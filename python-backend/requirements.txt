@@ -7,6 +7,8 @@ plotly
 matplotlib
 pillow
 pyproj
+jinja2
+markupsafe
 requests
 httpx
 urllib3
@@ -18,3 +20,4 @@ groundhog
 python-multipart
 xlrd
 openpyxl
+et_xmlfile

@@ -62,6 +62,8 @@ hiddenimports += collect_submodules('requests')
 hiddenimports += collect_submodules('urllib3')
 hiddenimports += collect_submodules('httpx')
 hiddenimports += collect_submodules('certifi')
+hiddenimports += collect_submodules('jinja2')
+hiddenimports += collect_submodules('markupsafe')
 
 # ---------------------------------------------------------------------------
 # Data files
@@ -77,6 +79,7 @@ for json_file in ['module_info_structured.json', 'schema_overrides.json']:
         datas.append((json_file, '.'))
 
 datas += collect_data_files('plotly')
+datas += collect_data_files('jinja2')
 
 # ---------------------------------------------------------------------------
 # Analysis
