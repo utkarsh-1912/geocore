@@ -6,6 +6,8 @@
 import React from 'react';
 import { Layers, Box, Shovel, FileText, Activity, Droplets, Database, Ruler, Zap, Anchor } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
+import logoFull from '../../assets/logo-2.png';
+import logoIcon from '../../assets/logoIcon.png';
 
 const CategoryIcon = ({ id }) => {
     const icons = {
@@ -40,9 +42,9 @@ export const Sidebar = ({ modules, onSelectCategory, selectedCategory, collapsed
         <div className={`bg-surface border-r border-border flex flex-col h-full transition-all duration-300 ${collapsed ? 'w-[70px]' : 'w-64'}`}>
             <div className="h-13 flex items-center justify-center border-b border-border p-2">
                 {collapsed ? (
-                    <img src="/logoIcon.png" alt="GeoCore" className="h-8 w-8 object-contain" />
+                    <img src={logoIcon} alt="GeoCore" className="h-8 w-8 object-contain" />
                 ) : (
-                    <img src="/logo-2.png" alt="GeoCore" className="h-10 object-contain" />
+                    <img src={logoFull} alt="GeoCore" className="h-10 object-contain" />
                 )}
             </div>
 

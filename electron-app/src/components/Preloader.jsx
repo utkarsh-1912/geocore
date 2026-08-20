@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import logoFull from '../assets/logo-2.png';
 
 export const Preloader = ({ status = "Initializing..." }) => {
     return (
@@ -21,7 +22,7 @@ export const Preloader = ({ status = "Initializing..." }) => {
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     className="mb-8 relative z-10"
                 >
-                    <img src="/logo-2.png" alt="Geocore" className="w-80 h-32 object-contain" />
+                    <img src={logoFull} alt="Geocore" className="w-80 h-32 object-contain" />
                 </motion.div>
 
                 {/* Background glow behind logo */}

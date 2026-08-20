@@ -7,7 +7,7 @@
     "url": "https://github.com/utkarsh/geocore"
   },
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Geotechnical Desktop App powered by Groundhog and Electron",
   "type": "module",
   "scripts": {
@@ -51,7 +51,8 @@
           "arch": ["x64"]
         }
       ],
-      "icon": "public/logoIcon.png"
+      "icon": "public/logoIcon.png",
+      "signAndEditExecutable": false
     },
     "nsis": {
       "oneClick": false,

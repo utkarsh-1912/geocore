@@ -2,6 +2,11 @@ fastapi
 uvicorn
 pandas
 numpy
+scipy
+plotly
+matplotlib
+pillow
+pyproj
 groundhog
 python-multipart
 xlrd

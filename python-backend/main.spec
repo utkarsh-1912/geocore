@@ -53,6 +53,11 @@ hiddenimports = [
 
 hiddenimports += collect_submodules('groundhog')
 hiddenimports += collect_submodules('core')
+hiddenimports += collect_submodules('plotly')
+hiddenimports += collect_submodules('scipy')
+hiddenimports += collect_submodules('matplotlib')
+hiddenimports += collect_submodules('PIL')
+hiddenimports += collect_submodules('pyproj')
 
 # ---------------------------------------------------------------------------
 # Data files
@@ -67,6 +72,8 @@ for json_file in ['module_info_structured.json', 'schema_overrides.json']:
     if os.path.exists(json_file):
         datas.append((json_file, '.'))
 
+datas += collect_data_files('plotly')
+
 # ---------------------------------------------------------------------------
 # Analysis
 # ---------------------------------------------------------------------------
@@ -80,8 +87,7 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=[
-        'tkinter', 'matplotlib', 'IPython', 'notebook',
-        'PIL', 'cv2', 'PyQt5', 'PySide2', 'wx',
+        'tkinter', 'IPython', 'notebook', 'PyQt5', 'PySide2', 'wx',
     ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
