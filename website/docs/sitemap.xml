@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/developer/architecture/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/developer/packaging/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/modules/ags-converter/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/modules/deep-foundations/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/modules/eurocode7/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/modules/shallow-foundations/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://utkarsh-1912.github.io/geocore/modules/site-investigation/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+</urlset>

@@ -1,0 +1,3972 @@
+/**
+ * Author: Utkarsh Gupta
+ * License: GPL v2
+ */
+
+export const schemas = {
+    "relativedensity_categories": {
+        "type": "object",
+        "properties": {
+            "relative_density": {
+                "type": "number",
+                "title": "Relative Density",
+                "description": "Relative density of cohesionless material (D_r) [-] - Suggested range: 0.0 <= relative_density <= 1.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "relative_density"
+        ],
+        "documentation": "<br/>Categorizes relative densities according to the following definition:<br/><br/>    - 0 - 0.15: Very loose<br/>    - 0.15 - 0.35: Loose<br/>    - 0.35 - 0.65: Medium dense<br/>    - 0.65 - 0.85: Dense<br/>    - 0.85 - 1: Very dense<br/><br/>:param relative_density: Relative density of cohesionless material (<span class=\"math-inline\">D_r</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= relative_density <= 1.0<br/><br/><div class=\"math-block\"><br/>    D_r = \\frac{e - e_{min}}{e_{max} - e_{min}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Relative density': Relative density class<br/><br/>Reference - API RP2 GEO<br/><br/>"
+    },
+    "samplequality_voidratio_lunne": {
+        "type": "object",
+        "properties": {
+            "voidratio": {
+                "type": "number",
+                "title": "Voidratio",
+                "description": "Initial void ratio (e_0) [-] - Suggested range: 0.3 <= voidratio <= 3.0",
+                "unit": "-",
+                "default": null
+            },
+            "voidratio_change": {
+                "type": "number",
+                "title": "Voidratio Change",
+                "description": "Change in void ratio when consolidating to in-situ stress (\\Delta e) [-] - Suggested range: -1 <= voidratio <= 1",
+                "unit": "-",
+                "default": null
+            },
+            "ocr": {
+                "type": "number",
+                "title": "Ocr",
+                "description": "Overconsolidation ratio (\\text{OCR}) [-] - Suggested range: 1 <= voidratio <= 4.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "voidratio",
+            "voidratio_change",
+            "ocr"
+        ],
+        "documentation": "<br/>Determines the sample quality for clays based on the change in void ratio when consolidating the sample back to the initial vertical effective stress.<br/>The classification is based on testing of soft marine clays sampled with different methods.<br/><br/>+-------+-----------------------------------------------------------------+<br/>| OCR   |                    <span class=\"math-inline\">\\Delta e / e_0</span>                       |<br/>|       +------------------------+--------------+-------------+-----------+<br/>|       | Very good to excellent | Good to fair | Poor        | Very poor |<br/>+-------+------------------------+--------------+-------------+-----------+<br/>| 1 - 2 |         < 0.04         |  0.04 - 0.07 | 0.07 - 0.14 |   > 0.14  |<br/>+-------+------------------------+--------------+-------------+-----------+<br/>| 2 - 4 |         < 0.03         |  0.03 - 0.05 | 0.05 - 0.10 |   > 0.10  |<br/>+-------+------------------------+--------------+-------------+-----------+<br/><br/>:param voidratio: Initial void ratio (<span class=\"math-inline\">e_0</span>) [-] - Suggested range: 0.3 <= voidratio <= 3.0<br/>:param voidratio_change: Change in void ratio when consolidating to in-situ stress (<span class=\"math-inline\">\\Delta e</span>) [-] - Suggested range: -1 <= voidratio <= 1<br/>:param ocr: Overconsolidation ratio (<span class=\"math-inline\">\\text{OCR}</span>) [-] - Suggested range: 1 <= voidratio <= 4.0<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'delta e/e0 [-]': Ratio used for classification<br/>    - 'Quality category': Quality category according to Lunne et al.<br/><br/>Reference - Lunne, T., et al. \"Effects of sample disturbance on consolidation behaviour of soft marine Norwegian clays.\" Geotechnical and geophysical site characterization: proceedings of the third international conference on site characterization ISC. Vol. 3. 2008.<br/><br/>"
+    },
+    "su_categories": {
+        "type": "object",
+        "properties": {
+            "undrained_shear_strength": {
+                "type": "number",
+                "title": "Undrained Shear Strength",
+                "description": "Undrained shear strength of the cohesive sample (S_u) [kPa] - Suggested range: 0.0 <= undrained_shear_strength <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "standard": {
+                "type": "string",
+                "title": "Standard",
+                "description": "Standard used for the classification (optional, default= 'BS 5930:2015') - Options: ('BS 5930:2015', 'ASTM D-2488')",
+                "unit": "",
+                "default": "'BS 5930:2015'"
+            }
+        },
+        "required": [
+            "undrained_shear_strength"
+        ],
+        "documentation": "<br/>Classifies undrained shear strength in a number of categories.<br/>The classification system can be selected but the default is BS 5930:2015.<br/>Classification according to ASTM D-2488 is also available.<br/><br/>According to BS 5930:2015:<br/><br/>- Extremely low: < 10kPa<br/>- Very low: 10 - 20kPa<br/>- Low: 20 - 40kPa<br/>- Medium: 40 - 75kPa<br/>- High: 75 - 150kPa<br/>- Very high: 150 - 300kPa<br/>- Extremely high: > 300kPa<br/><br/>According to ASTM D-2488:<br/><br/>- Very soft: 0 - 12.5kPa<br/>- Soft: 12.5 - 25kPa<br/>- Firm: 25 - 50kPa<br/>- Stiff: 50 - 100kPa<br/>- Very stiff: 100 - 200kPa<br/>- Hard: 200 - 400kPa<br/>- Very hard: > 400kPa<br/><br/><br/>:param undrained_shear_strength: Undrained shear strength of the cohesive sample (<span class=\"math-inline\">S_u</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= undrained_shear_strength <= 1000.0<br/>:param standard: Standard used for the classification (optional, default= 'BS 5930:2015') - Options: ('BS 5930:2015', 'ASTM D-2488')<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'strength class': Strength class for the selected classification system<br/><br/>Reference - BS 5930:2015, ASTM D-2488<br/><br/>"
+    },
+    "uscs_categories": {
+        "type": "object",
+        "properties": {
+            "symbol": {
+                "type": "string",
+                "title": "Symbol",
+                "description": "Two character symbol for the soil type according to USCS",
+                "unit": "",
+                "default": null
+            }
+        },
+        "required": [
+            "symbol"
+        ],
+        "documentation": "<br/>Provides the verbose description for soil type codes according to USCS. The ``USCS_DICTIONARY`` can also be used in workflows.<br/><br/>:param symbol: Two character symbol for the soil type according to USCS<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Soil type': Verbose description of the soil type<br/><br/>Reference - USCS<br/><br/>"
+    },
+    "bulkunitweight": {
+        "type": "object",
+        "properties": {
+            "saturation": {
+                "type": "number",
+                "title": "Saturation",
+                "description": "Saturation of the sample, ratio of volume of water to volume of voids (S) [-] - Suggested range: 0.0 <= saturation <= 1.0",
+                "unit": "-",
+                "default": null
+            },
+            "voidratio": {
+                "type": "number",
+                "title": "Voidratio",
+                "description": "Void ratio, ratio of volume of voids to volume of solids (e) [-] - Suggested range: 0.0 <= voidratio <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity of solid particles (G_s) [-] - Suggested range: 1.0 <= specific_gravity <= 3.0 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            },
+            "unitweight_water": {
+                "type": "number",
+                "title": "Unitweight Water",
+                "description": "Unit weight of water (\\gamma_w) [kN/m3] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.0)",
+                "unit": "kN/m3",
+                "default": "10.0"
+            }
+        },
+        "required": [
+            "saturation",
+            "voidratio"
+        ],
+        "documentation": "<br/>Calculates the bulk unit weight from specific gravity, void ratio and saturation<br/><br/>:param saturation: Saturation of the sample, ratio of volume of water to volume of voids (<span class=\"math-inline\">S</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= saturation <= 1.0<br/>:param voidratio: Void ratio, ratio of volume of voids to volume of solids (<span class=\"math-inline\">e</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= voidratio <= 4.0<br/>:param specific_gravity: Specific gravity of solid particles (<span class=\"math-inline\">G_s</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= specific_gravity <= 3.0 (optional, default= 2.65)<br/>:param unitweight_water: Unit weight of water (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.0)<br/><br/><div class=\"math-block\"><br/>    \\gamma = \\frac{W}{V} = \\left( \\frac{G_s + S \\cdot e}{1+e} \\right) \\cdot \\gamma_w<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'bulk unit weight [kN/m3]': Bulk unit weight of the material (<span class=\"math-inline\">\\gamma</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/>    - 'effective unit weight [kN/m3]': Effective unit weight of the material (<span class=\"math-inline\">\\gamma^{\\prime}</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "bulkunitweight_dryunitweight": {
+        "type": "object",
+        "properties": {
+            "dryunitweight": {
+                "type": "number",
+                "title": "Dryunitweight",
+                "description": "Dry unit weight, ratio of weight of solids to total volume (\\gamma_d) [kN/m3] - Suggested range: 1.0 <= dryunitweight <= 15.0",
+                "unit": "kN/m3",
+                "default": null
+            },
+            "watercontent": {
+                "type": "number",
+                "title": "Watercontent",
+                "description": "Water content, ratio of weight of water to weight of solids (w) [-] - Suggested range: 0.0 <= watercontent <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "unitweight_water": {
+                "type": "number",
+                "title": "Unitweight Water",
+                "description": "Unit weight of water (\\gamma_w) [kN/m3] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.0)",
+                "unit": "kN/m3",
+                "default": "10.0"
+            }
+        },
+        "required": [
+            "dryunitweight",
+            "watercontent"
+        ],
+        "documentation": "<br/>Calculates the bulk unit weight from the dry unit weight and the water content<br/><br/>:param dryunitweight: Dry unit weight, ratio of weight of solids to total volume (<span class=\"math-inline\">\\gamma_d</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 1.0 <= dryunitweight <= 15.0<br/>:param watercontent: Water content, ratio of weight of water to weight of solids (<span class=\"math-inline\">w</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= watercontent <= 4.0<br/>:param unitweight_water: Unit weight of water (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.0)<br/><br/><div class=\"math-block\"><br/>    \\gamma = (1+w) \\cdot \\gamma_d<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'bulk unit weight [kN/m3]': Bulk unit weight (<span class=\"math-inline\">\\gamma</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/>    - 'effective unit weight [kN/m3]': Effective unit weight (<span class=\"math-inline\">\\gamma^{\\prime}</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "density_unitweight": {
+        "type": "object",
+        "properties": {
+            "gamma": {
+                "type": "number",
+                "title": "Gamma",
+                "description": "Unit weight (\\gamma) [kN/m3] - Suggested range: 0.0 <= gamma <= 30.0",
+                "unit": "kN/m3",
+                "default": null
+            },
+            "g": {
+                "type": "number",
+                "title": "G",
+                "description": "Acceleration of gravity (g) [m/s2] - Suggested range: 9.7 <= g <= 10.0 (optional, default= 9.81)",
+                "unit": "m/s2",
+                "default": "9.81"
+            }
+        },
+        "required": [
+            "gamma"
+        ],
+        "documentation": "<br/>Converts unit weight (in kN/m3) to density (in kg/m3)<br/><br/>:param gamma: Unit weight (<span class=\"math-inline\">\\gamma</span>) [kN/m3] - Suggested range: 0.0 <= gamma <= 30.0<br/>:param g: Acceleration of gravity (<span class=\"math-inline\">g</span>) [m/s2] - Suggested range: 9.7 <= g <= 10.0 (optional, default= 9.81)<br/><br/><div class=\"math-block\"><br/>    \\rho = \\frac{\\gamma}{g}<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Density [kg/m3]': Density (<span class=\"math-inline\">\\rho</span>)  [kg/m3]<br/><br/>Reference - Budhu (2011) Introduction to soil mechanics and foundations.<br/><br/>"
+    },
+    "dryunitweight_watercontent": {
+        "type": "object",
+        "properties": {
+            "watercontent": {
+                "type": "number",
+                "title": "Watercontent",
+                "description": "Water content of the sample, ratio of weight of water to weight of solids (w) [-] - Suggested range: 0.0 <= watercontent <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "bulkunitweight": {
+                "type": "number",
+                "title": "Bulkunitweight",
+                "description": "Bulk unit weight of the sample (\\gamma) [kN/m3] - Suggested range: 10.0 <= bulkunitweight <= 25.0",
+                "unit": "kN/m3",
+                "default": null
+            }
+        },
+        "required": [
+            "watercontent",
+            "bulkunitweight"
+        ],
+        "documentation": "<br/>Calculates the dry unit weight of the sample from the water content and the bulk unit weight<br/><br/>:param watercontent: Water content of the sample, ratio of weight of water to weight of solids (<span class=\"math-inline\">w</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= watercontent <= 4.0<br/>:param bulkunitweight: Bulk unit weight of the sample (<span class=\"math-inline\">\\gamma</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 10.0 <= bulkunitweight <= 25.0<br/><br/><div class=\"math-block\"><br/>    \\gamma_d = \\frac{W_s}{V} = \\left( \\frac{G_s}{1+e} \\right) \\cdot \\gamma_w = \\frac{\\gamma}{1 + w}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'dry unit weight [kN/m3]': Dry unit weight, ratio of weight of solids to total volume (<span class=\"math-inline\">\\gamma_d</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "porosity_voidratio": {
+        "type": "object",
+        "properties": {
+            "voidratio": {
+                "type": "number",
+                "title": "Voidratio",
+                "description": "Void ratio defined as the ratio of volume of voids to volume of solids (e) [-] - Suggested range: 0.0 <= voidratio <= 5.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "voidratio"
+        ],
+        "documentation": "<br/>Calculates the porosity of sample from the void ratio<br/><br/>:param voidratio: Void ratio defined as the ratio of volume of voids to volume of solids (<span class=\"math-inline\">e</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= voidratio <= 5.0<br/><br/><div class=\"math-block\"><br/>    n = \\frac{e}{e+1}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'porosity [-]': Porosity defined as the ratio of the volume of voids to the total volume (<span class=\"math-inline\">n</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "relative_density": {
+        "type": "object",
+        "properties": {
+            "void_ratio": {
+                "type": "number",
+                "title": "Void Ratio",
+                "description": "Void ratio of the sample (e) [-] - Suggested range: 0.0 <= void_ratio <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "e_min": {
+                "type": "number",
+                "title": "E Min",
+                "description": "Void ratio at the minimum density (e_{min}) [-] - Suggested range: 0.0 <= e_min <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "e_max": {
+                "type": "number",
+                "title": "E Max",
+                "description": "Void ratio at the maximum density (e_{max}) [-] - Suggested range: 0.0 <= e_max <= 5.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "void_ratio",
+            "e_min",
+            "e_max"
+        ],
+        "documentation": "<br/>Calculates the relative density for a cohesionless sample from the measured void ratio, comparing it to the void ratio at minimum and maximum density.<br/><br/>:param void_ratio: Void ratio of the sample (<span class=\"math-inline\">e</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= void_ratio <= 5.0<br/>:param e_min: Void ratio at the minimum density (<span class=\"math-inline\">e_{min}</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= e_min <= 5.0<br/>:param e_max: Void ratio at the maximum density (<span class=\"math-inline\">e_{max}</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= e_max <= 5.0<br/><br/><div class=\"math-block\"><br/>    D_r = \\frac{e - e_{min}}{e_{max} - e_{min}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Dr [-]': Relative density (<span class=\"math-inline\">D_r</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "saturation_watercontent": {
+        "type": "object",
+        "properties": {
+            "water_content": {
+                "type": "number",
+                "title": "Water Content",
+                "description": "Water content of the soil defined as the ratio of weight of water to weight of solids (w) [-] - Suggested range: 0.0 <= water_content <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "voidratio": {
+                "type": "number",
+                "title": "Voidratio",
+                "description": "Ratio of volume of voids to volume of solids (e) [-] - Suggested range: 0.0 <= voidratio <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity of the soil grains (G_s) [-] - Suggested range: 1.0 <= specific_gravity <= 3.0 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            }
+        },
+        "required": [
+            "water_content",
+            "voidratio"
+        ],
+        "documentation": "<br/>Calculates the saturation of a sample from the water content, the specific gravity and the void ratio<br/><br/>:param water_content: Water content of the soil defined as the ratio of weight of water to weight of solids (<span class=\"math-inline\">w</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= water_content <= 4.0<br/>:param voidratio: Ratio of volume of voids to volume of solids (<span class=\"math-inline\">e</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= voidratio <= 4.0<br/>:param specific_gravity: Specific gravity of the soil grains (<span class=\"math-inline\">G_s</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= specific_gravity <= 3.0 (optional, default= 2.65)<br/><br/><div class=\"math-block\"><br/>    S = \\frac{V_{water}}{V_{voids}} = \\frac{w \\cdot G_s}{e}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'saturation [-]': Saturation of the sample defined as the ratio of volume of water to volume of voids (<span class=\"math-inline\">S</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "unitweight_density": {
+        "type": "object",
+        "properties": {
+            "density": {
+                "type": "number",
+                "title": "Density",
+                "description": "Density of the sample (\\rho) [kg/m3] - Suggested range: 0.0 <= density <= 3000.0",
+                "unit": "kg/m3",
+                "default": null
+            },
+            "g": {
+                "type": "number",
+                "title": "G",
+                "description": "Acceleration due to gravity (g) [m/s2] - Suggested range: 9.7 <= g <= 11.0 (optional, default= 9.81)",
+                "unit": "m/s2",
+                "default": "9.81"
+            }
+        },
+        "required": [
+            "density"
+        ],
+        "documentation": "<br/>Converts density (in kg/m3) to unit weight (kN/m3)<br/><br/>:param density: Density of the sample (<span class=\"math-inline\">\\rho</span>) [kg/m3] - Suggested range: 0.0 <= density <= 3000.0<br/>:param g: Acceleration due to gravity (<span class=\"math-inline\">g</span>) [m/s2] - Suggested range: 9.7 <= g <= 11.0 (optional, default= 9.81)<br/><br/><div class=\"math-block\"><br/>    \\gamma = \\rho \\cdot g<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Unit weight [kN/m3]': Unit weight of the sample (<span class=\"math-inline\">\\gamma</span>)  [kN/m3]<br/><br/>Reference - Budhu (2011) Introduction to soil mechanics and foundations.<br/><br/>"
+    },
+    "unitweight_watercontent_saturated": {
+        "type": "object",
+        "properties": {
+            "water_content": {
+                "type": "number",
+                "title": "Water Content",
+                "description": "Water content of the sample (w) [-] - Suggested range: 0.0 <= water_content <= 2.0",
+                "unit": "-",
+                "default": null
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity of the soil (G_s) [-] - Suggested range: 2.5 <= specific_gravity <= 2.8 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            },
+            "gamma_w": {
+                "type": "number",
+                "title": "Gamma W",
+                "description": "Unit weight of water (\\gamma_w) [kN/m3] - Suggested range: 9.5 <= gamma_w <= 10.5 (optional, default= 10.0)",
+                "unit": "kN/m3",
+                "default": "10.0"
+            }
+        },
+        "required": [
+            "water_content"
+        ],
+        "documentation": "<br/>Calculates the bulk unit weight from water content for a saturated soil. A specific gravity needs to be assumed or derived from pycnometer test results.<br/><br/>:param water_content: Water content of the sample (<span class=\"math-inline\">w</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= water_content <= 2.0<br/>:param specific_gravity: Specific gravity of the soil (<span class=\"math-inline\">G_s</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 2.5 <= specific_gravity <= 2.8 (optional, default= 2.65)<br/>:param gamma_w: Unit weight of water (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.5 <= gamma_w <= 10.5 (optional, default= 10.0)<br/><br/><div class=\"math-block\"><br/>    S \\cdot e = w \\cdot G_s<br/><br/>    \\gamma = \\left( \\frac{G_s + S \\cdot e}{1 + e} \\right) \\cdot \\gamma_w<br/><br/>    \\gamma = \\left( \\frac{G_s \\cdot (1 + w)}{1 + w \\cdot G_s} \\right) \\cdot \\gamma_w<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'gamma [kN/m3]': Bulk unit weight of the saturated sample (<span class=\"math-inline\">\\gamma</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/><br/>Reference - UGent In-house practice<br/><br/>"
+    },
+    "voidratio_bulkunitweight": {
+        "type": "object",
+        "properties": {
+            "bulkunitweight": {
+                "type": "number",
+                "title": "Bulkunitweight",
+                "description": "The bulk unit weight of the soil (ratio of weight of water and solids to volume) (\\gamma) [kN/m3] - Suggested range: 10.0 <= bulkunitweight <= 25.0",
+                "unit": "kN/m3",
+                "default": null
+            },
+            "saturation": {
+                "type": "number",
+                "title": "Saturation",
+                "description": "Saturation of the soil as a number between 0 (dry) and fully saturated (1) (S) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity or the ratio of the weight of soil solids to the weight of an equal volume of water (G_s) [-] - Suggested range: 2.4 <= specific_gravity <= 2.9 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            },
+            "unitweight_water": {
+                "type": "number",
+                "title": "Unitweight Water",
+                "description": "Unit weight of water (\\gamma_w) [kN/m3] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.0)",
+                "unit": "kN/m3",
+                "default": "10.0"
+            }
+        },
+        "required": [
+            "bulkunitweight"
+        ],
+        "documentation": "<br/>Calculates the void ratio from the bulk unit weight for a soil with varying saturation.<br/><br/>Since unit weight is generally better known or measured than void ratio, this conversion can be useful to derive the in-situ void ratio in a soil profile.<br/><br/>The default behaviour of this function assumes saturated soil but the saturation can be changed for dry or partially saturated soil.<br/><br/>The water content is also returned.<br/><br/>:param bulkunitweight: The bulk unit weight of the soil (ratio of weight of water and solids to volume) (<span class=\"math-inline\">\\gamma</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 10.0 <= bulkunitweight <= 25.0<br/>:param saturation: Saturation of the soil as a number between 0 (dry) and fully saturated (1) (<span class=\"math-inline\">S</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)<br/>:param specific_gravity: Specific gravity or the ratio of the weight of soil solids to the weight of an equal volume of water (<span class=\"math-inline\">G_s</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 2.4 <= specific_gravity <= 2.9 (optional, default= 2.65)<br/>:param unitweight_water: Unit weight of water (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.0)<br/><br/><div class=\"math-block\"><br/>    \\gamma = \\left( \\frac{G_s + S e}{1 + e} \\right) \\gamma_w<br/><br/>    \\implies e = \\frac{\\gamma_w G_s - \\gamma}{\\gamma - S \\gamma_w}<br/><br/>    w = \\frac{S e}{G_s}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'e [-]': Void ratio of the soil (<span class=\"math-inline\">e</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'w [-]': Water content of the soil (<span class=\"math-inline\">w</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "voidratio_drydensity": {
+        "type": "object",
+        "properties": {
+            "dry_density": {
+                "type": "number",
+                "title": "Dry Density",
+                "description": "Dry density of the sample (\\rho_d) [kg/m3] - Suggested range: 1000.0 <= dry_density <= 2000.0",
+                "unit": "kg/m3",
+                "default": null
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity (G_s) [-] - Suggested range: 2.4 <= specific_gravity <= 2.9 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            },
+            "water_density": {
+                "type": "number",
+                "title": "Water Density",
+                "description": "Density of water (\\rho_w) [kg/m3] - Suggested range: 900.0 <= water_density <= 1100.0 (optional, default= 1000.0)",
+                "unit": "kg/m3",
+                "default": "1000.0"
+            }
+        },
+        "required": [
+            "dry_density"
+        ],
+        "documentation": "<br/>Calculates void ratio when the specific gravity and the dry density are known<br/><br/>:param dry_density: Dry density of the sample (<span class=\"math-inline\">\\rho_d</span>) [kg/m3] - Suggested range: 1000.0 <= dry_density <= 2000.0<br/>:param specific_gravity: Specific gravity (<span class=\"math-inline\">G_s</span>) [-] - Suggested range: 2.4 <= specific_gravity <= 2.9 (optional, default= 2.65)<br/>:param water_density: Density of water (<span class=\"math-inline\">\\rho_w</span>) [kg/m3] - Suggested range: 900.0 <= water_density <= 1100.0 (optional, default= 1000.0)<br/><br/><div class=\"math-block\"><br/>    e = G_s \\cdot \\frac{\\rho_w}{\\rho_d} - 1<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Void ratio [-]': Void ratio (<span class=\"math-inline\">e</span>)  [-]<br/><br/>Reference - Budhu (2011) Introduction to soil mechanics and foundations.<br/><br/>"
+    },
+    "voidratio_porosity": {
+        "type": "object",
+        "properties": {
+            "porosity": {
+                "type": "number",
+                "title": "Porosity",
+                "description": "Porosity of the sample defined as the ratio of volume of voids to total volume (n) [-] - Suggested range: 0.0 <= porosity <= 1.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "porosity"
+        ],
+        "documentation": "<br/>Converts a void ratio into a porosity<br/><br/>:param porosity: Porosity of the sample defined as the ratio of volume of voids to total volume (<span class=\"math-inline\">n</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= porosity <= 1.0<br/><br/><div class=\"math-block\"><br/>    e = \\frac{V_{voids}}{V_{solids}}<br/><br/>    n = \\frac{V_{voids}}{V_{total}}<br/><br/>    e = \\frac{n}{1-n}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'voidratio [-]': Void ratio defined as the ratio of volume of voids to volume of solids (<span class=\"math-inline\">e</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "voidratio_watercontent": {
+        "type": "object",
+        "properties": {
+            "water_content": {
+                "type": "number",
+                "title": "Water Content",
+                "description": "Water content of the sample (w) [-] - Suggested range: 0.0 <= water_content <= 2.0",
+                "unit": "-",
+                "default": null
+            },
+            "saturation": {
+                "type": "number",
+                "title": "Saturation",
+                "description": "Saturation of the sample (S) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity of the sample (G_s) [-] - Suggested range: 2.3 <= specific_gravity <= 3.0 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            }
+        },
+        "required": [
+            "water_content"
+        ],
+        "documentation": "<br/>Calculates the void ratio of a sample from the water content. By default, full saturation is assumed but this can be modified<br/><br/>:param water_content: Water content of the sample (<span class=\"math-inline\">w</span>) [-] - Suggested range: 0.0 <= water_content <= 2.0<br/>:param saturation: Saturation of the sample (<span class=\"math-inline\">S</span>) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)<br/>:param specific_gravity: Specific gravity of the sample (<span class=\"math-inline\">G_s</span>) [-] - Suggested range: 2.3 <= specific_gravity <= 3.0 (optional, default= 2.65)<br/><br/><div class=\"math-block\"><br/>    e = \\frac{w \\cdot G_s}{S}<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Void ratio [-]': Void ratio of the sample (<span class=\"math-inline\">e</span>)  [-]<br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "watercontent_voidratio": {
+        "type": "object",
+        "properties": {
+            "voidratio": {
+                "type": "number",
+                "title": "Voidratio",
+                "description": "Void ratio of the sample (e) [-] - Suggested range: voidratio >= 0.0",
+                "unit": "-",
+                "default": null
+            },
+            "saturation": {
+                "type": "number",
+                "title": "Saturation",
+                "description": "Saturation of the sample (S) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity (G_s) [-] - Suggested range: 2.4 <= specific_gravity <= 3.0 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            }
+        },
+        "required": [
+            "voidratio"
+        ],
+        "documentation": "<br/>Calculates the water content of a sample from it's void ratio. By default, full saturation is assumed.<br/><br/>:param voidratio: Void ratio of the sample (<span class=\"math-inline\">e</span>) [-] - Suggested range: voidratio >= 0.0<br/>:param saturation: Saturation of the sample (<span class=\"math-inline\">S</span>) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)<br/>:param specific_gravity: Specific gravity (<span class=\"math-inline\">G_s</span>) [-] - Suggested range: 2.4 <= specific_gravity <= 3.0 (optional, default= 2.65)<br/><br/><div class=\"math-block\"><br/>    w = \\frac{S \\cdot e}{G_s}<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Water content [-]': Water content of the sample (<span class=\"math-inline\">w</span>)  [-]<br/>    - 'Water content [%]': Water content of the sample (<span class=\"math-inline\">w</span>)  [%]<br/><br/><br/>Reference - Budhu (2011). Soil mechanics and foundation engineering<br/><br/>"
+    },
+    "gmax_sand_hardinblack": {
+        "type": "object",
+        "properties": {
+            "sigma_m0": {
+                "type": "number",
+                "title": "Sigma M0",
+                "description": "Mean effective stress (p^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_m0 <= 500.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "void_ratio": {
+                "type": "number",
+                "title": "Void Ratio",
+                "description": "In-situ void ratio of the sand (e_0) [-] - Suggested range: 0.0 <= void_ratio <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "coefficient_B": {
+                "type": "number",
+                "title": "Coefficient B",
+                "description": "Calibration coefficient (B) [-] (optional, default= 875.0)",
+                "unit": "-",
+                "default": "875.0"
+            },
+            "pref": {
+                "type": "number",
+                "title": "Pref",
+                "description": "Reference pressure (p_{ref}^{\\prime}) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            }
+        },
+        "required": [
+            "sigma_m0",
+            "void_ratio"
+        ],
+        "documentation": "<br/>Calculates the small-strain shear modulus of sand based on the correlation proposed with initial void ratio and stress level suggested by Hardin and Black (1968).<br/><br/>The formulation was developed on a dataset of cohesive soils. However, the correlation was used in the PISA project to predict the small-strain shear modulus of sand.<br/><br/>The default calibration parameter is taken from the recent study on monopile lateral response for the PISA project (Taborda et al, 2019). This calibration applies for dense marine sand.<br/><br/>:param sigma_m0: Mean effective stress (<span class=\"math-inline\">p^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_m0 <= 500.0<br/>:param void_ratio: In-situ void ratio of the sand (<span class=\"math-inline\">e_0</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= void_ratio <= 4.0<br/>:param coefficient_B: Calibration coefficient (<span class=\"math-inline\">B</span>) [<span class=\"math-inline\">-</span>] (optional, default= 875.0)<br/>:param pref: Reference pressure (<span class=\"math-inline\">p_{ref}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/><br/><div class=\"math-block\"><br/>    G_{max} = \\frac{B p_{ref}^{\\prime}}{0.3 + 0.7 e_0^2} \\sqrt{\\frac{p^{\\prime}}{p_{ref}^{\\prime}}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Hardin, B.O. and Black W.L. 1968. Vibration modulus of normally consolidated clay Journal of Soil Mechanics and Foundations Div, 94(SM2), 353-369.<br/><br/>Taborda, D.M.G., Zdravkovi\u0107, L., Potts, D.M., Burd, H.J., Byrne, B.W., Gavin, K., Houlsby, G.T., Jardine, R.J., Liu, T., Martin, C.M. and McAdam, R.A. 2018. Finite element modelling of laterally loaded piles in a dense marine sand at Dunkirk. G\u00e9otechnique, https://doi.org/10.1680/jgeot.18.pisa.006<br/><br/>"
+    },
+    "hssmall_parameters_sand": {
+        "type": "object",
+        "properties": {
+            "relative_density": {
+                "type": "number",
+                "title": "Relative Density",
+                "description": "Relative density of sand (D_r) [pct] - Suggested range: 10.0 <= relative_density <= 100.0",
+                "unit": "pct",
+                "default": null
+            }
+        },
+        "required": [
+            "relative_density"
+        ],
+        "documentation": "<br/>Calculates the constitutive parameters for the HS Small model in PLAXIS as a function of relative density.<br/><br/>The formulae were calibrated against a high-quality laboratory testing dataset on Toyoura, Ham River, Hostun and Ticino sand.<br/><br/>:param relative_density: Relative density of sand (<span class=\"math-inline\">D_r</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 10.0 <= relative_density <= 100.0<br/><br/><div class=\"math-block\"><br/>    \\gamma_{unsat} = 15 + 4 \\cdot \\frac{D_r}{100}<br/><br/>    \\gamma_{sat} = 19 + 1.6 \\cdot \\frac{D_r}{100}<br/><br/>    E_{50}^{ref} = 6e4 \\cdot \\frac{D_r}{100}<br/><br/>    E_{oed}^{ref} = 6e4 \\cdot \\frac{D_r}{100}<br/><br/>    E_{ur}^{ref} = 18e4 \\cdot \\frac{D_r}{100}<br/><br/>    G_0^{ref} = 6e4 + 6.8e4 \\frac{D_r}{100}<br/><br/>    m = 0.7 - \\frac{D_r}{320}<br/><br/>    \\gamma_{0.7}= 10^{-4} \\cdot \\left( 2 - \\frac{D_r}{100} \\right)<br/><br/>    \\varphi^{\\prime} = 28 + 12.5 \\cdot \\frac{D_r}{100}<br/><br/>    \\psi = -2 + 12.5 \\cdot \\frac{D_r}{100}<br/><br/>    R_f = 1 - \\frac{D_r}{800}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'gamma_unsat [kN/m3]': Unsaturated unit weight (<span class=\"math-inline\">\\gamma_{unsat}</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/>    - 'gamma_sat [kN/m3]': Saturated unit weight (<span class=\"math-inline\">\\gamma_{sat}</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/>    - 'E50_ref [kPa]': Reference secant stiffness (<span class=\"math-inline\">E_{50}^{ref}</span>)  [<span class=\"math-inline\">kPa</span>]<br/>    - 'Eoed_ref [kPa]': Reference oedometric stiffness (<span class=\"math-inline\">E_{oed}^{ref}</span>)  [<span class=\"math-inline\">kPa</span>]<br/>    - 'Eur_ref [kPa]': Reference unloading-reloading stiffness (<span class=\"math-inline\">E_{ur}^{ref}</span>)  [<span class=\"math-inline\">kPa</span>]<br/>    - 'G0_ref [kPa]': Reference small-strain shear modulus (<span class=\"math-inline\">G_{0}^{ref}</span>)  [<span class=\"math-inline\">kPa</span>]<br/>    - 'm [-]': Stiffness exponent (<span class=\"math-inline\">m</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'gamma_07 [-]': Strain level where shear modulus has reduced to  70 percent of Gmax (<span class=\"math-inline\">\\gamma_{0.7}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'phi_eff [deg]': Effective friction angle (<span class=\"math-inline\">\\varphi^{\\prime}</span>)  [<span class=\"math-inline\">deg</span>]<br/>    - 'psi [deg]': Dilation angle (<span class=\"math-inline\">\\psi</span>)  [<span class=\"math-inline\">deg</span>]<br/>    - 'Rf [-]': Failure ratio (<span class=\"math-inline\">-</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/hssmall_parameters_sand_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    HS Small parameters as a function of relative density<br/><br/>Reference - Brinkgreve, R. B. J., Engin, E., & Engin, H. K. (2010). Validation of empirical formulas to derive model parameters for sands. Numerical methods in geotechnical engineering, 137- 142.<br/><br/>"
+    },
+    "permeability_d10_hazen": {
+        "type": "object",
+        "properties": {
+            "grain_size": {
+                "type": "number",
+                "title": "Grain Size",
+                "description": "Grain size for which 10% of the particles are finer (D_{10}) [mm] - Suggested range: 0.01 <= grain_size <= 2.0",
+                "unit": "mm",
+                "default": null
+            },
+            "coefficient_C": {
+                "type": "number",
+                "title": "Coefficient C",
+                "description": "Calibration coefficient containing the effect of the shape of pore channels (C_{10)) [-] (optional, default= 0.01)",
+                "unit": "-",
+                "default": "0.01"
+            }
+        },
+        "required": [
+            "grain_size"
+        ],
+        "documentation": "<br/>Calculates the permeability of a granular soil based on its grain size. Extensive investigation has shown that the fine particles have the greatest influence on permeability since they fill the voids between larger grains. The correlation by Hazen (1892) uses the 10th percentile grain size. Other authors have argues that the 5th percentile would be a better choice.<br/><br/>:param grain_size: Grain size for which 10% of the particles are finer (<span class=\"math-inline\">D_{10}</span>) [<span class=\"math-inline\">mm</span>] - Suggested range: 0.01 <= grain_size <= 2.0<br/>:param coefficient_C: Calibration coefficient containing the effect of the shape of pore channels (<span class=\"math-inline\">C_{10)</span>) [<span class=\"math-inline\">-</span>] (optional, default= 0.01)<br/><br/><div class=\"math-block\"><br/>    k = C_{10} \\cdot D_{10}^2<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'k [m/s]': Permeability of the granular soil (<span class=\"math-inline\">k</span>)  [<span class=\"math-inline\">m/s</span>]<br/><br/><img src=\"/assets/groundhog_images/permeability_d10_hazen_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Data supporting the Hazen correlation<br/><br/>Reference - Terzaghi, K., Peck, R. B., & Mesri, G. (1996). Soil mechanics in engineering practice. John Wiley & Sons.<br/><br/>"
+    },
+    "stress_dilatancy_bolton": {
+        "type": "object",
+        "properties": {
+            "relative_density": {
+                "type": "number",
+                "title": "Relative Density",
+                "description": "Relative density of the material (D_{r)) [-] - Suggested range: 0.1 <= relative_density <= 1.0",
+                "unit": "-",
+                "default": null
+            },
+            "p_eff": {
+                "type": "number",
+                "title": "P Eff",
+                "description": "Effective pressure (p_{eff)^{\\prime}) [kPa] - Suggested range: 20 <= p_eff <= 10000. In the discussion following the paper publication, a remark was made that using a minimum value of 150kPa for the effective pressure is prudent.",
+                "unit": "kPa",
+                "default": null
+            },
+            "Q": {
+                "type": "number",
+                "title": "Q",
+                "description": "First calibration factor in the equation for relative dilatancy index (Q) (optional: Default = 10 for quartz and feldspar sands, See Table 2 in Bolton's paper for other grain types)- Suggested range: 5 <= Q <= 10",
+                "unit": "",
+                "default": "10"
+            },
+            "R": {
+                "type": "number",
+                "title": "R",
+                "description": "Second calibration factor in the equation for relative dilatancy index (R) (optional: Default = 1)",
+                "unit": "",
+                "default": "1"
+            },
+            "stress_condition": {
+                "type": "string",
+                "title": "Stress Condition",
+                "description": "Assumed stress condition: Choose between ``'triaxial strain'`` and ``'plane strain'``",
+                "unit": "",
+                "default": "'triaxial strain'"
+            }
+        },
+        "required": [
+            "relative_density",
+            "p_eff"
+        ],
+        "documentation": "<br/>Cohesionless soils with sufficiently high relative density will tend to dilate but dilation<br/>can be suppressed by the stress on the sample. The higher the stress, the lower the amount<br/>of dilation.<br/>Bolton (1986) formulated relations to calculated the difference between peak friction angle<br/>and critical state friction angle based on a series of plane strain and triaxial tests.<br/>A relative dilatancy index (<span class=\"math-inline\">I_R</span>) is defined which has allows prediction of the dilation<br/>angle for plane strain and triaxial strain.<br/>This function predicts the value of the relative dilatancy index based on user input and<br/>applies this to calculate the difference between peak and residual friction angle, <br/>dilation angle and the maximum ratio of volumetric strain increment to first principal strain increment<br/>for a selected stress condition (plane strain or triaxial strain).<br/>The calibration factors in the equation for relative dilatancy index can be adjusted<br/>(e.g. for crushable soils).<br/>Note that the formulae apply for <span class=\"math-inline\">0 < I_R < 4</span>.<br/><br/>:param relative_density: Relative density of the material (<span class=\"math-inline\">D_{r)</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.1 <= relative_density <= 1.0<br/>:param p_eff: Effective pressure (<span class=\"math-inline\">p_{eff)^{\\prime}</span>) [kPa] - Suggested range: 20 <= p_eff <= 10000. In the discussion following the paper publication, a remark was made that using a minimum value of 150kPa for the effective pressure is prudent.<br/>:param Q: First calibration factor in the equation for relative dilatancy index (<span class=\"math-inline\">Q</span>) (optional: Default = 10 for quartz and feldspar sands, See Table 2 in Bolton's paper for other grain types)- Suggested range: 5 <= Q <= 10<br/>:param R: Second calibration factor in the equation for relative dilatancy index (<span class=\"math-inline\">R</span>) (optional: Default = 1)<br/>:param stress_condition: Assumed stress condition: Choose between ``'triaxial strain'`` and ``'plane strain'``<br/><br/><div class=\"math-block\"><br/>    I_R = D_r \\left( Q - \\ln p^{\\prime} \\right) - R<br/><br/>    \\varphi_{max}^{\\prime} - \\varphi_{crit}^{\\prime} = 0.8 \\phi_{max} = 5 I_R \\ \\ \\text{plane strain}<br/><br/>    \\varphi_{max}^{\\prime} - \\varphi_{crit}^{\\prime} = 3 I_R \\ \\ \\text{triaxial strain}<br/>    <br/>    \\left( - \\frac{d \\epsilon_v}{d \\epsilon_1} \\right)_{max} = 0.3 I_R<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Ir [-]': Relative dilatancy index (<span class=\"math-inline\">I_R</span>)  [-]<br/>    - 'phi_max - phi_cs [deg]': Difference between peak and critical state friction angle (<span class=\"math-inline\">\\varphi_{max}^{\\prime} - \\varphi_{crit}^{\\prime}</span>)  [deg]<br/>    - 'Dilation angle [deg]': Calculated dilation angle for the selected stress condition (<span class=\"math-inline\">\\psi</span>)  [deg]<br/>    - '-depsilon_v/depsilon_1__max [-]': Maximum ratio of volumetric to first principal strain increment (<span class=\"math-inline\">\\left( - \\frac{d \\epsilon_v}{d \\epsilon_1} \\right)_{max}</span>) [-]<br/><br/><img src=\"/assets/groundhog_images/data_bolton.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Stress-dilatancy theory applied to selected tests (Bolton, 1986)<br/><br/>Reference - Bolton, M. D. \"The strength and dilatancy of sands.\" Geotechnique 36.1 (1986): 65-78.<br/><br/>"
+    },
+    "compressionindex_watercontent_koppula": {
+        "type": "object",
+        "properties": {
+            "water_content": {
+                "type": "number",
+                "title": "Water Content",
+                "description": "In-situ natural water content of the clay (w_n) [-] - Suggested range: 0.0 <= water_content <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "cc_cr_ratio": {
+                "type": "number",
+                "title": "Cc Cr Ratio",
+                "description": "Ratio of compression index and recompression index (C_r / C_c) [-] - Suggested range: 5.0 <= cc_cr_ratio <= 10.0 (optional, default= 7.5)",
+                "unit": "-",
+                "default": "7.5"
+            }
+        },
+        "required": [
+            "water_content"
+        ],
+        "documentation": "<br/>Based on an evaluation of the compression index of clays and eight other soil mechanics parameters, Koppula (1981) concluded that the best fit was obtain using a direct relation with natural water content.<br/><br/>The recompression index is also calculated using a user-defined ratio of <span class=\"math-inline\">C_c</span> and <span class=\"math-inline\">C_r</span>. This ratio is generally between 5 and 10.<br/><br/>:param water_content: In-situ natural water content of the clay (<span class=\"math-inline\">w_n</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= water_content <= 4.0<br/>:param cc_cr_ratio: Ratio of compression index and recompression index (<span class=\"math-inline\">C_r / C_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 5.0 <= cc_cr_ratio <= 10.0 (optional, default= 7.5)<br/><br/><div class=\"math-block\"><br/>    C_c = w_n<br/><br/>    C_c / C_r = 5 \\ \\text{to} \\ 10<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Cc [-]': Compression index (<span class=\"math-inline\">C_c</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Cr [-]': Recompression index (<span class=\"math-inline\">C_r</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Koppula SD (1981) Statistical evaluation of compression index. Geotech Test J ASTM 4(2):68\u201373<br/><br/>"
+    },
+    "cv_liquidlimit_usnavy": {
+        "type": "object",
+        "properties": {
+            "liquid_limit": {
+                "type": "number",
+                "title": "Liquid Limit",
+                "description": "Liquid limit of the clay (LL) [pct] - Suggested range: 20.0 <= liquid_limit <= 160.0",
+                "unit": "pct",
+                "default": null
+            },
+            "trend": {
+                "type": "string",
+                "title": "Trend",
+                "description": "Choice of trend, choose between trends for remoulded, NC and OC clay (optional, default= 'NC') - Options: ('Remoulded', 'NC', 'OC')",
+                "unit": "",
+                "default": "'NC'"
+            }
+        },
+        "required": [
+            "liquid_limit"
+        ],
+        "documentation": "<br/>Calculates an estimate of the coefficient of consolidation based on the liquid limit of a clay. Three trends are available; an upper bound trend for remoulded clays, a trend for normally consolidated and a lower bound trend for undisturbed overconsolidated clay. Note that sample disturbance can lead to a reduced coefficient of consolidation.<br/><br/>:param liquid_limit: Liquid limit of the clay (<span class=\"math-inline\">LL</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 20.0 <= liquid_limit <= 160.0<br/>:param trend: Choice of trend, choose between trends for remoulded, NC and OC clay (optional, default= 'NC') - Options: ('Remoulded', 'NC', 'OC')<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'cv [m2/yr]': Coefficient of consolidation (<span class=\"math-inline\">c_v</span>)  [<span class=\"math-inline\">m2/yr</span>]<br/><br/><img src=\"/assets/groundhog_images/cv_liquidlimit_usnavy_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Proposed relation between coefficient of consolidation and liquid limit<br/><br/>Reference - U.S. Navy (1982) Soil mechanics \u2013 design manual 7.1, Department of the Navy, Naval Facilities Engineering Command, U.S. Government Printing Office, Washington, DC<br/><br/>"
+    },
+    "frictionangle_plasticityindex": {
+        "type": "object",
+        "properties": {
+            "plasticity_index": {
+                "type": "number",
+                "title": "Plasticity Index",
+                "description": "Plasticity index of the clay as determined from Atterberg limit tests (PI) [pct] - Suggested range: 5.0 <= plasticity_index <= 1000.0",
+                "unit": "pct",
+                "default": null
+            }
+        },
+        "required": [
+            "plasticity_index"
+        ],
+        "documentation": "<br/>Based on a dataset of soft to stiff clays, a correlation between plasticity index and drained friction angle of clay is proposed. It should be noted that the friction angle of overconsolidated depends strongly on the in-situ condition. If the overconsolidated is fissured, the available shearing resistance will be lower than the value resulting from the correlation.<br/><br/>:param plasticity_index: Plasticity index of the clay as determined from Atterberg limit tests (<span class=\"math-inline\">PI</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 5.0 <= plasticity_index <= 1000.0<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Effective friction angle [deg]': Drained friction angle of the clay (<span class=\"math-inline\">\\varphi^{\\prime}</span>)  [<span class=\"math-inline\">deg</span>]<br/><br/><img src=\"/assets/groundhog_images/frictionangle_plasticityindex_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Dataset used for the correlation<br/><br/>Reference - Terzaghi, K., Peck, R. B., & Mesri, G. (1996). Soil mechanics in engineering practice. John Wiley & Sons.<br/><br/>"
+    },
+    "gmax_plasticityocr_andersen": {
+        "type": "object",
+        "properties": {
+            "pi": {
+                "type": "number",
+                "title": "Pi",
+                "description": "Plasticity index (difference between liquid limit and plastic limit) (PI) [pct] - Suggested range: 0.0 <= PI <= 160.0",
+                "unit": "pct",
+                "default": null
+            },
+            "ocr": {
+                "type": "number",
+                "title": "Ocr",
+                "description": "Overconsolidation ratio of the clay (OCR) [-] - Suggested range: 1.0 <= OCR <= 40.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "First calibration coefficient (:math:``) [-] (optional, default= 30.0)",
+                "unit": "-",
+                "default": "30.0"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Second calibration coefficient (:math:``) [-] (optional, default= 75.0)",
+                "unit": "-",
+                "default": "75.0"
+            },
+            "coefficient_3": {
+                "type": "number",
+                "title": "Coefficient 3",
+                "description": "Third calibration coefficient (:math:``) [-] (optional, default= 0.03)",
+                "unit": "-",
+                "default": "0.03"
+            },
+            "coefficient_4": {
+                "type": "number",
+                "title": "Coefficient 4",
+                "description": "Fourth calibration coefficient (exponent for OCR) (:math:``) [-] (optional, default= 0.5)",
+                "unit": "-",
+                "default": "0.5"
+            },
+            "coefficient_5": {
+                "type": "number",
+                "title": "Coefficient 5",
+                "description": "Fifth calibration coefficient (exponent for sigma_ref) (:math:``) [-] (optional, default= 0.9)",
+                "unit": "-",
+                "default": "0.9"
+            }
+        },
+        "required": [
+            "pi",
+            "ocr",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Calculates the small-strain shear modulus for cohesive soils based on plasticity index, effective overburden pressure and OCR. The proposed relation is calibrated on a number of shear wave velocity tests on clay samples with different plasticity index and OCR.<br/><br/>:param pi: Plasticity index (difference between liquid limit and plastic limit) (<span class=\"math-inline\">PI</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 0.0 <= PI <= 160.0<br/>:param ocr: Overconsolidation ratio of the clay (<span class=\"math-inline\">OCR</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= OCR <= 40.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)<br/>:param coefficient_1: First calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 30.0)<br/>:param coefficient_2: Second calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 75.0)<br/>:param coefficient_3: Third calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.03)<br/>:param coefficient_4: Fourth calibration coefficient (exponent for OCR) (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.5)<br/>:param coefficient_5: Fifth calibration coefficient (exponent for sigma_ref) (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.9)<br/><br/><div class=\"math-block\"><br/>    \\frac{G_{max}}{\\sigma_{ref}^{\\prime}} = \\left( 30 + \\frac{75}{\\frac{I_p}{100} + 0.03} \\right) \\cdot OCR^{0.5}<br/><br/>    \\sigma_{ref}^{\\prime} = P_a \\cdot \\left( \\sigma_{0}^{\\prime}  / P_a \\right)^{0.9}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'sigma_0_ref [kPa]': Reference stress (<span class=\"math-inline\">\\sigma_{ref}^{\\prime}</span>)  [<span class=\"math-inline\">kPa</span>]<br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/><img src=\"/assets/groundhog_images/gmax_plasticityocr_andersen_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Data used for calibrating the correlation<br/><br/>Reference - Andersen KH. Cyclic soil parameters for offshore foundation design. The Third ISSMGE McClelland Lecture. In: Meyer V, editor. Proc. Int. Symp. Frontiers in offshore geotechnics, ISFOG 2015. London: Taylor and Francis; 2015. 5\u201382.<br/><br/>"
+    },
+    "k0_plasticity_kenney": {
+        "type": "object",
+        "properties": {
+            "pi": {
+                "type": "number",
+                "title": "Pi",
+                "description": "Plasticity index (\\text{PI}) [pct] - Suggested range: 5 <= PI <= 80",
+                "unit": "pct",
+                "default": null
+            },
+            "ocr": {
+                "type": "number",
+                "title": "Ocr",
+                "description": "Overconsolidation ratio (\\text{OCR}) [-] (optional, default= 1, suggested range: 1 <= OCR < 30)",
+                "unit": "-",
+                "default": "1"
+            },
+            "coeff_1": {
+                "type": "number",
+                "title": "Coeff 1",
+                "description": "First calibration coefficient (optional, default=0.19)",
+                "unit": "",
+                "default": "0.19"
+            },
+            "coeff_2": {
+                "type": "number",
+                "title": "Coeff 2",
+                "description": "Second calibration coefficient (optional, default=0.233)",
+                "unit": "",
+                "default": "0.233"
+            },
+            "coeff_3": {
+                "type": "number",
+                "title": "Coeff 3",
+                "description": "First calibration coefficient (optional, default=-281)",
+                "unit": "",
+                "default": "-281"
+            },
+            "coeff_4": {
+                "type": "number",
+                "title": "Coeff 4",
+                "description": "Second calibration coefficient (optional, default=1.85)",
+                "unit": "",
+                "default": "1.85"
+            }
+        },
+        "required": [
+            "pi"
+        ],
+        "documentation": "<br/>Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated clay.<br/>Kenney (1959) presented a formula for coefficient of lateral earth pressure at rest for normally consolidated clay.<br/>The plasticity index <span class=\"math-inline\">\\text{PI}</span> was used as a basis for this correlation.<br/>This relation was modified for the effect of overconsolidation as shown by Alpan (1967).<br/>The exponent on OCR shows a linear variation with plasticity index.<br/><br/>:param pi: Plasticity index (<span class=\"math-inline\">\\text{PI}</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 5 <= PI <= 80<br/>:param ocr: Overconsolidation ratio (<span class=\"math-inline\">\\text{OCR}</span>) [<span class=\"math-inline\">-</span>] (optional, default= 1, suggested range: 1 <= OCR < 30)<br/>:param coeff_1: First calibration coefficient (optional, default=0.19)<br/>:param coeff_2: Second calibration coefficient (optional, default=0.233)<br/>:param coeff_3: First calibration coefficient (optional, default=-281)<br/>:param coeff_4: Second calibration coefficient (optional, default=1.85)<br/><br/><div class=\"math-block\"><br/>    K_{0,NC} = 0.19 + 0.233 \\log_{10} I_p<br/><br/>    I_p = -281 \\log_{10} \\left( 1.85 \\lambda \\right)<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'K0 NC [-]': Coefficient of lateral earth pressure at rest for normally consolidated conditions (<span class=\"math-inline\">K_{0,NC}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'K0 [-]': Coefficient of lateral earth pressure at rest (<span class=\"math-inline\">K_0</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Alpan (1967) THE EMPIRICAL EVALUATION OF THE COEFFICIENT K0 AND K0R. Soils and Foundations. Volume 7, Issue 1<br/><br/>"
+    },
+    "acousticimpedance_bulkunitweight_chen": {
+        "type": "object",
+        "properties": {
+            "bulkunitweight": {
+                "type": "number",
+                "title": "Bulkunitweight",
+                "description": "Bulk (total) unit weight (\\gamma) [kN/m3] - Suggested range: 12.0 <= bulkunitweight <= 22.0",
+                "unit": "kN/m3",
+                "default": null
+            },
+            "specific_gravity": {
+                "type": "number",
+                "title": "Specific Gravity",
+                "description": "Specific gravity of the soil (G_s) [-] - Suggested range: 1.0 <= specific_gravity <= 3.0 (optional, default= 2.65)",
+                "unit": "-",
+                "default": "2.65"
+            },
+            "saturation": {
+                "type": "number",
+                "title": "Saturation",
+                "description": "Saturation of the soil (fully saturated for offshore soils) (S) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "gamma_w": {
+                "type": "number",
+                "title": "Gamma W",
+                "description": "Unit weight of water (\\gamma_w) [kN/m3] - Suggested range: 9.5 <= gamma_w <= 10.5 (optional, default= 10.0)",
+                "unit": "kN/m3",
+                "default": "10.0"
+            },
+            "calibration_factor_4": {
+                "type": "number",
+                "title": "Calibration Factor 4",
+                "description": "Calibration factor on the fourth order term (:math:``) [-] (optional, default= 0.0001315)",
+                "unit": "-",
+                "default": "0.0001315"
+            },
+            "calibration_factor_3": {
+                "type": "number",
+                "title": "Calibration Factor 3",
+                "description": "Calibration factor on the third order term (:math:``) [-] (optional, default= -0.03776)",
+                "unit": "-",
+                "default": "-0.03776"
+            },
+            "calibration_factor_2": {
+                "type": "number",
+                "title": "Calibration Factor 2",
+                "description": "Calibration factor on the second order term (:math:``) [-] (optional, default= 4.201)",
+                "unit": "-",
+                "default": "4.201"
+            },
+            "calibration_factor_1": {
+                "type": "number",
+                "title": "Calibration Factor 1",
+                "description": "Calibration factor on the first order term (:math:``) [-] (optional, default= -245.0)",
+                "unit": "-",
+                "default": "-245.0"
+            },
+            "calibration_factor_0": {
+                "type": "number",
+                "title": "Calibration Factor 0",
+                "description": "Calibration factor on the zero order term (:math:``) [-] (optional, default= 8603.0)",
+                "unit": "-",
+                "default": "8603.0"
+            }
+        },
+        "required": [
+            "bulkunitweight"
+        ],
+        "documentation": "<br/>Several authors have researched the correlation between porosity and acoustic impedance. Chen et al compiled available measurements for sand and clay and supplemented them with deepwater measurements with the multi-sensor core logger.<br/><br/>Since porosity is not a parameter which is commonly used, the user can enter bulk unit weight instead which is then converted to porosity for a saturated soil.<br/><br/>The correlation shows a tight relation between acoustic impedance and porosity. However, soils with in-situ excess pore pressure are not included in this dataset.<br/><br/>:param bulkunitweight: Bulk (total) unit weight (<span class=\"math-inline\">\\gamma</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 12.0 <= bulkunitweight <= 22.0<br/>:param specific_gravity: Specific gravity of the soil (<span class=\"math-inline\">G_s</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= specific_gravity <= 3.0 (optional, default= 2.65)<br/>:param saturation: Saturation of the soil (fully saturated for offshore soils) (<span class=\"math-inline\">S</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)<br/>:param gamma_w: Unit weight of water (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.5 <= gamma_w <= 10.5 (optional, default= 10.0)<br/>:param calibration_factor_4: Calibration factor on the fourth order term (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.0001315)<br/>:param calibration_factor_3: Calibration factor on the third order term (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= -0.03776)<br/>:param calibration_factor_2: Calibration factor on the second order term (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 4.201)<br/>:param calibration_factor_1: Calibration factor on the first order term (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= -245.0)<br/>:param calibration_factor_0: Calibration factor on the zero order term (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 8603.0)<br/><br/><div class=\"math-block\"><br/>    I =1.315 \\cdot 10^{-4} \\cdot n^4 - 3.776 \\cdot 10^{-2} \\cdot n^3 + 4.201 \\cdot n^2 - 2.450 \\cdot 10^2 \\cdot n + 8.603 \\cdot 10^3<br/><br/>    e = \\frac{\\gamma_w G_s - \\gamma}{\\gamma - S \\gamma_w}<br/><br/>    w = \\frac{S e}{G_s}<br/><br/>    n = \\frac{e}{e+1}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'e [-]': Void ratio (<span class=\"math-inline\">e</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'we [-]': Water content (<span class=\"math-inline\">w</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'n [-]': Porosity (<span class=\"math-inline\">n</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'I [(m/s).(g/cm3)]': Acoustic impedance (<span class=\"math-inline\">I</span>)  [<span class=\"math-inline\">(m/s).(g/cm3)</span>]<br/><br/><img src=\"/assets/groundhog_images/acousticimpedance_bulkunitweight_chen_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Compiled data from Chen et al<br/><br/>Reference - Chen et al (2021). Machine Learning Based Digital Integration of Geotechnical and Ultra-High Frequency Geophysical Data for Offshore Site Characterizations. Journal of Geotechnical and Geoenvironmental Engineering.<br/><br/>"
+    },
+    "k0_frictionangle_mesri": {
+        "type": "object",
+        "properties": {
+            "phi_cs": {
+                "type": "number",
+                "title": "Phi Cs",
+                "description": "Critical state friction angle (\\varphi_{cs}^{\\prime}) [deg] - Suggested range: 0.01 <= grain_size <= 2.0",
+                "unit": "deg",
+                "default": null
+            },
+            "ocr": {
+                "type": "number",
+                "title": "Ocr",
+                "description": "Overconsolidation ratio (\\text{OCR}) [-] (optional, default= 1, suggested range: 1 <= OCR < 30)",
+                "unit": "-",
+                "default": "1"
+            }
+        },
+        "required": [
+            "phi_cs"
+        ],
+        "documentation": "<br/>Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated sand and clay.<br/>Mesri and Hayat (1993) showed that the equation by Jaky (1944) only applied for sedimented, normally consolidated young clays and sands.<br/>The effect of overconsolidation was captured by multiplying the value for normally consolidated soil with the OCR raised to an exponent.<br/>This exponent is independent of the soil's initial density and thus needs to be related to the critical state friction angle,<br/>rather than the peak friction angle of the soil. By adjusting for the effect of overconsolidation, reasonable predictions are obtained<br/>for overconsolidated and pre-sheared soils.<br/><br/>:param phi_cs: Critical state friction angle (<span class=\"math-inline\">\\varphi_{cs}^{\\prime}</span>) [<span class=\"math-inline\">deg</span>] - Suggested range: 0.01 <= grain_size <= 2.0<br/>:param ocr: Overconsolidation ratio (<span class=\"math-inline\">\\text{OCR}</span>) [<span class=\"math-inline\">-</span>] (optional, default= 1, suggested range: 1 <= OCR < 30)<br/><br/><div class=\"math-block\"><br/>    K_0 = \\left( 1 - \\sin \\varphi_{cv}^{\\prime} \\right) \\text{OCR}^{\\sin \\varphi_{cv}^{\\prime}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'K0 [-]': Coefficient of lateral earth pressure at rest (<span class=\"math-inline\">K_0</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Mesri and Hayat (1993) The coefficient of earth pressure at rest. Canadian Geotechnical Journal. 30(4), 647-666<br/><br/>"
+    },
+    "shearwavevelocity_compressionindex_cha": {
+        "type": "object",
+        "properties": {
+            "Cc": {
+                "type": "number",
+                "title": "Cc",
+                "description": "Compression index (C_c) [-] - Suggested range: 0.005 <= Cc <= 1.2",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_eff_particle_motion": {
+                "type": "number",
+                "title": "Sigma Eff Particle Motion",
+                "description": "Effective stress in the direction of particle motion (\\sigma_{\\perp}^{\\prime}) [kPa] - Suggested range: 10 <= sigma_eff_particle_motion <= 1200",
+                "unit": "kPa",
+                "default": null
+            },
+            "sigma_eff_wave_propagation": {
+                "type": "number",
+                "title": "Sigma Eff Wave Propagation",
+                "description": "Effective stress in the direction of wave propagation (\\sigma_{\\parallel}^{\\prime}) [kPa] - Suggested range: 10 <= sigma_eff_wave_propagation <= 1200",
+                "unit": "kPa",
+                "default": null
+            },
+            "alpha": {
+                "type": "number",
+                "title": "Alpha",
+                "description": "Custom alpha-factor in the power law (\\alpha) [-] - Suggested range: 5 <= alpha <= 1000 (optional, default=``np.nan``)",
+                "unit": "-",
+                "default": "null"
+            },
+            "beta": {
+                "type": "number",
+                "title": "Beta",
+                "description": "Custom beta-factor in the power law (\\beta) [-] - Suggested range: 0.0 <= beta <= 0.6 (optional, default= \u00b4\u00b4np.nan\u00b4\u00b4)",
+                "unit": "-",
+                "default": "null"
+            },
+            "calibration_factor_alpha_1": {
+                "type": "number",
+                "title": "Calibration Factor Alpha 1",
+                "description": "First calibration factor for alpha [-] (optional, default= 13.5)",
+                "unit": "-",
+                "default": "13.5"
+            },
+            "calibration_factor_alpha_2": {
+                "type": "number",
+                "title": "Calibration Factor Alpha 2",
+                "description": "Second calibration factor for alpha [-] (optional, default= 0.63)",
+                "unit": "-",
+                "default": "-0.63"
+            },
+            "calibration_factor_beta_1": {
+                "type": "number",
+                "title": "Calibration Factor Beta 1",
+                "description": "First calibration factor for beta [-] (optional, default= 0.17)",
+                "unit": "-",
+                "default": "0.17"
+            },
+            "calibration_factor_beta_2": {
+                "type": "number",
+                "title": "Calibration Factor Beta 2",
+                "description": "First calibration factor for alpha [-] (optional, default= 0.43)",
+                "unit": "-",
+                "default": "0.43"
+            }
+        },
+        "required": [
+            "Cc",
+            "sigma_eff_particle_motion",
+            "sigma_eff_wave_propagation"
+        ],
+        "documentation": "<br/>Shear wave velocity is dependent on the stiffness of the soil skeleton which is in turn affected by the compression index <span class=\"math-inline\">C_c</span>.<br/>Cha et al (2014) reported a series of oedometer tests with bender elements to establish the coefficients of a power law equation.<br/>Note that <span class=\"math-inline\">C_c</span> itself is also stress-dependent and requires the selection of appropriate points in <span class=\"math-inline\">e-\\log p^{\\prime}</span> space.<br/><br/>The relations proposed by Cha et al (2014) are used here by default, but the user can also enter custom values for <span class=\"math-inline\">\\alpha</span> and <span class=\"math-inline\">\\beta</span><br/>Since porosity is not a parameter which is commonly used, the user can enter bulk unit weight instead which is then converted to porosity for a saturated soil.<br/><br/>For application to field cases, the effective stress in the direction of particle motion and wave propagation needs to be estimated.<br/>This usually involves estimation of the coefficient of lateral earth pressure.<br/><br/>:param Cc: Compression index (<span class=\"math-inline\">C_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.005 <= Cc <= 1.2<br/>:param sigma_eff_particle_motion: Effective stress in the direction of particle motion (<span class=\"math-inline\">\\sigma_{\\perp}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 10 <= sigma_eff_particle_motion <= 1200<br/>:param sigma_eff_wave_propagation: Effective stress in the direction of wave propagation (<span class=\"math-inline\">\\sigma_{\\parallel}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 10 <= sigma_eff_wave_propagation <= 1200<br/>:param alpha: Custom alpha-factor in the power law (<span class=\"math-inline\">\\alpha</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 5 <= alpha <= 1000 (optional, default=``np.nan``)<br/>:param beta: Custom beta-factor in the power law (<span class=\"math-inline\">\\beta</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= beta <= 0.6 (optional, default= \u00b4\u00b4np.nan\u00b4\u00b4)<br/>:param calibration_factor_alpha_1: First calibration factor for alpha [<span class=\"math-inline\">-</span>] (optional, default= 13.5)<br/>:param calibration_factor_alpha_2: Second calibration factor for alpha [<span class=\"math-inline\">-</span>] (optional, default= 0.63)<br/>:param calibration_factor_beta_1: First calibration factor for beta [<span class=\"math-inline\">-</span>] (optional, default= 0.17)<br/>:param calibration_factor_beta_2: First calibration factor for alpha [<span class=\"math-inline\">-</span>] (optional, default= 0.43)<br/><br/><div class=\"math-block\"><br/>    V_s = \\sqrt{\\frac{G}{\\rho}} = \\alpha \\left( \\frac{\\sigma_{\\perp}^{\\prime} + \\sigma_{\\parallel}^{\\prime}}{2 \\ \\text{kPa}} \\right)^{\\beta}<br/><br/>    \\alpha = 13.5 (\\text{m/s}) \\cdot C_c^{-0.63}<br/><br/>    \\beta = 0.17 \\log_{10} C_c + 0.43<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">\\text{m/s}</span>]<br/>    - 'alpha [-]': Alpha-factor (multiplier) (<span class=\"math-inline\">\\alpha</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'beta [-]': Beta-factor (exponent) (<span class=\"math-inline\">\\beta</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/chaetal_data.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Compiled data from Cha et al<br/><br/>Reference - Cha et al (2014). Small-Strain Stiffness, Shear-Wave Velocity and Soil Compressibilitys. Journal of Geotechnical and Geoenvironmental Engineering.<br/><br/>"
+    },
+    "behaviourindex_pcpt_nonnormalised": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "Rf": {
+                "type": "number",
+                "title": "Rf",
+                "description": "Friction rato (R_f) [pct] - Suggested range: 0.1 <= Rf <= 10.0",
+                "unit": "pct",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            }
+        },
+        "required": [
+            "qc",
+            "Rf"
+        ],
+        "documentation": "<br/>Calculates the non-normalised soil behaviour type index. For vertical effective stresses between 50 and 150kPa, the non-normalised index is almost equal to the normalised soil behaviour type index.<br/><br/>When used with ``apply_correlation``, use ``'Isbt Robertson (2010)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 100.0<br/>:param Rf: Friction rato (<span class=\"math-inline\">R_f</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 0.1 <= Rf <= 10.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)<br/><br/><div class=\"math-block\"><br/>    I_{SBT} = \\sqrt{ \\left( 3.47 - \\log ( q_c / P_a ) \\right)^2 + \\left( \\log R_f + 1.22 \\right)^2}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Isbt [-]': Non-normalised soil behaviour type index (<span class=\"math-inline\">I_{SBT}</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/behaviourindex_pcpt_nonnormalised_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Contours of non-normalised soil behaviour type index<br/><br/>Reference - Fugro guidance on PCPT interpretation<br/><br/>"
+    },
+    "behaviourindex_pcpt_robertsonwride": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "fs": {
+                "type": "number",
+                "title": "Fs",
+                "description": "Sleeve friction (f_s) [MPa] - Suggested range: fs >= 0.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo": {
+                "type": "number",
+                "title": "Sigma Vo",
+                "description": "Total vertical stress (\\sigma_{vo}) [kPa] - Suggested range: sigma_vo >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 9.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (used for normalisation) (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "ic_min": {
+                "type": "number",
+                "title": "Ic Min",
+                "description": "Minimum value for soil behaviour type index used in the optimisation routine (I_{c,min}) [-] (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "ic_max": {
+                "type": "number",
+                "title": "Ic Max",
+                "description": "Maximum value for soil behaviour type index used in the optimisation routine (I_{c,max}) [-] (optional, default= 4.0)",
+                "unit": "-",
+                "default": "4.0"
+            },
+            "zhang_multiplier_1": {
+                "type": "number",
+                "title": "Zhang Multiplier 1",
+                "description": "First multiplier in the equation for exponent n (:math:``) [-] (optional, default= 0.381)",
+                "unit": "-",
+                "default": "0.381"
+            },
+            "zhang_multiplier_2": {
+                "type": "number",
+                "title": "Zhang Multiplier 2",
+                "description": "Second multiplier in the equation for exponent n (:math:``) [-] (optional, default= 0.05)",
+                "unit": "-",
+                "default": "0.05"
+            },
+            "zhang_subtraction": {
+                "type": "number",
+                "title": "Zhang Subtraction",
+                "description": "Term subtracted in the equation for exponent n (:math:``) [-] (optional, default= 0.15)",
+                "unit": "-",
+                "default": "0.15"
+            },
+            "robertsonwride_coefficient1": {
+                "type": "number",
+                "title": "Robertsonwride Coefficient1",
+                "description": "First coefficient in the equation by Robertson and Wride (:math:``) [-] (optional, default= 3.47)",
+                "unit": "-",
+                "default": "3.47"
+            },
+            "robertsonwride_coefficient2": {
+                "type": "number",
+                "title": "Robertsonwride Coefficient2",
+                "description": "Second coefficient in the equation by Robertson and Wride (:math:``) [-] (optional, default= 1.22)",
+                "unit": "-",
+                "default": "1.22"
+            },
+            "cn_capping": {
+                "type": "number",
+                "title": "Cn Capping",
+                "description": "",
+                "unit": "",
+                "default": "1.7"
+            }
+        },
+        "required": [
+            "qt",
+            "fs",
+            "sigma_vo",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Calculates the soil behaviour index according to Robertson and Wride (1998). This index is a measure for the behaviour of soils.<br/>Soils with a value below 2.5 are generally cohesionless and coarse grained whereas a value above 2.7 indicates cohesive, fine-grained sediments.<br/>Between 2.5 and 2.7, partially drained behaviour is expected.<br/>The exponent n in the equations is used to account for different cone resistance normalisation in non-clayey soils (lower exponent).<br/>Because the exponent n is defined implicitly, an iterative approach is required to calculate the soil behaviour type index.<br/><br/>When used with ``apply_correlation``, use ``'Ic Robertson and Wride (1998)'`` as correlation name.<br/><br/>:param qt: Corrected cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 120.0<br/>:param fs: Sleeve friction (<span class=\"math-inline\">f_s</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: fs >= 0.0<br/>:param sigma_vo: Total vertical stress (<span class=\"math-inline\">\\sigma_{vo}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo >= 0.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 9.0<br/>:param atmospheric_pressure: Atmospheric pressure (used for normalisation) (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param ic_min: Minimum value for soil behaviour type index used in the optimisation routine (<span class=\"math-inline\">I_{c,min}</span>) [<span class=\"math-inline\">-</span>] (optional, default= 1.0)<br/>:param ic_max: Maximum value for soil behaviour type index used in the optimisation routine (<span class=\"math-inline\">I_{c,max}</span>) [<span class=\"math-inline\">-</span>] (optional, default= 4.0)<br/>:param zhang_multiplier_1: First multiplier in the equation for exponent n (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.381)<br/>:param zhang_multiplier_2: Second multiplier in the equation for exponent n (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.05)<br/>:param zhang_subtraction: Term subtracted in the equation for exponent n (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.15)<br/>:param robertsonwride_coefficient1: First coefficient in the equation by Robertson and Wride (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 3.47)<br/>:param robertsonwride_coefficient2: Second coefficient in the equation by Robertson and Wride (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.22)<br/><br/><div class=\"math-block\"><br/>    Cn = \\min(1.7, \\left(\frac{P_a}{\\sigma_{vo}^{\\prime}}\right)^n)<br/>    Q_{tn} = \\frac{q_t - \\sigma_{vo}}{P_a} \\cdot Cn<br/>    \\\\<br/>    n = 0.381 \\cdot I_c + 0.05 \\cdot \\frac{\\sigma_{vo}^{\\prime}}{P_a} - 0.15 \\ \\text{where} \\ n \\leq 1<br/>    \\\\<br/>    I_c = \\sqrt{ \\left( 3.47 - \\log_{10} Q_{tn} \\right)^2 + \\left( \\log_{10} F_r + 1.22 \\right)^2 }<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'exponent_zhang [-]': Exponent n according to Zhang et al (<span class=\"math-inline\">n</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Qtn [-]': Normalised cone resistance (<span class=\"math-inline\">Q_{tn}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Fr [%]': Normalised friction ratio (<span class=\"math-inline\">F_r</span>)  [<span class=\"math-inline\">%</span>]<br/>    - 'Ic [-]': Soil behaviour type index (<span class=\"math-inline\">I_c</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Ic class number [-]': Soil behaviour type class number according to the Robertson chart<br/>    - 'Ic class': Soil behaviour type class description according to the Robertson chart<br/><br/><img src=\"/assets/groundhog_images/behaviourindex_pcpt_robertsonwride_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Contour lines for soil behaviour type index<br/><br/>Reference - Fugro guidance on PCPT interpretation<br/><br/>"
+    },
+    "clippingdepths_qc1N_tianlehane": {
+        "type": "object",
+        "properties": {
+            "qc1NW": {
+                "type": "number",
+                "title": "Qc1Nw",
+                "description": "Steady-state normalised cone resistance in the weaker layer (q_{c1N,W}) [-] - Suggested range: 0.0 <= qc1NW <= 1000.0",
+                "unit": "-",
+                "default": null
+            },
+            "qc1NS": {
+                "type": "number",
+                "title": "Qc1Ns",
+                "description": "Steady-state normalised cone resistance in the stronger layer (q_{c1N,S}) [-] - Suggested range: 0.0 <= qc1NS <= 1000.0",
+                "unit": "-",
+                "default": null
+            },
+            "cone_diameter": {
+                "type": "number",
+                "title": "Cone Diameter",
+                "description": "Cone diameter (d_c) [m] - Suggested range: 0.001 <= cone_diameter <= 1000.0 (optional, default=0.03568 for a 10cm2 cone)",
+                "unit": "m",
+                "default": "0.03568"
+            },
+            "tolerance": {
+                "type": "number",
+                "title": "Tolerance",
+                "description": "Defines the multiplier to detect which data needs to be clipped [-] - Suggested range: 0.001 <= tolerance <= 0.999 (optional, default=0.05)",
+                "unit": "-",
+                "default": "0.05"
+            }
+        },
+        "required": [
+            "qc1NW",
+            "qc1NS"
+        ],
+        "documentation": "<br/>Calculates the depths where the normalised cone resistance reaches steady values in weak over strong layer systems based on the equations proposed by Tian and Lehane (2025).<br/>These depths can be used to filter CPT data which belongs to a layer transition.<br/>The equations were developed based on centrifuge and pressure chamber testing with various two-layer systems (denser sand over looser sand, looser sand over denser sand, sand over clay).<br/>Note that the equations provided by Tian and Lehane only work for weaker layers (lower normalised cone resistance) overlying stronger layers (higher normalised cone resistance).<br/><br/>:param qc1NW: Steady-state normalised cone resistance in the weaker layer (<span class=\"math-inline\">q_{c1N,W}</span>) [-] - Suggested range: 0.0 <= qc1NW <= 1000.0<br/>:param qc1NS: Steady-state normalised cone resistance in the stronger layer (<span class=\"math-inline\">q_{c1N,S}</span>) [-] - Suggested range: 0.0 <= qc1NS <= 1000.0<br/>:param cone_diameter: Cone diameter (<span class=\"math-inline\">d_c</span>) [m] - Suggested range: 0.001 <= cone_diameter <= 1000.0 (optional, default=0.03568 for a 10cm2 cone)<br/>:param tolerance: Defines the multiplier to detect which data needs to be clipped [-] - Suggested range: 0.001 <= tolerance <= 0.999 (optional, default=0.05)<br/><br/><div class=\"math-block\"><br/>    q_{c1N}=q_{c1N,0} - \\tanh \\left[ a_w z^* \\right] \\left( q_{c1N,0} - q_{c1N,W} \\right) \\quad \\text{in weak layer} \\\\<br/>    q_{c1N}=q_{c1N,0} + \\tanh \\left[ a_s z^* \\right] \\left( q_{c1N,S} - q_{c1N,0} \\right) \\quad \\text{in strong layer} \\\\<br/>    a_s = 0.7 r^2 + 0.15 \\\\<br/>    a_w = a_s + 0.4r < 1 \\\\<br/>    r = \\frac{q_{c1N,W}}{q_{c1N,S}} \\\\<br/>    z^* = \\frac{z-H_t}{d_c} \\\\<br/>    q_{c1N,0} = \\eta q_{c1N,S} \\\\<br/>    \\eta = 0.96 r^{0.64} \\quad 0<r<0.95<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'r': Ratio of weak to strong normalised cone resistance (<span class=\"math-inline\">r</span>) [-]<br/>    - 'eta': Multiplier on the normalised cone resistance of the strongest layer defining the normalised cone resistance at the interface (<span class=\"math-inline\">\\eta</span>) [-]<br/>    - 'qc1N0': Normalised cone tip resistance at the interface (<span class=\"math-inline\">q_{c1N0}</span>) [-]<br/>    - 'as': Fitting parameter for strong layer (<span class=\"math-inline\">a_s</span>) [-]<br/>    - 'aw': Fitting parameter for weak layer (<span class=\"math-inline\">a_w</span>) [-]<br/>    - 'z*W': Array of normalised depths in the weak layer (<span class=\"math-inline\">z^*_W</span>) [-]<br/>    - 'z*S': Array of normalised depths in the strong layer (<span class=\"math-inline\">z^*_S</span>) [-]<br/>    - 'qc1N weak': Array of normalised cone resistances in the weak layer (<span class=\"math-inline\">q_{c1N,W}</span>) [-]<br/>    - 'qc1N strong': Array of normalised cone resistances in the strong layer (<span class=\"math-inline\">q_{c1N,S}</span>) [-]<br/>    - 'qc1N weak function': Interpolation function providing normalised depth as a function of normalised cone resistance for the weak layer<br/>    - 'qc1N strong function': Interpolation function providing normalised depth as a function of normalised cone resistance for the strong layer<br/>    - 'z* clipping weak': Normalised offset from the interface in the weak layer below which CPT data needs to be clipped because it belongs to the layer transition [-]<br/>    - 'z* clipping strong': Normalised offset from the interface in the weak layer above which CPT data needs to be clipped because it belongs to the layer transition [-]<br/>    - 'z clipping weak': Absolute offset from the interface in the weak layer below which CPT data needs to be clipped because it belongs to the layer transition [m]<br/>    - 'z clipping strong': Absolute offset from the interface in the weak layer above which CPT data needs to be clipped because it belongs to the layer transition [m]<br/><br/>Reference - Tian, Y. and Lehane, B. (2025). The influence of soil layering and penetrometer diameter on penetration resistance. Canadian Geotechnical Journal, DOI: 10.1139/cgj-2024-0491<br/><br/>"
+    },
+    "coneresistance_ocsand_baldi": {
+        "type": "object",
+        "properties": {
+            "dr": {
+                "type": "number",
+                "title": "Dr",
+                "description": "Relative density (D_r) [-] - Suggested range: 0.0 <= dr <= 1.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "k0": {
+                "type": "number",
+                "title": "K0",
+                "description": "Coefficient of lateral earth pressure (K_o) [-] - Suggested range: 0.3 <= k0 <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "coefficient_0": {
+                "type": "number",
+                "title": "Coefficient 0",
+                "description": "Coefficient C0 (C_0) [-] (optional, default= 181.0)",
+                "unit": "-",
+                "default": "181.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "Coefficient C1 (C_1) [-] (optional, default= 0.55)",
+                "unit": "-",
+                "default": "0.55"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Coefficient C2 (C_2) [-] (optional, default= 2.61)",
+                "unit": "-",
+                "default": "2.61"
+            }
+        },
+        "required": [
+            "dr",
+            "sigma_vo_eff",
+            "k0"
+        ],
+        "documentation": "<br/>Calculates the cone resistance for a given relative density for overconsolidated sand based on calibration chamber tests on silica sand.<br/>It should be noted that this correlation provides an approximative estimate of relative density and the sand at the site should be compared to the sands used in the calibration chamber tests.<br/>The correlation will always be sensitive to variations in compressibility and horizontal stress.<br/>Note that this correlation requires an estimate of the coefficient of lateral earth pressure.<br/><br/>:param dr: Relative density (<span class=\"math-inline\">D_r</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= dr <= 1.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param k0: Coefficient of lateral earth pressure (<span class=\"math-inline\">K_o</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.3 <= k0 <= 5.0<br/>:param coefficient_0: Coefficient C0 (<span class=\"math-inline\">C_0</span>) [<span class=\"math-inline\">-</span>] (optional, default= 181.0)<br/>:param coefficient_1: Coefficient C1 (<span class=\"math-inline\">C_1</span>) [<span class=\"math-inline\">-</span>] (optional, default= 0.55)<br/>:param coefficient_2: Coefficient C2 (<span class=\"math-inline\">C_2</span>) [<span class=\"math-inline\">-</span>] (optional, default= 2.61)<br/><br/><div class=\"math-block\"><br/>    D_r = \\frac{1}{2.61} \\cdot \\ln \\left[ \\frac{q_c}{181 \\cdot \\left( \\sigma_{m}^{\\prime} \\right)^{0.55} } \\right]<br/><br/>    \\sigma_{m}^{\\prime} = \\frac{\\sigma_{vo}^{\\prime} + 2 \\cdot K_o \\cdot \\sigma_{m}^{\\prime}}{3}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'qc [MPa]': Cone resistance corresponding to the given relative density (<span class=\"math-inline\">q_c</span>)  [<span class=\"math-inline\">MPa</span>]<br/><br/>Reference - Baldi et al 1986.<br/><br/>"
+    },
+    "constrainedmodulus_pcpt_robertson": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone tip resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "ic": {
+                "type": "number",
+                "title": "Ic",
+                "description": "Soil behaviour type index (I_c) [-] - Suggested range: 1.0 <= ic <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo": {
+                "type": "number",
+                "title": "Sigma Vo",
+                "description": "Total vertical stress (\\sigma_{vo}) [kPa] - Suggested range: 0.0 <= sigma_vo <= 2000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "coefficient1": {
+                "type": "number",
+                "title": "Coefficient1",
+                "description": "First calibration coefficient (default=0.0188)",
+                "unit": "",
+                "default": "0.0188"
+            },
+            "coefficient2": {
+                "type": "number",
+                "title": "Coefficient2",
+                "description": "Second calibration coefficient (default=0.55)",
+                "unit": "",
+                "default": "0.55"
+            },
+            "coefficient3": {
+                "type": "number",
+                "title": "Coefficient3",
+                "description": "Third calibration coefficient (default=1.68)",
+                "unit": "",
+                "default": "1.68"
+            },
+            "qt_pivot": {
+                "type": "number",
+                "title": "Qt Pivot",
+                "description": "Value of Q_t when the formula for \\alpha_M changes (default=14)",
+                "unit": "",
+                "default": "14"
+            }
+        },
+        "required": [
+            "qt",
+            "ic",
+            "sigma_vo",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Calculates the one-dimensional constrained modulus. The constrained modulus is compared to direct measurements for<br/>different clays. The Bothkennar clay which is a soft silty estuarine clay is an outlier which shows an overprediction of <span class=\"math-inline\">M</span> with the CPT.<br/><br/>When used with ``apply_correlation``, use ``'M Robertson (2009)'`` as correlation name.<br/><br/>:param qt: Corrected cone tip resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param ic: Soil behaviour type index (<span class=\"math-inline\">I_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ic <= 5.0<br/>:param sigma_vo: Total vertical stress (<span class=\"math-inline\">\\sigma_{vo}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo <= 2000.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param coefficient1: First calibration coefficient (default=0.0188)<br/>:param coefficient2: Second calibration coefficient (default=0.55)<br/>:param coefficient3: Third calibration coefficient (default=1.68)<br/>:param qt_pivot: Value of <span class=\"math-inline\">Q_t</span> when the formula for <span class=\"math-inline\">\\alpha_M</span> changes (default=14)<br/><br/><div class=\"math-block\"><br/>    M = \\alpha_M \\cdot \\left( q_t - \\sigma_{v0} \\right)<br/><br/>    \\text{when } I_c > 2.2 \\text{:}<br/><br/>    \\alpha_M = Q_t \\ \\text{when } Q_t \\leq 14<br/><br/>    \\alpha_M = 14 \\ \\text{when } Q_t > 14<br/><br/>    \\text{when } I_c \\leq 2.2<br/><br/>    \\alpha_M = 0.0188 \\cdot \\left[ 10^{0.55 I_c  + 1.68} \\right]<br/><br/>    Q_{t} = \\frac{q_t - \\sigma_{vo}}{\\sigma_{vo}^{\\prime}}<br/><br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'alphaM [-]': Multiplier on net cone resistance (<span class=\"math-inline\">\\alpha_M</span>) [-]<br/>    - 'M [kPa]': Contrained modulus for one-dimensional compression (<span class=\"math-inline\">M</span>) [kPa]<br/>    - 'mv [1/kPa]': Modulus of volumetric compressiblity (<span class=\"math-inline\">m_v</span>) [1/kPa]<br/><br/><img src=\"/assets/groundhog_images/constrainedmodulus_pcpt_robertson.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison of measured and calculated values for constrained modulus for various soils<br/><br/>Reference - CPT guide - 7th edition - Robertson and Cabal (2022)<br/><br/>"
+    },
+    "dissipation_test_teh": {
+        "type": "object",
+        "properties": {
+            "ch": {
+                "type": "number",
+                "title": "Ch",
+                "description": "Horizontal coefficient of consolidation (c_h) [m2/yr] - Suggested range: 0.0 <= ch <= 100.0",
+                "unit": "m2/yr",
+                "default": null
+            },
+            "shearmodulus": {
+                "type": "number",
+                "title": "Shearmodulus",
+                "description": "Shear modulus of the soil (G) [kPa] - Suggested range: 0.0 <= shearmodulus <= 500000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "undrained_shear_strength": {
+                "type": "number",
+                "title": "Undrained Shear Strength",
+                "description": "Undrained shear strength (S_u) [kPa] - Suggested range: 1.0 <= undrained_shear_strength <= 500.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "u_initial": {
+                "type": "number",
+                "title": "U Initial",
+                "description": "Initial excess pore pressure (\\Delta u_i) [kPa] - Suggested range: 0.0 <= u_initial <= 2000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "cone_area": {
+                "type": "number",
+                "title": "Cone Area",
+                "description": "Cone area (\\pi a^2) [cm2] - Suggested range: 2.0 <= cone_area <= 15.0 (optional, default= 10.0)",
+                "unit": "cm2",
+                "default": "10.0"
+            },
+            "sensor_location": {
+                "type": "string",
+                "title": "Sensor Location",
+                "description": "Location of the pore pressure sensor (optional, default= 'u2') - Options: ('u1', ' u2')",
+                "unit": "",
+                "default": "'u2'"
+            }
+        },
+        "required": [
+            "ch",
+            "shearmodulus",
+            "undrained_shear_strength",
+            "u_initial"
+        ],
+        "documentation": "<br/>Calculates the pore pressure dissipation from a dissipation tests in clay according to the normalised dissipation curves proposed by Teh & Houlsby (1991).<br/><br/>:param ch: Horizontal coefficient of consolidation (<span class=\"math-inline\">c_h</span>) [m2/yr] - Suggested range: 0.0 <= ch <= 100.0<br/>:param shearmodulus: Shear modulus of the soil (<span class=\"math-inline\">G</span>) [kPa] - Suggested range: 0.0 <= shearmodulus <= 500000.0<br/>:param undrained_shear_strength: Undrained shear strength (<span class=\"math-inline\">S_u</span>) [kPa] - Suggested range: 1.0 <= undrained_shear_strength <= 500.0<br/>:param u_initial: Initial excess pore pressure (<span class=\"math-inline\">\\Delta u_i</span>) [kPa] - Suggested range: 0.0 <= u_initial <= 2000.0<br/>:param cone_area: Cone area (<span class=\"math-inline\">\\pi a^2</span>) [cm2] - Suggested range: 2.0 <= cone_area <= 15.0 (optional, default= 10.0)<br/>:param sensor_location: Location of the pore pressure sensor (optional, default= 'u2') - Options: ('u1', ' u2')<br/><br/><div class=\"math-block\"><br/>    T^{*} = \\frac{c_h \\cdot t}{a^2 \\cdot \\sqrt{I_r}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'delta u [kPa]': List with excess pore pressures (<span class=\"math-inline\">\\Delta u</span>)  [kPa]<br/>    - 't [s]': List with times for excess pore pressure dissipation (<span class=\"math-inline\">t</span>)  [s]<br/>    - 'delta u / delta u_i [-]': Normalised excess pore pressure decay (<span class=\"math-inline\">\\Delta u \\Delta u_i</span>)  [-]<br/>    - 'T* [-]': Time factors (<span class=\"math-inline\">T^*</span>) [-]<br/>    - 'Ir [-]': Rigidity index (G/Su) [-]<br/>    - 'Cone radius [m]': Radius of the cone [m]<br/><br/>Reference - Teh, C. I., & Houlsby, G. T. (1991). An analytical study of the cone penetration test in clay. Geotechnique, 41(1), 17-34.<br/><br/>"
+    },
+    "drainedsecantmodulus_sand_bellotti": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 50.0 <= sigma_vo_eff <= 300.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "K0": {
+                "type": "number",
+                "title": "K0",
+                "description": "Coefficient of lateral earth pressure at rest (K_0) [-] - Suggested range: 0.5 <= K0 <= 2.0",
+                "unit": "-",
+                "default": null
+            },
+            "sandtype": {
+                "type": "string",
+                "title": "Sandtype",
+                "description": "Type of sand - Options: (\"NC\", \"Aged NC\", \"OC\")",
+                "unit": "",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff",
+            "K0",
+            "sandtype"
+        ],
+        "documentation": "<br/>Calculates the drained secant modulus for various types of sand for an average strain of 0.1 percent. This stress range should be representative for well-designed foundations (with sufficient safety against excessive deformations).<br/><br/>Bands for mean effective stress from 50kPa to 300kPa are provided. Note that the correlation will not return values outside that range.<br/><br/>Ageing and overconsolidation are beneficial effects, leading to increased stiffness.<br/><br/>When used with ``apply_correlation``, use ``'Es Bellotti (1989) - sand'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 100.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 50.0 <= sigma_vo_eff <= 300.0<br/>:param K0: Coefficient of lateral earth pressure at rest (<span class=\"math-inline\">K_0</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.5 <= K0 <= 2.0<br/>:param sandtype: Type of sand - Options: (\"NC\", \"Aged NC\", \"OC\")<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)<br/><br/><div class=\"math-block\"><br/>    q_{c1} = \\left( \\frac{q_c}{P_a} \\right) \\cdot \\sqrt{ \\frac{P_a}{\\sigma_{vo}^{\\prime}} }<br/><br/>    \\sigma_{mo}^{\\prime} = \\frac{(1 + 2 \\cdot K_0) \\cdot \\sigma_{vo}^{\\prime}}{3}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'qc1 [-]': Normalised cone resistance (<span class=\"math-inline\">q_{c1}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Es_qc [-]': Ratio of drained secant modulus to cone resistance (<span class=\"math-inline\">E_s^{\\prime} / q_c</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Es [kPa]': Drained secant modulus at strain level of 0.1 percent (<span class=\"math-inline\">E_s^{\\prime}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/><img src=\"/assets/groundhog_images/drainedsecantmodulus_sand__1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Visualisation of correlation<br/><br/>Reference - Bellotti, R., Ghionna, V. N., Jamiolkowski, M., Lancellotta, R., & Robertson, P. K. (1989). Shear strength of sand from CPT. In Congr\u00e8s international de m\u00e9canique des sols et des travaux de fondations. 12 (pp. 179-184).<br/><br/>"
+    },
+    "frictionangle_overburden_kleven": {
+        "type": "object",
+        "properties": {
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Effective vertical stress (\\sigma \\prime _{vo}) [kPa]  - Suggested range: 10.0<=sigma_vo_eff<=800.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "relative_density": {
+                "type": "number",
+                "title": "Relative Density",
+                "description": "Relative density of sand (D_r) [Percent]  - Suggested range: 40.0<=relative_density<=100.0",
+                "unit": "Percent",
+                "default": null
+            },
+            "Ko": {
+                "type": "number",
+                "title": "Ko",
+                "description": "Coefficient of lateral earth pressure at rest (K_o) [-] (optional, default=0.5) - Suggested range: 0.3<=Ko<=2.0",
+                "unit": "-",
+                "default": "0.5"
+            },
+            "max_friction_angle": {
+                "type": "number",
+                "title": "Max Friction Angle",
+                "description": "The maximum allowable effective friction angle (\\phi \\prime _{max}) [deg] (optional, default=45.0)",
+                "unit": "deg",
+                "default": "45.0"
+            }
+        },
+        "required": [
+            "sigma_vo_eff",
+            "relative_density"
+        ],
+        "documentation": "<br/>This function calculates the friction angle according to the chart proposed by Kleven (1986). The function takes into account the effective confining pressure of the sand and its relative density. The function was calibrated on North Sea sand tests with confining pressures ranging from 10 to 800kPa. Lower confinement clearly leads to higher friction angles. The fit to the data is not excellent and this function should be compared to site-specific testing or other correlations.<br/><br/>When used with ``apply_correlation``, use ``'Friction angle Kleven (1986)'`` as correlation name.<br/><br/>:param sigma_vo_eff: Effective vertical stress (<span class=\"math-inline\">\\sigma \\prime _{vo}</span>) [<span class=\"math-inline\">kPa</span>]  - Suggested range: 10.0<=sigma_vo_eff<=800.0<br/>:param relative_density: Relative density of sand (<span class=\"math-inline\">D_r</span>) [<span class=\"math-inline\">Percent</span>]  - Suggested range: 40.0<=relative_density<=100.0<br/>:param Ko: Coefficient of lateral earth pressure at rest (<span class=\"math-inline\">K_o</span>) [<span class=\"math-inline\">-</span>] (optional, default=0.5) - Suggested range: 0.3<=Ko<=2.0<br/>:param max_friction_angle: The maximum allowable effective friction angle (<span class=\"math-inline\">\\phi \\prime _{max}</span>) [<span class=\"math-inline\">deg</span>] (optional, default=45.0)<br/><br/>:returns:   Peak drained friction angle (<span class=\"math-inline\">\\phi_d</span>) [<span class=\"math-inline\">deg</span>], Mean effective stress (<span class=\"math-inline\">\\sigma \\prime _m</span>) [<span class=\"math-inline\">kPa</span>]<br/><br/>:rtype: Python dictionary with keys ['phi [deg]','sigma_m [kPa]']<br/><br/><img src=\"/assets/groundhog_images/Phi_Kleven.png<br/>\" alt=\"Figure\" />    :figwidth: 500<br/>    :width: 400<br/>    :align: center<br/><br/>    Data and interpretation chart according to Kleven (Lunne et al (1997))<br/><br/>Reference - Lunne, T., Robertson, P.K., Powell, J.J.M. (1997). Cone penetration testing in geotechnical practice.  SPON press<br/><br/>Examples:<br/>    .. code-block:: python<br/><br/>        >>>phi = friction_angle_kleven(sigma_vo_eff=100.0,relative_density=60.0,Ko=1.0)['phi [deg]']<br/>        35.8<br/><br/>"
+    },
+    "frictionangle_sand_kulhawymayne": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Total cone resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure used for normalisation (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "First calibration coefficient (:math:``) [-] (optional, default= 17.6)",
+                "unit": "-",
+                "default": "17.6"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Second calibration coefficient (:math:``) [-] (optional, default= 11.0)",
+                "unit": "-",
+                "default": "11.0"
+            }
+        },
+        "required": [
+            "qt",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Determines the friction angle for sand based on calibration chamber tests.<br/><br/>When used with ``apply_correlation``, use ``'Friction angle Kulhawy and Mayne (1990)'`` as correlation name.<br/><br/>:param qt: Total cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 120.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param atmospheric_pressure: Atmospheric pressure used for normalisation (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param coefficient_1: First calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 17.6)<br/>:param coefficient_2: Second calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 11.0)<br/><br/><div class=\"math-block\"><br/>    \\varphi^{\\prime} = 17.6 + 11.0 \\cdot \\log_{10} \\left[  \\frac{q_t / P_a}{ \\sqrt{\\sigma_{vo}^{\\prime} / P_a}} \\right]<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Phi [deg]': Effective friction angle for sand (<span class=\"math-inline\">\\varphi</span>)  [<span class=\"math-inline\">deg</span>]<br/><br/><img src=\"/assets/groundhog_images/kulhawy_mayne_data.png<br/>\" alt=\"Figure\" />    :figwidth: 500<br/>    :width: 400<br/>    :align: center<br/><br/>    Data and interpretation chart according to Kulhawy and Mayne 1990)<br/><br/><br/>Reference - Kulhawy, F.H. and Mayne, P.H. (1990), \u201cManual on Estimating Soil Properties for Foundation Design\u201d, Electric Power Research Institute EPRI, Palo Alto, EPRI Report, EL-6800.<br/><br/>"
+    },
+    "gmax_clay_maynerix": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier in the equation (:math:``) [-] (optional, default= 2.78)",
+                "unit": "-",
+                "default": "2.78"
+            },
+            "exponent": {
+                "type": "number",
+                "title": "Exponent",
+                "description": "Exponent in the equation (:math:``) [-] (optional, default= 1.335)",
+                "unit": "-",
+                "default": "1.335"
+            }
+        },
+        "required": [
+            "qc"
+        ],
+        "documentation": "<br/>Mayne and Rix (1993) determined a relationship between small-strain shear modulus and cone tip resistance by studying 481 data sets from 31 sites all over the world. Gmax ranged between about 0.7 MPa and 800 MPa.<br/><br/>When used with ``apply_correlation``, use ``'Gmax Mayne and Rix (1993)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0<br/>:param multiplier: Multiplier in the equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 2.78)<br/>:param exponent: Exponent in the equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.335)<br/><br/><div class=\"math-block\"><br/>    G_{max} = 2.78 \\cdot q_c^{1.335}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Mayne, P.W. and Rix, G.J. (1993), \u201cGmax-qc Relationships for Clays\u201d, Geotechnical Testing Journal, Vol. 16, No. 1, pp. 54-60.<br/><br/>"
+    },
+    "gmax_cpt_puechen": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 70.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "Bq": {
+                "type": "number",
+                "title": "Bq",
+                "description": "Pore pressure ratio (B_q) [-] - Suggested range: -0.2 <= Bq <= 0.5",
+                "unit": "-",
+                "default": null
+            },
+            "coefficient_b": {
+                "type": "number",
+                "title": "Coefficient B",
+                "description": "Calibration coefficient b (b) [-] (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "coefficient_Bq": {
+                "type": "number",
+                "title": "Coefficient Bq",
+                "description": "Multiplier on Bq (:math:``) [-] (optional, default= 4.0)",
+                "unit": "-",
+                "default": "4.0"
+            },
+            "multiplier_qc": {
+                "type": "number",
+                "title": "Multiplier Qc",
+                "description": "Multiplier applied on qc (:math:``) [-] (optional, default= 1.634)",
+                "unit": "-",
+                "default": "1.634"
+            },
+            "exponent_1": {
+                "type": "number",
+                "title": "Exponent 1",
+                "description": "Exponent on qc (:math:``) [-] (optional, default= 0.25)",
+                "unit": "-",
+                "default": "0.25"
+            },
+            "exponent_2": {
+                "type": "number",
+                "title": "Exponent 2",
+                "description": "Exponent on vertical effective stress (:math:``) [-] (optional, default= 0.375)",
+                "unit": "-",
+                "default": "0.375"
+            },
+            "Bq_min": {
+                "type": "number",
+                "title": "Bq Min",
+                "description": "Minimum value of Bq. If Bq is lower than this value, the minimum will be used for the calculation [-] (optional, default= 0)",
+                "unit": "-",
+                "default": "0"
+            },
+            "Bq_max": {
+                "type": "number",
+                "title": "Bq Max",
+                "description": "Maximum value of Bq. If Bq is higher than this value, the maximum will be used for the calculation [-] (optional, default= 0.5)",
+                "unit": "-",
+                "default": "0.5"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff",
+            "Bq"
+        ],
+        "documentation": "<br/>Calculates the small-strain modulus based on CPT data. The correlation by Rix and Stokoe is modified to include the importance of the pore pressure ratio.<br/><br/>The calibration coefficient b has recommended values between 0.5 and 2, with a suggested best estimate of 1.<br/><br/>When used with ``apply_correlation``, use ``'Gmax Puechen (2020)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 70.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param Bq: Pore pressure ratio (<span class=\"math-inline\">B_q</span>) [<span class=\"math-inline\">-</span>] - Suggested range: -0.2 <= Bq <= 0.5<br/>:param coefficient_b: Calibration coefficient b (<span class=\"math-inline\">b</span>) [<span class=\"math-inline\">-</span>] (optional, default= 1.0)<br/>:param coefficient_Bq: Multiplier on Bq (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 4.0)<br/>:param multiplier_qc: Multiplier applied on qc (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.634)<br/>:param exponent_1: Exponent on qc (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.25)<br/>:param exponent_2: Exponent on vertical effective stress (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.375)<br/>:param Bq_min: Minimum value of Bq. If Bq is lower than this value, the minimum will be used for the calculation [<span class=\"math-inline\">-</span>] (optional, default= 0)<br/>:param Bq_max: Maximum value of Bq. If Bq is higher than this value, the maximum will be used for the calculation [<span class=\"math-inline\">-</span>] (optional, default= 0.5)<br/><br/><div class=\"math-block\"><br/>    G_{max} = b \\cdot \\left( 1 + 4 \\cdot B_q \\right) \\cdot 1.634 \\cdot q_c^{0.25} \\cdot \\sigma_{vo}^{\\prime \\ 0.375}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Puechen et al (2020). Characteristic values for geotechnical design of offshore monopiles in sandy soils - Case study. ISFOG2020<br/><br/>"
+    },
+    "gmax_sand_rixstokoe": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier in the correlation equation (:math:``) [-] (optional, default= 1634.0)",
+                "unit": "-",
+                "default": "1634.0"
+            },
+            "qc_exponent": {
+                "type": "number",
+                "title": "Qc Exponent",
+                "description": "Exponent applied on the cone tip resistance (:math:``) [-] (optional, default= 0.25)",
+                "unit": "-",
+                "default": "0.25"
+            },
+            "stress_exponent": {
+                "type": "number",
+                "title": "Stress Exponent",
+                "description": "Exponent applied on the vertical effective stress (:math:``) [-] (optional, default= 0.375)",
+                "unit": "-",
+                "default": "0.375"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Calculates the small-strain shear modulus for uncemented silica sand based on cone resistance and vertical effective stress. The correlation is based on calibration chamber tests compared to results from PCPT, S-PCPT and cross-hole tests reported by Baldi et al (1989).<br/><br/>When used with ``apply_correlation``, use ``'Gmax Rix and Stokoe (1991)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param multiplier: Multiplier in the correlation equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1634.0)<br/>:param qc_exponent: Exponent applied on the cone tip resistance (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.25)<br/>:param stress_exponent: Exponent applied on the vertical effective stress (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.375)<br/><br/><div class=\"math-block\"><br/>    G_{max} = 1634 \\cdot (q_c)^{0.25} \\cdot (\\sigma_{vo}^{\\prime})^{0.375}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Rix, G.J. and Stokoe, K.H. (II) (1991), \u201cCorrelation of Initial Tangent Modulus and Cone Penetration Resistance\u201d, in Huang, A.B. (Ed.), Calibration Chamber Testing: Proceedings of the First International Symposium on Calibration Chamber Testing ISOCCTI, Potsdam, New York, 28-29 June 1991, Elsevier Science Publishing Company, New York, pp. 351-362.<br/><br/>"
+    },
+    "gmax_voidratio_maynerix": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.1 <= qc <= 10.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "void_ratio": {
+                "type": "number",
+                "title": "Void Ratio",
+                "description": "Void ratio of the clay determined from index tests or CPT-based correlations (e_0) [-] - Suggested range: 0.2 <= void_ratio <= 10.0",
+                "unit": "-",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 1.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "First calibration coefficient (:math:``) [-] (optional, default= 99.5)",
+                "unit": "-",
+                "default": "99.5"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Second  calibration coefficient (:math:``) [-] (optional, default= 0.305)",
+                "unit": "-",
+                "default": "0.305"
+            },
+            "coefficient_3": {
+                "type": "number",
+                "title": "Coefficient 3",
+                "description": "Third calibration coefficient (:math:``) [-] (optional, default= 0.695)",
+                "unit": "-",
+                "default": "0.695"
+            },
+            "coefficient_4": {
+                "type": "number",
+                "title": "Coefficient 4",
+                "description": "Fourth calibration coefficient (:math:``) [-] (optional, default= 1.13)",
+                "unit": "-",
+                "default": "1.13"
+            }
+        },
+        "required": [
+            "qc",
+            "void_ratio"
+        ],
+        "documentation": "<br/>Calculates the small-strain shear modulus for clay based on the void ratio of the material. The relation between Gmax and qc presented in the CPT book (``gmax_clay_maynerix`` function) shows an inferior fit (r2 = 0.713) to the clay data than the correlation which is finally proposed by the authors (r2 = 0.901). This correlation also takes the void ratio of the material into account.<br/><br/>The correlation is developed based on a database of in-situ testing for Gmax at 31 sites with seismic cone, SASW, cross-hole and downhole tests. The main difficulty in applying this correlation is the requirement for companion profiles of void ratio. Void ratio can be estimated using a CPT correlation for unit weight (``unitweight_mayne``) but this correlation has a rather high uncertainty associated with it.<br/><br/>When used with ``apply_correlation``, use ``'Gmax void ratio Mayne and Rix (1993)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.1 <= qc <= 10.0<br/>:param void_ratio: Void ratio of the clay determined from index tests or CPT-based correlations (<span class=\"math-inline\">e_0</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.2 <= void_ratio <= 10.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 1.0)<br/>:param coefficient_1: First calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 99.5)<br/>:param coefficient_2: Second  calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.305)<br/>:param coefficient_3: Third calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.695)<br/>:param coefficient_4: Fourth calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.13)<br/><br/><div class=\"math-block\"><br/>    G_{max} = 99.5 \\cdot (P_a)^{0.305} \\cdot \\frac{q_c^{0.695}}{e_0^{1.130}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/><img src=\"/assets/groundhog_images/gmax_voidratio_maynerix_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison of measured vs predicted Gmax<br/><br/>Reference - Mayne, P.W. and Rix, G.J. (1993), \u201cGmax-qc Relationships for Clays\u201d, Geotechnical Testing Journal, Vol. 16, No. 1, pp. 54-60.<br/><br/>"
+    },
+    "ic_soilclass_robertson": {
+        "type": "object",
+        "properties": {
+            "ic": {
+                "type": "number",
+                "title": "Ic",
+                "description": "Soil behaviour type index (I_c) [-] - Suggested range: 1.0 <= ic <= 5.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "ic"
+        ],
+        "documentation": "<br/>Provides soil type classification according to the soil behaviour type index by Robertson and Wride.<br/><br/>:param ic: Soil behaviour type index (<span class=\"math-inline\">I_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ic <= 5.0<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Soil type number [-]': Number of the soil type in the Robertson chart [<span class=\"math-inline\">-</span>]<br/>    - 'Soil type': Description of the soil type in the Robertson chart<br/><br/>Reference - Fugro guidance on PCPT interpretation<br/><br/>"
+    },
+    "k0_sand_mayne": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Total cone resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "ocr": {
+                "type": "number",
+                "title": "Ocr",
+                "description": "Overconsolidation ratio (OCR) [-] - Suggested range: 1.0 <= ocr <= 20.0",
+                "unit": "-",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier in equation (:math:``) [-] (optional, default= 0.192)",
+                "unit": "-",
+                "default": "0.192"
+            },
+            "exponent_1": {
+                "type": "number",
+                "title": "Exponent 1",
+                "description": "First exponent in equation (:math:``) [-] (optional, default= 0.22)",
+                "unit": "-",
+                "default": "0.22"
+            },
+            "exponent_2": {
+                "type": "number",
+                "title": "Exponent 2",
+                "description": "Second exponent in equation (:math:``) [-] (optional, default= 0.31)",
+                "unit": "-",
+                "default": "0.31"
+            },
+            "exponent_3": {
+                "type": "number",
+                "title": "Exponent 3",
+                "description": "Third exponent in equation (:math:``) [-] (optional, default= 0.27)",
+                "unit": "-",
+                "default": "0.27"
+            },
+            "friction_angle": {
+                "type": "number",
+                "title": "Friction Angle",
+                "description": "Effective friction angle of the sand (\\varphi^{\\prime}) [deg] - Suggested range: 25.0 <= friction_angle <= 45.0 (optional, default= 32.0)",
+                "unit": "deg",
+                "default": "32.0"
+            }
+        },
+        "required": [
+            "qt",
+            "sigma_vo_eff",
+            "ocr"
+        ],
+        "documentation": "<br/>Calculates the lateral coefficient of earth pressure at rest based on calibration chamber tests on clean sands.<br/>The values calculated from the equation need to be compared to values obtained using friction angle and OCR (see equations).<br/><br/>When used with ``apply_correlation``, use ``'K0 Mayne (2007) - sand'`` as correlation name.<br/><br/>:param qt: Total cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param ocr: Overconsolidation ratio (<span class=\"math-inline\">OCR</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ocr <= 20.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)<br/>:param multiplier: Multiplier in equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.192)<br/>:param exponent_1: First exponent in equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.22)<br/>:param exponent_2: Second exponent in equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.31)<br/>:param exponent_3: Third exponent in equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.27)<br/>:param friction_angle: Effective friction angle of the sand (<span class=\"math-inline\">\\varphi^{\\prime}</span>) [<span class=\"math-inline\">deg</span>] - Suggested range: 25.0 <= friction_angle <= 45.0 (optional, default= 32.0)<br/><br/><div class=\"math-block\"><br/>    K_0 = 0.192 \\cdot \\left( \\frac{q_t}{P_a} \\right)^{0.22} \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.31} \\cdot \\text{OCR}^{0.27}<br/><br/>    \\text{The maximum value for } K_0 \\text{ can be obtained as}:<br/><br/>    K_p = \\tan^2 \\left( \\frac{\\pi}{4} + \\frac{\\varphi^{\\prime}}{2} \\right) = \\frac{1 + \\sin \\varphi^{\\prime}}{1 - \\sin \\varphi^{\\prime}}<br/><br/>    \\text{These values need to be compared to}:<br/><br/>    K_0 = (1 - \\sin \\varphi^{\\prime}) \\cdot \\text{OCR} ^{\\sin \\varphi^{\\prime}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'K0 CPT [-]': Coefficient of lateral earth pressure at rest derived from CPT (<span class=\"math-inline\">K_{0,CPT}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'K0 conventional [-]': Value derived from the conventional equation (<span class=\"math-inline\">K_{0,\\text{conventional}}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Kp [-]': Limiting value of coefficient of lateral earth pressure based on Rankine passive earth pressure (<span class=\"math-inline\">K_p</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/k0_sand_mayne_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Dataset used for calibration<br/><br/>Reference - Mayne (2007) NCHRP SYNTHESIS 368. Cone Penetration Testing. A Synthesis of Highway Practice.<br/><br/>"
+    },
+    "ocr_cpt_lunne": {
+        "type": "object",
+        "properties": {
+            "Qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Normalised cone resistance (Q_t) [-] - Suggested range: 2.0 <= Qt <= 34.0",
+                "unit": "-",
+                "default": null
+            },
+            "Bq": {
+                "type": "number",
+                "title": "Bq",
+                "description": "Pore pressure ratio (B_q) [-] - Suggested range: 0.0 <= Bq <= 1.4 (optional, default=None)",
+                "unit": "-",
+                "default": "null"
+            }
+        },
+        "required": [
+            "Qt"
+        ],
+        "documentation": "<br/>Calculates the overconsolidation ratio (OCR) for clay based on normalised CPT properties. A low estimate, best estimate and high estimate of OCR is provided. The data is based on testing of high-quality undisturbed samples by the Norwegian Geotechnical Institute.<br/><br/>Both normalised cone resistance Qt and pore pressure ratio Bq can be used as inputs. If only one of the two inputs is specified, NaN is returned for the other.<br/><br/>The implementation of the formulation is based on digitisation of the graphs.<br/><br/>When used with ``apply_correlation``, use ``'OCR Lunne (1989)'`` as correlation name.<br/><br/>:param Qt: Normalised cone resistance (<span class=\"math-inline\">Q_t</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 2.0 <= Qt <= 34.0<br/>:param Bq: Pore pressure ratio (<span class=\"math-inline\">B_q</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= Bq <= 1.4 (optional, default=None)<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'OCR_Qt_LE [-]': Low estimate OCR based on Qt (<span class=\"math-inline\">OCR_{Q_t,LE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'OCR_Qt_BE [-]': Best estimate OCR based on Qt (<span class=\"math-inline\">OCR_{Q_t,BE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'OCR_Qt_HE [-]': High estimate OCR based on Qt (<span class=\"math-inline\">OCR_{Q_t,HE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'OCR_Bq_LE [-]': Low estimate OCR based on Bq (<span class=\"math-inline\">OCR_{B_q,LE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'OCR_Bq_BE [-]': Best estimate OCR based on Bq (<span class=\"math-inline\">OCR_{B_q,BE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'OCR_Bq_HE [-]': High estimate OCR based on Bq (<span class=\"math-inline\">OCR_{B_q,HE}</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/ocr_cpt_lunne.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Data used for correlations according to Lunne et al<br/><br/>Reference - Lunne, T., Robertson, P.K., Powell, J.J.M., 1997. Cone penetration testing in geotechnical practice. E & FN Spon.<br/><br/>"
+    },
+    "pcpt_normalisations": {
+        "type": "object",
+        "properties": {
+            "measured_qc": {
+                "type": "number",
+                "title": "Measured Qc",
+                "description": "Measured cone resistance (q_c^*) [MPa] - Suggested range: 0.0 <= measured_qc <= 150.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "measured_fs": {
+                "type": "number",
+                "title": "Measured Fs",
+                "description": "Measured sleeve friction (f_s^*) [MPa] - Suggested range: 0.0 <= measured_fs <= 10.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "measured_u2": {
+                "type": "number",
+                "title": "Measured U2",
+                "description": "Pore pressure measured at the shoulder (u_2^*) [MPa] - Suggested range: -10.0 <= measured_u2 <= 10.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_tot": {
+                "type": "number",
+                "title": "Sigma Vo Tot",
+                "description": "Total vertical stress (\\sigma_{vo}) [kPa] - Suggested range: sigma_vo_tot >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Effective vertical stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "depth": {
+                "type": "number",
+                "title": "Depth",
+                "description": "Depth below surface (for saturated soils) where measurement is taken. For onshore tests, use the depth below the watertable. (z) [m] - Suggested range: depth >= 0.0",
+                "unit": "m",
+                "default": null
+            },
+            "cone_area_ratio": {
+                "type": "number",
+                "title": "Cone Area Ratio",
+                "description": "Ratio between the cone rod area and the maximum cone area (a) [-] - Suggested range: 0.0 <= cone_area_ratio <= 1.0",
+                "unit": "-",
+                "default": null
+            },
+            "start_depth": {
+                "type": "number",
+                "title": "Start Depth",
+                "description": "Start depth of the test, specify this for a downhole test. Leave at zero for a test starting from surface (d) [m] - Suggested range: start_depth >= 0.0 (optional, default= 0.0)",
+                "unit": "m",
+                "default": "0.0"
+            },
+            "unitweight_water": {
+                "type": "number",
+                "title": "Unitweight Water",
+                "description": "Unit weight of water, default is for seawater (\\gamma_w) [kN/m3] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.25)",
+                "unit": "kN/m3",
+                "default": "10.25"
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (used for normalisation) (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100"
+            },
+            "ic_min": {
+                "type": "number",
+                "title": "Ic Min",
+                "description": "Minimum value for soil behaviour type index used in the optimisation routine (I_{c,min}) [-] (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "ic_max": {
+                "type": "number",
+                "title": "Ic Max",
+                "description": "Maximum value for soil behaviour type index used in the optimisation routine (I_{c,max}) [-] (optional, default= 4.0)",
+                "unit": "-",
+                "default": "4.0"
+            },
+            "zhang_multiplier_1": {
+                "type": "number",
+                "title": "Zhang Multiplier 1",
+                "description": "First multiplier in the equation for exponent n (:math:``) [-] (optional, default= 0.381)",
+                "unit": "-",
+                "default": "0.381"
+            },
+            "zhang_multiplier_2": {
+                "type": "number",
+                "title": "Zhang Multiplier 2",
+                "description": "Second multiplier in the equation for exponent n (:math:``) [-] (optional, default= 0.05)",
+                "unit": "-",
+                "default": "0.05"
+            },
+            "zhang_subtraction": {
+                "type": "number",
+                "title": "Zhang Subtraction",
+                "description": "Term subtracted in the equation for exponent n (:math:``) [-] (optional, default= 0.15)",
+                "unit": "-",
+                "default": "0.15"
+            },
+            "robertsonwride_coefficient1": {
+                "type": "number",
+                "title": "Robertsonwride Coefficient1",
+                "description": "First coefficient in the equation by Robertson and Wride (:math:``) [-] (optional, default= 3.47)",
+                "unit": "-",
+                "default": "3.47"
+            },
+            "robertsonwride_coefficient2": {
+                "type": "number",
+                "title": "Robertsonwride Coefficient2",
+                "description": "Second coefficient in the equation by Robertson and Wride (:math:``) [-] (optional, default= 1.22)",
+                "unit": "-",
+                "default": "1.22"
+            },
+            "cn_capping": {
+                "type": "number",
+                "title": "Cn Capping",
+                "description": "",
+                "unit": "",
+                "default": "1.7"
+            }
+        },
+        "required": [
+            "measured_qc",
+            "measured_fs",
+            "measured_u2",
+            "sigma_vo_tot",
+            "sigma_vo_eff",
+            "depth",
+            "cone_area_ratio"
+        ],
+        "documentation": "<br/>Carried out the necessary normalisation and correction on PCPT data to allow calculation of derived parameters and soil type classification.<br/><br/>For a downhole test, the depth of the test and the unit weight of water can optionally be provided. If no start depth is specified, a continuous test starting from the surface is assumed. The measurements are corrected for this effect.<br/><br/>Next, the cone resistance is corrected for the unequal area effect using the cone area ratio. The correction for total sleeve friction is not included as it is more uncommon. The procedure assumes that the pore pressure are measured at the shoulder of the cone. If this is not the case, corrections can be used which are not included in this function.<br/><br/>During normalisation, the friction ratio and pore pressure ratio are calculated. Note that the total cone resistance is used for the friction ratio and pore pressure ratio calculation, the pore pressure ratio calculation also used the total vertical effective stress. The normalised cone resistance and normalised friction ratio are also calculated.<br/><br/>Finally the net cone resistance is calculated.<br/><br/>:param measured_qc: Measured cone resistance (<span class=\"math-inline\">q_c^*</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= measured_qc <= 150.0<br/>:param measured_fs: Measured sleeve friction (<span class=\"math-inline\">f_s^*</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= measured_fs <= 10.0<br/>:param measured_u2: Pore pressure measured at the shoulder (<span class=\"math-inline\">u_2^*</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: -10.0 <= measured_u2 <= 10.0<br/>:param sigma_vo_tot: Total vertical stress (<span class=\"math-inline\">\\sigma_{vo}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_tot >= 0.0<br/>:param sigma_vo_eff: Effective vertical stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param depth: Depth below surface (for saturated soils) where measurement is taken. For onshore tests, use the depth below the watertable. (<span class=\"math-inline\">z</span>) [<span class=\"math-inline\">m</span>] - Suggested range: depth >= 0.0<br/>:param cone_area_ratio: Ratio between the cone rod area and the maximum cone area (<span class=\"math-inline\">a</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= cone_area_ratio <= 1.0<br/>:param start_depth: Start depth of the test, specify this for a downhole test. Leave at zero for a test starting from surface (<span class=\"math-inline\">d</span>) [<span class=\"math-inline\">m</span>] - Suggested range: start_depth >= 0.0 (optional, default= 0.0)<br/>:param unitweight_water: Unit weight of water, default is for seawater (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.25)<br/>:param atmospheric_pressure: Atmospheric pressure (used for normalisation) (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param ic_min: Minimum value for soil behaviour type index used in the optimisation routine (<span class=\"math-inline\">I_{c,min}</span>) [<span class=\"math-inline\">-</span>] (optional, default= 1.0)<br/>:param ic_max: Maximum value for soil behaviour type index used in the optimisation routine (<span class=\"math-inline\">I_{c,max}</span>) [<span class=\"math-inline\">-</span>] (optional, default= 4.0)<br/>:param zhang_multiplier_1: First multiplier in the equation for exponent n (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.381)<br/>:param zhang_multiplier_2: Second multiplier in the equation for exponent n (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.05)<br/>:param zhang_subtraction: Term subtracted in the equation for exponent n (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.15)<br/>:param robertsonwride_coefficient1: First coefficient in the equation by Robertson and Wride (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 3.47)<br/>:param robertsonwride_coefficient2: Second coefficient in the equation by Robertson and Wride (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.22)<br/><br/><div class=\"math-block\"><br/>    q_c = q_c^* + d \\cdot a \\cdot \\gamma_w<br/><br/>    q_t = q_c + u_2 \\cdot (1 - a)<br/><br/>    u_2 = u_2^* + \\gamma_w \\cdot d<br/><br/>    \\Delta u_2 = u_2 - u_o<br/><br/>    R_f = \\frac{f_s}{q_t}<br/><br/>    B_q = \\frac{\\Delta u_2}{q_t - \\sigma_{vo}}<br/><br/>    Q_t = \\frac{q_t - \\sigma_{vo}}{\\sigma_{vo}^{\\prime}}<br/><br/>    Cn = \\min(1.7, \\left(\\frac{P_a}{\\sigma_{vo}^{\\prime}}\\right)^n)<br/><br/>    Q_{tn} = \\frac{q_t - \\sigma_{vo}}{P_a} \\cdot Cn<br/>    <br/>    n = 0.381 \\cdot I_c + 0.05 \\cdot \\frac{\\sigma_{vo}^{\\prime}}{P_a} - 0.15 \\ \\text{where} \\ n \\leq 1<br/><br/>    F_r = \\frac{f_s}{q_t - \\sigma_{vo}}<br/><br/>    q_{net} = q_t - \\sigma_{vo}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'qt [MPa]': Total cone resistance (<span class=\"math-inline\">q_t</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'qc [MPa]': Cone resistance corrected for downhole effect (<span class=\"math-inline\">q_c</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'u2 [MPa]': Pore pressure at the shoulder corrected for downhole effect (<span class=\"math-inline\">u_2</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'Delta u2 [MPa]': Difference between measured pore pressure at the shoulder and hydrostatic pressure (<span class=\"math-inline\">\\Delta u_2</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'Rf [pct]': Ratio of sleeve friction to total cone resistance (note that it is expressed as a percentage) (<span class=\"math-inline\">R_f</span>)  [<span class=\"math-inline\">pct</span>]<br/>    - 'Bq [-]': Pore pressure ratio (<span class=\"math-inline\">B_q</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Qt [-]': Normalised cone resistance (<span class=\"math-inline\">Q_t</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Fr [-]': Normalised friction ratio (<span class=\"math-inline\">F_r</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'qnet [MPa]': Net cone resistance (<span class=\"math-inline\">q_{net}</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'exponent_zhang [-]': Exponent n according to Zhang et al (<span class=\"math-inline\">n</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Qtn [-]': Normalised cone resistance (<span class=\"math-inline\">Q_{tn}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Fr [%]': Normalised friction ratio (<span class=\"math-inline\">F_r</span>)  [<span class=\"math-inline\">%</span>]<br/>    - 'Ic [-]': Soil behaviour type index (<span class=\"math-inline\">I_c</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Ic class number [-]': Soil behaviour type class number according to the Robertson chart<br/>    - 'Ic class': Soil behaviour type class description according to the Robertson chart<br/><br/><br/><img src=\"/assets/groundhog_images/pcpt_normalisations_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Pore water pressure effects on measured parameters<br/><br/>Reference - Lunne, T., Robertson, P.K., Powell, J.J.M., 1997. Cone penetration testing in geotechnical practice. E & FN Spon.<br/><br/>"
+    },
+    "relativedensity_ncsand_baldi": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tipe resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "coefficient_0": {
+                "type": "number",
+                "title": "Coefficient 0",
+                "description": "Coefficient C0 (C_0) [-] (optional, default= 157.0)",
+                "unit": "-",
+                "default": "157.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "Coefficient C1 (C_1) [-] (optional, default= 0.55)",
+                "unit": "-",
+                "default": "0.55"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Coefficient C2 (C_2) [-] (optional, default= 2.41)",
+                "unit": "-",
+                "default": "2.41"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Calculates the relative density for normally consolidated sand based on calibration chamber tests on silica sand. It should be noted that this correlation provides an approximative estimate of relative density and the sand at the site should be compared to the sands used in the calibration chamber tests. The correlation will always be sensitive to variations in compressibility and horizontal stress.<br/><br/>When used with ``apply_correlation``, use ``'Dr Baldi et al (1986) - NC sand'`` as correlation name.<br/><br/>:param qc: Cone tipe resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param coefficient_0: Coefficient C0 (<span class=\"math-inline\">C_0</span>) [<span class=\"math-inline\">-</span>] (optional, default= 157.0)<br/>:param coefficient_1: Coefficient C1 (<span class=\"math-inline\">C_1</span>) [<span class=\"math-inline\">-</span>] (optional, default= 0.55)<br/>:param coefficient_2: Coefficient C2 (<span class=\"math-inline\">C_2</span>) [<span class=\"math-inline\">-</span>] (optional, default= 2.41)<br/><br/><div class=\"math-block\"><br/>    D_r = \\frac{1}{2.41} \\cdot \\ln \\left[ \\frac{q_c}{157 \\cdot \\left( \\sigma_{vo}^{\\prime} \\right)^{0.55} } \\right]<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Dr [-]': Relative density as a number between 0 and 1 (<span class=\"math-inline\">D_r</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/relativedensity_ncsand_baldi_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Relationship between cone tip resistance, vertical effective stress and relative density for normally consolidated Ticino sand<br/><br/>Reference - Baldi et al 1986.<br/><br/>"
+    },
+    "relativedensity_ocsand_baldi": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "k0": {
+                "type": "number",
+                "title": "K0",
+                "description": "Coefficient of lateral earth pressure (K_o) [-] - Suggested range: 0.3 <= k0 <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "coefficient_0": {
+                "type": "number",
+                "title": "Coefficient 0",
+                "description": "Coefficient C0 (C_0) [-] (optional, default= 181.0)",
+                "unit": "-",
+                "default": "181.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "Coefficient C1 (C_1) [-] (optional, default= 0.55)",
+                "unit": "-",
+                "default": "0.55"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Coefficient C2 (C_2) [-] (optional, default= 2.61)",
+                "unit": "-",
+                "default": "2.61"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff",
+            "k0"
+        ],
+        "documentation": "<br/>Calculates the relative density for overconsolidated sand based on calibration chamber tests on silica sand. It should be noted that this correlation provides an approximative estimate of relative density and the sand at the site should be compared to the sands used in the calibration chamber tests. The correlation will always be sensitive to variations in compressibility and horizontal stress. Note that this correlation requires an estimate of the coefficient of lateral earth pressure.<br/><br/>When used with ``apply_correlation``, use ``'Dr Baldi et al (1986) - OC sand'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param k0: Coefficient of lateral earth pressure (<span class=\"math-inline\">K_o</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.3 <= k0 <= 5.0<br/>:param coefficient_0: Coefficient C0 (<span class=\"math-inline\">C_0</span>) [<span class=\"math-inline\">-</span>] (optional, default= 181.0)<br/>:param coefficient_1: Coefficient C1 (<span class=\"math-inline\">C_1</span>) [<span class=\"math-inline\">-</span>] (optional, default= 0.55)<br/>:param coefficient_2: Coefficient C2 (<span class=\"math-inline\">C_2</span>) [<span class=\"math-inline\">-</span>] (optional, default= 2.61)<br/><br/><div class=\"math-block\"><br/>    D_r = \\frac{1}{2.61} \\cdot \\ln \\left[ \\frac{q_c}{181 \\cdot \\left( \\sigma_{m}^{\\prime} \\right)^{0.55} } \\right]<br/><br/>    \\sigma_{m}^{\\prime} = \\frac{\\sigma_{vo}^{\\prime} + 2 \\cdot K_o \\ cdot \\sigma_{h0}^{\\prime}}{3}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Dr [-]': Relative density as a number between 0 and 1 (<span class=\"math-inline\">D_r</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/relativedensity_ocsand_baldi_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Relationship between cone tip resistance, vertical effective stress and relative density for overconsolidated Ticino sand<br/><br/>Reference - Baldi et al 1986.<br/><br/>"
+    },
+    "relativedensity_sand_jamiolkowski": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 50.0 <= sigma_vo_eff <= 400.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "k0": {
+                "type": "number",
+                "title": "K0",
+                "description": "Coefficient of lateral earth pressure (K_o) [-] - Suggested range: 0.4 <= k0 <= 1.5",
+                "unit": "-",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure used for normalisation (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "First calibration coefficient (:math:``) [-] (optional, default= 2.96)",
+                "unit": "-",
+                "default": "2.96"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Second calibration coefficient (:math:``) [-] (optional, default= 24.94)",
+                "unit": "-",
+                "default": "24.94"
+            },
+            "coefficient_3": {
+                "type": "number",
+                "title": "Coefficient 3",
+                "description": "Third calibration coefficient (:math:``) [-] (optional, default= 0.46)",
+                "unit": "-",
+                "default": "0.46"
+            },
+            "coefficient_4": {
+                "type": "number",
+                "title": "Coefficient 4",
+                "description": "Fourth calibration coefficient (:math:``) [-] (optional, default= -1.87)",
+                "unit": "-",
+                "default": "-1.87"
+            },
+            "coefficient_5": {
+                "type": "number",
+                "title": "Coefficient 5",
+                "description": "Fifth calibration coefficient (:math:``) [-] (optional, default= 2.32)",
+                "unit": "-",
+                "default": "2.32"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff",
+            "k0"
+        ],
+        "documentation": "<br/>Jamiolkowksi et al formulated a correlation for the relative density of dry sand based on calibration chamber tests.<br/>The correlation can be modified for saturated sands by applying a correction factor and results in relative densities which can be up to 10% higher.<br/>Note that calibration chamber testing is carried out on sands with vertical effective stress between 50kPa and 400kPa and coefficients of lateral earth pressure Ko between 0.4 and 1.5.<br/>Relative densities for stress conditions outside this range (e.g. shallow soils) should be assessed with care.<br/><br/>When used with ``apply_correlation``, use ``'Dr Jamiolkowski et al (2003)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 50.0 <= sigma_vo_eff <= 400.0<br/>:param k0: Coefficient of lateral earth pressure (<span class=\"math-inline\">K_o</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.4 <= k0 <= 1.5<br/>:param atmospheric_pressure: Atmospheric pressure used for normalisation (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param coefficient_1: First calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 2.96)<br/>:param coefficient_2: Second calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 24.94)<br/>:param coefficient_3: Third calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.46)<br/>:param coefficient_4: Fourth calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= -1.87)<br/>:param coefficient_5: Fifth calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 2.32)<br/><br/><div class=\"math-block\"><br/>    D_{r,dry} = \\frac{1}{2.96} \\cdot \\ln \\left[ \\frac{q_c / P_a}{24.94 \\cdot \\left( \\frac{\\sigma_{m}^{\\prime}}{P_a} \\right)^{0.46} } \\right]<br/><br/>    D_{r,sat} = \\left( 1 + \\frac{-1.87 + 2.32 \\cdot \\ln \\left[ \\frac{q_c}{\\sqrt{P_a + \\sigma_{vo}^{\\prime}}} \\right] }{100} \\right) \\cdot D_{r,dry}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Dr dry [-]': Relative density for dry sand as a number between 0 and 1 (<span class=\"math-inline\">D_{r,dry}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Dr sat [-]': Relative density for saturated sand as a number between 0 and 1 (<span class=\"math-inline\">D_{r,sat}</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Jamiolkowski, M., Lo Presti, D.C.F. and Manassero, M. (2003), \"Evaluation of Relative Density and Shear Strength of Sands from CPT and DMT\", in Germaine, J.T., Sheahan, T.C. and Whitman, R.V. (Eds.), Soil Behavior and Soft Ground Construction: Proceedings of the Symposium, October 5-6, 2001, Cambridge, Massachusetts, Geotechnical Special Publication, No. 119, American Society of Civil Engineers, Reston, pp. 201-238.<br/><br/>"
+    },
+    "sensitivity_frictionratio_lunne": {
+        "type": "object",
+        "properties": {
+            "Rf": {
+                "type": "number",
+                "title": "Rf",
+                "description": "Friction ratio (R_f = f_t / q_t) [percent] - Suggested range: 0.5 <= Rf <= 2.2",
+                "unit": "percent",
+                "default": null
+            }
+        },
+        "required": [
+            "Rf"
+        ],
+        "documentation": "<br/>Calculates the sensitivity of clay from the friction ratio according to Rad and Lunne (1986). The correlation is derived based on measurements on Norwegian clays.<br/><br/>Ideally, the sleeve friction corrected for pore pressure effects should be used to calculate the friction ratio but if this is not available (when pore pressures are not measured on both ends of the friction sleeve), the ratio of sleeve friction to cone tip resistance (in percent) can be used.<br/><br/>The function returns a low estimate, best estimate and high estimate value.<br/><br/>When used with ``apply_correlation``, use ``'Sensitivity Rad and Lunne (1986)'`` as correlation name.<br/><br/>:param Rf: Friction ratio (<span class=\"math-inline\">R_f = f_t / q_t</span>) [<span class=\"math-inline\">percent</span>] - Suggested range: 0.5 <= Rf <= 2.2<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'St LE [-]': Low estimate sensitivity (<span class=\"math-inline\">S_{t,LE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'St BE [-]': Best estimate sensitivity (<span class=\"math-inline\">S_{t,BE}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'St HE [-]': High estimate sensitivity (<span class=\"math-inline\">S_{t,HE}</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/sensitivity_frictionratio_lunne_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Data used to derive correlation according to Rad & Lunne (1986)<br/><br/>Reference - Lunne, T., Robertson, P.K., Powell, J.J.M., 1997. Cone penetration testing in geotechnical practice. E & FN Spon.<br/><br/>"
+    },
+    "soilclass_robertson": {
+        "type": "object",
+        "properties": {
+            "ic_class_number": {
+                "type": "number",
+                "title": "Ic Class Number",
+                "description": "Soil behaviour type index class number (I_c) [-] - Suggested range: ic = 1 to 9",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "ic_class_number"
+        ],
+        "documentation": "<br/>Provides soil type classification according to the soil behaviour type index by Robertson and Wride.<br/><br/>:param ic_class_number: Soil behaviour type index class number (<span class=\"math-inline\">I_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: ic = 1 to 9<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Soil type': Description of the soil type in the Robertson chart<br/><br/>Reference - Fugro guidance on PCPT interpretation<br/><br/>"
+    },
+    "soiltype_vs_longodonohue": {
+        "type": "object",
+        "properties": {
+            "Vs": {
+                "type": "number",
+                "title": "Vs",
+                "description": "Shear wave velocity (V_s) [m/s] - Suggested range: 0.0 <= Vs <= 600.0",
+                "unit": "m/s",
+                "default": null
+            },
+            "Qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Normalised cone resistance (Q_t) [-] - Suggested range: 0.0 <= Qt <= 200.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            }
+        },
+        "required": [
+            "Vs",
+            "Qt",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Determines the soil type based on measured shear wave velocity and normalised cone resistance. The underlying dataset consists of soft clays (Long and Donohue, 2010), sands (Mayne, 2006) and stiff clays (Lunne et al, 2007).<br/><br/>The chart of Qt vs Vs1 allows determination of the soil type.<br/><br/>When used with ``apply_correlation``, use ``'Soiltype Vs Long and Donohue (2010)'`` as correlation name.<br/><br/>:param Vs: Shear wave velocity (<span class=\"math-inline\">V_s</span>) [<span class=\"math-inline\">m/s</span>] - Suggested range: 0.0 <= Vs <= 600.0<br/>:param Qt: Normalised cone resistance (<span class=\"math-inline\">Q_t</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= Qt <= 200.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/><br/><div class=\"math-block\"><br/>    V_{s,1} = \\frac{V_s}{\\left( \\frac{\\sigma_{vo}^{\\prime}}{P_a} \\right)^{0.5}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Vs1 [m/s]': Normalised shear wave velocity (<span class=\"math-inline\">V_{s1}</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'soiltype': Soil type class based on Figure 10 from the paper<br/><br/><img src=\"/assets/groundhog_images/soiltype_vs_longodonohue_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison between soil types<br/><br/>Reference - Long and Donohue (2010). Characterisation of Norwegian marine clays with combined shear wave velocity and CPTU data.<br/><br/>"
+    },
+    "undrainedshearstrength_clay_radlunne": {
+        "type": "object",
+        "properties": {
+            "qnet": {
+                "type": "number",
+                "title": "Qnet",
+                "description": "Net cone resistance (corrected for area ratio and total stress at the depth of the cone) (q_{net}) [MPa] - Suggested range: 0.0 <= qnet <= 120.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "Nk": {
+                "type": "number",
+                "title": "Nk",
+                "description": "Empirical factor (N_k) [-] - Suggested range: 8.0 <= Nk <= 30.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "qnet",
+            "Nk"
+        ],
+        "documentation": "<br/>Calculates the undrained shear strength of clay from net cone tip resistance. The correlation is empirical and the cone factor needs to be adjusted to fit CIU or other high-quality laboratory tests for undrained shear strength.<br/><br/>When used with ``apply_correlation``, use ``'Su Rad and Lunne (1988)'`` as correlation name.<br/><br/>:param qnet: Net cone resistance (corrected for area ratio and total stress at the depth of the cone) (<span class=\"math-inline\">q_{net}</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qnet <= 120.0<br/>:param Nk: Empirical factor (<span class=\"math-inline\">N_k</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 8.0 <= Nk <= 30.0<br/><br/><div class=\"math-block\"><br/>    S_u = \\frac{q_{net}}{N_k}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Su [kPa]': Undrained shear strength inferred from PCPT data (<span class=\"math-inline\">S_u</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Rad, N.S. and Lunne, T. (1988), \"Direct Correlations between Piezocone Test Results and Undrained Shear Strength of Clay\", in De Ruiter, J. (Ed.), Penetration Testing 1988: Proceedings of the First International Symposium on Penetration Testing, ISOPT-1, Orlando, 20-24 March 1988, Vol. 2, A.A. Balkema, Rotterdam, pp. 911-917.<br/><br/>"
+    },
+    "unitweight_mayne": {
+        "type": "object",
+        "properties": {
+            "ft": {
+                "type": "number",
+                "title": "Ft",
+                "description": "Total sleeve friction (f_t) [MPa] - Suggested range: 0.0 <= ft <= 10.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 500.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "unitweight_water": {
+                "type": "number",
+                "title": "Unitweight Water",
+                "description": "Unit weight of water (\\gamma_w) [kN/m3] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.25)",
+                "unit": "kN/m3",
+                "default": "10.25"
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "First coefficient in the calibrated equation (:math:``) [-] (optional, default= 1.95)",
+                "unit": "-",
+                "default": "1.95"
+            },
+            "exponent_1": {
+                "type": "number",
+                "title": "Exponent 1",
+                "description": "First exponent in the calibrated equation (:math:``) [-] (optional, default= 0.06)",
+                "unit": "-",
+                "default": "0.06"
+            },
+            "exponent_2": {
+                "type": "number",
+                "title": "Exponent 2",
+                "description": "Second exponent in the calibrated equation (:math:``) [-] (optional, default= 0.06)",
+                "unit": "-",
+                "default": "0.06"
+            }
+        },
+        "required": [
+            "ft",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Estimates the total unit weight for sand, clay and silt from CPT measurements. A correlation with sleeve friction and vertical effective stress showed the best fit across a range of soil types. The correlation does not apply for cemented soils. An error band of +-2kN/m3 seems to encompass the data rather well.<br/><br/>For the sake of accuracy, the corrected total sleeve friction is used instead of the uncorrected sleeve friction. PCPT normalisation is required before applying the correlation. If sleeve dimensions are not available, the uncorrected sleeve friction will be used.<br/><br/>When used with ``apply_correlation``, use ``'Unit weight Mayne et al (2010)'`` as correlation name.<br/><br/>:param ft: Total sleeve friction (<span class=\"math-inline\">f_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= ft <= 10.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 500.0<br/>:param unitweight_water: Unit weight of water (<span class=\"math-inline\">\\gamma_w</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 9.0 <= unitweight_water <= 11.0 (optional, default= 10.25)<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param coefficient_1: First coefficient in the calibrated equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.95)<br/>:param exponent_1: First exponent in the calibrated equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.06)<br/>:param exponent_2: Second exponent in the calibrated equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.06)<br/><br/><div class=\"math-block\"><br/>    \\gamma = 1.95 \\cdot \\gamma_w \\cdot \\left( \\frac{\\sigma_{vo}^{\\prime}}{P_a} \\right)^{0.06} \\cdot \\left( \\frac{f_t}{P_a} \\right)^{0.06}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'gamma [kN/m3]': Total unit weight (<span class=\"math-inline\">\\gamma</span>)  [<span class=\"math-inline\">kN/m3</span>]<br/><br/><img src=\"/assets/groundhog_images/unitweight_mayne_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Calibration with soil data used<br/><br/>Reference - P.W. Mayne ; J. Peuchen ; D. Bouwmeester (2010). Soil unit weight estimation from CPTs - 2nd International Symposium on Cone Penetration Testing, Huntington Beach, CA, USA. Volume 2&3: Technical Papers, Session 2: Interpretation, Paper No. 5<br/><br/>"
+    },
+    "vs_cpt_andrus": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone tip resistance (note that formula is based on qt in kPa) (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "depth": {
+                "type": "number",
+                "title": "Depth",
+                "description": "Depth below mudline (z) [m] - Suggested range: 0.0 <= depth <= 100.0",
+                "unit": "m",
+                "default": null
+            },
+            "ic": {
+                "type": "number",
+                "title": "Ic",
+                "description": "Soil behaviour type index (I_c) [-] - Suggested range: 1.0 <= ic <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "SF": {
+                "type": "number",
+                "title": "Sf",
+                "description": "Scaling factor. In case of Holocene soils, this is an age scaling factor (SF, ASF) [-] - Suggested range: 1.0 <= SF <= 3.0 (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "age": {
+                "type": "string",
+                "title": "Age",
+                "description": "Age of soils (optional, default= 'Holocene') - Options: ('Holocene', 'Pleistocene', 'Tertiary')",
+                "unit": "",
+                "default": "'Holocene'"
+            },
+            "holocene_multiplier": {
+                "type": "number",
+                "title": "Holocene Multiplier",
+                "description": "Multiplier on holocene equation (:math:``) [-] (optional, default= 2.27)",
+                "unit": "-",
+                "default": "2.27"
+            },
+            "holocene_qt_exponent": {
+                "type": "number",
+                "title": "Holocene Qt Exponent",
+                "description": "Exponent on qt in holocene equation (:math:``) [-] (optional, default= 0.412)",
+                "unit": "-",
+                "default": "0.412"
+            },
+            "holocene_ic_exponent": {
+                "type": "number",
+                "title": "Holocene Ic Exponent",
+                "description": "Exponent on Ic in holocene equation (:math:``) [-] (optional, default= 0.989)",
+                "unit": "-",
+                "default": "0.989"
+            },
+            "holocene_z_exponent": {
+                "type": "number",
+                "title": "Holocene Z Exponent",
+                "description": "Exponent on depth in holocene equation (:math:``) [-] (optional, default= 0.033)",
+                "unit": "-",
+                "default": "0.033"
+            },
+            "pleistocene_multiplier": {
+                "type": "number",
+                "title": "Pleistocene Multiplier",
+                "description": "Multiplier on pleistocene equation (:math:``) [-] (optional, default= 2.62)",
+                "unit": "-",
+                "default": "2.62"
+            },
+            "pleistocene_qt_exponent": {
+                "type": "number",
+                "title": "Pleistocene Qt Exponent",
+                "description": "Exponent on qt in pleistocene equation (:math:``) [-] (optional, default= 0.395)",
+                "unit": "-",
+                "default": "0.395"
+            },
+            "pleistocene_ic_exponent": {
+                "type": "number",
+                "title": "Pleistocene Ic Exponent",
+                "description": "Exponent on Ic in pleistocene equation (:math:``) [-] (optional, default= 0.912)",
+                "unit": "-",
+                "default": "0.912"
+            },
+            "pleistocene_z_exponent": {
+                "type": "number",
+                "title": "Pleistocene Z Exponent",
+                "description": "Exponent on depth in pleistocene equation (:math:``) [-] (optional, default= 0.124)",
+                "unit": "-",
+                "default": "0.124"
+            },
+            "tertiary_multiplier": {
+                "type": "number",
+                "title": "Tertiary Multiplier",
+                "description": "Multiplier on tertiary equation (:math:``) [-] (optional, default= 13.0)",
+                "unit": "-",
+                "default": "13.0"
+            },
+            "tertiary_qt_exponent": {
+                "type": "number",
+                "title": "Tertiary Qt Exponent",
+                "description": "Exponent on qt in tertiary equation (:math:``) [-] (optional, default= 0.382)",
+                "unit": "-",
+                "default": "0.382"
+            },
+            "tertiary_z_exponent": {
+                "type": "number",
+                "title": "Tertiary Z Exponent",
+                "description": "Exponent on depth in tertiary equation (:math:``) [-] (optional, default= 0.099)",
+                "unit": "-",
+                "default": "0.099"
+            }
+        },
+        "required": [
+            "qt",
+            "depth",
+            "ic"
+        ],
+        "documentation": "<br/>Calculates shear wave velocity from CPT measurements based on a relation calibrated on 229 measurements of which the majority are S-PCPT with some cross-hole tests and suspension logger measurements.<br/><br/>Correlations for Holocene/Pleistocene soils and Tertiary soils are developed separately but it should be noted that the only Tertiary soil used for calibration is a marl which has different mineralogy from silica soils.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT Andrus (2007)'`` as correlation name.<br/><br/>:param qt: Corrected cone tip resistance (note that formula is based on qt in kPa) (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param depth: Depth below mudline (<span class=\"math-inline\">z</span>) [<span class=\"math-inline\">m</span>] - Suggested range: 0.0 <= depth <= 100.0<br/>:param ic: Soil behaviour type index (<span class=\"math-inline\">I_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ic <= 5.0<br/>:param SF: Scaling factor. In case of Holocene soils, this is an age scaling factor (<span class=\"math-inline\">SF, ASF</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= SF <= 3.0 (optional, default= 1.0)<br/>:param age: Age of soils (optional, default= 'Holocene') - Options: ('Holocene', 'Pleistocene', 'Tertiary')<br/>:param holocene_multiplier: Multiplier on holocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 2.27)<br/>:param holocene_qt_exponent: Exponent on qt in holocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.412)<br/>:param holocene_ic_exponent: Exponent on Ic in holocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.989)<br/>:param holocene_z_exponent: Exponent on depth in holocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.033)<br/>:param pleistocene_multiplier: Multiplier on pleistocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 2.62)<br/>:param pleistocene_qt_exponent: Exponent on qt in pleistocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.395)<br/>:param pleistocene_ic_exponent: Exponent on Ic in pleistocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.912)<br/>:param pleistocene_z_exponent: Exponent on depth in pleistocene equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.124)<br/>:param tertiary_multiplier: Multiplier on tertiary equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 13.0)<br/>:param tertiary_qt_exponent: Exponent on qt in tertiary equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.382)<br/>:param tertiary_z_exponent: Exponent on depth in tertiary equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.099)<br/><br/><div class=\"math-block\"><br/>    \\text{Holocene}<br/><br/>    V_s = 2.27 \\cdot q_t^{0.412} \\cdot I_c^{0.989} \\cdot z^{0.033} \\cdot ASF<br/><br/>    \\text{Pleistocene}<br/><br/>    V_s = 2.62 \\cdot q_t^{0.395} \\cdot I_c^{0.912} \\cdot z^{0.124} \\cdot SF<br/><br/>    \\text{Tertiary}<br/><br/>    V_s = 13 \\cdot q_t^{0.382} \\cdot z^{0.099}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/><br/>Reference - Andrus, R.D., Mohanan, N.P., Piratheepan, P., Ellis, B.S., Holzer, T.L., 2007. Predicting Shear-wave velocity from cone penetration resistance, in: Paper No. 1454. Presented at the 4th International Conference on Earthquake Geotechnical Engineering, Thessaloniki, Greece.<br/><br/>"
+    },
+    "vs_cpt_hegazymayne": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone tip resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "fs": {
+                "type": "number",
+                "title": "Fs",
+                "description": "Sleeve friction (f_s) [MPa] - Suggested range: 0.0 <= fs <= 10.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "sigma_vo": {
+                "type": "number",
+                "title": "Sigma Vo",
+                "description": "Vertical total stress (\\sigma_{vo}) [kPa] - Suggested range: 0.0 <= sigma_vo <= 2000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "zhang": {
+                "type": "boolean",
+                "title": "Zhang",
+                "description": "Boolean determining whether the Zhang exponent (default groundhog implementation) needs to be used (optional, default= True)",
+                "unit": "",
+                "default": "true"
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier in Equation 6 (:math:``) [-] (optional, default= 0.0831)",
+                "unit": "-",
+                "default": "0.0831"
+            },
+            "exponent_stress": {
+                "type": "number",
+                "title": "Exponent Stress",
+                "description": "Exponent on the normalised stresses (:math:``) [-] (optional, default= 0.25)",
+                "unit": "-",
+                "default": "0.25"
+            },
+            "multiplier_ic": {
+                "type": "number",
+                "title": "Multiplier Ic",
+                "description": "Multiplier on soil behaviour type index (:math:``) [-] (optional, default= 1.786)",
+                "unit": "-",
+                "default": "1.786"
+            }
+        },
+        "required": [
+            "qt",
+            "fs",
+            "sigma_vo_eff",
+            "sigma_vo"
+        ],
+        "documentation": "<br/>The correlation between shear wave velocity and CPT properties developed by Hegazy and Mayne was based on a global databased from 73 sites with different soil conditions including sands, clays, soil mixtures and mine tailings. The correlation includes the 30 clay sites used for the Mayne and Rix (1993) correlation as well as 30 cohesive and cohesionless sites from Hegazy and Mayne (1995). 12 new sites were added in the 2006 paper. A total of 558 data points are included in the database. A coefficient of determiniaton (r2) of 0.85 is obtained using all data.<br/><br/>Shear wave velocity was measured using S-PCPT, downhole testing, cross-hole testing and SASW. No comment is made on the measurement uncertainty and the obtained values are used as such.<br/><br/>The correlation shows a good fit of the ratio of corrected Vs to normalised cone tip resistance. Note that the normalised cone tip resistance is calculated by default using the Zhang exponent (``zhang=True``). The suggested formulation in the original paper by Hegazy and Mayne is included by setting the boolean zhang to False.<br/><br/>Note that all stresses in the equation are given in kPa.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT Hegazy and Mayne (2006)'`` as correlation name.<br/><br/>:param qt: Corrected cone tip resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param fs: Sleeve friction (<span class=\"math-inline\">f_s</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= fs <= 10.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param sigma_vo: Vertical total stress (<span class=\"math-inline\">\\sigma_{vo}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo <= 2000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param zhang: Boolean determining whether the Zhang exponent (default groundhog implementation) needs to be used (optional, default= True)<br/>:param multiplier: Multiplier in Equation 6 (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.0831)<br/>:param exponent_stress: Exponent on the normalised stresses (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.25)<br/>:param multiplier_ic: Multiplier on soil behaviour type index (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.786)<br/><br/><div class=\"math-block\"><br/>    Q_{t,N} = \\frac{q_t - \\sigma_{vo}}{\\sigma_{vo}^{\\prime}}<br/><br/>    I_c = \\left[ (3.47 - \\log Q_{t,N} )^2 + ( \\log F_r + 1.22 )^2 \\right]^{0.5}<br/><br/>    \\text{if } I_c \\leq 2.6<br/><br/>    q_{c1N} = \\left( \\frac{q_t}{P_a} \\right) \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.5}<br/><br/>    \\text{if } I_c > 2.6<br/><br/>    q_{c1N} = \\left( \\frac{q_t}{P_a} \\right) \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.75}<br/><br/>    V_s = 0.0831 \\cdot q_{c1N} \\cdot \\left( \\frac{\\sigma_{vo}^{\\prime}}{P_a} \\right)^{0.25} \\cdot e^{1.786 \\cdot I_c}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Ic uncorrected [-]': Soil behaviour type index according to equation 2a (<span class=\"math-inline\">I_{c,uncorrected}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'qc1N [-]': Corrected normalised cone tip resistance based on Ic criterion (<span class=\"math-inline\">q_{c1N}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Ic [-]': Corrected soil behaviour type index as used in Equation 6 from the paper (<span class=\"math-inline\">I_c</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/><br/><img src=\"/assets/groundhog_images/vs_cpt_hegazy_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison between proposed trend and data<br/><br/>Reference - Hegazy and Mayne (2006). A Global Statistical Correlation between Shear Wave Velocity and Cone Penetration Data.<br/><br/>"
+    },
+    "vs_cpt_longdonohue": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 2.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "u2": {
+                "type": "number",
+                "title": "U2",
+                "description": "Pore pressure at the shoulder (u_2) [MPa] - Suggested range: -1.0 <= u2 <= 1.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "u0": {
+                "type": "number",
+                "title": "U0",
+                "description": "Hydrostatic pressure (u_0) [kPa] - Suggested range: 0.0 <= u0 <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "Bq": {
+                "type": "number",
+                "title": "Bq",
+                "description": "Pore pressure ratio (B_q) [-] - Suggested range: -0.6 <= Bq <= 1.4",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier in expression for Vs (:math:``) [-] (optional, default= 1.961)",
+                "unit": "-",
+                "default": "1.961"
+            },
+            "exponent_qt": {
+                "type": "number",
+                "title": "Exponent Qt",
+                "description": "Exponent on qt (:math:``) [-] (optional, default= 0.579)",
+                "unit": "-",
+                "default": "0.579"
+            },
+            "exponent_Bq": {
+                "type": "number",
+                "title": "Exponent Bq",
+                "description": "Exponent on 1 + Bq (:math:``) [-] (optional, default= 1.202)",
+                "unit": "-",
+                "default": "1.202"
+            }
+        },
+        "required": [
+            "qt",
+            "u2",
+            "u0",
+            "Bq",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>The authors propose a correlation between shear wave velocity and CPT properties based on high-quality CPT tests and Gmax obtained from S-PCPT, MASW, cross-hole and block sampling.<br/>The formula for Vs only applies to soft marine clays.<br/><br/>The overconsolidation ratio of the material can be differentiated by plotting the normalised excess pore pressure vs the normalised shear wave velocity.<br/><br/>Note that stresses have units of kPa in the formula.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT Long and Donohue (2010)'`` as correlation name.<br/><br/>:param qt: Corrected cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 2.0<br/>:param u2: Pore pressure at the shoulder (<span class=\"math-inline\">u_2</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: -1.0 <= u2 <= 1.0<br/>:param u0: Hydrostatic pressure (<span class=\"math-inline\">u_0</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= u0 <= 1000.0<br/>:param Bq: Pore pressure ratio (<span class=\"math-inline\">B_q</span>) [<span class=\"math-inline\">-</span>] - Suggested range: -0.6 <= Bq <= 1.4<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param multiplier: Multiplier in expression for Vs (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.961)<br/>:param exponent_qt: Exponent on qt (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.579)<br/>:param exponent_Bq: Exponent on 1 + Bq (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.202)<br/><br/><div class=\"math-block\"><br/>    V_s = 1.961 \\cdot q_t^{0.579} \\cdot \\left( 1 + B_q \\right)^{1.202}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Vs [m/s]': Shear wave velocity according to Equation 15 from paper (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'Vs1 [m/s]': Normalised shear wave velocity (<span class=\"math-inline\">V_{s,1}</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'ocr_class': OCR class based on Figure 9 from the paper<br/><br/><img src=\"/assets/groundhog_images/vs_cpt_longdonohue_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Differentiation of OCR based on shear wave velocity<br/><br/>Reference - Long, M. and Donohue, S. (2010). Characterisation of Norwegian marine clays with combined shear wave velocity and CPTU data. Canadian Geotechnical Journal.<br/><br/>"
+    },
+    "vs_cpt_mcgannetal": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone tip resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "fs": {
+                "type": "number",
+                "title": "Fs",
+                "description": "Sleeve friction (f_s) [MPa] - Suggested range: 0.0 <= fs <= 10.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "depth": {
+                "type": "number",
+                "title": "Depth",
+                "description": "Depth below ground surface (z) [m] - Suggested range: 0.0 <= depth <= 100.0",
+                "unit": "m",
+                "default": null
+            },
+            "coefficient1_general": {
+                "type": "number",
+                "title": "Coefficient1 General",
+                "description": "First calibration coefficient in general equation (:math:``) [-] (optional, default= 18.4)",
+                "unit": "-",
+                "default": "18.4"
+            },
+            "coefficient2_general": {
+                "type": "number",
+                "title": "Coefficient2 General",
+                "description": "Second calibration coefficient in general equation (:math:``) [-] (optional, default= 0.144)",
+                "unit": "-",
+                "default": "0.144"
+            },
+            "coefficient3_general": {
+                "type": "number",
+                "title": "Coefficient3 General",
+                "description": "Third calibration coefficient in general equation (:math:``) [-] (optional, default= 0.083)",
+                "unit": "-",
+                "default": "0.083"
+            },
+            "coefficient4_general": {
+                "type": "number",
+                "title": "Coefficient4 General",
+                "description": "Fourth calibration coefficient in general equation (:math:``) [-] (optional, default= 0.278)",
+                "unit": "-",
+                "default": "0.278"
+            },
+            "coefficient1_loess": {
+                "type": "number",
+                "title": "Coefficient1 Loess",
+                "description": "First calibration coefficient in loess equation (:math:``) [-] (optional, default= 103.6)",
+                "unit": "-",
+                "default": "103.6"
+            },
+            "coefficient2_loess": {
+                "type": "number",
+                "title": "Coefficient2 Loess",
+                "description": "Second calibration coefficient in loess equation (:math:``) [-] (optional, default= 0.0074)",
+                "unit": "-",
+                "default": "0.0074"
+            },
+            "coefficient3_loess": {
+                "type": "number",
+                "title": "Coefficient3 Loess",
+                "description": "Third calibration coefficient in loess equation (:math:``) [-] (optional, default= 0.13)",
+                "unit": "-",
+                "default": "0.13"
+            },
+            "coefficient4_loess": {
+                "type": "number",
+                "title": "Coefficient4 Loess",
+                "description": "Fourth calibration coefficient in loess equation (:math:``) [-] (optional, default= 0.253)",
+                "unit": "-",
+                "default": "0.253"
+            },
+            "loess": {
+                "type": "boolean",
+                "title": "Loess",
+                "description": "Boolean determining whether the loess equation needs to be used (optional, default= False)",
+                "unit": "",
+                "default": "false"
+            }
+        },
+        "required": [
+            "qt",
+            "fs",
+            "depth"
+        ],
+        "documentation": "<br/>The authors develop a correlation between shear wave velocity and CPT properties based on Christchurch-specific general soils. The soils were predominantly sand and silty sand. While the original formula uses the raw cone tip resistance, the authors suggest that the corrected cone resistance can be used without changes to the formula and prediction standard deviation.<br/><br/>Further work on the Banks Peninsula where loess soils are present, showed a significant underprediction of the shear wave velocity. The correlation was adjusted for these soils.<br/><br/>Note that all stresses in the equation are given in kPa.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT McGann et al (2018)'`` as correlation name.<br/><br/>:param qt: Corrected cone tip resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param fs: Sleeve friction (<span class=\"math-inline\">f_s</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= fs <= 10.0<br/>:param depth: Depth below ground surface (<span class=\"math-inline\">z</span>) [<span class=\"math-inline\">m</span>] - Suggested range: 0.0 <= depth <= 100.0<br/>:param coefficient1_general: First calibration coefficient in general equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 18.4)<br/>:param coefficient2_general: Second calibration coefficient in general equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.144)<br/>:param coefficient3_general: Third calibration coefficient in general equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.083)<br/>:param coefficient4_general: Fourth calibration coefficient in general equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.278)<br/>:param coefficient1_loess: First calibration coefficient in loess equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 103.6)<br/>:param coefficient2_loess: Second calibration coefficient in loess equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.0074)<br/>:param coefficient3_loess: Third calibration coefficient in loess equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.13)<br/>:param coefficient4_loess: Fourth calibration coefficient in loess equation (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.253)<br/>:param loess: Boolean determining whether the loess equation needs to be used (optional, default= False)<br/><br/><div class=\"math-block\"><br/>    \\text{Christchurch general soils}<br/><br/>    V_s = 18.4 \\cdot q_t^{0.144} \\cdot f_s^{0.083} \\cdot z^{0.278}<br/><br/>    \\sigma_{\\ln(V_s)} = \\begin{cases}<br/>    0.162 \\ \\text{for } z \\leq 5m,\\\\<br/>    0.216 - 0.0108 \\cdot z \\ \\text{for } 5m < z < 10m \\\\<br/>    0.108 \\ \\text{for } z \\geq 10m<br/>    \\end{cases}<br/><br/>    \\text{Loess soils}<br/><br/>    V_s = 103.6 \\cdot q_t^{0.0074} \\cdot f_s^{0.130} \\cdot z^{0.253}<br/><br/>    \\sigma_{\\ln(V_s)} = 0.2367<br/><br/>    \\epsilon = \\frac{\\ln (V_{sM}) - \\ln (V_{sP})}{\\sigma_{\\ln(V_{sP})}}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'sigma_lnVs [-]': Standard deviation on natural logarithm of Vs (<span class=\"math-inline\">\\sigma_{\\ln (V_s)}</span>)  [<span class=\"math-inline\">-</span>]<br/><br/><img src=\"/assets/groundhog_images/vs_CPT_mcgannetal_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison of measured and calculated values for general correlation<br/><br/><img src=\"/assets/groundhog_images/vs_CPT_mcgannetal_2.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Residuals for loess-specific correlation<br/><br/>Reference - McGann, Christopher R., et al. \"Development of an empirical correlation for predicting shear wave velocity of Christchurch soils from cone penetration test data.\" Soil Dynamics and Earthquake Engineering 75 (2015): 66-75.<br/><br/>McGann, Christopher R., Brendon A. Bradley, and Seokho Jeong. \"Empirical correlation for estimating shear-wave velocity from cone penetration test data for banks Peninsula loess soils in Canterbury, New Zealand.\" Journal of Geotechnical and Geoenvironmental Engineering 144.9 (2018): 04018054.<br/><br/>"
+    },
+    "vs_cpt_tonniandsimonini": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Corrected cone tip resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "ic": {
+                "type": "number",
+                "title": "Ic",
+                "description": "Soil behaviour type index (I_c) [-] - Suggested range: 1.0 <= ic <= 5.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo": {
+                "type": "number",
+                "title": "Sigma Vo",
+                "description": "Total vertical stress (\\sigma_{vo}) [kPa] - Suggested range: 0.0 <= sigma_vo <= 2000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "Multiplier on Ic in Equation 12 (:math:``) [-] (optional, default= 0.8)",
+                "unit": "-",
+                "default": "0.8"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Value after minus sign in Equation 12 (:math:``) [-] (optional, default= 1.17)",
+                "unit": "-",
+                "default": "1.17"
+            }
+        },
+        "required": [
+            "qt",
+            "ic",
+            "sigma_vo",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>The authors propose a correlation between CPT properties and shear wave velocity for the Treporti site near Venice, Italy which consist mostly of silty sediments.<br/><br/>CPT and dilatometer (DMT) tests were conducted as well as seismic CPT and DMT tests at the site of a test embankment. Testing was conducted before and after placement of the embankment.<br/><br/>The authors highlight the importance of using the soil behaviour type index for obtaining a correlation which performs well across the different soil types encountered at the site. The authors finally propose different forms of the general equation proposed by Robertson and Cabal but accounting for stress correction.<br/><br/>The authors observe that stress corrections improve the accuracy of the correlations.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT Tonni and Simonini (2013)'`` as correlation name.<br/><br/>:param qt: Corrected cone tip resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param ic: Soil behaviour type index (<span class=\"math-inline\">I_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ic <= 5.0<br/>:param sigma_vo: Total vertical stress (<span class=\"math-inline\">\\sigma_{vo}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo <= 2000.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param coefficient_1: Multiplier on Ic in Equation 12 (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.8)<br/>:param coefficient_2: Value after minus sign in Equation 12 (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.17)<br/><br/><div class=\"math-block\"><br/>    V_{s1} = 10^{ \\left( 0.80 \\cdot I_c - 1.17 \\right) } \\cdot Q_{tn}<br/><br/>    V_{s1} = V_s \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.25}<br/><br/>    Q_{tn} = \\frac{q_t - \\sigma_{vo}}{P_a}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Qtn [-]': Normalised cone resistance (<span class=\"math-inline\">Q_{tn}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Vs1 [m/s]': Stress-corrected shear wave velocity (<span class=\"math-inline\">V_{s1}</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/><br/><img src=\"/assets/groundhog_images/vs_cpt_tonniandsimonini_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison between predicted and measured shear wave velocity<br/><br/>Reference - Tonni, L., Simonini, P. (2013). Shear wave velocity as function of cone penetration test measurements in sand and silt mixtures. Engineering Geology.<br/><br/>"
+    },
+    "vs_cpt_wrideetal": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier on corrected cone resistance (Y) [-] - Suggested range: 95.6 <= multiplier <= 110.8 (optional, default= 103.2)",
+                "unit": "-",
+                "default": "103.2"
+            },
+            "exponent_qc1": {
+                "type": "number",
+                "title": "Exponent Qc1",
+                "description": "Exponent on stress-corrected cone resistance (:math:``) [-] - Suggested range: 0.23 <= exponent_qc1 <= 0.25 (optional, default= 0.25)",
+                "unit": "-",
+                "default": "0.25"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Calculates shear wave velocity based on normalised cone tip resistance based on test data from the CANLEX project.<br/><br/>The Canadian Liquefaction Experiment (CANLEX) consists of in-situ testing at six sandy sites. The sand was fine sand with median grain size ranging from 0.16 to 0.25mm. The shear wave velocity measurements were recorded predominantely from downhole testing.<br/><br/>A general formula was established relating stress-corrected values of the cone tip resistance and shear wave velocity. The average value of the multiplier Y proposed by Karray et al (2011) was used as a default.<br/><br/>The authors do not present a chart comparing the calculated shear wave velocities to the measured ones, making it impossible to make statements on the accuracy of the correlation.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT Wride et al (2000)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 100.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param multiplier: Multiplier on corrected cone resistance (<span class=\"math-inline\">Y</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 95.6 <= multiplier <= 110.8 (optional, default= 103.2)<br/>:param exponent_qc1: Exponent on stress-corrected cone resistance (:math:``) [<span class=\"math-inline\">-</span>] - Suggested range: 0.23 <= exponent_qc1 <= 0.25 (optional, default= 0.25)<br/><br/><div class=\"math-block\"><br/>    q_{c1} = q_c \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.5}<br/><br/>    V_{s1} = V_s \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.25}<br/><br/>    V_{s1} = Y \\cdot q_{c1}^{0.25}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'qc1 [MPa]': Stress-corrected cone tip resistance (<span class=\"math-inline\">q_{c1}</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'Vs1 [m/s]': Stress-corrected shear wave velocity (<span class=\"math-inline\">V_{s1}</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/><br/>Reference - C.E. (Fear) Wride, P.K. Robertson, K.W. Biggar, R.G. Campanella, B.A. Hofmann, J.M.O. Hughes, A. K\u00fcpper, and D.J. Woeller (2000). Interpretation of in situ test results from the CANLEX sites. Canadian Geotechnical Journal.<br/><br/>"
+    },
+    "vs_cptd50_karrayetal": {
+        "type": "object",
+        "properties": {
+            "qc": {
+                "type": "number",
+                "title": "Qc",
+                "description": "Cone tip resistance (q_c) [MPa] - Suggested range: 0.0 <= qc <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "d50": {
+                "type": "number",
+                "title": "D50",
+                "description": "Median grain size (d_{50}) [mm] - Suggested range: 0.1 <= d50 <= 10.0",
+                "unit": "mm",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "exponent_vs1": {
+                "type": "number",
+                "title": "Exponent Vs1",
+                "description": "Exponent on stresses in Vs1 formula (:math:``) [-] (optional, default= 0.25)",
+                "unit": "-",
+                "default": "0.25"
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier in Equation 15 (:math:``) [-] (optional, default= 125.5)",
+                "unit": "-",
+                "default": "125.5"
+            },
+            "exponent_qc1": {
+                "type": "number",
+                "title": "Exponent Qc1",
+                "description": "Exponent on qc1 in Equation 15 (:math:``) [-] (optional, default= 0.25)",
+                "unit": "-",
+                "default": "0.25"
+            },
+            "exponent_d50": {
+                "type": "number",
+                "title": "Exponent D50",
+                "description": "Exponent on median grain size in Equation 15 (:math:``) [-] (optional, default= 0.115)",
+                "unit": "-",
+                "default": "0.115"
+            }
+        },
+        "required": [
+            "qc",
+            "sigma_vo_eff",
+            "d50"
+        ],
+        "documentation": "<br/>This correlation between Vs and normalised cone tip resistance takes into account the influence of median grain size. The data was obtained from the Peribonka site where vibrocompaction was performed for soil improvement. Tests before and after compaction were performed. The shear wave velocity was derived from surface wave testing. The soil type at the Peribonka site was gravelly coarse sand with an average median grain size of 1.9mm.<br/><br/>The correlation applies to uncemented holocene granular soils.<br/><br/>When used with ``apply_correlation``, use ``'Vs CPT d50 Karray et al (2011)'`` as correlation name.<br/><br/>:param qc: Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 100.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param d50: Median grain size (<span class=\"math-inline\">d_{50}</span>) [<span class=\"math-inline\">mm</span>] - Suggested range: 0.1 <= d50 <= 10.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param exponent_vs1: Exponent on stresses in Vs1 formula (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.25)<br/>:param multiplier: Multiplier in Equation 15 (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 125.5)<br/>:param exponent_qc1: Exponent on qc1 in Equation 15 (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.25)<br/>:param exponent_d50: Exponent on median grain size in Equation 15 (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.115)<br/><br/><div class=\"math-block\"><br/>    q_{c1} = q_c \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.5}<br/><br/>    V_{s1} = V_s \\cdot \\left( \\frac{P_a}{\\sigma_{vo}^{\\prime}} \\right)^{0.25}<br/><br/>    V_{s1} = 125.5 \\cdot \\left( q_{c1} \\right)^{0.25} \\cdot d_{50}^{0.115}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'qc1 [MPa]': Cone tip resistance corrected for stress level (<span class=\"math-inline\">q_{c1}</span>)  [<span class=\"math-inline\">MPa</span>]<br/>    - 'Vs1 [m/s]': Shear wave velocity corrected for stress level (<span class=\"math-inline\">V_{s1}</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/><br/><img src=\"/assets/groundhog_images/vs_cptd50_karrayetal_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Comparison between proposed trend and measured data<br/><br/>Reference - Karray, M., Lefebvre, G., Ethier, Y., Bigras, A. (2011). Influence of particle size on the correlation between shear wave velocity and cone tip resistance. Canadian Geotechnical Journal.<br/><br/>"
+    },
+    "vs_ic_robertsoncabal": {
+        "type": "object",
+        "properties": {
+            "qt": {
+                "type": "number",
+                "title": "Qt",
+                "description": "Total cone resistance (q_t) [MPa] - Suggested range: 0.0 <= qt <= 100.0",
+                "unit": "MPa",
+                "default": null
+            },
+            "ic": {
+                "type": "number",
+                "title": "Ic",
+                "description": "Soil behaviour type index according to Robertson and Wride (I_c) [-] - Suggested range: 1.0 <= ic <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo": {
+                "type": "number",
+                "title": "Sigma Vo",
+                "description": "Total vertical stress (sigma_{vo}) [kPa] - Suggested range: 0.0 <= sigma_vo <= 800.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "gamma": {
+                "type": "number",
+                "title": "Gamma",
+                "description": "Bulk unit weight (\\gamma) [kN/m3] - Suggested range: 12.0 <= gamma <= 22.0",
+                "unit": "kN/m3",
+                "default": "19"
+            },
+            "g": {
+                "type": "number",
+                "title": "G",
+                "description": "Acceleration due to gravity (g) [m/s2] - Suggested range: 9.7 <= g <= 10.2 (optional, default= 9.81)",
+                "unit": "m/s2",
+                "default": "9.81"
+            },
+            "exponent": {
+                "type": "number",
+                "title": "Exponent",
+                "description": "Exponent in equation for shear wave velocity (:math:``) [-] (optional, default= 0.5)",
+                "unit": "-",
+                "default": "0.5"
+            },
+            "calibration_coefficient_1": {
+                "type": "number",
+                "title": "Calibration Coefficient 1",
+                "description": "First calibration coefficient in equation for alpha_s (:math:``) [-] (optional, default= 0.55)",
+                "unit": "-",
+                "default": "0.55"
+            },
+            "calibration_coefficient_2": {
+                "type": "number",
+                "title": "Calibration Coefficient 2",
+                "description": "Second calibration coefficient in equation for alpha_s (:math:``) [-] (optional, default= 1.68)",
+                "unit": "-",
+                "default": "1.68"
+            }
+        },
+        "required": [
+            "qt",
+            "ic",
+            "sigma_vo"
+        ],
+        "documentation": "<br/>Calculates shear wave velocity based on a correlation with total cone resistance and soil behaviour type index. Shear wave velocity is sensitive to age and cementation, where older deposits of the same soil have higher shear wave velocity (i.e. higher stiffness) than younger deposits. The correlation is based on measured shear wave velocity data for uncemented Holocene to Pleistocene age soils.<br/>Since the small-strain shear modulus can be derived from the shear wave velocity and the bulk density of the soil, is it also calculated. The bulk density of the soil can be specified as an optional argument.<br/><br/>Unfortunately, no plots on the background data to the calibrated equation are available.<br/><br/>When used with ``apply_correlation``, use ``'Shear wave velocity Robertson and Cabal (2015)'`` as correlation name.<br/><br/>:param qt: Total cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 100.0<br/>:param ic: Soil behaviour type index according to Robertson and Wride (<span class=\"math-inline\">I_c</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ic <= 4.0<br/>:param sigma_vo: Total vertical stress (<span class=\"math-inline\">sigma_{vo}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo <= 800.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/>:param gamma: Bulk unit weight (<span class=\"math-inline\">\\gamma</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 12.0 <= gamma <= 22.0<br/>:param g: Acceleration due to gravity (<span class=\"math-inline\">g</span>) [<span class=\"math-inline\">m/s2</span>] - Suggested range: 9.7 <= g <= 10.2 (optional, default= 9.81)<br/>:param exponent: Exponent in equation for shear wave velocity (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.5)<br/>:param calibration_coefficient_1: First calibration coefficient in equation for alpha_s (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.55)<br/>:param calibration_coefficient_2: Second calibration coefficient in equation for alpha_s (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 1.68)<br/><br/><div class=\"math-block\"><br/>    V_s = \\left[ \\alpha_{vs} (q_t - \\sigma_{vo}) / P_a \\right]^{0.5}<br/><br/>    \\alpha_{vs} = 10^{0.55 \\cdot I_c + 1.68}<br/><br/>    G_{max} = \\rho \\cdot V_s^2<br/><br/>    \\rho = \\gamma / g<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'alpha_vs [-]': Coefficient to the shear wave velocity calculation, capturing the influence of the soil behaviour (<span class=\"math-inline\">\\alpha_{vs}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [<span class=\"math-inline\">m/s</span>]<br/>    - 'Gmax [kPa]': Small-strain shear modulus (<span class=\"math-inline\">G_{max}</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Robertson, P.K. and Cabal, K.L. (2015). Guide to Cone Penetration Testing for Geotechnical Engineering. 6th edition. Gregg Drilling & Testing, Inc.<br/><br/>"
+    },
+    "vs_stressdependent_stuyts": {
+        "type": "object",
+        "properties": {
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 50.0 <= sigma_vo_eff <= 800.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "ic": {
+                "type": "number",
+                "title": "Ic",
+                "description": "Soil behaviour type index (I_c) [-] - Suggested range: 1.0 <= ic <= 4.0",
+                "unit": "-",
+                "default": null
+            },
+            "a0": {
+                "type": "number",
+                "title": "A0",
+                "description": "Calibration coefficient 0 (a_0) [-] - Suggested range: 1.7 <= a0 <= 2.5 (optional, default= 2.075)",
+                "unit": "-",
+                "default": "2.075"
+            },
+            "a1": {
+                "type": "number",
+                "title": "A1",
+                "description": "Calibration coefficient 1 (a_1) [-] - Suggested range: -0.5 <= a1 <= -0.05 (optional, default= -0.213)",
+                "unit": "-",
+                "default": "-0.213"
+            },
+            "a2": {
+                "type": "number",
+                "title": "A2",
+                "description": "Calibration coefficient 2 (a_2) [-] - Suggested range: 0.5 <= a2 <= 1.0 (optional, default= 0.77)",
+                "unit": "-",
+                "default": "0.77"
+            },
+            "a3": {
+                "type": "number",
+                "title": "A3",
+                "description": "Calibration coefficient 3 (a_3) [-] - Suggested range: -0.5 <= a3 <= -0.1 (optional, default= -0.25)",
+                "unit": "-",
+                "default": "-0.25"
+            }
+        },
+        "required": [
+            "sigma_vo_eff",
+            "ic"
+        ],
+        "documentation": "<br/>    Calculates the shear wave velocity using the calibrated power-law expression proposed by Stuyts et al (2024). The correlation is calibrated on shear wave velocity measurements with the seismic CPT for sedimentary soils from the Southern North Sea. The correlation includes a dependency on the effective stress conditions and on the soil type through Robertson's soil behaviour type index.<br/>The correlations shows neutral bias and a coefficient of variation of 0.188 for the calibration dataset.<br/><br/>    :param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [kPa] - Suggested range: 50.0 <= sigma_vo_eff <= 800.0<br/>    :param ic: Soil behaviour type index (<span class=\"math-inline\">I_c</span>) [-] - Suggested range: 1.0 <= ic <= 4.0<br/>    :param a0: Calibration coefficient 0 (<span class=\"math-inline\">a_0</span>) [-] - Suggested range: 1.7 <= a0 <= 2.5 (optional, default= 2.075)<br/>    :param a1: Calibration coefficient 1 (<span class=\"math-inline\">a_1</span>) [-] - Suggested range: -0.5 <= a1 <= -0.05 (optional, default= -0.213)<br/>    :param a2: Calibration coefficient 2 (<span class=\"math-inline\">a_2</span>) [-] - Suggested range: 0.5 <= a2 <= 1.0 (optional, default= 0.77)<br/>    :param a3: Calibration coefficient 3 (<span class=\"math-inline\">a_3</span>) [-] - Suggested range: -0.5 <= a3 <= -0.1 (optional, default= -0.25)<br/><br/>    <div class=\"math-block\"><br/>        V_s = {\\alpha} \\left( \\frac{\\sigma_{vo}^{\\prime}}{1 \\text{kPa}} \\right)^{\\beta} = 10^{a_0 + a_1 \\cdot I_c} \\left( \\frac{\\sigma_{vo}^{\\prime}}{1 \\text{kPa}} \\right)^{a_2 + a_3 \\cdot \\log_{10}(\\alpha)}<br/><br/>        V_s = 10^{2.075 - 0.213 \\cdot I_c} \\left( \\frac{\\sigma_{vo}^{\\prime}}{1 \\text{kPa}} \\right)^{0.77 - 0.25 \\cdot \\log_{10}(\\alpha)}<br/><br/>    :returns: Dictionary with the following keys:<br/><br/>        - 'Vs [m/s]': Shear wave velocity (<span class=\"math-inline\">V_s</span>)  [m/s]<br/><br/>    Reference - Stuyts, B.; Weijtjens, W.; Jurado, C.S.; Devriendt, C.; Kheffache, A. A Critical Review of Cone Penetration Test-Based Correlations for Estimating Small-Strain Shear Modulus in North Sea Soils. Geotechnics 2024, 4, 604-635. https://doi.org/10.3390/geotechnics4020033<br/><br/>"
+    },
+    "InsituTestProcessing": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "number",
+                "title": "Title",
+                "description": "",
+                "unit": "",
+                "default": null
+            },
+            "waterunitweight": {
+                "type": "number",
+                "title": "Waterunitweight",
+                "description": "",
+                "unit": "",
+                "default": "10.25"
+            }
+        },
+        "required": [
+            "title"
+        ],
+        "documentation": "<br/>Abstract base class for the processing of in-situ tests.<br/>Encodes shared functionality between different types of in-situ tests<br/>"
+    },
+    "PCPTProcessing": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "number",
+                "title": "Title",
+                "description": "",
+                "unit": "",
+                "default": null
+            },
+            "waterunitweight": {
+                "type": "number",
+                "title": "Waterunitweight",
+                "description": "",
+                "unit": "",
+                "default": "10.25"
+            }
+        },
+        "required": [
+            "title"
+        ],
+        "documentation": "<br/>The PCPTProcessing class implements methods for reading, processing and presentation of PCPT data.<br/>Common correlations are also encoded.<br/>"
+    },
+    "plot_combined_longitudinal_profile": {
+        "type": "object",
+        "properties": {
+            "cpts": {
+                "type": "array",
+                "title": "Cpts",
+                "description": "List with PCPTProcessing objects to be plotted",
+                "unit": "",
+                "default": "[]"
+            },
+            "profiles": {
+                "type": "array",
+                "title": "Profiles",
+                "description": "List with SoilProfile objects for which a log needs to be plotted",
+                "unit": "",
+                "default": "[]"
+            },
+            "latlon": {
+                "type": "boolean",
+                "title": "Latlon",
+                "description": "Boolean determining whether latitude and longitude are used or easting and northing in m (default=False for easting and northing in m)",
+                "unit": "",
+                "default": "false"
+            },
+            "option": {
+                "type": "string",
+                "title": "Option",
+                "description": "Determines whether CPT names (``option='name'``) or tuples with coordinates (``option='coords'``) are used for the ``start`` and ``end`` arguments",
+                "unit": "",
+                "default": "'name'"
+            },
+            "start": {
+                "type": "string",
+                "title": "Start",
+                "description": "CPT name for the starting point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.",
+                "unit": "",
+                "default": "null"
+            },
+            "end": {
+                "type": "string",
+                "title": "End",
+                "description": "CPT name for the end point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.",
+                "unit": "",
+                "default": "null"
+            },
+            "band": {
+                "type": "number",
+                "title": "Band",
+                "description": "Offset from the line connecting start and end points in which CPT are considered for plotting (default=1000m)",
+                "unit": "",
+                "default": "1000"
+            },
+            "extend_profile": {
+                "type": "boolean",
+                "title": "Extend Profile",
+                "description": "Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)",
+                "unit": "",
+                "default": "false"
+            },
+            "plotmap": {
+                "type": "boolean",
+                "title": "Plotmap",
+                "description": "Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)",
+                "unit": "",
+                "default": "false"
+            },
+            "fillcolordict": {
+                "type": "string",
+                "title": "Fillcolordict",
+                "description": "Dictionary with fill colours (default yellow for 'SAND', brown from 'CLAY' and grey for 'ROCK')",
+                "unit": "",
+                "default": "{\"SAND\": \"yellow\", \"CLAY\": \"brown\", \"SILT\": \"green\", \"ROCK\": \"grey\"}"
+            },
+            "uniformcolor": {
+                "type": "string",
+                "title": "Uniformcolor",
+                "description": "Uniform color to use for all CPT traces (default=None for different color for each trace)",
+                "unit": "",
+                "default": "null"
+            },
+            "opacity": {
+                "type": "number",
+                "title": "Opacity",
+                "description": "Opacity of the layers (default = 1 for non-transparent behaviour)",
+                "unit": "",
+                "default": "1"
+            },
+            "logwidth": {
+                "type": "number",
+                "title": "Logwidth",
+                "description": "Width of the soil logs as an absolute value (default = 1)",
+                "unit": "",
+                "default": "1"
+            },
+            "prop": {
+                "type": "string",
+                "title": "Prop",
+                "description": "Selected property for plotting (default='qc [MPa]')",
+                "unit": "MPa",
+                "default": "'qc [MPa]'"
+            },
+            "distance_unit": {
+                "type": "string",
+                "title": "Distance Unit",
+                "description": "Unit for coordinates and elevation (default='m')",
+                "unit": "",
+                "default": "'m'"
+            },
+            "scale_factor": {
+                "type": "number",
+                "title": "Scale Factor",
+                "description": "Scale factor for the property (default=0.001)",
+                "unit": "",
+                "default": "0.001"
+            },
+            "showfig": {
+                "type": "boolean",
+                "title": "Showfig",
+                "description": "Boolean determining whether the figure is shown (default=True)",
+                "unit": "",
+                "default": "true"
+            },
+            "xaxis_layout": {
+                "type": "string",
+                "title": "Xaxis Layout",
+                "description": "Dictionary with layout for the xaxis (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "yaxis_layout": {
+                "type": "string",
+                "title": "Yaxis Layout",
+                "description": "Dictionary with layout for the xaxis (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "general_layout": {
+                "type": "string",
+                "title": "General Layout",
+                "description": "Dictionary with general layout options (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "legend_layout": {
+                "type": "string",
+                "title": "Legend Layout",
+                "description": "Dictionary with legend layout options (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "show_annotations": {
+                "type": "boolean",
+                "title": "Show Annotations",
+                "description": "Boolean determining whether annotations need to be shown (default=True)",
+                "unit": "",
+                "default": "true"
+            }
+        },
+        "required": [],
+        "documentation": "<br/>Creates a longitudinal profile along selected CPTs and ``SoilProfile`` objects. A line is drawn from the first<br/>to the last location and the plot of the selected parameter (``prop``) vs depth<br/>is projected onto this line.<br/><br/>This function also adds ``SoilProfile`` objects to the plot through mini-logs.<br/><br/>:param cpts: List with PCPTProcessing objects to be plotted<br/>:param latlon: Boolean determining whether latitude and longitude are used or easting and northing in m (default=False for easting and northing in m)<br/>:param profiles: List with SoilProfile objects for which a log needs to be plotted<br/>:param option: Determines whether CPT names (``option='name'``) or tuples with coordinates (``option='coords'``) are used for the ``start`` and ``end`` arguments<br/>:param start: CPT name for the starting point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.<br/>:param end: CPT name for the end point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.<br/>:param band: Offset from the line connecting start and end points in which CPT are considered for plotting (default=1000m)<br/>:param extend_profile: Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)<br/>:param plotmap: Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)<br/>:param fillcolordict: Dictionary with fill colours (default yellow for 'SAND', brown from 'CLAY' and grey for 'ROCK')<br/>:param uniformcolor: Uniform color to use for all CPT traces (default=None for different color for each trace)<br/>:param opacity: Opacity of the layers (default = 1 for non-transparent behaviour)<br/>:param logwidth: Width of the soil logs as an absolute value (default = 1)<br/>:param prop: Selected property for plotting (default='qc [MPa]')<br/>:param distance_unit: Unit for coordinates and elevation (default='m')<br/>:param scale_factor: Scale factor for the property (default=0.001)<br/>:param showfig: Boolean determining whether the figure is shown (default=True)<br/>:param xaxis_layout: Dictionary with layout for the xaxis (default=None)<br/>:param yaxis_layout: Dictionary with layout for the xaxis (default=None)<br/>:param general_layout: Dictionary with general layout options (default=None)<br/>:param legend_layout: Dictionary with legend layout options (default=None)<br/>:param show_annotations: Boolean determining whether annotations need to be shown (default=True)<br/>:return: Plotly figure object<br/>"
+    },
+    "plot_longitudinal_profile": {
+        "type": "object",
+        "properties": {
+            "cpts": {
+                "type": "array",
+                "title": "Cpts",
+                "description": "List with PCPTProcessing objects to be plotted",
+                "unit": "",
+                "default": "[]"
+            },
+            "latlon": {
+                "type": "boolean",
+                "title": "Latlon",
+                "description": "Boolean determining whether latitude and longitude are used or easting and northing in m (default=False for easting and northing in m)",
+                "unit": "",
+                "default": "false"
+            },
+            "option": {
+                "type": "string",
+                "title": "Option",
+                "description": "Determines whether CPT names (``option='name'``) or tuples with coordinates (``option='coords'``) are used for the ``start`` and ``end`` arguments",
+                "unit": "",
+                "default": "'name'"
+            },
+            "start": {
+                "type": "string",
+                "title": "Start",
+                "description": "CPT name for the starting point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.",
+                "unit": "",
+                "default": "null"
+            },
+            "end": {
+                "type": "string",
+                "title": "End",
+                "description": "CPT name for the end point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.",
+                "unit": "",
+                "default": "null"
+            },
+            "band": {
+                "type": "number",
+                "title": "Band",
+                "description": "Offset from the line connecting start and end points in which CPT are considered for plotting (default=1000m)",
+                "unit": "",
+                "default": "1000"
+            },
+            "extend_profile": {
+                "type": "boolean",
+                "title": "Extend Profile",
+                "description": "Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)",
+                "unit": "",
+                "default": "false"
+            },
+            "plotmap": {
+                "type": "boolean",
+                "title": "Plotmap",
+                "description": "Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)",
+                "unit": "",
+                "default": "false"
+            },
+            "uniformcolor": {
+                "type": "string",
+                "title": "Uniformcolor",
+                "description": "Uniform color to use for all CPT traces (default=None for different color for each trace)",
+                "unit": "",
+                "default": "null"
+            },
+            "prop": {
+                "type": "string",
+                "title": "Prop",
+                "description": "Selected property for plotting (default='qc [MPa]')",
+                "unit": "MPa",
+                "default": "'qc [MPa]'"
+            },
+            "distance_unit": {
+                "type": "string",
+                "title": "Distance Unit",
+                "description": "Unit for coordinates and elevation (default='m')",
+                "unit": "",
+                "default": "'m'"
+            },
+            "scale_factor": {
+                "type": "number",
+                "title": "Scale Factor",
+                "description": "Scale factor for the property (default=0.001)",
+                "unit": "",
+                "default": "0.001"
+            },
+            "showfig": {
+                "type": "boolean",
+                "title": "Showfig",
+                "description": "Boolean determining whether the figure is shown (default=True)",
+                "unit": "",
+                "default": "true"
+            },
+            "xaxis_layout": {
+                "type": "string",
+                "title": "Xaxis Layout",
+                "description": "Dictionary with layout for the xaxis (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "yaxis_layout": {
+                "type": "string",
+                "title": "Yaxis Layout",
+                "description": "Dictionary with layout for the xaxis (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "general_layout": {
+                "type": "string",
+                "title": "General Layout",
+                "description": "Dictionary with general layout options (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "legend_layout": {
+                "type": "string",
+                "title": "Legend Layout",
+                "description": "Dictionary with legend layout options (default=None)",
+                "unit": "",
+                "default": "null"
+            },
+            "show_annotations": {
+                "type": "boolean",
+                "title": "Show Annotations",
+                "description": "Boolean determining whether annotations need to be shown (default=True)",
+                "unit": "",
+                "default": "true"
+            },
+            "mapbox_zoom": {
+                "type": "number",
+                "title": "Mapbox Zoom",
+                "description": "Zoom factor for map (if plotted, default=10)",
+                "unit": "",
+                "default": "10"
+            }
+        },
+        "required": [],
+        "documentation": "<br/>Creates a longitudinal profile along selected CPTs. A line is drawn from the first (smallest distance from origin)<br/>to the last location (greatest distance from origin) and the plot of the selected parameter (``prop``) vs depth<br/>is projected onto this line.<br/><br/>:param cpts: List with PCPTProcessing objects to be plotted<br/>:param latlon: Boolean determining whether latitude and longitude are used or easting and northing in m (default=False for easting and northing in m)<br/>:param option: Determines whether CPT names (``option='name'``) or tuples with coordinates (``option='coords'``) are used for the ``start`` and ``end`` arguments<br/>:param start: CPT name for the starting point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.<br/>:param end: CPT name for the end point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in ``cpts``.<br/>:param band: Offset from the line connecting start and end points in which CPT are considered for plotting (default=1000m)<br/>:param extend_profile: Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)<br/>:param plotmap: Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)<br/>:param uniformcolor: Uniform color to use for all CPT traces (default=None for different color for each trace)<br/>:param prop: Selected property for plotting (default='qc [MPa]')<br/>:param distance_unit: Unit for coordinates and elevation (default='m')<br/>:param scale_factor: Scale factor for the property (default=0.001)<br/>:param showfig: Boolean determining whether the figure is shown (default=True)<br/>:param xaxis_layout: Dictionary with layout for the xaxis (default=None)<br/>:param yaxis_layout: Dictionary with layout for the xaxis (default=None)<br/>:param general_layout: Dictionary with general layout options (default=None)<br/>:param legend_layout: Dictionary with legend layout options (default=None)<br/>:param show_annotations: Boolean determining whether annotations need to be shown (default=True)<br/>:param mapbox_zoom: Zoom factor for map (if plotted, default=10)<br/>:return: Plotly figure object<br/>"
+    },
+    "read_ags": {
+        "type": "object",
+        "properties": {
+            "file_path": {
+                "type": "number",
+                "title": "File Path",
+                "description": "Path (absolute or relative to the ags file)",
+                "unit": "",
+                "default": null
+            },
+            "groupname": {
+                "type": "string",
+                "title": "Groupname",
+                "description": "Name of the AGS group exactly as it is written in the AGS file",
+                "unit": "",
+                "default": null
+            },
+            "combine_headers": {
+                "type": "boolean",
+                "title": "Combine Headers",
+                "description": "Boolean determining whether the units are included in the header or not",
+                "unit": "",
+                "default": "true"
+            },
+            "includes_type": {
+                "type": "boolean",
+                "title": "Includes Type",
+                "description": "Boolean determining whether a TYPE is included with the data",
+                "unit": "",
+                "default": "true"
+            }
+        },
+        "required": [
+            "file_path",
+            "groupname"
+        ],
+        "documentation": "<br/>Reads AGS data from a file and extracts the data for a given groupname into a DataFrame.<br/>All data with type \"DP\" is converted to float format<br/><br/>:param file_path: Path (absolute or relative to the ags file)<br/>:param groupname: Name of the AGS group exactly as it is written in the AGS file<br/>:param combine_headers: Boolean determining whether the units are included in the header or not<br/>:param includes_type: Boolean determining whether a TYPE is included with the data<br/>:return: Dataframe with data for the given group<br/>"
+    },
+    "frictionangle_spt_PHT": {
+        "type": "object",
+        "properties": {
+            "N1_60": {
+                "type": "number",
+                "title": "N1 60",
+                "description": "Corrected SPT N value (\\left( N_1 \\right)_{60}) [-] - Suggested range: 0.0 <= N1_60 <= 60.0",
+                "unit": "-",
+                "default": null
+            },
+            "intercept": {
+                "type": "number",
+                "title": "Intercept",
+                "description": "Intercept at N=0 (-) [deg] - Suggested range: 23.0 <= intercept <= 35.0 (optional, default= 27.1)",
+                "unit": "deg",
+                "default": "27.1"
+            },
+            "multiplier": {
+                "type": "number",
+                "title": "Multiplier",
+                "description": "Multiplier on linear term (-) [deg/blow] - Suggested range: 0.1 <= multiplier <= 0.7 (optional, default= 0.3)",
+                "unit": "deg/blow",
+                "default": "0.3"
+            },
+            "multiplier_quadratic": {
+                "type": "number",
+                "title": "Multiplier Quadratic",
+                "description": "Multiplier on the quadratic term (-) [deg/blow^2] - Suggested range: 0.0001 <= multiplier_quadratic <= 0.001 (optional, default= 0.00054)",
+                "unit": "deg/blow^2",
+                "default": "0.00054"
+            }
+        },
+        "required": [
+            "N1_60"
+        ],
+        "documentation": "<br/>Correlation proposed by Peck, Hanson and Thornburn (1974) and mentioned by Wolff (1989)<br/><br/>:param N1_60: Corrected SPT N value (<span class=\"math-inline\">\\left( N_1 \\right)_{60}</span>) [-] - Suggested range: 0.0 <= N1_60 <= 60.0<br/>:param intercept: Intercept at N=0 (<span class=\"math-inline\">-</span>) [deg] - Suggested range: 23.0 <= intercept <= 35.0 (optional, default= 27.1)<br/>:param multiplier: Multiplier on linear term (<span class=\"math-inline\">-</span>) [deg/blow] - Suggested range: 0.1 <= multiplier <= 0.7 (optional, default= 0.3)<br/>:param multiplier_quadratic: Multiplier on the quadratic term (<span class=\"math-inline\">-</span>) [deg/blow^2] - Suggested range: 0.0001 <= multiplier_quadratic <= 0.001 (optional, default= 0.00054)<br/><br/><div class=\"math-block\"><br/>    \\varphi^{\\prime} = 27.1 + 0.3 \\cdot \\left( N_1 \\right)_{60} - 0.00054 \\cdot \\left( N_1 \\right)_{60}^2<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Phi [deg]': Friction angle derived from SPT (<span class=\"math-inline\">\\varphi^{\\prime}</span>)  [deg]<br/><br/>Reference - Peck, Hanson and Thornburn (1974). Foundation Engineering.<br/><br/>"
+    },
+    "frictionangle_spt_kulhawymayne": {
+        "type": "object",
+        "properties": {
+            "N": {
+                "type": "number",
+                "title": "N",
+                "description": "SPT N number (N) [-] - Suggested range: 0.0 <= N <= 60.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "coefficient_1": {
+                "type": "number",
+                "title": "Coefficient 1",
+                "description": "First calibration coefficient (:math:``) [-] (optional, default= 12.2)",
+                "unit": "-",
+                "default": "12.2"
+            },
+            "coefficient_2": {
+                "type": "number",
+                "title": "Coefficient 2",
+                "description": "Second  calibration coefficient (:math:``) [-] (optional, default= 20.3)",
+                "unit": "-",
+                "default": "20.3"
+            },
+            "coefficient_3": {
+                "type": "number",
+                "title": "Coefficient 3",
+                "description": "Third calibration coefficient (:math:``) [-] (optional, default= 0.34)",
+                "unit": "-",
+                "default": "0.34"
+            }
+        },
+        "required": [
+            "N",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Kulhawy and Mayne approximated the chart for friction angle selection from SPT using the formula given below. The friction angle depends on the effective overburden stress and SPT N number.<br/><br/>:param N: SPT N number (<span class=\"math-inline\">N</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= N <= 60.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)<br/>:param coefficient_1: First calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 12.2)<br/>:param coefficient_2: Second  calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 20.3)<br/>:param coefficient_3: Third calibration coefficient (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 0.34)<br/><br/><div class=\"math-block\"><br/>    \\phi = \\tan^{-1} \\left[ \\frac{N}{12.2 +20.3 \\cdot \\left( \\frac{\\sigma_{v0}^{\\prime}}{P_a} \\right)} \\right]^{0.34}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Phi [deg]': Effective internal friction angle of the soil (<span class=\"math-inline\">\\phi</span>)  [<span class=\"math-inline\">deg</span>]<br/><br/>Reference - Kulhawy FH, Mayne PW (1990) Manual on estimating soil properties for foundation design. Electric Power Research Institute, Palo Alto<br/><br/>"
+    },
+    "overburdencorrection_spt_ISO": {
+        "type": "object",
+        "properties": {
+            "N": {
+                "type": "number",
+                "title": "N",
+                "description": "Uncorrected or corrected SPT N number (N or N_{60}) [-] - Suggested range: 0.0 <= N <= 60.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Vertical effective stress (\\sigma_{v0}^{\\prime}) [kPa] - Suggested range: 25.0 <= sigma_vo_eff <= 400.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "granular": {
+                "type": "boolean",
+                "title": "Granular",
+                "description": "Boolean defining whether the soil is granular or not. If the soil is not granular, the correction factor is taken equal to 1",
+                "unit": "",
+                "default": "true"
+            }
+        },
+        "required": [
+            "N",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Corrects the SPT N number or corrected N number (<span class=\"math-inline\">N_{60}</span>) for the effect of overburden pressure in granular soils. The multiplier <span class=\"math-inline\">C_N</span> is calculated and applied to N or <span class=\"math-inline\">N_{60}</span>.<br/>Note that <span class=\"math-inline\">C_N</span> should be limited to 2 and preferably be kept below 1.5. In the function, a lower limit on the vertical effective stress of 25kPa is used in the validation to achieve this.<br/><br/>:param N: Uncorrected or corrected SPT N number (<span class=\"math-inline\">N or N_{60}</span>) [-] - Suggested range: 0.0 <= N <= 60.0<br/>:param sigma_vo_eff: Vertical effective stress (<span class=\"math-inline\">\\sigma_{v0}^{\\prime}</span>) [kPa] - Suggested range: 25.0 <= sigma_vo_eff <= 400.0<br/>:param granular: Boolean defining whether the soil is granular or not. If the soil is not granular, the correction factor is taken equal to 1<br/><div class=\"math-block\"><br/>    C_N = \\sqrt{\\frac{98}{\\sigma_{v0}^{\\prime}}}<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'CN [-]': Multiplier on SPT N number (<span class=\"math-inline\">C_N</span>)  [-]<br/>    - 'N1 [-]': Corrected N number (<span class=\"math-inline\">N_1 or \\left( N_1 \\right)_{60}</span>)  [-]<br/><br/>Reference - BS EN ISO 22476-3<br/><br/>"
+    },
+    "overburdencorrection_spt_liaowhitman": {
+        "type": "object",
+        "properties": {
+            "N": {
+                "type": "number",
+                "title": "N",
+                "description": "Field value of SPT N number (N) or corrected value N_{60} [-] - Suggested range: N >= 0.0",
+                "unit": "-",
+                "default": null
+            },
+            "sigma_vo_eff": {
+                "type": "number",
+                "title": "Sigma Vo Eff",
+                "description": "Effective overburden pressure (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+                "unit": "kPa",
+                "default": null
+            },
+            "granular": {
+                "type": "boolean",
+                "title": "Granular",
+                "description": "Boolean defining whether the soil behaves in a granular or not. If the behaviour is not granular, the correction factor is taken equal to 1.",
+                "unit": "",
+                "default": "true"
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            }
+        },
+        "required": [
+            "N",
+            "sigma_vo_eff"
+        ],
+        "documentation": "<br/>Applies a correction to the SPT N value to account for the effect of effective overburden pressure in granular soils.<br/>The relation given by Liao and Whitman (1986) is one of the most commonly used.<br/>Increasing overburden pressure will lead to less penetration at deeper depths for the same soil type.<br/>By applying the correction, the field value of N is corrected to a standard effective overburden pressure of 100kPa.<br/><br/>The standard penetration number corrected for field condition (<span class=\"math-inline\">N_{60}</span>) can also be used as an input in which case <span class=\"math-inline\">\\left( N_1 \\right)_{60}</span> is obtained.<br/><br/>:param N: Field value of SPT N number (<span class=\"math-inline\">N</span>) or corrected value <span class=\"math-inline\">N_{60}</span> [<span class=\"math-inline\">-</span>] - Suggested range: N >= 0.0<br/>:param sigma_vo_eff: Effective overburden pressure (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0<br/>:param granular: Boolean defining whether the soil behaves in a granular or not. If the behaviour is not granular, the correction factor is taken equal to 1.<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] (optional, default= 100.0)<br/><br/><div class=\"math-block\"><br/>    N_1 = C_N \\cdot N<br/><br/>    C_N = \\left[ \\frac{1}{ \\left( \\frac{\\sigma_{vo}^{\\prime}}{P_a} \\right) } \\right]^{0.5}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'CN [-]': Correction factor (<span class=\"math-inline\">C_N</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'N1 [-]': Value of SPT N number corrected to an effective overburden pressure of 100kPa (<span class=\"math-inline\">N_1</span> or <span class=\"math-inline\">\\left( N_1 \\right)_{60}</span> in case <span class=\"math-inline\">N_{60}</span> is used as input)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Liao SSC, Whitman RV (1986) Overburden correction factors for SPT in sand. J Geotech Eng ASCE 112(3):373\u2013377<br/><br/>"
+    },
+    "relativedensity_spt_kulhawymayne": {
+        "type": "object",
+        "properties": {
+            "N1_60": {
+                "type": "number",
+                "title": "N1 60",
+                "description": "SPT number corrected for overburden stress and energy ((N_1)_{60}) [-] - Suggested range: 0.0 <= N_1_60 <= 100.0",
+                "unit": "-",
+                "default": null
+            },
+            "d_50": {
+                "type": "number",
+                "title": "D 50",
+                "description": "Median grain size (d_{50}) [mm] - Suggested range: 0.002 <= d_50 <= 20.0",
+                "unit": "mm",
+                "default": null
+            },
+            "calibration_factor_1": {
+                "type": "number",
+                "title": "Calibration Factor 1",
+                "description": "First calibration factor (:math:``) [-] (optional, default= 60.0)",
+                "unit": "-",
+                "default": "60.0"
+            },
+            "calibration_factor_2": {
+                "type": "number",
+                "title": "Calibration Factor 2",
+                "description": "Second calibration factor (:math:``) [-] (optional, default= 25.0)",
+                "unit": "-",
+                "default": "25.0"
+            },
+            "time_since_deposition": {
+                "type": "number",
+                "title": "Time Since Deposition",
+                "description": "Time since deposition (t) [years] - Suggested range: time_since_deposition >= 1.0 (optional, default= 1.0)",
+                "unit": "years",
+                "default": "1.0"
+            },
+            "ocr": {
+                "type": "number",
+                "title": "Ocr",
+                "description": "Overconsolidation ratio (OCR) [-] - Suggested range: 1.0 <= ocr <= 50.0 (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "ca_override": {
+                "type": "number",
+                "title": "Ca Override",
+                "description": "Direct specification of factor CA (C_A) [-] - Suggested range: ca_override >= 1.0 (optional, default= np.nan)",
+                "unit": "-",
+                "default": "null"
+            },
+            "cocr_override": {
+                "type": "number",
+                "title": "Cocr Override",
+                "description": "Direct specification of factor COCR (C_{OCR}) [-] - Suggested range: cocr_override >= 1.0 (optional, default= np.nan)",
+                "unit": "-",
+                "default": "null"
+            }
+        },
+        "required": [
+            "N1_60",
+            "d_50"
+        ],
+        "documentation": "<br/>Estimates relative density from SPT test. Although initially proposed based on the results of tests on non-aged, normally consolidated sands, the correlation can account for the effect of ageing and overconsolidation through correction factors. The parameters for these correction factors are not always easy to estimate.<br/><br/>Note that stress and energy corrections need to be applied to the raw SPT data before applying the correlation.<br/><br/>:param N1_60: SPT number corrected for overburden stress and energy (<span class=\"math-inline\">(N_1)_{60}</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= N_1_60 <= 100.0<br/>:param d_50: Median grain size (<span class=\"math-inline\">d_{50}</span>) [<span class=\"math-inline\">mm</span>] - Suggested range: 0.002 <= d_50 <= 20.0<br/>:param calibration_factor_1: First calibration factor (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 60.0)<br/>:param calibration_factor_2: Second calibration factor (:math:``) [<span class=\"math-inline\">-</span>] (optional, default= 25.0)<br/>:param time_since_deposition: Time since deposition (<span class=\"math-inline\">t</span>) [<span class=\"math-inline\">years</span>] - Suggested range: time_since_deposition >= 1.0 (optional, default= 1.0)<br/>:param ocr: Overconsolidation ratio (<span class=\"math-inline\">OCR</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= ocr <= 50.0 (optional, default= 1.0)<br/>:param ca_override: Direct specification of factor CA (<span class=\"math-inline\">C_A</span>) [<span class=\"math-inline\">-</span>] - Suggested range: ca_override >= 1.0 (optional, default= np.nan)<br/>:param cocr_override: Direct specification of factor COCR (<span class=\"math-inline\">C_{OCR}</span>) [<span class=\"math-inline\">-</span>] - Suggested range: cocr_override >= 1.0 (optional, default= np.nan)<br/><br/><div class=\"math-block\"><br/>    \\text{Unaged, normally consolidated sand}<br/><br/>    D_r = \\sqrt{\\frac{(N_1)_{60}}{60 + 25 \\cdot \\log_{10} ( d_{50} )}}<br/><br/>    \\text{With corrections for overconsolidation and ageing}<br/><br/>    D_r = \\sqrt{\\frac{(N_1)_{60}}{\\left( 60 + 25 \\cdot \\log d_{50} \\right) \\cdot C_A \\cdot C_{OCR}}}<br/><br/>    C_A = 1.2 + 0.05 \\cdot \\log_{10} \\left( \\frac{t}{100} \\right)<br/><br/>    C_{OCR} = (OCR)^{0.18}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'Dr [-]': Relative density (unitless) (<span class=\"math-inline\">D_r</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Dr [pct]': Relative density (percent) (<span class=\"math-inline\">D_r</span>)  [<span class=\"math-inline\">pct</span>]<br/>    - 'C_A [-]': Correction factor for ageing (<span class=\"math-inline\">C_A</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'C_OCR [-]': Correction factor for overconsolidation (<span class=\"math-inline\">C_{OCR}</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - Kulhawy FH, Mayne PW (1990) Manual on estimating soil properties for foundation design. Electric Power Research Institute, Palo Alto<br/><br/>"
+    },
+    "relativedensityclass_spt_terzaghipeck": {
+        "type": "object",
+        "properties": {
+            "N": {
+                "type": "number",
+                "title": "N",
+                "description": "Uncorrected SPT N number (N) [-] - Suggested range: 0.0 <= N <= 60.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "N"
+        ],
+        "documentation": "<br/>Defines the relative density class for SPT measurements in cohesionless soils based on the uncorrected N-number<br/><br/>+-----------------+-----------------------------+<br/>| N (uncorrected) | Relative density category   |<br/>+=================+=============================+<br/>|   <= 4          |         Very loose          |<br/>+-----------------+-----------------------------+<br/>|   4 < N <= 10   |         Loose               |<br/>+-----------------+-----------------------------+<br/>|   10 < N <= 30  |         Medium dense        |<br/>+-----------------+-----------------------------+<br/>|   30 < N <= 50  |         Dense               |<br/>+-----------------+-----------------------------+<br/>|   N <= 50       |         Very dense          |<br/>+-----------------+-----------------------------+<br/><br/>:param N: Uncorrected SPT N number (<span class=\"math-inline\">N</span>) [-] - Suggested range: 0.0 <= N <= 60.0<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Dr class': Relative density class (<span class=\"math-inline\">D_r</span>) <br/><br/>Reference - Terzaghi K, Peck RB (1967) Soil mechanics in engineering practice, 2nd edn. Wiley, New York<br/><br/>"
+    },
+    "spt_N60_correction": {
+        "type": "object",
+        "properties": {
+            "N": {
+                "type": "number",
+                "title": "N",
+                "description": "Field value of SPT N number (N) [-] - Suggested range: N >= 0.0",
+                "unit": "-",
+                "default": null
+            },
+            "borehole_diameter": {
+                "type": "number",
+                "title": "Borehole Diameter",
+                "description": "Diameter of the borehole (D) [mm] - Suggested range: 60.0 <= borehole_diameter <= 200.0",
+                "unit": "mm",
+                "default": null
+            },
+            "rod_length": {
+                "type": "number",
+                "title": "Rod Length",
+                "description": "Length of rods connecting hammer with sampler (L) [m] - Suggested range: rod_length >= 0.0",
+                "unit": "m",
+                "default": null
+            },
+            "country": {
+                "type": "number",
+                "title": "Country",
+                "description": "Country where SPT test is executed - Options: ('Japan', 'United States', 'Argentina', 'China', 'Other'). If 'Other' is chosen, an override for \\eta_H should be specified",
+                "unit": "",
+                "default": null
+            },
+            "hammertype": {
+                "type": "string",
+                "title": "Hammertype",
+                "description": "Type of hammer used - Options: ('Donut', 'Safety')",
+                "unit": "",
+                "default": null
+            },
+            "hammerrelease": {
+                "type": "number",
+                "title": "Hammerrelease",
+                "description": "Release mechanism for the hammer - Options: ('Free fall', 'Rope and pulley')",
+                "unit": "",
+                "default": null
+            },
+            "samplertype": {
+                "type": "string",
+                "title": "Samplertype",
+                "description": "Type of sampler used (optional, default= 'Standard sampler') - Options: ('Standard sampler', 'With liner for dense sand and clay', 'With liner for loose sand')",
+                "unit": "",
+                "default": "'Standard sampler'"
+            },
+            "eta_H": {
+                "type": "number",
+                "title": "Eta H",
+                "description": "Correction factor for hammer efficiency (\\eta_H) [pct] - Suggested range: 0.0 <= eta_H <= 100.0 (optional, default= np.nan)",
+                "unit": "pct",
+                "default": "null"
+            },
+            "eta_B": {
+                "type": "number",
+                "title": "Eta B",
+                "description": "Correction factor for borehole diameter (\\eta_B) [-] - Suggested range: 1.0 <= eta_B <= 1.2 (optional, default= np.nan)",
+                "unit": "-",
+                "default": "null"
+            },
+            "eta_S": {
+                "type": "number",
+                "title": "Eta S",
+                "description": "Correction factor for sampler type (\\eta_S) [-] - Suggested range: 0.8 <= eta_S <= 1.0 (optional, default= np.nan)",
+                "unit": "-",
+                "default": "null"
+            },
+            "eta_R": {
+                "type": "number",
+                "title": "Eta R",
+                "description": "Correction factor for rod length (\\eta_R) [-] - Suggested range: 0.75 <= eta_R <= 1.0 (optional, default= np.nan)",
+                "unit": "-",
+                "default": "null"
+            }
+        },
+        "required": [
+            "N",
+            "borehole_diameter",
+            "rod_length",
+            "country",
+            "hammertype",
+            "hammerrelease"
+        ],
+        "documentation": "<br/>The performance of the SPT in a given soil type depends on the efficiency of energy transmission to the soil. It is common practice to correct the field value of SPT N number to an equivalent number of blows at an energy ratio of 60% (ratio of energy delivered to the sampler divided by the input energy). The hammer efficiency (<span class=\"math-inline\">\\eta_H</span>), borehole diameter (<span class=\"math-inline\">\\eta_B</span>), sampler type (<span class=\"math-inline\">\\eta_S</span>) and rod length (<span class=\"math-inline\">\\eta_R</span>) are corrected for.<br/><br/>The recommendations by Seed et al (1985) and Skempton (1986) as presented by Ameratunga et al (2016) are used by default. The user can specify overrides for each correction factor. If overrides are specified, they take precedence.<br/><br/>+---------------+-------------+-----------------+----------------------+<br/>|    Country    | Hammer type |  Hammer release | <span class=\"math-inline\">\\eta_H</span> [pct] |<br/>+===============+=============+=================+======================+<br/>|     Japan     |    Donut    |    Free fall    |          78          |<br/>|               +-------------+-----------------+----------------------+<br/>|               |    Donut    | Rope and pulley |          67          |<br/>+---------------+-------------+-----------------+----------------------+<br/>| United States |    Safety   | Rope and pulley |          60          |<br/>|               +-------------+-----------------+----------------------+<br/>|               |    Donut    | Rope and pulley |          45          |<br/>+---------------+-------------+-----------------+----------------------+<br/>|   Argentina   |    Donut    | Rope and pulley |          45          |<br/>+---------------+-------------+-----------------+----------------------+<br/>|     China     |    Donut    |    Free fall    |          60          |<br/>|               +-------------+-----------------+----------------------+<br/>|               |    Donut    | Rope and pulley |          50          |<br/>+---------------+-------------+-----------------+----------------------+<br/><br/><br/>+---------------+---------------------+<br/>| Diameter [mm] | <span class=\"math-inline\">\\eta_B</span> [-]  |<br/>+===============+=====================+<br/>|     60-120    |          1          |<br/>+---------------+---------------------+<br/>|      150      |         1.05        |<br/>+---------------+---------------------+<br/>|      200      |         1.15        |<br/>+---------------+---------------------+<br/><br/><br/>+------------------------------------+---------------------+<br/>|            Sampler type            | <span class=\"math-inline\">\\eta_S</span> [-]  |<br/>+====================================+=====================+<br/>|          Standard sampler          |         1.0         |<br/>+------------------------------------+---------------------+<br/>| With liner for dense sand and clay |         0.8         |<br/>+------------------------------------+---------------------+<br/>|      With liner for loose sand     |         0.9         |<br/>+------------------------------------+---------------------+<br/><br/><br/>+----------------+---------------------+<br/>| Rod length [m] | <span class=\"math-inline\">\\eta_R</span> [-]  |<br/>+================+=====================+<br/>|       >10      |         1.0         |<br/>+----------------+---------------------+<br/>|      6-10      |         0.95        |<br/>+----------------+---------------------+<br/>|       4-6      |         0.85        |<br/>+----------------+---------------------+<br/>|       0-4      |         0.75        |<br/>+----------------+---------------------+<br/><br/><br/>:param N: Field value of SPT N number (<span class=\"math-inline\">N</span>) [<span class=\"math-inline\">-</span>] - Suggested range: N >= 0.0<br/>:param borehole_diameter: Diameter of the borehole (<span class=\"math-inline\">D</span>) [<span class=\"math-inline\">mm</span>] - Suggested range: 60.0 <= borehole_diameter <= 200.0<br/>:param rod_length: Length of rods connecting hammer with sampler (<span class=\"math-inline\">L</span>) [<span class=\"math-inline\">m</span>] - Suggested range: rod_length >= 0.0<br/>:param country: Country where SPT test is executed - Options: ('Japan', 'United States', 'Argentina', 'China', 'Other'). If 'Other' is chosen, an override for <span class=\"math-inline\">\\eta_H</span> should be specified<br/>:param hammertype: Type of hammer used - Options: ('Donut', 'Safety')<br/>:param hammerrelease: Release mechanism for the hammer - Options: ('Free fall', 'Rope and pulley')<br/>:param samplertype: Type of sampler used (optional, default= 'Standard sampler') - Options: ('Standard sampler', 'With liner for dense sand and clay', 'With liner for loose sand')<br/>:param eta_H: Correction factor for hammer efficiency (<span class=\"math-inline\">\\eta_H</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 0.0 <= eta_H <= 100.0 (optional, default= np.nan)<br/>:param eta_B: Correction factor for borehole diameter (<span class=\"math-inline\">\\eta_B</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= eta_B <= 1.2 (optional, default= np.nan)<br/>:param eta_S: Correction factor for sampler type (<span class=\"math-inline\">\\eta_S</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.8 <= eta_S <= 1.0 (optional, default= np.nan)<br/>:param eta_R: Correction factor for rod length (<span class=\"math-inline\">\\eta_R</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.75 <= eta_R <= 1.0 (optional, default= np.nan)<br/><br/><div class=\"math-block\"><br/>    N_{60} = \\frac{N \\cdot \\eta_H \\cdot \\eta_B \\cdot \\eta_S \\cdot \\eta_R}{60}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'N60 [-]': SPT N number corrected to 60pct efficiency (<span class=\"math-inline\">N_{60}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'eta_H [%]': Correction factor for hammer efficiency (<span class=\"math-inline\">\\eta_H</span>)  [<span class=\"math-inline\">pct</span>]<br/>    - 'eta_H [-]': : Correction factor for hammer efficiency (<span class=\"math-inline\">\\eta_H</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'eta_B [-]': Correction factor for borehole diameter (<span class=\"math-inline\">\\eta_B</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'eta_S [-]': Correction factor for sampler type (<span class=\"math-inline\">\\eta_S</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'eta_R [-]': Correction factor for rod length (<span class=\"math-inline\">\\eta_R</span>)  [<span class=\"math-inline\">-</span>]<br/><br/>Reference - J. Ameratunga et al., Correlations of Soil and Rock Properties in Geotechnical Engineering, Developments in Geotechnical Engineering, DOI 10.1007/978-81-322-2629-1_4<br/><br/>"
+    },
+    "undrainedshearstrength_spt_salgado": {
+        "type": "object",
+        "properties": {
+            "pi": {
+                "type": "number",
+                "title": "Pi",
+                "description": "Plasticity index (difference between liquid and plastic limit) (PI) [pct] - Suggested range: 15.0 <= plasticity_index <= 60.0",
+                "unit": "pct",
+                "default": null
+            },
+            "N_60": {
+                "type": "number",
+                "title": "N 60",
+                "description": "SPT number corrected to 60% energy ratio (N_{60}) [-] - Suggested range: 0.0 <= N_60 <= 100.0",
+                "unit": "-",
+                "default": null
+            },
+            "atmospheric_pressure": {
+                "type": "number",
+                "title": "Atmospheric Pressure",
+                "description": "Atmospheric pressure (P_a) [kPa] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)",
+                "unit": "kPa",
+                "default": "100.0"
+            },
+            "alpha_prime_override": {
+                "type": "number",
+                "title": "Alpha Prime Override",
+                "description": "Override for direct specification of the alpha prime factor (\\alpha^{\\prime}) [-] - Suggested range: alpha_prime_override >= 0.0 (optional, default= np.nan)",
+                "unit": "-",
+                "default": "null"
+            }
+        },
+        "required": [
+            "pi",
+            "N_60"
+        ],
+        "documentation": "<br/>Calculates undrained shear strength based on plasticity index and SPT number (corrected to 60% energy ratio).<br/><br/><br/>+--------+-------------------------------+<br/>| PI [%] | <span class=\"math-inline\">\\alpha^{\\prime}</span> [-]   |<br/>+========+===============================+<br/>|   15   |             0.068             |<br/>+--------+-------------------------------+<br/>|   20   |             0.055             |<br/>+--------+-------------------------------+<br/>|   25   |             0.048             |<br/>+--------+-------------------------------+<br/>|   30   |             0.045             |<br/>+--------+-------------------------------+<br/>|   40   |             0.044             |<br/>+--------+-------------------------------+<br/>|   60   |             0.043             |<br/>+--------+-------------------------------+<br/><br/><br/>:param pi: Plasticity index (difference between liquid and plastic limit) (<span class=\"math-inline\">PI</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 15.0 <= plasticity_index <= 60.0<br/>:param N_60: SPT number corrected to 60% energy ratio (<span class=\"math-inline\">N_{60}</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= N_60 <= 100.0<br/>:param atmospheric_pressure: Atmospheric pressure (<span class=\"math-inline\">P_a</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 90.0 <= atmospheric_pressure <= 110.0 (optional, default= 100.0)<br/>:param alpha_prime_override: Override for direct specification of the alpha prime factor (<span class=\"math-inline\">\\alpha^{\\prime}</span>) [<span class=\"math-inline\">-</span>] - Suggested range: alpha_prime_override >= 0.0 (optional, default= np.nan)<br/><br/><div class=\"math-block\"><br/>    \\frac{S_u}{P_a} = \\alpha^{\\prime} \\cdot N_{60}<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'alpha_prime [-]': Factor based on plasticity index (<span class=\"math-inline\">\\alpha^{\\prime}</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'Su [kPa]': Undrained shear strength (<span class=\"math-inline\">S_u</span>)  [<span class=\"math-inline\">kPa</span>]<br/><br/>Reference - Salgado R (2008) The engineering of foundations. McGraw-Hill, New York<br/><br/>"
+    },
+    "undrainedshearstrengthclass_spt_terzaghipeck": {
+        "type": "object",
+        "properties": {
+            "N": {
+                "type": "number",
+                "title": "N",
+                "description": "Uncorrected SPT N number (N) [-] - Suggested range: 0.0 <= N <= 60.0",
+                "unit": "-",
+                "default": null
+            }
+        },
+        "required": [
+            "N"
+        ],
+        "documentation": "<br/>Defines the relative density class for SPT measurements in cohesionless soils based on the uncorrected N-number<br/><br/>+-----------------+-------------+-------------------+<br/>| N (uncorrected) | Consistency | <span class=\"math-inline\">q_u</span> [kPa] |<br/>+=================+=============+===================+<br/>|   <= 2          | Very soft   | < 25              | <br/>+-----------------+-------------+-------------------+<br/>|   2 < N <= 4    | Soft        | 25 - 50           |<br/>+-----------------+-------------+-------------------+<br/>|   4 < N <= 8    | Medium      | 50 - 100          |<br/>+-----------------+-------------+-------------------+<br/>|   8 < N <= 15   | Stiff       | 100 - 200         |<br/>+-----------------+-------------+-------------------+<br/>|   15 < N <= 30  | Very stiff  | 200 - 400         |<br/>+-----------------+-------------+-------------------+<br/>|   N > 30        | Hard        | > 400             |<br/>+-----------------+-------------+-------------------+<br/><br/>:param N: Uncorrected SPT N number (<span class=\"math-inline\">N</span>) [-] - Suggested range: 0.0 <= N <= 60.0<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Consistency class': Consistency class<br/>    - 'qu min [kPa]': Minimum value for ultimate axial stress in a UCS test<br/>    - 'qu max [kPa]': Maximum value for ultimate axial stress in a UCS test<br/><br/>Reference - Terzaghi K, Peck RB (1967) Soil mechanics in engineering practice, 2nd edn. Wiley, New York<br/><br/>"
+    },
+    "youngsmodulus_spt_AASHTO": {
+        "type": "object",
+        "properties": {
+            "N1_60": {
+                "type": "number",
+                "title": "N1 60",
+                "description": "Corrected SPT N number (\\left( N_1 \\right)_{60}) [-] - Suggested range: 0.0 <= N1_60 <= 60.0",
+                "unit": "-",
+                "default": null
+            },
+            "soiltype": {
+                "type": "string",
+                "title": "Soiltype",
+                "description": "Soil type - Options: (\"Silts\", \"Clean sands\", \"Coarse sands\", \"Gravels\")",
+                "unit": "",
+                "default": null
+            },
+            "multiplier_silts": {
+                "type": "number",
+                "title": "Multiplier Silts",
+                "description": "Multiplier on the silty soils (-) [-] (optional, default= 0.4)",
+                "unit": "-",
+                "default": "0.4"
+            },
+            "multiplier_cleansand": {
+                "type": "number",
+                "title": "Multiplier Cleansand",
+                "description": "Multiplier on the clean find sands (-) [-] (optional, default= 0.7)",
+                "unit": "-",
+                "default": "0.7"
+            },
+            "multiplier_coarsesand": {
+                "type": "number",
+                "title": "Multiplier Coarsesand",
+                "description": "Multiplier on the coarse sands (-) [-] (optional, default= 1.0)",
+                "unit": "-",
+                "default": "1.0"
+            },
+            "multiplier_gravel": {
+                "type": "number",
+                "title": "Multiplier Gravel",
+                "description": "Multiplier on the gravels (-) [-] (optional, default= 1.1)",
+                "unit": "-",
+                "default": "1.1"
+            }
+        },
+        "required": [
+            "N1_60",
+            "soiltype"
+        ],
+        "documentation": "<br/>Calculates the Young's modulus based on corrected SPT number for various soil types.<br/><br/>+-----------------------------------------------------+------------------------+---------------------------+<br/>| Soil type                                           | Soil type (short name) | <span class=\"math-inline\">E_s</span> [MPa]         |<br/>+=====================================================+========================+===========================+<br/>| Silts, sandy silts, slightly cohesive mixtures      | Silts                  |  <span class=\"math-inline\">0.4 ( N_1 )_{60}</span> |<br/>+-----------------------------------------------------+------------------------+---------------------------+<br/>| Clean fine to medium sands and slightly silty sands | Clean sands            |  <span class=\"math-inline\">0.7 ( N_1 )_{60}</span> |<br/>+-----------------------------------------------------+------------------------+---------------------------+<br/>| Coarse sands and sands with little gravel           | Coarse sands           |  <span class=\"math-inline\">1.0 ( N_1 )_{60}</span> |<br/>+-----------------------------------------------------+------------------------+---------------------------+<br/>| Sandy gravel and gravels                            | Gravels                |  <span class=\"math-inline\">1.1 ( N_1 )_{60}</span> |<br/>+-----------------------------------------------------+------------------------+---------------------------+<br/><br/>:param N1_60: Corrected SPT N number (<span class=\"math-inline\">\\left( N_1 \\right)_{60}</span>) [-] - Suggested range: 0.0 <= N1_60 <= 60.0<br/>:param soiltype: Soil type - Options: (\"Silts\", \"Clean sands\", \"Coarse sands\", \"Gravels\")<br/>:param multiplier_silts: Multiplier on the silty soils (<span class=\"math-inline\">-</span>) [-] (optional, default= 0.4)<br/>:param multiplier_cleansand: Multiplier on the clean find sands (<span class=\"math-inline\">-</span>) [-] (optional, default= 0.7)<br/>:param multiplier_coarsesand: Multiplier on the coarse sands (<span class=\"math-inline\">-</span>) [-] (optional, default= 1.0)<br/>:param multiplier_gravel: Multiplier on the gravels (<span class=\"math-inline\">-</span>) [-] (optional, default= 1.1)<br/><br/>:returns: Dictionary with the following keys:<br/>    <br/>    - 'Es [MPa]': Young's modulus (<span class=\"math-inline\">E_s</span>)  [MPa]<br/><br/>Reference - AASHTO 1997 - LRFD<br/><br/>"
+    },
+    "SPTProcessing": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "number",
+                "title": "Title",
+                "description": "",
+                "unit": "",
+                "default": null
+            },
+            "waterunitweight": {
+                "type": "number",
+                "title": "Waterunitweight",
+                "description": "",
+                "unit": "",
+                "default": "10"
+            }
+        },
+        "required": [
+            "title"
+        ],
+        "documentation": "<br/>The SPTProcessing class implements methods for reading, processing and presentation of Standard Penetration Test (SPT) data.<br/><br/>`GeoEngineer <https://www.geoengineer.org/education/site-characterization-in-situ-testing-general/standard-penetration-testing-spt/>`_ describes the SPT test as follows:<br/><br/>    Standard Penetration Test (SPT) is a simple and low-cost testing procedure widely used in geotechnical investigation to determine the relative density and angle of shearing resistance of cohesionless soils and also the strength of stiff cohesive soils.<br/><br/>    For this test, a borehole has to be drilled to the desired sampling depth. The split-spoon sampler that is attached to the drill rod is placed at the testing point. A hammer of 63.5 kg (140 lbs) is dropped repeatedly from a height of 76 cm (30 inches) driving the sampler into the ground until reaching a depth of 15 cm (6 inches). The number of the required blows is recorded. This procedure is repeated two more times until a total penetration of 45 cm (18 inches) is achieved. The number of blows required to penetrate the first 15 cm is called \u201cseating drive\u201d and the total number of blows required to penetrate the remaining 30 cm depth is known as the \u201cstandard penetration resistance\u201d, or otherwise, the \u201cN-value\u201d. If the N-value exceeds 50 then the test is discontinued and is called a \u201crefusal\u201d. The interpreted results, with several corrections, are used to estimate the geotechnical engineering properties of the soil.<br/><br/>Check the GeoEngineer website for more useful information and an insightful presentation by Paul W. Mayne on SPT hammer types.<br/><br/>Data for checking and validation was provided by Ajay Sastri of GeoSyntec and Dennis O'Meara of Foundation Alternatives.<br/><br/><img src=\"/assets/groundhog_images/spt_principle.png<br/>\" alt=\"Figure\" />    :figwidth: 700.0<br/>    :width: 650.0<br/>    :align: center<br/><br/>    Working principle of the SPT (Mayne, 2016)<br/><br/>The SPT test is a simple and robust test but it has its drawbacks. For example, measurements are discontinuous, the application of SPT N number in soft clays and silts is not possible, the are energy inefficiency problems, ... The user needs to be aware of these issues at the onset of a SPT processing exercise.<br/>"
+    },
+    "logtimemethod": {
+        "type": "object",
+        "properties": {
+            "times": {
+                "type": "number",
+                "title": "Times",
+                "description": "Array with time values in seconds, increasing from 0s at the start of the test",
+                "unit": "",
+                "default": null
+            },
+            "settlements": {
+                "type": "number",
+                "title": "Settlements",
+                "description": "Array with settlement values, increasing from 0 at the origin. The units are not important as only the time for 90% consolidation is determined.",
+                "unit": "",
+                "default": null
+            },
+            "drainagelength": {
+                "type": "number",
+                "title": "Drainagelength",
+                "description": "Drainage length for the consolidation (H_{dr}) [m] - Suggested range: drainagelength > 0",
+                "unit": "m",
+                "default": null
+            },
+            "initialguess_override": {
+                "type": "number",
+                "title": "Initialguess Override",
+                "description": "Override for the initial guess for \\sqrt{t_{100}}, default=np.nan",
+                "unit": "",
+                "default": "null"
+            },
+            "ignore_warnings": {
+                "type": "boolean",
+                "title": "Ignore Warnings",
+                "description": "",
+                "unit": "",
+                "default": "true"
+            },
+            "showfig": {
+                "type": "boolean",
+                "title": "Showfig",
+                "description": "",
+                "unit": "",
+                "default": "true"
+            }
+        },
+        "required": [
+            "times",
+            "settlements",
+            "drainagelength"
+        ],
+        "documentation": "<br/> Calculates the log-time construction for determining the coefficient of consolidation for an oedometer test<br/> (or any other soil mechanical test involving consolidation).<br/><br/> The following steps need to be performed:<br/><br/>#. Project the straight portions of the primary consolidation and secondary compression to intersect at <span class=\"math-inline\">A</span>. The ordinate of A, <span class=\"math-inline\">d_{100}</span>, is the displacement gage reading for 100% primary consolidation.<br/>#. Correct the initial portion of the curve to make it a parabola. Select a time <span class=\"math-inline\">t_1</span>, point <span class=\"math-inline\">B</span>, near the head of the initial portion of the curve (<span class=\"math-inline\">U < 60%</span>) and then another time <span class=\"math-inline\">t_2</span>, point <span class=\"math-inline\">C</span>, such that <span class=\"math-inline\">t_2</span> = 4 <span class=\"math-inline\">t_1</span>.<br/>#. Calculate the difference in displacement reading, <span class=\"math-inline\">\\Delta d = d_2 - d_1</span>, between <span class=\"math-inline\">t_2</span> and <span class=\"math-inline\">t_1</span>. Plot a point <span class=\"math-inline\">D</span> at a vertical distance <span class=\"math-inline\">\\Delta d</span> from <span class=\"math-inline\">B</span>. The ordinate of point <span class=\"math-inline\">D</span> is the corrected initial displacement gage reading, <span class=\"math-inline\">d_o</span>, at the beginning of primary consolidation.<br/>#. Calculate the ordinate for 50% consolidation as <span class=\"math-inline\">d_{50} = (d_{100} + d_o)/2</span>. Draw a horizontal line through this point to intersect the curve at <span class=\"math-inline\">E</span>. The abscissa of point <span class=\"math-inline\">E</span> is the time for 50% consolidation, <span class=\"math-inline\">t_{50}</span>.<br/>#. You will recall that the time factor for 50% consolidation is 0.197, and from the one-dimensional consolidation equation we obtain:<br/><br/> <div class=\"math-block\"><br/>     c_v = \\frac{0.197 H_{dr}^2}{t_{50}}<br/><br/> Because the construction relies heavily on the laboratory data and the judgement of the user, a semi-automated procedure is followed in which the user first selects<br/> two points on primary consolidation part, then two points on the secondary consolidation part and finally a point B close to the origin of the curve.<br/> Any notebook needs to ensure that matplotlib plots are generated with the ``qt`` backend using the following magic command:<br/><br/> .. code-block:: python<br/><br/>     %matplotlib qt<br/><br/> The following input parameters are expected:<br/><br/> :param times: Array with time values in seconds, increasing from 0s at the start of the test<br/> :param settlements: Array with settlement values, increasing from 0 at the origin. The units are not important as only the time for 90% consolidation is determined.<br/> :param drainagelength: Drainage length for the consolidation (<span class=\"math-inline\">H_{dr}</span>) [m] - Suggested range: drainagelength > 0<br/> :param initialguess_override: Override for the initial guess for <span class=\"math-inline\">\\sqrt{t_{100}}</span>, default=np.nan<br/><br/> <img src=\"/assets/groundhog_images/log_time.png<br/>\" alt=\"Figure\" />     :figwidth: 500.0<br/>     :width: 450.0<br/>     :align: center<br/><br/>     Log-time construction<br/><br/> Reference - Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.<br/> "
+    },
+    "roottimemethod": {
+        "type": "object",
+        "properties": {
+            "times": {
+                "type": "number",
+                "title": "Times",
+                "description": "Array with time values in seconds, increasing from 0s at the start of the test",
+                "unit": "",
+                "default": null
+            },
+            "settlements": {
+                "type": "number",
+                "title": "Settlements",
+                "description": "Array with settlement values, increasing from 0 at the origin. The units are not important as only the time for 90% consolidation is determined.",
+                "unit": "",
+                "default": null
+            },
+            "drainagelength": {
+                "type": "number",
+                "title": "Drainagelength",
+                "description": "Drainage length for the consolidation (H_{dr}) [m] - Suggested range: drainagelength > 0",
+                "unit": "m",
+                "default": null
+            },
+            "initialguess_override": {
+                "type": "number",
+                "title": "Initialguess Override",
+                "description": "Override for the initial guess for \\sqrt{t_{90}}, default=np.nan",
+                "unit": "",
+                "default": "null"
+            },
+            "xrange": {
+                "type": "string",
+                "title": "Xrange",
+                "description": "",
+                "unit": "",
+                "default": "'(0, 100)'"
+            },
+            "showfig": {
+                "type": "boolean",
+                "title": "Showfig",
+                "description": "",
+                "unit": "",
+                "default": "true"
+            }
+        },
+        "required": [
+            "times",
+            "settlements",
+            "drainagelength"
+        ],
+        "documentation": "<br/>Calculates the root-time construction for determining the coefficient of consolidation for an oedometer test<br/>(or any other soil mechanical test involving consolidation).<br/><br/>The following procedure is applied:<br/><br/>#. Plot the displacement gage readings versus square root of times.<br/>#. Draw the best straight line through the initial part of the curve intersecting the ordinate (displacement reading) at <span class=\"math-inline\">O</span> and the abscissa (<span class=\"math-inline\">\\sqrt{\\text{time}}</span>) at  <span class=\"math-inline\">A</span>.<br/>#. Note the time at point <span class=\"math-inline\">A</span>; let us say it is <span class=\"math-inline\">\\sqrt{t_A}</span>.<br/>#. Locate a point <span class=\"math-inline\">B</span>, <span class=\"math-inline\">1.15 \\sqrt{t_A}</span>, on the abscissa.<br/>#. Join <span class=\"math-inline\">OB</span>.<br/>#. The intersection of the line <span class=\"math-inline\">OB</span> with the curve, point <span class=\"math-inline\">C</span>, gives the displacement gage reading and the time for 90% consolidation (<span class=\"math-inline\">t_{90}</span>). You should note that the value read off the abscissa is <span class=\"math-inline\">\\sqrt{t_{90}}</span>. Now when <span class=\"math-inline\">U</span> = 90%,  <span class=\"math-inline\">T_v</span> = 0.848 and from one-dimensional consolidation equation, we obtain:<br/><br/><div class=\"math-block\"><br/>    c_v = \\frac{0.848 H_{dr}^2}{t_{90}}<br/><br/>Because the construction relies heavily on the laboratory data and the judgement of the user, a semi-automated procedure is followed in which the user selects<br/>the origin <span class=\"math-inline\">O</span> and point <span class=\"math-inline\">A</span> in an interactive matplotlib plot. Any notebook needs to ensure that matplotlib plots are generated with the ``qt`` backend using the following magic command:<br/><br/>.. code-block:: python<br/><br/>    %matplotlib qt<br/><br/>The following input parameters are expected:<br/><br/>:param times: Array with time values in seconds, increasing from 0s at the start of the test<br/>:param settlements: Array with settlement values, increasing from 0 at the origin. The units are not important as only the time for 90% consolidation is determined.<br/>:param drainagelength: Drainage length for the consolidation (<span class=\"math-inline\">H_{dr}</span>) [m] - Suggested range: drainagelength > 0<br/>:param initialguess_override: Override for the initial guess for <span class=\"math-inline\">\\sqrt{t_{90}}</span>, default=np.nan<br/><br/><img src=\"/assets/groundhog_images/root_time.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Root-time construction<br/><br/>Reference - Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.<br/>"
+    },
+    "selectpoints": {
+        "type": "object",
+        "properties": {
+            "nopoints": {
+                "type": "number",
+                "title": "Nopoints",
+                "description": "",
+                "unit": "",
+                "default": null
+            },
+            "timeout": {
+                "type": "number",
+                "title": "Timeout",
+                "description": "",
+                "unit": "",
+                "default": "60"
+            }
+        },
+        "required": [
+            "nopoints"
+        ],
+        "documentation": ""
+    },
+    "PSDChart": {
+        "type": "object",
+        "properties": {
+            "plot_title": {
+                "type": "string",
+                "title": "Plot Title",
+                "description": "",
+                "unit": "",
+                "default": "null"
+            },
+            "marginsettings": {
+                "type": "string",
+                "title": "Marginsettings",
+                "description": "",
+                "unit": "",
+                "default": "{\"l\": 0, \"r\": 0, \"b\": 100, \"t\": 100, \"pad\": 0}"
+            },
+            "legendsettings": {
+                "type": "string",
+                "title": "Legendsettings",
+                "description": "",
+                "unit": "",
+                "default": "{\"x\": 0.1, \"y\": 0.9}"
+            }
+        },
+        "required": [],
+        "documentation": "<br/>Class for plotting of grain size distribution data<br/>"
+    },
+    "PlasticityChart": {
+        "type": "object",
+        "properties": {
+            "plot_height": {
+                "type": "number",
+                "title": "Plot Height",
+                "description": "",
+                "unit": "",
+                "default": "500"
+            },
+            "plot_width": {
+                "type": "number",
+                "title": "Plot Width",
+                "description": "",
+                "unit": "",
+                "default": "800"
+            },
+            "plot_title": {
+                "type": "string",
+                "title": "Plot Title",
+                "description": "",
+                "unit": "",
+                "default": "null"
+            }
+        },
+        "required": [],
+        "documentation": "<br/>Class for plasticity chart<br/>"
+    },
+    "undercompaction_cohesionless_ladd": {
+        "type": "object",
+        "properties": {
+            "sample_height": {
+                "type": "number",
+                "title": "Sample Height",
+                "description": "Total height of the sample (H_0) [m] - Suggested range: 0.0 <= sample_height <= 1.0",
+                "unit": "m",
+                "default": null
+            },
+            "no_layers": {
+                "type": "number",
+                "title": "No Layers",
+                "description": "Number of layers for the sample (N) [-] - Suggested range: 1.0 <= no_layers <= 10.0",
+                "unit": "-",
+                "default": null
+            },
+            "undercompaction_deepest": {
+                "type": "number",
+                "title": "Undercompaction Deepest",
+                "description": "Chosen undercompaction degree of the deepest layer (U_1) [pct] - Suggested range: 0.0 <= undercompaction_deepest <= 10.0",
+                "unit": "pct",
+                "default": null
+            },
+            "undercompaction_shallowest": {
+                "type": "number",
+                "title": "Undercompaction Shallowest",
+                "description": "Chosen undercompaction degree of the shallowest layer (U_N) [pct] (default=0pct) - Suggested range: 0.0 <= undercompaction_deepest <= 10.0",
+                "unit": "pct",
+                "default": "0"
+            }
+        },
+        "required": [
+            "sample_height",
+            "no_layers",
+            "undercompaction_deepest"
+        ],
+        "documentation": "<br/>When soil sample have to be reconstituted to a specific relative density,  the sample is generally prepared in several layers of equal mass and tamping or vibration is used to obtain the desired volume in the sample mould.<br/><br/>If each layer is however compacted to the desired relative density, a non-uniform density profile will be obtained as the lower layers will still be compacted to a certain degree by the tamping or vibration on the upper layers.<br/><br/>To address this shortcoming, the undercompaction method is used (Ladd, 1978) which compacts the deeper layers to a lesser degree than the higher layers. The degree of undercompaction of the deepest layer is chosen based on experience (e.g. from density profiling using core loggers) and the undercompaction degree is then chosen to vary linearly from the bottom to the top of the sample.<br/><br/>This function calculates the undercompaction degrees for each layer (using a linear variation) and the height to the top of each layer for the given undercompaction degrees.<br/><br/>:param sample_height: Total height of the sample (<span class=\"math-inline\">H_0</span>) [<span class=\"math-inline\">m</span>] - Suggested range: 0.0 <= sample_height <= 1.0<br/>:param no_layers: Number of layers for the sample (<span class=\"math-inline\">N</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= no_layers <= 10.0<br/>:param undercompaction_deepest: Chosen undercompaction degree of the deepest layer (<span class=\"math-inline\">U_1</span>) [<span class=\"math-inline\">pct</span>] - Suggested range: 0.0 <= undercompaction_deepest <= 10.0<br/>:param undercompaction_shallowest: Chosen undercompaction degree of the shallowest layer (<span class=\"math-inline\">U_N</span>) [<span class=\"math-inline\">pct</span>] (default=0pct) - Suggested range: 0.0 <= undercompaction_deepest <= 10.0<br/><br/><div class=\"math-block\"><br/>    U_i = U_1 - \\left[ \\frac{U_1 - U_N}{N - 1} \\cdot (i - 1) \\right]<br/><br/>    h_i = \\frac{H_0}{N} \\left[ (i - 1) + (1 + U_i) \\right]<br/><br/>:returns: Dictionary with the following keys:<br/><br/>    - 'U [-]': Undercompaction degrees of each layer starting from the deepest layer (<span class=\"math-inline\">U</span>)  [<span class=\"math-inline\">-</span>]<br/>    - 'h [m]': Height to the top of each layer (<span class=\"math-inline\">h</span>)  [<span class=\"math-inline\">m</span>]<br/><br/><img src=\"/assets/groundhog_images/undercompaction_cohesionless_ladd_1.png<br/>\" alt=\"Figure\" />    :figwidth: 500.0<br/>    :width: 450.0<br/>    :align: center<br/><br/>    Density profiles of triaxial silt samples using different undercompaction degrees<br/><br/>Reference - R. Ladd, \"Preparing Test Specimens Using Undercompaction,\" Geotechnical Testing Journal 1, no. 1 (1978): 16-23. https://doi.org/10.1520/GTJ10364J<br/><br/>"
+    }
+};

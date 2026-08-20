@@ -1,0 +1,6 @@
+﻿
+--- to_plotly_json() ---
+Type: <class 'dict'>
+Keys: dict_keys(['dtype', 'bdata'])
+
+--- PlotlyJSONEncoder ---

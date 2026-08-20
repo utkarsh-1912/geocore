@@ -1,0 +1,4 @@
+﻿Running log_plot_wrapper...
+SUCCESS: Plot generated successfully.
+FAILED: Binary data (bdata) found in JSON output!
+Original profile columns: ['Depth from [m]', 'Depth to [m]', 'Stratigraphy', 'UnitWeight [kN_m3]', 'WaterTable [-]']

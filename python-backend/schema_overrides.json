@@ -1,0 +1,33 @@
+{
+  "Circular Footing Stress": {
+    "footing_radius": {
+      "label": "Footing Radius (R) [m]",
+      "description": "Radius of the circular foundation",
+      "unit": "",
+      "placeholder": "",
+      "validationRegex": "",
+      "imageUrl": ""
+    }
+  },
+  "Axial Capacity (AxCap)": {
+    "annulus_area": {
+      "label": "Annulus Area [m2]",
+      "description": "Required for coring conditions",
+      "unit": "",
+      "placeholder": "",
+      "validationRegex": ""
+    },
+    "internal_circumference": {
+      "label": "Internal Circumference [m]",
+      "description": "Required for coring conditions",
+      "unit": "",
+      "placeholder": "",
+      "validationRegex": ""
+    }
+  },
+  "Hardening Soil (Drained Triaxial)": {
+    "_page_docs": {
+      "description": "\n            <h2>Hardening Soil Model - Drained Triaxial</h2>\n            <p>Simulates a drained triaxial test using the Hardening Soil model.</p>\n            \n            <h4>Parameters</h4>\n            <h5>Strength</h5>\n            <ul>\n                <li><b>Friction Angle (phi):</b> Internal friction angle [deg]</li>\n                <li><b>Cohesion (c):</b> Cohesion intercept [kPa]</li>\n                <li><b>Rf:</b> Failure ratio (q_f / q_a), typically 0.9.</li>\n            </ul>\n\n            <h5>Stiffness (at p_ref)</h5>\n            <ul>\n                <li><b>E50_ref:</b> Secant stiffness in standard drained triaxial test [kPa]</li>\n                <li><b>Eur_ref:</b> Unloading-reloading stiffness [kPa]</li>\n                <li><b>Eoed_ref:</b> Tangent stiffness for primary oedometric loading [kPa]</li>\n                <li><b>p_ref:</b> Reference stress for stiffnesss [kPa]</li>\n            </ul>\n\n            <h5>Test Conditions</h5>\n            <ul>\n                <li><b>sigma3:</b> Constant confining pressure [kPa]</li>\n                <li><b>sigma1_0:</b> Initial vertical stress [kPa]</li>\n                <li><b>m:</b> Power for stress-level dependency of stiffness (0.5 - 1.0)</li>\n            </ul>\n        "
+    }
+  }
+}
