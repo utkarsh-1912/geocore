@@ -54,9 +54,17 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Initialize Registry (scans groundhog)
 registry = Registry()
 
+@app.get("/")
+def root():
+    return {"status": "Geotechnical Analysis Engine Running"}
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "version": "1.0.0"}
+
+@app.get("/modules")
+def list_modules():
+    return {k: v.__name__ if hasattr(v, '__name__') else str(v) for k, v in registry.function_map.items()}
 
 from fastapi.staticfiles import StaticFiles
 

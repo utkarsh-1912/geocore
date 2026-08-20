@@ -57,9 +57,11 @@ hiddenimports += collect_submodules('core')
 # ---------------------------------------------------------------------------
 # Data files
 # ---------------------------------------------------------------------------
-datas = [
-    ('assets', 'assets'),
-]
+datas = []
+
+if not os.path.exists('assets'):
+    os.makedirs('assets', exist_ok=True)
+datas.append(('assets', 'assets'))
 
 for json_file in ['module_info_structured.json', 'schema_overrides.json']:
     if os.path.exists(json_file):
