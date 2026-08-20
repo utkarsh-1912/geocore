@@ -7,6 +7,13 @@ plotly
 matplotlib
 pillow
 pyproj
+requests
+httpx
+urllib3
+certifi
+charset-normalizer
+idna
+pyyaml
 groundhog
 python-multipart
 xlrd

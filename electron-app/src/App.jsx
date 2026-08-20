@@ -56,9 +56,10 @@ const MainLayout = () => {
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
+    // Dismiss preloader smoothly after quick 300ms boot
     const timer = setTimeout(() => {
       setAppReady(true);
-    }, 1500); // 1.5s intro
+    }, 300);
     return () => clearTimeout(timer);
   }, []);
 

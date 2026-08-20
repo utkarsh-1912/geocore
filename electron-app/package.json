@@ -51,7 +51,7 @@
           "arch": ["x64"]
         }
       ],
-      "icon": "public/logoIcon.png",
+      "icon": "public/icon.ico",
       "signAndEditExecutable": false
     },
     "nsis": {

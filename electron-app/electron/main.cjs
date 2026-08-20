@@ -1,29 +1,59 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeImage } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
+
+// Set Application User Model ID for Windows Taskbar icon grouping
+if (process.platform === 'win32') {
+  app.setAppUserModelId('com.geocore.app');
+}
 
 let mainWindow;
 let pythonProcess;
 
 function createWindow() {
+  const isWin = process.platform === 'win32';
+  const iconCandidates = isWin
+    ? [
+        path.join(__dirname, '../public/icon.ico'),
+        path.join(__dirname, '../dist/icon.ico'),
+        path.join(__dirname, '../public/logoIcon.ico'),
+        path.join(__dirname, '../public/logoIcon.png'),
+        path.join(__dirname, '../dist/logoIcon.png'),
+      ]
+    : [
+        path.join(__dirname, '../public/logoIcon.png'),
+        path.join(__dirname, '../dist/logoIcon.png'),
+      ];
+
+  const resolvedIconPath = iconCandidates.find(p => fs.existsSync(p)) || path.join(__dirname, '../public/logoIcon.png');
+  const appIcon = nativeImage.createFromPath(resolvedIconPath);
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 968,
     minHeight: 480,
+    show: false,
+    backgroundColor: '#080c14',
+    icon: appIcon,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
     },
-    icon: path.join(__dirname, '../public/logoIcon.png'),
     titleBarStyle: 'hidden', // Custom title bar
     titleBarOverlay: {
-      color: '#1e1e1e',
+      color: '#080c14',
       symbolColor: '#ffffff',
-      height: 48 // Match header height roughly if needed, or default
+      height: 48
     },
+  });
+
+  mainWindow.setIcon(appIcon);
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
   });
 
   const isDev = !app.isPackaged;

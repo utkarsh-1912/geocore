@@ -58,6 +58,10 @@ hiddenimports += collect_submodules('scipy')
 hiddenimports += collect_submodules('matplotlib')
 hiddenimports += collect_submodules('PIL')
 hiddenimports += collect_submodules('pyproj')
+hiddenimports += collect_submodules('requests')
+hiddenimports += collect_submodules('urllib3')
+hiddenimports += collect_submodules('httpx')
+hiddenimports += collect_submodules('certifi')
 
 # ---------------------------------------------------------------------------
 # Data files
