@@ -47,6 +47,11 @@ jobs:
           cd python-backend
           pyinstaller --clean main.spec
 
+      - name: Ad-hoc Sign Python Binary (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          codesign --force --deep --sign - python-backend/dist/main/main || codesign --force --deep --sign - python-backend/dist/main || true
+
       - name: Install Electron Dependencies
         run: |
           cd electron-app
@@ -60,7 +65,7 @@ jobs:
           npm run dist
 
       - name: Upload Release Artifacts
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
