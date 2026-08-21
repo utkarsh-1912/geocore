@@ -2,12 +2,12 @@
 import os
 
 AUTHOR_HEADER_PY = """# Author: Utkarsh Gupta
-# License: GPL v2
+# License: GPL v3
 """
 
 AUTHOR_HEADER_JS = """/**
  * Author: Utkarsh Gupta
- * License: GPL v2
+ * License: GPL v3
  */
 """
 

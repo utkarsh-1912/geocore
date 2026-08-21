@@ -25,6 +25,11 @@ class Registry:
         self.modules = {}
         self.function_map = {}
         self._scan_library()
+        try:
+            from core.geoai.schema_factory import populate_full_coverage
+            populate_full_coverage(self)
+        except Exception as e:
+            pass
 
     def _scan_library(self):
         """Scans the groundhog library for all submodules and functions."""

@@ -1,14 +1,17 @@
-# Author: Utkarsh Gupta
-# License: GPL v2
+import sys
+import os
+
+# Add the current directory to path to ensure modules are found
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Early import of core numeric libraries to prevent circular import in PyInstaller
+import numpy as np
+import scipy
+import pandas as pd
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import os
-import sys
-
-# Add the current directory to path to ensure modules are found
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.registry import Registry
 from core.router import create_dynamic_router

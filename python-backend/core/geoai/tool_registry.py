@@ -61,6 +61,19 @@ class GeoAITool:
         return {"result": res}
 
 
+def _clean_json_schema(obj: Any) -> Any:
+    import math
+    if isinstance(obj, dict):
+        return {k: _clean_json_schema(v) for k, v in obj.items() if not (isinstance(v, float) and (math.isnan(v) or math.isinf(v)))}
+    elif isinstance(obj, list):
+        return [_clean_json_schema(item) for item in obj]
+    elif isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return None
+        return obj
+    return obj
+
+
 class GeoAIToolRegistry:
     """Central whitelisted registry of GeoAI tools."""
     def __init__(self):
@@ -101,8 +114,8 @@ class GeoAIToolRegistry:
                 "name": t.name,
                 "description": t.description,
                 "category": t.category,
-                "input_schema": t.input_model.model_json_schema() if t.input_model else None,
-                "output_schema": t.output_model.model_json_schema() if t.output_model else None
+                "input_schema": _clean_json_schema(t.input_model.model_json_schema()) if t.input_model else None,
+                "output_schema": _clean_json_schema(t.output_model.model_json_schema()) if t.output_model else None
             }
             for t in self._tools.values()
         ]

@@ -4,11 +4,11 @@
   "author": "Utkarsh Gupta",
   "repository": {
     "type": "git",
-    "url": "https://github.com/utkarsh/geocore"
+    "url": "https://github.com/utkarsh-1912/geocore"
   },
   "private": true,
   "version": "1.0.0",
-  "description": "Geotechnical Desktop App powered by Groundhog and Electron",
+  "description": "Geotechnical Desktop App powered by Geocore",
   "type": "module",
   "scripts": {
     "dev": "vite",
