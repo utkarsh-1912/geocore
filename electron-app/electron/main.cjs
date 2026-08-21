@@ -140,31 +140,45 @@ function startPythonBackend() {
   }
 }
 
-app.whenReady().then(() => {
-  const isDev = !app.isPackaged;
-  // In Dev, we run python manually to see logs. In Prod, we run it automatically.
-  if (!isDev) {
-    startPythonBackend();
-  } else {
-    console.log("Dev Mode: Skipping auto-start of Python backend. Run 'python main.py' manually.");
-  }
-  createWindow();
+// Single instance lock to prevent multiple clicks spawning competing instances
+const gotTheLock = app.requestSingleInstanceLock();
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Focus the existing window if user clicks the app icon again
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
     }
   });
-});
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+  app.whenReady().then(() => {
+    const isDev = !app.isPackaged;
+    if (!isDev) {
+      startPythonBackend();
+    } else {
+      console.log("Dev Mode: Skipping auto-start of Python backend. Run 'python main.py' manually.");
+    }
+    createWindow();
 
-app.on('will-quit', () => {
-  if (pythonProcess) {
-    pythonProcess.kill();
-  }
-});
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+  });
+
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  app.on('will-quit', () => {
+    if (pythonProcess) {
+      pythonProcess.kill();
+    }
+  });
+}
