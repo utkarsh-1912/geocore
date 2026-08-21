@@ -142,6 +142,7 @@ class Registry:
 
     def execute_function(self, module_id: str, function_id: str, args: dict):
         from .state import state_manager
+        from core.geoai.validator import validate_and_coerce_inputs, GeoAIValidationError
         import pandas as pd
         import inspect
         import importlib
@@ -150,6 +151,12 @@ class Registry:
         import numpy as np
         import math
         import json
+
+        # Pre-validate and sanitize input arguments
+        try:
+            args, _ = validate_and_coerce_inputs(function_id, args)
+        except GeoAIValidationError as ve:
+            return ve.to_dict()
 
         # 1. Handle Special Cases (Stateful objects like SoilProfile)
         if function_id == 'SoilProfile':

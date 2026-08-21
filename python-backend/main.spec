@@ -42,6 +42,10 @@ hiddenimports = [
     'pandas._libs.tslibs.timedeltas',
     'numpy',
     'numpy.core._multiarray_umath',
+    'numpy.linalg._umath_linalg',
+    'numpy.linalg',
+    'numpy.fft',
+    'numpy.random',
     'openpyxl',
     'xlrd',
     'python_multipart',
@@ -53,6 +57,7 @@ hiddenimports = [
 
 hiddenimports += collect_submodules('groundhog')
 hiddenimports += collect_submodules('core')
+hiddenimports += collect_submodules('numpy')
 hiddenimports += collect_submodules('plotly')
 hiddenimports += collect_submodules('scipy')
 hiddenimports += collect_submodules('matplotlib')
@@ -80,6 +85,7 @@ for json_file in ['module_info_structured.json', 'schema_overrides.json']:
 
 datas += collect_data_files('plotly')
 datas += collect_data_files('jinja2')
+datas += collect_data_files('numpy')
 
 # ---------------------------------------------------------------------------
 # Analysis

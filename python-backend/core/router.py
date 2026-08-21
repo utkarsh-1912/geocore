@@ -24,6 +24,8 @@ def create_dynamic_router():
         result = registry.execute_function(module_id, function_id, args)
         
         if "error" in result:
+             if result.get("status") == "ValidationError":
+                 raise HTTPException(status_code=422, detail=result)
              raise HTTPException(status_code=500, detail=result["error"])
         
         return result
