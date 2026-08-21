@@ -1,12 +1,24 @@
 # Author: Utkarsh Gupta
 # License: GPL v2
 
+import sys
 import inspect
 import pkgutil
 import importlib
 import groundhog
 from pydantic import create_model
 from typing import Any, Dict, List, Optional
+from . import wrappers
+from . import plotting_wrappers
+from . import labtesting_wrappers
+from . import manual_functions
+
+def _safe_reload(mod):
+    if not getattr(sys, 'frozen', False):
+        try:
+            importlib.reload(mod)
+        except Exception:
+            pass
 
 class Registry:
     def __init__(self):
@@ -41,16 +53,11 @@ class Registry:
         
         # Scan manual_functions.py
         try:
-            from core import manual_functions
-            importlib.reload(manual_functions) # Ensure we get the latest version
+            _safe_reload(manual_functions)
             for func_name, obj in inspect.getmembers(manual_functions):
                 if inspect.isfunction(obj) and not func_name.startswith("_"):
-                     # Add to map (will overwrite groundhog if same name, or add if unique)
-                     # If you want manual to be fallback only, check using 'if func_name not in self.function_map:'
-                     # But usually manual overrides are preferred if same name.
-                     # User said "check the function in that if not found in library", so fallback logic:
-                     if func_name not in self.function_map:
-                         self.function_map[func_name] = obj
+                    if func_name not in self.function_map:
+                        self.function_map[func_name] = obj
         except ImportError:
             pass # manual_functions.py might not exist or verify fail
         except Exception as e:
@@ -752,16 +759,12 @@ class Registry:
                 return {"error": f"Consolidation Function Error ({function_id}): {str(e)}"}
 
         if function_id == 'LogPlot':
-            import core.plotting_wrappers as plotting_wrappers
-            import importlib
-            importlib.reload(plotting_wrappers)
+            _safe_reload(plotting_wrappers)
             return plotting_wrappers.log_plot_wrapper(args)
 
         if function_id == 'plot_with_log':
             # Use dedicated wrapper for plotting
-            import core.plotting_wrappers as plotting_wrappers
-            import importlib
-            importlib.reload(plotting_wrappers)
+            _safe_reload(plotting_wrappers)
             return plotting_wrappers.plot_with_log_wrapper(args)
 
         if function_id == 'LogPlotMatplotlib':
@@ -897,128 +900,87 @@ class Registry:
                 return {"error": f"Settlement Calculation Error: {str(e)}"}
 
         if function_id == 'shallow_foundation_capacity_undrained':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.shallow_foundation_capacity_undrained_wrapper(args)
 
         if function_id == 'shallow_foundation_capacity_drained':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.shallow_foundation_capacity_drained_wrapper(args)
 
         if function_id == 'effectivearea_circle_api':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.effectivearea_circle_wrapper(args)
 
         if function_id == 'effectivearea_rectangle_api':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.effectivearea_rectangle_wrapper(args)
         
         if function_id == 'map_depth_properties':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.map_depth_properties_wrapper(args)
 
         if function_id == 'offsets_api':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.offsets_wrapper(args)
 
         if function_id == 'merge_two_dicts':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.merge_two_dicts_wrapper(args)
 
         if function_id == 'reverse_dict':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.reverse_dict_wrapper(args)
-        
 
         if function_id == 'AxCapCalculation':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.axcap_calculation_wrapper(args)
 
         if function_id == 'DeBeerCalculation':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.debeer_calculation_wrapper(args)
 
         if function_id == 'KoppejanCalculation':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.koppejan_calculation_wrapper(args)
 
         if function_id == 'LCPC_Calculation':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.lcpc_calculation_wrapper(args)
 
         if function_id == 'PileSettlementCurves':
-            import importlib
-            from . import wrappers
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return wrappers.pile_settlement_curves_wrapper(args)
 
         # Lateral Response
         if function_id == 'pilegroupeffect_reesevanimpe':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.pilegroupeffect_reesevanimpe_wrapper(args))
 
         if function_id == 'reinforced_circularsection_inertia':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.reinforced_circularsection_inertia_wrapper(args))
 
         # Cavity Expansion
         if function_id == 'expansion_cylinder_tresca':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.expansion_cylinder_tresca_wrapper(args))
 
         if function_id == 'expansion_tresca_thicksphere':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.expansion_tresca_thicksphere_wrapper(args))
 
         if function_id == 'stress_cylinder_elastic_isotropic':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.stress_cylinder_elastic_isotropic_wrapper(args))
 
         # Negative Skin Friction
         if function_id == 'negativeskinfriction_pilegroup_zeevaertdebeer':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.negativeskinfriction_pilegroup_zeevaertdebeer_wrapper(args))
 
         # Pile Testing
         if function_id == 'piletest_chinkondler':
-            import core.wrappers as wrappers
-            import importlib
-            importlib.reload(wrappers)
+            _safe_reload(wrappers)
             return self._sanitize(wrappers.piletest_chinkondler_wrapper(args))
 
         # Generic Handler for Stateless Functions
