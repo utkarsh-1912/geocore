@@ -96,6 +96,7 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[
         'tkinter', 'IPython', 'notebook', 'PyQt5', 'PySide2', 'wx',
+        'torch', 'sympy', 'botocore', 'lxml',
     ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
