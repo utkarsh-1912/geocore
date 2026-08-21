@@ -61,8 +61,8 @@
   <style>
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: rgba(7, 10, 18, 0.5); }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.2); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.4); }
 
     .math-card {
@@ -73,45 +73,70 @@
       margin: 16px 0;
       overflow-x: auto;
     }
+    .light .math-card {
+      background: rgba(241, 245, 249, 0.9);
+      border-color: rgba(203, 213, 225, 0.8);
+      color: #0f172a;
+    }
   </style>
+
+  <script>
+    // Theme Initializer
+    if (localStorage.theme === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+  </script>
 </head>
-<body class="bg-surface-900 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand selection:text-white">
+<body class="bg-slate-50 dark:bg-surface-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 selection:bg-brand selection:text-white">
 
   <!-- TOP HEADER / APP BAR -->
-  <header class="sticky top-0 z-50 h-16 bg-surface-900/90 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 flex items-center justify-between">
+  <header class="sticky top-0 z-50 h-16 bg-white/90 dark:bg-surface-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 px-4 sm:px-6 flex items-center justify-between transition-colors">
     <div class="flex items-center gap-4">
       <!-- Mobile Sidebar Toggle -->
-      <button id="sidebarToggleBtn" class="lg:hidden p-2 rounded-lg bg-surface-800 border border-white/10 text-slate-300 hover:text-white" aria-label="Toggle Menu">
+      <button id="sidebarToggleBtn" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-surface-800 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-brand" aria-label="Toggle Menu">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
 
       <!-- Logo -->
       <a href="../" class="flex items-center gap-2 group">
-        <img src="../public/logo.png" alt="GeoCore Logo" class="h-8 sm:h-9 w-auto max-w-[160px] object-contain transition-transform group-hover:scale-[1.02]" />
+        <img src="../public/logo-2.png" alt="GeoCore Logo" class="h-8 sm:h-9 w-auto max-w-[160px] object-contain transition-transform group-hover:scale-[1.02]" />
       </a>
-      <span class="hidden sm:inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded bg-brand/10 text-brand-light border border-brand/20">Docs v1.0.0</span>
+      <span class="hidden sm:inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded bg-brand/10 text-brand-dark dark:text-brand-light border border-brand/20">Docs v1.0.0</span>
     </div>
 
-    <!-- Center Search Trigger -->
-    <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
-      <button onclick="openSearchModal()" class="w-full flex items-center justify-between px-3.5 py-1.5 rounded-lg bg-surface-800/80 border border-white/10 text-slate-400 text-sm hover:border-brand/40 transition-colors">
+    <!-- Center Search & Theme Toggle Area -->
+    <div class="flex items-center gap-3 flex-1 max-w-lg mx-3 sm:mx-6 justify-end md:justify-center">
+      <!-- Search Input Trigger -->
+      <button onclick="openSearchModal()" class="w-full max-w-sm hidden md:flex items-center justify-between px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800/80 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 text-sm hover:border-brand/40 transition-colors">
         <div class="flex items-center gap-2">
           <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           <span>Search docs, methods, equations...</span>
         </div>
-        <kbd class="text-[11px] font-mono bg-surface-700 px-1.5 py-0.5 rounded text-slate-300 border border-white/10">Ctrl K</kbd>
+        <kbd class="text-[11px] font-mono bg-slate-200 dark:bg-surface-700 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-white/10">Ctrl K</kbd>
+      </button>
+
+      <button onclick="openSearchModal()" class="md:hidden p-2 rounded-lg bg-slate-100 dark:bg-surface-800 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-brand" aria-label="Search">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </button>
+
+      <!-- THEME TOGGLE (DIRECTLY AFTER SEARCH) -->
+      <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-100 dark:bg-surface-800 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-brand dark:hover:text-brand-light transition-all flex items-center justify-center shrink-0" title="Toggle Dark / Light Mode" aria-label="Toggle Theme">
+        <!-- Sun Icon (shown in dark mode) -->
+        <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <!-- Moon Icon (shown in light mode) -->
+        <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
     </div>
 
     <!-- Header Actions -->
     <div class="flex items-center gap-3">
-      <button onclick="openSearchModal()" class="md:hidden p-2 rounded-lg bg-surface-800 border border-white/10 text-slate-300 hover:text-white" aria-label="Search">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      </button>
-
-      <a href="../" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-brand-light bg-surface-800 border border-white/10 px-3 py-1.5 rounded-lg transition-colors">
+      <a href="../" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-brand bg-slate-100 dark:bg-surface-800 border border-slate-200 dark:border-white/10 px-3 py-1.5 rounded-lg transition-colors">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Marketing Home
+        Home
       </a>
 
       <a href="https://github.com/utkarsh-1912/geocore" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-brand to-brand-dark px-3.5 py-1.5 rounded-lg shadow-sm hover:shadow-brand/30 hover:scale-[1.02] transition-all">
@@ -128,43 +153,43 @@
     <div id="mobileBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-40 lg:hidden hidden backdrop-blur-sm"></div>
 
     <!-- LEFT SIDEBAR -->
-    <aside id="docSidebar" class="fixed lg:sticky top-16 z-40 w-72 h-[calc(100vh-4rem)] bg-surface-900 lg:bg-transparent border-r border-white/10 p-5 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-6">
+    <aside id="docSidebar" class="fixed lg:sticky top-16 z-40 w-72 h-[calc(100vh-4rem)] bg-white dark:bg-surface-900 lg:bg-transparent border-r border-slate-200 dark:border-white/10 p-5 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-6">
       
       <!-- Section: Overview -->
       <div>
-        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Overview & Setup</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-mono">Overview & Setup</div>
         <ul class="space-y-1 text-sm font-medium">
-          <li><a href="#overview" onclick="navTo('overview')" class="sidebar-link active block px-3 py-1.5 rounded-lg text-brand-light bg-brand/10 border border-brand/20">Documentation Hub</a></li>
-          <li><a href="#quickstart" onclick="navTo('quickstart')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">Quickstart Guide</a></li>
-          <li><a href="#installation" onclick="navTo('installation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">System Requirements</a></li>
+          <li><a href="#overview" onclick="navTo('overview')" class="sidebar-link active block px-3 py-1.5 rounded-lg text-brand-dark dark:text-brand-light bg-brand/10 border border-brand/20">Documentation Hub</a></li>
+          <li><a href="#quickstart" onclick="navTo('quickstart')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">Quickstart Guide</a></li>
+          <li><a href="#installation" onclick="navTo('installation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">System Requirements</a></li>
         </ul>
       </div>
 
       <!-- Section: Calculation Engines -->
       <div>
-        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Geotechnical Solvers</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-mono">Geotechnical Solvers</div>
         <ul class="space-y-1 text-sm font-medium">
-          <li><a href="#deep-foundations" onclick="navTo('deep-foundations')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🏗️ Deep Pile Capacity</a></li>
-          <li><a href="#shallow-foundations" onclick="navTo('shallow-foundations')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">📐 Shallow Footings & Settlement</a></li>
-          <li><a href="#site-investigation" onclick="navTo('site-investigation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🧪 CPT & SPT Soundings</a></li>
-          <li><a href="#eurocode7" onclick="navTo('eurocode7')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">⚖️ Eurocode 7 (DA1/DA2/DA3)</a></li>
-          <li><a href="#consolidation" onclick="navTo('consolidation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">⏱️ 1D Consolidation Dissipation</a></li>
-          <li><a href="#pipelines-cables" onclick="navTo('pipelines-cables')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🌊 Marine Pipelines & Cables</a></li>
-          <li><a href="#ags-converter" onclick="navTo('ags-converter')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">📁 AGS 4.0 File Converter</a></li>
+          <li><a href="#deep-foundations" onclick="navTo('deep-foundations')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">🏗️ Deep Pile Capacity</a></li>
+          <li><a href="#shallow-foundations" onclick="navTo('shallow-foundations')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">📐 Shallow Footings & Settlement</a></li>
+          <li><a href="#site-investigation" onclick="navTo('site-investigation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">🧪 CPT & SPT Soundings</a></li>
+          <li><a href="#eurocode7" onclick="navTo('eurocode7')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">⚖️ Eurocode 7 (DA1/DA2/DA3)</a></li>
+          <li><a href="#consolidation" onclick="navTo('consolidation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">⏱️ 1D Consolidation Dissipation</a></li>
+          <li><a href="#pipelines-cables" onclick="navTo('pipelines-cables')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">🌊 Marine Pipelines & Cables</a></li>
+          <li><a href="#ags-converter" onclick="navTo('ags-converter')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">📁 AGS 4.0 File Converter</a></li>
         </ul>
       </div>
 
       <!-- Section: Architecture & Packaging -->
       <div>
-        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Architecture & Releases</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-mono">Architecture & Releases</div>
         <ul class="space-y-1 text-sm font-medium">
-          <li><a href="#architecture" onclick="navTo('architecture')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🏛️ System Architecture</a></li>
-          <li><a href="#packaging" onclick="navTo('packaging')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">📦 PyInstaller & Electron Builds</a></li>
-          <li><a href="#deployment" onclick="navTo('deployment')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🚀 Netlify Web Deployment</a></li>
+          <li><a href="#architecture" onclick="navTo('architecture')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">🏛️ System Architecture</a></li>
+          <li><a href="#packaging" onclick="navTo('packaging')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">📦 PyInstaller & Electron Builds</a></li>
+          <li><a href="#deployment" onclick="navTo('deployment')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-surface-800 transition-colors">🚀 Netlify Web Deployment</a></li>
         </ul>
       </div>
 
-      <div class="mt-auto pt-4 border-t border-white/10 text-xs text-slate-400">
+      <div class="mt-auto pt-4 border-t border-slate-200 dark:border-white/10 text-xs text-slate-500 dark:text-slate-400">
         GeoCore Engine • GPL v2 Open Source
       </div>
     </aside>
@@ -175,110 +200,110 @@
       <!-- SECTION 1: OVERVIEW -->
       <article id="overview" class="doc-section mb-16">
         <div class="flex items-center gap-2 mb-3">
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-brand-light bg-brand/10 px-2 py-0.5 rounded border border-brand/20">Documentation Hub</span>
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-brand-dark dark:text-brand-light bg-brand/10 px-2 py-0.5 rounded border border-brand/20">Documentation Hub</span>
         </div>
-        <h1 class="font-space text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
+        <h1 class="font-space text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">
           GeoCore Documentation & Engineering Reference
         </h1>
-        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6">
-          Welcome to the technical reference manual for <strong>GeoCore</strong> — an open-source geotechnical desktop platform combining Python numerical engines with Electron and React.
+        <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed mb-6">
+          Welcome to the technical reference manual for <strong>GeoCore</strong> — an open-source geotechnical desktop platform combining Python numerical engines with Electron and React. No sign-in or login required.
         </p>
 
         <!-- Feature cards in Docs -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
-          <div class="p-5 rounded-xl bg-surface-800/80 border border-white/10 hover:border-brand/40 transition-all">
-            <div class="text-brand-light font-space font-bold text-lg mb-1.5">🚀 Offline-First Engine</div>
-            <p class="text-xs text-slate-400 leading-relaxed">Purely local execution on <code class="text-brand-light font-mono text-[11px]">127.0.0.1:8000</code>. Subsurface project data stays private on your workstation.</p>
+          <div class="p-5 rounded-xl bg-white dark:bg-surface-800/80 border border-slate-200 dark:border-white/10 hover:border-brand/40 shadow-sm transition-all">
+            <div class="text-brand-dark dark:text-brand-light font-space font-bold text-lg mb-1.5">🚀 Offline-First Engine</div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Purely local execution on <code class="text-brand-dark dark:text-brand-light font-mono text-[11px]">127.0.0.1:8000</code>. Subsurface project data stays private on your workstation.</p>
           </div>
-          <div class="p-5 rounded-xl bg-surface-800/80 border border-white/10 hover:border-brand/40 transition-all">
+          <div class="p-5 rounded-xl bg-white dark:bg-surface-800/80 border border-slate-200 dark:border-white/10 hover:border-brand/40 shadow-sm transition-all">
             <div class="text-sky font-space font-bold text-lg mb-1.5">📊 100+ Geotechnical Solvers</div>
-            <p class="text-xs text-slate-400 leading-relaxed">PCPT Robertson SBT, LCPC pile capacity, Vesic footing limits, Schmertmann settlement, and AGS 4.0 data exchange.</p>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">PCPT Robertson SBT, LCPC pile capacity, Vesic footing limits, Schmertmann settlement, and AGS 4.0 data exchange.</p>
           </div>
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 2: QUICKSTART -->
       <article id="quickstart" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           ⏱️ Quickstart Guide
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           Launch GeoCore, load soil stratigraphy, and run a complete Robertson CPT sounding interpretation in less than 5 minutes:
         </p>
 
         <div class="space-y-4 my-6">
-          <div class="p-4 rounded-xl bg-surface-800 border border-white/10">
-            <div class="font-semibold text-brand-light text-sm mb-1">1. Initialize a SoilProfile</div>
-            <p class="text-xs text-slate-300">Navigate to <strong>Site Investigation &rarr; Soil Profile</strong> and paste depth stratigraphy with <code class="font-mono text-[11px] text-brand-light">Depth from [m]</code>, <code class="font-mono text-[11px] text-brand-light">Depth to [m]</code>, and cone resistance <code class="font-mono text-[11px] text-brand-light">qc [MPa]</code>.</p>
+          <div class="p-4 rounded-xl bg-white dark:bg-surface-800 border border-slate-200 dark:border-white/10 shadow-sm">
+            <div class="font-semibold text-brand-dark dark:text-brand-light text-sm mb-1">1. Initialize a SoilProfile</div>
+            <p class="text-xs text-slate-600 dark:text-slate-300">Navigate to <strong>Site Investigation &rarr; Soil Profile</strong> and paste depth stratigraphy with <code class="font-mono text-[11px] text-brand-dark dark:text-brand-light">Depth from [m]</code>, <code class="font-mono text-[11px] text-brand-dark dark:text-brand-light">Depth to [m]</code>, and cone resistance <code class="font-mono text-[11px] text-brand-dark dark:text-brand-light">qc [MPa]</code>.</p>
           </div>
-          <div class="p-4 rounded-xl bg-surface-800 border border-white/10">
-            <div class="font-semibold text-brand-light text-sm mb-1">2. Run PCPT Processing</div>
-            <p class="text-xs text-slate-300">Select the profile, configure groundwater depth ($z_w = 1.5\text{ m}$) and cone factor ($N_{kt} = 14.0$), then execute to generate multi-panel Robertson SBT curves.</p>
+          <div class="p-4 rounded-xl bg-white dark:bg-surface-800 border border-slate-200 dark:border-white/10 shadow-sm">
+            <div class="font-semibold text-brand-dark dark:text-brand-light text-sm mb-1">2. Run PCPT Processing</div>
+            <p class="text-xs text-slate-600 dark:text-slate-300">Select the profile, configure groundwater depth ($z_w = 1.5\text{ m}$) and cone factor ($N_{kt} = 14.0$), then execute to generate multi-panel Robertson SBT curves.</p>
           </div>
-          <div class="p-4 rounded-xl bg-surface-800 border border-white/10">
-            <div class="font-semibold text-brand-light text-sm mb-1">3. Compute Bearing Capacity Envelope</div>
-            <p class="text-xs text-slate-300">Navigate to <strong>Shallow Foundations</strong>, supply footing geometry $B \times L$, strength parameters $\phi'$ and $c'$, and compute the 2D/3D interaction envelope.</p>
+          <div class="p-4 rounded-xl bg-white dark:bg-surface-800 border border-slate-200 dark:border-white/10 shadow-sm">
+            <div class="font-semibold text-brand-dark dark:text-brand-light text-sm mb-1">3. Compute Bearing Capacity Envelope</div>
+            <p class="text-xs text-slate-600 dark:text-slate-300">Navigate to <strong>Shallow Foundations</strong>, supply footing geometry $B \times L$, strength parameters $\phi'$ and $c'$, and compute the 2D/3D interaction envelope.</p>
           </div>
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 3: DEEP FOUNDATIONS -->
       <article id="deep-foundations" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           🏗️ Deep Foundations & Pile Capacity
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           GeoCore implements industry-standard analytical formulations for axial pile resistance:
         </p>
 
-        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">1. LCPC Method (Bustamante & Gianeselli / NF P 94-262)</h3>
-        <p class="text-xs text-slate-300 mb-2">Calculates unit base resistance $q_b$ and shaft friction $q_s$ from CPT cone resistance $q_c$:</p>
+        <h3 class="font-space text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2">1. LCPC Method (Bustamante & Gianeselli / NF P 94-262)</h3>
+        <p class="text-xs text-slate-600 dark:text-slate-300 mb-2">Calculates unit base resistance $q_b$ and shaft friction $q_s$ from CPT cone resistance $q_c$:</p>
         
         <div class="math-card">
           $$R_b = A_b \cdot q_b = A_b \cdot k_b \cdot q_{ce}$$
           $$R_s = \sum_{i=1}^n \pi D \cdot \frac{q_{ci}}{\beta} \cdot \Delta z_i$$
         </div>
 
-        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">2. Koppejan Method (Dutch Standard NEN 6743)</h3>
+        <h3 class="font-space text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2">2. Koppejan Method (Dutch Standard NEN 6743)</h3>
         <div class="math-card">
           $$q_b = \frac{1}{2} \cdot \alpha_p \cdot \beta \cdot s \cdot \left[ \frac{q_{c;I;mean} + q_{c;II;mean}}{2} + q_{c;III;mean} \right]$$
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 4: SHALLOW FOUNDATIONS -->
       <article id="shallow-foundations" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           📐 Shallow Foundations & Settlement
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           Evaluate ultimate bearing capacity and elastic/consolidation settlement for eccentric and inclined loads:
         </p>
 
-        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">Vesic / Eurocode 7 Bearing Capacity Equation</h3>
+        <h3 class="font-space text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2">Vesic / Eurocode 7 Bearing Capacity Equation</h3>
         <div class="math-card">
           $$q_{ult} = c' N_c s_c d_c i_c + q' N_q s_q d_q i_q + \frac{1}{2} \gamma B' N_\gamma s_\gamma d_\gamma i_\gamma$$
         </div>
 
-        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">API RP 2GEO Circular Effective Footing Area</h3>
+        <h3 class="font-space text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2">API RP 2GEO Circular Effective Footing Area</h3>
         <div class="math-card">
           $$A' = 2 \left[ R^2 \arccos\left(\frac{e}{R}\right) - e \sqrt{R^2 - e^2} \right]$$
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 5: SITE INVESTIGATION -->
       <article id="site-investigation" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           🧪 Site Investigation & CPT Processing
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           Automated normalizations according to <strong>Robertson (1990/2009/2016)</strong> and <strong>Lunne et al. (1997)</strong>:
         </p>
 
@@ -290,20 +315,20 @@
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 6: EUROCODE 7 -->
       <article id="eurocode7" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           ⚖️ Eurocode 7 & Standards Verification
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           Automated partial factor sets for Design Approaches <strong>DA1 (Combinations 1 & 2)</strong>, <strong>DA2</strong>, and <strong>DA3</strong>:
         </p>
 
-        <div class="overflow-x-auto my-4 rounded-xl border border-white/10">
+        <div class="overflow-x-auto my-4 rounded-xl border border-slate-200 dark:border-white/10">
           <table class="w-full text-left text-xs">
-            <thead class="bg-surface-800 text-slate-300 font-mono">
+            <thead class="bg-slate-100 dark:bg-surface-800 text-slate-700 dark:text-slate-300 font-mono">
               <tr>
                 <th class="p-3">Set</th>
                 <th class="p-3">$\gamma_G$ (Perm.)</th>
@@ -313,28 +338,28 @@
                 <th class="p-3">$\gamma_{cu}$ ($s_u$)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-white/5 text-slate-400">
-              <tr><td class="p-3 font-bold text-white">A1</td><td class="p-3">1.35</td><td class="p-3">1.50</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">—</td></tr>
-              <tr><td class="p-3 font-bold text-white">A2</td><td class="p-3">1.00</td><td class="p-3">1.30</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">—</td></tr>
-              <tr><td class="p-3 font-bold text-brand-light">M1</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">1.00</td><td class="p-3">1.00</td><td class="p-3">1.00</td></tr>
-              <tr><td class="p-3 font-bold text-brand-light">M2</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">1.25</td><td class="p-3">1.25</td><td class="p-3">1.40</td></tr>
+            <tbody class="divide-y divide-slate-200 dark:divide-white/5 text-slate-600 dark:text-slate-400">
+              <tr><td class="p-3 font-bold text-slate-900 dark:text-white">A1</td><td class="p-3">1.35</td><td class="p-3">1.50</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">—</td></tr>
+              <tr><td class="p-3 font-bold text-slate-900 dark:text-white">A2</td><td class="p-3">1.00</td><td class="p-3">1.30</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">—</td></tr>
+              <tr><td class="p-3 font-bold text-brand-dark dark:text-brand-light">M1</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">1.00</td><td class="p-3">1.00</td><td class="p-3">1.00</td></tr>
+              <tr><td class="p-3 font-bold text-brand-dark dark:text-brand-light">M2</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">1.25</td><td class="p-3">1.25</td><td class="p-3">1.40</td></tr>
             </tbody>
           </table>
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 7: AGS CONVERTER -->
       <article id="ags-converter" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           📁 AGS 4.0 File Converter
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           Parse standard Association of Geotechnical Specialists (AGS 4.0) data files:
         </p>
 
-        <div class="p-4 rounded-xl bg-surface-800 font-mono text-xs text-slate-300 border border-white/10 overflow-x-auto">
+        <div class="p-4 rounded-xl bg-slate-900 dark:bg-surface-800 font-mono text-xs text-slate-200 border border-slate-800 dark:border-white/10 overflow-x-auto">
           <span class="text-slate-500"># Extract AGS group into a DataFrame</span><br>
           <span class="text-purple-400">from</span> core.wrappers <span class="text-purple-400">import</span> AGSConverter<br><br>
           conv = AGSConverter(<span class="text-brand-light">"ground_investigation.ags"</span>)<br>
@@ -344,25 +369,25 @@
         </div>
       </article>
 
-      <hr class="border-white/10 my-12" />
+      <hr class="border-slate-200 dark:border-white/10 my-12" />
 
       <!-- SECTION 8: ARCHITECTURE & DEPLOYMENT -->
       <article id="architecture" class="doc-section mb-16">
-        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
           🏛️ System Architecture & Netlify Deployment
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
           GeoCore utilizes a multi-tier local architecture:
         </p>
 
-        <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-300 mb-6">
+        <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6">
           <li><strong>Frontend:</strong> React 18 + Tailwind CSS + Lucide Icons + Plotly.js inside Electron.</li>
           <li><strong>Backend Kernel:</strong> Local FastAPI server running Python 3.11 with NumPy, SciPy, Groundhog, and Pandas.</li>
           <li><strong>Static Portal:</strong> Pure HTML5, Tailwind CSS, MathJax 3 with zero Python/MkDocs runtime dependencies on Netlify!</li>
         </ul>
 
-        <div class="p-4 rounded-xl bg-brand/10 border border-brand/30 text-xs text-slate-200">
-          <strong>⚡ Netlify Zero-Config Deployment:</strong> Push this repository to GitHub and connect it to Netlify. The <code class="font-mono text-brand-light">website/</code> folder is published statically in 2 seconds with zero build failures!
+        <div class="p-4 rounded-xl bg-brand/10 border border-brand/30 text-xs text-slate-800 dark:text-slate-200">
+          <strong>⚡ Netlify Zero-Config Deployment:</strong> Push this repository to GitHub and connect it to Netlify. The <code class="font-mono text-brand-dark dark:text-brand-light">website/</code> folder is published statically in 2 seconds with zero build failures!
         </div>
       </article>
 
@@ -371,21 +396,34 @@
 
   <!-- SEARCH MODAL (Ctrl + K) -->
   <div id="searchModal" class="fixed inset-0 bg-black/80 z-50 backdrop-blur-md hidden items-start justify-center pt-20 px-4">
-    <div class="bg-surface-800 border border-white/15 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden">
-      <div class="p-4 border-b border-white/10 flex items-center gap-3">
-        <svg class="w-5 h-5 text-brand-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input id="searchInput" type="text" placeholder="Search algorithms, equations, standards..." oninput="handleSearch()" class="w-full bg-transparent text-white placeholder-slate-500 text-sm outline-none font-sans" />
-        <button onclick="closeSearchModal()" class="text-slate-400 hover:text-white text-xs font-mono px-2 py-1 bg-surface-700 rounded">ESC</button>
+    <div class="bg-white dark:bg-surface-800 border border-slate-200 dark:border-white/15 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-200 dark:border-white/10 flex items-center gap-3">
+        <svg class="w-5 h-5 text-brand-dark dark:text-brand-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="searchInput" type="text" placeholder="Search algorithms, equations, standards..." oninput="handleSearch()" class="w-full bg-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm outline-none font-sans" />
+        <button onclick="closeSearchModal()" class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs font-mono px-2 py-1 bg-slate-100 dark:bg-surface-700 rounded">ESC</button>
       </div>
       <div id="searchResults" class="max-h-80 overflow-y-auto p-3 space-y-2 text-xs">
-        <!-- Injected search results -->
-        <div class="p-2 text-slate-400">Type to search geotechnical modules...</div>
+        <div class="p-2 text-slate-500 dark:text-slate-400">Type to search geotechnical modules...</div>
       </div>
     </div>
   </div>
 
   <!-- JAVASCRIPT HANDLERS -->
   <script>
+    // Theme Toggle Functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        localStorage.theme = 'light';
+      } else {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        localStorage.theme = 'dark';
+      }
+    }
+
     // Toggle Mobile Sidebar
     function toggleSidebar() {
       const sb = document.getElementById('docSidebar');
@@ -405,13 +443,13 @@
 
     function navTo(id) {
       document.querySelectorAll('.sidebar-link').forEach(l => {
-        l.classList.remove('active', 'text-brand-light', 'bg-brand/10', 'border', 'border-brand/20');
-        l.classList.add('text-slate-400');
+        l.classList.remove('active', 'text-brand-dark', 'dark:text-brand-light', 'bg-brand/10', 'border', 'border-brand/20');
+        l.classList.add('text-slate-600', 'dark:text-slate-400');
       });
       const activeLink = document.querySelector(`a[href="#${id}"]`);
       if (activeLink) {
-        activeLink.classList.add('active', 'text-brand-light', 'bg-brand/10', 'border', 'border-brand/20');
-        activeLink.classList.remove('text-slate-400');
+        activeLink.classList.add('active', 'text-brand-dark', 'dark:text-brand-light', 'bg-brand/10', 'border', 'border-brand/20');
+        activeLink.classList.remove('text-slate-600', 'dark:text-slate-400');
       }
       if (window.innerWidth < 1024) {
         toggleSidebar();
@@ -444,20 +482,20 @@
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
       const resultsContainer = document.getElementById('searchResults');
       if (!q) {
-        resultsContainer.innerHTML = '<div class="p-2 text-slate-400">Type to search geotechnical modules...</div>';
+        resultsContainer.innerHTML = '<div class="p-2 text-slate-500 dark:text-slate-400">Type to search geotechnical modules...</div>';
         return;
       }
 
       const matches = searchData.filter(d => d.title.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q));
       if (matches.length === 0) {
-        resultsContainer.innerHTML = '<div class="p-2 text-slate-500">No matching documentation topics found.</div>';
+        resultsContainer.innerHTML = '<div class="p-2 text-slate-400">No matching documentation topics found.</div>';
         return;
       }
 
       resultsContainer.innerHTML = matches.map(m => `
-        <a href="#${m.section}" onclick="closeSearchModal(); navTo('${m.section}')" class="block p-3 rounded-lg bg-surface-700/60 hover:bg-brand/10 border border-white/5 hover:border-brand/30 transition-colors">
-          <div class="font-semibold text-white text-xs">${m.title}</div>
-          <div class="text-[11px] text-slate-400 mt-1">${m.desc}</div>
+        <a href="#${m.section}" onclick="closeSearchModal(); navTo('${m.section}')" class="block p-3 rounded-lg bg-slate-100 dark:bg-surface-700/60 hover:bg-brand/10 border border-slate-200 dark:border-white/5 hover:border-brand/30 transition-colors">
+          <div class="font-semibold text-slate-900 dark:text-white text-xs">${m.title}</div>
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">${m.desc}</div>
         </a>
       `).join('');
     }
