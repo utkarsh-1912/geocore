@@ -8,7 +8,6 @@ repo_name: utkarsh-1912/geocore
 
 theme:
   name: material
-  custom_dir: docs/overrides
   logo: assets/logoIcon.png
   favicon: assets/logoIcon.png
   palette:
