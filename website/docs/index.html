@@ -1,1349 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+  <title>GeoCore Documentation Portal — Modern Geotechnical Engineering Reference</title>
+  <meta name="description" content="Comprehensive documentation, mathematical derivations, API schemas, and usage guides for the GeoCore geotechnical application.">
+  <link rel="icon" href="../public/logoIcon.png" type="image/png">
 
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      
-        <meta name="description" content="Official Documentation for GeoCore - Advanced Open-Source Geotechnical Engineering Application.">
-      
-      
-        <meta name="author" content="Utkarsh Gupta">
-      
-      
-        <link rel="canonical" href="https://geocore.app/docs/">
-      
-      
-      
-        <link rel="next" href="getting-started/quickstart/">
-      
-      
-        
-      
-      
-      <link rel="icon" href="assets/logoIcon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
-    
-    
-      
-        <title>GeoCore Documentation Portal</title>
-      
-    
-    
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
-      
-        
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
-      
-      
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#10b981',
+              light: '#34d399',
+              dark: '#059669',
+              dim: 'rgba(16, 185, 129, 0.12)'
+            },
+            surface: {
+              900: '#070a12',
+              800: '#0b1120',
+              700: '#111c30',
+              600: '#1a2942'
+            },
+            sky: {
+              DEFAULT: '#38bdf8',
+              dim: 'rgba(56, 189, 248, 0.12)'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            space: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-    
-    
-      
-    
-    
-      
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
-    
-    
-      <link rel="stylesheet" href="stylesheets/extra.css">
-    
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
-    
-      
+  <!-- MathJax for Crisp LaTeX equations -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-    
-    
-  </head>
-  
-  
-    
-    
-      
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="emerald" data-md-color-accent="sky">
-  
-    
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
-    <div data-md-component="skip">
-      
-        
-        <a href="#geocore-documentation-portal" class="md-skip">
-          Skip to content
-        </a>
-      
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(7, 10, 18, 0.5); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.4); }
+
+    .math-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body class="bg-surface-900 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand selection:text-white">
+
+  <!-- TOP HEADER / APP BAR -->
+  <header class="sticky top-0 z-50 h-16 bg-surface-900/90 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <!-- Mobile Sidebar Toggle -->
+      <button id="sidebarToggleBtn" class="lg:hidden p-2 rounded-lg bg-surface-800 border border-white/10 text-slate-300 hover:text-white" aria-label="Toggle Menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <!-- Logo -->
+      <a href="../" class="flex items-center gap-2 group">
+        <img src="../public/logo.png" alt="GeoCore Logo" class="h-8 sm:h-9 w-auto max-w-[160px] object-contain transition-transform group-hover:scale-[1.02]" />
+      </a>
+      <span class="hidden sm:inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded bg-brand/10 text-brand-light border border-brand/20">Docs v1.0.0</span>
     </div>
-    <div data-md-component="announce">
-      
+
+    <!-- Center Search Trigger -->
+    <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
+      <button onclick="openSearchModal()" class="w-full flex items-center justify-between px-3.5 py-1.5 rounded-lg bg-surface-800/80 border border-white/10 text-slate-400 text-sm hover:border-brand/40 transition-colors">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <span>Search docs, methods, equations...</span>
+        </div>
+        <kbd class="text-[11px] font-mono bg-surface-700 px-1.5 py-0.5 rounded text-slate-300 border border-white/10">Ctrl K</kbd>
+      </button>
     </div>
+
+    <!-- Header Actions -->
+    <div class="flex items-center gap-3">
+      <button onclick="openSearchModal()" class="md:hidden p-2 rounded-lg bg-surface-800 border border-white/10 text-slate-300 hover:text-white" aria-label="Search">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </button>
+
+      <a href="../" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-brand-light bg-surface-800 border border-white/10 px-3 py-1.5 rounded-lg transition-colors">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Marketing Home
+      </a>
+
+      <a href="https://github.com/utkarsh-1912/geocore" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-brand to-brand-dark px-3.5 py-1.5 rounded-lg shadow-sm hover:shadow-brand/30 hover:scale-[1.02] transition-all">
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN DOCUMENTATION WRAPPER -->
+  <div class="flex-1 flex max-w-7xl w-full mx-auto">
     
-    
-      
+    <!-- BACKDROP FOR MOBILE -->
+    <div id="mobileBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-40 lg:hidden hidden backdrop-blur-sm"></div>
 
-  
-
-<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="GeoCore Documentation Portal" class="md-header__button md-logo" aria-label="GeoCore Documentation Portal" data-md-component="logo">
+    <!-- LEFT SIDEBAR -->
+    <aside id="docSidebar" class="fixed lg:sticky top-16 z-40 w-72 h-[calc(100vh-4rem)] bg-surface-900 lg:bg-transparent border-r border-white/10 p-5 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-6">
       
-  <img src="assets/logoIcon.png" alt="logo">
-
-    </a>
-    <label class="md-header__button md-icon" for="__drawer">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-    </label>
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">
-            GeoCore Documentation Portal
-          </span>
-        </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
-            
-              Overview
-            
-          </span>
-        </div>
+      <!-- Section: Overview -->
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Overview & Setup</div>
+        <ul class="space-y-1 text-sm font-medium">
+          <li><a href="#overview" onclick="navTo('overview')" class="sidebar-link active block px-3 py-1.5 rounded-lg text-brand-light bg-brand/10 border border-brand/20">Documentation Hub</a></li>
+          <li><a href="#quickstart" onclick="navTo('quickstart')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">Quickstart Guide</a></li>
+          <li><a href="#installation" onclick="navTo('installation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">System Requirements</a></li>
+        </ul>
       </div>
-    </div>
-    
-      
-        <form class="md-header__option" data-md-component="palette">
-  
-    
-    
-    
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="emerald" data-md-color-accent="sky"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
-    
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
-      </label>
-    
-  
-    
-    
-    
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="emerald" data-md-color-accent="sky"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
-    
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
-      </label>
-    
-  
-</form>
-      
-    
-    
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
-    
-    
-    
-      
-      
-        <label class="md-header__button md-icon" for="__search">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
-          </a>
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
+
+      <!-- Section: Calculation Engines -->
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Geotechnical Solvers</div>
+        <ul class="space-y-1 text-sm font-medium">
+          <li><a href="#deep-foundations" onclick="navTo('deep-foundations')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🏗️ Deep Pile Capacity</a></li>
+          <li><a href="#shallow-foundations" onclick="navTo('shallow-foundations')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">📐 Shallow Footings & Settlement</a></li>
+          <li><a href="#site-investigation" onclick="navTo('site-investigation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🧪 CPT & SPT Soundings</a></li>
+          <li><a href="#eurocode7" onclick="navTo('eurocode7')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">⚖️ Eurocode 7 (DA1/DA2/DA3)</a></li>
+          <li><a href="#consolidation" onclick="navTo('consolidation')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">⏱️ 1D Consolidation Dissipation</a></li>
+          <li><a href="#pipelines-cables" onclick="navTo('pipelines-cables')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🌊 Marine Pipelines & Cables</a></li>
+          <li><a href="#ags-converter" onclick="navTo('ags-converter')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">📁 AGS 4.0 File Converter</a></li>
+        </ul>
+      </div>
+
+      <!-- Section: Architecture & Packaging -->
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Architecture & Releases</div>
+        <ul class="space-y-1 text-sm font-medium">
+          <li><a href="#architecture" onclick="navTo('architecture')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🏛️ System Architecture</a></li>
+          <li><a href="#packaging" onclick="navTo('packaging')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">📦 PyInstaller & Electron Builds</a></li>
+          <li><a href="#deployment" onclick="navTo('deployment')" class="sidebar-link block px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-800 transition-colors">🚀 Netlify Web Deployment</a></li>
+        </ul>
+      </div>
+
+      <div class="mt-auto pt-4 border-t border-white/10 text-xs text-slate-400">
+        GeoCore Engine • GPL v2 Open Source
+      </div>
+    </aside>
+
+    <!-- CENTER DOCUMENTATION CONTENT -->
+    <main class="flex-1 min-w-0 px-5 sm:px-10 py-8 lg:py-10 max-w-4xl">
+
+      <!-- SECTION 1: OVERVIEW -->
+      <article id="overview" class="doc-section mb-16">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-brand-light bg-brand/10 px-2 py-0.5 rounded border border-brand/20">Documentation Hub</span>
+        </div>
+        <h1 class="font-space text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
+          GeoCore Documentation & Engineering Reference
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6">
+          Welcome to the technical reference manual for <strong>GeoCore</strong> — an open-source geotechnical desktop platform combining Python numerical engines with Electron and React.
+        </p>
+
+        <!-- Feature cards in Docs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
+          <div class="p-5 rounded-xl bg-surface-800/80 border border-white/10 hover:border-brand/40 transition-all">
+            <div class="text-brand-light font-space font-bold text-lg mb-1.5">🚀 Offline-First Engine</div>
+            <p class="text-xs text-slate-400 leading-relaxed">Purely local execution on <code class="text-brand-light font-mono text-[11px]">127.0.0.1:8000</code>. Subsurface project data stays private on your workstation.</p>
           </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
+          <div class="p-5 rounded-xl bg-surface-800/80 border border-white/10 hover:border-brand/40 transition-all">
+            <div class="text-sky font-space font-bold text-lg mb-1.5">📊 100+ Geotechnical Solvers</div>
+            <p class="text-xs text-slate-400 leading-relaxed">PCPT Robertson SBT, LCPC pile capacity, Vesic footing limits, Schmertmann settlement, and AGS 4.0 data exchange.</p>
+          </div>
         </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 2: QUICKSTART -->
+      <article id="quickstart" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          ⏱️ Quickstart Guide
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Launch GeoCore, load soil stratigraphy, and run a complete Robertson CPT sounding interpretation in less than 5 minutes:
+        </p>
+
+        <div class="space-y-4 my-6">
+          <div class="p-4 rounded-xl bg-surface-800 border border-white/10">
+            <div class="font-semibold text-brand-light text-sm mb-1">1. Initialize a SoilProfile</div>
+            <p class="text-xs text-slate-300">Navigate to <strong>Site Investigation &rarr; Soil Profile</strong> and paste depth stratigraphy with <code class="font-mono text-[11px] text-brand-light">Depth from [m]</code>, <code class="font-mono text-[11px] text-brand-light">Depth to [m]</code>, and cone resistance <code class="font-mono text-[11px] text-brand-light">qc [MPa]</code>.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-surface-800 border border-white/10">
+            <div class="font-semibold text-brand-light text-sm mb-1">2. Run PCPT Processing</div>
+            <p class="text-xs text-slate-300">Select the profile, configure groundwater depth ($z_w = 1.5\text{ m}$) and cone factor ($N_{kt} = 14.0$), then execute to generate multi-panel Robertson SBT curves.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-surface-800 border border-white/10">
+            <div class="font-semibold text-brand-light text-sm mb-1">3. Compute Bearing Capacity Envelope</div>
+            <p class="text-xs text-slate-300">Navigate to <strong>Shallow Foundations</strong>, supply footing geometry $B \times L$, strength parameters $\phi'$ and $c'$, and compute the 2D/3D interaction envelope.</p>
+          </div>
+        </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 3: DEEP FOUNDATIONS -->
+      <article id="deep-foundations" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          🏗️ Deep Foundations & Pile Capacity
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          GeoCore implements industry-standard analytical formulations for axial pile resistance:
+        </p>
+
+        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">1. LCPC Method (Bustamante & Gianeselli / NF P 94-262)</h3>
+        <p class="text-xs text-slate-300 mb-2">Calculates unit base resistance $q_b$ and shaft friction $q_s$ from CPT cone resistance $q_c$:</p>
+        
+        <div class="math-card">
+          $$R_b = A_b \cdot q_b = A_b \cdot k_b \cdot q_{ce}$$
+          $$R_s = \sum_{i=1}^n \pi D \cdot \frac{q_{ci}}{\beta} \cdot \Delta z_i$$
+        </div>
+
+        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">2. Koppejan Method (Dutch Standard NEN 6743)</h3>
+        <div class="math-card">
+          $$q_b = \frac{1}{2} \cdot \alpha_p \cdot \beta \cdot s \cdot \left[ \frac{q_{c;I;mean} + q_{c;II;mean}}{2} + q_{c;III;mean} \right]$$
+        </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 4: SHALLOW FOUNDATIONS -->
+      <article id="shallow-foundations" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          📐 Shallow Foundations & Settlement
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Evaluate ultimate bearing capacity and elastic/consolidation settlement for eccentric and inclined loads:
+        </p>
+
+        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">Vesic / Eurocode 7 Bearing Capacity Equation</h3>
+        <div class="math-card">
+          $$q_{ult} = c' N_c s_c d_c i_c + q' N_q s_q d_q i_q + \frac{1}{2} \gamma B' N_\gamma s_\gamma d_\gamma i_\gamma$$
+        </div>
+
+        <h3 class="font-space text-lg font-bold text-white mt-6 mb-2">API RP 2GEO Circular Effective Footing Area</h3>
+        <div class="math-card">
+          $$A' = 2 \left[ R^2 \arccos\left(\frac{e}{R}\right) - e \sqrt{R^2 - e^2} \right]$$
+        </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 5: SITE INVESTIGATION -->
+      <article id="site-investigation" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          🧪 Site Investigation & CPT Processing
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Automated normalizations according to <strong>Robertson (1990/2009/2016)</strong> and <strong>Lunne et al. (1997)</strong>:
+        </p>
+
+        <div class="math-card">
+          $$q_t = q_c + u_2 \cdot (1 - a)$$
+          $$Q_{tn} = \left( \frac{q_t - \sigma_{v0}}{p_a} \right) \left( \frac{p_a}{\sigma'_{v0}} \right)^n$$
+          $$I_c = \left[ (3.47 - \log_{10} Q_{tn})^2 + (\log_{10} F_r + 1.22)^2 \right]^{0.5}$$
+          $$s_u = \frac{q_t - \sigma_{v0}}{N_{kt}}$$
+        </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 6: EUROCODE 7 -->
+      <article id="eurocode7" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          ⚖️ Eurocode 7 & Standards Verification
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Automated partial factor sets for Design Approaches <strong>DA1 (Combinations 1 & 2)</strong>, <strong>DA2</strong>, and <strong>DA3</strong>:
+        </p>
+
+        <div class="overflow-x-auto my-4 rounded-xl border border-white/10">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-surface-800 text-slate-300 font-mono">
+              <tr>
+                <th class="p-3">Set</th>
+                <th class="p-3">$\gamma_G$ (Perm.)</th>
+                <th class="p-3">$\gamma_Q$ (Var.)</th>
+                <th class="p-3">$\gamma_\phi$ ($\tan \phi'$)</th>
+                <th class="p-3">$\gamma_c$ ($c'$)</th>
+                <th class="p-3">$\gamma_{cu}$ ($s_u$)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-slate-400">
+              <tr><td class="p-3 font-bold text-white">A1</td><td class="p-3">1.35</td><td class="p-3">1.50</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">—</td></tr>
+              <tr><td class="p-3 font-bold text-white">A2</td><td class="p-3">1.00</td><td class="p-3">1.30</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">—</td></tr>
+              <tr><td class="p-3 font-bold text-brand-light">M1</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">1.00</td><td class="p-3">1.00</td><td class="p-3">1.00</td></tr>
+              <tr><td class="p-3 font-bold text-brand-light">M2</td><td class="p-3">—</td><td class="p-3">—</td><td class="p-3">1.25</td><td class="p-3">1.25</td><td class="p-3">1.40</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 7: AGS CONVERTER -->
+      <article id="ags-converter" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          📁 AGS 4.0 File Converter
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Parse standard Association of Geotechnical Specialists (AGS 4.0) data files:
+        </p>
+
+        <div class="p-4 rounded-xl bg-surface-800 font-mono text-xs text-slate-300 border border-white/10 overflow-x-auto">
+          <span class="text-slate-500"># Extract AGS group into a DataFrame</span><br>
+          <span class="text-purple-400">from</span> core.wrappers <span class="text-purple-400">import</span> AGSConverter<br><br>
+          conv = AGSConverter(<span class="text-brand-light">"ground_investigation.ags"</span>)<br>
+          conv.extract_groupnames()<br>
+          df_ispt = conv.convert_ags_group(<span class="text-brand-light">"ISPT"</span>)<br>
+          <span class="text-sky">print</span>(df_ispt.head())
+        </div>
+      </article>
+
+      <hr class="border-white/10 my-12" />
+
+      <!-- SECTION 8: ARCHITECTURE & DEPLOYMENT -->
+      <article id="architecture" class="doc-section mb-16">
+        <h2 class="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+          🏛️ System Architecture & Netlify Deployment
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          GeoCore utilizes a multi-tier local architecture:
+        </p>
+
+        <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-300 mb-6">
+          <li><strong>Frontend:</strong> React 18 + Tailwind CSS + Lucide Icons + Plotly.js inside Electron.</li>
+          <li><strong>Backend Kernel:</strong> Local FastAPI server running Python 3.11 with NumPy, SciPy, Groundhog, and Pandas.</li>
+          <li><strong>Static Portal:</strong> Pure HTML5, Tailwind CSS, MathJax 3 with zero Python/MkDocs runtime dependencies on Netlify!</li>
+        </ul>
+
+        <div class="p-4 rounded-xl bg-brand/10 border border-brand/30 text-xs text-slate-200">
+          <strong>⚡ Netlify Zero-Config Deployment:</strong> Push this repository to GitHub and connect it to Netlify. The <code class="font-mono text-brand-light">website/</code> folder is published statically in 2 seconds with zero build failures!
+        </div>
+      </article>
+
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL (Ctrl + K) -->
+  <div id="searchModal" class="fixed inset-0 bg-black/80 z-50 backdrop-blur-md hidden items-start justify-center pt-20 px-4">
+    <div class="bg-surface-800 border border-white/15 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-white/10 flex items-center gap-3">
+        <svg class="w-5 h-5 text-brand-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="searchInput" type="text" placeholder="Search algorithms, equations, standards..." oninput="handleSearch()" class="w-full bg-transparent text-white placeholder-slate-500 text-sm outline-none font-sans" />
+        <button onclick="closeSearchModal()" class="text-slate-400 hover:text-white text-xs font-mono px-2 py-1 bg-surface-700 rounded">ESC</button>
+      </div>
+      <div id="searchResults" class="max-h-80 overflow-y-auto p-3 space-y-2 text-xs">
+        <!-- Injected search results -->
+        <div class="p-2 text-slate-400">Type to search geotechnical modules...</div>
       </div>
     </div>
   </div>
-</div>
-      
-    
-    
-      <div class="md-header__source">
-        <a href="https://github.com/utkarsh-1912/geocore" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
-  </div>
-  <div class="md-source__repository">
-    utkarsh-1912/geocore
-  </div>
-</a>
-      </div>
-    
-  </nav>
-  
-    
-      
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-  
-    
-  
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
-        
-  
-  
-    
-  
-  Overview
 
-      </a>
-    </li>
-  
-
+  <!-- JAVASCRIPT HANDLERS -->
+  <script>
+    // Toggle Mobile Sidebar
+    function toggleSidebar() {
+      const sb = document.getElementById('docSidebar');
+      const bd = document.getElementById('mobileBackdrop');
+      const isOpen = !sb.classList.contains('-translate-x-full');
       
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="getting-started/quickstart/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Getting Started
+      if (isOpen) {
+        sb.classList.add('-translate-x-full');
+        bd.classList.add('hidden');
+      } else {
+        sb.classList.remove('-translate-x-full');
+        bd.classList.remove('hidden');
+      }
+    }
 
+    document.getElementById('sidebarToggleBtn').addEventListener('click', toggleSidebar);
+
+    function navTo(id) {
+      document.querySelectorAll('.sidebar-link').forEach(l => {
+        l.classList.remove('active', 'text-brand-light', 'bg-brand/10', 'border', 'border-brand/20');
+        l.classList.add('text-slate-400');
+      });
+      const activeLink = document.querySelector(`a[href="#${id}"]`);
+      if (activeLink) {
+        activeLink.classList.add('active', 'text-brand-light', 'bg-brand/10', 'border', 'border-brand/20');
+        activeLink.classList.remove('text-slate-400');
+      }
+      if (window.innerWidth < 1024) {
+        toggleSidebar();
+      }
+    }
+
+    // Search Index
+    const searchData = [
+      { title: "Deep Pile Capacity (LCPC & Koppejan)", section: "deep-foundations", desc: "Calculate base resistance and skin friction using French LCPC and Dutch Koppejan." },
+      { title: "Shallow Footings & Bearing Capacity", section: "shallow-foundations", desc: "Vesic bearing capacity equation, effective footing area (API RP 2GEO), and Schmertmann settlement." },
+      { title: "CPT & Robertson Soil Classification", section: "site-investigation", desc: "Robertson 1990/2016 Soil Behavior Type index Ic, Qtn, Fr, undrained strength su." },
+      { title: "Eurocode 7 Partial Safety Factors", section: "eurocode7", desc: "DA1 Combination 1 & 2, DA2, DA3 factor matrices and Schneider characteristic values." },
+      { title: "1D Consolidation Dissipation", section: "consolidation", desc: "Terzaghi 1D consolidation equation, isochrones, and cv curve-fitting." },
+      { title: "AGS 4.0 Geotechnical Data Parser", section: "ags-converter", desc: "Extract PROJ, HOLE, SAMP, ISPT, GEOL groups and export to DataFrames." },
+      { title: "System Architecture & Offline Kernel", section: "architecture", desc: "Decoupled Electron frontend and local Python FastAPI calculation daemon." }
+    ];
+
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.remove('hidden');
+      document.getElementById('searchModal').classList.add('flex');
+      document.getElementById('searchInput').focus();
+    }
+
+    function closeSearchModal() {
+      document.getElementById('searchModal').classList.add('hidden');
+      document.getElementById('searchModal').classList.remove('flex');
+    }
+
+    function handleSearch() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+      if (!q) {
+        resultsContainer.innerHTML = '<div class="p-2 text-slate-400">Type to search geotechnical modules...</div>';
+        return;
+      }
+
+      const matches = searchData.filter(d => d.title.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q));
+      if (matches.length === 0) {
+        resultsContainer.innerHTML = '<div class="p-2 text-slate-500">No matching documentation topics found.</div>';
+        return;
+      }
+
+      resultsContainer.innerHTML = matches.map(m => `
+        <a href="#${m.section}" onclick="closeSearchModal(); navTo('${m.section}')" class="block p-3 rounded-lg bg-surface-700/60 hover:bg-brand/10 border border-white/5 hover:border-brand/30 transition-colors">
+          <div class="font-semibold text-white text-xs">${m.title}</div>
+          <div class="text-[11px] text-slate-400 mt-1">${m.desc}</div>
         </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="modules/deep-foundations/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Geotechnical Modules
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="developer/architecture/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Developer Guides
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ul>
-  </div>
-</nav>
-    
-  
-</header>
-    
-    <div class="md-container" data-md-component="container">
-      
-      
-        
-      
-      <main class="md-main" data-md-component="main">
-        <div class="md-main__inner md-grid">
-          
-            
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-
-  
-
-
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
-  <label class="md-nav__title" for="__drawer">
-    <a href="." title="GeoCore Documentation Portal" class="md-nav__button md-logo" aria-label="GeoCore Documentation Portal" data-md-component="logo">
-      
-  <img src="assets/logoIcon.png" alt="logo">
-
-    </a>
-    GeoCore Documentation Portal
-  </label>
-  
-    <div class="md-nav__source">
-      <a href="https://github.com/utkarsh-1912/geocore" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
-  </div>
-  <div class="md-source__repository">
-    utkarsh-1912/geocore
-  </div>
-</a>
-    </div>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#key-capabilities-at-a-glance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🌟 Key Capabilities at a Glance
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="🌟 Key Capabilities at a Glance">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-site-investigation-in-situ-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Site Investigation &amp; In-Situ Testing
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-deep-shallow-foundations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Deep &amp; Shallow Foundations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-standards-geotechnical-data-interoperability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Standards &amp; Geotechnical Data Interoperability
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-navigation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🚀 Quick Navigation
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Getting Started
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="getting-started/quickstart/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Quickstart Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="getting-started/installation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Geotechnical Modules
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Geotechnical Modules
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/deep-foundations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deep Foundations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/shallow-foundations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Shallow Foundations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/site-investigation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Site Investigation & CPT
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/eurocode7/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Eurocode 7 & Standards
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/consolidation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    1D Consolidation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/pipelines-cables/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pipelines & Cables
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="modules/ags-converter/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AGS 4.0 File Converter
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Developer Guides
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Developer Guides
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="developer/architecture/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="developer/packaging/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Packaging & Executables
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="developer/deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Netlify & Web Deployment
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-  </ul>
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#key-capabilities-at-a-glance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🌟 Key Capabilities at a Glance
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="🌟 Key Capabilities at a Glance">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-site-investigation-in-situ-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Site Investigation &amp; In-Situ Testing
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-deep-shallow-foundations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Deep &amp; Shallow Foundations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-standards-geotechnical-data-interoperability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Standards &amp; Geotechnical Data Interoperability
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-navigation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🚀 Quick Navigation
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-          
-          
-            <div class="md-content" data-md-component="content">
-              
-              <article class="md-content__inner md-typeset">
-                
-                  
-
-
-  
-  
-    
-      
-    
-    <a href="https://github.com/utkarsh-1912/geocore/raw/master/docs/index.md" title="View source of this page" class="md-content__button md-icon">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
-    </a>
-  
-
-
-<h1 id="geocore-documentation-portal">GeoCore Documentation Portal<a class="headerlink" href="#geocore-documentation-portal" title="Permanent link">&para;</a></h1>
-<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
-  <span class="badge">v1.0.0 Stable</span>
-  <span class="badge blue">Open Source (GPL v2)</span>
-  <span class="badge purple">FastAPI + Electron + React</span>
-</div>
-
-<p>Welcome to the official technical documentation for <strong>GeoCore</strong> — the advanced open-source geotechnical desktop platform engineered for geotechnical engineers, offshore specialists, researchers, and civil contractors.</p>
-<hr />
-<h2 id="key-capabilities-at-a-glance">🌟 Key Capabilities at a Glance<a class="headerlink" href="#key-capabilities-at-a-glance" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>graph TD
-    A[Geotechnical Input Data] --&gt; B{GeoCore Calculation Engine}
-    B --&gt; C[Deep Foundations]
-    B --&gt; D[Shallow Foundations]
-    B --&gt; E[Site Investigation &amp; CPT]
-    B --&gt; F[Eurocode 7 Standards]
-    B --&gt; G[1D Consolidation]
-    B --&gt; H[Pipelines &amp; Cables]
-    B --&gt; I[AGS 4.0 Converter]
-
-    C --&gt; J[Interactive Plotly Visualizations]
-    D --&gt; J
-    E --&gt; J
-    F --&gt; J
-    G --&gt; J
-    H --&gt; J
-    I --&gt; K[Clean Structured DataFrames]</code></pre>
-<h3 id="1-site-investigation-in-situ-testing">1. Site Investigation &amp; In-Situ Testing<a class="headerlink" href="#1-site-investigation-in-situ-testing" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>PCPT / CPT Soundings</strong>: Automated Robertson (1990/2009/2016) Soil Behavior Type (SBT) classification, <span class="arithmatex">\(Q_{tn}-F_r\)</span> and <span class="arithmatex">\(I_c\)</span> calculations, undrained shear strength (<span class="arithmatex">\(s_u\)</span>) profiling, <span class="arithmatex">\(G_{max}\)</span> small-strain shear modulus.</li>
-<li><strong>SPT Processing</strong>: Standardized <span class="arithmatex">\(N_{60}\)</span> and <span class="arithmatex">\((N_1)_{60}\)</span> corrections with Liao &amp; Whitman overburden factors.</li>
-<li><strong>Laboratory Soil Mechanics</strong>: Casagrande A-Line plasticity chart classification, Particle Size Distribution (PSD) with <span class="arithmatex">\(D_{10}, D_{30}, D_{60}, C_u, C_c\)</span> metrics.</li>
-</ul>
-<h3 id="2-deep-shallow-foundations">2. Deep &amp; Shallow Foundations<a class="headerlink" href="#2-deep-shallow-foundations" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Axial Pile Capacity</strong>: LCPC (Bustamante &amp; Gianeselli), Koppejan, De Beer, and AxCap automated penetration curves.</li>
-<li><strong>Shallow Footings</strong>: Drained and undrained bearing capacity according to Eurocode 7 &amp; Vesic, elastic/consolidation settlement (Schmertmann, Janbu, Christian &amp; Carrier).</li>
-<li><strong>Effective Footing Area</strong>: Full implementation of API RP 2GEO circular and rectangular eccentric load reductions.</li>
-</ul>
-<h3 id="3-standards-geotechnical-data-interoperability">3. Standards &amp; Geotechnical Data Interoperability<a class="headerlink" href="#3-standards-geotechnical-data-interoperability" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Eurocode 7 (EN 1997-1)</strong>: Automated partial factor selection for Design Approaches DA1 (Combination 1 &amp; 2), DA2, and DA3 across STR and GEO limit states.</li>
-<li><strong>Characteristic Parameter Selection</strong>: Schneider (1997) Bayesian confidence statistical assessments for constant values and linear depth trends.</li>
-<li><strong>AGS 4.0 File Converter</strong>: Instant validation, group extraction (PROJ, HOLE, HDPH, SAMP, ISPT, GEOL, etc.), and export to CSV, Excel, or Pandas DataFrames.</li>
-</ul>
-<hr />
-<h2 id="quick-navigation">🚀 Quick Navigation<a class="headerlink" href="#quick-navigation" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Topic</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Quickstart Guide</strong></td>
-<td style="text-align: left;">Get up and running in under 5 minutes</td>
-<td style="text-align: left;"><a href="getting-started/quickstart/">Get Started &rarr;</a></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Deep Foundations</strong></td>
-<td style="text-align: left;">LCPC, Koppejan, De Beer, and AxCap pile capacity</td>
-<td style="text-align: left;"><a href="modules/deep-foundations/">Deep Foundations &rarr;</a></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Shallow Foundations</strong></td>
-<td style="text-align: left;">Bearing capacity, stress distribution &amp; settlement</td>
-<td style="text-align: left;"><a href="modules/shallow-foundations/">Shallow Foundations &rarr;</a></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Site Investigation</strong></td>
-<td style="text-align: left;">CPT Robertson classification, SPT &amp; Lab charts</td>
-<td style="text-align: left;"><a href="modules/site-investigation/">In-Situ Testing &rarr;</a></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Eurocode 7</strong></td>
-<td style="text-align: left;">DA1/DA2/DA3 partial factors &amp; Schneider parameters</td>
-<td style="text-align: left;"><a href="modules/eurocode7/">Eurocode 7 &rarr;</a></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Consolidation</strong></td>
-<td style="text-align: left;">1D Terzaghi dissipation and isochrone plots</td>
-<td style="text-align: left;"><a href="modules/consolidation/">Consolidation &rarr;</a></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Architecture</strong></td>
-<td style="text-align: left;">System architecture, FastAPI backend &amp; Electron IPC</td>
-<td style="text-align: left;"><a href="developer/architecture/">Architecture &rarr;</a></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<p><a href="../" class="back-to-home">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-  Back to Marketing Home
-</a></p>
-
-
-
-
-
-
-
-
-
-
-
-
-                
-              </article>
-            </div>
-          
-          
-  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
-
-<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
-        </div>
-        
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
-</button>
-        
-      </main>
-      
-        <footer class="md-footer">
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-  
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
-    </a>
-  
-</div>
-      
-        
-<div class="md-social">
-  
-    
-    
-    
-    
-    <a href="https://github.com/utkarsh-1912/geocore" target="_blank" rel="noopener" title="GeoCore on GitHub" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
-    </a>
-  
-    
-    
-    
-    
-    <a href="https://geocore.app/" target="_blank" rel="noopener" title="Marketing Website" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M351.9 280H161c2.9 64.5 17.2 123.9 37.5 167.4 11.4 24.5 23.7 41.8 35.1 52.4 11.2 10.5 18.9 12.2 22.9 12.2s11.7-1.7 22.9-12.2c11.4-10.6 23.7-28 35.1-52.4 20.3-43.5 34.6-102.9 37.5-167.4zm-191-48h190.9c-2.8-64.5-17.1-123.9-37.4-167.4-11.4-24.4-23.7-41.8-35.1-52.4C268.1 1.7 260.4 0 256.4 0s-11.7 1.7-22.9 12.2c-11.4 10.6-23.7 28-35.1 52.4-20.3 43.5-34.6 102.9-37.5 167.4m-48 0c3.5-85.6 25.6-165.1 57.9-217.3C78.7 47.3 10.9 131.2 1.5 232zM1.5 280c9.4 100.8 77.2 184.7 169.3 217.3-32.3-52.2-54.4-131.7-57.9-217.3zm398.4 0c-3.5 85.6-25.6 165.1-57.9 217.3 92.1-32.7 159.9-116.5 169.3-217.3zm111.4-48C501.9 131.2 434.1 47.3 342 14.7c32.3 52.2 54.4 131.7 57.9 217.3z"/></svg>
-    </a>
-  
-</div>
-      
-    </div>
-  </div>
-</footer>
-      
-    </div>
-    <div class="md-dialog" data-md-component="dialog">
-      <div class="md-dialog__inner md-typeset"></div>
-    </div>
-    
-    
-    
-      
-      
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.view"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-    
-    
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
-      
-        <script src="javascripts/mathjax.js"></script>
-      
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-      
-        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-      
-    
-  </body>
+      `).join('');
+    }
+
+    // Keyboard Shortcuts (Ctrl+K or Cmd+K)
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearchModal();
+      }
+      if (e.key === 'Escape') {
+        closeSearchModal();
+      }
+    });
+  </script>
+</body>
 </html>

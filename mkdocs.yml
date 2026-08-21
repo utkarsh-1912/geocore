@@ -8,7 +8,7 @@ repo_name: utkarsh-1912/geocore
 
 theme:
   name: material
-  logo: assets/logoIcon.png
+  logo: assets/logo.png
   favicon: assets/logoIcon.png
   palette:
     - scheme: slate

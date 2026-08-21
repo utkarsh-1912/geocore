@@ -9,7 +9,7 @@
 
 [[redirects]]
   from = "/docs/*"
-  to = "/docs/:splat"
+  to = "/docs/index.html"
   status = 200
 
 [[headers]]
@@ -21,10 +21,5 @@
 
 [[headers]]
   for = "/public/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/docs/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
