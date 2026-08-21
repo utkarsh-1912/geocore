@@ -3,1113 +3,1898 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GeoCore — Geotechnical Engineering Platform</title>
-  <meta name="description" content="Enterprise-grade geotechnical calculation desktop app. Open source, blazing fast, 100+ algorithms.">
+  <title>GeoCore — Next-Gen Geotechnical Engineering Platform</title>
+  <meta name="description" content="Advanced open-source geotechnical calculation & analysis desktop application. 100+ algorithms, CPT/SPT interpretation, pile capacity, shallow foundations, Eurocode 7, AGS 4.0.">
+  <meta name="keywords" content="geotechnical engineering, soil mechanics, CPT interpretation, Robertson SBT, shallow foundation bearing capacity, deep foundations, pile capacity, Eurocode 7, AGS 4, Groundhog, open source geotechnical software">
   <link rel="icon" href="public/logoIcon.png" type="image/png">
+
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="GeoCore — Geotechnical Engineering Platform">
+  <meta property="og:description" content="Blazing fast, open-source geotechnical calculation engine. 100+ solvers, CPT processing, EC7 standards, offline-first.">
+  <meta property="og:image" content="public/logo.png">
+
+  <!-- Fonts & Plotly CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
   <style>
     :root {
-      --bg: #080c14;
-      --surface: #0f1623;
-      --card: #141f33;
-      --border: #1e2d47;
-      --border-bright: #2a3f5e;
-      --brand: #6a8e4e;
-      --brand-light: #8ab86e;
-      --brand-dim: rgba(106,142,78,0.12);
-      --emerald: #34d399;
+      --bg: #070a12;
+      --surface: #0e1626;
+      --card: #131f36;
+      --card-hover: #192947;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(52, 211, 153, 0.35);
+      --brand: #10b981;
+      --brand-light: #34d399;
+      --brand-dark: #059669;
+      --brand-dim: rgba(16, 185, 129, 0.12);
       --sky: #38bdf8;
-      --text: #f0f4f8;
-      --muted: #7a8fa6;
-      --subtle: #334155;
+      --sky-dim: rgba(56, 189, 248, 0.12);
+      --amber: #fbbf24;
+      --purple: #a855f7;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --subtle: #475569;
       --radius: 16px;
       --radius-sm: 10px;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth;overflow-x:hidden}
-    body{
-      font-family:'Inter',sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      min-height:100vh;
-      overflow-x:hidden;
+      --radius-lg: 24px;
     }
 
-    /* ===== GRAIN OVERLAY ===== */
-    body::before{
-      content:'';position:fixed;inset:0;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events:none;z-index:1000;
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* ===== GLOW MESH BG ===== */
-    .mesh-bg{
-      position:fixed;inset:0;pointer-events:none;
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Ambient Background Gradients */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(106,142,78,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(52,211,153,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 60% at 50% 50%, rgba(56,189,248,0.04) 0%, transparent 60%);
-      z-index:0;
+        radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 25%, rgba(56, 189, 248, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.07) 0%, transparent 55%),
+        radial-gradient(circle at 75% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
     }
 
-    /* ===== TYPOGRAPHY ===== */
-    .font-space{font-family:'Space Grotesk',sans-serif}
-    .font-mono{font-family:'JetBrains Mono',monospace}
-
-    /* ===== NAVBAR ===== */
-    nav{
-      position:fixed;top:0;left:0;right:0;z-index:900;
-      padding:0 24px;height:68px;
-      display:flex;align-items:center;justify-content:space-between;
-      background:rgba(8,12,20,0.85);
-      backdrop-filter:blur(20px) saturate(1.5);
-      border-bottom:1px solid var(--border);
-      transition:background 0.3s;
-    }
-    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .nav-logo img{height:36px;width:auto}
-    .nav-links{display:flex;align-items:center;gap:32px}
-    .nav-links a{
-      color:var(--muted);font-size:13.5px;font-weight:500;text-decoration:none;
-      transition:color 0.2s;letter-spacing:0.01em;
-    }
-    .nav-links a:hover{color:var(--text)}
-    .nav-actions{display:flex;align-items:center;gap:12px}
-    .btn-ghost{
-      display:flex;align-items:center;gap:7px;
-      padding:8px 14px;border-radius:8px;
-      background:var(--card);border:1px solid var(--border);
-      color:var(--text);font-size:13px;font-weight:500;
-      cursor:pointer;text-decoration:none;transition:all 0.2s;
-    }
-    .btn-ghost:hover{border-color:var(--border-bright);background:var(--surface)}
-    .btn-primary{
-      display:flex;align-items:center;gap:7px;
-      padding:9px 18px;border-radius:8px;
-      background:linear-gradient(135deg,var(--brand),#4a7a34);
-      color:#fff;font-size:13px;font-weight:600;
-      cursor:pointer;text-decoration:none;
-      box-shadow:0 4px 20px rgba(106,142,78,0.3);
-      transition:all 0.2s;border:none;
-    }
-    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(106,142,78,0.45)}
-
-    /* ===== SECTIONS ===== */
-    section{position:relative;z-index:2}
-    .container{max-width:1200px;margin:0 auto;padding:0 24px}
-
-    /* ===== HERO ===== */
-    .hero{
-      min-height:100vh;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;
-      padding:120px 24px 80px;text-align:center;
-    }
-    .hero-badge{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:6px 14px;border-radius:100px;
-      border:1px solid rgba(106,142,78,0.4);
-      background:rgba(106,142,78,0.08);
-      color:var(--brand-light);font-size:12.5px;font-weight:600;
-      letter-spacing:0.05em;text-transform:uppercase;
-      margin-bottom:32px;
-      animation:fadeSlideUp 0.6s ease both;
-    }
-    .pulse-dot{
-      width:7px;height:7px;border-radius:50%;background:var(--emerald);
-      box-shadow:0 0 0 0 rgba(52,211,153,0.6);
-      animation:pulse 2s infinite;
-    }
-    @keyframes pulse{
-      0%{box-shadow:0 0 0 0 rgba(52,211,153,0.6)}
-      70%{box-shadow:0 0 0 8px rgba(52,211,153,0)}
-      100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}
-    }
-    .hero-title{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:clamp(42px,7vw,88px);
-      font-weight:700;line-height:1.05;letter-spacing:-0.03em;
-      margin-bottom:24px;
-      animation:fadeSlideUp 0.6s 0.1s ease both;
-    }
-    .hero-title .accent{
-      background:linear-gradient(135deg,#a3e635 0%,#34d399 45%,#38bdf8 100%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
-    .hero-sub{
-      font-size:clamp(16px,2vw,20px);color:var(--muted);
-      max-width:620px;line-height:1.7;margin-bottom:48px;font-weight:400;
-      animation:fadeSlideUp 0.6s 0.2s ease both;
-    }
-    .hero-ctas{
-      display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
-      animation:fadeSlideUp 0.6s 0.3s ease both;
-    }
-    .btn-hero-primary{
-      display:flex;align-items:center;gap:10px;
-      padding:14px 28px;border-radius:12px;
-      background:linear-gradient(135deg,var(--brand),#4a7a34);
-      color:#fff;font-size:15px;font-weight:600;
-      text-decoration:none;
-      box-shadow:0 6px 30px rgba(106,142,78,0.35);
-      transition:all 0.25s;
-    }
-    .btn-hero-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(106,142,78,0.5)}
-    .btn-hero-secondary{
-      display:flex;align-items:center;gap:10px;
-      padding:14px 28px;border-radius:12px;
-      background:var(--card);border:1px solid var(--border-bright);
-      color:var(--text);font-size:15px;font-weight:600;
-      text-decoration:none;transition:all 0.25s;
-    }
-    .btn-hero-secondary:hover{border-color:var(--muted);background:var(--surface)}
-
-    /* ===== HERO STATS ===== */
-    .hero-stats{
-      display:flex;flex-wrap:wrap;justify-content:center;gap:0;
-      margin-top:72px;border:1px solid var(--border);border-radius:var(--radius);
-      overflow:hidden;background:var(--card);
-      animation:fadeSlideUp 0.6s 0.5s ease both;
-    }
-    .stat-item{
-      padding:28px 40px;text-align:center;flex:1;min-width:140px;
-      border-right:1px solid var(--border);
-    }
-    .stat-item:last-child{border-right:none}
-    .stat-num{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:32px;font-weight:700;letter-spacing:-0.02em;color:var(--text);
-    }
-    .stat-num.green{color:var(--brand-light)}
-    .stat-num.emerald{color:var(--emerald)}
-    .stat-label{font-size:12.5px;color:var(--muted);margin-top:4px;font-weight:500}
-
-    /* ===== BENTO GRID ===== */
-    .bento{display:grid;gap:16px}
-    .bento-6col{grid-template-columns:repeat(6,1fr)}
-    .col-span-4{grid-column:span 4}
-    .col-span-2{grid-column:span 2}
-    .col-span-3{grid-column:span 3}
-    .col-span-6{grid-column:span 6}
-    .bento-card{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:var(--radius);padding:28px;
-      transition:border-color 0.25s,transform 0.25s;
-      overflow:hidden;position:relative;
-    }
-    .bento-card:hover{border-color:var(--border-bright)}
-    .bento-card.glow-green:hover{border-color:rgba(106,142,78,0.6);box-shadow:0 0 40px rgba(106,142,78,0.1)}
-    .bento-card.glow-sky:hover{border-color:rgba(56,189,248,0.4);box-shadow:0 0 40px rgba(56,189,248,0.08)}
-
-    /* ===== APP SHELL PREVIEW ===== */
-    .app-shell{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--radius);overflow:hidden;
-    }
-    .app-titlebar{
-      height:44px;background:var(--bg);border-bottom:1px solid var(--border);
-      display:flex;align-items:center;justify-between;padding:0 16px;
-      gap:16px;flex-shrink:0;
-    }
-    .traffic-lights{display:flex;align-items:center;gap:7px}
-    .tl{width:12px;height:12px;border-radius:50%}
-    .tl.red{background:#ff5f57}.tl.yellow{background:#febc2e}.tl.green{background:#28c840}
-    .app-body{display:grid;grid-template-columns:220px 1fr;min-height:440px}
-    .app-sidebar{
-      background:var(--surface);border-right:1px solid var(--border);
-      padding:16px;display:flex;flex-direction:column;gap:4px;
-    }
-    .sidebar-header{
-      display:flex;align-items:center;gap:8px;padding:8px;margin-bottom:12px;
-    }
-    .sidebar-header img{height:26px;width:auto}
-    .sidebar-section-label{
-      font-size:10.5px;font-weight:600;letter-spacing:0.08em;
-      text-transform:uppercase;color:var(--muted);padding:4px 10px;margin-top:8px;
-    }
-    .sidebar-item{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:9px 12px;border-radius:8px;font-size:13px;font-weight:500;
-      color:var(--muted);cursor:pointer;transition:all 0.15s;
-      text-align:left;background:none;border:none;width:100%;
-    }
-    .sidebar-item:hover{background:var(--card);color:var(--text)}
-    .sidebar-item.active{
-      background:rgba(106,142,78,0.15);
-      color:var(--brand-light);border:1px solid rgba(106,142,78,0.25);
-    }
-    .sidebar-item .left{display:flex;align-items:center;gap:8px}
-    .sidebar-badge{
-      font-size:10px;padding:2px 7px;border-radius:100px;
-      background:var(--border);color:var(--muted);font-weight:600;
-    }
-    .sidebar-badge.active{background:rgba(106,142,78,0.25);color:var(--brand-light)}
-    .app-main{padding:24px;display:flex;flex-direction:column;gap:20px;background:var(--bg)}
-    .app-top{display:flex;align-items:center;justify-content:space-between}
-    .app-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600}
-    .app-top-actions{display:flex;gap:8px}
-    .mini-btn{
-      padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;
-      background:var(--card);border:1px solid var(--border);
-      color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px;
-      transition:all 0.15s;
-    }
-    .mini-btn:hover{color:var(--text);border-color:var(--border-bright)}
-    .mini-btn.accent{background:rgba(106,142,78,0.15);border-color:rgba(106,142,78,0.35);color:var(--brand-light)}
-
-    /* FORM INPUTS */
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .form-field label{
-      display:block;font-size:11.5px;font-weight:500;
-      color:var(--muted);margin-bottom:5px;
-    }
-    .form-input{
-      width:100%;padding:9px 12px;border-radius:8px;
-      background:var(--card);border:1px solid var(--border);
-      color:var(--text);font-size:13px;font-family:'JetBrains Mono',monospace;
-      outline:none;transition:border-color 0.15s;
-    }
-    .form-input:focus{border-color:var(--brand)}
-    .form-select{
-      width:100%;padding:9px 12px;border-radius:8px;
-      background:var(--card);border:1px solid var(--border);
-      color:var(--text);font-size:13px;outline:none;
-      transition:border-color 0.15s;cursor:pointer;appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a8fa6' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat:no-repeat;background-position:right 10px center;
-    }
-    .calc-btn{
-      width:100%;padding:11px;border-radius:9px;
-      background:linear-gradient(135deg,var(--brand),#4a7a34);
-      color:#fff;font-size:13.5px;font-weight:600;
-      border:none;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      transition:all 0.2s;box-shadow:0 4px 16px rgba(106,142,78,0.3);
-    }
-    .calc-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(106,142,78,0.45)}
-    .result-bar{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:10px 14px;border-radius:8px;
-      background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);
-    }
-    .result-label{font-size:12px;color:var(--muted)}
-    .result-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--emerald)}
-
-    /* ===== SECTION STYLES ===== */
-    .section-pad{padding:100px 0}
-    .section-label{
-      display:inline-flex;align-items:center;gap:7px;
-      font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
-      color:var(--brand-light);margin-bottom:16px;
-    }
-    .section-title{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:clamp(32px,4vw,52px);font-weight:700;
-      letter-spacing:-0.02em;line-height:1.1;margin-bottom:16px;
-    }
-    .section-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:520px}
-
-    /* ===== FEATURE CARDS ===== */
-    .feature-icon{
-      width:44px;height:44px;border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      margin-bottom:18px;
-    }
-    .feature-icon.green{background:rgba(106,142,78,0.15)}
-    .feature-icon.emerald{background:rgba(52,211,153,0.1)}
-    .feature-icon.sky{background:rgba(56,189,248,0.1)}
-    .feature-icon.amber{background:rgba(251,191,36,0.1)}
-    .feature-icon.purple{background:rgba(167,139,250,0.1)}
-    .feature-icon.rose{background:rgba(251,113,133,0.1)}
-    .feature-name{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;margin-bottom:8px}
-    .feature-desc{font-size:13.5px;color:var(--muted);line-height:1.6}
-    .feature-count{
-      margin-top:16px;font-size:11.5px;font-weight:600;
-      font-family:'JetBrains Mono',monospace;
-      color:var(--brand-light);
-      padding:4px 10px;background:var(--brand-dim);border-radius:6px;
-      display:inline-block;
+    /* Grid Overlay */
+    .grid-pattern {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      z-index: 0;
     }
 
-    /* ===== MODULE GRID ===== */
-    .module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-    .module-card{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:var(--radius);padding:24px;
-      transition:all 0.2s;cursor:default;
-    }
-    .module-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+    /* Typography Utilities */
+    .font-space { font-family: 'Space Grotesk', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* ===== DOWNLOAD SECTION ===== */
-    .download-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .dl-card{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:var(--radius);padding:32px;
-      display:flex;flex-direction:column;align-items:flex-start;gap:16px;
-      transition:all 0.25s;
+    /* Layout Containers */
+    section {
+      position: relative;
+      z-index: 2;
     }
-    .dl-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
-    .dl-card.featured{
-      background:linear-gradient(135deg,rgba(106,142,78,0.12),rgba(74,122,52,0.06));
-      border-color:rgba(106,142,78,0.35);
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
-    .dl-platform{
-      display:flex;align-items:center;gap:12px;
-      font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;
-    }
-    .dl-platform-icon{
-      width:48px;height:48px;border-radius:12px;
-      display:flex;align-items:center;justify-content:center;
-      background:var(--surface);border:1px solid var(--border);
-    }
-    .dl-meta{font-size:13px;color:var(--muted);line-height:1.5}
-    .dl-tags{display:flex;gap:8px;flex-wrap:wrap}
-    .dl-tag{
-      font-size:11px;padding:3px 10px;border-radius:100px;
-      background:var(--border);color:var(--muted);font-weight:500;font-family:'JetBrains Mono',monospace;
-    }
-    .dl-btn{
-      display:flex;align-items:center;gap:9px;width:100%;
-      padding:13px 20px;border-radius:10px;
-      background:linear-gradient(135deg,var(--brand),#4a7a34);
-      color:#fff;font-size:14px;font-weight:600;
-      text-decoration:none;border:none;cursor:pointer;
-      box-shadow:0 4px 20px rgba(106,142,78,0.3);
-      transition:all 0.2s;justify-content:center;
-    }
-    .dl-btn:hover{transform:translateY(-1px);box-shadow:0 7px 28px rgba(106,142,78,0.45)}
-    .dl-btn.outline{
-      background:transparent;border:1px solid var(--border-bright);
-      color:var(--text);box-shadow:none;
-    }
-    .dl-btn.outline:hover{border-color:var(--muted);background:var(--surface)}
-
-    /* ===== ARCHITECTURE DIAGRAM ===== */
-    .arch-diagram{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--radius);padding:28px;font-family:'JetBrains Mono',monospace;font-size:12.5px;
-      line-height:1.8;color:var(--muted);overflow-x:auto;
-    }
-    .arch-layer{
-      padding:12px 18px;border-radius:9px;margin-bottom:6px;
-      border:1px solid;
-    }
-    .arch-layer.electron{background:rgba(56,189,248,0.05);border-color:rgba(56,189,248,0.2);color:var(--sky)}
-    .arch-layer.react{background:rgba(106,142,78,0.05);border-color:rgba(106,142,78,0.2);color:var(--brand-light)}
-    .arch-layer.python{background:rgba(52,211,153,0.05);border-color:rgba(52,211,153,0.2);color:var(--emerald)}
-    .arch-arrow{text-align:center;font-size:16px;color:var(--subtle);padding:2px 0}
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeSlideUp{
-      from{opacity:0;transform:translateY(28px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    @keyframes float{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-8px)}
-    }
-    @keyframes shimmer{
-      0%{background-position:200% center}
-      100%{background-position:-200% center}
-    }
-    .animate-float{animation:float 4s ease-in-out infinite}
-    .reveal{
-      opacity:0;transform:translateY(32px);
-      transition:opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible{opacity:1;transform:none}
-    .reveal-delay-1{transition-delay:0.1s}
-    .reveal-delay-2{transition-delay:0.2s}
-    .reveal-delay-3{transition-delay:0.3s}
-
-    /* ===== DIVIDER ===== */
-    .divider{height:1px;background:var(--border);margin:0}
-
-    /* ===== FOOTER ===== */
-    footer{
-      padding:48px 24px;border-top:1px solid var(--border);
-      position:relative;z-index:2;
-    }
-    .footer-inner{
-      max-width:1200px;margin:0 auto;
-      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
-    }
-    .footer-left{display:flex;align-items:center;gap:20px}
-    .footer-logo img{height:28px;width:auto;opacity:0.7}
-    .footer-copy{font-size:13px;color:var(--muted)}
-    .footer-links{display:flex;gap:24px}
-    .footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.2s}
-    .footer-links a:hover{color:var(--text)}
-
-    /* ===== TERMINAL BLOCK ===== */
-    .terminal{
-      background:#050810;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
-    }
-    .terminal-header{
-      padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);
-      display:flex;align-items:center;gap:8px;
-    }
-    .terminal-title{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;flex:1;text-align:center}
-    .terminal-body{padding:20px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.9}
-    .t-comment{color:#4a5568}
-    .t-cmd{color:var(--emerald)}
-    .t-path{color:var(--sky)}
-    .t-output{color:#6b7280}
-    .t-success{color:var(--brand-light)}
-    .t-warn{color:#f59e0b}
-
-    /* PLOTLY CONTAINER */
-    #plot-container{width:100%;height:260px;border-radius:10px;overflow:hidden}
-
-    /* ===== STATUS BADGE ===== */
-    .status-indicator{
-      display:flex;align-items:center;gap:6px;
-      font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;
-      padding:4px 10px;border-radius:100px;
-      background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);
-      color:var(--emerald);
+    .section-pad {
+      padding: 110px 0;
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media(max-width:900px){
-      .bento-6col{grid-template-columns:1fr}
-      .col-span-4,.col-span-2,.col-span-3,.col-span-6{grid-column:span 1}
-      .app-body{grid-template-columns:1fr}
-      .app-sidebar{display:none}
-      .download-grid{grid-template-columns:1fr}
-      .nav-links{display:none}
-      .form-grid{grid-template-columns:1fr}
+    /* =========================================================
+       NAVBAR
+       ========================================================= */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: 72px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(7, 10, 18, 0.85);
+      backdrop-filter: blur(20px) saturate(1.8);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .nav-container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 38px;
+      width: auto;
+    }
+    .nav-logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .nav-logo-text span {
+      color: var(--brand-light);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .nav-links a:hover {
+      color: #fff;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover {
+      background: var(--card-hover);
+      border-color: var(--border-bright);
+      color: var(--brand-light);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      transition: all 0.25s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.5);
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px;
     }
 
-    /* ===== SCROLL PROGRESS ===== */
-    #scroll-bar{
-      position:fixed;top:0;left:0;height:2px;background:var(--brand);
-      z-index:9999;transition:width 0.1s linear;width:0%;
+    /* Mobile Drawer */
+    .mobile-drawer {
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
+      background: rgba(7, 10, 18, 0.98);
+      backdrop-filter: blur(24px);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      gap: 24px;
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-drawer a {
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
     }
 
-    /* ===== TAG CHIPS ===== */
-    .chip{
-      display:inline-flex;align-items:center;gap:5px;
-      padding:4px 11px;border-radius:100px;font-size:11.5px;font-weight:500;
-      background:var(--card);border:1px solid var(--border);color:var(--muted);
+    /* =========================================================
+       HERO SECTION
+       ========================================================= */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 24px 80px;
+      text-align: center;
     }
-    .chip.green{background:var(--brand-dim);border-color:rgba(106,142,78,0.3);color:var(--brand-light)}
-    .chip.sky{background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.25);color:var(--sky)}
-    .chip.purple{background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.25);color:#a78bfa}
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--brand-light);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+      backdrop-filter: blur(10px);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand-light);
+      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(40px, 6.5vw, 84px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+      max-width: 1050px;
+    }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #a7f3d0 0%, #34d399 35%, #38bdf8 70%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--muted);
+      max-width: 680px;
+      line-height: 1.7;
+      margin-bottom: 44px;
+      font-weight: 400;
+    }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 30px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), #047857);
+      color: #fff;
+      font-size: 15.5px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4);
+      transition: all 0.25s;
+    }
+    .btn-hero-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(16, 185, 129, 0.55);
+    }
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      font-size: 15.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-hero-secondary:hover {
+      border-color: var(--brand-light);
+      background: var(--card-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Terminal Pill */
+    .cli-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(14, 22, 38, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cli-pill:hover {
+      border-color: var(--border-bright);
+      color: var(--text);
+    }
+    .cli-pill code {
+      color: var(--brand-light);
+    }
+
+    /* Hero Metrics Ticker */
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 64px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(19, 31, 54, 0.6);
+      backdrop-filter: blur(12px);
+      max-width: 980px;
+      width: 100%;
+    }
+    .stat-item {
+      padding: 24px 36px;
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child {
+      border-right: none;
+    }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .stat-num.brand { color: var(--brand-light); }
+    .stat-num.sky { color: var(--sky); }
+    .stat-num.purple { color: #c084fc; }
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* =========================================================
+       INTERACTIVE GEOTECHNICAL SANDBOX (LIVE IN-BROWSER)
+       ========================================================= */
+    .sandbox-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+    .sandbox-header {
+      background: rgba(7, 10, 18, 0.9);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .sandbox-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sandbox-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sandbox-tab:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .sandbox-tab.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--brand-light);
+      color: var(--brand-light);
+    }
+    .sandbox-body {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 520px;
+    }
+    .sandbox-controls {
+      background: rgba(15, 23, 42, 0.7);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .control-group label span {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--brand-light);
+    }
+    .range-slider {
+      width: 100%;
+      accent-color: var(--brand);
+      cursor: pointer;
+    }
+    .sandbox-select {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13.5px;
+      outline: none;
+      cursor: pointer;
+    }
+    .sandbox-output-panel {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg);
+    }
+    .metrics-summary-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+    .metric-badge-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .metric-badge-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .metric-badge-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--emerald);
+      margin-top: 4px;
+    }
+
+    /* =========================================================
+       BENTO FEATURE GRID
+       ========================================================= */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+    .bento-col-8 { grid-column: span 8; }
+    .bento-col-4 { grid-column: span 4; }
+    .bento-col-6 { grid-column: span 6; }
+    .bento-col-12 { grid-column: span 12; }
+
+    .bento-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bento-card:hover {
+      border-color: rgba(52, 211, 153, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+    }
+    .bento-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .bento-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--brand-light); }
+    .bento-icon.sky { background: rgba(56, 189, 248, 0.15); color: var(--sky); }
+    .bento-icon.purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+    .bento-icon.amber { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
+
+    .bento-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .bento-desc {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .bento-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .pill {
+      font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* =========================================================
+       APP SHELL / PRODUCT SHOWCASE
+       ========================================================= */
+    .app-showcase-shell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+    }
+    .app-showcase-titlebar {
+      height: 44px;
+      background: rgba(7, 10, 18, 0.95);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      gap: 16px;
+    }
+    .app-showcase-lights {
+      display: flex;
+      gap: 7px;
+    }
+    .light-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .light-dot.red { background: #ef4444; }
+    .light-dot.yellow { background: #f59e0b; }
+    .light-dot.green { background: #10b981; }
+
+    /* =========================================================
+       MODULE SHOWCASE CARDS
+       ========================================================= */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .module-card:hover {
+      border-color: var(--brand-light);
+      background: var(--card-hover);
+      transform: translateY(-3px);
+    }
+    .module-card-top {
+      margin-bottom: 20px;
+    }
+    .module-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--brand-dim);
+      color: var(--brand-light);
+      margin-bottom: 12px;
+    }
+    .module-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .module-card-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .module-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-light);
+    }
+
+    /* =========================================================
+       COMPARISON TABLE
+       ========================================================= */
+    .comparison-table-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .comparison-table th {
+      background: rgba(15, 23, 42, 0.8);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .comparison-table th.highlight, .comparison-table td.highlight {
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--brand-light);
+      font-weight: 600;
+    }
+
+    /* =========================================================
+       DOWNLOAD MATRIX
+       ========================================================= */
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .download-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      transition: all 0.25s;
+    }
+    .download-card:hover {
+      border-color: var(--brand-light);
+      transform: translateY(-3px);
+    }
+    .download-card.featured {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 78, 59, 0.06));
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .dl-os-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       FAQ ACCORDION
+       ========================================================= */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+    }
+    .faq-q {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .faq-a {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    footer {
+      padding: 60px 24px 30px;
+      border-top: 1px solid var(--border);
+      background: #04060b;
+    }
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .footer-brand {
+      max-width: 340px;
+    }
+    .footer-brand p {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+    .footer-links-group {
+      display: flex;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-col a {
+      color: var(--muted);
+      font-size: 13.5px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover {
+      color: var(--brand-light);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--subtle);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .nav-links, .nav-actions .btn-ghost { display: none; }
+      .mobile-menu-btn { display: block; }
+      .sandbox-body { grid-template-columns: 1fr; }
+      .sandbox-controls { border-right: none; border-bottom: 1px solid var(--border); }
+      .bento-col-8, .bento-col-4, .bento-col-6 { grid-column: span 12; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<!-- Scroll Progress -->
-<div id="scroll-bar"></div>
+  <!-- Ambient background glow mesh -->
+  <div class="ambient-bg"></div>
+  <div class="grid-pattern"></div>
 
-<!-- Mesh Background -->
-<div class="mesh-bg"></div>
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <img src="public/logoIcon.png" alt="GeoCore Logo" />
+        <span class="nav-logo-text">Geo<span>Core</span></span>
+      </a>
 
-<!-- ========== NAVBAR ========== -->
-<nav>
-  <a href="#" class="nav-logo">
-    <img src="public/logo-2.png" alt="GeoCore">
-  </a>
-  <div class="nav-links">
-    <a href="#demo">Simulator</a>
-    <a href="#modules">Modules</a>
-    <a href="#architecture">Architecture</a>
-    <a href="#docs">Docs</a>
-    <a href="#download">Download</a>
-  </div>
-  <div class="nav-actions">
-    <a href="https://github.com/utkarsh-1912/geocore" target="_blank" class="btn-ghost">
-      <!-- Github Icon -->
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
-    <a href="#download" class="btn-primary">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download Free
-    </a>
-  </div>
-</nav>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#sandbox">Interactive Sandbox</a>
+        <a href="#modules">Engines</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#download">Download</a>
+        <a href="docs/" target="_blank" style="color: var(--brand-light); font-weight: 600;">Documentation &rarr;</a>
+      </div>
 
-<!-- ========== HERO ========== -->
-<section class="hero">
-  <div class="hero-badge">
-    <span class="pulse-dot"></span>
-    v1.0.0 — Native Windows &amp; macOS
-  </div>
+      <div class="nav-actions">
+        <a href="https://github.com/utkarsh-1912/geocore" target="_blank" class="btn-ghost">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub Stars
+        </a>
+        <a href="#download" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Get GeoCore
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
 
-  <h1 class="hero-title">
-    Geotechnical Precision.<br>
-    <span class="accent">Built for Engineers.</span>
-  </h1>
-
-  <p class="hero-sub">
-    Open-source desktop platform powered by Groundhog. CPT analysis, deep foundation sizing, Eurocode 7 verification — locally, in milliseconds, no cloud required.
-  </p>
-
-  <div class="hero-ctas">
-    <a href="#download" class="btn-hero-primary">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download GeoCore
-    </a>
-    <a href="#demo" class="btn-hero-secondary">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Live Simulator
-    </a>
-    <a href="https://github.com/utkarsh-1912/geocore" target="_blank" class="btn-hero-secondary">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      Star on GitHub
-    </a>
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#features" onclick="closeDrawer()">Features</a>
+    <a href="#sandbox" onclick="closeDrawer()">Interactive Sandbox</a>
+    <a href="#modules" onclick="closeDrawer()">Calculation Engines</a>
+    <a href="#architecture" onclick="closeDrawer()">System Architecture</a>
+    <a href="#download" onclick="closeDrawer()">Download Desktop App</a>
+    <a href="docs/" target="_blank" style="color: var(--brand-light);">Documentation Portal &rarr;</a>
+    <a href="https://github.com/utkarsh-1912/geocore" target="_blank">View GitHub Repository</a>
   </div>
 
-  <!-- Stats -->
-  <div class="hero-stats animate-float">
-    <div class="stat-item">
-      <div class="stat-num green">100+</div>
-      <div class="stat-label">Calculation Algorithms</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      GeoCore v1.0.0 Stable • 100+ Solvers • Open Source
     </div>
-    <div class="stat-item">
-      <div class="stat-num">0 ms</div>
-      <div class="stat-label">Cloud Latency</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num emerald">GPL v2</div>
-      <div class="stat-label">Open Source License</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">Win + Mac</div>
-      <div class="stat-label">Native Platform Support</div>
-    </div>
-  </div>
-</section>
 
-<!-- ========== DEMO SIMULATOR ========== -->
-<section class="section-pad" id="demo">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:48px" class="reveal">
-      <div class="section-label">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Interactive Simulator
+    <h1 class="hero-title">
+      The Open-Source Operating System for <span class="gradient-text">Geotechnical Engineering</span>
+    </h1>
+
+    <p class="hero-sub">
+      Unleash enterprise-grade analytical solvers, CPT Robertson classifications, pile capacities, shallow footing interaction envelopes, and AGS 4.0 conversions — completely offline with zero latency.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="#download" class="btn-hero-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download for Desktop
+      </a>
+      <a href="docs/" class="btn-hero-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Explore Documentation
+      </a>
+    </div>
+
+    <div class="cli-pill" onclick="copyCliCommand()">
+      <span>$</span>
+      <code id="cliText">git clone https://github.com/utkarsh-1912/geocore.git</code>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </div>
+
+    <!-- Ticker metrics -->
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num brand">100+</div>
+        <div class="stat-label">Geotechnical Solvers</div>
       </div>
-      <h2 class="section-title">Live Desktop Shell Preview</h2>
-      <p class="section-sub" style="margin:0 auto">Interact with an exact replica of the GeoCore application UI. Change pile geometry, trigger a calculation, and see live Plotly results.</p>
+      <div class="stat-item">
+        <div class="stat-num sky">0 ms</div>
+        <div class="stat-label">Cloud Latency (100% Local)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num purple">AGS 4.0</div>
+        <div class="stat-label">Full Spec Interoperability</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num brand">EN 1997-1</div>
+        <div class="stat-label">Eurocode 7 Verification</div>
+      </div>
     </div>
+  </section>
 
-    <!-- App Shell -->
-    <div class="app-shell reveal reveal-delay-1">
-      <!-- Titlebar -->
-      <div class="app-titlebar">
-        <div class="traffic-lights">
-          <div class="tl red"></div>
-          <div class="tl yellow"></div>
-          <div class="tl green"></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:center">
-          <img src="public/logoIcon.png" style="height:18px;width:18px;border-radius:4px">
-          <span style="font-size:12.5px;color:var(--muted);font-family:'JetBrains Mono',monospace">GeoCore Desktop — v1.0.0</span>
-        </div>
-        <div class="status-indicator">
-          <span class="pulse-dot" style="width:6px;height:6px"></span>
-          Engine Ready
-        </div>
+  <!-- INTERACTIVE SANDBOX SECTION -->
+  <section class="section-pad" id="sandbox" style="background: rgba(14, 22, 38, 0.4);">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 48px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-light);">Live Web Sandbox</span>
+        <h2 class="font-space" style="font-size: clamp(30px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin-top: 8px;">
+          Try Geotechnical Solvers Live in Your Browser
+        </h2>
+        <p style="color: var(--muted); max-width: 600px; margin: 12px auto 0;">
+          Experience real-time interactive analytical models powered by GeoCore formulas. Adjust sliders to see instant dynamic recalculations.
+        </p>
       </div>
 
-      <!-- App Body -->
-      <div class="app-body">
-        <!-- Sidebar -->
-        <div class="app-sidebar">
-          <div class="sidebar-header">
-            <img src="public/logo-2.png" alt="GeoCore">
+      <div class="sandbox-container">
+        <div class="sandbox-header">
+          <div class="sandbox-tabs">
+            <button class="sandbox-tab active" onclick="switchSandbox('cpt')">CPT Robertson Interpretation</button>
+            <button class="sandbox-tab" onclick="switchSandbox('bearing')">Bearing Capacity & Envelope</button>
+            <button class="sandbox-tab" onclick="switchSandbox('mohr')">Mohr-Coulomb Failure Circle</button>
+            <button class="sandbox-tab" onclick="switchSandbox('consolidation')">1D Consolidation Dissipation</button>
           </div>
-          <div class="sidebar-section-label">Modules</div>
-          <button class="sidebar-item active" onclick="switchModule('lcpc')">
-            <div class="left">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
-              Pile Calculations
-            </div>
-            <span class="sidebar-badge active">11</span>
-          </button>
-          <button class="sidebar-item" onclick="switchModule('ec7')">
-            <div class="left">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-              Eurocode 7
-            </div>
-            <span class="sidebar-badge">2</span>
-          </button>
-          <button class="sidebar-item" onclick="switchModule('site')">
-            <div class="left">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              Site Investigation
-            </div>
-            <span class="sidebar-badge">14</span>
-          </button>
-          <button class="sidebar-item" onclick="switchModule('shallow')">
-            <div class="left">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-              Shallow Foundations
-            </div>
-            <span class="sidebar-badge">3</span>
-          </button>
-          <button class="sidebar-item" onclick="switchModule('ags')">
-            <div class="left">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              AGS Converter
-            </div>
-            <span class="sidebar-badge">2</span>
-          </button>
-          <div style="flex:1"></div>
-          <div style="padding:10px;border-top:1px solid var(--border);margin-top:8px">
-            <div style="font-size:11px;color:var(--muted);line-height:1.8;font-family:'JetBrains Mono',monospace">
-              <div>Port: <span style="color:var(--emerald)">8000</span></div>
-              <div>Latency: <span style="color:var(--emerald)">1.2 ms</span></div>
-              <div>Engine: <span style="color:var(--brand-light)">Groundhog</span></div>
-            </div>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--brand-light);">● Interactive Plotly Engine</span>
         </div>
 
-        <!-- Main Area -->
-        <div class="app-main">
-          <div class="app-top">
-            <div>
-              <div class="app-title" id="sim-module-title">LCPC Method (Bustamante &amp; Gianeselli)</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:3px" id="sim-module-desc">CPT-based pile axial capacity using cone resistance q<sub>c</sub></div>
-            </div>
-            <div class="app-top-actions">
-              <button class="mini-btn">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
-                PDF Report
-              </button>
-              <button class="mini-btn">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
-                Export CSV
-              </button>
-              <button class="mini-btn accent">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit Fields
-              </button>
-            </div>
+        <div class="sandbox-body">
+          <!-- Controls Column -->
+          <div class="sandbox-controls" id="sandboxControls">
+            <!-- Dynamic Controls Injected via JS -->
           </div>
 
-          <!-- Form + Chart Grid -->
-          <div style="display:grid;grid-template-columns:260px 1fr;gap:20px;flex:1">
-            <!-- Inputs -->
-            <div style="display:flex;flex-direction:column;gap:12px">
-              <div class="form-field">
-                <label>Soil Profile</label>
-                <select class="form-select">
-                  <option>BH-01_NorthSea_CPT.csv</option>
-                  <option>BH-02_Clay_Profile.csv</option>
-                  <option>BH-03_Sand_Profile.csv</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label>Pile Diameter (m)</label>
-                <input type="number" id="sim-diam" class="form-input" value="0.80" step="0.05" min="0.1" max="3.0" oninput="updatePlot()">
-              </div>
-              <div class="form-field">
-                <label>Pile Length (m)</label>
-                <input type="number" id="sim-len" class="form-input" value="25" step="1" min="5" max="60" oninput="updatePlot()">
-              </div>
-              <div class="form-field">
-                <label>Base Group</label>
-                <select class="form-select" onchange="updatePlot()">
-                  <option>Group I</option>
-                  <option>Group II</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label>Shaft Group</label>
-                <select class="form-select" onchange="updatePlot()">
-                  <option>Group IA</option>
-                  <option>Group IB</option>
-                  <option>Group IIA</option>
-                </select>
-              </div>
-              <button class="calc-btn" onclick="updatePlot()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Calculate Capacity
-              </button>
-              <div class="result-bar">
-                <span class="result-label">Total Capacity (Qt)</span>
-                <span class="result-val" id="result-val">4,820 kN</span>
-              </div>
+          <!-- Chart & Output Column -->
+          <div class="sandbox-output-panel">
+            <div class="metrics-summary-bar" id="metricsBar">
+              <!-- Metrics injected dynamically -->
             </div>
-
-            <!-- Plotly Chart -->
-            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-                <span style="font-size:12.5px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  Axial Resistance Profile
-                </span>
-                <span class="chip green" style="font-size:10.5px">Live</span>
-              </div>
-              <div id="plot-container"></div>
-            </div>
+            <div id="sandboxPlot" style="width: 100%; height: 420px;"></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ========== FEATURES / MODULES ========== -->
-<section class="section-pad" id="modules" style="background:linear-gradient(180deg,var(--bg),var(--surface) 50%,var(--bg))">
-  <div class="container">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:20px">
-      <div class="reveal">
-        <div class="section-label">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          Module Directory
-        </div>
-        <h2 class="section-title">100+ Verified Algorithms</h2>
-        <p class="section-sub">Structured into 10 engineering categories, all backed by peer-reviewed literature.</p>
-      </div>
-    </div>
-
-    <div class="module-grid">
-      <!-- Card 1 -->
-      <div class="module-card reveal">
-        <div class="feature-icon green">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" stroke-width="1.8"><path d="M12 22V8m0-4V2M8 22l4-4 4 4M2 12h4m12 0h4"/></svg>
-        </div>
-        <div class="feature-name">Deep Foundations</div>
-        <div class="feature-desc">LCPC, Koppejan, De Beer (EC7), Axial Capacity, Negative Skin Friction, Chin-Kondler test extrapolation, pile settlement curves.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-          <span class="chip green">LCPC</span>
-          <span class="chip green">Koppejan</span>
-          <span class="chip green">De Beer</span>
-          <span class="chip">+8 more</span>
-        </div>
+  <!-- FEATURES / BENTO GRID -->
+  <section class="section-pad" id="features">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 56px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-light);">Engineered for Practitioners</span>
+        <h2 class="font-space" style="font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; margin-top: 8px;">
+          Built for Modern Geotechnical Workflows
+        </h2>
       </div>
 
-      <!-- Card 2 -->
-      <div class="module-card reveal reveal-delay-1">
-        <div class="feature-icon sky">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-        </div>
-        <div class="feature-name">Eurocode 7</div>
-        <div class="feature-desc">Characteristic parameter selection at 5% &amp; 95% fractiles (constant + linear trend), partial factors for DA1/DA2/DA3.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-          <span class="chip sky">DA1-1 / DA1-2</span>
-          <span class="chip sky">DA2 / DA3</span>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="module-card reveal reveal-delay-2">
-        <div class="feature-icon emerald">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
-        <div class="feature-name">Site Investigation &amp; CPT</div>
-        <div class="feature-desc">PCPT &amp; SPT processing classes, Robertson soil classification, OCR, G_max, undrained strength correlations. 30+ CPT functions.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-          <span class="chip sky">Robertson (2016)</span>
-          <span class="chip">Lunne</span>
-          <span class="chip">Mayne</span>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="module-card reveal">
-        <div class="feature-icon amber">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>
-        <div class="feature-name">Shallow Foundations</div>
-        <div class="feature-desc">Point, strip, circular, and rectangular stress distributions. Janbu &amp; Schmertmann settlement. Vesic, Prandtl bearing capacity.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-          <span class="chip" style="color:#f59e0b;border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.06)">Janbu</span>
-          <span class="chip" style="color:#f59e0b;border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.06)">Vesic</span>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="module-card reveal reveal-delay-1">
-        <div class="feature-icon purple">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <div class="feature-name">AGS File Converter</div>
-        <div class="feature-desc">Native parser for AGS v3.1 &amp; v4 borehole files. Exports HOLE, GEOL, SCPT, ISPT, SAMP groups directly into Pandas DataFrames.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-          <span class="chip purple">AGS v3.1</span>
-          <span class="chip purple">AGS v4.0</span>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="module-card reveal reveal-delay-2">
-        <div class="feature-icon rose">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <div class="feature-name">Soil Dynamics &amp; Liquefaction</div>
-        <div class="feature-desc">Moss (2006), Youd (2001), Boulanger &amp; Idriss (2014) cyclic stress ratios. Andersen cyclic contours. Darendeli modulus reduction.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-          <span class="chip" style="color:#fb7185;border-color:rgba(251,113,133,0.3);background:rgba(251,113,133,0.06)">CRR / CSR</span>
-          <span class="chip" style="color:#fb7185;border-color:rgba(251,113,133,0.3);background:rgba(251,113,133,0.06)">FoS</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== ARCHITECTURE ========== -->
-<section class="section-pad" id="architecture">
-  <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center" class="reveal">
-      <div>
-        <div class="section-label">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 22 22 7 12 2"/></svg>
-          Architecture
-        </div>
-        <h2 class="section-title">Decoupled.<br>Fast. Offline-First.</h2>
-        <p class="section-sub" style="margin-bottom:28px">No cloud, no latency. The Python engine runs as a frozen microservice managed automatically by the Electron shell at startup.</p>
-
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div style="display:flex;gap:14px;align-items:flex-start">
-            <div style="width:36px;height:36px;border-radius:8px;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-            </div>
-            <div>
-              <div style="font-weight:600;font-size:14px;margin-bottom:3px">Electron Shell + React 19</div>
-              <div style="font-size:13px;color:var(--muted)">Native desktop window manager, file system access, IPC bridge to Python process.</div>
-            </div>
+      <div class="bento-grid">
+        <!-- Bento 1 -->
+        <div class="bento-card bento-col-8">
+          <div class="bento-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
-          <div style="display:flex;gap:14px;align-items:flex-start">
-            <div style="width:36px;height:36px;border-radius:8px;background:var(--brand-dim);border:1px solid rgba(106,142,78,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </div>
-            <div>
-              <div style="font-weight:600;font-size:14px;margin-bottom:3px">Vite + Tailwind + Plotly</div>
-              <div style="font-size:13px;color:var(--muted)">Sub-second hot module reload in dev, static dist build for production Electron packaging.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:14px;align-items:flex-start">
-            <div style="width:36px;height:36px;border-radius:8px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="1.8"><polygon points="12 2 2 7 12 22 22 7 12 2"/></svg>
-            </div>
-            <div>
-              <div style="font-weight:600;font-size:14px;margin-bottom:3px">FastAPI + PyInstaller Bundle</div>
-              <div style="font-size:13px;color:var(--muted)">Zero Python install required. Groundhog, Pandas, NumPy, SciPy bundled as a standalone binary.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Terminal + Arch Diagram -->
-      <div>
-        <div class="terminal reveal reveal-delay-1">
-          <div class="terminal-header">
-            <div class="traffic-lights">
-              <div class="tl red"></div><div class="tl yellow"></div><div class="tl green"></div>
-            </div>
-            <div class="terminal-title">GeoCore Boot Log</div>
-          </div>
-          <div class="terminal-body">
-            <div class="t-comment"># Electron main process starts</div>
-            <div class="t-cmd">[Main] <span class="t-output">Creating BrowserWindow 1200x800</span></div>
-            <div class="t-cmd">[Backend] <span class="t-output">Spawning Python microservice...</span></div>
-            <div class="t-path">python-backend/dist/main.exe</div>
-            <div class="t-success">[Engine] Groundhog registry loaded: 104 functions</div>
-            <div class="t-success">[Uvicorn] Listening on 127.0.0.1:8000</div>
-            <div class="t-cmd">[HealthCheck] <span class="t-output">GET /health →</span> <span class="t-success">200 OK (1.2ms)</span></div>
-            <div class="t-success">[React] MainLayout mounted — ready</div>
+          <h3 class="bento-title">Automated CPT & Site Investigation Suite</h3>
+          <p class="bento-desc">
+            Load raw piezocone soundings (depth, cone resistance $q_c$, sleeve friction $f_s$, pore pressure $u_2$) and automatically compute Robertson 1990/2016 normalized metrics ($Q_{tn}, F_r, I_c$), undrained shear strength ($s_u$), small-strain shear modulus ($G_{max}$), and stratigraphic zoning.
+          </p>
+          <div class="bento-pills">
+            <span class="pill">Robertson 1990/2016</span>
+            <span class="pill">Lunne et al. (1997)</span>
+            <span class="pill">Liao-Whitman SPT</span>
+            <span class="pill">Casagrande Plasticity</span>
           </div>
         </div>
 
-        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px" class="reveal reveal-delay-2">
-          <div class="arch-layer electron">
-            <div style="font-weight:600;margin-bottom:2px">Electron Shell</div>
-            <div style="font-size:11px;opacity:0.7">electron/main.cjs → preload.js → IPC bridge</div>
+        <!-- Bento 2 -->
+        <div class="bento-card bento-col-4">
+          <div class="bento-icon sky">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
           </div>
-          <div class="arch-arrow">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          <h3 class="bento-title">Eurocode 7 Verification</h3>
+          <p class="bento-desc">
+            Automated partial factor assignments for Design Approaches DA1 (Combinations 1 & 2), DA2, and DA3. Schneider (1997) statistical confidence bounds.
+          </p>
+          <div class="bento-pills">
+            <span class="pill">EN 1997-1</span>
+            <span class="pill">STR / GEO States</span>
+            <span class="pill">Bayesian Trends</span>
           </div>
-          <div class="arch-layer react">
-            <div style="font-weight:600;margin-bottom:2px">React App (Vite)</div>
-            <div style="font-size:11px;opacity:0.7">SchemaForm → HTTP POST → ResultsRenderer</div>
+        </div>
+
+        <!-- Bento 3 -->
+        <div class="bento-card bento-col-4">
+          <div class="bento-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </div>
-          <div class="arch-arrow">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          <h3 class="bento-title">AGS 4.0 Data Interchange</h3>
+          <p class="bento-desc">
+            Seamlessly parse and validate geotechnical data files in standard AGS 4.0 format. Instant extraction of PROJ, HOLE, SAMP, ISPT, and GEOL groups with 1-click DataFrame export.
+          </p>
+          <div class="bento-pills">
+            <span class="pill">AGS 4.0 Spec</span>
+            <span class="pill">CSV / Excel Export</span>
+            <span class="pill">Borehole Logs</span>
           </div>
-          <div class="arch-layer python">
-            <div style="font-weight:600;margin-bottom:2px">FastAPI Engine (PyInstaller)</div>
-            <div style="font-size:11px;opacity:0.7">registry.py → wrappers.py → Groundhog → JSON</div>
+        </div>
+
+        <!-- Bento 4 -->
+        <div class="bento-card bento-col-8">
+          <div class="bento-icon amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3 class="bento-title">Deep & Shallow Foundation Solvers</h3>
+          <p class="bento-desc">
+            Calculate axial pile resistance using French LCPC (Bustamante & Gianeselli), Dutch Koppejan, Belgian De Beer, and AxCap integration algorithms. Evaluate shallow foundation drained/undrained bearing capacity with API RP 2GEO eccentric circular and rectangular reduction factors.
+          </p>
+          <div class="bento-pills">
+            <span class="pill">LCPC NF P 94-262</span>
+            <span class="pill">Koppejan NEN 6743</span>
+            <span class="pill">API RP 2GEO</span>
+            <span class="pill">Schmertmann Settlement</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ========== DOWNLOAD ========== -->
-<section class="section-pad" id="download" style="background:linear-gradient(180deg,var(--bg),rgba(106,142,78,0.04),var(--bg))">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:56px" class="reveal">
-      <div class="section-label">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download
-      </div>
-      <h2 class="section-title">Get GeoCore. Free. Forever.</h2>
-      <p class="section-sub" style="margin:0 auto">Native installers compiled via GitHub Actions on Windows and macOS runners. No telemetry, no account required.</p>
-    </div>
-
-    <div class="download-grid">
-      <!-- Windows -->
-      <div class="dl-card featured reveal">
-        <div class="dl-platform">
-          <div class="dl-platform-icon">
-            <!-- Windows SVG -->
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--sky)"><path d="M0 3.449L9.75 2.1v9.451H0m10.95-9.6L24 0v11.4H10.95M0 12.6h9.75v9.451L0 20.699M10.95 12.6H24V24l-13.05-1.8"/></svg>
-          </div>
-          Windows
+  <!-- MODULES EXPLORER -->
+  <section class="section-pad" id="modules" style="background: rgba(10, 16, 28, 0.6);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; margin-bottom: 48px;">
+        <div>
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-light);">Engine Library</span>
+          <h2 class="font-space" style="font-size: clamp(30px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin-top: 8px;">
+            Comprehensive Analytical Modules
+          </h2>
         </div>
-        <div class="dl-meta">
-          NSIS installer with optional Start Menu &amp; Desktop shortcuts. Portable .exe also available. x64 only.
-        </div>
-        <div class="dl-tags">
-          <span class="dl-tag">.exe installer</span>
-          <span class="dl-tag">Portable .exe</span>
-          <span class="dl-tag">Windows 10+</span>
-          <span class="dl-tag">x64</span>
-        </div>
-        <a href="https://github.com/utkarsh-1912/geocore/releases/latest" class="dl-btn" style="margin-top:8px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download for Windows (.exe)
+        <a href="docs/modules/deep-foundations/" target="_blank" class="btn-ghost">
+          Browse All in Docs &rarr;
         </a>
       </div>
 
-      <!-- macOS -->
-      <div class="dl-card reveal reveal-delay-1">
-        <div class="dl-platform">
-          <div class="dl-platform-icon">
-            <!-- Apple SVG -->
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--text)"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.32c.67-.82 1.13-1.96.99-3.11-.98.04-2.19.66-2.88 1.47-.62.72-1.16 1.88-1.01 3.01 1.1.08 2.23-.55 2.9-1.37z"/></svg>
+      <div class="modules-grid">
+        <a href="docs/modules/deep-foundations/" target="_blank" class="module-card">
+          <div class="module-card-top">
+            <span class="module-badge">Piles & Deep Foundations</span>
+            <h3 class="module-card-title">Axial Pile Capacity</h3>
+            <p class="module-card-desc">LCPC, Koppejan, De Beer, and AxCap depth-integrated base and skin friction capacity profiles.</p>
           </div>
-          macOS
-        </div>
-        <div class="dl-meta">
-          DMG disk image for drag-and-drop installation. Universal binaries for both Apple Silicon (M1–M4) and Intel x64.
-        </div>
-        <div class="dl-tags">
-          <span class="dl-tag">.dmg disk image</span>
-          <span class="dl-tag">.zip bundle</span>
-          <span class="dl-tag">macOS 12+</span>
-          <span class="dl-tag">arm64 + x64</span>
-        </div>
-        <a href="https://github.com/utkarsh-1912/geocore/releases/latest" class="dl-btn outline" style="margin-top:8px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download for macOS (.dmg)
+          <span class="module-card-link">Read Guide &rarr;</span>
+        </a>
+
+        <a href="docs/modules/shallow-foundations/" target="_blank" class="module-card">
+          <div class="module-card-top">
+            <span class="module-badge">Shallow Foundations</span>
+            <h3 class="module-card-title">Bearing Capacity & Settlement</h3>
+            <p class="module-card-desc">Vesic and Eurocode 7 drained/undrained limits, Schmertmann CPT strain influence, and API RP 2GEO effective area.</p>
+          </div>
+          <span class="module-card-link">Read Guide &rarr;</span>
+        </a>
+
+        <a href="docs/modules/site-investigation/" target="_blank" class="module-card">
+          <div class="module-card-top">
+            <span class="module-badge">In-Situ Testing</span>
+            <h3 class="module-card-title">PCPT & SPT Processing</h3>
+            <p class="module-card-desc">Automated Robertson 1990/2016 Soil Behavior Type indexing, $s_u$ extraction, Liao-Whitman $N_{60}$, and Casagrande charts.</p>
+          </div>
+          <span class="module-card-link">Read Guide &rarr;</span>
+        </a>
+
+        <a href="docs/modules/eurocode7/" target="_blank" class="module-card">
+          <div class="module-card-top">
+            <span class="module-badge">Standards</span>
+            <h3 class="module-card-title">Eurocode 7 Partial Factors</h3>
+            <p class="module-card-desc">DA1, DA2, and DA3 STR/GEO factor matrices, Schneider characteristic value determination with Student-t confidence bounds.</p>
+          </div>
+          <span class="module-card-link">Read Guide &rarr;</span>
+        </a>
+
+        <a href="docs/modules/consolidation/" target="_blank" class="module-card">
+          <div class="module-card-top">
+            <span class="module-badge">Soil Dynamics</span>
+            <h3 class="module-card-title">1D Consolidation & Dissipation</h3>
+            <p class="module-card-desc">Terzaghi partial differential equation solver, excess pore pressure isochrones, Casagrande log-time & Taylor root-time $c_v$.</p>
+          </div>
+          <span class="module-card-link">Read Guide &rarr;</span>
+        </a>
+
+        <a href="docs/modules/pipelines-cables/" target="_blank" class="module-card">
+          <div class="module-card-top">
+            <span class="module-badge">Offshore Geotechnics</span>
+            <h3 class="module-card-title">Pipelines & Marine Cables</h3>
+            <p class="module-card-desc">Subsea pipe seabed penetration, undrained & drained vertical embedment, contact width, and touchdown lay amplification factors.</p>
+          </div>
+          <span class="module-card-link">Read Guide &rarr;</span>
         </a>
       </div>
     </div>
+  </section>
 
-    <!-- Release CTA -->
-    <div style="margin-top:24px;text-align:center;padding:24px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border)" class="reveal">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Prefer to build from source or inspect the release pipeline?</div>
-      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
-        <a href="https://github.com/utkarsh-1912/geocore" class="btn-ghost">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          View on GitHub
-        </a>
-        <a href="docs/index.html" class="btn-ghost">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-          Browse Documentation
-        </a>
+  <!-- ARCHITECTURE -->
+  <section class="section-pad" id="architecture">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 56px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-light);">System Architecture</span>
+        <h2 class="font-space" style="font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; margin-top: 8px;">
+          Modern High-Performance Stack
+        </h2>
+        <p style="color: var(--muted); max-width: 650px; margin: 12px auto 0;">
+          A decoupled, security-first desktop architecture combining the raw computation speed of Python/NumPy with the fluidity of React 18.
+        </p>
+      </div>
+
+      <div class="comparison-table-wrapper" style="margin-bottom: 40px;">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature Dimension</th>
+              <th class="highlight">GeoCore</th>
+              <th>Legacy Geotechnical Suites</th>
+              <th>Custom In-House Excel Sheets</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Licensing & Source</strong></td>
+              <td class="highlight">Open Source (GPL v2) - Free Forever</td>
+              <td>Proprietary ($5k–$20k/seat/yr)</td>
+              <td>Unmaintainable macro silos</td>
+            </tr>
+            <tr>
+              <td><strong>Hardware Dongles / USB Keys</strong></td>
+              <td class="highlight">Zero (Install anywhere instantly)</td>
+              <td>Required (HASP / Sentinel dongles)</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><strong>Calculation Kernel</strong></td>
+              <td class="highlight">FastAPI + NumPy + SciPy + Groundhog</td>
+              <td>Closed compiled legacy C/Fortran</td>
+              <td>VBA / Excel numerical limitations</td>
+            </tr>
+            <tr>
+              <td><strong>Data Interchange</strong></td>
+              <td class="highlight">Native AGS 4.0, CSV, Excel, Parquet</td>
+              <td>Proprietary binary file formats</td>
+              <td>Workbook copy-pasting</td>
+            </tr>
+            <tr>
+              <td><strong>Plotting & Graphics</strong></td>
+              <td class="highlight">Interactive Plotly.js (Zoom, Pan, SVG)</td>
+              <td>Static bitmap exports</td>
+              <td>Static Excel charts</td>
+            </tr>
+            <tr>
+              <td><strong>Extensibility</strong></td>
+              <td class="highlight">Python API + Custom Tool Registry</td>
+              <td>Restricted vendor scripting</td>
+              <td>Complex cell formulas</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ========== FOOTER ========== -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-left">
-      <div class="footer-logo"><img src="public/logo-2.png" alt="GeoCore"></div>
-      <div class="footer-copy">&copy; 2026 GeoCore &mdash; Utkarsh Gupta &mdash; GPL v2</div>
+  <!-- DOWNLOAD MATRIX -->
+  <section class="section-pad" id="download" style="background: rgba(14, 22, 38, 0.7);">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 56px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-light);">Get Started Today</span>
+        <h2 class="font-space" style="font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; margin-top: 8px;">
+          Download GeoCore Desktop
+        </h2>
+        <p style="color: var(--muted); max-width: 600px; margin: 12px auto 0;">
+          Free and open source. Includes bundled Python environment with all required geotechnical numerical engines.
+        </p>
+      </div>
+
+      <div class="download-grid">
+        <!-- Windows -->
+        <div class="download-card featured">
+          <div class="dl-os-badge">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.802"/></svg>
+            Windows
+          </div>
+          <p style="font-size: 13.5px; color: var(--muted);">Windows 10 / 11 (64-bit). One-click installer with automatic updates.</p>
+          <a href="https://github.com/utkarsh-1912/geocore/releases" target="_blank" class="btn-primary" style="width: 100%; justify-content: center;">
+            Download .exe Installer (64-bit)
+          </a>
+          <span style="font-size: 11.5px; font-family: 'JetBrains Mono', monospace; color: var(--subtle);">GeoCore-Setup-1.0.0.exe</span>
+        </div>
+
+        <!-- macOS -->
+        <div class="download-card">
+          <div class="dl-os-badge">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.98.6-2.61 1.34-.56.64-.97 1.69-.84 2.71.99.08 2.01-.52 2.52-1.2"/></svg>
+            macOS
+          </div>
+          <p style="font-size: 13.5px; color: var(--muted);">Apple Silicon (M1/M2/M3/M4) & Intel 64-bit. macOS 11 Big Sur or higher.</p>
+          <a href="https://github.com/utkarsh-1912/geocore/releases" target="_blank" class="btn-ghost" style="width: 100%; justify-content: center;">
+            Download .dmg Package
+          </a>
+          <span style="font-size: 11.5px; font-family: 'JetBrains Mono', monospace; color: var(--subtle);">GeoCore-1.0.0-universal.dmg</span>
+        </div>
+
+        <!-- Linux -->
+        <div class="download-card">
+          <div class="dl-os-badge">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12.002 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.884 18.064c-.391 0-.742-.19-.958-.518l-2.029-3.072a1.144 1.144 0 0 1 .184-1.488 1.137 1.137 0 0 1 1.487.184l1.316 1.993 4.298-6.516a1.145 1.145 0 0 1 1.488-.184 1.139 1.139 0 0 1 .184 1.488l-5.02 7.613c-.216.328-.567.5-.959.5z"/></svg>
+            Linux
+          </div>
+          <p style="font-size: 13.5px; color: var(--muted);">Ubuntu, Debian, Fedora, Arch. Standalone AppImage & Debian package.</p>
+          <a href="https://github.com/utkarsh-1912/geocore/releases" target="_blank" class="btn-ghost" style="width: 100%; justify-content: center;">
+            Download AppImage / .deb
+          </a>
+          <span style="font-size: 11.5px; font-family: 'JetBrains Mono', monospace; color: var(--subtle);">GeoCore-1.0.0.AppImage</span>
+        </div>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="https://github.com/utkarsh-1912/geocore">GitHub</a>
-      <a href="docs/index.html">Documentation</a>
-      <a href="#download">Releases</a>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-pad" id="faq">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 48px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-light);">Common Questions</span>
+        <h2 class="font-space" style="font-size: clamp(30px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin-top: 8px;">
+          Frequently Asked Questions
+        </h2>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3 class="faq-q">Is GeoCore truly free and open source?</h3>
+          <p class="faq-a">Yes! GeoCore is released under the GNU General Public License v2 (GPL v2). You can use it in commercial engineering design projects, academic research, and consulting without any licensing fees or seat restrictions.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">Does GeoCore send project soil data to the cloud?</h3>
+          <p class="faq-a">No. GeoCore is 100% offline-first. All computations, CPT interpretations, and AGS conversions run purely locally on your machine over a local loopback port (`127.0.0.1:8000`). Your subsurface project data never leaves your computer.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">Can I import standard AGS 4.0 files directly?</h3>
+          <p class="faq-a">Yes. GeoCore has a built-in AGS 4.0 parser that extracts all standard groups (PROJ, HOLE, SAMP, ISPT, GEOL, etc.) with automatic unit checking, coordinate mapping, and one-click conversion to SoilProfile layers.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">How are calculation results verified?</h3>
+          <p class="faq-a">All algorithms in GeoCore are unit-tested against peer-reviewed benchmark datasets, textbook solutions, and standard published papers (e.g. Robertson 1990/2016, Bustamante & Gianeselli 1982, Koppejan 1948, Vesic 1973, Schneider 1997).</p>
+        </div>
+      </div>
     </div>
-  </div>
-</footer>
+  </section>
 
-<!-- ========== JS ========== -->
-<script>
-  // Scroll progress bar
-  window.addEventListener('scroll', () => {
-    const el = document.getElementById('scroll-bar');
-    const max = document.body.scrollHeight - window.innerHeight;
-    el.style.width = (window.scrollY / max * 100) + '%';
-  });
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <img src="public/logoIcon.png" alt="GeoCore Logo" />
+            <span class="nav-logo-text">Geo<span>Core</span></span>
+          </a>
+          <p>The modern open-source geotechnical desktop platform. Built with Groundhog, FastAPI, React, and Electron.</p>
+        </div>
 
-  // Reveal on scroll
-  const revealEls = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => obs.observe(el));
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h4>Solvers & Engines</h4>
+            <ul>
+              <li><a href="docs/modules/deep-foundations/">Deep Foundations</a></li>
+              <li><a href="docs/modules/shallow-foundations/">Shallow Footings</a></li>
+              <li><a href="docs/modules/site-investigation/">CPT & In-Situ Tests</a></li>
+              <li><a href="docs/modules/eurocode7/">Eurocode 7</a></li>
+              <li><a href="docs/modules/ags-converter/">AGS 4.0 Converter</a></li>
+            </ul>
+          </div>
 
-  // Plotly Init
-  function buildPlot(diam, len) {
-    const depths = [], qb = [], qs = [], qt = [];
-    for (let z = 0; z <= len; z += 0.5) {
-      depths.push(-z);
-      const b = Math.min(3200, z * 200 * (diam / 0.8));
-      const s = z * z * 9 * (diam / 0.8);
-      qb.push(b); qs.push(s); qt.push(b + s);
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="docs/">Documentation Portal</a></li>
+              <li><a href="docs/getting-started/quickstart/">Quickstart Guide</a></li>
+              <li><a href="docs/developer/architecture/">Architecture Audit</a></li>
+              <li><a href="docs/developer/packaging/">Packaging & Builds</a></li>
+              <li><a href="docs/developer/deployment/">Netlify Deployment</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Community</h4>
+            <ul>
+              <li><a href="https://github.com/utkarsh-1912/geocore" target="_blank">GitHub Repository</a></li>
+              <li><a href="https://github.com/utkarsh-1912/geocore/releases" target="_blank">Releases & Binaries</a></li>
+              <li><a href="https://github.com/utkarsh-1912/geocore/issues" target="_blank">Issue Tracker</a></li>
+              <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE" target="_blank">GPL v2 License</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. Open Source under GPL v2 License.</span>
+        <span>GeoCore Desktop Engineering Engine</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       INTERACTIVE SANDBOX & NAVIGATION JAVASCRIPT
+       ========================================================= -->
+  <script>
+    // Copy CLI Command
+    function copyCliCommand() {
+      const text = document.getElementById('cliText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const pill = document.querySelector('.cli-pill');
+        const orig = pill.innerHTML;
+        pill.innerHTML = `<span style="color: var(--brand-light);">✓ Copied to clipboard!</span>`;
+        setTimeout(() => { pill.innerHTML = orig; }, 2000);
+      });
     }
-    const layout = {
-      paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
-      margin:{l:46,r:12,t:10,b:36},
-      xaxis:{title:'Resistance (kN)',color:'#7a8fa6',gridcolor:'#1e2d47',zeroline:false,tickfont:{size:10}},
-      yaxis:{title:'Depth (m)',color:'#7a8fa6',gridcolor:'#1e2d47',zeroline:false,tickfont:{size:10}},
-      legend:{x:0.01,y:0.01,font:{color:'#f0f4f8',size:10},bgcolor:'rgba(20,31,51,0.8)'},
-      showlegend:true,
-    };
-    const traces = [
-      {x:qb, y:depths, mode:'lines', name:'Base Q<sub>b</sub>', line:{color:'#38bdf8',width:2}},
-      {x:qs, y:depths, mode:'lines', name:'Shaft Q<sub>s</sub>', line:{color:'#a3e635',width:2}},
-      {x:qt, y:depths, mode:'lines', name:'Total Q<sub>t</sub>', line:{color:'#34d399',width:2.5}},
-    ];
-    Plotly.react('plot-container', traces, layout, {displayModeBar:false, responsive:true});
-    document.getElementById('result-val').textContent = Math.round(qt[qt.length-1]).toLocaleString() + ' kN';
-  }
 
-  function updatePlot() {
-    const d = parseFloat(document.getElementById('sim-diam').value) || 0.8;
-    const l = parseFloat(document.getElementById('sim-len').value) || 25;
-    buildPlot(d, l);
-  }
-
-  function switchModule(id) {
-    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.sidebar-badge').forEach(b => b.classList.remove('active'));
-    const btn = document.getElementById ? null : null;
-    const map = {
-      lcpc: {title:'LCPC Method (Bustamante & Gianeselli)',desc:'CPT-based pile axial capacity using cone resistance q<sub>c</sub>'},
-      ec7:  {title:'Eurocode 7 — Parameter Selection',    desc:'5% and 95% characteristic values, constant + linear trend profiles'},
-      site: {title:'PCPT Classification (Robertson 2016)',desc:'Normalized Q<sub>tn</sub>, F<sub>r</sub> and Soil Behaviour Type Index I<sub>c</sub>'},
-      shallow:{title:'Shallow Foundation Settlement',     desc:'Janbu elastic settlement with Schmertmann CPT method'},
-      ags:  {title:'AGS File Converter (v3.1 & v4)',       desc:'Parses borehole AGS files → structured SoilProfile DataFrames'},
-    };
-    if(map[id]){
-      document.getElementById('sim-module-title').innerHTML = map[id].title;
-      document.getElementById('sim-module-desc').innerHTML  = map[id].desc;
+    // Mobile Drawer Toggle
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    mobileToggle.addEventListener('click', () => {
+      mobileDrawer.classList.toggle('open');
+    });
+    function closeDrawer() {
+      mobileDrawer.classList.remove('open');
     }
-    // Highlight button — use onclick attr since dynamically rendered
-    event.currentTarget.classList.add('active');
-    const badge = event.currentTarget.querySelector('.sidebar-badge');
-    if(badge) badge.classList.add('active');
-  }
 
-  // Init plot after DOM ready
-  window.addEventListener('DOMContentLoaded', () => buildPlot(0.8, 25));
-</script>
+    // Current active sandbox mode
+    let currentMode = 'cpt';
+
+    // Sandbox Configurations
+    const sandboxes = {
+      cpt: {
+        controls: `
+          <div class="control-group">
+            <label>Stratigraphy Preset</label>
+            <select class="sandbox-select" id="cptPreset" onchange="updateSandbox()">
+              <option value="dense_sand">Layered Sand over Soft Clay</option>
+              <option value="soft_clay">Deep Normally Consolidated Clay</option>
+              <option value="silty_sand">Silty Sand with Silt Interbed</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>Groundwater Depth zw <span id="zwVal">1.5 m</span></label>
+            <input type="range" class="range-slider" id="zwSlider" min="0" max="6" step="0.5" value="1.5" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Cone Factor Nkt <span id="nktVal">14.0</span></label>
+            <input type="range" class="range-slider" id="nktSlider" min="10" max="20" step="0.5" value="14.0" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Net Area Ratio a <span id="areaRatioVal">0.80</span></label>
+            <input type="range" class="range-slider" id="areaRatioSlider" min="0.6" max="0.95" step="0.05" value="0.80" oninput="updateSandbox()">
+          </div>
+        `,
+        calculate: () => {
+          const zw = parseFloat(document.getElementById('zwSlider')?.value || 1.5);
+          const nkt = parseFloat(document.getElementById('nktSlider')?.value || 14.0);
+          const preset = document.getElementById('cptPreset')?.value || 'dense_sand';
+          
+          document.getElementById('zwVal').innerText = zw.toFixed(1) + ' m';
+          document.getElementById('nktVal').innerText = nkt.toFixed(1);
+
+          const depths = [];
+          const qc = [];
+          const fs = [];
+          const Ic = [];
+          const su = [];
+
+          for (let z = 0.5; z <= 20; z += 0.25) {
+            depths.push(z);
+            let rawQc = 0;
+            let rawFs = 0;
+
+            if (preset === 'dense_sand') {
+              if (z < 6) {
+                rawQc = 12 + 2 * Math.sin(z) + (z * 1.5);
+                rawFs = rawQc * 0.006 * 1000;
+              } else if (z < 14) {
+                rawQc = 1.2 + 0.15 * (z - 6);
+                rawFs = rawQc * 0.022 * 1000;
+              } else {
+                rawQc = 18 + 1.2 * (z - 14);
+                rawFs = rawQc * 0.008 * 1000;
+              }
+            } else if (preset === 'soft_clay') {
+              rawQc = 0.6 + 0.18 * z;
+              rawFs = rawQc * 0.028 * 1000;
+            } else {
+              rawQc = 6 + 1.2 * z + 3 * Math.sin(z * 1.5);
+              rawFs = rawQc * 0.012 * 1000;
+            }
+
+            qc.push(rawQc);
+            fs.push(rawFs);
+
+            // Compute Robertson Ic approximation
+            const sigma_v0 = z * 18.5;
+            const u0 = z > zw ? (z - zw) * 9.81 : 0;
+            const sigma_v0_eff = Math.max(5, sigma_v0 - u0);
+            const Qtn = Math.max(1, ((rawQc * 1000 - sigma_v0) / 100) * Math.pow(100 / sigma_v0_eff, 0.65));
+            const Fr = Math.max(0.1, (rawFs / Math.max(10, (rawQc * 1000 - sigma_v0))) * 100);
+            const icVal = Math.sqrt(Math.pow(3.47 - Math.log10(Qtn), 2) + Math.pow(Math.log10(Fr) + 1.22, 2));
+            Ic.push(icVal);
+
+            // su estimate in clay zones
+            const suVal = Math.max(0, (rawQc * 1000 - sigma_v0) / nkt);
+            su.push(suVal);
+          }
+
+          const avgQc = (qc.reduce((a, b) => a + b, 0) / qc.length).toFixed(1);
+          const maxQc = Math.max(...qc).toFixed(1);
+          const avgIc = (Ic.reduce((a, b) => a + b, 0) / Ic.length).toFixed(2);
+
+          document.getElementById('metricsBar').innerHTML = `
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Avg Cone Resistance</div>
+              <div class="metric-badge-val">${avgQc} MPa</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Peak Cone Resistance</div>
+              <div class="metric-badge-val">${maxQc} MPa</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Mean Soil Index Ic</div>
+              <div class="metric-badge-val">${avgIc}</div>
+            </div>
+          `;
+
+          const trace1 = {
+            x: qc,
+            y: depths,
+            name: 'qc [MPa]',
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: '#10b981', width: 2.5 }
+          };
+
+          const trace2 = {
+            x: Ic,
+            y: depths,
+            name: 'Ic Index',
+            xaxis: 'x2',
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: '#38bdf8', width: 2, dash: 'dot' }
+          };
+
+          const layout = {
+            margin: { t: 30, r: 40, l: 50, b: 40 },
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'rgba(11, 17, 32, 0.6)',
+            font: { color: '#94a3b8', family: 'Inter' },
+            xaxis: {
+              title: 'Cone Resistance qc [MPa]',
+              gridcolor: 'rgba(255,255,255,0.06)',
+              zerolinecolor: 'rgba(255,255,255,0.1)'
+            },
+            xaxis2: {
+              title: 'Robertson Ic Index [-]',
+              overlaying: 'x',
+              side: 'top',
+              range: [1, 4],
+              gridcolor: 'transparent'
+            },
+            yaxis: {
+              title: 'Depth z [m]',
+              autorange: 'reversed',
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            legend: { orientation: 'h', y: -0.15 }
+          };
+
+          Plotly.newPlot('sandboxPlot', [trace1, trace2], layout, { responsive: true, displayModeBar: false });
+        }
+      },
+
+      bearing: {
+        controls: `
+          <div class="control-group">
+            <label>Footing Width B <span id="bVal">3.0 m</span></label>
+            <input type="range" class="range-slider" id="bSlider" min="1" max="10" step="0.5" value="3.0" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Footing Length L <span id="lVal">6.0 m</span></label>
+            <input type="range" class="range-slider" id="lSlider" min="1" max="20" step="0.5" value="6.0" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Embedment Depth D <span id="dVal">1.5 m</span></label>
+            <input type="range" class="range-slider" id="dSlider" min="0" max="5" step="0.25" value="1.5" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Friction Angle φ' <span id="phiVal">32.0°</span></label>
+            <input type="range" class="range-slider" id="phiSlider" min="20" max="45" step="1" value="32" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Cohesion c' <span id="cVal">5.0 kPa</span></label>
+            <input type="range" class="range-slider" id="cSlider" min="0" max="50" step="2.5" value="5.0" oninput="updateSandbox()">
+          </div>
+        `,
+        calculate: () => {
+          const B = parseFloat(document.getElementById('bSlider')?.value || 3.0);
+          const L = parseFloat(document.getElementById('lSlider')?.value || 6.0);
+          const D = parseFloat(document.getElementById('dSlider')?.value || 1.5);
+          const phiDeg = parseFloat(document.getElementById('phiSlider')?.value || 32);
+          const c = parseFloat(document.getElementById('cSlider')?.value || 5.0);
+
+          document.getElementById('bVal').innerText = B.toFixed(1) + ' m';
+          document.getElementById('lVal').innerText = L.toFixed(1) + ' m';
+          document.getElementById('dVal').innerText = D.toFixed(2) + ' m';
+          document.getElementById('phiVal').innerText = phiDeg.toFixed(0) + '°';
+          document.getElementById('cVal').innerText = c.toFixed(1) + ' kPa';
+
+          const phiRad = (phiDeg * Math.PI) / 180;
+          const gamma = 19.0;
+          const q0 = gamma * D;
+
+          // Bearing Capacity Factors
+          const Nq = Math.exp(Math.PI * Math.tan(phiRad)) * Math.pow(Math.tan(Math.PI / 4 + phiRad / 2), 2);
+          const Nc = (Nq - 1) / Math.tan(phiRad);
+          const Ngamma = 2 * (Nq - 1) * Math.tan(phiRad);
+
+          // Shape Factors
+          const sq = 1 + (B / L) * Math.sin(phiRad);
+          const sc = (sq * Nq - 1) / (Nq - 1);
+          const sgamma = 1 - 0.3 * (B / L);
+
+          const qUlt = (c * Nc * sc) + (q0 * Nq * sq) + (0.5 * gamma * B * Ngamma * sgamma);
+          const area = B * L;
+          const Qult = qUlt * area;
+          const Qall = Qult / 2.5;
+
+          document.getElementById('metricsBar').innerHTML = `
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Ult. Bearing Pressure</div>
+              <div class="metric-badge-val">${qUlt.toFixed(0)} kPa</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Ult. Vertical Load</div>
+              <div class="metric-badge-val">${(Qult / 1000).toFixed(2)} MN</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Allowable Load (FS=2.5)</div>
+              <div class="metric-badge-val">${(Qall / 1000).toFixed(2)} MN</div>
+            </div>
+          `;
+
+          // Generate V-H Failure Envelope
+          const vLoads = [];
+          const hMax = [];
+          const numSteps = 50;
+
+          for (let i = 0; i <= numSteps; i++) {
+            const v = (Qult * i) / numSteps;
+            vLoads.push(v / 1000);
+            // Parabolic V-H interaction: H_max = V * tan(delta) * (1 - V/Qult)
+            const h = v * Math.tan(phiRad * 0.67) * Math.pow(1 - (v / Qult), 0.7);
+            hMax.push(Math.max(0, h / 1000));
+          }
+
+          const trace = {
+            x: hMax,
+            y: vLoads,
+            type: 'scatter',
+            mode: 'lines',
+            fill: 'tozerox',
+            fillcolor: 'rgba(16, 185, 129, 0.15)',
+            line: { color: '#10b981', width: 3 },
+            name: 'V-H Failure Limit'
+          };
+
+          const layout = {
+            margin: { t: 30, r: 30, l: 60, b: 50 },
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'rgba(11, 17, 32, 0.6)',
+            font: { color: '#94a3b8', family: 'Inter' },
+            xaxis: {
+              title: 'Horizontal Load H [MN]',
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            yaxis: {
+              title: 'Vertical Load V [MN]',
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            showlegend: false
+          };
+
+          Plotly.newPlot('sandboxPlot', [trace], layout, { responsive: true, displayModeBar: false });
+        }
+      },
+
+      mohr: {
+        controls: `
+          <div class="control-group">
+            <label>Major Stress σ1 <span id="s1Val">300 kPa</span></label>
+            <input type="range" class="range-slider" id="s1Slider" min="100" max="800" step="25" value="300" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Minor Stress σ3 <span id="s3Val">100 kPa</span></label>
+            <input type="range" class="range-slider" id="s3Slider" min="20" max="400" step="10" value="100" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Effective Friction φ' <span id="mPhiVal">30.0°</span></label>
+            <input type="range" class="range-slider" id="mPhiSlider" min="15" max="45" step="1" value="30" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Cohesion c' <span id="mCVal">20.0 kPa</span></label>
+            <input type="range" class="range-slider" id="mCSlider" min="0" max="60" step="5" value="20" oninput="updateSandbox()">
+          </div>
+        `,
+        calculate: () => {
+          let s1 = parseFloat(document.getElementById('s1Slider')?.value || 300);
+          let s3 = parseFloat(document.getElementById('s3Slider')?.value || 100);
+          if (s3 >= s1) s3 = s1 - 10;
+
+          const phiDeg = parseFloat(document.getElementById('mPhiSlider')?.value || 30);
+          const c = parseFloat(document.getElementById('mCSlider')?.value || 20);
+
+          document.getElementById('s1Val').innerText = s1.toFixed(0) + ' kPa';
+          document.getElementById('s3Val').innerText = s3.toFixed(0) + ' kPa';
+          document.getElementById('mPhiVal').innerText = phiDeg.toFixed(0) + '°';
+          document.getElementById('mCVal').innerText = c.toFixed(0) + ' kPa';
+
+          const center = (s1 + s3) / 2;
+          const radius = (s1 - s3) / 2;
+          const phiRad = (phiDeg * Math.PI) / 180;
+
+          // Generate circle points
+          const circleX = [];
+          const circleY = [];
+          for (let theta = 0; theta <= Math.PI; theta += 0.05) {
+            circleX.push(center + radius * Math.cos(theta));
+            circleY.push(radius * Math.sin(theta));
+          }
+
+          // Generate Failure Envelope: tau = c + sigma * tan(phi)
+          const envX = [0, s1 + 150];
+          const envY = [c, c + (s1 + 150) * Math.tan(phiRad)];
+
+          // Calculate Factor of Safety against failure envelope
+          const maxTauAvailable = c * Math.cos(phiRad) + center * Math.sin(phiRad);
+          const fos = (maxTauAvailable / radius).toFixed(2);
+
+          document.getElementById('metricsBar').innerHTML = `
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Mean Normal Stress p'</div>
+              <div class="metric-badge-val">${center.toFixed(1)} kPa</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Max Shear Stress q/2</div>
+              <div class="metric-badge-val">${radius.toFixed(1)} kPa</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Factor of Safety (FoS)</div>
+              <div class="metric-badge-val" style="color: ${fos >= 1.0 ? '#10b981' : '#ef4444'}">${fos}</div>
+            </div>
+          `;
+
+          const traceCircle = {
+            x: circleX,
+            y: circleY,
+            name: 'Mohr Stress Circle',
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: '#38bdf8', width: 3 },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(56, 189, 248, 0.1)'
+          };
+
+          const traceEnv = {
+            x: envX,
+            y: envY,
+            name: "Mohr-Coulomb Failure Envelope",
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: '#ef4444', width: 2.5, dash: 'dash' }
+          };
+
+          const layout = {
+            margin: { t: 30, r: 30, l: 60, b: 50 },
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'rgba(11, 17, 32, 0.6)',
+            font: { color: '#94a3b8', family: 'Inter' },
+            xaxis: {
+              title: "Normal Stress σ' [kPa]",
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            yaxis: {
+              title: "Shear Stress τ [kPa]",
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            legend: { orientation: 'h', y: -0.15 }
+          };
+
+          Plotly.newPlot('sandboxPlot', [traceCircle, traceEnv], layout, { responsive: true, displayModeBar: false });
+        }
+      },
+
+      consolidation: {
+        controls: `
+          <div class="control-group">
+            <label>Clay Layer Drainage Path d <span id="drainVal">4.0 m</span></label>
+            <input type="range" class="range-slider" id="drainSlider" min="1" max="15" step="0.5" value="4.0" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Coeff. of Consolidation cv <span id="cvVal">2.5 m²/yr</span></label>
+            <input type="range" class="range-slider" id="cvSlider" min="0.5" max="10" step="0.5" value="2.5" oninput="updateSandbox()">
+          </div>
+          <div class="control-group">
+            <label>Applied Stress Increment Δσ <span id="dsVal">100 kPa</span></label>
+            <input type="range" class="range-slider" id="dsSlider" min="20" max="300" step="10" value="100" oninput="updateSandbox()">
+          </div>
+        `,
+        calculate: () => {
+          const d = parseFloat(document.getElementById('drainSlider')?.value || 4.0);
+          const cv = parseFloat(document.getElementById('cvSlider')?.value || 2.5);
+          const ds = parseFloat(document.getElementById('dsSlider')?.value || 100);
+
+          document.getElementById('drainVal').innerText = d.toFixed(1) + ' m';
+          document.getElementById('cvVal').innerText = cv.toFixed(1) + ' m²/yr';
+          document.getElementById('dsVal').innerText = ds.toFixed(0) + ' kPa';
+
+          const tYears = [0.05, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0];
+          const Uv = [];
+          const settlement = [];
+
+          const mv = 0.0004; // 1/kPa
+          const totalSettlement = ds * mv * (2 * d) * 1000; // mm
+
+          tYears.forEach(t => {
+            const Tv = (cv * t) / Math.pow(d, 2);
+            let u = 0;
+            if (Tv < 0.28) {
+              u = Math.sqrt((4 * Tv) / Math.PI);
+            } else {
+              u = 1 - (8 / Math.pow(Math.PI, 2)) * Math.exp(-Math.pow(Math.PI, 2) * Tv / 4);
+            }
+            u = Math.min(0.999, Math.max(0, u));
+            Uv.push(u * 100);
+            settlement.push(u * totalSettlement);
+          });
+
+          const t50 = (0.197 * Math.pow(d, 2) / cv).toFixed(1);
+          const t90 = (0.848 * Math.pow(d, 2) / cv).toFixed(1);
+
+          document.getElementById('metricsBar').innerHTML = `
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Ultimate Settlement</div>
+              <div class="metric-badge-val">${totalSettlement.toFixed(0)} mm</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Time to 50% (t50)</div>
+              <div class="metric-badge-val">${t50} years</div>
+            </div>
+            <div class="metric-badge-box">
+              <div class="metric-badge-label">Time to 90% (t90)</div>
+              <div class="metric-badge-val">${t90} years</div>
+            </div>
+          `;
+
+          const trace = {
+            x: tYears,
+            y: settlement,
+            type: 'scatter',
+            mode: 'lines+markers',
+            line: { color: '#a855f7', width: 3 },
+            marker: { size: 6, color: '#c084fc' }
+          };
+
+          const layout = {
+            margin: { t: 30, r: 30, l: 60, b: 50 },
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'rgba(11, 17, 32, 0.6)',
+            font: { color: '#94a3b8', family: 'Inter' },
+            xaxis: {
+              title: 'Time Elapsed [Years] (Log Scale)',
+              type: 'log',
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            yaxis: {
+              title: 'Settlement S [mm]',
+              gridcolor: 'rgba(255,255,255,0.06)'
+            },
+            showlegend: false
+          };
+
+          Plotly.newPlot('sandboxPlot', [trace], layout, { responsive: true, displayModeBar: false });
+        }
+      }
+    };
+
+    function switchSandbox(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.sandbox-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const config = sandboxes[mode];
+      document.getElementById('sandboxControls').innerHTML = config.controls;
+      config.calculate();
+    }
+
+    function updateSandbox() {
+      if (sandboxes[currentMode]) {
+        sandboxes[currentMode].calculate();
+      }
+    }
+
+    // Initialize default CPT sandbox
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('sandboxControls').innerHTML = sandboxes.cpt.controls;
+      sandboxes.cpt.calculate();
+    });
+  </script>
 </body>
 </html>

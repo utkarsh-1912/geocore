@@ -67,8 +67,10 @@ def list_modules():
     return {k: v.__name__ if hasattr(v, '__name__') else str(v) for k, v in registry.function_map.items()}
 
 from fastapi.staticfiles import StaticFiles
+from core.geoai.api import router as geoai_router
 
 app.include_router(create_dynamic_router(), prefix="/api")
+app.include_router(geoai_router, prefix="/api")
 
 # Mount assets directory
 assets_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")

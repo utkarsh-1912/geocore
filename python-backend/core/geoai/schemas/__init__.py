@@ -14,6 +14,12 @@ from core.geoai.schemas.shallowfoundations import (
     StressesPointloadInput, StressesPointloadOutput,
     ShallowFoundationCapacityUndrainedInput
 )
+from core.geoai.schemas.expanded import (
+    GmaxShearWaveVelocityInput, GmaxShearWaveVelocityOutput,
+    EarthPressureRankineInput, EarthPressureRankineOutput,
+    ContactWidthInput, ContactWidthOutput,
+    HydraulicConductivityUnconfinedInput, HydraulicConductivityUnconfinedOutput
+)
 
 SCHEMA_REGISTRY: Dict[str, Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseModel]]]] = {
     'bulkunitweight': (BulkUnitWeightInput, BulkUnitWeightOutput),
@@ -22,6 +28,10 @@ SCHEMA_REGISTRY: Dict[str, Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseMo
     'stresses_circle': (StressesCircleInput, StressesCircleOutput),
     'stresses_pointload': (StressesPointloadInput, StressesPointloadOutput),
     'shallow_foundation_capacity_undrained': (ShallowFoundationCapacityUndrainedInput, None),
+    'gmax_shearwavevelocity': (GmaxShearWaveVelocityInput, GmaxShearWaveVelocityOutput),
+    'earthpressurecoefficients_rankine': (EarthPressureRankineInput, EarthPressureRankineOutput),
+    'contactwidth': (ContactWidthInput, ContactWidthOutput),
+    'hydraulicconductivity_unconfinedaquifer': (HydraulicConductivityUnconfinedInput, HydraulicConductivityUnconfinedOutput),
 }
 
 def get_schema(function_id: str) -> Optional[Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseModel]]]]:

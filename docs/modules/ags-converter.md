@@ -1,28 +1,49 @@
-# AGS File Converter
+# AGS 4.0 Geotechnical File Converter
 
-GeoCore includes an automated parser for **AGS (Association of Geotechnical and Geoenvironmental Specialists)** data files.
+GeoCore includes an automated, full-spec parser and converter for **AGS 4.0 (Association of Geotechnical and Geoenvironmental Specialists)** data files.
 
-## Supported Formats
-- **AGS 3.1**
-- **AGS 4.0**
+---
 
-## Extracted Groups
+## 📄 What is the AGS Format?
 
-GeoCore extracts standard AGS groups directly into pandas DataFrames:
-- `HOLE`: Borehole metadata, locations, coordinates.
-- `GEOL`: Geological stratum descriptions, depths, legend codes.
-- `SCPT`: Cone Penetration Test sounding data ($z$, $q_c$, $f_s$, $u_2$).
-- `ISPT`: Standard Penetration Test field results ($N$-values).
-- `SAMP`: Soil sample indices, recovery rates, and quality ratings.
+The AGS format is the global standard data interchange format for geotechnical and geoenvironmental ground investigation data across the UK, Australia, Middle East, and worldwide.
 
-## Python API Usage
+---
+
+## ⚡ Key Capabilities in GeoCore
+
+```mermaid
+graph LR
+    A[AGS 4.0 File .ags] --> B[AGSConverter Parser]
+    B --> C[Validate Group Headers & Units]
+    B --> D[Extract Groups: PROJ, HOLE, SAMP, ISPT, GEOL, etc.]
+    D --> E[Export to Pandas DataFrames]
+    D --> F[Export to CSV / Excel]
+    D --> G[Instant 1-Click SoilProfile Ingestion]
+```
+
+### Supported AGS Groups
+
+1. **`PROJ`**: Project metadata, client name, contractor, site coordinates.
+2. **`HOLE`**: Borehole, CPT sounding, and trial pit locations ($X, Y, Z$, groundwater level, final depth).
+3. **`GEOL`**: Geological stratigraphy and strata description logs.
+4. **`SAMP`**: Soil sample records, depth intervals, sample types.
+5. **`ISPT`**: In-situ Standard Penetration Test blow counts ($N$-values, penetration increments).
+6. **`DCPT` / `SCPG`**: Dynamic cone and piezocone test data.
+7. **`LLPL` / `GRAT`**: Atterberg limits and particle size distribution lab records.
+
+---
+
+## 💻 API & Python Integration
 
 ```python
-from groundhog.general.agsconversion import AGSConverter
+from core.wrappers import AGSConverter
 
 # Initialize converter
-converter = AGSConverter("borehole_data.ags", encoding="utf8", agsformat="4")
+converter = AGSConverter("borehole_investigation.ags", encoding="utf8", agsformat="4")
+converter.extract_groupnames()
 
-# Extract group as DataFrame
-cpt_df = converter.convert_ags_group("SCPT", verbose_keys=True)
+# Extract specific group as sanitized Pandas DataFrame
+ispt_df = converter.convert_ags_group("ISPT", verbose_keys=False)
+print(ispt_df.head())
 ```

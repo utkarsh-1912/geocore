@@ -1,32 +1,37 @@
-# Developer Packaging & Executable Generation Guide
+# Packaging & Executable Distribution
 
-This guide documents how to compile, bundle, and package GeoCore into native executables.
+GeoCore uses **PyInstaller (one-folder mode)** for compiling the Python backend and **electron-builder** for packaging the desktop installer.
 
-## Architecture
+---
 
-GeoCore packages a Python FastAPI backend into a single executable using **PyInstaller**, and embeds it inside an **Electron** shell using **electron-builder**.
+## 🛠️ Step 1: Building the Python Backend
 
-## 1. PyInstaller Spec Configuration
-
-The Python backend is packaged via `python-backend/main.spec`:
+In one-folder mode, PyInstaller generates a standalone `python-backend/dist/main/` folder containing the Python executable, shared C-extensions (`.pyd` / `.dll`), and runtime assets without causing antivirus false-positives.
 
 ```bash
 cd python-backend
-pyinstaller --clean main.spec
+
+# Build with PyInstaller spec
+python -m PyInstaller main.spec --clean --noconfirm
 ```
 
-## 2. Electron Packaging
+---
+
+## 📦 Step 2: Packaging the Electron Application
+
+Once the backend is built in `python-backend/dist/main/`, package the full installer:
 
 ```bash
 cd electron-app
 
-# Windows Installer (.exe)
-npm run dist:win
+# Install dependencies
+npm install
 
-# macOS Installer (.dmg)
-npm run dist:mac
+# Build Vite frontend assets
+npm run build
+
+# Package Electron executable for your host OS
+npm run build:exe
 ```
 
-## 3. GitHub Actions Release Pipeline
-
-Pushes to git release tags (`v*`) automatically trigger `.github/workflows/release.yml` to compile binaries on Windows (`windows-latest`) and macOS (`macos-latest`) runners and publish them directly to GitHub Releases.
+The output installer (`GeoCore-Setup-1.0.0.exe` or `.dmg` / `.AppImage`) will be generated inside `electron-app/dist/`.

@@ -1,53 +1,103 @@
 site_name: GeoCore Documentation Portal
-site_url: https://utkarsh-1912.github.io/geocore/
+site_url: https://geocore.app/docs/
 site_author: Utkarsh Gupta
-site_description: Official Documentation for GeoCore - Advanced Geotechnical Engineering Application.
+site_description: Official Documentation for GeoCore - Advanced Open-Source Geotechnical Engineering Application.
 site_dir: website/docs
+repo_url: https://github.com/utkarsh-1912/geocore
+repo_name: utkarsh-1912/geocore
 
 theme:
   name: material
+  custom_dir: docs/overrides
+  logo: assets/logoIcon.png
+  favicon: assets/logoIcon.png
   palette:
     - scheme: slate
-      primary: green
-      accent: emerald
+      primary: emerald
+      accent: sky
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
     - scheme: default
-      primary: green
-      accent: emerald
+      primary: emerald
+      accent: sky
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
   features:
     - navigation.indexes
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
     - navigation.top
     - navigation.tracking
     - search.suggest
     - search.highlight
+    - search.share
     - content.code.copy
-    - content.action.edit
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.view
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
   - admonition
   - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
   - pymdownx.arithmatex:
       generic: true
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
 
 nav:
-  - Getting Started: index.md
+  - Overview: index.md
+  - Getting Started:
+      - Quickstart Guide: getting-started/quickstart.md
+      - Installation: getting-started/installation.md
   - Geotechnical Modules:
       - Deep Foundations: modules/deep-foundations.md
-      - Eurocode 7 Standards: modules/eurocode7.md
-      - Site Investigation & CPT: modules/site-investigation.md
       - Shallow Foundations: modules/shallow-foundations.md
-      - AGS File Converter: modules/ags-converter.md
-  - Developer & Release Guides:
+      - Site Investigation & CPT: modules/site-investigation.md
+      - Eurocode 7 & Standards: modules/eurocode7.md
+      - 1D Consolidation: modules/consolidation.md
+      - Pipelines & Cables: modules/pipelines-cables.md
+      - AGS 4.0 File Converter: modules/ags-converter.md
+  - Developer Guides:
       - Architecture Overview: developer/architecture.md
       - Packaging & Executables: developer/packaging.md
+      - Netlify & Web Deployment: developer/deployment.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/utkarsh-1912/geocore
+      name: GeoCore on GitHub
+    - icon: fontawesome/solid/globe
+      link: https://geocore.app/
+      name: Marketing Website
