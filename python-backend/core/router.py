@@ -1,5 +1,5 @@
 # Author: Utkarsh Gupta
-# License: GPL v2
+# License: GPL v3
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Body
 from .registry import registry

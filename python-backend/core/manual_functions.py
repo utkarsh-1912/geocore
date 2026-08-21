@@ -1,5 +1,5 @@
 # Author: Utkarsh Gupta
-# License: GPL v2
+# License: GPL v3
 
 """
 This file is for manually added functions that are not present in the installed groundhog library.

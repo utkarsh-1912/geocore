@@ -1,5 +1,5 @@
 # Author: Utkarsh Gupta
-# License: GPL v2
+# License: GPL v3
 
 from typing import Dict, Any, List, Optional
 import uuid

@@ -1,5 +1,5 @@
 # Author: Utkarsh Gupta
-# License: GPL v2
+# License: GPL v3
 
 
 def negativeskinfriction_pilegroup_zeevaertdebeer_wrapper(args):

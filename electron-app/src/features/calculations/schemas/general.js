@@ -1,6 +1,6 @@
 /**
  * Author: Utkarsh Gupta
- * License: GPL v2
+ * License: GPL v3
  */
 
 import { SOIL_PROFILE_DOCS, CALCULATION_GRID_DOCS } from '../documentation';

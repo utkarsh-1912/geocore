@@ -1,6 +1,6 @@
 /**
  * Author: Utkarsh Gupta
- * License: GPL v2
+ * License: GPL v3
  */
 
 export const eurocodeSchemas = {
