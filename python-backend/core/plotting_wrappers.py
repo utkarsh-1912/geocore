@@ -231,7 +231,8 @@ def log_plot_wrapper(args):
     missing_params = [p for p in param_list if p not in profile.columns]
     if missing_params:
         available = ", ".join(sorted(profile.columns))
-        return {"error": f"Plotting Error: The following parameters are not in the profile: {', '.join(f'\"{mp}\"' for mp in missing_params)}.\n\nAvailable columns:\n{available}"}
+        missing_str = ", ".join(f'"{mp}"' for mp in missing_params)
+        return {"error": f"Plotting Error: The following parameters are not in the profile: {missing_str}.\n\nAvailable columns:\n{available}"}
 
     # Construct the tuple of tuples (one param per panel)
     plotting_params = tuple((p,) for p in param_list)
