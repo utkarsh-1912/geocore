@@ -1,0 +1,90 @@
+[
+  {
+    "id": "088c6cd0-2948-4cc5-abb7-a944320e2ba2",
+    "type": "SoilProfile",
+    "name": "Test Profile",
+    "timestamp": "now",
+    "data": [
+      {
+        "Depth from [m]": 0.0,
+        "Depth to [m]": 2.0,
+        "Soil type": "Sand",
+        "Unit weight [kN/m3]": 18.0,
+        "Cohesion [kPa]": 0.0,
+        "Friction angle [deg]": 32.0,
+        "qc [MPa]": 10.0,
+        "Su [kPa]": 0.0,
+        "E [MPa]": 30.0,
+        "G0 [MPa]": 50.0
+      },
+      {
+        "Depth from [m]": 2.0,
+        "Depth to [m]": 6.0,
+        "Soil type": "Clay",
+        "Unit weight [kN/m3]": 17.0,
+        "Cohesion [kPa]": 25.0,
+        "Friction angle [deg]": 22.0,
+        "qc [MPa]": 2.0,
+        "Su [kPa]": 45.0,
+        "E [MPa]": 15.0,
+        "G0 [MPa]": 25.0
+      },
+      {
+        "Depth from [m]": 6.0,
+        "Depth to [m]": 12.0,
+        "Soil type": "Sand",
+        "Unit weight [kN/m3]": 19.0,
+        "Cohesion [kPa]": 0.0,
+        "Friction angle [deg]": 35.0,
+        "qc [MPa]": 18.0,
+        "Su [kPa]": 0.0,
+        "E [MPa]": 60.0,
+        "G0 [MPa]": 90.0
+      }
+    ]
+  },
+  {
+    "id": "20be9358-c142-4fdb-8ba8-71ccd6ed3859",
+    "type": "SoilProfile",
+    "name": "SoilProfile_20be9358",
+    "timestamp": "now",
+    "data": [
+      {
+        "Depth from [m]": 0.0,
+        "Depth to [m]": 2.0,
+        "Soil type": "Sand",
+        "Unit weight [kN/m3]": 18.0,
+        "Cohesion [kPa]": 0.0,
+        "Friction angle [deg]": 32.0,
+        "qc [MPa]": 10.0,
+        "Su [kPa]": 0.0,
+        "E [MPa]": 30.0,
+        "G0 [MPa]": 50.0
+      },
+      {
+        "Depth from [m]": 2.0,
+        "Depth to [m]": 6.0,
+        "Soil type": "Clay",
+        "Unit weight [kN/m3]": 17.0,
+        "Cohesion [kPa]": 25.0,
+        "Friction angle [deg]": 22.0,
+        "qc [MPa]": 2.0,
+        "Su [kPa]": 45.0,
+        "E [MPa]": 15.0,
+        "G0 [MPa]": 25.0
+      },
+      {
+        "Depth from [m]": 6.0,
+        "Depth to [m]": 12.0,
+        "Soil type": "Sand",
+        "Unit weight [kN/m3]": 19.0,
+        "Cohesion [kPa]": 0.0,
+        "Friction angle [deg]": 35.0,
+        "qc [MPa]": 18.0,
+        "Su [kPa]": 0.0,
+        "E [MPa]": 60.0,
+        "G0 [MPa]": 90.0
+      }
+    ]
+  }
+]

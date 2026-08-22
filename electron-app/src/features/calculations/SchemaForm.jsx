@@ -53,7 +53,7 @@ const ObjectSelector = ({ objectType, value, onChange, required, refreshTrigger 
             <option value="">Select {objectType}...</option>
             {/* If value exists but isn't in options (common after refresh/reload), show it */}
             {value && !options.find(o => o.id === value) && (
-                <option value={value}>[Current/Restored] ID: {value.substring(0, 8)}...</option>
+                <option value={value}>Profile {value.substring(0, 8)}</option>
             )}
             {options.map(opt => (
                 <option key={opt.id} value={opt.id}>

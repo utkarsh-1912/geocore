@@ -34,7 +34,32 @@ def _map_python_type(type_str: str, param_name: str = "") -> Type:
     if p_lower in ('soilprofile', 'soil_profile', 'profile', 'calculationgrid', 'grid', 'data', 'raw_data', 'object_id', 'obj_id', 'obj', 'object', 'dataframe', 'df', 'path', 'filepath', 'filename', 'file'):
         return Union[str, Dict[str, Any], List[Any], Any]
 
-    if p_lower.endswith('_col') or p_lower.endswith('_column') or p_lower.endswith('column') or p_lower in ('soiltype', 'soiltypecolumn', 'depth_column', 'qc_column', 'rf_column', 'fs_column', 'u2_column', 'u0_column', 'water_table_column', 'unit', 'name', 'encoding', 'errors', 'title', 'legend', 'colormap', 'color', 'pattern', 'layer_name', 'method'):
+    # Categorical, enum, description, and classification fields
+    if (
+        p_lower.endswith('_col') or p_lower.endswith('_column') or p_lower.endswith('column') or
+        p_lower.endswith('_description') or p_lower.endswith('description') or
+        p_lower.endswith('_desc') or p_lower.endswith('desc') or
+        p_lower.endswith('_category') or p_lower.endswith('category') or
+        p_lower.endswith('_categories') or p_lower.endswith('categories') or
+        p_lower.endswith('_type') or p_lower.endswith('type') or
+        p_lower.endswith('_mode') or p_lower.endswith('mode') or
+        p_lower.endswith('_method') or p_lower.endswith('method') or
+        p_lower.endswith('_standard') or p_lower.endswith('standard') or
+        p_lower.endswith('_theory') or p_lower.endswith('theory') or
+        p_lower.endswith('_class') or p_lower.endswith('class') or
+        p_lower in (
+            'api_relativedensity', 'api_soildescription', 'soildescription',
+            'relativedensity', 'classification', 'symbol', 'standard', 'method',
+            'theory', 'material', 'consistency', 'density_class', 'sand_class',
+            'shape', 'foundation_type', 'pile_type', 'installation_method',
+            'failure_mode', 'loading_condition', 'drainage_condition', 'soil_behavior_type',
+            'sbt', 'sbt_index', 'uscs', 'layer', 'stratum', 'geology', 'correlation',
+            'soiltype', 'soiltypecolumn', 'depth_column', 'qc_column', 'rf_column',
+            'fs_column', 'u2_column', 'u0_column', 'water_table_column', 'unit', 'name',
+            'encoding', 'errors', 'title', 'legend', 'colormap', 'color', 'pattern',
+            'layer_name', 'standard_type', 'design_approach', 'approach'
+        )
+    ):
         return Optional[Union[str, int, float, Any]]
 
     if p_lower in ('parameters', 'plot_parameters', 'properties', 'columns', 'correlations', 'selected_parameters', 'times', 'settlements', 'grainsize', 'pctpassing', 'depths', 'requested_depths'):
@@ -48,7 +73,7 @@ def _map_python_type(type_str: str, param_name: str = "") -> Type:
         return int
     elif 'bool' in type_lower:
         return bool
-    elif 'str' in type_lower or 'string' in type_lower or 'text' in type_lower or 'path' in type_lower:
+    elif 'str' in type_lower or 'string' in type_lower or 'text' in type_lower or 'path' in type_lower or 'select' in type_lower or 'enum' in type_lower:
         return Union[str, Any]
     elif 'list' in type_lower or 'array' in type_lower or 'tuple' in type_lower:
         return Union[List[float], List[str], List[Any], str, Any]
@@ -91,6 +116,13 @@ def build_schema_for_function(func_name: str, func_obj: Any) -> Type[GeoAIBaseMo
             default_val = inv_p.get('default_value')
             if default_val in ('null', 'nan', 'NaN'):
                 default_val = None
+
+        # Check docstring for options
+        doc = getattr(func_obj, '__doc__', '') or ''
+        if f":param {p_name}:" in doc and "Options:" in doc:
+            py_type = Optional[Union[str, float, int, Any]] if default_val is not ... else Union[str, float, int, Any]
+        elif isinstance(default_val, str) and py_type == float:
+            py_type = Optional[Union[str, float, int, Any]]
 
         # Determine min / max bounds only for pure numeric types
         min_v = None

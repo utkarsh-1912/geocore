@@ -214,6 +214,94 @@ function initLiveCalculator() {
   calculateVoid();
 }
 
+// OS Auto-Detection for Downloads (macOS and Windows)
+function detectUserOS() {
+  const userAgent = window.navigator.userAgent || '';
+  const platform = window.navigator.platform || '';
+  
+  if (/Mac|iPhone|iPod|iPad/i.test(platform) || /Macintosh|Mac OS X/i.test(userAgent)) {
+    return 'mac';
+  }
+  return 'windows';
+}
+
+function updateDownloadElements() {
+  const os = detectUserOS();
+  const releaseUrl = 'https://github.com/utkarsh-1912/geocore/releases';
+
+  const heroDownloadBtn = document.getElementById('hero-download-btn');
+  const heroDownloadSubtext = document.getElementById('hero-download-subtext');
+  const navDownloadBtn = document.getElementById('nav-download-btn');
+  const drawerDownloadBtn = document.getElementById('drawer-download-btn');
+  const winCard = document.getElementById('download-card-win');
+  const macCard = document.getElementById('download-card-mac');
+
+  if (os === 'mac') {
+    if (heroDownloadBtn) {
+      heroDownloadBtn.href = releaseUrl;
+      heroDownloadBtn.innerHTML = '<i data-lucide="apple" class="w-4 h-4"></i><span>Download for macOS (.dmg)</span>';
+    }
+    if (heroDownloadSubtext) {
+      heroDownloadSubtext.innerText = 'Auto-detected: macOS (Apple Silicon & Intel) • v1.0.0';
+    }
+    if (navDownloadBtn) {
+      navDownloadBtn.href = releaseUrl;
+      navDownloadBtn.innerHTML = '<i data-lucide="apple" class="w-3.5 h-3.5"></i> Download for Mac';
+    }
+    if (drawerDownloadBtn) {
+      drawerDownloadBtn.href = releaseUrl;
+      drawerDownloadBtn.innerHTML = '<i data-lucide="apple" class="w-3.5 h-3.5"></i> Download for macOS';
+    }
+
+    if (macCard) {
+      macCard.classList.add('border-primary', 'ring-2', 'ring-primary/20');
+      const badge = macCard.querySelector('.detected-badge');
+      if (badge) badge.classList.remove('hidden');
+    }
+    if (winCard) {
+      winCard.classList.remove('border-primary', 'ring-2', 'ring-primary/20');
+      const badge = winCard.querySelector('.detected-badge');
+      if (badge) badge.classList.add('hidden');
+    }
+  } else {
+    // Windows
+    if (heroDownloadBtn) {
+      heroDownloadBtn.href = releaseUrl;
+      heroDownloadBtn.innerHTML = '<i data-lucide="download" class="w-4 h-4"></i><span>Download for Windows (.exe)</span>';
+    }
+    if (heroDownloadSubtext) {
+      heroDownloadSubtext.innerText = 'Auto-detected: Windows 10/11 (64-bit) • v1.0.0';
+    }
+    if (navDownloadBtn) {
+      navDownloadBtn.href = releaseUrl;
+      navDownloadBtn.innerHTML = '<i data-lucide="download" class="w-3.5 h-3.5"></i> Download for Windows';
+    }
+    if (drawerDownloadBtn) {
+      drawerDownloadBtn.href = releaseUrl;
+      drawerDownloadBtn.innerHTML = '<i data-lucide="download" class="w-3.5 h-3.5"></i> Download for Windows';
+    }
+
+    if (winCard) {
+      winCard.classList.add('border-primary', 'ring-2', 'ring-primary/20');
+      const badge = winCard.querySelector('.detected-badge');
+      if (badge) badge.classList.remove('hidden');
+    }
+    if (macCard) {
+      macCard.classList.remove('border-primary', 'ring-2', 'ring-primary/20');
+      const badge = macCard.querySelector('.detected-badge');
+      if (badge) badge.classList.add('hidden');
+    }
+  }
+
+  // Update all release links
+  document.querySelectorAll('a[data-release-link]').forEach(a => {
+    a.href = releaseUrl;
+  });
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initLiveCalculator();
+  updateDownloadElements();
 });

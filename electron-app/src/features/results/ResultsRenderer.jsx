@@ -36,7 +36,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
     const displayData = results.result !== undefined ? results.result : results;
 
     const renderContent = () => {
-        // Handle Error State
+        // 1. Handle Error State
         if (displayData && displayData.error) {
             const errorMsg = typeof displayData.error === 'object'
                 ? (displayData.error.error || displayData.error.message || JSON.stringify(displayData.error))
@@ -65,8 +65,8 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             );
         }
 
-        // Handle specific result types
-        if (displayData && displayData.type === 'SoilProfile') {
+        // 2. Handle SoilProfile Object
+        if (displayData && (displayData.type === 'SoilProfile' || (displayData.preview && displayData.layers !== undefined))) {
             const previewData = displayData.preview || [];
             const isExpanded = expandedSections.profile;
             const displayedRows = isExpanded ? previewData : previewData.slice(0, 5);
@@ -76,12 +76,12 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     <div className="bg-surface p-4 rounded-md border border-border">
                         <h4 className="font-bold text-lg mb-2 flex items-center gap-2 text-primary">
                             <Database size={20} />
-                            {displayData.name}
+                            {displayData.name || "Soil Profile"}
                         </h4>
                         <div className="grid grid-cols-2 gap-4 text-sm">
                             <div className="p-2 bg-background/50 rounded border border-border/50">
                                 <span className="text-text-muted">Status:</span>
-                                <span className="ml-2 font-medium text-green-500">{displayData.message}</span>
+                                <span className="ml-2 font-medium text-green-500">{displayData.message || "Profile Ready"}</span>
                             </div>
                             <div className="p-2 bg-background/50 rounded border border-border/50">
                                 <span className="text-text-muted">Total Layers:</span>
@@ -129,8 +129,202 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             );
         }
 
-        // Plotly Visualization Support
-        if (displayData.type === 'plotly' || displayData.type === 'plot' || displayData.type === 'multi_plot') {
+        // 3. Handle CalculationGrid Object
+        if (displayData && (displayData.type === 'CalculationGrid' || (Array.isArray(displayData.nodes) && Array.isArray(displayData.elements)))) {
+            const nodes = displayData.nodes || [];
+            const elements = displayData.elements || [];
+            const nodesExpanded = expandedSections.nodes;
+            const elementsExpanded = expandedSections.elements;
+
+            const displayedNodes = nodesExpanded ? nodes : nodes.slice(0, 10);
+            const displayedElements = elementsExpanded ? elements : elements.slice(0, 10);
+
+            return (
+                <div className="space-y-6">
+                    <div className="bg-surface p-4 rounded-md border border-border flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                            <h4 className="font-bold text-lg text-primary flex items-center gap-2">
+                                <Layers size={20} />
+                                Calculation Grid
+                            </h4>
+                            <p className="text-text-muted text-sm">{displayData.message || "Discretized Grid Ready"}</p>
+                        </div>
+                        <div className="flex gap-4">
+                            <div className="text-center px-4 py-2 bg-background/50 rounded border border-border/50">
+                                <div className="text-xl font-bold text-text-main">{displayData.nodes_count || nodes.length}</div>
+                                <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Nodes</div>
+                            </div>
+                            <div className="text-center px-4 py-2 bg-background/50 rounded border border-border/50">
+                                <div className="text-xl font-bold text-text-main">{displayData.elements_count || elements.length}</div>
+                                <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Elements</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Nodes Table */}
+                    {nodes.length > 0 && (
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between px-1">
+                                <h5 className="font-semibold text-text-main flex items-center gap-2 text-sm">
+                                    <div className="w-2 h-2 rounded-full bg-primary" />
+                                    Nodes (Depth & Boundary State)
+                                    {!nodesExpanded && nodes.length > 10 && (
+                                        <span className="text-[10px] text-text-muted font-normal italic ml-2">
+                                            (Showing first 10 of {nodes.length})
+                                        </span>
+                                    )}
+                                </h5>
+                                {nodes.length > 10 && (
+                                    <button
+                                        onClick={() => toggleSection('nodes')}
+                                        className="text-primary hover:text-primary-hover text-xs font-bold flex items-center gap-1 transition-colors"
+                                    >
+                                        {nodesExpanded ? <><ChevronUp size={14} /> Collapse</> : <><ChevronDown size={14} /> View All ({nodes.length})</>}
+                                    </button>
+                                )}
+                            </div>
+                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm max-h-96">
+                                <table className="w-full text-xs text-left border-collapse">
+                                    <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border sticky top-0">
+                                        <tr>
+                                            {Object.keys(nodes[0]).map(k => (
+                                                <th key={k} className="p-2.5 whitespace-nowrap">{k}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-border">
+                                        {displayedNodes.map((row, i) => (
+                                            <tr key={i} className="hover:bg-primary/5 transition-colors">
+                                                {Object.values(row).map((v, j) => (
+                                                    <td key={j} className="p-2.5 text-text-main whitespace-nowrap">
+                                                        {typeof v === 'number' ? v.toFixed(3) : String(v)}
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Elements Table */}
+                    {elements.length > 0 && (
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between px-1">
+                                <h5 className="font-semibold text-text-main flex items-center gap-2 text-sm">
+                                    <div className="w-2 h-2 rounded-full bg-secondary" />
+                                    Elements (Layer Strata & Properties)
+                                    {!elementsExpanded && elements.length > 10 && (
+                                        <span className="text-[10px] text-text-muted font-normal italic ml-2">
+                                            (Showing first 10 of {elements.length})
+                                        </span>
+                                    )}
+                                </h5>
+                                {elements.length > 10 && (
+                                    <button
+                                        onClick={() => toggleSection('elements')}
+                                        className="text-primary hover:text-primary-hover text-xs font-bold flex items-center gap-1 transition-colors"
+                                    >
+                                        {elementsExpanded ? <><ChevronUp size={14} /> Collapse</> : <><ChevronDown size={14} /> View All ({elements.length})</>}
+                                    </button>
+                                )}
+                            </div>
+                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm max-h-96">
+                                <table className="w-full text-xs text-left border-collapse">
+                                    <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border sticky top-0">
+                                        <tr>
+                                            {Object.keys(elements[0]).map(k => (
+                                                <th key={k} className="p-2.5 whitespace-nowrap">{k}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-border">
+                                        {displayedElements.map((row, i) => (
+                                            <tr key={i} className="hover:bg-primary/5 transition-colors">
+                                                {Object.values(row).map((v, j) => (
+                                                    <td key={j} className="p-2.5 text-text-main whitespace-nowrap">
+                                                        {typeof v === 'number' ? v.toFixed(3) : String(v)}
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // 4. Handle Multi-Plot Results
+        if (displayData && displayData.type === 'multi_plot' && Array.isArray(displayData.plots)) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6 w-full"
+                    id="results-visualization"
+                >
+                    {displayData.plots.map((plot, index) => {
+                        const plotData = plot.data || [];
+                        const plotLayout = plot.layout || {};
+                        const finalLayout = {
+                            autosize: true,
+                            paper_bgcolor: 'rgba(0,0,0,0)',
+                            plot_bgcolor: 'rgba(0,0,0,0)',
+                            font: { family: 'Inter, sans-serif', color: 'var(--color-text-main, #333)' },
+                            margin: { t: 40, r: 20, l: 50, b: 40 },
+                            ...plotLayout
+                        };
+
+                        return (
+                            <Card key={index} title={plot.title || plotLayout?.title?.text || plotLayout?.title || `Plot ${index + 1}`} className="w-full">
+                                <div className="w-full h-[500px]">
+                                    <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
+                                        <Plot
+                                            data={plotData}
+                                            layout={finalLayout}
+                                            useResizeHandler={true}
+                                            style={{ width: "100%", height: "100%" }}
+                                            config={{ responsive: true, displayModeBar: true }}
+                                        />
+                                    </Suspense>
+                                </div>
+                            </Card>
+                        );
+                    })}
+
+                    {displayData.results && displayData.results.type === 'dataframe' && displayData.results.data && (
+                        <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm">
+                            <table className="w-full text-xs text-left border-collapse">
+                                <thead className="bg-surface/50 text-text-muted font-medium border-b border-border sticky top-0">
+                                    <tr>
+                                        {displayData.results.columns.map(k => <th key={k} className="p-3 whitespace-nowrap">{k}</th>)}
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-border">
+                                    {displayData.results.data.map((row, i) => (
+                                        <tr key={i} className="hover:bg-primary/5 transition-colors">
+                                            {displayData.results.columns.map((col, j) => (
+                                                <td key={j} className="p-3 text-text-main whitespace-nowrap">
+                                                    {typeof row[col] === 'number' ? row[col].toFixed(4) : String(row[col])}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </motion.div>
+            );
+        }
+
+        // 5. Handle Single Plotly Chart
+        if (displayData.type === 'plotly' || displayData.type === 'plot') {
             const plotData = displayData.data || [];
             const plotLayout = displayData.layout || {};
 
@@ -179,8 +373,9 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             );
         }
 
-        // Matplotlib Base64 Image Support
-        if (displayData.type === 'image') {
+        // 6. Handle Matplotlib Base64 Image
+        if (displayData.type === 'image' || displayData.image) {
+            const imgData = displayData.data || displayData.image;
             return (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -192,7 +387,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     <Card title="Plot (Static)" className="w-full max-w-4xl">
                         <div className="flex justify-center p-4 bg-white rounded-lg">
                             <img
-                                src={`data:image/png;base64,${displayData.data}`}
+                                src={`data:image/png;base64,${imgData}`}
                                 alt="Matplotlib Plot"
                                 className="max-w-full h-auto shadow-sm"
                             />
@@ -202,7 +397,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             );
         }
 
-        // Generic DataFrame Support
+        // 7. Handle Generic DataFrame
         if (displayData.type === 'dataframe' && displayData.data && displayData.data.length > 0) {
             const columns = displayData.columns || Object.keys(displayData.data[0]);
             return (
@@ -229,7 +424,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             );
         }
 
-        // Default: Render as Enhanced Table for Key-Value pairs + Metric Highlight Badges
+        // 8. Default: Render KPI cards, dedicated Unit column table & Formula derivations
         if (typeof displayData === 'object' && displayData !== null) {
             const entries = Object.entries(displayData).filter(([k]) => k !== 'warnings' && k !== 'type');
             const numericEntries = entries.filter(([, val]) => typeof val === 'number');
@@ -265,23 +460,36 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                                     <th className="py-2.5 px-4">Parameter Output</th>
                                     <th className="py-2.5 px-4">Symbol</th>
                                     <th className="py-2.5 px-4">Computed Value</th>
+                                    <th className="py-2.5 px-4">Unit</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
                                 {entries.map(([key, value]) => {
                                     const not = getParameterNotation(key);
+                                    // Strip embedded [unit] from title if present
+                                    const match = key.match(/^(.*?)\s*\[(.*?)\]$/);
+                                    const cleanTitle = match ? match[1].trim().replace(/_/g, ' ') : (not?.label || key.replace(/_/g, ' '));
+                                    const cleanUnit = match ? match[2].trim() : (not?.unit || '-');
+
                                     return (
                                         <tr key={key} className="hover:bg-primary/5 transition-colors">
-                                            <td className="py-2.5 px-4 font-medium text-text-main flex items-center gap-2">
-                                                <span>{not?.label || key.replace(/_/g, ' ')}</span>
+                                            <td className="py-2.5 px-4 font-medium text-text-main">
+                                                {cleanTitle}
                                             </td>
                                             <td className="py-2.5 px-4 font-mono text-primary font-bold">
                                                 {not?.symbol || '-'}
                                             </td>
                                             <td className="py-2.5 px-4 text-text-main font-mono font-semibold">
                                                 {typeof value === 'number'
-                                                    ? `${value.toLocaleString(undefined, { maximumFractionDigits: 5 })} ${not?.unit || ''}`
+                                                    ? value.toLocaleString(undefined, { maximumFractionDigits: 5 })
                                                     : (typeof value === 'object' ? JSON.stringify(value) : String(value))}
+                                            </td>
+                                            <td className="py-2.5 px-4 text-text-muted font-mono">
+                                                {cleanUnit && cleanUnit !== '-' ? (
+                                                    <span className="px-1.5 py-0.5 rounded bg-surface border border-border text-[11px] font-semibold text-text-muted">
+                                                        [{cleanUnit}]
+                                                    </span>
+                                                ) : '-'}
                                             </td>
                                         </tr>
                                     );

@@ -11,9 +11,8 @@ for (const file of files) {
     let content = fs.readFileSync(fullPath, 'utf-8');
     
     // Replace imports with mock
-    content = content.replace(/^import\s+.*?;\s*$/gm, '');
-    content = 'const SOIL_PROFILE_DOCS = {}; const CALCULATION_GRID_DOCS = {};
-' + content;
+    content = content.replace(/^import\s+.*?;?\s*$/gm, '');
+    content = 'const SOIL_PROFILE_DOCS = {}; const CALCULATION_GRID_DOCS = {};\n' + content;
     
     const tmpPath = path.resolve('tests/_tmp_' + file);
     fs.writeFileSync(tmpPath, content);

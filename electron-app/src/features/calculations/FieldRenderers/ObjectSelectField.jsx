@@ -43,7 +43,7 @@ const ObjectSelectorInner = ({ objectType, value, onChange, required, refreshTri
         >
             <option value="">Select {objectType}...</option>
             {value && !options.find(o => o.id === value) && (
-                <option value={value}>[Current/Restored] ID: {value.substring(0, 8)}...</option>
+                <option value={value}>Profile {value.substring(0, 8)}</option>
             )}
             {options.map(opt => (
                 <option key={opt.id} value={opt.id}>

@@ -75,6 +75,33 @@ class Registry:
 
         if obj is None:
             return None
+
+        # Handle Plotly Figures
+        if hasattr(obj, 'to_plotly_json'):
+            try:
+                fig_json = obj.to_plotly_json()
+                return {
+                    "type": "plotly",
+                    "data": self._sanitize(fig_json.get("data", [])),
+                    "layout": self._sanitize(fig_json.get("layout", {}))
+                }
+            except Exception:
+                pass
+
+        # Handle Matplotlib Figures
+        if hasattr(obj, 'savefig'):
+            try:
+                import io, base64
+                buf = io.BytesIO()
+                obj.savefig(buf, format='png', bbox_inches='tight')
+                buf.seek(0)
+                img_str = base64.b64encode(buf.read()).decode('utf-8')
+                return {
+                    "type": "image",
+                    "data": img_str
+                }
+            except Exception:
+                pass
         
         # Handle Pandas types
         if isinstance(obj, pd.DataFrame):
