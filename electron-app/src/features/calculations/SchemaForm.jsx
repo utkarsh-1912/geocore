@@ -638,30 +638,40 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
     return (
 
         <>
-            <Card className="w-full relative">
-                <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
-                    <h3 className="font-semibold text-text-main flex items-center gap-2">
-                        Input Parameters
-                        {isDev && isEditMode && <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">Editing Mode</span>}
-                    </h3>
-                    <div className="flex items-center gap-2.5">
+            <Card className="w-full relative shadow-sm">
+                <div className="flex flex-wrap items-center justify-between border-b border-border pb-4 mb-6 gap-3">
+                    <div className="min-w-0 flex-1">
+                        <h2 className="text-xl font-bold text-text-main flex items-center gap-2.5 truncate">
+                            <span className="truncate">{functionName || "Calculation Analysis"}</span>
+                            {isDev && isEditMode && (
+                                <span className="text-[10px] font-mono font-semibold bg-primary/15 text-primary border border-primary/30 px-2 py-0.5 rounded-full uppercase shrink-0">
+                                    Dev Edit Mode
+                                </span>
+                            )}
+                        </h2>
+                        <p className="text-xs text-text-muted mt-1">Configure geotechnical parameters and execute validated analysis.</p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
                         {isDev && (
                             <button
                                 type="button"
                                 onClick={() => setIsEditMode(!isEditMode)}
-                                className={`flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 border border-border rounded ${isEditMode ? 'bg-primary text-white shadow-md' : 'text-text-muted hover:bg-secondary/10'}`}
+                                className={`flex items-center gap-1.5 text-xs font-medium transition-colors px-2.5 py-1.5 border border-border rounded ${isEditMode ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:bg-secondary/10'}`}
                                 title="Toggle Schema Customization Mode (Dev only)"
                             >
-                                {isEditMode ? <Check size={16} /> : <Edit2 size={16} />}
+                                {isEditMode ? <Check size={14} /> : <Edit2 size={14} />}
+                                <span>{isEditMode ? 'Done Editing' : 'Customize Form'}</span>
                             </button>
                         )}
                         <button
+                            type="button"
                             onClick={() => setShowDocs(true)}
-                            className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 text-sm font-medium"
-                            title="View Documentation"
+                            className="text-text-muted hover:text-primary border border-border hover:border-primary/40 bg-surface px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                            title="View Calculation Guide & Formulation"
                         >
-                            <Book size={16} />
-                            Documentation
+                            <Book size={14} className="text-primary" />
+                            <span>Guide & Theory</span>
                         </button>
                     </div>
                 </div>

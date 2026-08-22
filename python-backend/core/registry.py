@@ -621,14 +621,8 @@ class Registry:
                 if isinstance(sanitized_res, dict):
                     output_vals = [v for k, v in sanitized_res.items() if k != 'warnings']
                     if output_vals and all(v is None for v in output_vals):
-                        if hasattr(func, '__closure__') and func.__closure__:
-                            for cell in func.__closure__:
-                                candidate = cell.cell_contents
-                                if callable(candidate) and candidate != func:
-                                    try:
-                                        candidate(**func_args)
-                                    except Exception as inner_e:
-                                        return {"status": "Error", "error": f"Geotechnical Constraint Error ({function_id}): {str(inner_e)}"}
+                        if warning_messages:
+                            return {"status": "Error", "error": f"Geotechnical Constraint Error ({function_id}): {'; '.join(warning_messages)}"}
                         return {"status": "Error", "error": f"Calculation returned no output (null). The supplied inputs do not satisfy the geotechnical physical boundary equations for '{function_id}'."}
 
                     if warning_messages:
@@ -1030,17 +1024,11 @@ class Registry:
             warning_messages = [str(w.message) for w in caught_warnings]
             
             if isinstance(sanitized_result, dict):
-                # If all primary outputs are None, extract the exact physical error reason from the unwrapped function
+                # If all primary outputs are None, extract the exact physical error reason from caught warnings
                 output_vals = [v for k, v in sanitized_result.items() if k != 'warnings']
                 if output_vals and all(v is None for v in output_vals):
-                    if hasattr(func, '__closure__') and func.__closure__:
-                        for cell in func.__closure__:
-                            candidate = cell.cell_contents
-                            if callable(candidate) and candidate != func:
-                                try:
-                                    candidate(**func_args)
-                                except Exception as inner_e:
-                                    return {"status": "Error", "error": f"Geotechnical Constraint Error ({function_id}): {str(inner_e)}"}
+                    if warning_messages:
+                        return {"status": "Error", "error": f"Geotechnical Constraint Error ({function_id}): {'; '.join(warning_messages)}"}
                     return {"status": "Error", "error": f"Calculation returned no output (null). The supplied inputs do not satisfy the geotechnical physical boundary equations for '{function_id}'."}
 
                 if warning_messages:

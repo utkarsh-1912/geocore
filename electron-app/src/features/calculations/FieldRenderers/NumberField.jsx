@@ -7,6 +7,8 @@ export const NumberField = ({ input, value, onChange, isEditMode, onEditField, v
   return (
     <FieldWrapper
       input={input}
+      value={value}
+      onChange={onChange}
       isEditMode={isEditMode}
       onEditField={onEditField}
       validationError={validationError}

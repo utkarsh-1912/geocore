@@ -11,6 +11,10 @@ export const siteInvestigationSchemas = {
                 label: 'Relative Density',
                 type: 'float',
                 required: true,
+                min: 0.0,
+                max: 1.0,
+                step: 0.01,
+                default: 0.55,
                 description: 'Relative density of cohesionless material (D_r) [-] - Suggested range: 0.0 <= relative_density <= 1.0',
                 unit: '-'
             },

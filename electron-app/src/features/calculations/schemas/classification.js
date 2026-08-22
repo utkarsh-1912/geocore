@@ -99,7 +99,7 @@ export const classificationSchemas = {
     },
     relativedensity_categories: {
         inputs: [
-            { name: "relative_density", type: "float", description: "Relative density (0.0 - 1.0)", required: true }
+            { name: "relative_density", label: "Relative Density", type: "float", min: 0.0, max: 1.0, step: 0.01, default: 0.55, description: "Relative density Dr (0.0 to 1.0)", unit: "-", required: true }
         ]
     },
     samplequality_voidratio_lunne: {

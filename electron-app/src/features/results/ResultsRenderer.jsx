@@ -1,17 +1,19 @@
 /**
  * Author: Utkarsh Gupta
- * License: GPL v3
+ * License: GPL v3 / GeoCore
  */
 
 import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '../../components/ui/Card';
-import { ChevronDown, ChevronUp, Database, Layers } from 'lucide-react';
+import { ChevronDown, ChevronUp, Database, Layers, CheckCircle2 } from 'lucide-react';
 import Papa from 'papaparse';
+import { getParameterNotation } from '@/utils/geoNotation';
+import { FormulaDerivationCard } from '../calculations/FormulaDerivationCard';
 
 const Plot = React.lazy(() => import('react-plotly.js'));
 
-export const ResultsRenderer = ({ results }) => {
+export const ResultsRenderer = ({ results, functionName = '', formData = {} }) => {
     const [expandedSections, setExpandedSections] = useState({
         nodes: false,
         elements: false,
@@ -101,143 +103,19 @@ export const ResultsRenderer = ({ results }) => {
                                     </button>
                                 )}
                             </div>
-                            <div className="overflow-x-auto rounded-lg border border-border bg-background">
-                                <table className="w-full text-xs text-left">
-                                    <thead className="bg-surface/50 text-text-muted font-medium border-b border-border">
+                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm max-h-96">
+                                <table className="w-full text-xs text-left border-collapse">
+                                    <thead className="bg-surface/50 text-text-muted font-medium border-b border-border sticky top-0">
                                         <tr>
-                                            {Object.keys(previewData[0]).map(k => <th key={k} className="p-3">{k}</th>)}
+                                            {Object.keys(previewData[0]).map(k => <th key={k} className="p-3 whitespace-nowrap">{k}</th>)}
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-border">
                                         {displayedRows.map((row, i) => (
                                             <tr key={i} className="hover:bg-primary/5 transition-colors">
-                                                {Object.values(row).map((v, j) => <td key={j} className="p-3 text-text-main">{v}</td>)}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        }
-
-        if (displayData && displayData.type === 'CalculationGrid') {
-            const nodes = displayData.nodes || [];
-            const elements = displayData.elements || [];
-            const nodesExpanded = expandedSections.nodes;
-            const elementsExpanded = expandedSections.elements;
-
-            const displayedNodes = nodesExpanded ? nodes : nodes.slice(0, 10);
-            const displayedElements = elementsExpanded ? elements : elements.slice(0, 10);
-
-            return (
-                <div className="space-y-6">
-                    <div className="bg-surface p-4 rounded-md border border-border flex items-center justify-between">
-                        <div>
-                            <h4 className="font-bold text-lg text-primary flex items-center gap-2">
-                                <Layers size={20} />
-                                Calculation Grid
-                            </h4>
-                            <p className="text-text-muted text-sm">{displayData.message}</p>
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="text-center px-4 py-2 bg-background/50 rounded border border-border/50">
-                                <div className="text-xl font-bold text-text-main">{displayData.nodes_count}</div>
-                                <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Nodes</div>
-                            </div>
-                            <div className="text-center px-4 py-2 bg-background/50 rounded border border-border/50">
-                                <div className="text-xl font-bold text-text-main">{displayData.elements_count}</div>
-                                <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Elements</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Nodes Preview */}
-                    {nodes.length > 0 && (
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between px-1">
-                                <h5 className="font-semibold text-text-main flex items-center gap-2 text-sm">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                    Nodes (Depth & Parameters)
-                                    {!nodesExpanded && nodes.length > 10 && (
-                                        <span className="text-[10px] text-text-muted font-normal italic ml-2">
-                                            (Showing first 10 of {nodes.length})
-                                        </span>
-                                    )}
-                                </h5>
-                                {nodes.length > 10 && (
-                                    <button
-                                        onClick={() => toggleSection('nodes')}
-                                        className="text-primary hover:text-primary-hover text-xs font-bold flex items-center gap-1 transition-colors"
-                                    >
-                                        {nodesExpanded ? <><ChevronUp size={14} /> Collapse</> : <><ChevronDown size={14} /> View All ({nodes.length})</>}
-                                    </button>
-                                )}
-                            </div>
-                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm">
-                                <table className="w-full text-[11px] text-left border-collapse">
-                                    <thead className="bg-surface/50 text-text-muted uppercase tracking-wider font-semibold">
-                                        <tr>
-                                            {Object.keys(nodes[0]).map(k => (
-                                                <th key={k} className="p-3 border-b border-border">{k}</th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border">
-                                        {displayedNodes.map((row, i) => (
-                                            <tr key={i} className="hover:bg-primary/5 transition-colors">
-                                                {Object.values(row).map((v, j) => (
+                                                {Object.values(row).map((val, j) => (
                                                     <td key={j} className="p-3 text-text-main whitespace-nowrap">
-                                                        {typeof v === 'number' ? v.toFixed(3) : String(v)}
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Elements Preview */}
-                    {elements.length > 0 && (
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between px-1">
-                                <h5 className="font-semibold text-text-main flex items-center gap-2 text-sm">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                                    Elements (Tributary Area & Logic)
-                                    {!elementsExpanded && elements.length > 10 && (
-                                        <span className="text-[10px] text-text-muted font-normal italic ml-2">
-                                            (Showing first 10 of {elements.length})
-                                        </span>
-                                    )}
-                                </h5>
-                                {elements.length > 10 && (
-                                    <button
-                                        onClick={() => toggleSection('elements')}
-                                        className="text-primary hover:text-primary-hover text-xs font-bold flex items-center gap-1 transition-colors"
-                                    >
-                                        {elementsExpanded ? <><ChevronUp size={14} /> Collapse</> : <><ChevronDown size={14} /> View All ({elements.length})</>}
-                                    </button>
-                                )}
-                            </div>
-                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm">
-                                <table className="w-full text-[11px] text-left border-collapse">
-                                    <thead className="bg-surface/50 text-text-muted uppercase tracking-wider font-semibold">
-                                        <tr>
-                                            {Object.keys(elements[0]).map(k => (
-                                                <th key={k} className="p-3 border-b border-border">{k}</th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border">
-                                        {displayedElements.map((row, i) => (
-                                            <tr key={i} className="hover:bg-primary/5 transition-colors">
-                                                {Object.values(row).map((v, j) => (
-                                                    <td key={j} className="p-3 text-text-main whitespace-nowrap">
-                                                        {typeof v === 'number' ? v.toFixed(3) : String(v)}
+                                                        {typeof val === 'number' ? val.toFixed(2) : String(val)}
                                                     </td>
                                                 ))}
                                             </tr>
@@ -251,132 +129,64 @@ export const ResultsRenderer = ({ results }) => {
             );
         }
 
-        if (displayData && displayData.type === 'LogPlot') {
-            return (
-                <div className="bg-surface p-4 rounded-md border border-border">
-                    <h4 className="font-bold text-lg mb-2">Log Plot Result</h4>
-                    <p>{displayData.message}</p>
-                    <pre className="text-xs mt-2 p-2 bg-background rounded overflow-auto">
-                        {JSON.stringify(displayData, null, 2)}
-                    </pre>
-                </div>
-            );
-        }
+        // Plotly Visualization Support
+        if (displayData.type === 'plotly' || displayData.type === 'plot' || displayData.type === 'multi_plot') {
+            const plotData = displayData.data || [];
+            const plotLayout = displayData.layout || {};
 
-        // Handle Image results (base64)
-        if (displayData && displayData.image) {
-            return (
-                <div className="flex flex-col items-center">
-                    <img
-                        src={`data:image/png;base64,${displayData.image}`}
-                        alt="Calculation Plot"
-                        className="max-w-full rounded-lg shadow-lg"
-                    />
-                </div>
-            );
-        }
+            const finalLayout = {
+                autosize: true,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: {
+                    family: 'Inter, sans-serif',
+                    color: 'var(--color-text-main, #333)'
+                },
+                xaxis: {
+                    gridcolor: 'rgba(128, 128, 128, 0.15)',
+                    zerolinecolor: 'rgba(128, 128, 128, 0.25)',
+                    ...plotLayout.xaxis
+                },
+                yaxis: {
+                    gridcolor: 'rgba(128, 128, 128, 0.15)',
+                    zerolinecolor: 'rgba(128, 128, 128, 0.25)',
+                    ...plotLayout.yaxis
+                },
+                margin: { t: 40, r: 20, l: 50, b: 40 },
+                ...plotLayout
+            };
 
-        if (displayData.type === 'plotly' || displayData.type === 'plot') {
             return (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="mt-6 w-full"
+                    transition={{ duration: 0.3 }}
+                    className="w-full"
                     id="results-visualization"
                 >
-                    <Card title={displayData.layout?.title?.text || displayData.layout?.title || "Plot"} className="w-full">
-                        <div className="w-full h-[600px]">
-                            <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded animate-pulse"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
+                    <div className="w-full bg-surface p-4 rounded-lg border border-border min-h-[420px] flex items-center justify-center">
+                        <Suspense fallback={<div className="text-text-muted text-sm flex items-center gap-2"><div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div> Loading Interactive Chart...</div>}>
                             <Plot
-                                data={displayData.data}
-                                layout={{
-                                    ...displayData.layout,
-                                    autosize: true,
-                                    height: 600,
-                                    paper_bgcolor: 'rgba(0,0,0,0)',
-                                    plot_bgcolor: 'rgba(0,0,0,0)',
-                                    font: { color: '#888' }
-                                }}
+                                data={plotData}
+                                layout={finalLayout}
                                 useResizeHandler={true}
-                                style={{ width: "100%", height: "100%" }}
-                                config={{ responsive: true }}
+                                style={{ width: '100%', height: '100%', minHeight: '400px' }}
+                                config={{ responsive: true, displayModeBar: true }}
                             />
-                            </Suspense>
-                        </div>
-                    </Card>
+                        </Suspense>
+                    </div>
                 </motion.div>
             );
         }
 
-        if (displayData.type === 'multi_plot') {
-            return (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="mt-6 w-full space-y-8"
-                    id="results-visualization"
-                >
-                    {displayData.plots.map((plot, index) => (
-                        <Card key={index} title={plot.title || plot.layout?.title?.text || `Plot ${index + 1}`} className="w-full">
-                            <div className="w-full h-[600px]">
-                                <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded animate-pulse"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
-                                <Plot
-                                    data={plot.data}
-                                    layout={{
-                                        ...plot.layout,
-                                        autosize: true,
-                                        height: 600,
-                                        paper_bgcolor: 'rgba(0,0,0,0)',
-                                        plot_bgcolor: 'rgba(0,0,0,0)',
-                                        font: { color: '#888' }
-                                    }}
-                                    useResizeHandler={true}
-                                    style={{ width: "100%", height: "100%" }}
-                                    config={{ responsive: true }}
-                                />
-                                </Suspense>
-                            </div>
-                        </Card>
-                    ))}
-
-                    {/* Render specific results table if present in multi_plot */}
-                    {displayData.results && displayData.results.type === 'dataframe' && (
-                        <Card title="Results Data" className="w-full overflow-hidden">
-                            <div className="overflow-x-auto max-h-[500px]">
-                                <table className="w-full text-xs text-left">
-                                    <thead className="bg-surface/50 text-text-muted font-medium border-b border-border sticky top-0">
-                                        <tr>
-                                            {displayData.results.columns.map(k => <th key={k} className="p-3 whitespace-nowrap">{k}</th>)}
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border">
-                                        {displayData.results.data.map((row, i) => (
-                                            <tr key={i} className="hover:bg-primary/5 transition-colors">
-                                                {displayData.results.columns.map((col, j) => (
-                                                    <td key={j} className="p-3 text-text-main whitespace-nowrap">
-                                                        {typeof row[col] === 'number' ? row[col].toFixed(4) : row[col]}
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </Card>
-                    )}
-                </motion.div>
-            );
-        }
-
+        // Matplotlib Base64 Image Support
         if (displayData.type === 'image') {
             return (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="mt-6 w-full flex justify-center"
+                    transition={{ duration: 0.3 }}
+                    className="w-full flex justify-center"
                     id="results-visualization"
                 >
                     <Card title="Plot (Static)" className="w-full max-w-4xl">
@@ -419,36 +229,76 @@ export const ResultsRenderer = ({ results }) => {
             );
         }
 
-        // Default: Render as Table for Key-Value pairs
+        // Default: Render as Enhanced Table for Key-Value pairs + Metric Highlight Badges
         if (typeof displayData === 'object' && displayData !== null) {
+            const entries = Object.entries(displayData).filter(([k]) => k !== 'warnings' && k !== 'type');
+            const numericEntries = entries.filter(([, val]) => typeof val === 'number');
+
             return (
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="border-b border-border">
-                                <th className="py-2 px-4 font-semibold text-text-muted">Parameter</th>
-                                <th className="py-2 px-4 font-semibold text-text-muted">Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Object.entries(displayData).map(([key, value]) => {
-                                if (key === 'warnings') return null;
+                <div className="space-y-4">
+                    {/* Top KPI Metric Badges */}
+                    {numericEntries.length > 0 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {numericEntries.slice(0, 3).map(([key, val]) => {
+                                const not = getParameterNotation(key);
                                 return (
-                                    (
-                                        <tr key={key} className="border-b border-border hover:bg-white/5 transition-colors">
-                                            <td className="py-2 px-4 font-medium text-text-main">{key}</td>
-                                            <td className="py-2 px-4 text-text-muted font-mono text-sm">
-                                                {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                                    <div key={key} className="p-3.5 rounded-lg bg-surface border border-primary/20 shadow-sm flex flex-col justify-between">
+                                        <div className="flex items-center justify-between text-xs text-text-muted">
+                                            <span className="font-medium truncate">{not?.label || key.replace(/_/g, ' ')}</span>
+                                            {not?.symbol && <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] font-bold">{not.symbol}</span>}
+                                        </div>
+                                        <div className="text-xl font-mono font-extrabold text-text-main mt-1">
+                                            {Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 })}
+                                            {not?.unit && <span className="text-xs text-text-muted font-normal ml-1.5">{not.unit}</span>}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {/* Detailed Key-Value Table */}
+                    <div className="overflow-x-auto rounded-lg border border-border bg-background">
+                        <table className="w-full text-left border-collapse text-xs">
+                            <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border">
+                                <tr>
+                                    <th className="py-2.5 px-4">Parameter Output</th>
+                                    <th className="py-2.5 px-4">Symbol</th>
+                                    <th className="py-2.5 px-4">Computed Value</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-border">
+                                {entries.map(([key, value]) => {
+                                    const not = getParameterNotation(key);
+                                    return (
+                                        <tr key={key} className="hover:bg-primary/5 transition-colors">
+                                            <td className="py-2.5 px-4 font-medium text-text-main flex items-center gap-2">
+                                                <span>{not?.label || key.replace(/_/g, ' ')}</span>
+                                            </td>
+                                            <td className="py-2.5 px-4 font-mono text-primary font-bold">
+                                                {not?.symbol || '-'}
+                                            </td>
+                                            <td className="py-2.5 px-4 text-text-main font-mono font-semibold">
+                                                {typeof value === 'number'
+                                                    ? `${value.toLocaleString(undefined, { maximumFractionDigits: 5 })} ${not?.unit || ''}`
+                                                    : (typeof value === 'object' ? JSON.stringify(value) : String(value))}
                                             </td>
                                         </tr>
-                                    ))
-                            })}
-                        </tbody>
-                    </table>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Step-by-step formula breakdown */}
+                    <FormulaDerivationCard
+                        functionName={functionName}
+                        formData={formData}
+                        results={displayData}
+                    />
                 </div>
             );
         }
-
 
         return <pre className="text-xs p-4 bg-background overflow-auto">{JSON.stringify(displayData, null, 2)}</pre>;
     };
@@ -457,8 +307,8 @@ export const ResultsRenderer = ({ results }) => {
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mt-6"
+            transition={{ duration: 0.3 }}
+            className="mt-6 space-y-4"
         >
             <Card>
                 {/* Warnings */}

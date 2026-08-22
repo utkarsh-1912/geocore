@@ -682,78 +682,79 @@ const MainLayout = () => {
             {viewState === 'function' && activeFunction && (
               <motion.div
                 key="function"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
+                exit={{ opacity: 0, y: 15 }}
                 transition={{ duration: 0.2 }}
-                className="max-w-7xl mx-auto"
+                className="max-w-6xl mx-auto w-full space-y-6"
               >
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-text-main">{activeFunction.title}</h2>
-                  <p className="text-text-muted text-sm mt-1">Configure parameters and run the analysis.</p>
-                </div>
+                <SchemaForm
+                  functionName={activeFunction.title}
+                  schema={currentSchema}
+                  onCalculate={handleCalculate}
+                  isLoading={isLoading}
+                  initialValues={calculationInputs}
+                />
 
-                <div className="flex flex-col gap-8">
-                  <SchemaForm
-                    functionName={activeFunction.title}
-                    schema={currentSchema}
-                    onCalculate={handleCalculate}
-                    isLoading={isLoading}
-                    initialValues={calculationInputs}
-                  />
-                  {calculationResults && (
-                    <div className="w-full">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xl font-bold text-text-main">Results</h3>
+                {calculationResults && (
+                  <div className="w-full space-y-4 pt-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
+                        <span>Analysis Results</span>
+                      </h3>
 
-                        {/* Export Dropdown */}
-                        <div ref={exportDropdownRef} className="relative">
-                          <button
-                            onClick={() => setShowExportMenu(!showExportMenu)}
-                            className="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
-                          >
-                            <Download size={16} />
-                            <span>Export</span>
-                          </button>
+                      {/* Export Dropdown */}
+                      <div ref={exportDropdownRef} className="relative">
+                        <button
+                          onClick={() => setShowExportMenu(!showExportMenu)}
+                          className="flex items-center gap-2 px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary/90 transition-colors shadow-sm"
+                        >
+                          <Download size={14} />
+                          <span>Export Results</span>
+                        </button>
 
-                          <AnimatePresence>
-                            {showExportMenu && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 10 }}
-                                className="absolute right-0 mt-2 w-48 bg-background border border-border rounded shadow-lg z-50 overflow-hidden"
+                        <AnimatePresence>
+                          {showExportMenu && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 10 }}
+                              className="absolute right-0 mt-2 w-48 bg-background border border-border rounded shadow-lg z-50 overflow-hidden text-xs font-medium"
+                            >
+                              <button
+                                onClick={() => { handleExport('pdf'); setShowExportMenu(false); }}
+                                className="flex items-center gap-2.5 text-text-main hover:text-white w-full px-4 py-2.5 text-left hover:bg-primary transition-colors"
                               >
-                                <button
-                                  onClick={() => { handleExport('pdf'); setShowExportMenu(false); }}
-                                  className="flex items-center gap-3 text-primary hover:text-white w-full px-4 py-3 text-left hover:bg-primary transition-colors text-text-main"
-                                >
-                                  <FileText size={16} className="text-primary-dark" />
-                                  <span>Export PDF</span>
-                                </button>
-                                <button
-                                  onClick={() => { handleExport('csv'); setShowExportMenu(false); }}
-                                  className="flex items-center gap-3 text-primary hover:text-white w-full px-4 py-3 text-left hover:bg-primary transition-colors text-text-main"
-                                >
-                                  <FileText size={16} className="text-primary-dark" />
-                                  <span>Export CSV</span>
-                                </button>
-                                <button
-                                  onClick={() => { handleExport('json'); setShowExportMenu(false); }}
-                                  className="flex items-center gap-3 text-primary hover:text-white w-full px-4 py-3 text-left hover:bg-primary transition-colors text-text-main"
-                                >
-                                  <FileJson size={16} className="text-primary-dark" />
-                                  <span>Export JSON</span>
-                                </button>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
+                                <FileText size={14} className="text-primary" />
+                                <span>Export PDF Report</span>
+                              </button>
+                              <button
+                                onClick={() => { handleExport('csv'); setShowExportMenu(false); }}
+                                className="flex items-center gap-2.5 text-text-main hover:text-white w-full px-4 py-2.5 text-left hover:bg-primary transition-colors"
+                              >
+                                <FileText size={14} className="text-primary" />
+                                <span>Export CSV Data</span>
+                              </button>
+                              <button
+                                onClick={() => { handleExport('json'); setShowExportMenu(false); }}
+                                className="flex items-center gap-2.5 text-text-main hover:text-white w-full px-4 py-2.5 text-left hover:bg-primary transition-colors"
+                              >
+                                <FileJson size={14} className="text-primary" />
+                                <span>Export JSON Data</span>
+                              </button>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
-                      <ResultsRenderer results={calculationResults} />
                     </div>
-                  )}
-                </div>
+
+                    <ResultsRenderer
+                      results={calculationResults}
+                      functionName={activeFunction?.title}
+                      formData={calculationInputs}
+                    />
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
