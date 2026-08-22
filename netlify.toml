@@ -1,6 +1,6 @@
-# Netlify Configuration for GeoCore Static Marketing Website & Custom Tailwind Docs Portal
 [build]
   publish = "website"
+  command = "echo 'GeoCore static site build ready'"
 
 # Clean routing and Docs redirects
 [[redirects]]

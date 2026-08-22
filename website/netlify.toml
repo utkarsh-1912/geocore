@@ -1,6 +1,7 @@
 # Netlify configuration when deploying directly from the website/ directory
 [build]
   publish = "."
+  command = "echo 'GeoCore static site build ready'"
 
 [[redirects]]
   from = "/docs"
