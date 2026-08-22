@@ -4,12 +4,12 @@
 
 [[redirects]]
   from = "/docs"
-  to = "/docs/index.html"
+  to = "/docs.html"
   status = 200
 
 [[redirects]]
   from = "/docs/*"
-  to = "/docs/index.html"
+  to = "/docs.html"
   status = 200
 
 [[headers]]

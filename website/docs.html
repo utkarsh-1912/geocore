@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Documentation — GeoCore Geotechnical Engineering Workstation</title>
+  <meta name="description" content="Comprehensive engineering documentation, API references, and formulation guides for GeoCore Geotechnical Workstation.">
+  <link rel="icon" type="image/png" href="assets/images/logoIcon.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--color-primary)',
+            'primary-light': 'var(--color-primary-light)',
+            secondary: 'var(--color-secondary)',
+            background: 'var(--color-bg)',
+            surface: 'var(--color-surface)',
+            'surface-elevated': 'var(--color-surface-elevated)',
+            border: 'var(--color-border)',
+            'text-main': 'var(--color-text-main)',
+            'text-muted': 'var(--color-text-muted)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Theme Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-background text-text-main min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 glass-nav transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo & Mobile Menu Trigger -->
+      <div class="flex items-center gap-3">
+        <button id="toggle-docs-sidebar" class="lg:hidden p-2 rounded-md hover:bg-surface border border-border text-text-muted touch-target" aria-label="Open documentation navigation">
+          <i data-lucide="panel-left" class="w-5 h-5"></i>
+        </button>
+        <a href="index.html" class="flex items-center gap-2.5 group">
+          <img src="assets/images/logoIcon.png" alt="GeoCore Logo" class="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-105">
+          <span class="font-bold text-base sm:text-lg tracking-tight flex items-center gap-1.5">
+            GeoCore <span class="text-[10px] px-1.5 py-0.5 rounded bg-primary/15 text-primary border border-primary/20 font-mono font-semibold uppercase">Docs</span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Search Box in Header (Desktop) -->
+      <div class="hidden sm:flex items-center flex-1 max-w-md mx-6">
+        <div class="relative w-full">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"></i>
+          <input id="docs-search" type="text" placeholder="Search 213+ calculations, theory, parameters..." class="w-full bg-surface border border-border rounded-md pl-9 pr-4 py-1.5 text-xs text-text-main focus:outline-none focus:border-primary transition-colors">
+        </div>
+      </div>
+
+      <!-- Action Group -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="index.html" class="text-xs font-medium text-text-muted hover:text-text-main transition-colors hidden sm:block">Product Home</a>
+        <button id="theme-toggle" class="p-2 sm:p-2.5 rounded-md hover:bg-surface border border-border text-text-muted hover:text-text-main transition-colors touch-target" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+          <i data-lucide="sun" class="w-4 h-4 theme-sun-icon hidden"></i>
+          <i data-lucide="moon" class="w-4 h-4 theme-moon-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Backdrop Overlay for Docs Sidebar -->
+  <div id="docs-backdrop" class="mobile-overlay hidden lg:hidden"></div>
+
+  <!-- Docs Layout Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex w-full py-6 sm:py-8 gap-8 relative">
+    
+    <!-- Left Navigation Sidebar (Desktop Static & Mobile Slide-In Drawer) -->
+    <aside id="docs-sidebar" class="w-72 sm:w-80 lg:w-64 shrink-0 fixed inset-y-0 left-0 z-50 bg-surface lg:bg-transparent lg:static pt-4 lg:pt-0 px-5 lg:px-0 border-r lg:border-r-0 border-border shadow-2xl lg:shadow-none transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto max-h-screen lg:max-h-[calc(100vh-6rem)]">
+      
+      <!-- Mobile Sidebar Top Bar -->
+      <div class="lg:hidden flex items-center justify-between pb-3 mb-4 border-b border-border">
+        <span class="font-bold text-sm text-text-main">Documentation Topics</span>
+        <button id="close-docs-sidebar" class="p-1.5 rounded hover:bg-surface-elevated border border-border text-text-muted hover:text-text-main touch-target" aria-label="Close menu">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Search Box (Inside Drawer) -->
+      <div class="sm:hidden mb-4">
+        <div class="relative w-full">
+          <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"></i>
+          <input id="docs-search-mobile" type="text" placeholder="Search documentation..." class="w-full bg-background border border-border rounded-md pl-8 pr-3 py-1.5 text-xs text-text-main focus:outline-none focus:border-primary">
+        </div>
+      </div>
+
+      <div class="space-y-5 text-xs pb-12">
+        
+        <!-- Section: Getting Started -->
+        <div class="doc-nav-section">
+          <h5 class="font-bold text-text-main uppercase tracking-wider text-[11px] mb-2 px-2 text-primary">1. Getting Started</h5>
+          <div class="space-y-1">
+            <a href="#overview" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="compass" class="w-3.5 h-3.5"></i> System Overview
+            </a>
+            <a href="#architecture" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Architecture
+            </a>
+            <a href="#soil-profile" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="layers" class="w-3.5 h-3.5"></i> SoilProfile Layering
+            </a>
+          </div>
+        </div>
+
+        <!-- Section: Geotechnical Modules -->
+        <div class="doc-nav-section">
+          <h5 class="font-bold text-text-main uppercase tracking-wider text-[11px] mb-2 px-2 text-primary">2. Calculation Modules</h5>
+          <div class="space-y-1">
+            <a href="#shallow-foundations" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="square" class="w-3.5 h-3.5"></i> Shallow Foundations
+            </a>
+            <a href="#deep-foundations" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="box" class="w-3.5 h-3.5"></i> Deep Foundations (Piles)
+            </a>
+            <a href="#site-investigation" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="search" class="w-3.5 h-3.5"></i> Site Investigation & CPT
+            </a>
+            <a href="#eurocode-7" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="ruler" class="w-3.5 h-3.5"></i> Eurocode 7 (EN 1997)
+            </a>
+            <a href="#schema-overrides" class="doc-nav-item flex items-center gap-2 px-2.5 py-2 rounded text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors touch-target">
+              <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Parameter Overrides
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 max-w-4xl space-y-12 sm:space-y-16 pb-20 sm:pb-24">
+      
+      <!-- Article: Overview -->
+      <section id="overview" class="doc-article">
+        <div class="flex items-center gap-2 text-[11px] font-mono text-primary mb-2">
+          <span>GETTING STARTED</span> &bull; <span>OVERVIEW</span>
+        </div>
+        <h1>GeoCore Geotechnical Workstation</h1>
+        <p class="text-sm sm:text-base text-text-muted leading-relaxed">
+          GeoCore is a professional offline geotechnical engineering workstation designed for geotechnical engineers, offshore specialists, and consulting firms. It pairs an embedded local FastAPI computational backend with a modern React 19 / Tailwind / Electron interface.
+        </p>
+
+        <div class="doc-callout">
+          <strong>100% Offline by Design:</strong> All 213+ calculations, SoilProfile interpretations, and Plotly graphics run strictly on your local CPU. No proprietary borehole data leaves your machine.
+        </div>
+
+        <h2 id="key-capabilities">Core Workstation Capabilities</h2>
+        <ul>
+          <li><strong>Analytical & Empirical Engine:</strong> Direct execution of 213+ validated routines from the Groundhog library.</li>
+          <li><strong>Stratigraphy Object Model:</strong> Native SoilProfile management with layer boundaries, USCS soil types, CPT/SPT values, and groundwater tables.</li>
+          <li><strong>Standards Compliance:</strong> Eurocode 7 (EN 1997-1), API RP 2A (21st & 22nd Edition), ASTM, DNV-RP-C212, and ISO 19901-4 standards.</li>
+          <li><strong>Deliverable Generators:</strong> Export calculation sheets to PDF reports, Excel workbooks (.xlsx), CSV tables, and interactive Plotly HTML.</li>
+        </ul>
+      </section>
+
+      <!-- Article: Architecture -->
+      <section id="architecture" class="doc-article">
+        <h2 id="system-architecture">System Architecture</h2>
+        <p>
+          GeoCore follows a modular, decoupled desktop architecture:
+        </p>
+
+        <div class="code-block my-4">
+<pre><code>┌────────────────────────────────────────────────────────────┐
+│              Electron Desktop Shell (Node.js)              │
+├────────────────────────────┬───────────────────────────────┤
+│    React 19 Frontend UI    │    Python FastAPI Backend     │
+│   - SchemaForm Engine      │   - Groundhog Core Engine     │
+│   - Plotly CAD Visualizer  │   - Pydantic v2 Validation    │
+│   - SoilProfile Studio     │   - NumPy / SciPy Solvers     │
+│   - Command Palette        │   - SQLite Object Database    │
+└────────────────────────────┴───────────────────────────────┘</code></pre>
+        </div>
+
+        <p>
+          The frontend communicates with the local engine over HTTP loopback (<code>127.0.0.1:8000</code>). Calculations evaluate synchronously with sub-millisecond execution times.
+        </p>
+      </section>
+
+      <!-- Article: SoilProfile -->
+      <section id="soil-profile" class="doc-article">
+        <h2 id="soil-profile-management">SoilProfile Stratigraphy Model</h2>
+        <p>
+          The <code>SoilProfile</code> object represents a continuous vertical geological borehole. It contains stratigraphic layer intervals, strength parameters, unit weights, and water table elevations.
+        </p>
+
+        <h3>Defining a SoilProfile</h3>
+        <p>A SoilProfile is represented as a structured table with core geotechnical layer parameters:</p>
+        
+        <!-- Mobile Swipe Scrollable Table Container -->
+        <div class="geo-card overflow-x-auto my-4">
+          <table class="w-full text-left text-xs border-collapse min-w-[500px]">
+            <thead>
+              <tr class="border-b border-border bg-surface text-text-muted">
+                <th class="p-3 font-semibold">Column Key</th>
+                <th class="p-3 font-semibold">Unit</th>
+                <th class="p-3 font-semibold">Physical Parameter</th>
+                <th class="p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+              <tr>
+                <td class="p-3 font-mono text-primary font-bold">Depth from</td>
+                <td class="p-3 font-mono">m</td>
+                <td class="p-3">Top of stratum</td>
+                <td class="p-3 text-text-muted">Layer upper boundary below ground level</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-primary font-bold">Depth to</td>
+                <td class="p-3 font-mono">m</td>
+                <td class="p-3">Bottom of stratum</td>
+                <td class="p-3 text-text-muted">Layer lower boundary below ground level</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-primary font-bold">SoilType</td>
+                <td class="p-3 font-mono">-</td>
+                <td class="p-3">Classification</td>
+                <td class="p-3 text-text-muted">Sand, Clay, Silt, Gravel, Peat</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-primary font-bold">UnitWeight</td>
+                <td class="p-3 font-mono">kN/m³</td>
+                <td class="p-3">Bulk unit weight &gamma;</td>
+                <td class="p-3 text-text-muted">Total unit weight of the soil layer</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-primary font-bold">FrictionAngle</td>
+                <td class="p-3 font-mono">deg</td>
+                <td class="p-3">Effective &phi;'</td>
+                <td class="p-3 text-text-muted">Drained internal friction angle</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-primary font-bold">UndrainedCohesion</td>
+                <td class="p-3 font-mono">kPa</td>
+                <td class="p-3">Undrained strength c_u</td>
+                <td class="p-3 text-text-muted">Total strength for cohesive clay strata</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Article: Shallow Foundations -->
+      <section id="shallow-foundations" class="doc-article">
+        <h2 id="shallow-foundations-module">Shallow Foundations Module</h2>
+        <p>
+          Calculates ultimate and allowable bearing capacity under vertical, inclined, and eccentric loading according to classic theories and Eurocode 7.
+        </p>
+
+        <h3>Formulations Implemented:</h3>
+        <ul>
+          <li><strong>Terzaghi (1943):</strong> General bearing capacity equation with strip, round, and square shape factors.</li>
+          <li><strong>Meyerhof (1963):</strong> Inclination factors and depth coefficients for shallow footings.</li>
+          <li><strong>Hansen (1970) & Vesic (1973):</strong> Complete shape, depth, load inclination, ground slope, and base tilt factors.</li>
+          <li><strong>Eurocode 7 EN 1997-1 Annex D:</strong> Partial factor verification across Design Approaches DA1, DA2, and DA3.</li>
+        </ul>
+
+        <div class="code-block my-3">
+<pre><code># Sample Python API Execution
+import requests
+
+payload = {
+    "module_id": "shallowfoundations",
+    "function_id": "calculate_bearing_capacity_meyerhof",
+    "args": {
+        "phi_eff": 34.0,
+        "cohesion": 0.0,
+        "gamma": 19.5,
+        "width": 2.5,
+        "length": 3.0,
+        "depth": 1.5
+    }
+}
+response = requests.post("http://127.0.0.1:8000/api/execute", json=payload)
+print(response.json()["results"])
+# Output: {"q_ult": 842.65, "q_net": 813.4, "N_q": 29.44, "N_gamma": 31.15}</code></pre>
+        </div>
+      </section>
+
+      <!-- Article: Deep Foundations -->
+      <section id="deep-foundations" class="doc-article">
+        <h2 id="deep-foundations-module">Deep Foundations (Piles & Monopiles)</h2>
+        <p>
+          Axial pile capacity calculations (shaft friction \(q_s\) and end bearing \(q_b\)) in cohesive and cohesionless soils according to API RP 2A, ISO 19901-4, and offshore CPT methods (ICP-05, UWA-05).
+        </p>
+
+        <h3>API RP 2A Sand Method:</h3>
+        <p>
+          Unit skin friction is computed as \(f = eta \cdot \sigma'_v \le f_{lim}\) where \(eta = K \cdot 	an(\delta)\). Unit end bearing is evaluated as \(q = N_q \cdot \sigma'_v \le q_{lim}\).
+        </p>
+
+        <div class="doc-callout info">
+          <strong>Lateral Load Analysis:</strong> GeoCore includes Matlock (1970) soft clay p-y curves, Reese et al. (1975) stiff clay curves, and API (2000) sand p-y formulations for beam-on-elastic-foundation modeling.
+        </div>
+      </section>
+
+      <!-- Article: Site Investigation -->
+      <section id="site-investigation" class="doc-article">
+        <h2 id="site-investigation-module">Site Investigation & CPT Processing</h2>
+        <p>
+          Automated processing of piezocone penetrometer (CPTu) raw measurements (\(q_c, f_s, u_2\)):
+        </p>
+        <ul>
+          <li><strong>Robertson (1990/2009) SBT:</strong> Normalised cone resistance \(Q_t\), friction ratio \(F_r\), and Soil Behavior Type Index \(I_c\).</li>
+          <li><strong>Undrained Strength \(c_u\):</strong> Evaluated via \(c_u = (q_t - \sigma_{v0}) / N_{kt}\) with customizable empirical cone factor \(N_{kt}\).</li>
+          <li><strong>SPT Corrections:</strong> Energy ratio correction to \(N_{60}\) and overburden stress normalization to \((N_1)_{60}\).</li>
+        </ul>
+      </section>
+
+      <!-- Article: Eurocode 7 -->
+      <section id="eurocode-7" class="doc-article">
+        <h2 id="eurocode-7-standards">Eurocode 7 (EN 1997-1) Verification</h2>
+        <p>
+          GeoCore natively applies partial safety factors on actions, material properties (\(M1, M2\)), and resistances (\(R1, R2, R3, R4\)):
+        </p>
+
+        <!-- Mobile Swipe Scrollable Table Container -->
+        <div class="geo-card overflow-x-auto my-4">
+          <table class="w-full text-left text-xs border-collapse min-w-[500px]">
+            <thead>
+              <tr class="border-b border-border bg-surface text-text-muted">
+                <th class="p-3 font-semibold">Design Approach</th>
+                <th class="p-3 font-semibold">Actions (A)</th>
+                <th class="p-3 font-semibold">Materials (M)</th>
+                <th class="p-3 font-semibold">Resistance (R)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+              <tr>
+                <td class="p-3 font-bold text-text-main">DA1 - Comb. 1</td>
+                <td class="p-3 font-mono">A1 (&gamma;_G=1.35)</td>
+                <td class="p-3 font-mono">M1 (&gamma;_&phi;=1.0)</td>
+                <td class="p-3 font-mono">R1 (&gamma;_R=1.0)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-text-main">DA1 - Comb. 2</td>
+                <td class="p-3 font-mono">A2 (&gamma;_G=1.0)</td>
+                <td class="p-3 font-mono">M2 (&gamma;_&phi;=1.25)</td>
+                <td class="p-3 font-mono">R1 (&gamma;_R=1.0)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-text-main">DA2</td>
+                <td class="p-3 font-mono">A1 (&gamma;_G=1.35)</td>
+                <td class="p-3 font-mono">M1 (&gamma;_&phi;=1.0)</td>
+                <td class="p-3 font-mono">R2 (&gamma;_R=1.4)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-text-main">DA3</td>
+                <td class="p-3 font-mono">A1 / A2</td>
+                <td class="p-3 font-mono">M2 (&gamma;_&phi;=1.25)</td>
+                <td class="p-3 font-mono">R3 (&gamma;_R=1.0)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Article: Schema Overrides -->
+      <section id="schema-overrides" class="doc-article">
+        <h2 id="schema-customization">Parameter Overrides & Customization</h2>
+        <p>
+          GeoCore allows engineers to adapt parameter symbols, default values, and display units without modifying the core codebase:
+        </p>
+        <ol>
+          <li>Open any calculation module in development mode.</li>
+          <li>Click the <strong>Edit Mode</strong> toggle in the parameter card header.</li>
+          <li>Click any field to customize its display label, description, default value, and validation bounds.</li>
+          <li>Click <strong>Save Override</strong>. Changes are persisted to the local <code>schema_overrides.json</code> store.</li>
+        </ol>
+      </section>
+
+    </main>
+
+    <!-- Right-Hand ScrollSpy Table of Contents (Desktop Only) -->
+    <aside class="hidden xl:block w-56 shrink-0 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto text-xs">
+      <h6 class="font-bold text-text-main uppercase tracking-wider text-[11px] mb-3 text-primary">On this page</h6>
+      <nav class="space-y-2 border-l border-border pl-2">
+        <a href="#overview" class="toc-link block text-text-muted hover:text-text-main transition-colors">Overview</a>
+        <a href="#key-capabilities" class="toc-link block text-text-muted hover:text-text-main transition-colors pl-2">Capabilities</a>
+        <a href="#system-architecture" class="toc-link block text-text-muted hover:text-text-main transition-colors">Architecture</a>
+        <a href="#soil-profile-management" class="toc-link block text-text-muted hover:text-text-main transition-colors">SoilProfile Model</a>
+        <a href="#shallow-foundations-module" class="toc-link block text-text-muted hover:text-text-main transition-colors">Shallow Foundations</a>
+        <a href="#deep-foundations-module" class="toc-link block text-text-muted hover:text-text-main transition-colors">Deep Foundations</a>
+        <a href="#site-investigation-module" class="toc-link block text-text-muted hover:text-text-main transition-colors">Site Investigation</a>
+        <a href="#eurocode-7-standards" class="toc-link block text-text-muted hover:text-text-main transition-colors">Eurocode 7</a>
+        <a href="#schema-customization" class="toc-link block text-text-muted hover:text-text-main transition-colors">Customization</a>
+      </nav>
+    </aside>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-border bg-surface py-8 px-4 sm:px-6 lg:px-8 text-xs text-text-muted mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <img src="assets/images/logoIcon.png" alt="GeoCore" class="h-5 w-auto">
+        <span>© 2026 GeoCore. Developed by Utkarsh Gupta.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="hover:text-text-main">Home</a>
+        <a href="index.html#features" class="hover:text-text-main">Features</a>
+        <a href="index.html#download" class="hover:text-text-main">Download</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/docs.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
