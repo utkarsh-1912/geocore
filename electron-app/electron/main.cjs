@@ -44,10 +44,25 @@ function createWindow() {
     },
     titleBarStyle: 'hidden', // Custom title bar
     titleBarOverlay: {
-      color: '#080c14',
-      symbolColor: '#ffffff',
+      color: '#1f2937',
+      symbolColor: '#9ca3af',
       height: 48
     },
+  });
+
+  // Dynamic Window Controls Overlay Theme Sync
+  ipcMain.on('set-title-bar-overlay', (event, { isDark }) => {
+    if (mainWindow && !mainWindow.isDestroyed() && process.platform === 'win32') {
+      try {
+        mainWindow.setTitleBarOverlay({
+          color: isDark ? '#1f2937' : '#ffffff',
+          symbolColor: isDark ? '#9ca3af' : '#4b5563',
+          height: 48
+        });
+      } catch (e) {
+        console.error('Failed to update titleBarOverlay:', e);
+      }
+    }
   });
 
   mainWindow.setIcon(appIcon);

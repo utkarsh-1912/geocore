@@ -3,8 +3,6 @@
  * License: GPL v3
  */
 
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import Papa from 'papaparse';
 import logoFull from '../assets/logo-2.png';
 
@@ -151,6 +149,8 @@ const SECONDARY_COLOR = [44, 62, 80]; // Dark Navy for contrast
 
 export const generatePDF = async (results, inputs, functionName, filename, capturedImage = null, schema = null) => {
     console.log("generatePDF: Starting for", functionName);
+    const { default: jsPDF } = await import('jspdf');
+    const { default: autoTable } = await import('jspdf-autotable');
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.width;
 

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check } from 'lucide-react';
+import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
@@ -15,7 +15,7 @@ import { SoilProfileModal } from './SoilProfileModal';
 import { SavedProfilesList } from './SavedProfilesList';
 import { ProfileViewModal } from './ProfileViewModal';
 import SchemaEditor from './SchemaEditor';
-import { Edit2, Save } from 'lucide-react';
+import { UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
 
 
 // Object Selector Component
@@ -83,6 +83,191 @@ const Tabs = ({ tabs, activeTab, onChange }) => (
     </div>
 );
 
+// Interactive Multi-Parameter Tag / Chip Selector
+const ParameterChipsSelector = ({ name, value, availableColumns, onChange, required, disabled, placeholder }) => {
+    const [rawMode, setRawMode] = useState(false);
+
+    // Parse current value into array of selected column names
+    const selectedList = React.useMemo(() => {
+        if (!value) return [];
+        if (Array.isArray(value)) return value.map(v => String(v).trim()).filter(Boolean);
+        return String(value)
+            .split(/[,;\n]/)
+            .map(s => s.trim())
+            .filter(Boolean);
+    }, [value]);
+
+    const toggleColumn = (col) => {
+        let newList;
+        if (selectedList.includes(col)) {
+            newList = selectedList.filter(c => c !== col);
+        } else {
+            newList = [...selectedList, col];
+        }
+        onChange(newList.join(', '));
+    };
+
+    const selectAll = () => {
+        onChange(availableColumns.join(', '));
+    };
+
+    const selectNumeric = () => {
+        const numeric = availableColumns.filter(c => {
+            const lc = c.toLowerCase();
+            return !lc.includes('soil type') && !lc.includes('description') && !lc.includes('layer') && !lc.includes('name') && !lc.includes('lithology') && !lc.includes('color');
+        });
+        onChange(numeric.join(', '));
+    };
+
+    const clearAll = () => {
+        onChange('');
+    };
+
+    if (rawMode || availableColumns.length === 0) {
+        return (
+            <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-text-muted">Comma-separated parameters:</span>
+                    {availableColumns.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={() => setRawMode(false)}
+                            className="text-[11px] text-primary hover:underline font-medium"
+                        >
+                            Switch to Tag Selection
+                        </button>
+                    )}
+                </div>
+                <Input
+                    type="text"
+                    value={value || ''}
+                    onChange={(e) => onChange(e.target.value)}
+                    placeholder={placeholder || "e.g. qc [MPa], fs [kPa]"}
+                    required={required}
+                    disabled={disabled}
+                />
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-2 p-3 bg-surface/50 border border-border rounded-md">
+            <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
+                <span className="text-text-muted font-medium">
+                    Select parameters from profile ({selectedList.length} selected):
+                </span>
+                <div className="flex items-center gap-1.5">
+                    <button
+                        type="button"
+                        onClick={selectNumeric}
+                        className="text-[11px] px-2 py-0.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors flex items-center gap-1"
+                        title="Select typical numeric columns"
+                    >
+                        <Zap size={11} className="stroke-[2.5]" />
+                        <span>Numeric</span>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={selectAll}
+                        className="text-[11px] px-2 py-0.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"
+                    >
+                        All
+                    </button>
+                    <button
+                        type="button"
+                        onClick={clearAll}
+                        className="text-[11px] px-2 py-0.5 rounded bg-background hover:bg-border text-text-muted transition-colors"
+                    >
+                        Clear
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setRawMode(true)}
+                        className="text-[11px] text-text-muted hover:text-primary transition-colors underline"
+                    >
+                        Custom Text
+                    </button>
+                </div>
+            </div>
+
+            {/* Chips Grid */}
+            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1.5 bg-background/50 rounded border border-border/50">
+                {availableColumns.map(col => {
+                    const isSelected = selectedList.includes(col);
+                    return (
+                        <button
+                            key={col}
+                            type="button"
+                            onClick={() => toggleColumn(col)}
+                            disabled={disabled}
+                            className={`px-2.5 py-1 rounded text-xs font-medium transition-all flex items-center gap-1.5 ${
+                                isSelected
+                                    ? 'bg-primary text-white shadow-sm ring-1 ring-primary'
+                                    : 'bg-surface border border-border text-text-main hover:border-primary/50 hover:bg-primary/5'
+                            }`}
+                        >
+                            {isSelected && <Check size={12} className="stroke-[2.5]" />}
+                            <span>{col}</span>
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+// Smart Single Column Dropdown Selector
+const ColumnSelectDropdown = ({ name, value, availableColumns, onChange, required, disabled, placeholder }) => {
+    const [isCustom, setIsCustom] = useState(false);
+
+    return (
+        <div className="space-y-1.5">
+            {!isCustom ? (
+                <div className="flex gap-2">
+                    <select
+                        value={value || ''}
+                        onChange={(e) => {
+                            if (e.target.value === '__custom__') {
+                                setIsCustom(true);
+                            } else {
+                                onChange(e.target.value);
+                            }
+                        }}
+                        className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full text-sm"
+                        disabled={disabled}
+                        required={required}
+                    >
+                        <option value="">-- Select column --</option>
+                        {availableColumns.map(col => (
+                            <option key={col} value={col}>{col}</option>
+                        ))}
+                        <option value="__custom__">Add column name...</option>
+                    </select>
+                </div>
+            ) : (
+                <div className="flex gap-2 items-center">
+                    <Input
+                        type="text"
+                        value={value || ''}
+                        onChange={(e) => onChange(e.target.value)}
+                        placeholder="Enter custom column name"
+                        className="flex-1"
+                        required={required}
+                        disabled={disabled}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setIsCustom(false)}
+                        className="text-xs text-primary hover:underline px-2 shrink-0"
+                    >
+                        Back to List
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+};
+
 export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initialValues }) => {
     const [formData, setFormData] = useState({});
     const [showDocs, setShowDocs] = useState(false);
@@ -106,6 +291,51 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
     const [isEditingDocs, setIsEditingDocs] = useState(false);
     const [editedDocs, setEditedDocs] = useState('');
     const [activeDocTab, setActiveDocTab] = useState('guide'); // 'guide' | 'fields'
+
+    // AI Auto-Fill State
+    const [showAutoFillModal, setShowAutoFillModal] = useState(false);
+    const [autoFillText, setAutoFillText] = useState('');
+    const [isAutoFilling, setIsAutoFilling] = useState(false);
+    const [autoFillMsg, setAutoFillMsg] = useState(null);
+
+    const handleAutoFill = async () => {
+        if (!autoFillText.trim() || isAutoFilling) return;
+        setIsAutoFilling(true);
+        setAutoFillMsg(null);
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/geoai/autofill', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    function_id: functionName,
+                    raw_text: autoFillText
+                })
+            });
+            if (!response.ok) throw new Error('Auto-fill extraction failed');
+            const data = await response.json();
+            const extracted = data.fields || {};
+            const count = data.extracted_count || 0;
+            if (count === 0) {
+                setAutoFillMsg({ type: 'warn', text: 'No matching parameters found in text.' });
+            } else {
+                const newForm = { ...formData };
+                Object.keys(extracted).forEach(k => {
+                    newForm[k] = extracted[k].value;
+                });
+                setFormData(newForm);
+                setAutoFillMsg({ type: 'success', text: `Successfully populated ${count} parameters!` });
+                setTimeout(() => {
+                    setShowAutoFillModal(false);
+                    setAutoFillText('');
+                    setAutoFillMsg(null);
+                }, 1200);
+            }
+        } catch (e) {
+            setAutoFillMsg({ type: 'error', text: e.message });
+        } finally {
+            setIsAutoFilling(false);
+        }
+    };
 
     // Helper for Schema Image Upload
     const handleSchemaImageUpload = async (file, fieldName) => {
@@ -131,8 +361,32 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
         }
     };
 
+    // Normalize schema inputs (support both 'inputs' array and JSON Schema 'properties')
+    const normalizedInputs = React.useMemo(() => {
+        if (!schema) return [];
+        if (schema.inputs) return schema.inputs;
+        if (schema.properties) {
+            return Object.entries(schema.properties).map(([key, prop]) => ({
+                name: key,
+                label: prop.title || key,
+                type: prop.type,
+                description: prop.description,
+                default: prop.default,
+                required: schema.required?.includes(key),
+                enum: prop.enum,
+                minimum: prop.minimum,
+                maximum: prop.maximum,
+                unit: prop.unit,
+                objectType: prop.objectType
+            }));
+        }
+        return [];
+    }, [schema]);
+
     // Fetch Overrides and Page Docs on Mount/Update
     useEffect(() => {
+        const defaultDocs = schema?.documentation || generateDefaultDocumentation(functionName, schema, normalizedInputs);
+
         fetch('http://localhost:8000/api/schema/overrides')
             .then(res => res.json())
             .then(data => {
@@ -141,12 +395,16 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
 
                 // Initialize Page Docs
                 const customDocs = data[functionName]?._page_docs?.description;
-                const defaultDocs = schema?.documentation || '';
-                setPageDocs(customDocs || defaultDocs);
-                setEditedDocs(customDocs || defaultDocs);
+                const initialDocs = (customDocs && customDocs.trim()) ? customDocs : defaultDocs;
+                setPageDocs(initialDocs);
+                setEditedDocs(initialDocs);
             })
-            .catch(err => console.error("Failed to load schema overrides:", err));
-    }, [functionName, schema]);
+            .catch(err => {
+                console.error("Failed to load schema overrides:", err);
+                setPageDocs(defaultDocs);
+                setEditedDocs(defaultDocs);
+            });
+    }, [functionName, schema, normalizedInputs]);
 
     const handleSavePageDocs = () => {
         const metadata = { description: editedDocs }; // Store as description field in metadata object
@@ -176,29 +434,6 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
             })
         }).catch(err => console.error("Failed to save override:", err));
     };
-
-    // Normalize schema inputs (support both 'inputs' array and JSON Schema 'properties')
-
-    const normalizedInputs = React.useMemo(() => {
-        if (!schema) return [];
-        if (schema.inputs) return schema.inputs;
-        if (schema.properties) {
-            return Object.entries(schema.properties).map(([key, prop]) => ({
-                name: key,
-                label: prop.title || key,
-                type: prop.type,
-                description: prop.description,
-                default: prop.default,
-                required: schema.required?.includes(key),
-                enum: prop.enum,
-                minimum: prop.minimum,
-                maximum: prop.maximum,
-                unit: prop.unit,
-                objectType: prop.objectType
-            }));
-        }
-        return [];
-    }, [schema]);
 
     useEffect(() => {
         console.log("SchemaForm useEffect - initialValues changed:", initialValues);
@@ -396,6 +631,8 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
         onCalculate(formData);
     };
 
+    const isDev = import.meta.env.DEV || Boolean(window.electronAPI?.isDev);
+
     if (!schema) return <div className="text-gray-400">Select a function to configure parameters.</div>;
 
     return (
@@ -405,16 +642,19 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                 <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
                     <h3 className="font-semibold text-text-main flex items-center gap-2">
                         Input Parameters
-                        {isEditMode && <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">Editing Mode</span>}
+                        {isDev && isEditMode && <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">Editing Mode</span>}
                     </h3>
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => setIsEditMode(!isEditMode)}
-                            className={`flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 border border-border rounded-md ${isEditMode ? 'bg-primary text-white shadow-md' : 'text-text-muted hover:bg-secondary/10'}`}
-                            title="Toggle Edit Mode"
-                        >
-                            {isEditMode ? <Check size={16} /> : <Edit2 size={16} />}
-                        </button>
+                    <div className="flex items-center gap-2.5">
+                        {isDev && (
+                            <button
+                                type="button"
+                                onClick={() => setIsEditMode(!isEditMode)}
+                                className={`flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 border border-border rounded ${isEditMode ? 'bg-primary text-white shadow-md' : 'text-text-muted hover:bg-secondary/10'}`}
+                                title="Toggle Schema Customization Mode (Dev only)"
+                            >
+                                {isEditMode ? <Check size={16} /> : <Edit2 size={16} />}
+                            </button>
+                        )}
                         <button
                             onClick={() => setShowDocs(true)}
                             className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 text-sm font-medium"
@@ -432,6 +672,10 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                             // Apply Overrides
                             const override = overrides[functionName]?.[baseInput.name] || {};
                             const input = { ...baseInput, ...override };
+
+                            const isMultiColumn = override.displayType === 'column_multi_select' || (!override.displayType && (input.name === 'parameters' || input.name === 'plot_parameters' || input.name === 'properties' || (fileColumns.length > 0 && (input.name === 'columns' || input.name.toLowerCase().includes('parameters')))));
+                            const isSingleColumn = override.displayType === 'column_select' || (!override.displayType && (input.type === 'column_select' || input.name === 'soiltypecolumn' || input.name === 'depth_column' || input.name === 'qc_column' || input.name.toLowerCase().endsWith('_column') || input.name.toLowerCase().endsWith('_col') || input.name.toLowerCase().includes('soiltype')));
+                            const isDropdown = override.displayType === 'dropdown' || (override.allowedOptions && override.allowedOptions.length > 0);
 
                             // Helper for Edit Mode Wrapper
                             const wrapperClass = `relative ${isEditMode ? 'border border-dashed border-primary/20 rounded-md p-2' : ''}`;
@@ -512,6 +756,75 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                                         </div>
                                     </div>
                                 );
+                            } else if (isMultiColumn && fileColumns.length > 0) {
+                                return (
+                                    <div key={input.name} className={`${wrapperClass} md:col-span-2`}>
+                                        {editOverlay}
+                                        <div className="flex flex-col">
+                                            {renderLabel()}
+                                            <ParameterChipsSelector
+                                                name={input.name}
+                                                value={formData[input.name]}
+                                                availableColumns={fileColumns}
+                                                onChange={(val) => handleChange(input.name, val)}
+                                                required={input.required}
+                                                disabled={isEditMode}
+                                                placeholder={input.placeholder || input.description}
+                                            />
+                                            {validationErrors[input.name] && (
+                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            } else if (isSingleColumn && fileColumns.length > 0) {
+                                return (
+                                    <div key={input.name} className={wrapperClass}>
+                                        {editOverlay}
+                                        <div className="flex flex-col">
+                                            {renderLabel()}
+                                            <ColumnSelectDropdown
+                                                name={input.name}
+                                                value={formData[input.name]}
+                                                availableColumns={fileColumns}
+                                                onChange={(val) => handleChange(input.name, val)}
+                                                required={input.required}
+                                                disabled={isEditMode}
+                                                placeholder={input.placeholder || input.description}
+                                            />
+                                            {validationErrors[input.name] && (
+                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            } else if (isDropdown) {
+                                const optionsList = override.allowedOptions
+                                    ? override.allowedOptions.split(',').map(s => s.trim()).filter(Boolean)
+                                    : (input.enum || []);
+                                return (
+                                    <div key={input.name} className={wrapperClass}>
+                                        {editOverlay}
+                                        <div className="flex flex-col">
+                                            {renderLabel()}
+                                            <select
+                                                value={formData[input.name] !== undefined ? String(formData[input.name]) : ''}
+                                                onChange={(e) => handleChange(input.name, e.target.value)}
+                                                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full text-sm"
+                                                required={input.required}
+                                                disabled={isEditMode}
+                                            >
+                                                <option value="">Select option...</option>
+                                                {optionsList.map(opt => (
+                                                    <option key={opt} value={opt}>{opt}</option>
+                                                ))}
+                                            </select>
+                                            {validationErrors[input.name] && (
+                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
                             } else if (input.type === 'column_select') {
                                 return (
                                     <div key={input.name} className={wrapperClass}>
@@ -529,7 +842,7 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                                                     <option key={col} value={col}>{col}</option>
                                                 ))}
                                             </select>
-                                            {fileColumns.length === 0 && <span className="text-xs text-text-muted mt-1">Upload a file to see columns</span>}
+                                            {fileColumns.length === 0 && <span className="text-xs text-text-muted mt-1">Upload a file or select SoilProfile to see columns</span>}
                                         </div>
                                     </div>
                                 );
@@ -636,7 +949,9 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                                             <Input
                                                 type={input.type === 'number' || input.type === 'float' ? 'number' : 'text'}
                                                 step="any"
-                                                value={formData[input.name] || ''}
+                                                min={input.min !== undefined ? input.min : (input.minimum !== undefined ? input.minimum : undefined)}
+                                                max={input.max !== undefined ? input.max : (input.maximum !== undefined ? input.maximum : undefined)}
+                                                value={formData[input.name] !== undefined ? formData[input.name] : ''}
                                                 onChange={(e) => handleChange(input.name, e.target.value, input.validationRegex)}
                                                 placeholder={input.placeholder || input.description || ''}
                                                 required={input.required}
@@ -676,63 +991,131 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="bg-surface w-full max-w-5xl max-h-[85vh] rounded-lg shadow-2xl flex flex-col border border-border"
+                            className="bg-surface w-full max-w-5xl max-h-[85vh] rounded-md shadow-2xl flex flex-col border border-border overflow-hidden"
                         >
-                            <div className="flex items-center justify-between p-4 border-b border-border bg-background shrink-0">
-                                <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
-                                    <Book size={20} className="text-primary" />
-                                    {functionName} Configuration
-                                </h3>
-                                <div className="flex items-center gap-2">
+                            {/* Modal Header with Integrated Tabs and Actions */}
+                            <div className="flex flex-wrap items-center justify-between px-5 py-3.5 border-b border-border bg-background shrink-0 gap-4">
+                                {/* Left: Title & Icon */}
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                    <div className="p-1.5 rounded bg-primary/10 text-primary border border-primary/20 shrink-0">
+                                        <Book size={18} />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <h3 className="text-base font-bold text-text-main truncate">
+                                            {functionName}
+                                        </h3>
+                                        <span className="text-[11px] text-text-muted">Documentation & Parameter Configuration</span>
+                                    </div>
+                                </div>
+
+                                {/* Center & Right: Segmented Tabs + Header Actions */}
+                                <div className="flex items-center gap-2.5 shrink-0">
+                                    {/* Segmented Tab Switcher (Dev Only) */}
+                                    {isDev && (
+                                        <div className="flex bg-surface p-1 rounded border border-border">
+                                            <button
+                                                type="button"
+                                                onClick={() => setActiveDocTab('guide')}
+                                                className={`px-3 py-1 text-xs font-medium rounded transition-all ${
+                                                    activeDocTab === 'guide'
+                                                        ? 'bg-primary text-white shadow-sm'
+                                                        : 'text-text-muted hover:text-text-main'
+                                                }`}
+                                            >
+                                                User Guide
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setActiveDocTab('fields')}
+                                                className={`px-3 py-1 text-xs font-medium rounded transition-all ${
+                                                    activeDocTab === 'fields'
+                                                        ? 'bg-primary text-white shadow-sm'
+                                                        : 'text-text-muted hover:text-text-main'
+                                                }`}
+                                            >
+                                                Field Configuration
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {/* Edit Guide Button (Dev Only) */}
+                                    {isDev && activeDocTab === 'guide' && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                if (!isEditingDocs) {
+                                                    const currentOrFallback = (editedDocs && editedDocs.trim()) || (pageDocs && pageDocs.trim()) || generateDefaultDocumentation(functionName, schema, normalizedInputs);
+                                                    setEditedDocs(currentOrFallback);
+                                                    setPageDocs(currentOrFallback);
+                                                }
+                                                setIsEditingDocs(!isEditingDocs);
+                                            }}
+                                            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded border transition-all ${
+                                                isEditingDocs
+                                                    ? 'bg-primary text-white border-primary shadow-sm'
+                                                    : 'bg-surface border-border text-text-muted hover:text-text-main hover:border-primary/50'
+                                            }`}
+                                            title={isEditingDocs ? "Preview documentation" : "Edit documentation source"}
+                                        >
+                                            {isEditingDocs ? <Check size={14} /> : <Edit2 size={13} />}
+                                            <span>{isEditingDocs ? 'Preview' : 'Edit Guide'}</span>
+                                        </button>
+                                    )}
+
+                                    <div className="h-4 w-[1px] bg-border my-auto mx-0.5" />
+
+                                    {/* Close Button */}
                                     <button
+                                        type="button"
                                         onClick={() => setShowDocs(false)}
-                                        className="p-1 rounded-full hover:bg-background text-text-muted transition-colors"
+                                        className="p-1.5 rounded hover:bg-surface border border-transparent hover:border-border text-text-muted hover:text-text-main transition-colors"
+                                        title="Close documentation (Esc)"
                                     >
-                                        <X size={20} />
+                                        <X size={18} />
                                     </button>
                                 </div>
                             </div>
 
-                            <Tabs
-                                tabs={[
-                                    { id: 'guide', label: 'User Guide' },
-                                    { id: 'fields', label: 'Field Configuration' }
-                                ]}
-                                activeTab={activeDocTab}
-                                onChange={setActiveDocTab}
-                            />
-
                             <div className="flex-1 overflow-y-auto p-0 bg-surface/50">
                                 {activeDocTab === 'guide' ? (
                                     <div className="p-6 h-full flex flex-col">
-                                        <div className="flex justify-end mb-4">
-                                            <button
-                                                onClick={() => setIsEditingDocs(!isEditingDocs)}
-                                                className={`p-1.5 rounded-full flex items-center gap-2 text-sm transition-colors ${isEditingDocs ? 'bg-primary text-white' : 'text-text-muted hover:bg-secondary/10'}`}
-                                            >
-                                                {isEditingDocs ? <Check size={16} /> : <Edit2 size={16} />}
-                                            </button>
-                                        </div>
                                         {isEditingDocs ? (
-                                            <div className="flex-1 flex flex-col gap-2">
+                                            <div className="flex-1 flex flex-col gap-3">
+                                                <div className="flex items-center justify-between text-xs text-text-muted">
+                                                    <span>HTML / Markdown Source Editor</span>
+                                                    <span className="font-mono text-[11px]">Supports standard HTML tags and typography</span>
+                                                </div>
                                                 <textarea
                                                     value={editedDocs}
                                                     onChange={(e) => setEditedDocs(e.target.value)}
-                                                    className="w-full flex-1 min-h-[400px] p-4 bg-background border border-border rounded font-mono text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                                                    className="w-full flex-1 min-h-[420px] p-4 bg-background border border-border rounded-md font-mono text-sm focus:outline-none focus:ring-1 focus:ring-primary text-text-main leading-relaxed"
                                                     placeholder="Enter HTML or text documentation..."
                                                 />
-                                                <div className="flex justify-end gap-2">
-                                                    <Button variant="secondary" onClick={() => {
-                                                        setEditedDocs(pageDocs);
-                                                        setIsEditingDocs(false);
-                                                    }}>Cancel</Button>
-                                                    <Button variant="primary" onClick={handleSavePageDocs}>Save Guide</Button>
+                                                <div className="flex justify-between items-center gap-2 pt-2 border-t border-border">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setEditedDocs(generateDefaultDocumentation(functionName, schema, normalizedInputs))}
+                                                        className="text-xs text-text-muted hover:text-primary transition-colors underline"
+                                                    >
+                                                        Reset to default template
+                                                    </button>
+                                                    <div className="flex items-center gap-2">
+                                                        <Button variant="secondary" onClick={() => {
+                                                            setEditedDocs(pageDocs);
+                                                            setIsEditingDocs(false);
+                                                        }}>Cancel</Button>
+                                                        <Button variant="primary" onClick={handleSavePageDocs}>Save Guide</Button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className="prose dark:prose-invert max-w-none">
-                                                <div dangerouslySetInnerHTML={{ __html: pageDocs }} />
-                                            </div>
+                                            <UserGuideTemplate
+                                                functionName={functionName}
+                                                pageDocs={pageDocs}
+                                                schema={schema}
+                                                normalizedInputs={normalizedInputs}
+                                                overrides={overrides}
+                                            />
                                         )}
                                     </div>
                                 ) : (
@@ -883,6 +1266,85 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                 onSave={handleSaveOverride}
                 functionId={functionName}
             />
+
+            {/* AI Auto-Fill Modal */}
+            <AnimatePresence>
+                {showAutoFillModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                        onClick={() => setShowAutoFillModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            className="bg-surface border border-border rounded-xl shadow-2xl max-w-lg w-full p-5 space-y-4"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex items-center justify-between border-b border-border pb-3">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
+                                        <Sparkles size={18} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-sm text-text-main">AI Smart Auto-Fill</h3>
+                                        <p className="text-xs text-text-muted">Paste borehole log or site notes to auto-extract parameters</p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => setShowAutoFillModal(false)}
+                                    className="text-text-muted hover:text-text-main"
+                                >
+                                    <X size={16} />
+                                </button>
+                            </div>
+
+                            <div className="space-y-2">
+                                <textarea
+                                    value={autoFillText}
+                                    onChange={(e) => setAutoFillText(e.target.value)}
+                                    placeholder="e.g.: SPT borehole test at depth 4.5m indicates sand layer with friction angle phi = 32 deg, unit weight gamma = 19 kN/m3 and cohesion c = 0 kPa..."
+                                    rows={5}
+                                    className="w-full bg-background border border-border rounded-lg p-3 text-xs text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                                />
+                                {autoFillMsg && (
+                                    <div className={`p-2.5 rounded-lg text-xs font-medium ${
+                                        autoFillMsg.type === 'success'
+                                            ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                                            : autoFillMsg.type === 'warn'
+                                            ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
+                                            : 'bg-red-500/10 text-red-500 border border-red-500/20'
+                                    }`}>
+                                        {autoFillMsg.text}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => setShowAutoFillModal(false)}
+                                    className="text-xs py-1.5 px-3"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    onClick={handleAutoFill}
+                                    disabled={!autoFillText.trim() || isAutoFilling}
+                                    className="text-xs py-1.5 px-3 flex items-center gap-1.5"
+                                >
+                                    {isAutoFilling ? <Loader size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                                    <span>Extract & Populate</span>
+                                </Button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
         </>
     );

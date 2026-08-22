@@ -26,21 +26,39 @@ if os.path.exists(_INVENTORY_PATH):
         pass
 
 
-def _map_python_type(type_str: str) -> Type:
+def _map_python_type(type_str: str, param_name: str = "") -> Type:
     type_lower = (type_str or '').lower()
+    p_lower = (param_name or '').lower()
+
+    # 1. Parameter name-based heuristics for geotechnical objects and text fields
+    if p_lower in ('soilprofile', 'soil_profile', 'profile', 'calculationgrid', 'grid', 'data', 'raw_data', 'object_id', 'obj_id', 'obj', 'object', 'dataframe', 'df', 'path', 'filepath', 'filename', 'file'):
+        return Union[str, Dict[str, Any], List[Any], Any]
+
+    if p_lower.endswith('_col') or p_lower.endswith('_column') or p_lower.endswith('column') or p_lower in ('soiltype', 'soiltypecolumn', 'depth_column', 'qc_column', 'rf_column', 'fs_column', 'u2_column', 'u0_column', 'water_table_column', 'unit', 'name', 'encoding', 'errors', 'title', 'legend', 'colormap', 'color', 'pattern', 'layer_name', 'method'):
+        return Optional[Union[str, int, float, Any]]
+
+    if p_lower in ('parameters', 'plot_parameters', 'properties', 'columns', 'correlations', 'selected_parameters', 'times', 'settlements', 'grainsize', 'pctpassing', 'depths', 'requested_depths'):
+        return Union[List[str], List[float], List[Any], str, Any]
+
+    if p_lower in ('fillcolordict', 'colordict', 'custom_colors', 'options', 'kwargs', 'overrides'):
+        return Optional[Union[Dict[str, Any], str, Any]]
+
+    # 2. Type string-based matching
     if 'int' in type_lower:
         return int
     elif 'bool' in type_lower:
         return bool
-    elif 'str' in type_lower or 'string' in type_lower:
-        return str
-    elif 'list' in type_lower or 'array' in type_lower:
-        return Union[List[float], List[str], str]
-    elif 'dict' in type_lower or 'json' in type_lower:
-        return Union[Dict[str, Any], str]
+    elif 'str' in type_lower or 'string' in type_lower or 'text' in type_lower or 'path' in type_lower:
+        return Union[str, Any]
+    elif 'list' in type_lower or 'array' in type_lower or 'tuple' in type_lower:
+        return Union[List[float], List[str], List[Any], str, Any]
+    elif 'dict' in type_lower or 'json' in type_lower or 'object' in type_lower or 'soilprofile' in type_lower or 'grid' in type_lower:
+        return Union[Dict[str, Any], str, Any]
+    elif 'any' in type_lower:
+        return Any
     else:
         # Default numeric
-        return Union[float, int, str]
+        return float
 
 
 def build_schema_for_function(func_name: str, func_obj: Any) -> Type[GeoAIBaseModel]:
@@ -59,7 +77,7 @@ def build_schema_for_function(func_name: str, func_obj: Any) -> Type[GeoAIBaseMo
             continue
 
         inv_p = inv_params.get(p_name, {})
-        py_type = _map_python_type(inv_p.get('python_type', 'float'))
+        py_type = _map_python_type(inv_p.get('python_type', ''), p_name)
         unit = inv_p.get('canonical_unit', '-')
         desc = inv_p.get('physical_meaning', f"{p_name.replace('_', ' ').title()}")
         
@@ -74,9 +92,18 @@ def build_schema_for_function(func_name: str, func_obj: Any) -> Type[GeoAIBaseMo
             if default_val in ('null', 'nan', 'NaN'):
                 default_val = None
 
-        # Determine min / max bounds
-        min_v = float(inv_p['min_value']) if inv_p.get('min_value') != '' else None
-        max_v = float(inv_p['max_value']) if inv_p.get('max_value') != '' else None
+        # Determine min / max bounds only for pure numeric types
+        min_v = None
+        max_v = None
+        if py_type in (float, int, Optional[float], Optional[int]):
+            try:
+                min_v = float(inv_p['min_value']) if inv_p.get('min_value') != '' else None
+            except (ValueError, TypeError):
+                min_v = None
+            try:
+                max_v = float(inv_p['max_value']) if inv_p.get('max_value') != '' else None
+            except (ValueError, TypeError):
+                max_v = None
 
         field_kwargs = {
             "description": desc,

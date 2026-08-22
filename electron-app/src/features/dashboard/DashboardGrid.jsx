@@ -29,7 +29,7 @@ export const DashboardGrid = ({ items, onSelect, title, description, isCategory 
                         >
                             <Card className="h-full hover:border-primary transition-colors duration-300 relative overflow-hidden group-hover:shadow-lg">
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className={`p-3 rounded-lg ${isCategory ? 'bg-primary/10 text-primary' : 'bg-primary-light/10 text-primary-light'}`}>
+                                    <div className={`p-3 rounded ${isCategory ? 'bg-primary/10 text-primary' : 'bg-primary-light/10 text-primary-light'}`}>
                                         {isCategory ? <Folder size={24} /> : <FileText size={24} />}
                                     </div>
                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">

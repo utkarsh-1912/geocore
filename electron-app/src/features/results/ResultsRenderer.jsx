@@ -3,13 +3,13 @@
  * License: GPL v3
  */
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '../../components/ui/Card';
 import { ChevronDown, ChevronUp, Database, Layers } from 'lucide-react';
 import Papa from 'papaparse';
 
-import Plot from 'react-plotly.js';
+const Plot = React.lazy(() => import('react-plotly.js'));
 
 export const ResultsRenderer = ({ results }) => {
     const [expandedSections, setExpandedSections] = useState({
@@ -34,6 +34,35 @@ export const ResultsRenderer = ({ results }) => {
     const displayData = results.result !== undefined ? results.result : results;
 
     const renderContent = () => {
+        // Handle Error State
+        if (displayData && displayData.error) {
+            const errorMsg = typeof displayData.error === 'object'
+                ? (displayData.error.error || displayData.error.message || JSON.stringify(displayData.error))
+                : String(displayData.error);
+            const errorDetails = displayData.details || (typeof displayData.error === 'object' && displayData.error.details) || [];
+
+            return (
+                <div className="p-4 border-l-4 border-red-500 bg-red-500/10 rounded-r-md">
+                    <h4 className="text-red-500 font-bold mb-1 flex items-center gap-2">
+                        Validation / Calculation Error
+                    </h4>
+                    <p className="text-sm text-text-main font-medium mb-2">{errorMsg}</p>
+                    {errorDetails && errorDetails.length > 0 && (
+                        <div className="mt-2 space-y-1">
+                            <span className="text-xs font-bold text-text-muted uppercase">Invalid Parameters:</span>
+                            <ul className="list-disc list-inside text-xs text-text-muted">
+                                {errorDetails.map((d, i) => (
+                                    <li key={i}>
+                                        <span className="font-semibold text-text-main">{d.field || d.name}</span>: {d.message} {d.input_value !== undefined && d.input_value !== null ? `(received: ${JSON.stringify(d.input_value)})` : ''}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         // Handle specific result types
         if (displayData && displayData.type === 'SoilProfile') {
             const previewData = displayData.preview || [];
@@ -258,6 +287,7 @@ export const ResultsRenderer = ({ results }) => {
                 >
                     <Card title={displayData.layout?.title?.text || displayData.layout?.title || "Plot"} className="w-full">
                         <div className="w-full h-[600px]">
+                            <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded animate-pulse"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
                             <Plot
                                 data={displayData.data}
                                 layout={{
@@ -272,6 +302,7 @@ export const ResultsRenderer = ({ results }) => {
                                 style={{ width: "100%", height: "100%" }}
                                 config={{ responsive: true }}
                             />
+                            </Suspense>
                         </div>
                     </Card>
                 </motion.div>
@@ -290,6 +321,7 @@ export const ResultsRenderer = ({ results }) => {
                     {displayData.plots.map((plot, index) => (
                         <Card key={index} title={plot.title || plot.layout?.title?.text || `Plot ${index + 1}`} className="w-full">
                             <div className="w-full h-[600px]">
+                                <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded animate-pulse"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
                                 <Plot
                                     data={plot.data}
                                     layout={{
@@ -304,6 +336,7 @@ export const ResultsRenderer = ({ results }) => {
                                     style={{ width: "100%", height: "100%" }}
                                     config={{ responsive: true }}
                                 />
+                                </Suspense>
                             </div>
                         </Card>
                     ))}

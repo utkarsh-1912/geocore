@@ -9,6 +9,7 @@ import { Card } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { X, Upload, Plus, Trash2, Check, FileText, Loader, Eye, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { ProfileViewModal } from './ProfileViewModal';
 
 export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "SoilProfile" }) => {
@@ -108,7 +109,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
             onClose();
         } catch (err) {
             console.error(err);
-            alert("Error creating profile: " + err.message);
+            toast.error("Error creating profile: " + err.message);
         } finally {
             setLoading(false);
         }
@@ -135,7 +136,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
             onClose();
         } catch (err) {
             console.error(err);
-            alert("Error uploading profile: " + err.message);
+            toast.error("Error uploading profile: " + err.message);
         } finally {
             setLoading(false);
         }

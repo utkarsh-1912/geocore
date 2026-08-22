@@ -36,7 +36,14 @@ class GeoAIBaseModel(BaseModel):
                 if v_clean.lower() in sentinel_strings:
                     sanitized[k] = None
                 else:
-                    sanitized[k] = v_clean
+                    # Attempt numeric coercion for strings like '.35', '3', '-6'
+                    try:
+                        if '.' in v_clean or 'e' in v_clean.lower() or 'E' in v_clean:
+                            sanitized[k] = float(v_clean)
+                        else:
+                            sanitized[k] = int(v_clean)
+                    except ValueError:
+                        sanitized[k] = v_clean
             elif isinstance(v, (float, int)):
                 if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
                     raise ValueError(f"Parameter '{k}' cannot be NaN or Infinity.")

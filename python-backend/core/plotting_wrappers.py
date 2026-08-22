@@ -243,39 +243,37 @@ def log_plot_wrapper(args):
     fillcolordict.update({'Sand': 'yellow', 'Clay': 'brown', 'Silt': 'green', 'Rock': 'grey'})
     
     # 3. Handle Soil Type Column
-    soil_type_col = args.get('soiltypecolumn') or find_soil_type_column(profile)
-    
-    # Create a copy of the profile so we don't modify the state in-place
-    # and ensure 'Soil type' exists for groundhog
+    soil_type_col = args.get('soiltypecolumn')
+    if soil_type_col and (soil_type_col == '-- Select column --' or soil_type_col == 'None' or not soil_type_col.strip()):
+        soil_type_col = None
+
+    raw_df = pd.DataFrame(profile).copy()
+
+    # Determine which column to use for soil type
+    if not soil_type_col or soil_type_col not in raw_df.columns:
+        soil_type_col = find_soil_type_column(raw_df)
+
+    if soil_type_col and soil_type_col in raw_df.columns:
+        raw_df['Soil type'] = raw_df[soil_type_col]
+    else:
+        raw_df['Soil type'] = 'Soil'
+
+    # Build SoilProfile from the prepared DataFrame
     from groundhog.general.soilprofile import SoilProfile
-    profile_to_plot = SoilProfile(profile.copy())
+    profile_to_plot = SoilProfile(raw_df)
 
-    if soil_type_col and soil_type_col != 'Soil type':
-        profile_to_plot.rename(columns={soil_type_col: 'Soil type'}, inplace=True)
-        soil_type_col = 'Soil type'
-    elif not soil_type_col:
-        soil_type_col = 'Soil type'
-        if 'Soil type' not in profile_to_plot.columns:
-            profile_to_plot['Soil type'] = 'Unknown'
-
-    if soil_type_col in profile_to_plot.columns:
-        unique_types = profile_to_plot[soil_type_col].unique()
-        for st in unique_types:
-            if st not in fillcolordict:
-                 # Fallback colors
-                 fallback_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
-                 color_idx = abs(hash(str(st))) % len(fallback_colors)
-                 fillcolordict[st] = fallback_colors[color_idx]
+    # Auto-generate colors for unique soil types
+    unique_types = profile_to_plot['Soil type'].unique()
+    for st in unique_types:
+        st_str = str(st)
+        if st_str not in fillcolordict and st not in fillcolordict:
+            fallback_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#e6ab02', '#a6761d']
+            color_idx = abs(hash(st_str)) % len(fallback_colors)
+            fillcolordict[st] = fallback_colors[color_idx]
+            fillcolordict[st_str] = fallback_colors[color_idx]
 
     # 4. Call plot_profile
     try:
-        # We need to suppress showing the figure, groundhog uses typical plotly show() which opens a browser tab.
-        # But plot_with_log (and thus plot_profile) returns the figure object.
-        
-        # NOTE: Do NOT pass depth_key here. plot_profile handles depth columns internally from the profile object.
-        # Passing depth_key causes it to be passed via kwargs to plot_with_log, which crashes if it doesn't accept **kwargs.
-        
-        # Use the copy with the correctly named soil type column
         fig = profile_to_plot.plot_profile(plotting_params, soiltypecolumn='Soil type', showfig=False, fillcolordict=fillcolordict)
         
         # 4. Return Plotly JSON

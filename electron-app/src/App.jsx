@@ -3,15 +3,17 @@
  * License: GPL v3
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Sidebar } from './features/dashboard/Sidebar';
 import { SchemaForm } from './features/calculations/SchemaForm';
 import { ResultsRenderer } from './features/results/ResultsRenderer';
 import { HistoryPanel } from './features/history/HistoryPanel';
 import { DashboardGrid } from './features/dashboard/DashboardGrid';
+import { HomeView } from './features/dashboard/HomeView';
 import { HistoryProvider, useHistory } from './context/HistoryContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson } from 'lucide-react';
+import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
+import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, Bot, Sparkles, Command } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GEOTECHNICAL_MODULES } from './config/geotechnicalModules';
 import { getSchema } from './features/calculations/schemas';
@@ -21,6 +23,8 @@ import html2canvas from 'html2canvas';
 import { HelpModal } from './components/HelpModal';
 import { StatusModal } from './components/StatusModal';
 import { Preloader } from './components/Preloader';
+import { GeoAICopilot } from './features/copilot/GeoAICopilot';
+import { CommandPalette } from './features/command/CommandPalette';
 
 const MainLayout = () => {
   // Navigation State
@@ -44,13 +48,64 @@ const MainLayout = () => {
 
   // UI State
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const exportDropdownRef = useRef(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
   const [backendStatus, setBackendStatus] = useState('connecting');
   const [selectedSearchIndex, setSelectedSearchIndex] = useState(-1);
+  const [copilotOpen, setCopilotOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   const { isDarkMode, toggleTheme } = useTheme();
-  const { addToHistory } = useHistory();
+  const { history, addToHistory, clearHistory } = useHistory();
+
+  // Sync native window controls overlay background on Windows with active theme
+  useEffect(() => {
+    if (window.electronAPI?.setTitleBarTheme) {
+      window.electronAPI.setTitleBarTheme(isDarkMode);
+    }
+  }, [isDarkMode]);
+  const { favorites } = useFavorites();
+
+  // Close export dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (exportDropdownRef.current && !exportDropdownRef.current.contains(event.target)) {
+        setShowExportMenu(false);
+      }
+    };
+    if (showExportMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showExportMenu]);
+
+  // Navigation from AI Assistant
+  const handleSelectFromAI = (funcId, params) => {
+    let matchedFunc = null;
+    let matchedCategory = null;
+    let matchedSubModule = null;
+
+    for (const cat of GEOTECHNICAL_MODULES) {
+      for (const sub of cat.subModules || []) {
+        for (const fn of sub.functions || []) {
+          if (fn.id === funcId || fn.name === funcId) {
+            matchedFunc = fn;
+            matchedCategory = cat;
+            matchedSubModule = sub;
+            break;
+          }
+        }
+      }
+    }
+
+    const funcObj = matchedFunc || { id: funcId, name: funcId, title: funcId };
+    if (matchedCategory) setActiveCategory(matchedCategory);
+    if (matchedSubModule) setActiveSubModule(matchedSubModule);
+    selectFunction(funcObj);
+  };
 
   // App Ready State (Preloader)
   const [appReady, setAppReady] = useState(false);
@@ -132,18 +187,26 @@ const MainLayout = () => {
         setHistoryOpen(prev => !prev);
       }
 
+      // Ctrl+K to open Command Palette
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setCommandPaletteOpen(prev => !prev);
+      }
+
       // '/' to focus search bar if not already in an input
       if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
         e.preventDefault();
-        const searchInput = document.querySelector('input[placeholder="Search..."]');
-        if (searchInput) searchInput.focus();
+        setCommandPaletteOpen(true);
       }
+
 
       // Escape to close all modals/panels
       if (e.key === 'Escape') {
         setHelpOpen(false);
         setStatusOpen(false);
         setHistoryOpen(false);
+        setCopilotOpen(false);
+        setCommandPaletteOpen(false);
         setSearchQuery('');
         setShowSearch(false);
       }
@@ -234,6 +297,29 @@ const MainLayout = () => {
     setSearchQuery('');
   };
 
+  // Command Palette handlers
+  const handleCommandNavigate = (type, item, category, subModule) => {
+    if (type === 'Category') {
+      selectCategory(category);
+    } else if (type === 'Module') {
+      if (category) setActiveCategory(category);
+      selectSubModule(subModule);
+    } else if (type === 'Function') {
+      if (category) setActiveCategory(category);
+      if (subModule) setActiveSubModule(subModule);
+      selectFunction(item.func || item);
+    }
+  };
+
+  const handleCommandAction = (action) => {
+    switch (action) {
+      case 'toggleTheme': toggleTheme(); break;
+      case 'openHistory': setHistoryOpen(true); break;
+      case 'openCopilot': setCopilotOpen(true); break;
+      case 'openHelp': setHelpOpen(true); break;
+    }
+  };
+
   // Loading State
   const [isLoading, setIsLoading] = useState(false);
 
@@ -277,13 +363,32 @@ const MainLayout = () => {
       if (!response.ok) {
         const err = await response.json();
         console.error("Backend error data:", err);
-        throw new Error(err.detail || 'Calculation failed');
+        let errorMsg = 'Calculation failed';
+        let errorDetails = null;
+
+        if (typeof err.detail === 'string') {
+          errorMsg = err.detail;
+        } else if (err.detail && typeof err.detail === 'object') {
+          errorMsg = err.detail.error || err.detail.message || JSON.stringify(err.detail);
+          errorDetails = err.detail.details;
+        } else if (err.error) {
+          errorMsg = typeof err.error === 'string' ? err.error : JSON.stringify(err.error);
+          errorDetails = err.details;
+        }
+
+        const customError = new Error(errorMsg);
+        if (errorDetails) customError.details = errorDetails;
+        throw customError;
       }
 
       const results = await response.json();
       console.log("Success data:", results);
 
-      if (results.error) throw new Error(results.error);
+      if (results.error) {
+        const customError = new Error(typeof results.error === 'string' ? results.error : JSON.stringify(results.error));
+        if (results.details) customError.details = results.details;
+        throw customError;
+      }
 
       setCalculationResults(results);
       console.log("App.jsx: Calling addToHistory with results");
@@ -298,7 +403,10 @@ const MainLayout = () => {
       });
     } catch (error) {
       console.error("Calculation Error:", error);
-      setCalculationResults({ error: error.message });
+      setCalculationResults({
+        error: error.message || 'Calculation failed',
+        details: error.details || []
+      });
     } finally {
       setIsLoading(false);
     }
@@ -367,6 +475,13 @@ const MainLayout = () => {
     if (backendStatus === 'online') return "Engine Ready";
     if (backendStatus === 'offline') return "Engine Offline (Starting Offline Mode...)";
     return "Connecting to Engine...";
+  };
+
+  // HomeView function selection handler
+  const handleHomeSelectFunction = (func, category, subModule) => {
+    if (category) setActiveCategory(category);
+    if (subModule) setActiveSubModule(subModule);
+    selectFunction(func);
   };
 
   return (
@@ -472,50 +587,15 @@ const MainLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 no-drag h-full shrink-0" style={{ WebkitAppRegion: 'no-drag' }}>
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md border border-border bg-background w-64 mr-4 focus-within:ring-2 focus-within:ring-primary/20 transition-all relative">
-              <Search size={14} className="text-text-muted" />
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={handleKeyDown}
-                onFocus={() => setShowSearch(true)}
-                onBlur={() => setTimeout(() => setShowSearch(false), 200)}
-                className="bg-transparent border-none outline-none text-sm w-full placeholder-text-muted text-text-main"
-              />
+            {/* Search Icon Button */}
+            <button
+              onClick={() => setCommandPaletteOpen(true)}
+              className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+              title="Search & Commands (Ctrl+K)"
+            >
+              <Search size={20} />
+            </button>
 
-              {/* Search Dropdown */}
-              <AnimatePresence>
-                {searchQuery && showSearch && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border rounded-md shadow-xl z-50 max-h-96 overflow-y-auto"
-                  >
-                    {searchResults.length > 0 ? (
-                      <ul className="py-2">
-                        {searchResults.map((result, idx) => (
-                          <li key={idx}>
-                            <button
-                              onClick={() => handleSearchSelect(result)}
-                              onMouseEnter={() => setSelectedSearchIndex(idx)}
-                              className={`w-full text-left px-4 py-2 hover:bg-background transition-colors flex flex-col ${selectedSearchIndex === idx ? 'bg-primary/5 border-l-2 border-primary' : ''}`}
-                            >
-                              <span className="text-sm font-medium text-text-main">{result.item.title}</span>
-                              <span className="text-xs text-text-muted">{result.type} • {result.category.title}</span>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <div className="p-4 text-sm text-text-muted text-center">No results found</div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
 
             <button onClick={toggleTheme} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -543,12 +623,16 @@ const MainLayout = () => {
                 transition={{ duration: 0.2 }}
                 className="h-full"
               >
-                <DashboardGrid
-                  title="Geotechnical Modules"
-                  description="Select a category to explore available calculations and tools."
-                  items={GEOTECHNICAL_MODULES}
-                  onSelect={selectCategory}
-                  isCategory={true}
+                <HomeView
+                  modules={GEOTECHNICAL_MODULES}
+                  onSelectCategory={selectCategory}
+                  onSelectFunction={handleHomeSelectFunction}
+                  history={history}
+                  favorites={favorites}
+                  onClearRecent={clearHistory}
+                  onOpenCopilot={() => setCopilotOpen(true)}
+                  onOpenCommands={() => setCommandPaletteOpen(true)}
+                  onOpenHelp={() => setHelpOpen(true)}
                 />
               </motion.div>
             )}
@@ -570,8 +654,6 @@ const MainLayout = () => {
                     if (item.functions && item.functions.length > 0) {
                       selectSubModule(item);
                     } else {
-                      // If no sub-functions, treat as direct function for backward compat or if deep nesting not needed
-                      // But our new structure enforces functions array, so mostly we go to sub-module
                       selectSubModule(item);
                     }
                   }}
@@ -625,7 +707,7 @@ const MainLayout = () => {
                         <h3 className="text-xl font-bold text-text-main">Results</h3>
 
                         {/* Export Dropdown */}
-                        <div className="relative">
+                        <div ref={exportDropdownRef} className="relative">
                           <button
                             onClick={() => setShowExportMenu(!showExportMenu)}
                             className="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
@@ -686,8 +768,6 @@ const MainLayout = () => {
           if (item.category) setActiveCategory(item.category);
           if (item.subModule) setActiveSubModule(item.subModule);
 
-          // Reconstruct active function object if needed, or use stored one if I add it
-          // For now, title and id are enough
           const funcObj = {
             title: item.functionName,
             id: item.functionId || item.functionName // Fallback for old history
@@ -716,6 +796,23 @@ const MainLayout = () => {
         onClose={() => setStatusOpen(false)}
         backendStatus={backendStatus}
       />
+
+      <GeoAICopilot
+        isOpen={copilotOpen}
+        onClose={() => setCopilotOpen(false)}
+        onSelectFunction={handleSelectFromAI}
+        currentContext={{
+          activeFunction: activeFunction?.id,
+          activeCategory: activeCategory?.id
+        }}
+      />
+
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+        onNavigate={handleCommandNavigate}
+        onAction={handleCommandAction}
+      />
     </div>
   );
 };
@@ -723,9 +820,11 @@ const MainLayout = () => {
 function App() {
   return (
     <ThemeProvider>
-      <HistoryProvider>
-        <MainLayout />
-      </HistoryProvider>
+      <FavoritesProvider>
+        <HistoryProvider>
+          <MainLayout />
+        </HistoryProvider>
+      </FavoritesProvider>
     </ThemeProvider>
   );
 }

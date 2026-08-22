@@ -120,6 +120,36 @@ const SchemaEditor = ({ isOpen, onClose, field, onSave, functionId }) => {
                                 />
                             </div>
 
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-text-main">Input Field Type</label>
+                                <select
+                                    name="displayType"
+                                    value={formData.displayType || 'auto'}
+                                    onChange={handleChange}
+                                    className="w-full bg-background border border-border rounded px-3 py-2 text-sm text-text-main focus:ring-1 focus:ring-primary focus:outline-none"
+                                >
+                                    <option value="auto">Auto (Default from Schema)</option>
+                                    <option value="column_multi_select">Multi-Parameter Tag Picker (from Profile)</option>
+                                    <option value="column_select">Single Column Dropdown (from Profile)</option>
+                                    <option value="dropdown">Custom Options Dropdown (Enum)</option>
+                                    <option value="text">Standard Text Input</option>
+                                    <option value="number">Numeric Input</option>
+                                </select>
+                            </div>
+
+                            {formData.displayType === 'dropdown' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-text-main">Allowed Options (comma-separated)</label>
+                                    <input
+                                        name="allowedOptions"
+                                        value={formData.allowedOptions || ''}
+                                        onChange={handleChange}
+                                        placeholder="e.g. Option A, Option B, Option C"
+                                        className="w-full bg-background border border-border rounded px-3 py-2 text-sm text-text-main focus:ring-1 focus:ring-primary focus:outline-none"
+                                    />
+                                </div>
+                            )}
+
                             <div className="space-y-2 pt-2 border-t border-border">
                                 <label className="text-sm font-medium text-text-main flex items-center gap-2">
                                     Validation Pattern (Regex)

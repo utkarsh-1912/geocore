@@ -71,5 +71,297 @@
         "WaterTable [-]": 3.2
       }
     ]
+  },
+  {
+    "id": "99c1354f-dbf9-48e3-b428-0115fd61d57c",
+    "type": "SoilProfile",
+    "name": "SoilProfile_99c1354f",
+    "timestamp": "now",
+    "data": [
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.0,
+        "Depth to [m]": 0.8,
+        "SoilType": "Filled Silty Sand",
+        "USCS": "SM",
+        "SPT [N]": 5,
+        "UnitWeight [kN_m3]": 17.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 28,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.8,
+        "Depth to [m]": 2.5,
+        "SoilType": "Clayey Sand",
+        "USCS": "SC",
+        "SPT [N]": 12,
+        "UnitWeight [kN_m3]": 18.5,
+        "Cohesion [kPa]": 10.0,
+        "FrictionAngle [deg]": 30,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 2.5,
+        "Depth to [m]": 5.0,
+        "SoilType": "Soft Clay",
+        "USCS": "CL",
+        "SPT [N]": 6,
+        "UnitWeight [kN_m3]": 17.0,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 35.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 5.0,
+        "Depth to [m]": 8.0,
+        "SoilType": "Stiff Clay",
+        "USCS": "CL",
+        "SPT [N]": 18,
+        "UnitWeight [kN_m3]": 18.8,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 75.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 8.0,
+        "Depth to [m]": 12.0,
+        "SoilType": "Dense Sand",
+        "USCS": "SP",
+        "SPT [N]": 35,
+        "UnitWeight [kN_m3]": 19.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 36,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      }
+    ]
+  },
+  {
+    "id": "381c64b7-50b0-4249-aea0-00ecd9e00362",
+    "type": "SoilProfile",
+    "name": "SoilProfile_381c64b7",
+    "timestamp": "now",
+    "data": [
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.0,
+        "Depth to [m]": 0.8,
+        "SoilType": "Filled Silty Sand",
+        "USCS": "SM",
+        "SPT [N]": 5,
+        "UnitWeight [kN_m3]": 17.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 28,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.8,
+        "Depth to [m]": 2.5,
+        "SoilType": "Clayey Sand",
+        "USCS": "SC",
+        "SPT [N]": 12,
+        "UnitWeight [kN_m3]": 18.5,
+        "Cohesion [kPa]": 10.0,
+        "FrictionAngle [deg]": 30,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 2.5,
+        "Depth to [m]": 5.0,
+        "SoilType": "Soft Clay",
+        "USCS": "CL",
+        "SPT [N]": 6,
+        "UnitWeight [kN_m3]": 17.0,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 35.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 5.0,
+        "Depth to [m]": 8.0,
+        "SoilType": "Stiff Clay",
+        "USCS": "CL",
+        "SPT [N]": 18,
+        "UnitWeight [kN_m3]": 18.8,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 75.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 8.0,
+        "Depth to [m]": 12.0,
+        "SoilType": "Dense Sand",
+        "USCS": "SP",
+        "SPT [N]": 35,
+        "UnitWeight [kN_m3]": 19.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 36,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      }
+    ]
+  },
+  {
+    "id": "92bbad8c-45b0-4505-991a-42b2e84a3a79",
+    "type": "SoilProfile",
+    "name": "SoilProfile_92bbad8c",
+    "timestamp": "now",
+    "data": [
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.0,
+        "Depth to [m]": 0.8,
+        "SoilType": "Filled Silty Sand",
+        "USCS": "SM",
+        "SPT [N]": 5,
+        "UnitWeight [kN_m3]": 17.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 28,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.8,
+        "Depth to [m]": 2.5,
+        "SoilType": "Clayey Sand",
+        "USCS": "SC",
+        "SPT [N]": 12,
+        "UnitWeight [kN_m3]": 18.5,
+        "Cohesion [kPa]": 10.0,
+        "FrictionAngle [deg]": 30,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 2.5,
+        "Depth to [m]": 5.0,
+        "SoilType": "Soft Clay",
+        "USCS": "CL",
+        "SPT [N]": 6,
+        "UnitWeight [kN_m3]": 17.0,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 35.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 5.0,
+        "Depth to [m]": 8.0,
+        "SoilType": "Stiff Clay",
+        "USCS": "CL",
+        "SPT [N]": 18,
+        "UnitWeight [kN_m3]": 18.8,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 75.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 8.0,
+        "Depth to [m]": 12.0,
+        "SoilType": "Dense Sand",
+        "USCS": "SP",
+        "SPT [N]": 35,
+        "UnitWeight [kN_m3]": 19.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 36,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      }
+    ]
+  },
+  {
+    "id": "caef9dde-960b-4154-baf5-fae6466205f7",
+    "type": "SoilProfile",
+    "name": "SoilProfile_caef9dde",
+    "timestamp": "now",
+    "data": [
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.0,
+        "Depth to [m]": 0.8,
+        "SoilType": "Filled Silty Sand",
+        "USCS": "SM",
+        "SPT [N]": 5,
+        "UnitWeight [kN_m3]": 17.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 28,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 0.8,
+        "Depth to [m]": 2.5,
+        "SoilType": "Clayey Sand",
+        "USCS": "SC",
+        "SPT [N]": 12,
+        "UnitWeight [kN_m3]": 18.5,
+        "Cohesion [kPa]": 10.0,
+        "FrictionAngle [deg]": 30,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 2.5,
+        "Depth to [m]": 5.0,
+        "SoilType": "Soft Clay",
+        "USCS": "CL",
+        "SPT [N]": 6,
+        "UnitWeight [kN_m3]": 17.0,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 35.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 5.0,
+        "Depth to [m]": 8.0,
+        "SoilType": "Stiff Clay",
+        "USCS": "CL",
+        "SPT [N]": 18,
+        "UnitWeight [kN_m3]": 18.8,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 0,
+        "UndrainedCohesion [kPa]": 75.0,
+        "WaterTable [-]": 3.2
+      },
+      {
+        "BoreholeID": "BH-01",
+        "Depth from [m]": 8.0,
+        "Depth to [m]": 12.0,
+        "SoilType": "Dense Sand",
+        "USCS": "SP",
+        "SPT [N]": 35,
+        "UnitWeight [kN_m3]": 19.5,
+        "Cohesion [kPa]": 0.0,
+        "FrictionAngle [deg]": 36,
+        "UndrainedCohesion [kPa]": 0.0,
+        "WaterTable [-]": 3.2
+      }
+    ]
   }
 ]

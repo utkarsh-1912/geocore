@@ -61,3 +61,36 @@ def invoke_geoai_tool(payload: Dict[str, Any] = Body(...)):
         raise HTTPException(status_code=422, detail=ve.to_dict())
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Execution failed: {str(e)}")
+
+
+@router.post("/chat")
+def geoai_chat(payload: Dict[str, Any] = Body(...)):
+    """
+    Offline Local Gemma Agent endpoint.
+    Body format: {"prompt": str, "context": Optional[dict]}
+    """
+    from core.geoai.gemma_engine import gemma_engine
+    prompt = payload.get("prompt", "")
+    context = payload.get("context")
+
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Field 'prompt' is required.")
+
+    return gemma_engine.chat_and_execute(prompt, context)
+
+
+@router.post("/autofill")
+def geoai_autofill(payload: Dict[str, Any] = Body(...)):
+    """
+    Extracts structured parameters from unstructured text for a target calculation form.
+    Body format: {"function_id": str, "raw_text": str}
+    """
+    from core.geoai.gemma_engine import gemma_engine
+    function_id = payload.get("function_id", "")
+    raw_text = payload.get("raw_text", "")
+
+    if not function_id or not raw_text:
+        raise HTTPException(status_code=400, detail="Fields 'function_id' and 'raw_text' are required.")
+
+    return gemma_engine.autofill_form(function_id, raw_text)
+
