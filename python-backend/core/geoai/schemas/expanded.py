@@ -3,7 +3,7 @@ Canonical Pydantic Schemas for Soil Dynamics, Earth Pressures, Pipelines & Conso
 """
 from typing import Optional, Literal
 from pydantic import Field, AliasChoices
-from core.geoai.schemas.base import GeoAIBaseModel, GeotechnicalField
+from core.geoai.schemas.base import GeoAIBaseModel, GeoAIOutputModel, GeotechnicalField
 
 
 # --- Dynamics: Gmax from Shear Wave Velocity ---
@@ -38,7 +38,7 @@ class GmaxShearWaveVelocityInput(GeoAIBaseModel):
     )
 
 
-class GmaxShearWaveVelocityOutput(GeoAIBaseModel):
+class GmaxShearWaveVelocityOutput(GeoAIOutputModel):
     Gmax: float = GeotechnicalField(
         ...,
         unit="kPa",
@@ -84,7 +84,7 @@ class EarthPressureRankineInput(GeoAIBaseModel):
     )
 
 
-class EarthPressureRankineOutput(GeoAIBaseModel):
+class EarthPressureRankineOutput(GeoAIOutputModel):
     Ka: float = GeotechnicalField(..., unit="-", description="Active earth pressure coefficient Ka", validation_alias=AliasChoices('KaR [-]', 'Ka [-]', 'Ka', 'ka'))
     Kp: float = GeotechnicalField(..., unit="-", description="Passive earth pressure coefficient Kp", validation_alias=AliasChoices('KpR [-]', 'Kp [-]', 'Kp', 'kp'))
 
@@ -111,12 +111,12 @@ class ContactWidthInput(GeoAIBaseModel):
     )
 
 
-class ContactWidthOutput(GeoAIBaseModel):
+class ContactWidthOutput(GeoAIOutputModel):
     contact_width: float = GeotechnicalField(
         ...,
         unit="m",
-        description="Contact width 2*b",
-        validation_alias=AliasChoices('B [m]', 'contact width [m]', 'contact_width')
+        description="Seabed contact width 2*b [m]",
+        validation_alias=AliasChoices('contact_width', 'b_contact', 'contactwidth')
     )
 
 
@@ -133,7 +133,7 @@ class HydraulicConductivityUnconfinedInput(GeoAIBaseModel):
     flowrate: float = GeotechnicalField(..., gt=0.0, unit="m3/s", description="Steady discharge rate Q", validation_alias=AliasChoices('flowrate', 'Q'))
 
 
-class HydraulicConductivityUnconfinedOutput(GeoAIBaseModel):
+class HydraulicConductivityUnconfinedOutput(GeoAIOutputModel):
     hydraulic_conductivity: float = GeotechnicalField(
         ...,
         unit="m/s",

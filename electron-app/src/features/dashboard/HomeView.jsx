@@ -3,13 +3,15 @@
  * License: GPL v3
  */
 
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import {
-    ArrowRight, Folder, FileText, Clock, Star, Bot, Book, Command, Trash2,
+    ArrowRight, Folder, FileText, Clock, Star, Book, Command, Trash2,
     Database, Box, Shovel, Activity, Droplets, Ruler, Layers, Anchor
 } from 'lucide-react';
+import { GeoAILogo } from '@/components/common/GeoAILogo';
+import { ConfirmationModal } from '@/components/common/ConfirmationModal';
 
 // Category icon map (matches Sidebar.jsx)
 const CATEGORY_ICONS = {
@@ -42,6 +44,7 @@ const countTools = (category) => {
  * HomeView — Enhanced landing page with quick actions, favorites, recent calculations, and module grid
  */
 export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history = [], favorites = [], onClearRecent, onOpenCopilot, onOpenCommands, onOpenHelp }) => {
+    const [showClearConfirm, setShowClearConfirm] = useState(false);
 
     const recentCalcs = useMemo(() => {
         return (history || []).slice(0, 5);
@@ -162,7 +165,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    onClearRecent();
+                                    setShowClearConfirm(true);
                                 }}
                                 className="text-xs text-text-muted hover:text-red-500 hover:bg-red-500/10 px-2.5 py-1 rounded transition-colors flex items-center gap-1.5 font-medium border border-transparent hover:border-red-500/20"
                                 title="Clear recent calculation history"
@@ -249,6 +252,21 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                     })}
                 </div>
             </motion.div>
+
+            {/* Custom Clear History Confirmation Modal */}
+            <ConfirmationModal
+                isOpen={showClearConfirm}
+                title="Clear Recent History?"
+                message="Are you sure you want to clear your recent calculation history? Quick-access links on this dashboard will be removed."
+                confirmText="Clear All"
+                cancelText="Cancel"
+                variant="danger"
+                onConfirm={() => {
+                    onClearRecent?.();
+                    setShowClearConfirm(false);
+                }}
+                onCancel={() => setShowClearConfirm(false)}
+            />
         </div>
     );
 };

@@ -13,7 +13,8 @@ import { HomeView } from './features/dashboard/HomeView';
 import { HistoryProvider, useHistory } from './context/HistoryContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
-import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, Bot, Sparkles, Command } from 'lucide-react';
+import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, Sparkles, Command } from 'lucide-react';
+import { GeoAILogo } from './components/common/GeoAILogo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GEOTECHNICAL_MODULES } from './config/geotechnicalModules';
 import { getSchema } from './features/calculations/schemas';
@@ -24,6 +25,7 @@ import { HelpModal } from './components/HelpModal';
 import { StatusModal } from './components/StatusModal';
 import { Preloader } from './components/Preloader';
 import { GeoAICopilot } from './features/copilot/GeoAICopilot';
+import { GeoAIFullWindow } from './features/copilot/GeoAIFullWindow';
 import { CommandPalette } from './features/command/CommandPalette';
 
 const MainLayout = () => {
@@ -519,6 +521,13 @@ const MainLayout = () => {
         collapsed={!sidebarOpen}
         backendStatus={backendStatus}
         onStatusClick={() => setStatusOpen(true)}
+        onOpenGeoAI={() => {
+          setViewState('geoai');
+          setActiveCategory(null);
+          setActiveSubModule(null);
+          setActiveFunction(null);
+        }}
+        isGeoAIActive={viewState === 'geoai'}
       />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -553,6 +562,16 @@ const MainLayout = () => {
                 <span className="hidden sm:inline">Home</span>
               </button>
 
+              {viewState === 'geoai' && (
+                <>
+                  <span className="text-text-muted shrink-0">/</span>
+                  <span className="text-sm font-semibold text-primary truncate flex items-center gap-1.5">
+                    <GeoAILogo size={16} className="text-primary" />
+                    <span>GeoAI</span>
+                  </span>
+                </>
+              )}
+
               {activeCategory && (
                 <>
                   <span className="text-text-muted shrink-0">/</span>
@@ -586,34 +605,58 @@ const MainLayout = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 no-drag h-full shrink-0" style={{ WebkitAppRegion: 'no-drag' }}>
+          <div className="flex items-center gap-1.5 no-drag h-full shrink-0" style={{ WebkitAppRegion: 'no-drag' }}>
             {/* Search Icon Button */}
             <button
               onClick={() => setCommandPaletteOpen(true)}
               className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
               title="Search & Commands (Ctrl+K)"
             >
-              <Search size={20} />
+              <Search size={18} />
             </button>
 
-
-            <button onClick={toggleTheme} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors">
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            <button onClick={toggleTheme} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors" title={isDarkMode ? "Light Mode" : "Dark Mode"}>
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
               onClick={() => setHelpOpen(true)}
               className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+              title="Help & Shortcuts"
             >
-              <HelpCircle size={20} />
+              <HelpCircle size={18} />
             </button>
-            <button onClick={() => setHistoryOpen(true)} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors">
-              <HistoryIcon size={20} />
+            <button onClick={() => setHistoryOpen(true)} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors" title="Calculation History">
+              <HistoryIcon size={18} />
             </button>
+
+            {/* Separator between app icons and native window controls (- [] x) */}
+            <div className="h-5 w-px bg-border mx-2 shrink-0" />
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-6 md:p-8 relative">
+        <main className={`flex-1 ${viewState === 'geoai' ? 'overflow-hidden p-0' : 'overflow-auto p-6 md:p-8'} relative`}>
           <AnimatePresence mode="wait">
+            {viewState === 'geoai' && (
+              <motion.div
+                key="geoai"
+                initial={{ opacity: 0, scale: 0.99 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.99 }}
+                transition={{ duration: 0.2 }}
+                className="h-full w-full"
+              >
+                <GeoAIFullWindow
+                  onSelectFunction={handleSelectFromAI}
+                  currentContext={{
+                    activeFunction: activeFunction?.id || activeFunction?.name,
+                    activeCategory: activeCategory?.id,
+                    activeSubModule: activeSubModule?.id
+                  }}
+                  onBackToModules={goHome}
+                />
+              </motion.div>
+            )}
+
             {viewState === 'home' && (
               <motion.div
                 key="home"

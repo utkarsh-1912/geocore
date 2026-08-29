@@ -2,6 +2,7 @@
 Standard Tool Definitions for GeoAI
 Binds Groundhog functions to the Tool Registry with canonical schemas.
 """
+from typing import Optional, Dict, Any, List
 import groundhog.siteinvestigation.classification.phaserelations as pr
 import groundhog.shallowfoundations.stressdistribution as sd
 import groundhog.soildynamics.soilproperties as dp
@@ -132,3 +133,144 @@ def calculate_pipeline_contact_width(**kwargs):
 )
 def calculate_hydraulic_conductivity_unconfined(**kwargs):
     return gw.hydraulicconductivity_unconfinedaquifer(**kwargs)
+
+
+# 10. SPT Normalization & Empirical Correlation
+from core.geoai.schemas.in_situ import (
+    NormalizeSPTInput, NormalizeSPTOutput,
+    ClassifyCPTSoilBehaviorInput, ClassifyCPTSoilBehaviorOutput,
+    DeriveCPTParametersInput, DeriveCPTParametersOutput
+)
+from core.geoai.spt import SPTRecord
+from core.geoai.cpt import CPTSounding
+import pandas as pd
+
+
+@geoai_tool(
+    name="normalize_spt_test",
+    description="Normalizes raw SPT blow count N to standard N60 and overburden-corrected (N1)60, and estimates relative density Dr and friction angle phi'.",
+    category="in_situ",
+    input_model=NormalizeSPTInput,
+    output_model=NormalizeSPTOutput
+)
+def normalize_spt_test(
+    raw_n: int,
+    depth: float,
+    energy_ratio: float = 0.60,
+    rod_length: float = 10.0,
+    borehole_diameter_mm: float = 150.0,
+    has_liner: bool = False,
+    overburden_kpa: Optional[float] = None
+):
+    rec = SPTRecord(
+        borehole_id="SPT_TEST",
+        depth=depth,
+        raw_n=raw_n,
+        energy_ratio=energy_ratio,
+        rod_length=rod_length,
+        borehole_diameter_mm=borehole_diameter_mm,
+        has_liner=has_liner,
+        effective_overburden_kpa=overburden_kpa
+    )
+    return rec.correlate_granular_properties()
+
+
+# 11. CPT Soil Behavior Type Classification
+@geoai_tool(
+    name="classify_cpt_soil_behavior",
+    description="Classifies soil behavior type (SBT) and calculates normalized CPT indices (Qt, Fr, Bq, Ic) using Robertson (1990/2009).",
+    category="in_situ",
+    input_model=ClassifyCPTSoilBehaviorInput,
+    output_model=ClassifyCPTSoilBehaviorOutput
+)
+def classify_cpt_soil_behavior(
+    qc_mpa: float,
+    fs_kpa: float,
+    depth: float,
+    u2_kpa: float = 0.0,
+    water_table_depth: float = 0.0
+):
+    df_raw = pd.DataFrame([{
+        "depth": depth,
+        "qc": qc_mpa,
+        "fs": fs_kpa,
+        "u2": u2_kpa
+    }])
+    sounding = CPTSounding(sounding_id="CPT_POINT", raw_data=df_raw)
+    sounding.calculate_normalized_parameters(water_table_depth=water_table_depth)
+    return sounding.get_summary_at_depth(depth)
+
+
+# 12. CPT Parameter Derivations
+@geoai_tool(
+    name="derive_cpt_parameters",
+    description="Derives geotechnical design parameters (undrained shear strength su, friction angle phi', relative density Dr, small-strain shear modulus Gmax) from CPT measurements.",
+    category="in_situ",
+    input_model=DeriveCPTParametersInput,
+    output_model=DeriveCPTParametersOutput
+)
+def derive_cpt_parameters(
+    qc_mpa: float,
+    fs_kpa: float,
+    depth: float,
+    Nkt: float = 15.0
+):
+    df_raw = pd.DataFrame([{
+        "depth": depth,
+        "qc": qc_mpa,
+        "fs": fs_kpa,
+        "u2": 0.0
+    }])
+    sounding = CPTSounding(sounding_id="CPT_POINT", raw_data=df_raw)
+    return sounding.derive_soil_parameters(depth, Nkt=Nkt)
+
+
+# 13. Local Document Search (RAG)
+from core.geoai.schemas.research import (
+    SearchLocalDocumentsInput, SearchLocalDocumentsOutput,
+    IndexDocumentTextInput, IndexDocumentTextOutput
+)
+from core.geoai.research.indexer import local_indexer
+
+
+@geoai_tool(
+    name="search_local_documents",
+    description="Searches local project documents, technical notes, papers, and standards using BM25 full-text retrieval.",
+    category="research",
+    input_model=SearchLocalDocumentsInput,
+    output_model=SearchLocalDocumentsOutput
+)
+def search_local_documents(query: str, top_k: int = 5):
+    results = local_indexer.search(query, top_k=top_k)
+    return {
+        "query": query,
+        "total_found": len(results),
+        "results": [
+            {
+                "chunk_id": r.chunk_id,
+                "doc_title": r.doc_title,
+                "file_path": r.file_path,
+                "section": r.section_heading,
+                "content": r.content,
+                "score": round(r.score, 3)
+            }
+            for r in results
+        ]
+    }
+
+
+# 14. Local Document Indexing
+@geoai_tool(
+    name="index_document_text",
+    description="Indexes raw text or markdown technical content into the local SQLite full-text search index.",
+    category="research",
+    input_model=IndexDocumentTextInput,
+    output_model=IndexDocumentTextOutput
+)
+def index_document_text(doc_id: str, title: str, content: str):
+    chunks = local_indexer.index_text_content(doc_id=doc_id, title=title, content=content)
+    return {
+        "doc_id": doc_id,
+        "indexed_chunks": chunks,
+        "status": "indexed"
+    }

@@ -4,8 +4,9 @@
  */
 
 import React from 'react';
-import { Layers, Box, Shovel, FileText, Activity, Droplets, Database, Ruler, Zap, Anchor } from 'lucide-react';
+import { Layers, Box, Shovel, FileText, Activity, Droplets, Database, Ruler, Zap, Anchor, Sparkles } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
+import { GeoAILogo } from '../../components/common/GeoAILogo';
 import logoFull from '../../assets/logo-2.png';
 import logoIcon from '../../assets/logoIcon.png';
 
@@ -37,7 +38,16 @@ const Components = (props) => (
 );
 
 
-export const Sidebar = ({ modules, onSelectCategory, selectedCategory, collapsed, backendStatus, onStatusClick }) => {
+export const Sidebar = ({ 
+    modules, 
+    onSelectCategory, 
+    selectedCategory, 
+    collapsed, 
+    backendStatus, 
+    onStatusClick,
+    onOpenGeoAI,
+    isGeoAIActive
+}) => {
     return (
         <div className={`bg-surface border-r border-border flex flex-col h-full transition-all duration-300 ${collapsed ? 'w-[70px]' : 'w-64'}`}>
             <div className="h-13 flex items-center justify-center border-b border-border p-2">
@@ -49,6 +59,34 @@ export const Sidebar = ({ modules, onSelectCategory, selectedCategory, collapsed
             </div>
 
             <div className="flex-1 py-4 overflow-y-auto overflow-x-hidden">
+                <ul className="space-y-1 mb-4">
+                    <li>
+                        <button
+                            onClick={onOpenGeoAI}
+                            title={collapsed ? 'GeoAI' : ''}
+                            className={`w-full flex items-center py-3 transition-colors relative group ${
+                                isGeoAIActive
+                                    ? 'bg-primary/10 text-primary border-r-2 border-primary'
+                                    : 'text-text-muted hover:bg-background hover:text-text-main'
+                            } ${collapsed ? 'justify-center px-0' : 'justify-start px-4'}`}
+                        >
+                            <div className={`${collapsed ? '' : 'mr-3'} shrink-0`}>
+                                <GeoAILogo size={20} className="text-primary" />
+                            </div>
+
+                            {!collapsed && (
+                                <span className="text-sm font-medium truncate">GeoAI</span>
+                            )}
+
+                            {collapsed && (
+                                <div className="absolute left-full ml-2 px-2 py-1 bg-text-main text-background text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
+                                    GeoAI
+                                </div>
+                            )}
+                        </button>
+                    </li>
+                </ul>
+
                 {!collapsed && <div className="px-4 mb-2 text-xs font-semibold text-text-muted uppercase tracking-wider">Modules</div>}
 
                 <ul className="space-y-1">

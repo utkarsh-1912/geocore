@@ -1,28 +1,32 @@
 /**
  * Author: Utkarsh Gupta
  * License: GPL v3
+ * 
+ * GeoAI Copilot (Slide-out Drawer Assistant).
+ * Minimal border-radius, strict theme colors, and deterministic Groundhog calculations.
  */
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-    Bot, Send, X, Sparkles, Terminal, ArrowRight, CheckCircle, 
-    AlertCircle, Layers, RefreshCw, ChevronRight, HelpCircle, Zap
+    Bot, Send, X, Terminal, ArrowRight, CheckCircle, 
+    RefreshCw, Zap
 } from 'lucide-react';
+import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { Button } from '../../components/ui/Button';
+import { api } from '../../api/client';
 
 export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext }) => {
     const [messages, setMessages] = useState([
         {
             id: 'init-1',
             sender: 'ai',
-            text: "**Hello! I am your GeoCore Local AI Assistant.**\n\nI run **100% offline** on your machine with direct access to **213 whitelisted Groundhog geotechnical tools**.\n\nYou can ask me to perform calculations, extract soil parameters, or analyze site data in plain English.",
+            text: "Hello! I am your GeoCore AI Assistant.\n\nI run 100% offline with direct access to 213 Groundhog engineering calculation tools.",
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             suggestedPrompts: [
                 "Calculate Rankine earth pressure for phi = 32 deg",
                 "Calculate Gmax for Vs = 240 m/s and gamma = 19 kN/m3",
-                "Find void ratio for porosity = 0.38",
-                "Calculate pipeline contact width for diameter = 1.0 m, penetration = 0.35 m"
+                "Find void ratio for porosity = 0.38"
             ]
         }
     ]);
@@ -56,45 +60,88 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/geoai/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    prompt: text.trim(),
-                    context: currentContext || {}
-                })
-            });
-
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                throw new Error(errData.detail?.error || errData.detail || 'Offline AI Agent failed to respond');
-            }
-
-            const data = await response.json();
-
-            const aiMsg = {
-                id: `ai-${Date.now()}`,
+            const streamResponse = await api.geoaiChatStream(text, currentContext);
+            const reader = streamResponse.body.getReader();
+            const decoder = new TextDecoder();
+            
+            let aiMessageId = Date.now() + 1;
+            let accumulatedText = '';
+            let executedTool = null;
+            let toolParameters = null;
+            let toolResults = null;
+            
+            setMessages(prev => [...prev, {
+                id: aiMessageId,
                 sender: 'ai',
-                text: data.response || "Calculation completed.",
-                executedTool: data.executed_tool,
-                parameters: data.parameters_extracted,
-                results: data.results?.result,
-                candidateTools: data.candidate_tools || [],
+                text: '',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-
-            setMessages(prev => [...prev, aiMsg]);
-        } catch (error) {
-            setMessages(prev => [
-                ...prev,
-                {
-                    id: `ai-err-${Date.now()}`,
+            }]);
+            
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split('\n');
+                
+                for (const line of lines) {
+                    if (!line.startsWith('data: ')) continue;
+                    try {
+                        const eventData = JSON.parse(line.slice(6));
+                        
+                        if (eventData.type === 'token' && eventData.content) {
+                            accumulatedText += eventData.content;
+                            setMessages(prev => prev.map(msg =>
+                                msg.id === aiMessageId ? { ...msg, text: accumulatedText } : msg
+                            ));
+                        } else if (eventData.type === 'tool_start') {
+                            executedTool = eventData.tool_name;
+                            toolParameters = eventData.tool_args;
+                            setMessages(prev => prev.map(msg =>
+                                msg.id === aiMessageId 
+                                    ? { ...msg, text: `Calculating with **${eventData.tool_name}**...` }
+                                    : msg
+                            ));
+                        } else if (eventData.type === 'tool_result') {
+                            toolResults = eventData.tool_result;
+                            accumulatedText = '';
+                        } else if (eventData.type === 'done') {
+                            setMessages(prev => prev.map(msg =>
+                                msg.id === aiMessageId 
+                                    ? { 
+                                        ...msg, 
+                                        text: accumulatedText || msg.text,
+                                        executedTool,
+                                        parameters: toolParameters,
+                                        results: toolResults
+                                    } 
+                                    : msg
+                            ));
+                        }
+                    } catch (parseErr) { }
+                }
+            }
+        } catch (streamErr) {
+            try {
+                const res = await api.geoaiChat(text, currentContext);
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
+                    sender: 'ai',
+                    text: res.response || 'Calculation completed.',
+                    executedTool: res.executed_tool,
+                    parameters: res.parameters_extracted,
+                    results: res.results,
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                }]);
+            } catch (err) {
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
                     sender: 'ai',
                     isError: true,
-                    text: `**Agent Error**: ${error.message}\n\nPlease check that the Python backend is running.`,
+                    text: `Error: ${err.message || 'Execution failed.'}`,
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                }
-            ]);
+                }]);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -115,57 +162,50 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
                 onClick={onClose}
+                className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40"
             />
 
             <motion.div
-                initial={{ x: 450, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 450, opacity: 0 }}
-                transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-                className="fixed right-0 top-0 bottom-0 w-full sm:w-[460px] bg-surface border-l border-border z-50 flex flex-col shadow-2xl"
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="fixed top-0 right-0 bottom-0 w-[420px] bg-surface border-l border-border z-50 flex flex-col shadow-xl"
             >
                 {/* Header */}
-                <div className="p-4 border-b border-border bg-background flex items-center justify-between">
+                <div className="p-3.5 border-b border-border flex items-center justify-between bg-surface">
                     <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                            <Bot size={20} />
-                        </div>
+                        <GeoAILogo size={30} variant="badge" />
                         <div>
-                            <h3 className="font-bold text-sm text-text-main flex items-center gap-1.5">
-                                GeoAI Copilot
-                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary text-white font-semibold border border-primary/20">
-                                    Beta
-                                </span>
-                            </h3>
-                            <p className="text-[11px] text-text-muted">213 Groundhog Calculation Tools</p>
+                            <h3 className="font-bold text-xs text-text-main">GeoAI Copilot</h3>
+                            <p className="text-[10px] text-text-muted">213 Groundhog Routines</p>
                         </div>
                     </div>
 
                     <button
                         onClick={onClose}
-                        className="p-1.5 rounded-lg hover:bg-surface text-text-muted hover:text-text-main transition-colors"
-                        title="Close Copilot (Esc)"
+                        className="p-1.5 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+                        title="Close (Esc)"
                     >
-                        <X size={18} />
+                        <X size={16} />
                     </button>
                 </div>
 
                 {/* Messages Feed */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 text-sm">
+                <div className="flex-1 overflow-y-auto p-3.5 space-y-3.5 text-xs">
                     {messages.map((msg) => (
                         <div
                             key={msg.id}
                             className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                         >
                             <div
-                                className={`max-w-[90%] p-3 rounded-xl shadow-sm ${
+                                className={`max-w-[90%] p-3 rounded shadow-sm ${
                                     msg.sender === 'user'
-                                        ? 'bg-primary text-white rounded-br-none'
+                                        ? 'bg-primary text-white'
                                         : msg.isError
-                                        ? 'bg-red-500/10 border border-red-500/20 text-text-main rounded-bl-none'
-                                        : 'bg-background border border-border text-text-main rounded-bl-none'
+                                        ? 'bg-red-500/10 border border-red-500/20 text-text-main'
+                                        : 'bg-background border border-border text-text-main'
                                 }`}
                             >
                                 <div className="text-xs whitespace-pre-wrap leading-relaxed">
@@ -174,12 +214,9 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
 
                                 {/* Tool Result Card */}
                                 {msg.executedTool && msg.results && (
-                                    <div className="mt-3 p-2.5 bg-surface border border-border/80 rounded-lg text-xs space-y-2">
-                                        <div className="flex items-center justify-between text-primary font-semibold">
-                                            <span className="flex items-center gap-1">
-                                                <CheckCircle size={13} className="text-green-500" />
-                                                Routine: {msg.executedTool}
-                                            </span>
+                                    <div className="mt-2.5 p-2 bg-surface border border-border rounded text-[11px] space-y-2">
+                                        <div className="text-primary font-semibold truncate">
+                                            Routine: `{msg.executedTool}`
                                         </div>
 
                                         {onSelectFunction && (
@@ -188,10 +225,10 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                                                     onSelectFunction(msg.executedTool, msg.parameters);
                                                     onClose();
                                                 }}
-                                                className="w-full py-1.5 px-2.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium flex items-center justify-center gap-1 transition-colors text-[11px]"
+                                                className="w-full py-1 px-2 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium flex items-center justify-center gap-1 transition-colors text-[11px]"
                                             >
-                                                <span>Open in Interactive Form</span>
-                                                <ArrowRight size={12} />
+                                                <span>Open in Form</span>
+                                                <ArrowRight size={11} />
                                             </button>
                                         )}
                                     </div>
@@ -199,33 +236,28 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
 
                                 {/* Suggested Prompts */}
                                 {msg.suggestedPrompts && (
-                                    <div className="mt-3 pt-2.5 border-t border-border/50 space-y-1.5">
-                                        <span className="text-[10px] uppercase font-bold text-text-muted tracking-wider">
-                                            Quick Prompts:
-                                        </span>
-                                        <div className="flex flex-col gap-1">
-                                            {msg.suggestedPrompts.map((p, idx) => (
-                                                <button
-                                                    key={idx}
-                                                    onClick={() => handleSendMessage(p)}
-                                                    className="text-left text-[11px] p-1.5 rounded bg-surface hover:bg-primary/10 hover:text-primary transition-colors border border-border/40 text-text-muted truncate flex items-center gap-1.5"
-                                                >
-                                                    <Zap size={11} className="shrink-0 text-primary" />
-                                                    <span className="truncate">{p}</span>
-                                                </button>
-                                            ))}
-                                        </div>
+                                    <div className="mt-2.5 pt-2 border-t border-border/40 space-y-1">
+                                        {msg.suggestedPrompts.map((p, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleSendMessage(p)}
+                                                className="text-left text-[11px] p-1.5 rounded bg-surface hover:bg-primary/10 hover:text-primary transition-colors border border-border text-text-muted truncate w-full flex items-center gap-1.5"
+                                            >
+                                                <Zap size={10} className="shrink-0 text-primary" />
+                                                <span className="truncate">{p}</span>
+                                            </button>
+                                        ))}
                                     </div>
                                 )}
                             </div>
-                            <span className="text-[10px] text-text-muted mt-1 px-1">{msg.timestamp}</span>
+                            <span className="text-[9px] text-text-muted mt-1 px-1">{msg.timestamp}</span>
                         </div>
                     ))}
 
                     {isLoading && (
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-background border border-border w-fit text-xs text-text-muted">
-                            <RefreshCw size={14} className="animate-spin text-primary" />
-                            <span>GeoAI is calculating with Groundhog engine...</span>
+                        <div className="flex items-center gap-2 p-2 rounded bg-background border border-border w-fit text-[11px] text-text-muted">
+                            <RefreshCw size={12} className="animate-spin text-primary" />
+                            <span>Calculating...</span>
                         </div>
                     )}
                     <div ref={messagesEndRef} />
@@ -240,19 +272,15 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                             onKeyDown={handleKeyDown}
                             placeholder="Ask GeoAI to calculate or analyze..."
                             rows={1}
-                            className="flex-1 resize-none bg-surface border border-border rounded-lg px-3 py-2 text-xs text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary max-h-24"
+                            className="flex-1 resize-none bg-surface border border-border rounded px-2.5 py-1.5 text-xs text-text-main focus:outline-none focus:border-primary max-h-20"
                         />
-                        <Button
+                        <button
                             onClick={() => handleSendMessage()}
                             disabled={!inputValue.trim() || isLoading}
-                            variant="primary"
-                            className="h-9 px-3 shrink-0"
+                            className="p-2 bg-primary text-white rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
                         >
-                            <Send size={15} />
-                        </Button>
-                    </div>
-                    <div className="mt-1.5 flex items-center justify-between text-[10px] text-text-muted px-1">
-                        <span>Press Enter to send • 100% Offline Local Inference</span>
+                            <Send size={13} />
+                        </button>
                     </div>
                 </div>
             </motion.div>

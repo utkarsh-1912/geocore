@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Folder, FileText, Settings, Moon, Sun, History, Bot, HelpCircle, Command, Box, Wrench, Terminal } from 'lucide-react';
+import { Search, Folder, FileText, Settings, Moon, Sun, History, HelpCircle, Command, Box, Wrench, Terminal } from 'lucide-react';
+import { GeoAILogo } from '@/components/common/GeoAILogo';
 import { GEOTECHNICAL_MODULES } from '@/config/geotechnicalModules';
 
 /**

@@ -35,7 +35,24 @@ SCHEMA_REGISTRY: Dict[str, Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseMo
 }
 
 def get_schema(function_id: str) -> Optional[Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseModel]]]]:
-    return SCHEMA_REGISTRY.get(function_id)
+    if function_id in SCHEMA_REGISTRY:
+        return SCHEMA_REGISTRY[function_id]
+        
+    clean_id = function_id.replace('calculate_', '').lower()
+    if clean_id in SCHEMA_REGISTRY:
+        return SCHEMA_REGISTRY[clean_id]
+        
+    # Check tool registry (ensuring definitions are loaded)
+    try:
+        import core.geoai.tool_definitions
+        from core.geoai.tool_registry import tool_registry
+        tool = tool_registry.get_tool(function_id) or tool_registry.get_tool(clean_id)
+        if tool and tool.input_model:
+            return (tool.input_model, tool.output_model)
+    except Exception:
+        pass
+        
+    return None
 
 def register_schema(function_id: str, input_cls: Type[GeoAIBaseModel], output_cls: Optional[Type[GeoAIBaseModel]] = None):
     SCHEMA_REGISTRY[function_id] = (input_cls, output_cls)

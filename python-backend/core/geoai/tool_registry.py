@@ -32,9 +32,11 @@ class GeoAITool:
 
     def invoke(self, raw_args: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Execute tool with strict validation boundary.
+        Execute tool with strict validation boundary and attach complete provenance.
         Arbitrary Python execution, subprocesses, and filesystem modifications are strictly forbidden.
         """
+        from core.geoai.provenance import create_calculation_provenance
+
         # 1. Validate inputs strictly via Pydantic model
         try:
             validated_inputs = self.input_model(**raw_args)
@@ -43,22 +45,27 @@ class GeoAITool:
 
         call_args = validated_inputs.model_dump(exclude_unset=False)
 
-        # 2. Execute authoritative function
+        # 2. Execute authoritative Groundhog function
         res = self.func(**call_args)
 
         # 3. Format / validate output if output model is defined
+        output_data: Dict[str, Any] = {}
         if self.output_model:
             try:
-                # If res is dict with compatible fields
                 if isinstance(res, dict):
                     output_instance = self.output_model(**res)
-                    return output_instance.model_dump()
+                    output_data = output_instance.model_dump()
+                else:
+                    output_data = {"result": res}
             except Exception:
-                pass  # Fall back to raw sanitized dict
+                output_data = dict(res) if isinstance(res, dict) else {"result": res}
+        else:
+            output_data = dict(res) if isinstance(res, dict) else {"result": res}
 
-        if isinstance(res, dict):
-            return res
-        return {"result": res}
+        # 4. Attach calculation provenance metadata
+        provenance = create_calculation_provenance(self.name, call_args)
+        output_data["_provenance"] = provenance.to_dict()
+        return output_data
 
 
 def _clean_json_schema(obj: Any) -> Any:

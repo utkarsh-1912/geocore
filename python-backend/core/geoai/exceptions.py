@@ -1,3 +1,5 @@
+# Author: Utkarsh Gupta
+# License: GPL v3
 """
 GeoAI Custom Exceptions
 """
@@ -16,3 +18,21 @@ class GeoAIValidationError(Exception):
             "error": self.message,
             "details": self.errors
         }
+
+
+class GeoAIUnitError(GeoAIValidationError):
+    """Exception raised when parameter units have an incompatible dimension or invalid conversion."""
+    def __init__(self, message: str, field: Optional[str] = None, provided_unit: Optional[str] = None, expected_unit: Optional[str] = None):
+        errors = []
+        if field:
+            errors.append({
+                "field": field,
+                "message": message,
+                "provided_unit": provided_unit,
+                "expected_unit": expected_unit,
+                "type": "unit_dimension_mismatch"
+            })
+        super().__init__(message, errors=errors)
+        self.field = field
+        self.provided_unit = provided_unit
+        self.expected_unit = expected_unit

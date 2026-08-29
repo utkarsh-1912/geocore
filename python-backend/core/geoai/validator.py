@@ -63,6 +63,8 @@ def validate_and_coerce_inputs(function_id: str, raw_args: Dict[str, Any]) -> Tu
         # Convert back to dict for Groundhog execution
         validated_dict = instance.model_dump(exclude_unset=False)
         return validated_dict, instance
+    except GeoAIValidationError:
+        raise
     except ValidationError as e:
         error_details = []
         for err in e.errors():
