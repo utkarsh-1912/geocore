@@ -12,7 +12,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Send, ArrowRight, RefreshCw, Plus, MessageSquare, 
-    Trash2, Copy, Cpu, Check, Sliders, X, PanelLeft,
+    Trash2, Copy, Cpu, Check, X, PanelLeft,
     PanelLeftClose, Download, Pencil, RotateCcw,
     Shield, CheckCircle2, ChevronDown, AlertTriangle,
     HardDrive, Zap, BookOpen, Compass, Layers, User,
@@ -77,8 +77,9 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
     const [showModelModal, setShowModelModal] = useState(false);
     const [convToDelete, setConvToDelete] = useState(null);
 
-    // Gateway View State
+    // Gateway / Modal Filter State
     const [gatewayTab, setGatewayTab] = useState('qwen'); // 'qwen' | 'gemma'
+    const [modalTab, setModalTab] = useState('all'); // 'all' | 'qwen' | 'gemma'
     const [customGgufPath, setCustomGgufPath] = useState('');
     const [isLinkingCustom, setIsLinkingCustom] = useState(false);
 
@@ -424,6 +425,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
             await api.geoaiSelectModel(customGgufPath.trim(), 'llama_cpp');
             toast.success("Custom GGUF model linked successfully!");
             setCustomGgufPath('');
+            setShowModelModal(false);
             fetchStatus();
         } catch (e) {
             toast.error(`Failed to link custom model: ${e.message || 'Check file path'}`);
@@ -452,257 +454,17 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
     ];
 
     const hasAnyModelInstalled = availableModels.some(m => m.is_installed) || (modelInfo && modelInfo.loaded && modelInfo.provider === 'llama_cpp');
+    const activeModelName = modelInfo?.name || availableModels.find(m => m.is_installed)?.display_name || (hasAnyModelInstalled ? "Qwen 2.5 (1.5B)" : null);
 
     const qwenModels = availableModels.filter(m => m.family === 'qwen');
     const gemmaModels = availableModels.filter(m => m.family === 'gemma');
 
-    // --- GATEWAY VIEW: IF NO MODEL IS INSTALLED ON WORKSTATION ---
-    if (!hasAnyModelInstalled && availableModels.length > 0) {
-        return (
-            <div className="flex h-full w-full bg-background text-text-main overflow-y-auto font-sans p-4 md:p-10">
-                <div className="max-w-3xl mx-auto my-auto w-full space-y-6">
-                    {/* Alert & Hero Header */}
-                    <div className="text-center space-y-3">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-semibold">
-                            <AlertTriangle size={13} />
-                            <span>No Local AI Model Detected</span>
-                        </div>
+    const modalFilteredModels = availableModels.filter(m => {
+        if (modalTab === 'qwen') return m.family === 'qwen';
+        if (modalTab === 'gemma') return m.family === 'gemma';
+        return true;
+    });
 
-                        <div className="flex justify-center my-1">
-                            <div className="p-3.5 rounded bg-primary/10 border border-primary/20 text-primary shadow-sm">
-                                <GeoAILogo size={46} />
-                            </div>
-                        </div>
-
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-main">
-                            GeoAI Local Engine Installation Gateway
-                        </h1>
-                        <p className="text-xs md:text-sm text-text-muted max-w-xl mx-auto leading-relaxed">
-                            GeoAI runs 100% offline on your device using a wrapped Small Language Model (SLM) connected to Groundhog's 213 deterministic geotechnical engineering calculation tools.
-                        </p>
-                    </div>
-
-                    {/* Architecture Visualizer */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-left bg-surface border border-border rounded p-3 text-xs shadow-xs">
-                        <div className="p-2.5 rounded bg-background border border-border/60">
-                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase text-primary">
-                                <Cpu size={12} />
-                                <span>1. Local SLM</span>
-                            </div>
-                            <div className="text-xs text-text-main font-semibold mt-1">Qwen 2.5 / Gemma 2</div>
-                            <div className="text-[10px] text-text-muted mt-0.5">Parameters & geotechnical reasoning</div>
-                        </div>
-                        <div className="p-2.5 rounded bg-background border border-border/60">
-                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase text-primary">
-                                <Layers size={12} />
-                                <span>2. Wrapped MCP</span>
-                            </div>
-                            <div className="text-xs text-text-main font-semibold mt-1">Context Protocol</div>
-                            <div className="text-[10px] text-text-muted mt-0.5">Validated schemas & unit normalization</div>
-                        </div>
-                        <div className="p-2.5 rounded bg-background border border-border/60">
-                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase text-primary">
-                                <Zap size={12} />
-                                <span>3. Groundhog</span>
-                            </div>
-                            <div className="text-xs text-text-main font-semibold mt-1">213 Deterministic Tools</div>
-                            <div className="text-[10px] text-text-muted mt-0.5">Deterministic engineering results</div>
-                        </div>
-                    </div>
-
-                    {/* Active Download Progress Card (if actively downloading) */}
-                    {downloadStatus?.status === 'downloading' && (
-                        <motion.div 
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="p-4 rounded border border-primary/40 bg-primary/5 space-y-2.5"
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <RefreshCw size={15} className="animate-spin text-primary" />
-                                    <span className="text-xs font-bold text-text-main">
-                                        Downloading {downloadStatus.display_name || downloadStatus.model_id}...
-                                    </span>
-                                </div>
-                                <span className="text-xs font-mono text-primary font-semibold">
-                                    {downloadStatus.size_mb ? `${downloadStatus.size_mb} MB` : 'In Progress'}
-                                </span>
-                            </div>
-
-                            <div className="w-full bg-border/60 rounded-full h-1.5 overflow-hidden">
-                                <div className="bg-primary h-full rounded-full w-full animate-pulse" />
-                            </div>
-
-                            <p className="text-[11px] text-text-muted">
-                                Fetching GGUF quantized model weights directly from Hugging Face into your local application directory.
-                            </p>
-                        </motion.div>
-                    )}
-
-                    {/* Engine Family Selection Tabs */}
-                    <div className="space-y-4">
-                        <div className="flex border-b border-border">
-                            <button
-                                onClick={() => setGatewayTab('qwen')}
-                                className={`flex-1 py-2.5 px-4 text-xs font-bold transition-all flex items-center justify-center gap-2 border-b-2 ${
-                                    gatewayTab === 'qwen'
-                                        ? 'border-primary text-primary bg-primary/5'
-                                        : 'border-transparent text-text-muted hover:text-text-main hover:bg-surface'
-                                }`}
-                            >
-                                <Zap size={14} />
-                                <span>Qwen 2.5 Series (Tool Caller)</span>
-                            </button>
-
-                            <button
-                                onClick={() => setGatewayTab('gemma')}
-                                className={`flex-1 py-2.5 px-4 text-xs font-bold transition-all flex items-center justify-center gap-2 border-b-2 ${
-                                    gatewayTab === 'gemma'
-                                        ? 'border-primary text-primary bg-primary/5'
-                                        : 'border-transparent text-text-muted hover:text-text-main hover:bg-surface'
-                                }`}
-                            >
-                                <Sparkles size={14} />
-                                <span>Gemma 2 / 3 Series (Research & Synthesis)</span>
-                            </button>
-                        </div>
-
-                        {/* Qwen Models Selection */}
-                        {gatewayTab === 'qwen' && (
-                            <div className="space-y-3">
-                                <div className="text-[11px] text-text-muted px-1 flex items-center gap-1.5">
-                                    <Zap size={12} className="text-primary" />
-                                    <span>Optimized for ultra-fast CPU inference, parameter extraction, and Groundhog tool execution.</span>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    {qwenModels.map((model) => (
-                                        <div
-                                            key={model.id}
-                                            className="p-4 rounded border border-border bg-surface hover:border-primary/40 transition-colors space-y-3 flex flex-col justify-between"
-                                        >
-                                            <div className="space-y-1.5">
-                                                <div className="flex items-start justify-between gap-2">
-                                                    <h3 className="text-xs font-bold text-text-main">{model.display_name}</h3>
-                                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-background border border-border text-text-muted shrink-0">
-                                                        {model.size_mb} MB
-                                                    </span>
-                                                </div>
-                                                <p className="text-[11px] text-text-muted leading-relaxed">{model.description}</p>
-                                                <div className="text-[10px] text-primary/80 font-medium">{model.recommended_for}</div>
-                                            </div>
-
-                                            <button
-                                                onClick={() => handleSelectModel(model)}
-                                                disabled={downloadStatus?.status === 'downloading'}
-                                                className="w-full py-2 px-3 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
-                                            >
-                                                <Download size={13} />
-                                                <span>Install {model.display_name}</span>
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Gemma Models Selection */}
-                        {gatewayTab === 'gemma' && (
-                            <div className="space-y-3">
-                                <div className="text-[11px] text-text-muted px-1 flex items-center gap-1.5">
-                                    <BookOpen size={12} className="text-primary" />
-                                    <span>Google DeepMind architecture designed for geotechnical literature review, standards (Eurocode 7/ASTM), and synthesis.</span>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    {gemmaModels.map((model) => (
-                                        <div
-                                            key={model.id}
-                                            className="p-4 rounded border border-border bg-surface hover:border-primary/40 transition-colors space-y-3 flex flex-col justify-between"
-                                        >
-                                            <div className="space-y-1.5">
-                                                <div className="flex items-start justify-between gap-2">
-                                                    <h3 className="text-xs font-bold text-text-main">{model.display_name}</h3>
-                                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-background border border-border text-text-muted shrink-0">
-                                                        {model.size_mb} MB
-                                                    </span>
-                                                </div>
-                                                <p className="text-[11px] text-text-muted leading-relaxed">{model.description}</p>
-                                                <div className="text-[10px] text-primary/80 font-medium">{model.recommended_for}</div>
-                                            </div>
-
-                                            <button
-                                                onClick={() => handleSelectModel(model)}
-                                                disabled={downloadStatus?.status === 'downloading'}
-                                                className="w-full py-2 px-3 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
-                                            >
-                                                <Download size={13} />
-                                                <span>Install {model.display_name}</span>
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Auto-Detection & Custom Local Model Linking */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                        {/* Auto Detect Desktop Bundle Card */}
-                        <div className="p-3.5 rounded border border-border bg-surface space-y-2 text-left">
-                            <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-text-main flex items-center gap-1.5">
-                                    <HardDrive size={13} className="text-primary" />
-                                    <span>Bundled With Desktop App?</span>
-                                </span>
-                            </div>
-                            <p className="text-[11px] text-text-muted">
-                                Auto-scan AppData, Program Files, and local installation directories for pre-installed models.
-                            </p>
-                            <button
-                                onClick={handleAutoLink}
-                                className="w-full py-1.5 px-3 border border-border hover:bg-background text-text-main rounded text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                            >
-                                <RefreshCw size={12} />
-                                <span>Auto-Detect & Link</span>
-                            </button>
-                        </div>
-
-                        {/* Custom Local GGUF File Card */}
-                        <div className="p-3.5 rounded border border-border bg-surface space-y-2 text-left">
-                            <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-text-main flex items-center gap-1.5">
-                                    <FileCode size={13} className="text-primary" />
-                                    <span>Link Custom .GGUF File</span>
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <input
-                                    type="text"
-                                    value={customGgufPath}
-                                    onChange={(e) => setCustomGgufPath(e.target.value)}
-                                    placeholder="C:\path\to\model.gguf"
-                                    className="flex-1 bg-background border border-border rounded px-2 py-1 text-xs text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary"
-                                />
-                                <button
-                                    onClick={handleCustomGgufLink}
-                                    disabled={!customGgufPath.trim() || isLinkingCustom}
-                                    className="px-2.5 py-1 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-40 shrink-0"
-                                >
-                                    Link
-                                </button>
-                            </div>
-                            <p className="text-[10px] text-text-muted">
-                                Provide an absolute path to any compatible Llama / Qwen / Gemma GGUF file.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    // --- MAIN WORKSPACE VIEW (WHEN MODEL IS READY) ---
     return (
         <div className="flex h-full w-full bg-background text-text-main overflow-hidden font-sans">
             {/* --- Collapsible Left Chat History Sidebar --- */}
@@ -765,10 +527,10 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                     {/* Clean Status Footer */}
                     <div className="border-t border-border bg-surface px-3 py-2 shrink-0 flex items-center justify-between text-[11px] text-text-muted">
                         <div className="flex items-center gap-1.5 truncate">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="truncate">GeoAI Engine Ready</span>
+                            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                            <span className="truncate">Connected</span>
                         </div>
-                        {memoryInfo && (
+                        {memoryInfo && memoryInfo.process_ram_mb > 0 && (
                             <span className="font-mono text-[10px]">{memoryInfo.process_ram_mb} MB</span>
                         )}
                     </div>
@@ -791,21 +553,14 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                         )}
                         <div className="flex items-center gap-2 text-xs font-semibold text-text-main">
                             <GeoAILogo size={18} className="text-primary" />
-                            <span>GeoAI Assistant</span>
-                        </div>
-
-                        {/* Active Model Indicator Pill */}
-                        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-background border border-border text-[11px] text-text-muted">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            <span className="font-medium text-text-main">
-                                {modelInfo?.name || availableModels.find(m => m.is_installed)?.display_name || "Qwen 2.5 SLM"}
-                            </span>
+                            <span>GeoAI</span>
                         </div>
                     </div>
 
+                    {/* Single Unified Model Selector Button in Header */}
                     <div className="flex items-center gap-2">
                         {downloadStatus?.status === 'downloading' && (
-                            <span className="text-[11px] text-primary flex items-center gap-1.5 animate-pulse border border-primary/30 px-2 py-0.5 rounded">
+                            <span className="text-[11px] text-primary flex items-center gap-1.5 animate-pulse border border-primary/30 px-2 py-1 rounded bg-primary/5">
                                 <RefreshCw size={11} className="animate-spin" />
                                 <span>Downloading Model...</span>
                             </span>
@@ -813,10 +568,28 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
 
                         <button
                             onClick={() => setShowModelModal(true)}
-                            className="px-2.5 py-1.5 border border-border rounded text-xs text-text-muted hover:text-text-main hover:bg-background transition-colors flex items-center gap-1.5"
+                            className={`px-3 py-1.5 rounded text-xs transition-all flex items-center gap-2 border ${
+                                hasAnyModelInstalled
+                                    ? 'border-border bg-background hover:border-primary/40 text-text-main shadow-xs'
+                                    : 'border-amber-500/40 bg-amber-500/10 text-amber-500 hover:bg-amber-500/20'
+                            }`}
+                            title="Click to switch or install local SLM models"
                         >
-                            <Sliders size={13} />
-                            <span>Models</span>
+                            {hasAnyModelInstalled ? (
+                                <>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                                    <span className="font-semibold text-[11px] truncate max-w-[160px]">
+                                        {activeModelName}
+                                    </span>
+                                    <ChevronDown size={12} className="text-text-muted" />
+                                </>
+                            ) : (
+                                <>
+                                    <AlertTriangle size={13} className="shrink-0" />
+                                    <span className="font-semibold text-[11px]">Install / Select Model</span>
+                                    <ChevronDown size={12} />
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>
@@ -824,31 +597,176 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                 {/* Message Scroll Area */}
                 <div className="flex-1 overflow-y-auto p-3 sm:p-5">
                     {messages.length === 0 ? (
-                        /* Clean Initial Welcome */
-                        <div className="max-w-4xl mx-auto my-auto flex flex-col items-center justify-center text-center py-8">
-                            <GeoAILogo size={48} variant="badge" className="mb-3" />
-                            <h2 className="text-lg font-bold text-text-main mb-1">
-                                Geotechnical Intelligence Assistant
-                            </h2>
-                            <p className="text-xs text-text-muted max-w-lg mb-6 leading-relaxed">
-                                Offline Small Language Model executing 213 deterministic Groundhog calculations with strict parameter validation and provenance tracking.
-                            </p>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
-                                {promptCards.map((card, idx) => (
-                                    <div
-                                        key={idx}
-                                        onClick={() => handleSendMessage(card.prompt)}
-                                        className="p-3 rounded border border-border bg-surface hover:border-primary/50 hover:bg-background transition-colors cursor-pointer space-y-1 group"
-                                    >
-                                        <div className="text-xs font-bold text-text-main group-hover:text-primary transition-colors">
-                                            {card.title}
+                        /* Empty State: Either Model Installation Gateway or Welcome Prompt Cards */
+                        <div className="max-w-4xl mx-auto my-auto py-6 space-y-6">
+                            {!hasAnyModelInstalled ? (
+                                /* In-Chat Wrapped SLM Installer Gateway Card */
+                                <div className="p-5 md:p-6 rounded border border-border bg-surface shadow-xs space-y-5">
+                                    <div className="text-center space-y-2">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[11px] font-semibold">
+                                            <AlertTriangle size={12} />
+                                            <span>No Local SLM Engine Installed</span>
                                         </div>
-                                        <div className="text-[11px] text-text-muted line-clamp-2">
-                                            {card.prompt}
+                                        <h2 className="text-xl font-bold text-text-main">
+                                            Install Wrapped Offline Engine
+                                        </h2>
+                                        <p className="text-xs text-text-muted max-w-lg mx-auto leading-relaxed">
+                                            Choose an offline model to enable local geotechnical reasoning wrapped with Groundhog's 213 calculation tools.
+                                        </p>
+                                    </div>
+
+                                    {/* Active Download Progress Bar */}
+                                    {downloadStatus?.status === 'downloading' && (
+                                        <div className="p-3.5 rounded border border-primary/40 bg-primary/5 space-y-2">
+                                            <div className="flex items-center justify-between text-xs font-semibold text-text-main">
+                                                <span className="flex items-center gap-2">
+                                                    <RefreshCw size={13} className="animate-spin text-primary" />
+                                                    <span>Downloading {downloadStatus.display_name || downloadStatus.model_id}...</span>
+                                                </span>
+                                                <span className="font-mono text-primary">{downloadStatus.size_mb ? `${downloadStatus.size_mb} MB` : 'Downloading'}</span>
+                                            </div>
+                                            <div className="w-full bg-border/60 rounded-full h-1.5 overflow-hidden">
+                                                <div className="bg-primary h-full rounded-full w-full animate-pulse" />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Family Selector Tabs */}
+                                    <div className="space-y-3">
+                                        <div className="flex border-b border-border">
+                                            <button
+                                                onClick={() => setGatewayTab('qwen')}
+                                                className={`flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 border-b-2 ${
+                                                    gatewayTab === 'qwen'
+                                                        ? 'border-primary text-primary bg-primary/5'
+                                                        : 'border-transparent text-text-muted hover:text-text-main'
+                                                }`}
+                                            >
+                                                <Zap size={13} />
+                                                <span>Qwen 2.5 (Fast Tool Calling)</span>
+                                            </button>
+                                            <button
+                                                onClick={() => setGatewayTab('gemma')}
+                                                className={`flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 border-b-2 ${
+                                                    gatewayTab === 'gemma'
+                                                        ? 'border-primary text-primary bg-primary/5'
+                                                        : 'border-transparent text-text-muted hover:text-text-main'
+                                                }`}
+                                            >
+                                                <Sparkles size={13} />
+                                                <span>Gemma 2 (Research & Synthesis)</span>
+                                            </button>
+                                        </div>
+
+                                        {gatewayTab === 'qwen' ? (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                {qwenModels.map((model) => (
+                                                    <div
+                                                        key={model.id}
+                                                        className="p-3.5 rounded border border-border bg-background flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
+                                                    >
+                                                        <div className="space-y-1">
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="text-xs font-bold text-text-main">{model.display_name}</span>
+                                                                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-text-muted">
+                                                                    {model.size_mb} MB
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-[11px] text-text-muted">{model.description}</p>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => handleSelectModel(model)}
+                                                            disabled={downloadStatus?.status === 'downloading'}
+                                                            className="w-full py-1.5 px-3 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
+                                                        >
+                                                            <Download size={12} />
+                                                            <span>Install ({model.size_mb} MB)</span>
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                {gemmaModels.map((model) => (
+                                                    <div
+                                                        key={model.id}
+                                                        className="p-3.5 rounded border border-border bg-background flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
+                                                    >
+                                                        <div className="space-y-1">
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="text-xs font-bold text-text-main">{model.display_name}</span>
+                                                                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-text-muted">
+                                                                    {model.size_mb} MB
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-[11px] text-text-muted">{model.description}</p>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => handleSelectModel(model)}
+                                                            disabled={downloadStatus?.status === 'downloading'}
+                                                            className="w-full py-1.5 px-3 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
+                                                        >
+                                                            <Download size={12} />
+                                                            <span>Install ({model.size_mb} MB)</span>
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {/* Auto-detect and custom GGUF */}
+                                        <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                                            <button
+                                                onClick={handleAutoLink}
+                                                className="text-primary font-semibold hover:underline flex items-center gap-1"
+                                            >
+                                                <RefreshCw size={11} />
+                                                <span>Auto-detect installed desktop bundle</span>
+                                            </button>
+
+                                            <button
+                                                onClick={() => setShowModelModal(true)}
+                                                className="text-text-muted hover:text-text-main underline"
+                                            >
+                                                Custom GGUF / advanced settings
+                                            </button>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
+                            ) : (
+                                /* Standard Welcome Banner When Model is Installed */
+                                <div className="flex flex-col items-center justify-center text-center py-4">
+                                    <GeoAILogo size={44} variant="badge" className="mb-2.5" />
+                                    <h2 className="text-base font-bold text-text-main mb-1">
+                                        Geotechnical Intelligence Assistant
+                                    </h2>
+                                    <p className="text-xs text-text-muted max-w-lg mb-4 leading-relaxed">
+                                        Offline Small Language Model executing 213 deterministic Groundhog calculations with strict parameter validation and provenance tracking.
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* Prompt Cards (Always available to test immediately) */}
+                            <div className="space-y-2">
+                                <div className="text-[11px] font-semibold text-text-muted uppercase tracking-wider px-1">
+                                    Quick Geotechnical Analyses
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
+                                    {promptCards.map((card, idx) => (
+                                        <div
+                                            key={idx}
+                                            onClick={() => handleSendMessage(card.prompt)}
+                                            className="p-3 rounded border border-border bg-surface hover:border-primary/50 hover:bg-background transition-colors cursor-pointer space-y-1 group"
+                                        >
+                                            <div className="text-xs font-bold text-text-main group-hover:text-primary transition-colors">
+                                                {card.title}
+                                            </div>
+                                            <div className="text-[11px] text-text-muted line-clamp-2">
+                                                {card.prompt}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     ) : (
@@ -1029,8 +947,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
             <AnimatePresence>
                 {showModelModal && (
                     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-                        <div className="w-full max-w-lg bg-surface border border-border rounded shadow-xl overflow-hidden">
-                            <div className="p-4 border-b border-border flex items-center justify-between">
+                        <div className="w-full max-w-lg bg-surface border border-border rounded shadow-xl overflow-hidden flex flex-col max-h-[85vh]">
+                            <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
                                 <div className="flex items-center gap-2">
                                     <Cpu size={16} className="text-primary" />
                                     <h3 className="text-xs font-bold text-text-main">Local AI Model Manager</h3>
@@ -1043,8 +961,43 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                 </button>
                             </div>
 
-                            <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
-                                {availableModels.map((model) => (
+                            {/* Filter Tabs */}
+                            <div className="flex border-b border-border px-4 bg-background/50 shrink-0">
+                                <button
+                                    onClick={() => setModalTab('all')}
+                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors ${
+                                        modalTab === 'all'
+                                            ? 'border-primary text-primary'
+                                            : 'border-transparent text-text-muted hover:text-text-main'
+                                    }`}
+                                >
+                                    All Models ({availableModels.length})
+                                </button>
+                                <button
+                                    onClick={() => setModalTab('qwen')}
+                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors ${
+                                        modalTab === 'qwen'
+                                            ? 'border-primary text-primary'
+                                            : 'border-transparent text-text-muted hover:text-text-main'
+                                    }`}
+                                >
+                                    Qwen Series
+                                </button>
+                                <button
+                                    onClick={() => setModalTab('gemma')}
+                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors ${
+                                        modalTab === 'gemma'
+                                            ? 'border-primary text-primary'
+                                            : 'border-transparent text-text-muted hover:text-text-main'
+                                    }`}
+                                >
+                                    Gemma Series
+                                </button>
+                            </div>
+
+                            {/* Model List */}
+                            <div className="p-4 space-y-3 overflow-y-auto flex-1">
+                                {modalFilteredModels.map((model) => (
                                     <div
                                         key={model.id}
                                         className="p-3.5 rounded border border-border bg-background flex items-center justify-between gap-3"
@@ -1089,6 +1042,44 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                         </button>
                                     </div>
                                 ))}
+
+                                {/* Custom Local GGUF File Linker */}
+                                <div className="p-3 rounded border border-border bg-surface space-y-2 mt-4">
+                                    <div className="text-xs font-bold text-text-main flex items-center gap-1.5">
+                                        <FileCode size={13} className="text-primary" />
+                                        <span>Link Custom .GGUF File</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <input
+                                            type="text"
+                                            value={customGgufPath}
+                                            onChange={(e) => setCustomGgufPath(e.target.value)}
+                                            placeholder="C:\path\to\model.gguf"
+                                            className="flex-1 bg-background border border-border rounded px-2 py-1 text-xs text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary"
+                                        />
+                                        <button
+                                            onClick={handleCustomGgufLink}
+                                            disabled={!customGgufPath.trim() || isLinkingCustom}
+                                            className="px-2.5 py-1 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-40 shrink-0"
+                                        >
+                                            Link
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Modal Footer */}
+                            <div className="p-3 border-t border-border bg-surface/50 flex items-center justify-between text-[11px] text-text-muted shrink-0">
+                                <button
+                                    onClick={handleAutoLink}
+                                    className="text-primary font-semibold hover:underline flex items-center gap-1"
+                                >
+                                    <RefreshCw size={11} />
+                                    <span>Auto-detect installed desktop bundle</span>
+                                </button>
+                                {memoryInfo && (
+                                    <span className="font-mono">{memoryInfo.process_ram_mb} MB RAM</span>
+                                )}
                             </div>
                         </div>
                     </div>

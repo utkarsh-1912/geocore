@@ -109,17 +109,17 @@ export const api = {
     },
 
     geoaiStatus: async () => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/status`, { timeout: 5000 });
+        const response = await fetchWithTimeout('/api/geoai/status', { timeout: 5000 });
         return handleResponse(response);
     },
 
     geoaiListModels: async () => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/models`, { timeout: 5000 });
+        const response = await fetchWithTimeout('/api/geoai/models', { timeout: 5000 });
         return handleResponse(response);
     },
 
     geoaiDownloadModel: async (modelId = 'qwen2.5-1.5b-instruct', setActive = true) => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/models/download`, {
+        const response = await fetchWithTimeout('/api/geoai/models/download', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ model_id: modelId, set_active: setActive })
@@ -128,12 +128,12 @@ export const api = {
     },
 
     geoaiGetDownloadStatus: async () => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/models/download/status`, { timeout: 5000 });
+        const response = await fetchWithTimeout('/api/geoai/models/download/status', { timeout: 5000 });
         return handleResponse(response);
     },
 
     geoaiSelectModel: async (modelPath, provider = 'llama_cpp') => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/models/select`, {
+        const response = await fetchWithTimeout('/api/geoai/models/select', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ model_path: modelPath, provider })
@@ -142,19 +142,19 @@ export const api = {
     },
 
     geoaiAutoLinkModels: async () => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/models/autolink`, {
+        const response = await fetchWithTimeout('/api/geoai/models/autolink', {
             method: 'POST'
         });
         return handleResponse(response);
     },
 
     geoaiGetMemory: async () => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/memory`, { timeout: 5000 });
+        const response = await fetchWithTimeout('/api/geoai/memory', { timeout: 5000 });
         return handleResponse(response);
     },
 
     geoaiUnloadModel: async () => {
-        const response = await fetchWithTimeout(`${API_BASE}/api/geoai/unload`, {
+        const response = await fetchWithTimeout('/api/geoai/unload', {
             method: 'POST'
         });
         return handleResponse(response);
