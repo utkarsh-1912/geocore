@@ -139,8 +139,11 @@ def test_interpolate_cpt_profile_diffusion():
 
 def test_model_downloader_list():
     models = list_available_models()
-    assert len(models) == 3
+    assert len(models) >= 3
     model_ids = [m["id"] for m in models]
     assert "qwen2.5-1.5b-instruct" in model_ids
     assert "qwen2.5-3b-instruct" in model_ids
     assert "gemma-2-2b-it" in model_ids
+    families = {m.get("family") for m in models}
+    assert "qwen" in families
+    assert "gemma" in families

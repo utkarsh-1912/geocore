@@ -26,25 +26,49 @@ logger = logging.getLogger(__name__)
 # Curated Candidate SLM Registry for Desktop Offline Geotechnical AI
 RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     "qwen2.5-1.5b-instruct": {
+        "family": "qwen",
+        "display_name": "Qwen 2.5 (1.5B Instruct)",
         "repo_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
         "filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
         "size_mb": 986,
-        "description": "Ultra-lightweight (1.5B), fast CPU inference, native function calling support",
-        "recommended_for": "Laptops, low-resource workstations, high-speed tool calling"
+        "description": "Ultra-lightweight (1.5B), rapid CPU inference, high-precision function calling",
+        "recommended_for": "Laptops & standard workstations for high-speed Groundhog calculation execution"
     },
     "qwen2.5-3b-instruct": {
+        "family": "qwen",
+        "display_name": "Qwen 2.5 (3B Instruct)",
         "repo_id": "Qwen/Qwen2.5-3B-Instruct-GGUF",
         "filename": "qwen2.5-3b-instruct-q4_k_m.gguf",
         "size_mb": 2040,
-        "description": "Balanced (3B) with superior multi-turn geotechnical reasoning and tool precision",
-        "recommended_for": "Standard desktop engineering workstations"
+        "description": "Balanced (3B) with superior multi-turn geotechnical reasoning and complex parameter extraction",
+        "recommended_for": "Engineering workstations requiring balanced speed and deep tool precision"
+    },
+    "qwen2.5-7b-instruct": {
+        "family": "qwen",
+        "display_name": "Qwen 2.5 (7B Instruct)",
+        "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+        "filename": "qwen2.5-7b-instruct-q4_k_m.gguf",
+        "size_mb": 4400,
+        "description": "Maximum capability (7B) for complex geotechnical synthesis, CPT profiling & tool orchestration",
+        "recommended_for": "High-end workstations with dedicated GPU/VRAM acceleration"
     },
     "gemma-2-2b-it": {
+        "family": "gemma",
+        "display_name": "Gemma 2 (2.6B IT)",
         "repo_id": "bartowski/gemma-2-2b-it-GGUF",
         "filename": "gemma-2-2b-it-Q4_K_M.gguf",
         "size_mb": 1630,
-        "description": "Google Gemma 2 (2.6B) optimized for high factual grounding and synthesis",
-        "recommended_for": "Literature research, standards interpretation, report writing"
+        "description": "Google DeepMind Gemma 2 architecture optimized for high factual grounding & research synthesis",
+        "recommended_for": "Literature review, standards interpretation (Eurocode 7, ASTM), and technical reports"
+    },
+    "gemma-2-9b-it": {
+        "family": "gemma",
+        "display_name": "Gemma 2 (9B IT)",
+        "repo_id": "bartowski/gemma-2-9b-it-GGUF",
+        "filename": "gemma-2-9b-it-Q4_K_M.gguf",
+        "size_mb": 5400,
+        "description": "Advanced Google Gemma 2 (9B) for deep geotechnical research, site investigation analysis & RAG",
+        "recommended_for": "Dedicated research workstations with 16GB+ RAM"
     }
 }
 
@@ -59,6 +83,8 @@ def list_available_models() -> List[Dict[str, Any]]:
         local_path = str(installed[info["filename"].lower()]) if is_installed else None
         results.append({
             "id": key,
+            "family": info.get("family", "qwen"),
+            "display_name": info.get("display_name", key),
             "repo_id": info["repo_id"],
             "filename": info["filename"],
             "size_mb": info["size_mb"],
@@ -73,6 +99,8 @@ def list_available_models() -> List[Dict[str, Any]]:
 _download_state: Dict[str, Any] = {
     "status": "idle",  # "idle", "downloading", "completed", "error"
     "model_id": None,
+    "display_name": None,
+    "size_mb": None,
     "error": None
 }
 
@@ -105,6 +133,8 @@ def download_model(
 
     _download_state["status"] = "downloading"
     _download_state["model_id"] = model_id
+    _download_state["display_name"] = model_info.get("display_name", model_id)
+    _download_state["size_mb"] = model_info.get("size_mb", 0)
     _download_state["error"] = None
 
     try:
