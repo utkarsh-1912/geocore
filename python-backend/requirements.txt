@@ -22,3 +22,5 @@ xlrd
 openpyxl
 et_xmlfile
 llama-cpp-python
+psutil
+huggingface_hub

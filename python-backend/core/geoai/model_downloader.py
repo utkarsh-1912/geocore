@@ -11,7 +11,10 @@ import sys
 import logging
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-from huggingface_hub import hf_hub_download
+try:
+    from huggingface_hub import hf_hub_download
+except ImportError:
+    hf_hub_download = None
 
 from core.geoai.model_config import (
     get_default_model_dir,
@@ -130,6 +133,11 @@ def download_model(
 
     model_info = RECOMMENDED_MODELS[model_id]
     target_dir = get_default_model_dir()
+
+    if hf_hub_download is None:
+        _download_state["status"] = "error"
+        _download_state["error"] = "huggingface_hub is not installed. Please install huggingface_hub to download models."
+        raise ImportError("huggingface_hub is required to download models from Hugging Face.")
 
     _download_state["status"] = "downloading"
     _download_state["model_id"] = model_id

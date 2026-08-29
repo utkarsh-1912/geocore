@@ -10,10 +10,14 @@ Ensures desktop application responsiveness by providing:
 
 import time
 import os
-import psutil
 import logging
 from typing import Dict, Any, Optional
 from threading import RLock
+
+try:
+    import psutil
+except ImportError:
+    psutil = None
 
 from core.geoai.model_provider import ModelProvider
 from core.geoai.model_config import load_config, save_config, GeoAIModelConfig
@@ -91,9 +95,14 @@ class ModelLifecycleManager:
 
     def get_memory_status(self) -> Dict[str, Any]:
         """Returns current process RAM usage and model load status."""
-        process = psutil.Process(os.getpid())
-        mem_info = process.memory_info()
-        ram_mb = mem_info.rss / (1024 * 1024)
+        ram_mb = 0.0
+        if psutil is not None:
+            try:
+                process = psutil.Process(os.getpid())
+                mem_info = process.memory_info()
+                ram_mb = mem_info.rss / (1024 * 1024)
+            except Exception:
+                pass
 
         with self._lock:
             is_loaded = self._provider is not None and self._provider.is_loaded()
