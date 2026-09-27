@@ -1,0 +1,560 @@
+{
+  "home": {
+    "title": "GeoCore Documentation",
+    "slug": "index"
+  },
+  "sections": [
+    {
+      "title": "Getting Started",
+      "slug": "getting-started",
+      "children": [
+        {
+          "title": "What is GeoCore",
+          "slug": "geocore/overview"
+        },
+        {
+          "title": "Installing GeoCore",
+          "slug": "geocore/installation"
+        },
+        {
+          "title": "Running and building from source",
+          "slug": "geocore/building-from-source"
+        }
+      ]
+    },
+    {
+      "title": "Using GeoCore",
+      "slug": "using-geocore",
+      "children": [
+        {
+          "title": "Running calculations",
+          "slug": "geocore/using/calculations"
+        },
+        {
+          "title": "Soil profiles and AGS data",
+          "slug": "geocore/using/soil-profiles"
+        },
+        {
+          "title": "Calculation catalogue",
+          "slug": "geocore/using/modules"
+        },
+        {
+          "title": "Eurocode 7 partial factors",
+          "slug": "geocore/using/eurocode7"
+        },
+        {
+          "title": "Customising calculator forms",
+          "slug": "geocore/using/parameter-overrides"
+        },
+        {
+          "title": "Local calculation engine API",
+          "slug": "geocore/using/local-api"
+        }
+      ]
+    },
+    {
+      "title": "GeoAI",
+      "slug": "geoai",
+      "children": [
+        {
+          "title": "GeoAI overview",
+          "slug": "geoai/overview"
+        },
+        {
+          "title": "Setting up a GeoAI model",
+          "slug": "geoai/model-setup"
+        },
+        {
+          "title": "GeoAI tools",
+          "slug": "geoai/tools"
+        },
+        {
+          "title": "Local document search",
+          "slug": "geoai/research"
+        },
+        {
+          "title": "Limitations and engineering caution",
+          "slug": "geoai/limitations"
+        }
+      ]
+    },
+    {
+      "title": "Groundhog Guides",
+      "slug": "groundhog/guides",
+      "children": [
+        {
+          "title": "Introduction to groundhog",
+          "slug": "groundhog/guides/introduction"
+        },
+        {
+          "title": "Getting started with groundhog",
+          "slug": "groundhog/guides/getting-started"
+        },
+        {
+          "title": "Topics",
+          "slug": "groundhog/guides/topics",
+          "children": [
+            {
+              "title": "General and utility functions",
+              "slug": "groundhog/guides/topics/general"
+            },
+            {
+              "title": "Site investigation",
+              "slug": "groundhog/guides/topics/site-investigation"
+            },
+            {
+              "title": "Pile calculations",
+              "slug": "groundhog/guides/topics/piles"
+            },
+            {
+              "title": "Shallow foundations",
+              "slug": "groundhog/guides/topics/shallowfoundations"
+            },
+            {
+              "title": "Consolidation functions",
+              "slug": "groundhog/guides/topics/consolidation"
+            },
+            {
+              "title": "Excavations",
+              "slug": "groundhog/guides/topics/excavations"
+            },
+            {
+              "title": "Soil dynamics",
+              "slug": "groundhog/guides/topics/soildynamics"
+            },
+            {
+              "title": "Standards",
+              "slug": "groundhog/guides/topics/standards"
+            },
+            {
+              "title": "Constitutive models",
+              "slug": "groundhog/guides/topics/constitutivemodels"
+            },
+            {
+              "title": "Pipelines and cables",
+              "slug": "groundhog/guides/topics/pipelinescables"
+            }
+          ]
+        },
+        {
+          "title": "Tutorials",
+          "slug": "groundhog/tutorials",
+          "children": [
+            {
+              "title": "CGS webinar - CPT processing tutorial",
+              "slug": "groundhog/tutorials/cgs-webinar-cpt-processing-tutorial"
+            },
+            {
+              "title": "CGS webinar - De Beer method for axial pile resistance",
+              "slug": "groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance"
+            },
+            {
+              "title": "CPT retrieval from BRO (DINOLoket)",
+              "slug": "groundhog/tutorials/demo-bro-cpt-retrieval"
+            },
+            {
+              "title": "Demo - De Beer pile resistance calculation",
+              "slug": "groundhog/tutorials/demo-de-beer-pile-resistance-calculation"
+            },
+            {
+              "title": "Demo - Pile base resistance calculation according to De Beer's method",
+              "slug": "groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation"
+            },
+            {
+              "title": "Demo - Koppejan's pile resistance calculation method",
+              "slug": "groundhog/tutorials/demo-koppejan-pile-resistance-calculation"
+            },
+            {
+              "title": "Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog",
+              "slug": "groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog"
+            },
+            {
+              "title": "Tutorial - Basic use of groundhog functions",
+              "slug": "groundhog/tutorials/tutorial-basic-use-of-groundhog-functions"
+            },
+            {
+              "title": "Tutorial - Fence diagrams with ```groundhog```",
+              "slug": "groundhog/tutorials/tutorial-fence-diagrams-with-groundhog"
+            },
+            {
+              "title": "gINT data import in Python for Linux and Mac",
+              "slug": "groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux"
+            },
+            {
+              "title": "gINT data import in Python for Windows",
+              "slug": "groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows"
+            },
+            {
+              "title": "Groundhog parameter selection example",
+              "slug": "groundhog/tutorials/tutorial-groundhog-parameter-selection-example"
+            },
+            {
+              "title": "Tutorial - Loading AGS data using ```groundhog```",
+              "slug": "groundhog/tutorials/tutorial-loading-ags-data-using-groundhog"
+            },
+            {
+              "title": "Tutorial - PCPT data processing with Groundhog",
+              "slug": "groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog"
+            },
+            {
+              "title": "Tutorial - PCPT data reading with Groundhog",
+              "slug": "groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog"
+            },
+            {
+              "title": "Tutorial - Pore pressure dissipation",
+              "slug": "groundhog/tutorials/tutorial-pore-pressure-dissipation"
+            },
+            {
+              "title": "Tutorial - Settlement calculations with ```groundhog```",
+              "slug": "groundhog/tutorials/tutorial-settlement-calculations-with-groundhog"
+            },
+            {
+              "title": "Tutorial - Shallow foundation capacity with groundhog",
+              "slug": "groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog"
+            },
+            {
+              "title": "Tutorial - Soil profile objects in Groundhog",
+              "slug": "groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog"
+            },
+            {
+              "title": "Tutorial - SPT data processing with Groundhog",
+              "slug": "groundhog/tutorials/tutorial-spt-data-processing-with-groundhog"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Groundhog API Reference",
+      "slug": "groundhog/api",
+      "children": [
+        {
+          "title": "Consolidation",
+          "slug": "groundhog/api/consolidation",
+          "children": [
+            {
+              "title": "Dissipation",
+              "slug": "groundhog/api/consolidation/dissipation",
+              "children": [
+                {
+                  "title": "One-dimensional consolidation",
+                  "slug": "groundhog/api/consolidation/dissipation/onedimensionalconsolidation"
+                }
+              ]
+            },
+            {
+              "title": "Groundwater flow",
+              "slug": "groundhog/api/consolidation/groundwaterflow",
+              "children": [
+                {
+                  "title": "Pumping tests",
+                  "slug": "groundhog/api/consolidation/groundwaterflow/pumpingtests"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Constitutive models",
+          "slug": "groundhog/api/constitutivemodels",
+          "children": [
+            {
+              "title": "cohesionless",
+              "slug": "groundhog/api/constitutivemodels/cohesionless"
+            },
+            {
+              "title": "general",
+              "slug": "groundhog/api/constitutivemodels/general"
+            }
+          ]
+        },
+        {
+          "title": "Deep foundations",
+          "slug": "groundhog/api/deepfoundations",
+          "children": [
+            {
+              "title": "Axial capacity",
+              "slug": "groundhog/api/deepfoundations/axialcapacity",
+              "children": [
+                {
+                  "title": "axcap",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/axcap"
+                },
+                {
+                  "title": "debeer",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/debeer"
+                },
+                {
+                  "title": "Unit end bearing",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/endbearing"
+                },
+                {
+                  "title": "koppejan",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/koppejan"
+                },
+                {
+                  "title": "lcpc",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/lcpc"
+                },
+                {
+                  "title": "Negative skin friction",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/negativeskinfriction"
+                },
+                {
+                  "title": "piletesting",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/piletesting"
+                },
+                {
+                  "title": "Unit skin friction",
+                  "slug": "groundhog/api/deepfoundations/axialcapacity/skinfriction"
+                }
+              ]
+            },
+            {
+              "title": "Axial response",
+              "slug": "groundhog/api/deepfoundations/axialresponse",
+              "children": [
+                {
+                  "title": "Pile settlement",
+                  "slug": "groundhog/api/deepfoundations/axialresponse/settlement"
+                }
+              ]
+            },
+            {
+              "title": "Borehole stability",
+              "slug": "groundhog/api/deepfoundations/boreholestability",
+              "children": [
+                {
+                  "title": "Cavity expansion methods for cast in-situ piles",
+                  "slug": "groundhog/api/deepfoundations/boreholestability/cavityexpansion"
+                }
+              ]
+            },
+            {
+              "title": "Lateral response",
+              "slug": "groundhog/api/deepfoundations/lateralresponse",
+              "children": [
+                {
+                  "title": "lateral",
+                  "slug": "groundhog/api/deepfoundations/lateralresponse/lateral"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Excavations",
+          "slug": "groundhog/api/excavations",
+          "children": [
+            {
+              "title": "Earth pressure coefficients",
+              "slug": "groundhog/api/excavations/basic"
+            },
+            {
+              "title": "soilmix",
+              "slug": "groundhog/api/excavations/soilmix"
+            }
+          ]
+        },
+        {
+          "title": "General",
+          "slug": "groundhog/api/general",
+          "children": [
+            {
+              "title": "agsconversion",
+              "slug": "groundhog/api/general/agsconversion"
+            },
+            {
+              "title": "Parameter mapping",
+              "slug": "groundhog/api/general/parameter_mapping"
+            },
+            {
+              "title": "Plotting",
+              "slug": "groundhog/api/general/plotting"
+            },
+            {
+              "title": "soilprofile",
+              "slug": "groundhog/api/general/soilprofile"
+            },
+            {
+              "title": "Validation",
+              "slug": "groundhog/api/general/validation"
+            }
+          ]
+        },
+        {
+          "title": "Pipelines and cables",
+          "slug": "groundhog/api/pipelinescables",
+          "children": [
+            {
+              "title": "Stability",
+              "slug": "groundhog/api/pipelinescables/stability",
+              "children": [
+                {
+                  "title": "Pipeline and cable penetration",
+                  "slug": "groundhog/api/pipelinescables/stability/penetration"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Shallow foundations",
+          "slug": "groundhog/api/shallowfoundations",
+          "children": [
+            {
+              "title": "Shallow foundation capacity",
+              "slug": "groundhog/api/shallowfoundations/capacity"
+            },
+            {
+              "title": "Settlement",
+              "slug": "groundhog/api/shallowfoundations/settlement"
+            },
+            {
+              "title": "Stress distributions",
+              "slug": "groundhog/api/shallowfoundations/stressdistribution"
+            }
+          ]
+        },
+        {
+          "title": "Site investigation",
+          "slug": "groundhog/api/siteinvestigation",
+          "children": [
+            {
+              "title": "Classification",
+              "slug": "groundhog/api/siteinvestigation/classification",
+              "children": [
+                {
+                  "title": "Soil classes and categories",
+                  "slug": "groundhog/api/siteinvestigation/classification/categories"
+                },
+                {
+                  "title": "Phase relations",
+                  "slug": "groundhog/api/siteinvestigation/classification/phaserelations"
+                }
+              ]
+            },
+            {
+              "title": "Correlations",
+              "slug": "groundhog/api/siteinvestigation/correlations",
+              "children": [
+                {
+                  "title": "Cohesionless soils",
+                  "slug": "groundhog/api/siteinvestigation/correlations/cohesionless"
+                },
+                {
+                  "title": "Cohesive soils",
+                  "slug": "groundhog/api/siteinvestigation/correlations/cohesive"
+                },
+                {
+                  "title": "All soil types",
+                  "slug": "groundhog/api/siteinvestigation/correlations/general"
+                }
+              ]
+            },
+            {
+              "title": "In-situ tests",
+              "slug": "groundhog/api/siteinvestigation/insitutests",
+              "children": [
+                {
+                  "title": "PCPT functions",
+                  "slug": "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
+                },
+                {
+                  "title": "pcpt_processing",
+                  "slug": "groundhog/api/siteinvestigation/insitutests/pcpt_processing"
+                },
+                {
+                  "title": "read_site_data",
+                  "slug": "groundhog/api/siteinvestigation/insitutests/read_site_data"
+                },
+                {
+                  "title": "SPT corrections and correlations",
+                  "slug": "groundhog/api/siteinvestigation/insitutests/spt_correlations"
+                },
+                {
+                  "title": "spt_processing",
+                  "slug": "groundhog/api/siteinvestigation/insitutests/spt_processing"
+                }
+              ]
+            },
+            {
+              "title": "Lab testing",
+              "slug": "groundhog/api/siteinvestigation/labtesting",
+              "children": [
+                {
+                  "title": "Compressibility",
+                  "slug": "groundhog/api/siteinvestigation/labtesting/compressibility"
+                },
+                {
+                  "title": "indextests",
+                  "slug": "groundhog/api/siteinvestigation/labtesting/indextests"
+                },
+                {
+                  "title": "Sample preparation",
+                  "slug": "groundhog/api/siteinvestigation/labtesting/samplepreparation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Soil dynamics",
+          "slug": "groundhog/api/soildynamics",
+          "children": [
+            {
+              "title": "CPT Liquefaction",
+              "slug": "groundhog/api/soildynamics/cptliquefaction"
+            },
+            {
+              "title": "Cyclic behaviour",
+              "slug": "groundhog/api/soildynamics/cyclicbehaviour"
+            },
+            {
+              "title": "Liquefaction",
+              "slug": "groundhog/api/soildynamics/liquefaction"
+            },
+            {
+              "title": "Dynamic soil property correlations",
+              "slug": "groundhog/api/soildynamics/soilproperties"
+            }
+          ]
+        },
+        {
+          "title": "Standards",
+          "slug": "groundhog/api/standards",
+          "children": [
+            {
+              "title": "Eurocode 7",
+              "slug": "groundhog/api/standards/eurocode7",
+              "children": [
+                {
+                  "title": "factors",
+                  "slug": "groundhog/api/standards/eurocode7/factors"
+                },
+                {
+                  "title": "Parameter selection",
+                  "slug": "groundhog/api/standards/eurocode7/parameter_selection"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Changelog",
+      "slug": "changelog",
+      "children": [
+        {
+          "title": "groundhog changelog",
+          "slug": "changelog/groundhog"
+        }
+      ]
+    },
+    {
+      "title": "License & Credits",
+      "slug": "license"
+    }
+  ]
+}

@@ -5,7 +5,7 @@
 
 import sys
 import os
-from PyInstaller.utils.hooks import collect_submodules, collect_data_files
+from PyInstaller.utils.hooks import collect_submodules, collect_data_files, collect_dynamic_libs, copy_metadata
 
 block_cipher = None
 
@@ -63,6 +63,24 @@ hiddenimports += collect_submodules('jinja2')
 hiddenimports += collect_submodules('markupsafe')
 
 # ---------------------------------------------------------------------------
+# Local LLM runtime (llama-cpp-python) for GeoAI.
+# core/geoai/llama_cpp_provider.py imports it lazily, so PyInstaller cannot
+# see it statically. The native ggml/llama DLLs live in llama_cpp/lib and are
+# loaded via ctypes relative to the package's __file__, so they must be
+# collected into the same relative folder. The optional OpenAI-compatible
+# server subpackage is not used by GeoCore and is excluded.
+# ---------------------------------------------------------------------------
+llama_binaries = []
+try:
+    import llama_cpp  # noqa: F401
+    hiddenimports += collect_submodules(
+        'llama_cpp', filter=lambda name: not name.startswith('llama_cpp.server')
+    )
+    llama_binaries = collect_dynamic_libs('llama_cpp')
+except ImportError:
+    print('WARNING: llama_cpp not installed - GeoAI will fall back to the heuristic provider.')
+
+# ---------------------------------------------------------------------------
 # Data files
 # ---------------------------------------------------------------------------
 datas = []
@@ -79,6 +97,11 @@ for json_file in ['module_info_structured.json', 'schema_overrides.json']:
 if os.path.exists('core/geoai/parameter_inventory.json'):
     datas.append(('core/geoai/parameter_inventory.json', 'core/geoai'))
 
+# Lazy-registry manifest; without it the frozen app falls back to the slow eager scan.
+# Regenerate before building: python -m core.function_manifest
+datas.append(('core/function_manifest.json', 'core'))
+datas += copy_metadata('groundhog')
+
 datas += collect_data_files('plotly')
 datas += collect_data_files('jinja2')
 
@@ -88,7 +111,7 @@ datas += collect_data_files('jinja2')
 a = Analysis(
     ['main.py'],
     pathex=['.'],
-    binaries=[],
+    binaries=llama_binaries,
     datas=datas,
     hiddenimports=hiddenimports,
     hookspath=[],

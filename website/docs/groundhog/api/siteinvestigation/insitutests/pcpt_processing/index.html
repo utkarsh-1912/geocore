@@ -1,0 +1,4645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pcpt_processing — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.siteinvestigation.insitutests.pcpt_processing: 2 functions, 2 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="pcpt_processing — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.siteinvestigation.insitutests.pcpt_processing: 2 functions, 2 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/" aria-current="page">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/siteinvestigation/">Site investigation</a></li>
+        <li><a href="/docs/groundhog/api/siteinvestigation/insitutests/">In-situ tests</a></li>
+        <li><span aria-current="page">pcpt_processing</span></li>
+      </ol>
+    </nav>
+
+    <h1>pcpt_processing</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.siteinvestigation.insitutests.pcpt_processing</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.insitutests.pcpt_processing</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/pcpt_processing.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_class.html">PCPT processing class</a>.</p>
+<p><strong>Classes:</strong> <a href="#insitutestprocessing"><code>InsituTestProcessing</code></a>, <a href="#pcptprocessing"><code>PCPTProcessing</code></a></p>
+<p><strong>Functions:</strong> <a href="#plot_longitudinal_profile"><code>plot_longitudinal_profile</code></a>, <a href="#plot_combined_longitudinal_profile"><code>plot_combined_longitudinal_profile</code></a></p>
+<p><a id="insitutestprocessing"></a></p>
+<h2 id="class-insitutestprocessing">class <code>InsituTestProcessing</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">InsituTestProcessing</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mf">10.25</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Abstract base class for the processing of in-situ tests. Encodes shared functionality between different types of in-situ tests</p>
+<p><a id="insitutestprocessing-__init__"></a></p>
+<h3 id="insitutestprocessing__init__"><code>InsituTestProcessing.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mf">10.25</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Initialises an in-situ test object</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>waterunitweight</code></td>
+<td></td>
+<td></td>
+<td><code>10.25</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="insitutestprocessing-set_position"></a></p>
+<h3 id="insitutestprocessingset_position"><code>InsituTestProcessing.set_position</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_position</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span> <span class="n">datum</span><span class="o">=</span><span class="s1">&#39;mLAT&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the position of an SPT test in a given coordinate system.</p>
+<p>By default, srid 4326 is used which means easting is longitude and northing is latitude.</p>
+<p>The elevation is referenced to a chart datum for which mLAT (Lowest Astronomical Tide) is the default.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>easting</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>X-coordinate of the SPT position</td>
+</tr>
+<tr>
+<td><code>northing</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Y-coordinate of the SPT position</td>
+</tr>
+<tr>
+<td><code>elevation</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Elevation of the SPT position</td>
+</tr>
+<tr>
+<td><code>srid</code></td>
+<td></td>
+<td></td>
+<td><code>4326</code></td>
+<td>SRID of the coordinate system (see http://epsg.io)</td>
+</tr>
+<tr>
+<td><code>datum</code></td>
+<td></td>
+<td></td>
+<td><code>'mLAT'</code></td>
+<td>Chart datum used for the elevation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the corresponding attributes of the <code>SPTProcessing</code> object</p>
+<p><a id="insitutestprocessing-map_properties"></a></p>
+<h3 id="insitutestprocessingmap_properties"><code>InsituTestProcessing.map_properties</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">map_properties</span><span class="p">(</span>
+    <span class="n">layer_profile</span><span class="p">,</span>
+    <span class="n">initial_vertical_total_stress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vertical_total_stress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vertical_effective_stress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">extend_layer_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Maps the soil properties defined in the layering to the grid defined by the cone data. The procedure also calculates the total and effective vertical stress. Note that pre-calculated arrays with total and effective vertical stress can also be supplied to the routine. These needs to have the same length as the array with in-situ test depth data.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layer_profile</code></td>
+<td>kN/m3</td>
+<td></td>
+<td>required</td>
+<td><code>SoilProfile</code> object with the layer properties (need to contain the soil parameter <code>Total unit weight</code></td>
+</tr>
+<tr>
+<td><code>initial_vertical_total_stress</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>Initial vertical total stress at the highest point of the soil profile</td>
+</tr>
+<tr>
+<td><code>vertical_total_stress</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Pre-calculated total vertical stress at in-situ test depth nodes (default=None which will lead to calculation of total stress inside the routine)</td>
+</tr>
+<tr>
+<td><code>vertical_effective_stress</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Pre-calculated effective vertical stress at in-situ test depth nodes (default=None which will lead to calculation of total stress inside the routine)</td>
+</tr>
+<tr>
+<td><code>waterlevel</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Waterlevel in the soil (measured from soil surface), default = 0m</td>
+</tr>
+<tr>
+<td><code>extend_layer_profile</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the layer profile needs to be extended to the bottom of the CPT (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Expands the dataframe <code>.data</code> with additional columns for the cone and soil properties</p>
+<p><a id="pcptprocessing"></a></p>
+<h2 id="class-pcptprocessing">class <code>PCPTProcessing</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="PCPTProcessing">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#pcptprocessing">Site investigation › In-situ: PCPT processing class › PCPTProcessing</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">PCPTProcessing</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mf">10.25</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The PCPTProcessing class implements methods for reading, processing and presentation of PCPT data. Common correlations are also encoded.</p>
+<p><a id="pcptprocessing-__init__"></a></p>
+<h3 id="pcptprocessing__init__"><code>PCPTProcessing.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mf">10.25</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Initialises a PCPTProcessing object based on a title. Optionally, a geographical position can be defined. A dictionary for dumping unstructured data (<code>additionaldata</code>) is also available.</p>
+<p>An empty dataframe (<code>`.data</code>) is created for storing the PCPT data`</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Title for the PCPT test</td>
+</tr>
+<tr>
+<td><code>waterunitweight</code></td>
+<td></td>
+<td></td>
+<td><code>10.25</code></td>
+<td>Unit weight of water used for effective stress calculations (default=10.25kN/m3 for seawater)</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="pcptprocessing-rename_columns"></a></p>
+<h3 id="pcptprocessingrename_columns"><code>PCPTProcessing.rename_columns</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">rename_columns</span><span class="p">(</span><span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">push_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>z_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="pcptprocessing-convert_columns"></a></p>
+<h3 id="pcptprocessingconvert_columns"><code>PCPTProcessing.convert_columns</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">convert_columns</span><span class="p">(</span><span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="pcptprocessing-add_zerodepth_row"></a></p>
+<h3 id="pcptprocessingadd_zerodepth_row"><code>PCPTProcessing.add_zerodepth_row</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">add_zerodepth_row</span><span class="p">()</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><a id="pcptprocessing-dropna_rows"></a></p>
+<h3 id="pcptprocessingdropna_rows"><code>PCPTProcessing.dropna_rows</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">dropna_rows</span><span class="p">()</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><a id="pcptprocessing-load_excel"></a></p>
+<h3 id="pcptprocessingload_excel"><code>PCPTProcessing.load_excel</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_excel</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Loads PCPT data from an Excel file. Specific column keys have to be provided for z, qc, fs and u2. If column keys are not specified, the following keys are used:</p>
+<ul>
+<li>'z [m]' for depth below mudline</li>
+<li>'qc [MPa]' for cone tip resistance</li>
+<li>'fs [MPa]' for sleeve friction</li>
+<li>'u2 [MPa]' for pore pressure at cone shoulder</li>
+</ul>
+<p>Note that cone tip resistance, sleeve friction and pore pressure at the shoulder all need to be converted to MPa. Multipliers can be specified if a conversion from kPa to MPa is required. Optional keyword arguments for the <code>read_excel</code> function in Pandas can be specified as <code>**kwargs</code>.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the Excel file</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the read_excel function in Pandas (e.g. sheet_name, header, ...)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the columns 'z [m]', 'qc [MPa]', 'fs [MPa]' and 'u2 [MPa]' of the <code>.data</code> attribute</p>
+<p><a id="pcptprocessing-load_pandas"></a></p>
+<h3 id="pcptprocessingload_pandas"><code>PCPTProcessing.load_pandas</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_pandas</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Loads PCPT from a Pandas dataframe. Specific column keys have to be provided for z, qc, fs and u2. If column keys are not specified, the following keys are used:</p>
+<ul>
+<li>'z [m]' for depth below mudline</li>
+<li>'qc [MPa]' for cone tip resistance</li>
+<li>'fs [MPa]' for sleeve friction</li>
+<li>'u2 [MPa]' for pore pressure at cone shoulder</li>
+</ul>
+<p>Note that cone tip resistance, sleeve friction and pore pressure at the shoulder all need to be converted to MPa</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Pandas dataframe with required column keys</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the columns 'z [m]', 'qc [MPa]', 'fs [MPa]' and 'u2 [MPa]' of the <code>.data</code> attribute</p>
+<p><a id="pcptprocessing-load_ags"></a></p>
+<h3 id="pcptprocessingload_ags"><code>PCPTProcessing.load_ags</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_ags</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ags_group</span><span class="o">=</span><span class="s1">&#39;SCPT&#39;</span><span class="p">,</span>
+    <span class="n">verbose_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">use_shorthands</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Loads PCPT data from an AGS file. Specific column keys have to be provided for z, qc, fs and u2. If column keys are not specified, the following keys are used:</p>
+<ul>
+<li>'z [m]' for depth below mudline</li>
+<li>'qc [MPa]' for cone tip resistance</li>
+<li>'fs [MPa]' for sleeve friction</li>
+<li>'u2 [MPa]' for pore pressure at cone shoulder</li>
+</ul>
+<p>Note that cone tip resistance, sleeve friction and pore pressure at the shoulder all need to be converted to MPa. Multipliers can be specified if a conversion from kPa to MPa is required. Optional keyword arguments for the <code>read_ags</code> function in Pandas can be specified as <code>**kwargs</code>.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the ags file</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+<tr>
+<td><code>ags_group</code></td>
+<td></td>
+<td></td>
+<td><code>'SCPT'</code></td>
+<td>Name of the AGS group with the CPT data (default= <code>"SCPT"</code>)</td>
+</tr>
+<tr>
+<td><code>verbose_keys</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean for using verbose keys in the AGS converter (default=True)</td>
+</tr>
+<tr>
+<td><code>use_shorthands</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean for using shorthands in the AGS converter (default=True)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the read_excel function in Pandas (e.g. sheet_name, header, ...)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the columns 'z [m]', 'qc [MPa]', 'fs [MPa]' and 'u2 [MPa]' of the <code>.data</code> attribute</p>
+<p><a id="pcptprocessing-load_asc"></a></p>
+<h3 id="pcptprocessingload_asc"><code>PCPTProcessing.load_asc</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_asc</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">column_widths</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">skiprows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">custom_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Reads PCPT data from a Uniplot .asc file The widths of the columns for the .asc file need to be specified.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the .asc file</td>
+</tr>
+<tr>
+<td><code>column_widths</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>Column widths to use for the import (compulsory)</td>
+</tr>
+<tr>
+<td><code>skiprows</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Number of rows to skip</td>
+</tr>
+<tr>
+<td><code>custom_headers</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Custom headers to be used (default=None for auto-detection)</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for reading the datafile</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-load_gef"></a></p>
+<h3 id="pcptprocessingload_gef"><code>PCPTProcessing.load_gef</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_gef</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">inverse_depths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">override_title</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">separator</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Reads PCPT data from a Geotechnical Exchange Format (.gef) file. The file is parsed using regular expressions to provide the necessary data. If location data is provided, this data is also</p>
+<p>https://publicwiki.deltares.nl/download/attachments/102204314/GEFCR100.pdf?version=1&amp;modificationDate=1411129283000&amp;api=v2</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the .asc file</td>
+</tr>
+<tr>
+<td><code>inverse_depths</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean indicating whether depths need to be inverted. A positive downward z-axis is expected.</td>
+</tr>
+<tr>
+<td><code>override_title</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean indicating if the title specified needs to be replaced by the test id (default = True).</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td></td>
+<td></td>
+<td><code>' '</code></td>
+<td>Separator used for the gef file (default is <code>' '</code>)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for reading the datafile (using <code>read_csv</code> from Pandas)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-load_multi_asc"></a></p>
+<h3 id="pcptprocessingload_multi_asc"><code>PCPTProcessing.load_multi_asc</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_multi_asc</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">column_widths</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">skiprows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">custom_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">start_string</span><span class="o">=</span><span class="s1">&#39;Data table&#39;</span><span class="p">,</span>
+    <span class="n">end_string</span><span class="o">=</span><span class="s1">&#39;UNICAS data file&#39;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Reads PCPT data from a Uniplot .asc file with multiple pushes The widths of the columns for the .asc file need to be specified.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the .asc file</td>
+</tr>
+<tr>
+<td><code>column_widths</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>Column widths to use for the import (compulsory)</td>
+</tr>
+<tr>
+<td><code>skiprows</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Number of rows to skip</td>
+</tr>
+<tr>
+<td><code>custom_headers</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Custom headers to be used (default=None for auto-detection)</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+<tr>
+<td><code>start_string</code></td>
+<td></td>
+<td></td>
+<td><code>'Data table'</code></td>
+<td>String showing the start of the data</td>
+</tr>
+<tr>
+<td><code>end_string</code></td>
+<td></td>
+<td></td>
+<td><code>'UNICAS data file'</code></td>
+<td>String showing the end of the data</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for reading the datafile</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-load_a00"></a></p>
+<h3 id="pcptprocessingload_a00"><code>PCPTProcessing.load_a00</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_a00</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">column_widths</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">skiprows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">custom_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Reads PCPT data from a Uniplot .a00 file The widths of the columns for the .a00 file need to be specified.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the .a00 file</td>
+</tr>
+<tr>
+<td><code>column_widths</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>Column widths to use for the import (compulsory)</td>
+</tr>
+<tr>
+<td><code>skiprows</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Number of rows to skip</td>
+</tr>
+<tr>
+<td><code>custom_headers</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Custom headers to be used (default=None for auto-detection)</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether a datapoint needs to be added at zero depth.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for reading the datafile</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-load_multiple_asc"></a></p>
+<h3 id="pcptprocessingload_multiple_asc"><code>PCPTProcessing.load_multiple_asc</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_multiple_asc</span><span class="p">(</span>
+    <span class="n">folder</span><span class="p">,</span>
+    <span class="n">column_widths</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">skiprows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">custom_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>A PCPT can be provided as multiple .asc files in one folder. This method loops over the individual files and creates a combined <code>data</code> attribute with PCPT data. The method assumes that all .asc files have the same format.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>folder</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Folder with the .asc files</td>
+</tr>
+<tr>
+<td><code>column_widths</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>Column widths to use for the import (compulsory)</td>
+</tr>
+<tr>
+<td><code>skiprows</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Number of rows to skip</td>
+</tr>
+<tr>
+<td><code>custom_headers</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Custom headers to be used (default=None for auto-detection)</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for cone tip resistance. Optional, default=None when 'qc ' is the column key.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for sleeve friction. Optional, default=None when 'fs ' is the column key.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for pore pressure at shoulder. Optional, default=None when 'u2 ' is the column key.</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>Column key for the current push (for downhole PCPT). Optional, default=None for a continuous push.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on cone tip resistance to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on sleeve friction to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on pore pressure at shoulder to convert to MPa (e.g. 0.001 to convert from kPa to MPa)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for reading the datafiles</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the <code>data</code> attribute of the PCPTProcessing object</p>
+<p><a id="pcptprocessing-load_pydov"></a></p>
+<h3 id="pcptprocessingload_pydov"><code>PCPTProcessing.load_pydov</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_pydov</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">,</span>
+    <span class="n">push_key</span><span class="o">=</span><span class="s1">&#39;Push&#39;</span><span class="p">,</span>
+    <span class="n">add_zero_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">z_key</span><span class="o">=</span><span class="s1">&#39;diepte&#39;</span><span class="p">,</span>
+    <span class="n">qc_key</span><span class="o">=</span><span class="s1">&#39;qc&#39;</span><span class="p">,</span>
+    <span class="n">fs_key</span><span class="o">=</span><span class="s1">&#39;fs&#39;</span><span class="p">,</span>
+    <span class="n">u2_key</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">,</span>
+    <span class="n">qc_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fs_multiplier</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">u2_multiplier</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Load CPT data from Databank Ondergrond Vlaanderen based on the unique CPT name which can be found in DOV</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Unique identifier of the CPT in pydov</td>
+</tr>
+<tr>
+<td><code>push_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Push'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>add_zero_row</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td></td>
+<td></td>
+<td><code>'diepte'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>qc_key</code></td>
+<td></td>
+<td></td>
+<td><code>'qc'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td></td>
+<td></td>
+<td><code>'fs'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>u2_key</code></td>
+<td></td>
+<td></td>
+<td><code>'u'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>qc_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fs_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>0.001</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>u2_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>0.001</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the <code>data</code> attribute of the PCPTProcessing object</p>
+<p><a id="pcptprocessing-get_stratigraphy_pydov"></a></p>
+<h3 id="pcptprocessingget_stratigraphy_pydov"><code>PCPTProcessing.get_stratigraphy_pydov</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">get_stratigraphy_pydov</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Retrieves stratigraphic info from the 3D geological model of Flanders based on a CPT loaded in pydov</p>
+<p><a id="pcptprocessing-load_bro"></a></p>
+<h3 id="pcptprocessingload_bro"><code>PCPTProcessing.load_bro</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_bro</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Load CPT data from BasisRegistratie Ondergrond (BRO) based on the unique CPT name which can be found in BRO. The data loading is handled by the geotexx package written by Thomas van der Linden (https://github.com/ic144/geotexxx_package).</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Unique identifier of the CPT in BRO (see https://www.dinoloket.nl/ondergrondgegevens)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the <code>data</code> attribute of the PCPTProcessing object</p>
+<p><a id="pcptprocessing-get_stratigraphy_bro"></a></p>
+<h3 id="pcptprocessingget_stratigraphy_bro"><code>PCPTProcessing.get_stratigraphy_bro</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">get_stratigraphy_bro</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Retrieves stratigraphic info from the 3D geological model GeoTop of The Netherlands based on a CPT loaded from BRO</p>
+<p><a id="pcptprocessing-combine_pcpt"></a></p>
+<h3 id="pcptprocessingcombine_pcpt"><code>PCPTProcessing.combine_pcpt</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">combine_pcpt</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Combine PCPT data for two PCPTProcessing objects. The data of the second PCPT (<code>obj</code>) will be merged with the current object and the <code>data</code> attribute will be a combined dataframe. Only columns 'z [m]', 'qc [MPa]', 'fs [MPa]', 'u2 [MPa]' and 'Push' will be retained.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>obj</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>PCPTProcessing object containing the second PCPT info</td>
+</tr>
+<tr>
+<td><code>keep</code></td>
+<td></td>
+<td></td>
+<td><code>'first'</code></td>
+<td>Determines what to do in the area with overlap ("first", "second" or "both"). If "first" is chosen (default), the data from the first PCPT <code>self</code> is used in the area with overlap. For "second", data for the second PCPT <code>obj</code> is retained. If 'both' is selected, overlapping data will exist which might lead to presentation problems.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Updates the <code>data</code> attribute of the current PCPTProcessing object</p>
+<p><a id="pcptprocessing-map_properties"></a></p>
+<h3 id="pcptprocessingmap_properties"><code>PCPTProcessing.map_properties</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">map_properties</span><span class="p">(</span>
+    <span class="n">layer_profile</span><span class="p">,</span>
+    <span class="n">cone_profile</span><span class="o">=</span>   <span class="n">Depth</span> <span class="kn">from</span><span class="w"> </span><span class="p">[</span><span class="n">m</span><span class="p">]</span>  <span class="o">...</span>  <span class="n">Sleeve</span> <span class="n">cross</span><span class="o">-</span><span class="n">sectional</span> <span class="n">area</span> <span class="n">bottom</span> <span class="p">[</span><span class="n">cm2</span><span class="p">]</span>
+<span class="mi">0</span>               <span class="mi">0</span>  <span class="o">...</span>                                       <span class="n">NaN</span>
+
+<span class="p">[</span><span class="mi">1</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">8</span> <span class="n">columns</span><span class="p">],</span>
+    <span class="n">initial_vertical_total_stress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vertical_total_stress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vertical_effective_stress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">extend_cone_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">extend_layer_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Maps the soil properties defined in the layering and the cone properties to the grid defined by the cone data. The procedure also calculates the total and effective vertical stress. Note that pre-calculated arrays with total and effective vertical stress can also be supplied to the routine. These needs to have the same length as the array with PCPT depth data.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layer_profile</code></td>
+<td>kN/m3</td>
+<td></td>
+<td>required</td>
+<td><code>SoilProfile</code> object with the layer properties (need to contain the soil parameter <code>Total unit weight</code></td>
+</tr>
+<tr>
+<td><code>cone_profile</code></td>
+<td></td>
+<td></td>
+<td><code>Depth from [m]  ...  Sleeve cross-sectional area bottom [cm2] 0               0  ...                                       NaN  [1 rows x 8 columns]</code></td>
+<td><code>SoilProfile</code> object with the cone properties (default=<code>DEFAULT_CONE_PROPERTIES</code>)</td>
+</tr>
+<tr>
+<td><code>initial_vertical_total_stress</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>Initial vertical total stress at the highest point of the soil profile</td>
+</tr>
+<tr>
+<td><code>vertical_total_stress</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Pre-calculated total vertical stress at PCPT depth nodes (default=None which will lead to calculation of total stress inside the routine)</td>
+</tr>
+<tr>
+<td><code>vertical_effective_stress</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Pre-calculated effective vertical stress at PCPT depth nodes (default=None which will lead to calculation of total stress inside the routine)</td>
+</tr>
+<tr>
+<td><code>waterlevel</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Waterlevel in the soil (measured from soil surface), default = 0m</td>
+</tr>
+<tr>
+<td><code>extend_cone_profile</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the cone profile needs to be extended to go to the bottom of the CPT (default = True)</td>
+</tr>
+<tr>
+<td><code>extend_layer_profile</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the layer profile needs to be extended to the bottom of the CPT (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Expands the dataframe <code>.data</code> with additional columns for the cone and soil properties</p>
+<p><a id="pcptprocessing-downhole_pcpt_corrections"></a></p>
+<h3 id="pcptprocessingdownhole_pcpt_corrections"><code>PCPTProcessing.downhole_pcpt_corrections</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">downhole_pcpt_corrections</span><span class="p">(</span><span class="n">area_ratio_override</span><span class="o">=</span><span class="n">nan</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Correct the PCPT for downhole effects. Select each push, find the start depth of the push and</p>
+<div class="math-display">\[q_c = q_c^* + d \cdot a \cdot \gamma_w\]</div>
+<div class="math-display">\[u_2 = u_2^* + \gamma_w \cdot d\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>area_ratio_override</code></td>
+<td></td>
+<td></td>
+<td><code>nan</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-normalise_pcpt"></a></p>
+<h3 id="pcptprocessingnormalise_pcpt"><code>PCPTProcessing.normalise_pcpt</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">normalise_pcpt</span><span class="p">(</span><span class="n">qc_for_rf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">calculate_ic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Carries out the necessary normalisation and correction on PCPT data to allow calculation of derived parameters and soil type classification.</p>
+<p>First, the cone resistance is corrected for the unequal area effect using the cone area ratio. The correction for total sleeve friction is not included as it is more uncommon. The procedure assumes that the pore pressure are measured at the shoulder of the cone. If this is not the case, corrections can be used which are not included in this function.</p>
+<p>During normalisation, the friction ratio and pore pressure ratio are calculated. Note that the total cone resistance is used for the friction ratio and pore pressure ratio calculation, the pore pressure ratio calculation also used the total vertical effective stress. The normalised cone resistance and normalised friction ratio are also calculated.</p>
+<p>Finally the net cone resistance is calculated.</p>
+<p>Note that the absence of pore water pressure measurements will lead to NaN values. Reasoning can be used (e.g. presence of rapidly draining layers) to edit the pore pressure data before running this method.</p>
+<p>The total sleeve friction is also calculated. If the cross-sectional area of the friction sleeve is equal at the top and bottom of the sleeve, a correction is not required. This is the default behaviour (cross-sectional areas equal to NaN) but the areas can be entered to calculate the total sleeve friction.</p>
+<p>Soil behaviour type index <span class="math">\(I_c\)</span> and the corrected normalised cone resistance <span class="math">\(Q_{tn}\)</span> are calculated if <code>calculate_ic</code> is set to <code>True</code>. For quicker calculation, set this boolean to False.</p>
+<div class="math-display">\[q_c = q_c^* + d \cdot a \cdot \gamma_w\]</div>
+<div class="math-display">\[q_t = q_c + u_2 \cdot (1 - a)\]</div>
+<div class="math-display">\[u_2 = u_2^* + \gamma_w \cdot d\]</div>
+<div class="math-display">\[\Delta u_2 = u_2 - u_o\]</div>
+<div class="math-display">\[R_f = \frac{f_s}{q_t}\]</div>
+<div class="math-display">\[B_q = \frac{\Delta u_2}{q_t - \sigma_{vo}}\]</div>
+<div class="math-display">\[Q_t = \frac{q_t - \sigma_{vo}}{\sigma_{vo}^{\prime}}\]</div>
+<div class="math-display">\[Q_{tn} = \frac{q_t - \sigma_{vo}}{P_a} \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^n\]</div>
+<div class="math-display">\[n = 0.381 \cdot I_c + 0.05 \cdot \frac{\sigma_{vo}^{\prime}}{P_a} - 0.15 \ \text{where} \ n \leq 1\]</div>
+<div class="math-display">\[F_r = \frac{f_s}{q_t - \sigma_{vo}}\]</div>
+<div class="math-display">\[q_{net} = q_t - \sigma_{vo}\]</div>
+<div class="math-display">\[f_t = f_s - u_2 \frac{A_{sb} - A_{st}}{A_s}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc_for_rf</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether cone resistance instead of total cone resistance should be used for CPTs where pore pressures are not measured (default=False). If True, <span class="math">\(q_t\)</span> is replaced by <span class="math">\(q_c\)</span> in the formula for <span class="math">\(R_f\)</span>.</td>
+</tr>
+<tr>
+<td><code>calculate_ic</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Supplements the PCPT data (<code>.data</code>) with the normalised properties (column keys 'qt [MPa]', 'Delta u2 [MPa]', 'Rf [%]', 'Bq [-]', 'Qt [-]', 'Fr [%]', 'qnet [MPa]', 'ft [MPa]'</p>
+<p><a id="pcptprocessing-plot_raw_pcpt"></a></p>
+<h3 id="pcptprocessingplot_raw_pcpt"><code>PCPTProcessing.plot_raw_pcpt</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_raw_pcpt</span><span class="p">(</span>
+    <span class="n">qc_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">qc_tick</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">fs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">fs_tick</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">u2_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span>
+    <span class="n">u2_tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">rf_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">rf_tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">show_hydrostatic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">plot_friction_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">friction_ratio_panel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_margin</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">hydrostaticcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_hydrostatic_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">waterlevel_override</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the raw PCPT data using the Plotly package. This generates an interactive plot.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 100)</code></td>
+<td>Range for the cone tip resistance (default=(0, 100MPa))</td>
+</tr>
+<tr>
+<td><code>qc_tick</code></td>
+<td></td>
+<td></td>
+<td><code>10</code></td>
+<td>Tick interval for the cone tip resistance (default=10MPa)</td>
+</tr>
+<tr>
+<td><code>fs_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 1)</code></td>
+<td>Range for the sleeve friction (default=(0, 1MPa))</td>
+</tr>
+<tr>
+<td><code>fs_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.1</code></td>
+<td>Tick interval for sleeve friction (default=0.1MPa)</td>
+</tr>
+<tr>
+<td><code>u2_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-0.5, 2.5)</code></td>
+<td>Range for the pore pressure at the shoulder (default=(-0.1, 0.5MPa))</td>
+</tr>
+<tr>
+<td><code>u2_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.5</code></td>
+<td>Tick interval for the pore pressure at the shoulder (default=0.05MPa)</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for the depth (default=None for plotting from zero to maximum cone penetration)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick interval for depth (default=2m)</td>
+</tr>
+<tr>
+<td><code>rf_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 5)</code></td>
+<td>Range for the friction ratio, if used (default=None for plotting from zero to 5%)</td>
+</tr>
+<tr>
+<td><code>rf_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.5</code></td>
+<td>Tick interval for friction ratio, if used (default=0.5%)</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether hydrostatic pressure is shown on the pore pressure plot panel</td>
+</tr>
+<tr>
+<td><code>plot_friction_ratio</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether friction ratio needs to be plotted (default=False)</td>
+</tr>
+<tr>
+<td><code>friction_ratio_panel</code></td>
+<td></td>
+<td></td>
+<td><code>3</code></td>
+<td>Panel for plotting friction ratio (default=3 for pore pressure panel). Only used when <code>plot_friction_ratio=True</code></td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Height for the plot (default=700px)</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Width for the plot (default=1000px)</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure needs to be returned (True) or plotted (False)</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plot for the title (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td><code>{'t': 100, 'l': 50, 'b': 50}</code></td>
+<td>Margin for the plot (default=dict(t=100, l=50, b=50))</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Color to be used for plotting the hydrostatic pressure (default=None for default plotly colors)</td>
+</tr>
+<tr>
+<td><code>hydrostaticcolor</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic_legend</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether to show the hydrostatic pressure in the legend</td>
+</tr>
+<tr>
+<td><code>waterlevel_override</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>If a waterlevel is not specified in a soil profile which is mapped to the CPT, this can be used to get the water table at the correct elevation (default=0m for water level at the surface, &gt;0 for water level below groundlevel)</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-plot_raw_pcpt_withlog"></a></p>
+<h3 id="pcptprocessingplot_raw_pcpt_withlog"><code>PCPTProcessing.plot_raw_pcpt_withlog</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_raw_pcpt_withlog</span><span class="p">(</span>
+    <span class="n">soilprofile</span><span class="p">,</span>
+    <span class="n">qc_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">qc_tick</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">fs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">fs_tick</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">u2_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span>
+    <span class="n">u2_tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">rf_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">rf_tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">plot_friction_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Sand&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;Clay&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;Rock&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">},</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the raw PCPT data using the Plotly package using a <code>groundhog</code> <code>LogPlot</code>. This generates an interactive plot.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>soilprofile</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td><code>SoilProfile</code> object to use for the <code>LogPlot</code></td>
+</tr>
+<tr>
+<td><code>qc_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-10, 100)</code></td>
+<td>Range for the cone tip resistance (default=(0, 100MPa))</td>
+</tr>
+<tr>
+<td><code>qc_tick</code></td>
+<td></td>
+<td></td>
+<td><code>10</code></td>
+<td>Tick interval for the cone tip resistance (default=10MPa)</td>
+</tr>
+<tr>
+<td><code>fs_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 1)</code></td>
+<td>Range for the sleeve friction (default=(0, 1MPa))</td>
+</tr>
+<tr>
+<td><code>fs_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.1</code></td>
+<td>Tick interval for sleeve friction (default=0.1MPa)</td>
+</tr>
+<tr>
+<td><code>u2_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-0.5, 2.5)</code></td>
+<td>Range for the pore pressure at the shoulder (default=(-0.1, 0.5MPa))</td>
+</tr>
+<tr>
+<td><code>u2_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.5</code></td>
+<td>Tick interval for the pore pressure at the shoulder (default=0.05MPa)</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for the depth (default=None for plotting from zero to maximum cone penetration)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick interval for depth (default=2m)</td>
+</tr>
+<tr>
+<td><code>rf_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 5)</code></td>
+<td>Range for the friction ratio, if used (default=None for plotting from zero to 5%)</td>
+</tr>
+<tr>
+<td><code>rf_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.5</code></td>
+<td>Tick interval for friction ratio, if used (default=0.5%)</td>
+</tr>
+<tr>
+<td><code>plot_friction_ratio</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether friction ratio needs to be plotted (default=False)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Height for the plot (default=700px)</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Width for the plot (default=1000px)</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure needs to be returned (True) or plotted (False)</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plot for the title (default=None)</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+<tr>
+<td><code>fillcolordict</code></td>
+<td></td>
+<td></td>
+<td><code>{'Sand': 'yellow', 'Clay': 'brown', 'Rock': 'grey'}</code></td>
+<td>Dictionary with fill colors for each of the soil types. Every unique <code>Soil type</code> needs to have a corresponding color. Default: <code>{"Sand": 'yellow', "Clay": 'brown', 'Rock': 'grey'}</code></td>
+</tr>
+<tr>
+<td><code>show_hydrostatic</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether hydrostatic pressure is shown on the pore pressure plot panel</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether hydrostatic pressure is shown on the pore pressure plot panel</td>
+</tr>
+<tr>
+<td><code>friction_ratio_panel</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Panel for plotting friction ratio (default=3 for pore pressure panel). Only used when <code>plot_friction_ratio=True</code></td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Margin for the plot (default=dict(t=100, l=50, b=50))</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Color to be used for plotting (default=None for default plotly colors)</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Color to be used for plotting the hydrostatic pressure (default=None for default plotly colors)</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic_legend</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether to show the hydrostatic pressure in the legend</td>
+</tr>
+<tr>
+<td><code>waterlevel_override</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>If a waterlevel is not specified in a soil profile which is mapped to the CPT, this can be used to get the water table at the correct elevation (default=0m for water level at the surface, &gt;0 for water level below groundlevel)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-plot_raw_pcpt_withlog_matplotlib"></a></p>
+<h3 id="pcptprocessingplot_raw_pcpt_withlog_matplotlib"><code>PCPTProcessing.plot_raw_pcpt_withlog_matplotlib</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_raw_pcpt_withlog_matplotlib</span><span class="p">(</span>
+    <span class="n">soilprofile</span><span class="p">,</span>
+    <span class="n">qc_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">fs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">u2_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">rf_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">plot_friction_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Sand&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;Clay&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;Rock&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">},</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the raw PCPT data using the Matplotlib package using a <code>groundhog</code> <code>LogPlotMatplotlib</code>. This generates an Matplotlib plot.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>soilprofile</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td><code>SoilProfile</code> object to use for the <code>LogPlot</code></td>
+</tr>
+<tr>
+<td><code>qc_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-10, 100)</code></td>
+<td>Range for the cone tip resistance (default=(0, 100MPa))</td>
+</tr>
+<tr>
+<td><code>fs_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 1)</code></td>
+<td>Range for the sleeve friction (default=(0, 1MPa))</td>
+</tr>
+<tr>
+<td><code>u2_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-0.5, 2.5)</code></td>
+<td>Range for the pore pressure at the shoulder (default=(-0.1, 0.5MPa))</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for the depth (default=None for plotting from zero to maximum cone penetration)</td>
+</tr>
+<tr>
+<td><code>rf_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 5)</code></td>
+<td>Range for the friction ratio, if used (default=None for plotting from zero to 5%)</td>
+</tr>
+<tr>
+<td><code>plot_friction_ratio</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether friction ratio needs to be plotted (default=False)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>8</code></td>
+<td>Height for the plot (default=700px)</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>10</code></td>
+<td>Width for the plot (default=1000px)</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure needs to be returned (True) or plotted (False)</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+<tr>
+<td><code>fillcolordict</code></td>
+<td></td>
+<td></td>
+<td><code>{'Sand': 'yellow', 'Clay': 'brown', 'Rock': 'grey'}</code></td>
+<td>Dictionary with fill colors for each of the soil types. Every unique <code>Soil type</code> needs to have a corresponding color. Default: <code>{"Sand": 'yellow', "Clay": 'brown', 'Rock': 'grey'}</code></td>
+</tr>
+<tr>
+<td><code>qc_tick</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Tick interval for the cone tip resistance (default=10MPa)</td>
+</tr>
+<tr>
+<td><code>fs_tick</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Tick interval for sleeve friction (default=0.1MPa)</td>
+</tr>
+<tr>
+<td><code>u2_tick</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Tick interval for the pore pressure at the shoulder (default=0.05MPa)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Tick interval for depth (default=2m)</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether hydrostatic pressure is shown on the pore pressure plot panel</td>
+</tr>
+<tr>
+<td><code>rf_tick</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Tick interval for friction ratio, if used (default=0.5%)</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether hydrostatic pressure is shown on the pore pressure plot panel</td>
+</tr>
+<tr>
+<td><code>friction_ratio_panel</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Panel for plotting friction ratio (default=3 for pore pressure panel). Only used when <code>plot_friction_ratio=True</code></td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Plot for the title (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Margin for the plot (default=dict(t=100, l=50, b=50))</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Color to be used for plotting (default=None for default plotly colors)</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Color to be used for plotting the hydrostatic pressure (default=None for default plotly colors)</td>
+</tr>
+<tr>
+<td><code>show_hydrostatic_legend</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether to show the hydrostatic pressure in the legend</td>
+</tr>
+<tr>
+<td><code>waterlevel_override</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>If a waterlevel is not specified in a soil profile which is mapped to the CPT, this can be used to get the water table at the correct elevation (default=0m for water level at the surface, &gt;0 for water level below groundlevel)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="pcptprocessing-plot_normalised_pcpt"></a></p>
+<h3 id="pcptprocessingplot_normalised_pcpt"><code>PCPTProcessing.plot_normalised_pcpt</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_normalised_pcpt</span><span class="p">(</span>
+    <span class="n">qt_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">fr_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">bq_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">),</span>
+    <span class="n">bq_tick</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the normalised PCPT properties vs depth.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qt_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 3)</code></td>
+<td>Range for Qt (optional, default is (0, 3) for 1 to 1000 on log scale)</td>
+</tr>
+<tr>
+<td><code>fr_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-1, 1)</code></td>
+<td>Range for Fr (optional, default is (-1, 1) for 0.1 to 10 on log scale)</td>
+</tr>
+<tr>
+<td><code>bq_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-0.6, 1.4)</code></td>
+<td>Range for Bq (optional, default is (-0.6, 1.4))</td>
+</tr>
+<tr>
+<td><code>bq_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.2</code></td>
+<td>Tick mark interval for Bq</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for depths (optional, default is (0, maximum PCPT depth)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick mark distance for PCPT</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Height of the plot in pixels</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Width of the plot in pixels</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure is returned or the plot is generated; Default behaviour is to generate the plot.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plot title</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns the figure if return_fig=True. Otherwise the plot is displayed.</p>
+<p><a id="pcptprocessing-plot_properties"></a></p>
+<h3 id="pcptprocessingplot_properties"><code>PCPTProcessing.plot_properties</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_properties</span><span class="p">(</span>
+    <span class="n">prop_keys</span><span class="p">,</span>
+    <span class="n">plot_ranges</span><span class="p">,</span>
+    <span class="n">plot_ticks</span><span class="p">,</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">legend_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">axis_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">showlegends</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_layers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the soil and/or PCPT properties vs depth.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prop_keys</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with the keys to be plotted. Keys in the same tuple are plotted on the same panel</td>
+</tr>
+<tr>
+<td><code>plot_ranges</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with ranges for the panels of the plot</td>
+</tr>
+<tr>
+<td><code>plot_ticks</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple with tick intervals for the plot panels</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for depths (optional, default is (0, maximum PCPT depth)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick mark distance for PCPT</td>
+</tr>
+<tr>
+<td><code>legend_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used in the legend. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>axis_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used as axis labels. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>showlegends</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Array of booleans determining whether or not to show the trace in the legend</td>
+</tr>
+<tr>
+<td><code>plot_layers</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether layers are plotted (default=True)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Height of the plot in pixels</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Width of the plot in pixels</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure is returned or the plot is generated; Default behaviour is to generate the plot.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plot title</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns the figure if return_fig=True. Otherwise the plot is displayed.</p>
+<p><a id="pcptprocessing-plot_properties_withlog"></a></p>
+<h3 id="pcptprocessingplot_properties_withlog"><code>PCPTProcessing.plot_properties_withlog</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_properties_withlog</span><span class="p">(</span>
+    <span class="n">prop_keys</span><span class="p">,</span>
+    <span class="n">plot_ranges</span><span class="p">,</span>
+    <span class="n">plot_ticks</span><span class="p">,</span>
+    <span class="n">legend_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">axis_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">showlayers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots CPT properties vs depth and includes a mini-log on the left-hand side. The minilog is composed based on the entries in the <code>Soil type</code> column of the layering</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prop_keys</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with the keys to be plotted. Keys in the same tuple are plotted on the same panel</td>
+</tr>
+<tr>
+<td><code>plot_ranges</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with ranges for the panels of the plot</td>
+</tr>
+<tr>
+<td><code>plot_ticks</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple with tick intervals for the plot panels</td>
+</tr>
+<tr>
+<td><code>legend_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used in the legend. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>axis_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used as axis labels. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the figure needs to be shown in the notebook (default=True)</td>
+</tr>
+<tr>
+<td><code>showlayers</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether layer positions need to be plotted (default=True)</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Range for depths (optional, default is (0, maximum PCPT depth)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick mark distance for PCPT</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Plotly figure with mini-log</p>
+<p><a id="pcptprocessing-plot_robertson_chart"></a></p>
+<h3 id="pcptprocessingplot_robertson_chart"><code>PCPTProcessing.plot_robertson_chart</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_robertson_chart</span><span class="p">(</span>
+    <span class="n">charttype</span><span class="o">=</span><span class="s1">&#39;combined&#39;</span><span class="p">,</span>
+    <span class="n">start_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">qt_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">fr_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">modified</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">bq_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">),</span>
+    <span class="n">bq_tick</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">layerchangetolerance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">plot_width_single</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">backgroundimagedir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the normalised PCPT points in the Robertson chart to distinguish the soil type. The display can be limited to a specific depth range (by specifying <code>start_depth</code> and <code>end_depth</code>. The color coding is based on the layer.</p>
+<p>From v0.15.0, the Robertson chart can be split in two using the <code>charttype</code> argument. By default, both Qt-Fr and Qt-Bq plots are shown, but the user can also choose to display only the Qt-Fr plot (<code>charttype='QtFr'</code>) or only the Qt-Bq plot (<code>charttype='QtBq'</code>).</p>
+<p>The modified Robertson chart can also be shown by setting the boolean <code>modified</code> to <code>True</code>.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>charttype</code></td>
+<td></td>
+<td></td>
+<td><code>'combined'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>start_depth</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>end_depth</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>qt_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 3)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fr_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-1, 1)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>modified</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>bq_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-0.6, 1.4)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>bq_tick</code></td>
+<td></td>
+<td></td>
+<td><code>0.2</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>layerchangetolerance</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_width_single</code></td>
+<td></td>
+<td></td>
+<td><code>600</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>backgroundimagedir</code></td>
+<td></td>
+<td></td>
+<td><code>''</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns the figure if return_fig=True. Otherwise the plot is displayed.</p>
+<p><a id="pcptprocessing-plot_schneider_chart"></a></p>
+<h3 id="pcptprocessingplot_schneider_chart"><code>PCPTProcessing.plot_schneider_chart</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_schneider_chart</span><span class="p">(</span>
+    <span class="n">start_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">layerchangetolerance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the normalised PCPT points in the Schneider (2008) chart to distinguish the soil type. The display can be limited to a specific depth range (by specifying <code>start_depth</code> and <code>end_depth</code>. The color coding is based on the layer.</p>
+<p>The Schneider chart is especially useful to differentiate between different types of contractive fine-grained soil.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start_depth</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>end_depth</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>layerchangetolerance</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>600</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns the figure if return_fig=True. Otherwise the plot is displayed.</p>
+<p><strong>References</strong></p>
+<ul>
+<li>Schneider, J.A., Randolph, M.F., Mayne, P.W. &amp; Ramsey, N.R. 2008. Analysis of factors influencing soil classification using normalized piezocone tip resistance and pore pressure parameters. Journal Geotechnical and Geoenvironmental Engrg. 134 (11): 1569-1586.</li>
+</ul>
+<p><a id="pcptprocessing-apply_correlation"></a></p>
+<h3 id="pcptprocessingapply_correlation"><code>PCPTProcessing.apply_correlation</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">apply_correlation</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">apply_for_soiltypes</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Applies a correlation to the given PCPT data. The name of the correlation needs to be chosen from the following available correlations. Each correlation corresponds to a function in the <code>pcpt</code> module. By default, the correlation is applied to the entire depth range. However, a restriction on the soil types to which the correlation can be applied can be specified with the <code>apply_for_soiltypes</code> keyword argument. A list with the soil types for which the correlation needs to be applied can be provided.</p>
+<ul>
+<li>Ic Robertson and Wride (1998) (<code>behaviourindex_pcpt_robertsonwride</code>) - Calculation of soil behaviour type index from cone tip resistance and sleeve friction</li>
+<li>Isbt Robertson (2010) (<code>behaviourindex_pcpt_nonnormalised</code>) - Calculation of non-normalised soil behaviour type index from cone tip resistance and friction ratio</li>
+<li>Gmax Rix and Stokoe (1991) (<code>gmax_sand_rixstokoe</code>) - Calculation of small-strain shear modulus for uncemented silica sand from cone tip resistance and vertical effective stress</li>
+<li>Gmax Mayne and Rix (1993) (<code>gmax_clay_maynerix</code>) - Calculation of small-strain shear modulus for clay from cone tip resistance</li>
+<li>Dr Baldi et al (1986) - NC sand (<code>relativedensity_ncsand_baldi</code>) - Calculation of relative density of normally consolidated silica sand</li>
+<li>Dr Baldi et al (1986) - OC sand (<code>relativedensity_ocsand_baldi</code>) - Calculation of relative density of overconsolidated silica sand</li>
+<li>Dr Jamiolkowski et al (2003) (<code>relativedensity_sand_jamiolkowski</code>) - Calculation of relative density dry and saturated silica sand</li>
+<li>Friction angle Kulhawy and Mayne (1990) (<code>frictionangle_sand_kulhawymayne</code>) - Calculation of effective friction angle for sand</li>
+<li>Su Rad and Lunne (1988): (<code>undrainedshearstrength_clay_radlunne</code>) - Calculation of undrained shear strength for clay based on empirical cone factor Nk</li>
+<li>Friction angle Kleven (1986): (<code>frictionangle_overburden_kleven</code>) - Calculation of friction angle for North Sea sands at various stress levels and relative densities</li>
+<li>OCR Lunne (1989): (<code>ocr_cpt_lunne</code>) - Calculation of OCR for clay</li>
+<li>Sensitivity Rad and Lunne (1986): (<code>sensitivity_frictionratio_lunne</code>) - Calculation of sensitivity for clay</li>
+<li>Unit weight Mayne et al (2010): (<code>unitweight_mayne</code>) - Calculation of total unit weight</li>
+<li>Shear wave velocity Robertson and Cabal (2015): (<code>vs_ic_robertsoncabal</code>) - Calculation of shear wave velocity for all soil types</li>
+<li>K0 Mayne (2007) - sand: (<code>k0_sand_mayne</code>) - Calculation of coefficient of lateral earth pressure for sand</li>
+<li>Es Bellotti (1989) - sand: (<code>drainedsecantmodulus_sand_bellotti</code>) - Calculation of drained modulus at average strain of 0.1pct for sand</li>
+</ul>
+<p>Note that certain correlations require either the calculation of normalised properties or application of preceding correlations</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Name of the correlation according to the list defined above</td>
+</tr>
+<tr>
+<td><code>outputs</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>a dict of keys and values where keys are the same as the keys in the correlation, values are the table headers you want</td>
+</tr>
+<tr>
+<td><code>apply_for_soiltypes</code></td>
+<td></td>
+<td></td>
+<td><code>'all'</code></td>
+<td>List with soil types to which the correlation needs the be applied.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the correlation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds a column with key <code>outkey</code> to the dataframe with PCPT data</p>
+<p><a id="pcptprocessing-load_design_profile"></a></p>
+<h3 id="pcptprocessingload_design_profile"><code>PCPTProcessing.load_design_profile</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_design_profile</span><span class="p">(</span><span class="n">design_data</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Loads a design profile for the parameters available in the <code>data</code> attribute of the PCPTProcessing object. This design profile can then be plotted vs the PCPT data.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>design_data</code></td>
+<td>kPa</td>
+<td></td>
+<td>required</td>
+<td>Pandas dataframe with design soil profile. Linear variation of numerical parameters is expected so for example, use columns <code>Su from</code> and <code>Su to [kPa]</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the <code>designprofile</code> attribute of the PCPTProcessing object</p>
+<p><a id="pcptprocessing-plot_design_profile"></a></p>
+<h3 id="pcptprocessingplot_design_profile"><code>PCPTProcessing.plot_design_profile</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_design_profile</span><span class="p">(</span>
+    <span class="n">prop_keys</span><span class="p">,</span>
+    <span class="n">design_keys</span><span class="p">,</span>
+    <span class="n">plot_ranges</span><span class="p">,</span>
+    <span class="n">plot_ticks</span><span class="p">,</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">legend_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">axis_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">design_color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+    <span class="n">design_dash</span><span class="o">=</span><span class="s1">&#39;dot&#39;</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the soil and/or PCPT properties vs depth.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prop_keys</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with the keys to be plotted. Keys in the same tuple are plotted on the same panel</td>
+</tr>
+<tr>
+<td><code>design_keys</code></td>
+<td>kPa</td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with the design profile keys to be plotted. Keys in the same tuple are plotted on the same panel (note that <code>()</code> is an empty tuple). The design keys need to be specified as for example <code>Gmax</code> if the <code>designprofile</code> attribute contains keys <code>Gmax from [kPa]</code> and <code>Gmax to [kPa]</code></td>
+</tr>
+<tr>
+<td><code>plot_ranges</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with ranges for the panels of the plot</td>
+</tr>
+<tr>
+<td><code>plot_ticks</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple with tick intervals for the plot panels</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for depths (optional, default is (0, maximum PCPT depth)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick mark distance for PCPT</td>
+</tr>
+<tr>
+<td><code>legend_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used in the legend. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>axis_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used as axis labels. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Height of the plot in pixels</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Width of the plot in pixels</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Color list to be used in the plotting panels</td>
+</tr>
+<tr>
+<td><code>design_color</code></td>
+<td></td>
+<td></td>
+<td><code>'red'</code></td>
+<td>Color to be used for the design lines</td>
+</tr>
+<tr>
+<td><code>design_dash</code></td>
+<td></td>
+<td></td>
+<td><code>'dot'</code></td>
+<td>Dash style to be used for the design lines</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure is returned or the plot is generated; Default behaviour is to generate the plot.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plot title</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns the figure if return_fig=True. Otherwise the plot is displayed.</p>
+<p><a id="pcptprocessing-select_layering"></a></p>
+<h3 id="pcptprocessingselect_layering"><code>PCPTProcessing.select_layering</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">select_layering</span><span class="p">(</span>
+    <span class="n">default_soil_type</span><span class="o">=</span><span class="s1">&#39;Unknown&#39;</span><span class="p">,</span>
+    <span class="n">default_unit_weight</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">qc_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">fs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">u2_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span>
+    <span class="n">plot_friction_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">rf_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Selects the layering for a CPT trace. The routine creates a LogPlotMatplotlib with which the layering can be selected interactively. Ensure that the plotting option is set to <code>%matplotlib qt</code> in Jupyter. Clicking below 0MPa in the cone tip resistance panel stops the selection. The SoilProfile with the layering is returned. The <code>Soil type</code> and <code>Total unit weight [kN/m3]</code> columns still need to be fine-tuned by the user after the selection process. Default values are assigned according to the <code>default_soil_type</code> and <code>default_unit_weight</code> arguments. The plotting ranges can be finetuned using the <code>qc_range</code>, <code>fs_range</code> and <code>u2_range</code> arguments. A hydrostatic line is plotted in the pore pressure panel. A water level (default=0m) can be added for plotting this line.</p>
+<p>Keyword arguments for <code>LogPlotMatplotlib</code> can be specified by the user and are passed as **kwargs.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default_soil_type</code></td>
+<td></td>
+<td></td>
+<td><code>'Unknown'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>default_unit_weight</code></td>
+<td></td>
+<td></td>
+<td><code>20</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>qc_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-10, 100)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fs_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 1)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>u2_range</code></td>
+<td></td>
+<td></td>
+<td><code>(-0.5, 2.5)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_friction_ratio</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>rf_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 5)</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>waterlevel</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="pcptprocessing-to_json"></a></p>
+<h3 id="pcptprocessingto_json"><code>PCPTProcessing.to_json</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">to_json</span><span class="p">(</span><span class="n">write_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Write the PCPT object to a JSON file. JSON can either be returned or a JSON file can be written.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>write_file</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether a file is written or not (default=False). If True, a file is written to <code>output_path</code></td>
+</tr>
+<tr>
+<td><code>output_path</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>A valid path to the output .json file (include the file suffix).</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>If no file is returned, the JSON containing the location and data of the PCPT is returned.</p>
+<p><a id="pcptprocessing-to_excel"></a></p>
+<h3 id="pcptprocessingto_excel"><code>PCPTProcessing.to_excel</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">to_excel</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Write the PCPT object to an Excel file. The Excel file contains multiple sheet for the location, layer data, cone properties and raw data.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>output_path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>A valid path to the output .xlsx file (include the file suffix).</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>The file is written to the specified location</p>
+<p><a id="plot_longitudinal_profile"></a></p>
+<h2 id="plot_longitudinal_profile"><code>plot_longitudinal_profile</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">plot_longitudinal_profile</span><span class="p">(</span>
+    <span class="n">cpts</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">latlon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">option</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
+    <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">band</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">extend_profile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plotmap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">uniformcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">prop</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span>
+    <span class="n">distance_unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span>
+    <span class="n">scale_factor</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">xaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">yaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">general_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">legend_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_annotations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">mapbox_zoom</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Creates a longitudinal profile along selected CPTs. A line is drawn from the first (smallest distance from origin) to the last location (greatest distance from origin) and the plot of the selected parameter (<code>prop</code>) vs depth is projected onto this line.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cpts</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>List with PCPTProcessing objects to be plotted</td>
+</tr>
+<tr>
+<td><code>latlon</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether latitude and longitude are used or easting and northing in m (default=False for easting and northing in m)</td>
+</tr>
+<tr>
+<td><code>option</code></td>
+<td></td>
+<td></td>
+<td><code>'name'</code></td>
+<td>Determines whether CPT names (<code>option='name'</code>) or tuples with coordinates (<code>option='coords'</code>) are used for the <code>start</code> and <code>end</code> arguments</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>CPT name for the starting point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in <code>cpts</code>.</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>CPT name for the end point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in <code>cpts</code>.</td>
+</tr>
+<tr>
+<td><code>band</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Offset from the line connecting start and end points in which CPT are considered for plotting (default=1000m)</td>
+</tr>
+<tr>
+<td><code>extend_profile</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)</td>
+</tr>
+<tr>
+<td><code>plotmap</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)</td>
+</tr>
+<tr>
+<td><code>uniformcolor</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Uniform color to use for all CPT traces (default=None for different color for each trace)</td>
+</tr>
+<tr>
+<td><code>prop</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>'qc [MPa]'</code></td>
+<td>Selected property for plotting (default='qc ')</td>
+</tr>
+<tr>
+<td><code>distance_unit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>Unit for coordinates and elevation (default='m')</td>
+</tr>
+<tr>
+<td><code>scale_factor</code></td>
+<td></td>
+<td></td>
+<td><code>0.001</code></td>
+<td>Scale factor for the property (default=0.001)</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the figure is shown (default=True)</td>
+</tr>
+<tr>
+<td><code>xaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with layout for the xaxis (default=None)</td>
+</tr>
+<tr>
+<td><code>yaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with layout for the xaxis (default=None)</td>
+</tr>
+<tr>
+<td><code>general_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with general layout options (default=None)</td>
+</tr>
+<tr>
+<td><code>legend_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with legend layout options (default=None)</td>
+</tr>
+<tr>
+<td><code>show_annotations</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether annotations need to be shown (default=True)</td>
+</tr>
+<tr>
+<td><code>mapbox_zoom</code></td>
+<td></td>
+<td></td>
+<td><code>10</code></td>
+<td>Zoom factor for map (if plotted, default=10)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Plotly figure object</p>
+<p><a id="plot_combined_longitudinal_profile"></a></p>
+<h2 id="plot_combined_longitudinal_profile"><code>plot_combined_longitudinal_profile</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">plot_combined_longitudinal_profile</span><span class="p">(</span>
+    <span class="n">cpts</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">profiles</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">latlon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">option</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
+    <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">band</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">extend_profile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plotmap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;ROCK&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">},</span>
+    <span class="n">uniformcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">logwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">prop</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span>
+    <span class="n">distance_unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span>
+    <span class="n">scale_factor</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">xaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">yaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">general_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">legend_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_annotations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Creates a longitudinal profile along selected CPTs and <code>SoilProfile</code> objects. A line is drawn from the first to the last location and the plot of the selected parameter (<code>prop</code>) vs depth is projected onto this line.</p>
+<p>This function also adds <code>SoilProfile</code> objects to the plot through mini-logs.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cpts</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>List with PCPTProcessing objects to be plotted</td>
+</tr>
+<tr>
+<td><code>profiles</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>List with SoilProfile objects for which a log needs to be plotted</td>
+</tr>
+<tr>
+<td><code>latlon</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether latitude and longitude are used or easting and northing in m (default=False for easting and northing in m)</td>
+</tr>
+<tr>
+<td><code>option</code></td>
+<td></td>
+<td></td>
+<td><code>'name'</code></td>
+<td>Determines whether CPT names (<code>option='name'</code>) or tuples with coordinates (<code>option='coords'</code>) are used for the <code>start</code> and <code>end</code> arguments</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>CPT name for the starting point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in <code>cpts</code>.</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>CPT name for the end point or tuple of coordinates. If a CPT name is used, the selected CPT must be contained in <code>cpts</code>.</td>
+</tr>
+<tr>
+<td><code>band</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Offset from the line connecting start and end points in which CPT are considered for plotting (default=1000m)</td>
+</tr>
+<tr>
+<td><code>extend_profile</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)</td>
+</tr>
+<tr>
+<td><code>plotmap</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)</td>
+</tr>
+<tr>
+<td><code>fillcolordict</code></td>
+<td></td>
+<td></td>
+<td><code>{'SAND': 'yellow', 'CLAY': 'brown', 'SILT': 'green', 'ROCK': 'grey'}</code></td>
+<td>Dictionary with fill colours (default yellow for 'SAND', brown from 'CLAY' and grey for 'ROCK')</td>
+</tr>
+<tr>
+<td><code>uniformcolor</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Uniform color to use for all CPT traces (default=None for different color for each trace)</td>
+</tr>
+<tr>
+<td><code>opacity</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Opacity of the layers (default = 1 for non-transparent behaviour)</td>
+</tr>
+<tr>
+<td><code>logwidth</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Width of the soil logs as an absolute value (default = 1)</td>
+</tr>
+<tr>
+<td><code>prop</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>'qc [MPa]'</code></td>
+<td>Selected property for plotting (default='qc ')</td>
+</tr>
+<tr>
+<td><code>distance_unit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>Unit for coordinates and elevation (default='m')</td>
+</tr>
+<tr>
+<td><code>scale_factor</code></td>
+<td></td>
+<td></td>
+<td><code>0.001</code></td>
+<td>Scale factor for the property (default=0.001)</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the figure is shown (default=True)</td>
+</tr>
+<tr>
+<td><code>xaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with layout for the xaxis (default=None)</td>
+</tr>
+<tr>
+<td><code>yaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with layout for the xaxis (default=None)</td>
+</tr>
+<tr>
+<td><code>general_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with general layout options (default=None)</td>
+</tr>
+<tr>
+<td><code>legend_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with legend layout options (default=None)</td>
+</tr>
+<tr>
+<td><code>show_annotations</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether annotations need to be shown (default=True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Plotly figure object</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/pcpt_processing.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_class.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>PCPT functions</a><a class="next" href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>read_site_data</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#insitutestprocessing">class InsituTestProcessing</a></li>
+      <li class="lvl-2"><a href="#pcptprocessing">class PCPTProcessing</a></li>
+      <li class="lvl-2"><a href="#plot_longitudinal_profile">plot_longitudinal_profile</a></li>
+      <li class="lvl-2"><a href="#plot_combined_longitudinal_profile">plot_combined_longitudinal_profile</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

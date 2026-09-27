@@ -101,7 +101,8 @@ def build_core_training_examples() -> List[GeotechnicalExample]:
             user_prompt="Calculate the vertical stress increment under the center of a circular footing with radius 2.5m bearing 150 kPa surface pressure at a depth of 6m.",
             expected_action="tool_call",
             expected_tool="calculate_stresses_circular_footing",
-            expected_arguments={"footing_radius": 2.5, "q": 150.0, "z": 6.0, "r": 0.0}
+            # Canonical StressesCircleInput names (was {"q", "r"}, which the schema rejects).
+            expected_arguments={"footing_radius": 2.5, "imposedstress": 150.0, "z": 6.0}
         ),
 
         # --- 2. Ambiguous Requests (Clarification) ---

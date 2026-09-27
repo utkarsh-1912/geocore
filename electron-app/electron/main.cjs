@@ -155,6 +155,31 @@ function startPythonBackend() {
   }
 }
 
+// Background update check against GitHub Releases (packaged builds only).
+// GeoCore must work fully offline: any failure here (no network, no release,
+// unsigned mac build, etc.) is logged and ignored. No telemetry is sent.
+const UPDATE_CHECK_DELAY_MS = 15000;
+
+function scheduleUpdateCheck() {
+  if (!app.isPackaged) return;
+
+  setTimeout(() => {
+    try {
+      const { autoUpdater } = require('electron-updater');
+      autoUpdater.autoDownload = true;
+      autoUpdater.autoInstallOnAppQuit = true;
+      autoUpdater.on('error', (err) => {
+        console.warn('Auto-update unavailable:', err && err.message ? err.message : err);
+      });
+      autoUpdater.checkForUpdatesAndNotify().catch((err) => {
+        console.warn('Auto-update check failed:', err && err.message ? err.message : err);
+      });
+    } catch (err) {
+      console.warn('Auto-updater could not be initialised:', err);
+    }
+  }, UPDATE_CHECK_DELAY_MS);
+}
+
 // Single instance lock to prevent multiple clicks spawning competing instances
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -177,6 +202,7 @@ if (!gotTheLock) {
       console.log("Dev Mode: Skipping auto-start of Python backend. Run 'python main.py' manually.");
     }
     createWindow();
+    scheduleUpdateCheck();
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {

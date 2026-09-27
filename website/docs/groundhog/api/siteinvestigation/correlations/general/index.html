@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All soil types — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.siteinvestigation.correlations.general: 3 functions, 0 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="All soil types — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.siteinvestigation.correlations.general: 3 functions, 0 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/" aria-current="page">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/siteinvestigation/">Site investigation</a></li>
+        <li><a href="/docs/groundhog/api/siteinvestigation/correlations/">Correlations</a></li>
+        <li><span aria-current="page">All soil types</span></li>
+      </ol>
+    </nav>
+
+    <h1>All soil types</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.siteinvestigation.correlations.general</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.correlations.general</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/correlations/general.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/correlations_general.html">All soil types</a>.</p>
+<p><strong>Functions:</strong> <a href="#acousticimpedance_bulkunitweight_chen"><code>acousticimpedance_bulkunitweight_chen</code></a>, <a href="#shearwavevelocity_compressionindex_cha"><code>shearwavevelocity_compressionindex_cha</code></a>, <a href="#k0_frictionangle_mesri"><code>k0_frictionangle_mesri</code></a></p>
+<p><a id="acousticimpedance_bulkunitweight_chen"></a></p>
+<h2 id="acousticimpedance_bulkunitweight_chen"><code>acousticimpedance_bulkunitweight_chen</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="acousticimpedance_bulkunitweight_chen">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#acousticimpedance_bulkunitweight_chen">Site investigation › Correlations: All soil types › acousticimpedance_bulkunitweight_chen()</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">acousticimpedance_bulkunitweight_chen</span><span class="p">(</span>
+    <span class="n">bulkunitweight</span><span class="p">,</span>
+    <span class="n">specific_gravity</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span>
+    <span class="n">saturation</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">gamma_w</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="n">calibration_factor_4</span><span class="o">=</span><span class="mf">0.0001315</span><span class="p">,</span>
+    <span class="n">calibration_factor_3</span><span class="o">=-</span><span class="mf">0.03776</span><span class="p">,</span>
+    <span class="n">calibration_factor_2</span><span class="o">=</span><span class="mf">4.201</span><span class="p">,</span>
+    <span class="n">calibration_factor_1</span><span class="o">=-</span><span class="mf">245.0</span><span class="p">,</span>
+    <span class="n">calibration_factor_0</span><span class="o">=</span><span class="mf">8603.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Several authors have researched the correlation between porosity and acoustic impedance. Chen et al compiled available measurements for sand and clay and supplemented them with deepwater measurements with the multi-sensor core logger.</p>
+<p>Since porosity is not a parameter which is commonly used, the user can enter bulk unit weight instead which is then converted to porosity for a saturated soil.</p>
+<p>The correlation shows a tight relation between acoustic impedance and porosity. However, soils with in-situ excess pore pressure are not included in this dataset.</p>
+<div class="math-display">\[I =1.315 \cdot 10^{-4} \cdot n^4 - 3.776 \cdot 10^{-2} \cdot n^3 + 4.201 \cdot n^2 - 2.450 \cdot 10^2 \cdot n + 8.603 \cdot 10^3\]</div>
+<div class="math-display">\[e = \frac{\gamma_w G_s - \gamma}{\gamma - S \gamma_w}\]</div>
+<div class="math-display">\[w = \frac{S e}{G_s}\]</div>
+<div class="math-display">\[n = \frac{e}{e+1}\]</div>
+<p><img loading="lazy" decoding="async" alt="Compiled data from Chen et al" src="/docs/assets/groundhog/docs/site_investigation/images/acousticimpedance_bulkunitweight_chen_1.png"></p>
+<p><em>Compiled data from Chen et al</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bulkunitweight</code></td>
+<td>kN/m3</td>
+<td>12.0 &lt;= bulkunitweight &lt;= 22.0</td>
+<td>required</td>
+<td>Bulk (total) unit weight (<span class="math">\(\gamma\)</span>)</td>
+</tr>
+<tr>
+<td><code>specific_gravity</code></td>
+<td>-</td>
+<td>1.0 &lt;= specific_gravity &lt;= 3.0</td>
+<td><code>2.65</code></td>
+<td>Specific gravity of the soil (<span class="math">\(G_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>saturation</code></td>
+<td>-</td>
+<td>0.0 &lt;= saturation &lt;= 1.0</td>
+<td><code>1.0</code></td>
+<td>Saturation of the soil (fully saturated for offshore soils) (<span class="math">\(S\)</span>)</td>
+</tr>
+<tr>
+<td><code>gamma_w</code></td>
+<td>kN/m3</td>
+<td>9.5 &lt;= gamma_w &lt;= 10.5</td>
+<td><code>10.0</code></td>
+<td>Unit weight of water (<span class="math">\(\gamma_w\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_4</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.0001315</code></td>
+<td>Calibration factor on the fourth order term</td>
+</tr>
+<tr>
+<td><code>calibration_factor_3</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.03776</code></td>
+<td>Calibration factor on the third order term</td>
+</tr>
+<tr>
+<td><code>calibration_factor_2</code></td>
+<td>-</td>
+<td></td>
+<td><code>4.201</code></td>
+<td>Calibration factor on the second order term</td>
+</tr>
+<tr>
+<td><code>calibration_factor_1</code></td>
+<td>-</td>
+<td></td>
+<td><code>-245.0</code></td>
+<td>Calibration factor on the first order term</td>
+</tr>
+<tr>
+<td><code>calibration_factor_0</code></td>
+<td>-</td>
+<td></td>
+<td><code>8603.0</code></td>
+<td>Calibration factor on the zero order term</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>e [-]</code></td>
+<td>-</td>
+<td>Void ratio (<span class="math">\(e\)</span>)</td>
+</tr>
+<tr>
+<td><code>we [-]</code></td>
+<td>-</td>
+<td>Water content (<span class="math">\(w\)</span>)</td>
+</tr>
+<tr>
+<td><code>n [-]</code></td>
+<td>-</td>
+<td>Porosity (<span class="math">\(n\)</span>)</td>
+</tr>
+<tr>
+<td><code>I [(m/s).(g/cm3)]</code></td>
+<td>(m/s).(g/cm3)</td>
+<td>Acoustic impedance (<span class="math">\(I\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Chen et al (2021). Machine Learning Based Digital Integration of Geotechnical and Ultra-High Frequency Geophysical Data for Offshore Site Characterizations. Journal of Geotechnical and Geoenvironmental Engineering.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="shearwavevelocity_compressionindex_cha"></a></p>
+<h2 id="shearwavevelocity_compressionindex_cha"><code>shearwavevelocity_compressionindex_cha</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="shearwavevelocity_compressionindex_cha">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#shearwavevelocity_compressionindex_cha">Site investigation › Correlations: All soil types › shearwavevelocity_compressionindex_cha()</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">shearwavevelocity_compressionindex_cha</span><span class="p">(</span>
+    <span class="n">Cc</span><span class="p">,</span>
+    <span class="n">sigma_eff_particle_motion</span><span class="p">,</span>
+    <span class="n">sigma_eff_wave_propagation</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">beta</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">calibration_factor_alpha_1</span><span class="o">=</span><span class="mf">13.5</span><span class="p">,</span>
+    <span class="n">calibration_factor_alpha_2</span><span class="o">=-</span><span class="mf">0.63</span><span class="p">,</span>
+    <span class="n">calibration_factor_beta_1</span><span class="o">=</span><span class="mf">0.17</span><span class="p">,</span>
+    <span class="n">calibration_factor_beta_2</span><span class="o">=</span><span class="mf">0.43</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Shear wave velocity is dependent on the stiffness of the soil skeleton which is in turn affected by the compression index <span class="math">\(C_c\)</span>. Cha et al (2014) reported a series of oedometer tests with bender elements to establish the coefficients of a power law equation. Note that <span class="math">\(C_c\)</span> itself is also stress-dependent and requires the selection of appropriate points in <span class="math">\(e-\log p^{\prime}\)</span> space.</p>
+<p>The relations proposed by Cha et al (2014) are used here by default, but the user can also enter custom values for <span class="math">\(\alpha\)</span> and <span class="math">\(\beta\)</span> Since porosity is not a parameter which is commonly used, the user can enter bulk unit weight instead which is then converted to porosity for a saturated soil.</p>
+<p>For application to field cases, the effective stress in the direction of particle motion and wave propagation needs to be estimated. This usually involves estimation of the coefficient of lateral earth pressure.</p>
+<div class="math-display">\[V_s = \sqrt{\frac{G}{\rho}} = \alpha \left( \frac{\sigma_{\perp}^{\prime} + \sigma_{\parallel}^{\prime}}{2 \ \text{kPa}} \right)^{\beta}\]</div>
+<div class="math-display">\[\alpha = 13.5 (\text{m/s}) \cdot C_c^{-0.63}\]</div>
+<div class="math-display">\[\beta = 0.17 \log_{10} C_c + 0.43\]</div>
+<p><img loading="lazy" decoding="async" alt="Compiled data from Cha et al" src="/docs/assets/groundhog/docs/site_investigation/images/chaetal_data.png"></p>
+<p><em>Compiled data from Cha et al</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Cc</code></td>
+<td>-</td>
+<td>0.005 &lt;= Cc &lt;= 1.2</td>
+<td>required</td>
+<td>Compression index (<span class="math">\(C_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_eff_particle_motion</code></td>
+<td>kPa</td>
+<td>10 &lt;= sigma_eff_particle_motion &lt;= 1200</td>
+<td>required</td>
+<td>Effective stress in the direction of particle motion (<span class="math">\(\sigma_{\perp}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_eff_wave_propagation</code></td>
+<td>kPa</td>
+<td>10 &lt;= sigma_eff_wave_propagation &lt;= 1200</td>
+<td>required</td>
+<td>Effective stress in the direction of wave propagation (<span class="math">\(\sigma_{\parallel}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>alpha</code></td>
+<td>-</td>
+<td>5 &lt;= alpha &lt;= 1000</td>
+<td><code>nan</code></td>
+<td>Custom alpha-factor in the power law (<span class="math">\(\alpha\)</span>)</td>
+</tr>
+<tr>
+<td><code>beta</code></td>
+<td>-</td>
+<td>0.0 &lt;= beta &lt;= 0.6</td>
+<td><code>nan</code></td>
+<td>Custom beta-factor in the power law (<span class="math">\(\beta\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_alpha_1</code></td>
+<td>-</td>
+<td></td>
+<td><code>13.5</code></td>
+<td>First calibration factor for alpha</td>
+</tr>
+<tr>
+<td><code>calibration_factor_alpha_2</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.63</code></td>
+<td>Second calibration factor for alpha</td>
+</tr>
+<tr>
+<td><code>calibration_factor_beta_1</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.17</code></td>
+<td>First calibration factor for beta</td>
+</tr>
+<tr>
+<td><code>calibration_factor_beta_2</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.43</code></td>
+<td>First calibration factor for alpha</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Vs [m/s]</code></td>
+<td><span class="math">\(\text{m/s}\)</span></td>
+<td>Shear wave velocity (<span class="math">\(V_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>alpha [-]</code></td>
+<td>-</td>
+<td>Alpha-factor (multiplier) (<span class="math">\(\alpha\)</span>)</td>
+</tr>
+<tr>
+<td><code>beta [-]</code></td>
+<td>-</td>
+<td>Beta-factor (exponent) (<span class="math">\(\beta\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Cha et al (2014). Small-Strain Stiffness, Shear-Wave Velocity and Soil Compressibilitys. Journal of Geotechnical and Geoenvironmental Engineering.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="k0_frictionangle_mesri"></a></p>
+<h2 id="k0_frictionangle_mesri"><code>k0_frictionangle_mesri</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="k0_frictionangle_mesri">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#k0_frictionangle_mesri">Site investigation › Correlations: All soil types › k0_frictionangle_mesri()</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">k0_frictionangle_mesri</span><span class="p">(</span><span class="n">phi_cs</span><span class="p">,</span> <span class="n">ocr</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated sand and clay. Mesri and Hayat (1993) showed that the equation by Jaky (1944) only applied for sedimented, normally consolidated young clays and sands. The effect of overconsolidation was captured by multiplying the value for normally consolidated soil with the OCR raised to an exponent. This exponent is independent of the soil's initial density and thus needs to be related to the critical state friction angle, rather than the peak friction angle of the soil. By adjusting for the effect of overconsolidation, reasonable predictions are obtained for overconsolidated and pre-sheared soils.</p>
+<div class="math-display">\[K_0 = \left( 1 - \sin \varphi_{cv}^{\prime} \right) \text{OCR}^{\sin \varphi_{cv}^{\prime}}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>phi_cs</code></td>
+<td>deg</td>
+<td>0.01 &lt;= grain_size &lt;= 2.0</td>
+<td>required</td>
+<td>Critical state friction angle (<span class="math">\(\varphi_{cs}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>ocr</code></td>
+<td>-</td>
+<td>1 &lt;= ocr &lt;= 30</td>
+<td><code>1</code></td>
+<td>Overconsolidation ratio (<span class="math">\(\text{OCR}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>K0 [-]</code></td>
+<td>-</td>
+<td>Coefficient of lateral earth pressure at rest (<span class="math">\(K_0\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Mesri and Hayat (1993) The coefficient of earth pressure at rest. Canadian Geotechnical Journal. 30(4), 647-666</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/correlations/general.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/correlations_general.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Cohesive soils</a><a class="next" href="/docs/groundhog/api/siteinvestigation/insitutests/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>In-situ tests</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#acousticimpedance_bulkunitweight_chen">acousticimpedance_bulkunitweight_chen</a></li>
+      <li class="lvl-2"><a href="#shearwavevelocity_compressionindex_cha">shearwavevelocity_compressionindex_cha</a></li>
+      <li class="lvl-2"><a href="#k0_frictionangle_mesri">k0_frictionangle_mesri</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

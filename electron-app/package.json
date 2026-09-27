@@ -24,7 +24,14 @@
   "build": {
     "appId": "com.geocore.app",
     "productName": "GeoCore",
-    "publish": null,
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "utkarsh-1912",
+        "repo": "geocore",
+        "releaseType": "release"
+      }
+    ],
     "directories": {
       "output": "release"
     },
@@ -37,18 +44,18 @@
       {
         "from": "../python-backend/dist",
         "to": "python-backend/dist",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
-        },
-        {
-          "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "public/icon.ico",
@@ -56,6 +63,8 @@
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": false,
+      "artifactName": "${productName}-Setup-${version}.${ext}",
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
@@ -65,11 +74,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "category": "public.app-category.engineering",
@@ -91,6 +106,7 @@
     }
   },
   "dependencies": {
+    "electron-updater": "^6.8.9",
     "framer-motion": "^12.33.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.1.0",

@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial - Soil profile objects in Groundhog — GeoCore Docs</title>
+  <meta name="description" content="A soil profile is a table with several layers where the bottom depth of the previous layer corresponds to the top depth of the next layer.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Tutorial - Soil profile objects in Groundhog — GeoCore Docs">
+  <meta property="og:description" content="A soil profile is a table with several layers where the bottom depth of the previous layer corresponds to the top depth of the next layer.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/" aria-current="page">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/guides/">Groundhog Guides</a></li>
+        <li><a href="/docs/groundhog/tutorials/">Tutorials</a></li>
+        <li><span aria-current="page">Tutorial - Soil profile objects in Groundhog</span></li>
+      </ol>
+    </nav>
+
+    <h1>Tutorial - Soil profile objects in Groundhog</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+    <div class="prose docs-body"><p>A soil profile is a table with several layers where the bottom depth of the previous layer corresponds to the top depth of the next layer.</p>
+<p>Because a soil profile is a dataframe with additional functionality, the <code>SoilProfile</code> class inherits from the <code>DataFrame</code> class.</p>
+<p>Additional functionality is implemented to enable all common soil profile manipulations such:
+   - Retrieving minimum and maximum depth;
+   - Changing depth coordinate signs;
+   - Changing the mudline level;
+   - Retrieving the soil parameters available in the dataframe;
+   - Mapping the soil parameters to a grid;
+   - Plotting the soil profile;</p>
+<p>This tutorial demonstrates this functionality.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general</span><span class="w"> </span><span class="kn">import</span> <span class="n">soilprofile</span> <span class="k">as</span> <span class="n">sp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogPlot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.__version__</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="n">__version__</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>&#39;0.13.0&#39;
+</code></pre></div>
+
+<p><code>groundhog</code> uses Plotly as the plotting backend. Please note that you may still need to install Plotly in your Python environment.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">plotly</span><span class="w"> </span><span class="kn">import</span> <span class="n">tools</span><span class="p">,</span> <span class="n">subplots</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.figure_factory</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ff</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_PLOTLY_COLORS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_plotlyjs</span><span class="p">,</span> <span class="n">init_notebook_mode</span><span class="p">,</span> <span class="n">plot</span><span class="p">,</span> <span class="n">iplot</span>
+<span class="n">init_notebook_mode</span><span class="p">()</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;plotly_white&#39;</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="p">[</span><span class="s1">&#39;plotly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="s1">&#39;autosize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="s1">&#39;autosize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h2 id="1-soil-profile-creation">1. Soil profile creation</h2>
+<p>There are a couple of standard scenarios for creating soil profiles:</p>
+<ul>
+<li>Soil profile definition based on a Python dictionary;</li>
+<li>Soil profile reading from Excel file</li>
+</ul>
+<p>These two scenarios are demonstrated here.</p>
+<h3 id="11-soil-profile-creation-from-excel-file">1.1. Soil profile creation from Excel file</h3>
+<p>When a soil profile is created from Excel, the layer are encoded as rows and soil parameters names are put on the first row. The coordinate of the top of the next layer should always correspond to the coordinate of the bottom of the previous layer. There is one all-important convention for soil parameters:</p>
+<ul>
+<li>Numerical soil parameters have units between square brackets (e.g. <code>qc [MPa]</code>)</li>
+<li>Numerical soil parameters can have linear variations using the <code>from</code> and <code>to</code> words in the title (e.g. <code>qc from [MPa]</code> and <code>qc to [MPa]</code>)</li>
+<li>String soil parameters are specified without units, square brackets should not be used in the title</li>
+</ul>
+<p>The user can use several names for the depth from and depth to columns. <code>Depth from [m]</code> and <code>Depth to [m]</code> are used by default but different names and units can be used by specifying the <code>depth_key</code> and <code>unit</code> keyword arguments.</p>
+<p>As an example a file with depth (z) specified in imperial units can be read.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_1</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;Data/soilprofile_basic.xlsx&quot;</span><span class="p">)</span>
+<span class="n">profile_1</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m] Soil type Relative density  qc from [MPa]  \
+0               0             3      SAND            Loose              3   
+1               3             9      CLAY              NaN              1   
+2               9            12      SILT     Medium dense              4   
+3              12            30      SAND            Dense             40   
+
+   qc to [MPa]  qt [MPa]  Total unit weight [kN/m3]  
+0          4.0      3.50                         19  
+1          1.5      1.25                         18  
+2          8.0      6.00                         19  
+3         50.0     45.00                         20  
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">profile_1</span><span class="o">.</span><span class="n">calculate_overburden</span><span class="p">()</span>
+<span class="n">profile_1</span><span class="p">[[</span><span class="s1">&#39;Depth from [m]&#39;</span><span class="p">,</span> <span class="s1">&#39;Depth to [m]&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Vertical effective stress from [kPa]&#39;</span><span class="p">,</span> <span class="s1">&#39;Vertical effective stress to [kPa]&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Vertical total stress from [kPa]&#39;</span><span class="p">,</span> <span class="s1">&#39;Vertical total stress to [kPa]&#39;</span><span class="p">]]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m]  Vertical effective stress from [kPa]  \
+0               0             3                                   0.0   
+1               3             9                                  27.0   
+2               9            12                                  75.0   
+3              12            30                                 102.0   
+
+   Vertical effective stress to [kPa]  Vertical total stress from [kPa]  \
+0                                27.0                               0.0   
+1                                75.0                              57.0   
+2                               102.0                             165.0   
+3                               282.0                             222.0   
+
+   Vertical total stress to [kPa]  
+0                            57.0  
+1                           165.0  
+2                           222.0  
+3                           582.0  
+</code></pre></div>
+
+<h3 id="12-soil-profile-from-dictionary">1.2. Soil profile from dictionary</h3>
+<p>A soil profile can be directly specified in the notebook through a dictionary. Note that <code>Depth from [m]</code> and <code>Depth to [m]</code> are required here. Other soil parameter columns can be added. Both strings and numerical values are allowed.</p>
+<p>Linear variations of numerical soil parameters can be encoded using <code>to</code> and <code>from</code> after the soil parameter name and before the unit specification.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">SoilProfile</span><span class="p">({</span>
+    <span class="s1">&#39;Depth from [m]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s1">&#39;Depth to [m]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;Soil type&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;SAND&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Relative density&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Loose&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Medium dense&#39;</span><span class="p">,</span> <span class="s1">&#39;Dense&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;qc from [MPa]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s1">&#39;qc to [MPa]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+    <span class="s1">&#39;qt [MPa]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">45</span><span class="p">],</span>
+    <span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h2 id="2-retrieving-information-from-soilprofile-objects">2. Retrieving information from <code>SoilProfile</code> objects</h2>
+<p><code>SoilProfile</code> objects have properties which allow the user to quickly assess the contents of the soil profile.</p>
+<h3 id="21-top-and-bottom-depth">2.1. Top and bottom depth</h3>
+<p>The minimum and maximum depth of the soil profile can be retrieved using <code>min_depth</code> and <code>max_depth</code> attributes.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">min_depth</span><span class="p">,</span> <span class="n">profile_2</span><span class="o">.</span><span class="n">max_depth</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>(0, 10)
+</code></pre></div>
+
+<h3 id="22-soil-parameters">2.2. Soil parameters</h3>
+<p>The <code>SoilProfile</code> objects has a method to retrieve the numerical and string soil parameters.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">numerical_soil_parameters</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[&#39;qc [MPa]&#39;, &#39;qt [MPa]&#39;, &#39;Total unit weight [kN/m3]&#39;]
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">string_soil_parameters</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[&#39;Soil type&#39;, &#39;Relative density&#39;]
+</code></pre></div>
+
+<p>For the numerical soil parameters, the method <code>check_linear_variation</code> allows to check whether the parameter is constant in the layer or whether is has a linear variation. Linear variations are encoded in the soil profile by using the <code>to</code> and <code>from</code> column keys (e.g. <code>qc from [MPa]</code> and <code>qc to [MPa]</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">_param</span> <span class="ow">in</span> <span class="n">profile_2</span><span class="o">.</span><span class="n">numerical_soil_parameters</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">profile_2</span><span class="o">.</span><span class="n">check_linear_variation</span><span class="p">(</span><span class="n">_param</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> shows a linear variation&quot;</span> <span class="o">%</span> <span class="n">_param</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> is constant in each layer&quot;</span> <span class="o">%</span> <span class="n">_param</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>Parameter qc [MPa] shows a linear variation
+Parameter qt [MPa] is constant in each layer
+Parameter Total unit weight [kN/m3] is constant in each layer
+</code></pre></div>
+
+<h2 id="3-selection-of-soil-parameters">3. Selection of soil parameters</h2>
+<p>The <code>SoilProfile</code> object has a method for automatic selection of design lines based on parameter values in the layer. This can be demonstrated using a couple of randomly selected value for the undrained shear strength.</p>
+<div class="highlight"><pre><span></span><code><span class="n">depths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">su_values</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">selection_soilparameter</span><span class="p">(</span>
+    <span class="n">parameter</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span>
+    <span class="n">depths</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">rule</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+    <span class="n">linearvariation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">profile_2</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m] Soil type Relative density  qc from [MPa]  \
+0               0             1      SAND            Loose              3   
+1               1             3      CLAY             None              1   
+2               3             4      SILT     Medium dense              4   
+3               4            10      SAND            Dense             40   
+
+   qc to [MPa]  qt [MPa]  Total unit weight [kN/m3]  Su from [kPa]  \
+0          4.0      3.50                         19            NaN   
+1          1.5      1.25                         18      31.754843   
+2          8.0      6.00                         19            NaN   
+3         50.0     45.00                         20            NaN   
+
+   Su to [kPa]  
+0          NaN  
+1    30.253007  
+2          NaN  
+3          NaN  
+</code></pre></div>
+
+<p>The selected line can be plotted by adding a trace to a plot with a mini-log.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h2 id="4-soil-profile-manipulations">4. Soil profile manipulations</h2>
+<p>A number of manipulations with soil profiles are possible using the <code>SoilProfile</code> class.</p>
+<h3 id="41-shifting-vs-depth">4.1. Shifting vs depth</h3>
+<p>The profile can be shifted vs depth using the <code>shift_depths</code> method. For example we can move the profile up by 5m. Note: Moving up requires a negative offset to be specified (depth axis is positive in the downward direction).</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">shift_depths</span><span class="p">(</span><span class="n">offset</span><span class="o">=-</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<p>Each time the <code>shift_depths</code> method is applied, a further shift is applied, so be careful not to repeat code containing this method inadvertently.</p>
+<h3 id="42-flipping-the-depth-axis">4.2. Flipping the depth axis</h3>
+<p>In certain cases (e.g. when working with depths in mLAT), flipping of the depth axis is required. This can be done using the <code>convert_depth_sign</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">convert_depth_sign</span><span class="p">()</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<p>This statement can also be repeated. Note that most other methods of the <code>SoilProfile</code> object expect depths increasing downward!</p>
+<p>For the further demonstrations of the functionality, we will reset the depth reference:</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">convert_depth_sign</span><span class="p">()</span>
+<span class="n">profile_2</span><span class="o">.</span><span class="n">shift_depths</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h3 id="43-inserting-a-layer-transition">4.3. Inserting a layer transition</h3>
+<p>Inserting a layer transition is easily achieved using the <code>insert_layer_transition</code> method.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">insert_layer_transition</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>/opt/anaconda3/lib/python3.12/site-packages/groundhog/general/soilprofile.py:265: UserWarning:
+
+Specified depth is already at a layer transition, it will be ignored
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h3 id="44-merging-layers">4.4. Merging layers</h3>
+<p>Layers can be merged using their index (starting from 0 for the top layer). Note that the functionality still needs to be completed for layers with linearly varying properties. By default, the properties of the top layer are kept.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">merge_layers</span><span class="p">(</span><span class="n">layer_ids</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc, qt [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h3 id="45-removing-soil-parameters">4.5. Removing soil parameters</h3>
+<p>A soil parameter can be removed using its name.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">remove_parameter</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="s2">&quot;qt [MPa]&quot;</span><span class="p">)</span>
+<span class="n">profile_2</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m] Soil type Relative density  qc from [MPa]  \
+0             0.0           1.0      SAND            Loose            3.0   
+1             1.0           3.0      CLAY             None            1.0   
+2             3.0           4.0      SILT     Medium dense            4.0   
+3             4.0          10.0      SAND            Dense           40.0   
+
+   qc to [MPa]  Total unit weight [kN/m3]  Su from [kPa]  Su to [kPa]  
+0     4.000000                       19.0            NaN          NaN  
+1     1.500000                       18.0      31.754843    30.253007  
+2     8.000000                       19.0            NaN          NaN  
+3    46.666667                       20.0            NaN          NaN  
+</code></pre></div>
+
+<h3 id="46-cutting-a-soil-profile">4.6. Cutting a soil profile</h3>
+<p>A specific section of the soil profile can be <code>cut_profile</code> method. A deep copy of the soil profile is then returned which is a <code>SoilProfile</code> object in itself. The cutting process takes linearly varying parameters into consideration.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_extract</span> <span class="o">=</span> <span class="n">profile_2</span><span class="o">.</span><span class="n">cut_profile</span><span class="p">(</span><span class="n">top_depth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">bottom_depth</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_values</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su data&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h3 id="47-integration-of-a-soil-parameter-vs-depth">4.7. Integration of a soil parameter vs depth</h3>
+<p>A soil parameter can be integrated over the depth and the resulting property can be added to the <code>SoilProfile</code> dataframe. This only works for soil parameters with a constant value in each layer and with properties specified in each layer (no NaN values). This can be demonstrated for the vertical effective stress, as integrated from the effective unit weight.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">depth_integration</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">outputparameter</span><span class="o">=</span><span class="s1">&#39;Vertical total stress [kPa]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Vertical total stress [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;sigmav0 [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<p>Since calculation of overburden is a recurring task in geotechnical analyses, the method <code>calculate_overburden</code> is implemented to calculate hydrostatic water pressure, total and effective vertical stress with a single statement.</p>
+<p>The water level can be adjusted. If a layer interface is not present at the location of the water level, an additional interface is created. The soil profile needs to contain a column with the total unit weight to allow the calculation to happen. In layers above the water level, the total unit weight is the dry unit weight and the effective unit weight is equal to this value. In the layers below the water table, the effective unit weight is obtained by subtracting the water unit weight (default 10kN/m<span class="math">\(^3\)</span>) from the total unit weight.</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">calculate_overburden</span><span class="p">(</span><span class="n">waterlevel</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">depth_integration</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">outputparameter</span><span class="o">=</span><span class="s1">&#39;Vertical total stress [kPa]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Vertical total stress [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Vertical effective stress [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;sigmav0 [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<h2 id="5-gridding-functionality">5. Gridding functionality</h2>
+<p>The <code>SoilProfile</code> object can be mapped onto a grid. All that is required is a list or Numpy array with the depth coordinates of the grid. The method <code>map_soilprofile</code> returns a dataframe with the mapped soil parameters.</p>
+<div class="highlight"><pre><span></span><code><span class="n">grid</span> <span class="o">=</span> <span class="n">profile_2</span><span class="o">.</span><span class="n">map_soilprofile</span><span class="p">(</span>
+    <span class="n">nodalcoords</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Vertical total stress [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Vertical effective stress [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">grid</span><span class="p">[</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">grid</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Gridded qc&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;sigmav0 [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<div class="highlight"><pre><span></span><code><span class="n">grid</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   z [m] Soil type Relative density  qc [MPa]  Total unit weight [kN/m3]  \
+0    0.0      SAND            Loose     3.000                       19.0   
+1    0.5      SAND            Loose     3.500                       19.0   
+2    1.0      CLAY             None     1.000                       18.0   
+3    1.5      CLAY             None     1.125                       18.0   
+4    2.0      CLAY             None     1.250                       18.0   
+
+    Su [kPa]  Vertical total stress [kPa]  Water unit weight [kN/m3]  \
+0        NaN                          0.0                        0.0   
+1        NaN                          9.5                        0.0   
+2  31.754843                         19.0                        0.0   
+3  31.379384                         28.0                        0.0   
+4  31.003925                         37.0                        0.0   
+
+   Effective unit weight [kN/m3]  Hydrostatic pressure [kPa]  \
+0                           19.0                         0.0   
+1                           19.0                         0.0   
+2                           18.0                         0.0   
+3                           18.0                         0.0   
+4                           18.0                         0.0   
+
+   Vertical effective stress [kPa]  
+0                              0.0  
+1                              9.5  
+2                             19.0  
+3                             28.0  
+4                             37.0  
+</code></pre></div>
+
+<h2 id="6-changing-the-depth-scale">6. Changing the depth scale</h2>
+<p>When converting from metric to imperial units and vice versa, depth scales need to be converted from m to ft.</p>
+<p>This can be done using the <code>.convert_depth_reference</code> method. The new unit name and the conversion factor need to be specified:</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">convert_depth_reference</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="s1">&#39;ft&#39;</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mf">0.3048</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [ft]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span> <span class="o">/</span> <span class="mf">0.3048</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p>
+<p>The depth scale can be converted back to meters again:</p>
+<div class="highlight"><pre><span></span><code><span class="n">profile_2</span><span class="o">.</span><span class="n">convert_depth_reference</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mf">0.3048</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">profile_2</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Total unit weight [kN/m3]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;qc [MPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span>
+    <span class="n">parametername</span><span class="o">=</span><span class="s2">&quot;Su [kPa]&quot;</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;qc [MPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><em>Interactive output (Plotly/HTML) is not reproduced here; run the notebook to see it.</em></p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Soil%20profile%20objects%20in%20Groundhog.ipynb">Upstream source (groundhog 0.15.0)</a></li><li>Notebook: <code>notebooks/Tutorial - Soil profile objects in Groundhog.ipynb</code></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Tutorial - Shallow foundation capacity with groundhog</a><a class="next" href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Tutorial - SPT data processing with Groundhog</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#1-soil-profile-creation">1. Soil profile creation</a></li>
+      <li class="lvl-3"><a href="#11-soil-profile-creation-from-excel-file">1.1. Soil profile creation from Excel file</a></li>
+      <li class="lvl-3"><a href="#12-soil-profile-from-dictionary">1.2. Soil profile from dictionary</a></li>
+      <li class="lvl-2"><a href="#2-retrieving-information-from-soilprofile-objects">2. Retrieving information from SoilProfile objects</a></li>
+      <li class="lvl-3"><a href="#21-top-and-bottom-depth">2.1. Top and bottom depth</a></li>
+      <li class="lvl-3"><a href="#22-soil-parameters">2.2. Soil parameters</a></li>
+      <li class="lvl-2"><a href="#3-selection-of-soil-parameters">3. Selection of soil parameters</a></li>
+      <li class="lvl-2"><a href="#4-soil-profile-manipulations">4. Soil profile manipulations</a></li>
+      <li class="lvl-3"><a href="#41-shifting-vs-depth">4.1. Shifting vs depth</a></li>
+      <li class="lvl-3"><a href="#42-flipping-the-depth-axis">4.2. Flipping the depth axis</a></li>
+      <li class="lvl-3"><a href="#43-inserting-a-layer-transition">4.3. Inserting a layer transition</a></li>
+      <li class="lvl-3"><a href="#44-merging-layers">4.4. Merging layers</a></li>
+      <li class="lvl-3"><a href="#45-removing-soil-parameters">4.5. Removing soil parameters</a></li>
+      <li class="lvl-3"><a href="#46-cutting-a-soil-profile">4.6. Cutting a soil profile</a></li>
+      <li class="lvl-3"><a href="#47-integration-of-a-soil-parameter-vs-depth">4.7. Integration of a soil parameter vs depth</a></li>
+      <li class="lvl-2"><a href="#5-gridding-functionality">5. Gridding functionality</a></li>
+      <li class="lvl-2"><a href="#6-changing-the-depth-scale">6. Changing the depth scale</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

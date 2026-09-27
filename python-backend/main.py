@@ -81,5 +81,38 @@ if not os.path.exists(assets_dir):
     os.makedirs(assets_dir)
 app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
+def _warm_heavy_imports():
+    """Deferred start-up imports, run in the background once the server is listening.
+
+    Same modules the backend used to import before listening: the calculation
+    wrappers, every groundhog module in the registry, then the saved objects.
+    """
+    import importlib
+    from core.function_manifest import warm_imports
+    from core.state import state_manager
+
+    for name in ("core.wrappers", "core.plotting_wrappers", "core.labtesting_wrappers"):
+        try:
+            importlib.import_module(name)
+        except Exception as e:
+            logger.warning(f"Warm-up import of {name} failed: {e}")
+    warm_imports()
+    state_manager.ensure_loaded()
+
+
+def run_server(host: str = "127.0.0.1", port: int = 8000):
+    """Equivalent to uvicorn.run(app, host, port), plus background warm-up after listening."""
+    from core.warmup import start_background_warmup
+
+    server = uvicorn.Server(uvicorn.Config(app, host=host, port=port))
+    start_background_warmup(_warm_heavy_imports, ready=lambda: server.started)
+    try:
+        server.run()
+    except KeyboardInterrupt:
+        pass
+    if not server.started:
+        sys.exit(3)  # uvicorn's STARTUP_FAILURE exit code, as uvicorn.run() does
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    run_server()

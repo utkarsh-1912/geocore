@@ -5,13 +5,38 @@ from typing import Dict, Any, List, Optional
 import uuid
 import os
 import json
+import threading
 
 class StateManager:
     def __init__(self):
-        self._objects: Dict[str, Any] = {}
-        self._metadata: Dict[str, Dict[str, Any]] = {}
+        self._objects_store: Dict[str, Any] = {}
+        self._metadata_store: Dict[str, Dict[str, Any]] = {}
         self.filename = "saved_objects.json"
-        self._load_from_disk()
+        # Saved objects are restored on first access rather than at import:
+        # rebuilding a SoilProfile imports groundhog/scipy, which would slow
+        # backend start-up. main.py pre-loads them in the background.
+        self._loaded = False
+        self._load_lock = threading.Lock()
+
+    def ensure_loaded(self):
+        if self._loaded:
+            return
+        from .warmup import wait_for_warmup
+        wait_for_warmup()  # the start-up warm-up restores saved objects itself
+        with self._load_lock:
+            if not self._loaded:
+                self._load_from_disk()
+                self._loaded = True
+
+    @property
+    def _objects(self) -> Dict[str, Any]:
+        self.ensure_loaded()
+        return self._objects_store
+
+    @property
+    def _metadata(self) -> Dict[str, Dict[str, Any]]:
+        self.ensure_loaded()
+        return self._metadata_store
 
     def _load_from_disk(self):
         if not os.path.exists(self.filename):
@@ -36,20 +61,20 @@ class StateManager:
                     try:
                         from groundhog.general.soilprofile import SoilProfile
                         df = pd.DataFrame(raw_data)
-                        self._objects[obj_id] = SoilProfile(df)
+                        self._objects_store[obj_id] = SoilProfile(df)
                     except ImportError:
                         print("Warning: Could not import SoilProfile from groundhog. Reverting to DataFrame.")
                         df = pd.DataFrame(raw_data)
-                        self._objects[obj_id] = df
+                        self._objects_store[obj_id] = df
                 
-                self._metadata[obj_id] = {
+                self._metadata_store[obj_id] = {
                     "id": obj_id,
                     "type": type_name,
                     "name": name,
                     "timestamp": obj_data.get("timestamp", "restored")
                 }
                 
-            print(f"Loaded {len(self._objects)} objects from disk.")
+            print(f"Loaded {len(self._objects_store)} objects from disk.")
         except Exception as e:
             print(f"Failed to load saved objects: {e}")
 

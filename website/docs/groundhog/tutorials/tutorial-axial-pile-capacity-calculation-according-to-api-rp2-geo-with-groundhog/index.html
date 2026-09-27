@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog — GeoCore Docs</title>
+  <meta name="description" content="At the request of users, a routine for axial capacity is developed within groundhog.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog — GeoCore Docs">
+  <meta property="og:description" content="At the request of users, a routine for axial capacity is developed within groundhog.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/" aria-current="page">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/guides/">Groundhog Guides</a></li>
+        <li><a href="/docs/groundhog/tutorials/">Tutorials</a></li>
+        <li><span aria-current="page">Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span></li>
+      </ol>
+    </nav>
+
+    <h1>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+    <div class="prose docs-body"><p>At the request of users, a routine for axial capacity is developed within groundhog.</p>
+<p>The pile capacity class <code>AxCapCalculation</code> develops a workflow in which the unit skin friction methods and unit end bearing methods are introduced into a <code>SoilProfile</code> object.</p>
+<p>A check is then performed to assess whether the necessary soil parameters are defined in the <code>SoilProfile</code>. If all necessary parameters are available, a calculation grid is defined and the unit skin friction and unit end bearing calculations are calculated. This notebook outlines the different components of the calculation for the API RP2 GEO Main Text method.</p>
+<h2 id="library-imports">Library imports</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;plotly_white&#39;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.soilprofile</span><span class="w"> </span><span class="kn">import</span> <span class="n">SoilProfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogPlot</span>
+</code></pre></div>
+
+<h2 id="preparing-a-groundhog-soilprofile-object-for-axial-capacity-analysis">Preparing a <code>groundhog</code> <code>SoilProfile</code> object for axial capacity analysis</h2>
+<h3 id="definition-of-methods-and-soil-parameters-in-soilprofile">Definition of methods and soil parameters in <code>SoilProfile</code></h3>
+<p>For each layer in the <code>SoilProfile</code>, the unit skin friction and unit end bearing need to be set. Each methods has associated required parameters. The presence of these parameters can be checked before starting the calculation.</p>
+<p>First, a basic soil profile with three layers is defined:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span> <span class="o">=</span> <span class="n">SoilProfile</span><span class="p">({</span>
+    <span class="s1">&#39;Depth from [m]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;Depth to [m]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s1">&#39;Soil type&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Sand&#39;</span><span class="p">,</span> <span class="s1">&#39;Clay&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="n">sp</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m] Soil type  Total unit weight [kN/m3]
+0               0            10      Sand                         20
+1              10            40      Clay                         18
+</code></pre></div>
+
+<p>Next, the calculation methods for unit skin friction and unit end bearing are specified in the columns <code>Unit skin friction</code> and <code>Unit end bearing</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Unit skin friction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;API RP2 GEO Sand&#39;</span><span class="p">,</span> <span class="s1">&#39;API RP2 GEO Clay&#39;</span><span class="p">]</span>
+<span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Unit end bearing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;API RP2 GEO Sand&#39;</span><span class="p">,</span> <span class="s1">&#39;API RP2 GEO Clay&#39;</span><span class="p">]</span>
+<span class="n">sp</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m] Soil type  Total unit weight [kN/m3]  \
+0               0            10      Sand                         20   
+1              10            40      Clay                         18   
+
+  Unit skin friction  Unit end bearing  
+0   API RP2 GEO Sand  API RP2 GEO Sand  
+1   API RP2 GEO Clay  API RP2 GEO Clay  
+</code></pre></div>
+
+<h3 id="overburden-calculation">Overburden calculation</h3>
+<p>As several method require the vertical effective stress as an input, the stresses can be calculated using the <code>calculate_overburden</code> method.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">calculate_overburden</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The vertical effective stress profile can be plotted:</p>
+<div class="highlight"><pre><span></span><code><span class="n">stress_plot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">})</span>
+<span class="n">stress_plot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Vertical effective stress [kPa]&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Vertical effective stress [kPa]&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ \sigma_</span><span class="si">{v0}</span><span class="s1">^{\prime} $&#39;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">stress_plot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ \sigma_</span><span class="si">{v0}</span><span class="s1">^{\prime} \ \text{[kPa]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">stress_plot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ z \ \text{[m]} $&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">stress_plot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img loading="lazy" decoding="async" alt="Notebook output 1" src="/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-1.png"></p>
+<h2 id="axial-pile-capacity-calculation-setup">Axial pile capacity calculation setup</h2>
+<h3 id="creating-the-calculation-object">Creating the calculation object</h3>
+<p>An axial capacity calculation can be set up based on the soil profile. The <code>AxcapCalculation</code> class contains the necessary functionality.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.deepfoundations.axialcapacity.axcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">AxCapCalculation</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">calc</span> <span class="o">=</span> <span class="n">AxCapCalculation</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="checking-of-presence-of-require-soil-parameters">Checking of presence of require soil parameters</h3>
+<p>The presence of the required input to unit skin friction and unit end bearing calculations can be checked. Note that both numerical and string soil parameters need to be checked:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.parameter_mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">SOIL_PARAMETER_MAPPING</span><span class="p">,</span> <span class="n">reverse_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.deepfoundations.axialcapacity.skinfriction</span><span class="w"> </span><span class="kn">import</span> <span class="n">SKINFRICTION_PARAMETERS</span><span class="p">,</span> <span class="n">SKINFRICTION_METHODS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.deepfoundations.axialcapacity.endbearing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ENDBEARING_PARAMETERS</span><span class="p">,</span> <span class="n">ENDBEARING_METHODS</span>
+</code></pre></div>
+
+<p><code>groundhog</code> has a standard mapping for soil parameters, which defines the mapping from column headers in a Pandas dataframe to <code>groundhog</code> function variables. Column headers must conform to this naming.</p>
+<div class="highlight"><pre><span></span><code><span class="n">SOIL_PARAMETER_MAPPING</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>{&#39;qc [MPa]&#39;: &#39;qc&#39;,
+ &#39;fs [MPa]&#39;: &#39;fs&#39;,
+ &#39;u2 [MPa]&#39;: &#39;u2&#39;,
+ &#39;qt [MPa]&#39;: &#39;qt&#39;,
+ &#39;ft [MPa]&#39;: &#39;ft&#39;,
+ &#39;qnet [MPa]&#39;: &#39;qnet&#39;,
+ &#39;Vertical total stress [kPa]&#39;: &#39;sigma_vo&#39;,
+ &#39;Vertical effective stress [kPa]&#39;: &#39;sigma_vo_eff&#39;,
+ &#39;Effective pressure [kPa]&#39;: &#39;p_eff&#39;,
+ &#39;Effective unit weight [kN/m3]&#39;: &#39;gamma_eff&#39;,
+ &#39;Total unit weight [kN/m3]&#39;: &#39;gamma_tot&#39;,
+ &#39;Unit weight [kN/m3]&#39;: &#39;gamma&#39;,
+ &#39;Ic [-]&#39;: &#39;ic&#39;,
+ &#39;Dr [-]&#39;: &#39;relative_density&#39;,
+ &#39;Gmax [kPa]&#39;: &#39;gmax&#39;,
+ &#39;G [kPa]&#39;: &#39;shearmodulus&#39;,
+ &#39;Qt [-]&#39;: &#39;Qt&#39;,
+ &#39;Bq [-]&#39;: &#39;Bq&#39;,
+ &#39;Fr [%]&#39;: &#39;Fr&#39;,
+ &#39;Rf [%]&#39;: &#39;Rf&#39;,
+ &#39;K0 [-]&#39;: &#39;k0&#39;,
+ &#39;Vs [m/s]&#39;: &#39;Vs&#39;,
+ &#39;gamma [kN/m3]&#39;: &#39;gamma&#39;,
+ &#39;OCR [-]&#39;: &#39;ocr&#39;,
+ &#39;PI [%]&#39;: &#39;pi&#39;,
+ &#39;z [m]&#39;: &#39;depth&#39;,
+ &#39;Embedded length [m]&#39;: &#39;embedded_length&#39;,
+ &#39;Effective friction angle [deg]&#39;: &#39;phi_eff&#39;,
+ &#39;Friction angle [deg]&#39;: &#39;phi&#39;,
+ &#39;Critical state friction angle [deg]&#39;: &#39;phi_cs&#39;,
+... (output truncated)
+</code></pre></div>
+
+<p>The necessary parameters for skin friction calculation can be printed. In v0.9.0, only the API RP2 GEO methods are defined with their associated parameters.</p>
+<div class="highlight"><pre><span></span><code><span class="n">SKINFRICTION_PARAMETERS</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>{&#39;API RP2 GEO Sand&#39;: [&#39;api_relativedensity&#39;,
+  &#39;api_soildescription&#39;,
+  &#39;sigma_vo_eff&#39;],
+ &#39;API RP2 GEO Clay&#39;: [&#39;undrained_shear_strength&#39;, &#39;sigma_vo_eff&#39;],
+ &#39;Alm and Hamre Sand&#39;: [&#39;qt&#39;,
+  &#39;sigma_vo_eff&#39;,
+  &#39;interface_friction_angle&#39;,
+  &#39;depth&#39;,
+  &#39;embedded_length&#39;],
+ &#39;Alm and Hamre Clay&#39;: [&#39;depth&#39;,
+  &#39;embedded_length&#39;,
+  &#39;qt&#39;,
+  &#39;fs&#39;,
+  &#39;sigma_vo_eff&#39;]}
+</code></pre></div>
+
+<p>With the method <code>check_methods</code>, the presence of the parameters can be checked. At this point, the parameters are not yet defined so the method will return a message that the required parameters are not found.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">check_methods</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>Skin friction method API RP2 GEO Sand: Required parameter API relative density description not found
+Skin friction method API RP2 GEO Sand: Required parameter API soil description not found
+Skin friction method API RP2 GEO Clay: Required parameter Undrained shear strength [kPa] not found
+End bearing method API RP2 GEO Sand: Required parameter API relative density description not found
+End bearing method API RP2 GEO Sand: Required parameter API soil description not found
+End bearing method API RP2 GEO Clay: Required parameter Undrained shear strength [kPa] not found
+</code></pre></div>
+
+<p>The required soil parameters can be defined. Example parameters are defined below. The documentation of the unit skin friction and unit end bearing methods can be checked in the <code>groundhog</code> documentation.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;API soil description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Sand&#39;</span><span class="p">,</span> <span class="s1">&#39;Clay&#39;</span><span class="p">]</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;API relative density description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Medium dense&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">]</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Undrained shear strength from [kPa]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">150</span><span class="p">]</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Undrained shear strength to [kPa]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;API relative density description&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Very loose&#39;</span><span class="p">:</span>
+        <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Dr [pct]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;API relative density description&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Loose&#39;</span><span class="p">:</span>
+        <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Dr [pct]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;API relative density description&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Medium dense&#39;</span><span class="p">:</span>
+        <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Dr [pct]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;API relative density description&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Dense&#39;</span><span class="p">:</span>
+        <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Dr [pct]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">75</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;API relative density description&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Very dense&#39;</span><span class="p">:</span>
+        <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Dr [pct]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">90</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Dr [pct]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</code></pre></div>
+
+<p>When re-running the <code>check_methods</code> no messages are returned. But the attribute <code>checked</code> is now <code>True</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">check_methods</span><span class="p">()</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">checked</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>True
+</code></pre></div>
+
+<h2 id="gridding-for-axial-capacity-calculation">Gridding for axial capacity calculation</h2>
+<p>A calculation grid can be created based on the soil profile with a spacing of 1m.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">create_grid</span><span class="p">(</span><span class="n">dz</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The grid has a <code>nodes</code> and <code>elements</code> attribute where the former contains the nodal coordinates and the associated parameter values at the nodes. The latter contains the element definition with the parameter values at the center of the element.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   z [m] Soil type Unit skin friction  Unit end bearing API soil description  \
+0    0.0      Sand   API RP2 GEO Sand  API RP2 GEO Sand                 Sand   
+1    1.0      Sand   API RP2 GEO Sand  API RP2 GEO Sand                 Sand   
+2    2.0      Sand   API RP2 GEO Sand  API RP2 GEO Sand                 Sand   
+3    3.0      Sand   API RP2 GEO Sand  API RP2 GEO Sand                 Sand   
+4    4.0      Sand   API RP2 GEO Sand  API RP2 GEO Sand                 Sand   
+
+  API relative density description  Total unit weight [kN/m3]  \
+0                     Medium dense                       20.0   
+1                     Medium dense                       20.0   
+2                     Medium dense                       20.0   
+3                     Medium dense                       20.0   
+4                     Medium dense                       20.0   
+
+   Water unit weight [kN/m3]  Effective unit weight [kN/m3]  \
+0                       10.0                           10.0   
+1                       10.0                           10.0   
+2                       10.0                           10.0   
+3                       10.0                           10.0   
+4                       10.0                           10.0   
+
+   Hydrostatic pressure [kPa]  Vertical effective stress [kPa]  \
+0                         0.0                              0.0   
+1                        10.0                             10.0   
+2                        20.0                             20.0   
+3                        30.0                             30.0   
+4                        40.0                             40.0   
+
+   Vertical total stress [kPa]  Undrained shear strength [kPa]  Dr [pct]  
+0                          0.0                             NaN      50.0  
+... (output truncated)
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m]  z [m]  dz [m]  Total unit weight [kN/m3]  \
+0             0.0           1.0    0.5     1.0                       20.0   
+1             1.0           2.0    1.5     1.0                       20.0   
+2             2.0           3.0    2.5     1.0                       20.0   
+3             3.0           4.0    3.5     1.0                       20.0   
+4             4.0           5.0    4.5     1.0                       20.0   
+
+   Water unit weight [kN/m3]  Effective unit weight [kN/m3]  \
+0                       10.0                           10.0   
+1                       10.0                           10.0   
+2                       10.0                           10.0   
+3                       10.0                           10.0   
+4                       10.0                           10.0   
+
+   Hydrostatic pressure from [kPa]  Hydrostatic pressure to [kPa]  \
+0                              0.0                           10.0   
+1                             10.0                           20.0   
+2                             20.0                           30.0   
+3                             30.0                           40.0   
+4                             40.0                           50.0   
+
+   Hydrostatic pressure [kPa]  ...  Vertical total stress [kPa]  \
+0                         5.0  ...                         10.0   
+1                        15.0  ...                         30.0   
+2                        25.0  ...                         50.0   
+3                        35.0  ...                         70.0   
+4                        45.0  ...                         90.0   
+
+   Undrained shear strength from [kPa]  Undrained shear strength to [kPa]  \
+0                                  NaN                                NaN   
+... (output truncated)
+</code></pre></div>
+
+<p>The parameters in the grid can be prepared for plotting by applying the <code>soilparameter_series</code> with the name of the parameter under consideration. The x- and z-values can be defined based on the parameter name.</p>
+<div class="highlight"><pre><span></span><code><span class="n">su_z</span><span class="p">,</span> <span class="n">su_x</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Undrained shear strength [kPa]&#39;</span><span class="p">)</span>
+<span class="n">Dr_z</span><span class="p">,</span> <span class="n">Dr_x</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Dr [pct]&#39;</span><span class="p">)</span>
+<span class="n">sigmav_z</span><span class="p">,</span> <span class="n">sigmav_x</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Vertical effective stress [kPa]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">parameter_plot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">calc</span><span class="o">.</span><span class="n">sp</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;blanchedalmond&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;wheat&#39;</span><span class="p">})</span>
+
+<span class="n">parameter_plot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">su_x</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">su_z</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Su&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">parameter_plot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sigmav_x</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">sigmav_z</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;With linear&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">parameter_plot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ \sigma_</span><span class="si">{vo}</span><span class="s1">^{\prime} \ \text{[kPa]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigmav_x</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="n">parameter_plot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ S_u \ \text{[kPa]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">))</span>
+<span class="n">parameter_plot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ z \ \text{[m]}$&#39;</span><span class="p">)</span>
+<span class="n">parameter_plot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img loading="lazy" decoding="async" alt="Notebook output 2" src="/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-2.png"></p>
+<h2 id="calculation-of-unit-skin-friction-and-unit-end-bearing">Calculation of unit skin friction and unit end bearing</h2>
+<p>Unit skin friction and unit end bearing can be calculated by running the functions for the selected methods at each element.</p>
+<p>Note that the unit skin friction distribution may be depth-dependent, so at this stage, the pile penetration will need to be introduced.</p>
+<h3 id="setting-the-pile-penetration">Setting the pile penetration</h3>
+<p>The pile penetration can be set with the <code>set_pilepenetration</code> method. In this example, a pile penetration of 18m is selected.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">set_pilepenetration</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="calculation-of-unit-skin-friction">Calculation of unit skin friction</h3>
+<p>For the calculation of unit skin friction, the equation for the selected method is applied for each element.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate_unitskinfriction</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="calculation-of-unit-end-bearing">Calculation of unit end bearing</h3>
+<p>Similarly, the unit end bearing can be calculated:</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate_unitendbearing</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="unit-skin-friction-and-unit-end-bearing-visualisation">Unit skin friction and unit end bearing visualisation</h3>
+<p>The unit skin friction and unit end bearing profile can be visualised with the <code>groundhog</code> <code>LogPlot</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">z_fs</span><span class="p">,</span> <span class="n">x_fs</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Unit skin friction outside compression [kPa]&#39;</span><span class="p">)</span>
+<span class="n">z_qb</span><span class="p">,</span> <span class="n">x_qb</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Unit end bearing plugged [kPa]&#39;</span><span class="p">)</span>
+
+<span class="n">fs_qb_plot</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">calc</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Sand&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;Clay&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">})</span>
+
+<span class="n">fs_qb_plot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_fs</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z_fs</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;fs comp&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fs_qb_plot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_qb</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z_qb</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;qb&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">fs_qb_plot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ q_b \ \text{[kPa]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_qb</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="n">fs_qb_plot</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ f_s \ \text{[kPa]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_fs</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="n">fs_qb_plot</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ z \ \text{[m]}$&#39;</span><span class="p">)</span>
+<span class="n">fs_qb_plot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img loading="lazy" decoding="async" alt="Notebook output 3" src="/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-3.png"></p>
+<h2 id="integration-of-unit-skin-friction-and-unit-end-bearing">Integration of unit skin friction and unit end bearing</h2>
+<p>Unit skin friction can be integrated over the annulus of the pile. Four modes are discerned:</p>
+<ul>
+<li>Plugged compression: Outside skin friction and end bearing over the full diameter of the pile</li>
+<li>Plugged tension: Outside skin friction in tension + weight of the pile material and/or internal soil plug</li>
+<li>Coring compression: Outside skin friction + inside skin friction + annular end bearing</li>
+<li>Coring tension: Outside skin friction in tension + inside skin friction in tension</li>
+</ul>
+<p>The pile circumference and base cross-sectional area need to be known. Because pile shapes and sizes may differ, the weight of the pile and/or internal soil plug is excluded from the assessment. Calculating this component with a separate calculation is straightforward.</p>
+<p>In this example, a tubular open-ended pile with 2.48m outer diameter and 50mm wall thickness is taken.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate_pilecapacity</span><span class="p">(</span>
+    <span class="n">circumference</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.48</span><span class="p">,</span> <span class="n">base_area</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.48</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">internal_circumference</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.38</span><span class="p">,</span> <span class="n">annulus_area</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.48</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.38</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Depth from [m]  Depth to [m]  z [m]  dz [m]  Total unit weight [kN/m3]  \
+0             0.0           1.0    0.5     1.0                       20.0   
+1             1.0           2.0    1.5     1.0                       20.0   
+2             2.0           3.0    2.5     1.0                       20.0   
+3             3.0           4.0    3.5     1.0                       20.0   
+4             4.0           5.0    4.5     1.0                       20.0   
+
+   Water unit weight [kN/m3]  Effective unit weight [kN/m3]  \
+0                       10.0                           10.0   
+1                       10.0                           10.0   
+2                       10.0                           10.0   
+3                       10.0                           10.0   
+4                       10.0                           10.0   
+
+   Hydrostatic pressure from [kPa]  Hydrostatic pressure to [kPa]  \
+0                              0.0                           10.0   
+1                             10.0                           20.0   
+2                             20.0                           30.0   
+3                             30.0                           40.0   
+4                             40.0                           50.0   
+
+   Hydrostatic pressure [kPa]  ...  Unit skin friction inside tension [kPa]  \
+0                         5.0  ...                                     1.85   
+1                        15.0  ...                                     5.55   
+2                        25.0  ...                                     9.25   
+3                        35.0  ...                                    12.95   
+4                        45.0  ...                                    16.65   
+
+   Unit end bearing plugged [kPa]  Unit end bearing coring [kPa]  \
+0                           100.0                          100.0   
+... (output truncated)
+</code></pre></div>
+
+<h3 id="results-for-the-final-penetration">Results for the final penetration</h3>
+<p>As unit skin friction profiles can be penetration-dependent, the plot of unit skin friction <span class="math">\(f_s\)</span> is only valid for the selected final pile penetration.</p>
+<p>The profiles of unit skin friction <span class="math">\(f_s\)</span>, unit end bearing <span class="math">\(q_b\)</span> and integrated shaft resistance in compression and tension over the inside and outside of the pile are plotted as well as the plugged and unplugged (coring) end bearing.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">plot_single_penetration</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img loading="lazy" decoding="async" alt="Notebook output 4" src="/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-4.png"></p>
+<p>Numerical values of the results are available in the <code>result</code> attribute. These values are valid for the final pile penetration.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">([</span><span class="n">calc</span><span class="o">.</span><span class="n">result</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>   Rs compression plugged [kN]  Rb plugged [kN]  Rs compression coring [kN]  \
+0                 15063.689292      7934.117379                29519.971758   
+
+   Rb coring [kN]  Rb internal [kN]  Rt compression plugged [kN]  \
+0      626.948011       7307.169368                 22997.806672   
+
+   Rt compression coring [kN]  Rt compression [kN]  Plugged compression  \
+0                30146.919769         22997.806672                 True   
+
+   Rs tension plugged [kN]  Rs tension coring [kN]  Pile weight [kN]  \
+0             15063.689292            29519.971758                 0   
+
+   Soil plug weight [kN]  Rt tension plugged [kN]  Rt tension coring [kN]  \
+0                      0             15063.689292            29519.971758   
+
+   Rt tension [kN]  Plugged tension  
+0     15063.689292             True  
+</code></pre></div>
+
+<h3 id="results-for-all-penetrations">Results for all penetrations</h3>
+<p>The calculation of axial pile capacity needs to be repeated for every pile penetration for pile sizing as unit skin friction and unit end bearing can be depth-dependent (e.g. due to friction fatigue).</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate_capacity_profile</span><span class="p">(</span>
+    <span class="n">circumference</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.48</span><span class="p">,</span> <span class="n">base_area</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.48</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">internal_circumference</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.38</span><span class="p">,</span> <span class="n">annulus_area</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.48</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.38</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="n">pile_weight_permeter</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.48</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.38</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">68.5</span><span class="p">,</span>
+    <span class="n">soilplug_weight_permeter</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">2.38</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The results can be visualised. The leftmost panel shows the shaft resistance in compression and tension for plugged (only outside) and coring (inside and outside) conditions. The coring and plugged base resistance are shown in the middle panel. In the right-most panel, the compression and tension resistance for plugged and coring conditions are shown. Depending on the relative magnitude of internal shaft resistance vs end bearing on the plug, the calculation selects whether plugged (internal shaft resistance &gt; end bearing on soil plug) or coring (internal shaft resistance &lt; end bearing on soil plug) conditions are expected.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">plot_all_penetrations</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The results are shown in a dataframe which can be exported to csv or Excel.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">capacity_profile</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb">Upstream source (groundhog 0.15.0)</a></li><li>Notebook: <code>notebooks/Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog.ipynb</code></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Demo - Koppejan&#39;s pile resistance calculation method</a><a class="next" href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Tutorial - Basic use of groundhog functions</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#library-imports">Library imports</a></li>
+      <li class="lvl-2"><a href="#preparing-a-groundhog-soilprofile-object-for-axial-capacity-analysis">Preparing a groundhog SoilProfile object for axial capacity analysis</a></li>
+      <li class="lvl-3"><a href="#definition-of-methods-and-soil-parameters-in-soilprofile">Definition of methods and soil parameters in SoilProfile</a></li>
+      <li class="lvl-3"><a href="#overburden-calculation">Overburden calculation</a></li>
+      <li class="lvl-2"><a href="#axial-pile-capacity-calculation-setup">Axial pile capacity calculation setup</a></li>
+      <li class="lvl-3"><a href="#creating-the-calculation-object">Creating the calculation object</a></li>
+      <li class="lvl-3"><a href="#checking-of-presence-of-require-soil-parameters">Checking of presence of require soil parameters</a></li>
+      <li class="lvl-2"><a href="#gridding-for-axial-capacity-calculation">Gridding for axial capacity calculation</a></li>
+      <li class="lvl-2"><a href="#calculation-of-unit-skin-friction-and-unit-end-bearing">Calculation of unit skin friction and unit end bearing</a></li>
+      <li class="lvl-3"><a href="#setting-the-pile-penetration">Setting the pile penetration</a></li>
+      <li class="lvl-3"><a href="#calculation-of-unit-skin-friction">Calculation of unit skin friction</a></li>
+      <li class="lvl-3"><a href="#calculation-of-unit-end-bearing">Calculation of unit end bearing</a></li>
+      <li class="lvl-3"><a href="#unit-skin-friction-and-unit-end-bearing-visualisation">Unit skin friction and unit end bearing visualisation</a></li>
+      <li class="lvl-2"><a href="#integration-of-unit-skin-friction-and-unit-end-bearing">Integration of unit skin friction and unit end bearing</a></li>
+      <li class="lvl-3"><a href="#results-for-the-final-penetration">Results for the final penetration</a></li>
+      <li class="lvl-3"><a href="#results-for-all-penetrations">Results for all penetrations</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

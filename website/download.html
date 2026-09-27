@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download GeoCore for Windows and macOS</title>
+  <meta name="description" content="Download the latest GeoCore installer for Windows 10/11 or macOS. System requirements, installation steps, first-run notes and GeoAI model downloads.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Download GeoCore for Windows and macOS">
+  <meta property="og:description" content="Download the latest GeoCore installer for Windows 10/11 or macOS. System requirements, installation steps, first-run notes and GeoAI model downloads.">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <script src="assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="assets/css/site.css?v=133b3a4fa4">
+</head>
+<body class="layout-default">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="./" aria-label="GeoCore home">
+        <img src="assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="./">Home</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="docs/">Docs</a></li>
+          <li><a href="download.html" aria-current="page">Download</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="./">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="docs/">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="download.html" aria-current="page">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+<header class="page-header">
+  <div class="container">
+    <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</p>
+    <h1>Download GeoCore</h1>
+    <p class="lede">Free and open source. Installers are built automatically from the public source code and published on GitHub Releases.</p>
+  </div>
+</header>
+
+<section class="section section--tight" id="download-app"
+         data-api="https://api.github.com/repos/utkarsh-1912/geocore/releases/latest"
+         data-releases="https://github.com/utkarsh-1912/geocore/releases"
+         data-icons="assets/icons.svg?v=a8f4785ef1"
+         aria-labelledby="dl-title">
+  <div class="container dl-hero">
+    <div class="card dl-primary">
+      <p class="dl-os"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-monitor"></use></svg><span data-dl-os>Windows &amp; macOS</span></p>
+      <h2 id="dl-title">GeoCore <span data-dl-version class="skeleton">latest</span></h2>
+      <p class="dl-file" data-dl-file>Installers for Windows (.exe) and macOS (.dmg) are on the GitHub releases page.</p>
+      <p class="callout callout--info" data-dl-note hidden></p>
+      <div class="dl-actions">
+        <a class="btn btn--primary btn--lg" data-dl-button href="https://github.com/utkarsh-1912/geocore/releases/latest"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg><span data-dl-button-label>Download from GitHub</span></a>
+        <a class="btn btn--secondary btn--lg" data-dl-release-link href="https://github.com/utkarsh-1912/geocore/releases"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-github"></use></svg>All releases</a>
+      </div>
+      <p class="dl-status" data-dl-status role="status" aria-live="polite"></p>
+      <dl class="dl-meta">
+        <div><dt>Version</dt><dd><span data-dl-version-meta class="skeleton">—</span></dd></div>
+        <div><dt>Released</dt><dd><span data-dl-date class="skeleton">—</span></dd></div>
+        <div><dt>Size</dt><dd><span data-dl-size class="skeleton">—</span></dd></div>
+        <div><dt>Architecture</dt><dd><span data-dl-arch class="skeleton">—</span></dd></div>
+      </dl>
+    </div>
+
+    <div>
+      <h3>Other downloads</h3>
+      <div class="dl-others" data-dl-alternatives>
+        <a class="dl-other" href="https://github.com/utkarsh-1912/geocore/releases/latest"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-monitor"></use></svg><span class="grow">Windows 10 / 11 (x64)<small>GeoCore-Setup-&lt;version&gt;.exe</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-external"></use></svg></a>
+        <a class="dl-other" href="https://github.com/utkarsh-1912/geocore/releases/latest"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-laptop"></use></svg><span class="grow">macOS — Apple silicon and Intel<small>GeoCore-&lt;version&gt;[-arm64].dmg</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-external"></use></svg></a>
+      </div>
+      <p class="small muted dl-linux">No Linux build yet — see <a href="#source">running from source</a>.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section section--flush-top">
+  <div class="container">
+    <div class="grid grid--2 grid--start">
+      <section aria-labelledby="notes-title">
+        <h2 id="notes-title" class="h-sub" data-dl-notes-title>Release notes</h2>
+        <div class="release-notes" data-dl-notes>
+          <p class="muted">Release notes are shown here when GitHub is reachable. You can also read them on <a href="https://github.com/utkarsh-1912/geocore/releases">GitHub Releases</a>.</p>
+        </div>
+      </section>
+      <section aria-labelledby="files-title">
+        <h2 id="files-title" class="h-sub">All files in this release</h2>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th scope="col">File</th><th scope="col">Type</th><th scope="col">Size</th></tr></thead>
+            <tbody data-dl-assets>
+              <tr><td colspan="3">See all files on <a href="https://github.com/utkarsh-1912/geocore/releases/latest">GitHub Releases</a>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted"><code>.blockmap</code> and <code>latest*.yml</code> files are used by the in-app updater; you don’t need to download them.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="section section--alt">
+  <div class="container two-col">
+    <article class="prose">
+      <h2 id="requirements">System requirements</h2>
+      <div class="table-wrap">
+        <table class="data">
+          <tbody>
+            <tr><th scope="row">Operating system</th><td>Windows 10 or 11, 64-bit (x64)<br>macOS 12 Monterey or later</td></tr>
+            <tr><th scope="row">Processor</th><td>x64 on Windows; Apple silicon (arm64) or Intel (x64) on macOS. GeoAI runs on the CPU — no GPU is needed.</td></tr>
+            <tr><th scope="row">Memory</th><td>8 GB RAM recommended. With GeoAI, plan for the model’s size plus about 1–2 GB: 8 GB suits the Qwen 2.5 (1.5B Instruct), Qwen 2.5 (3B Instruct), Gemma 2 (2.6B IT) models; 16 GB is advisable for the larger ones.</td></tr>
+            <tr><th scope="row">Disk space</th><td>At least 1 GB free for the app, plus 986 MB–5.3 GB for each GeoAI model you download.</td></tr>
+            <tr><th scope="row">Internet</th><td>Not required to run. Used only for update checks and optional model downloads — see <a href="privacy.html">Privacy</a>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Memory figures are guidance based on model file sizes, not measured benchmarks.</p>
+      <div class="callout callout--warn">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-alert"></use></svg>
+        <p><strong>Intel Macs:</strong> release builds are produced on Apple silicon build machines, and the bundled Python calculation engine is compiled for the build machine’s processor. The Intel (x64) macOS package may therefore start without a working calculation engine. If you try it on an Intel Mac, please <a href="https://github.com/utkarsh-1912/geocore/issues">report how it goes</a>.</p>
+      </div>
+
+      <h2 id="install">Install on Windows</h2>
+      <ol class="steps">
+        <li>Download <code>GeoCore-Setup-&lt;version&gt;.exe</code> and run it.</li>
+        <li><strong>SmartScreen:</strong> the installer is not code-signed yet, so Windows may show “Windows protected your PC”. Choose <em>More info</em> → <em>Run anyway</em>.</li>
+        <li>The installer is per-user and does not need administrator rights. You can change the install folder; it creates Start-menu and desktop shortcuts.</li>
+      </ol>
+
+      <h2 id="install-mac">Install on macOS</h2>
+      <ol class="steps">
+        <li>Download the <code>.dmg</code> for your Mac (<code>-arm64</code> for Apple silicon), open it and drag <strong>GeoCore</strong> to <strong>Applications</strong>.</li>
+        <li><strong>Gatekeeper:</strong> builds are ad-hoc signed but not notarised by Apple, so the first launch is blocked. Open <em>System Settings → Privacy &amp; Security</em> and choose <em>Open Anyway</em> for GeoCore.</li>
+        <li>If macOS reports that the app “is damaged”, the download quarantine flag is the cause. If you trust the download, clear it with:
+          <pre><code>xattr -dr com.apple.quarantine /Applications/GeoCore.app</code></pre>
+        </li>
+      </ol>
+
+      <h2 id="first-run">First run</h2>
+      <ul>
+        <li>GeoCore starts its calculation engine in the background when it opens; the first launch can take a little longer than later ones.</li>
+        <li><strong>Updates:</strong> installed builds check GitHub for a new version about 15 seconds after launch. On Windows, updates download in the background and install when you quit. On macOS, automatic updates need a signed build, so install new versions from this page.</li>
+        <li>Nothing else needs to be online. Without a network connection the update check simply fails and GeoCore works as normal.</li>
+      </ul>
+
+      <h2 id="geoai-models">GeoAI models</h2>
+      <p>GeoAI needs a local language model in GGUF format. Models are <strong>not</strong> included in the installer; you choose one inside GeoCore:</p>
+      <ol class="steps">
+        <li>Open <strong>GeoAI</strong> in GeoCore and open its model list.</li>
+        <li>Pick a model. GeoCore downloads it from Hugging Face into your models folder and makes it the active model.</li>
+        <li>Already have a <code>.gguf</code> file? Select it by path instead, or copy it into the models folder: <code>%APPDATA%\GeoCore\models</code> on Windows, <code>~/.geocore/models</code> on macOS.</li>
+      </ol>
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th scope="col">Model</th><th scope="col">Download</th><th scope="col">Source (Hugging Face)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Qwen 2.5 (1.5B Instruct)</td>
+              <td class="num">986 MB</td>
+              <td><a href="https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF">Qwen/Qwen2.5-1.5B-Instruct-GGUF</a></td>
+            </tr>
+            <tr>
+              <td>Qwen 2.5 (3B Instruct)</td>
+              <td class="num">2.0 GB</td>
+              <td><a href="https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF">Qwen/Qwen2.5-3B-Instruct-GGUF</a></td>
+            </tr>
+            <tr>
+              <td>Qwen 2.5 (7B Instruct)</td>
+              <td class="num">4.3 GB</td>
+              <td><a href="https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF">Qwen/Qwen2.5-7B-Instruct-GGUF</a></td>
+            </tr>
+            <tr>
+              <td>Gemma 2 (2.6B IT)</td>
+              <td class="num">1.6 GB</td>
+              <td><a href="https://huggingface.co/bartowski/gemma-2-2b-it-GGUF">bartowski/gemma-2-2b-it-GGUF</a></td>
+            </tr>
+            <tr>
+              <td>Gemma 2 (9B IT)</td>
+              <td class="num">5.3 GB</td>
+              <td><a href="https://huggingface.co/bartowski/gemma-2-9b-it-GGUF">bartowski/gemma-2-9b-it-GGUF</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">All models are 4-bit (Q4_K_M) quantisations. Each model is published under its creator’s licence. Model choice for GeoAI is still being benchmarked; the smallest model is the quickest place to start.</p>
+
+      <h2 id="source">Run from source</h2>
+      <p>On Linux, or to develop GeoCore, run it from source with Node.js 18+ and Python 3.10+. The <a href="https://github.com/utkarsh-1912/geocore#-developer-quick-start">README</a> has step-by-step instructions.</p>
+    </article>
+    <aside class="two-col__aside">
+      <nav class="aside-nav" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>
+          <li><a href="#requirements">System requirements</a></li>
+          <li><a href="#install">Install on Windows</a></li>
+          <li><a href="#install-mac">Install on macOS</a></li>
+          <li><a href="#first-run">First run</a></li>
+          <li><a href="#geoai-models">GeoAI models</a></li>
+          <li><a href="#source">Run from source</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="./">
+            <img src="assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="index.html#integrations">Integrations</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js?v=118a059abb" defer></script>
+<script src="assets/js/download.js?v=2c8af633c4" defer></script></body>
+</html>

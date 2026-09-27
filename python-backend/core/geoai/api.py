@@ -88,7 +88,7 @@ def invoke_geoai_tool(payload: Dict[str, Any] = Body(...)):
 # --- Agent Chat Endpoint (with optional SSE streaming) ---
 
 @router.post("/chat")
-async def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False)):
+def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False)):
     """
     GeoAI Agent chat endpoint.
     Uses the configured ModelProvider (llama.cpp SLM or heuristic fallback)

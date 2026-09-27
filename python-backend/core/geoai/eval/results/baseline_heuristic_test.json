@@ -1,0 +1,3657 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "label": "heuristic-baseline-maxtools5",
+  "provider": "heuristic",
+  "model_info": {
+   "provider": "heuristic",
+   "name": "GeoAI Heuristic Engine",
+   "description": "Rule-based keyword matching and regex parameter extraction"
+  },
+  "split": "test",
+  "limit": null,
+  "turn_type": null,
+  "mode": "agent",
+  "n_ctx": null,
+  "llama_tool_choice": null,
+  "dataset_generator_version": "1.0.0",
+  "dataset_seed": 20260926,
+  "timestamp_utc": "2026-09-27T03:30:35+00:00",
+  "python": "3.13.1",
+  "platform": "win32"
+ },
+ "metrics": {
+  "n": 266,
+  "mean_score": 0.3473,
+  "strict_pass_rate": 0.0752,
+  "action_accuracy": 0.4173,
+  "tool_selection_accuracy": 0.6937,
+  "tool_selection_accuracy_incl_equivalent": 0.6937,
+  "argument_accuracy": 0.3329,
+  "schema_valid_rate": 0.2068,
+  "clarification_accuracy": 0.0,
+  "clarification_keyword_score": 0.0,
+  "hallucinated_parameter_rate": 0.0,
+  "hallucinated_tool_rate": 0.0,
+  "unit_trap_accuracy": 0.0333,
+  "execution_match_rate": 0.2597,
+  "final_answer_grounding": 0.0,
+  "caution_violation_rate": null,
+  "selector_recall": 0.5946,
+  "error_rate": 0.0,
+  "latency_p50_s": 0.244,
+  "latency_p95_s": 0.504,
+  "decision_latency_p50_s": 0.0026,
+  "decision_latency_p95_s": 0.0292,
+  "per_category": {
+   "ambiguous_request": {
+    "n": 12,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "conflicting_data": {
+    "n": 39,
+    "pass_rate": 0.0,
+    "mean_score": 0.3077,
+    "action_accuracy": 0.0
+   },
+   "correct_request": {
+    "n": 99,
+    "pass_rate": 0.202,
+    "mean_score": 0.4348,
+    "action_accuracy": 0.7576
+   },
+   "missing_data": {
+    "n": 34,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "research": {
+    "n": 18,
+    "pass_rate": 0.0,
+    "mean_score": 0.2167,
+    "action_accuracy": 0.6667
+   },
+   "tool_failure": {
+    "n": 23,
+    "pass_rate": 0.0,
+    "mean_score": 0.2911,
+    "action_accuracy": 0.0
+   },
+   "turn:decision": {
+    "n": 218,
+    "pass_rate": 0.0917,
+    "mean_score": 0.3607,
+    "action_accuracy": 0.5092
+   },
+   "turn:final_answer": {
+    "n": 48,
+    "pass_rate": 0.0,
+    "mean_score": 0.2865,
+    "action_accuracy": 0.0
+   },
+   "wrong_units": {
+    "n": 41,
+    "pass_rate": 0.0,
+    "mean_score": 0.3317,
+    "action_accuracy": 0.5854
+   }
+  },
+  "model_load_s": null,
+  "peak_memory_mb": 168.9,
+  "memory_at_start_mb": 102.2,
+  "wall_time_s": 74.58
+ },
+ "per_example": {
+  "correct_request-ca553cb838": [
+   1.0,
+   true
+  ],
+  "correct_request-ba6dc15195": [
+   1.0,
+   true
+  ],
+  "correct_request-ba6dc15195__final": [
+   0.375,
+   false
+  ],
+  "correct_request-fd3b05b0b1": [
+   1.0,
+   true
+  ],
+  "correct_request-36af1ae1a5": [
+   1.0,
+   true
+  ],
+  "correct_request-ee9a465d7f": [
+   1.0,
+   true
+  ],
+  "correct_request-cf2db0a485": [
+   1.0,
+   true
+  ],
+  "correct_request-cf2db0a485__final": [
+   0.375,
+   false
+  ],
+  "correct_request-09eb6d67a3": [
+   1.0,
+   true
+  ],
+  "correct_request-563d536817": [
+   0.25,
+   false
+  ],
+  "correct_request-f220ddfe70": [
+   0.25,
+   false
+  ],
+  "correct_request-f220ddfe70__final": [
+   0.25,
+   false
+  ],
+  "correct_request-4c6a468f25": [
+   0.25,
+   false
+  ],
+  "correct_request-63ed2c3e30": [
+   0.25,
+   false
+  ],
+  "correct_request-d2a8bd7a5b": [
+   0.425,
+   false
+  ],
+  "correct_request-d2a8bd7a5b__final": [
+   0.25,
+   false
+  ],
+  "missing_data-9cfdddc55f": [
+   0.285714,
+   false
+  ],
+  "missing_data-1e05318583": [
+   0.285714,
+   false
+  ],
+  "correct_request-950825ec6c": [
+   1.0,
+   true
+  ],
+  "correct_request-950825ec6c__final": [
+   0.375,
+   false
+  ],
+  "correct_request-17da99757d": [
+   1.0,
+   true
+  ],
+  "correct_request-b94588b388": [
+   1.0,
+   true
+  ],
+  "missing_data-b00867aff7": [
+   0.285714,
+   false
+  ],
+  "missing_data-522b6896e9": [
+   0.285714,
+   false
+  ],
+  "correct_request-332ff35f36": [
+   1.0,
+   true
+  ],
+  "correct_request-332ff35f36__final": [
+   0.375,
+   false
+  ],
+  "correct_request-33b43b28aa": [
+   0.483333,
+   false
+  ],
+  "correct_request-be23fdfa91": [
+   0.366667,
+   false
+  ],
+  "correct_request-5c923993df": [
+   1.0,
+   true
+  ],
+  "correct_request-5c923993df__final": [
+   0.375,
+   false
+  ],
+  "missing_data-f6f66ad180": [
+   0.285714,
+   false
+  ],
+  "correct_request-19022a09b6": [
+   1.0,
+   true
+  ],
+  "correct_request-19022a09b6__final": [
+   0.375,
+   false
+  ],
+  "correct_request-dc3ea30bc3": [
+   1.0,
+   true
+  ],
+  "correct_request-7c40e04eda": [
+   1.0,
+   true
+  ],
+  "correct_request-3de2b47f91": [
+   0.425,
+   false
+  ],
+  "correct_request-3de2b47f91__final": [
+   0.25,
+   false
+  ],
+  "correct_request-3da8f1514e": [
+   0.46,
+   false
+  ],
+  "correct_request-3da8f1514e__final": [
+   0.25,
+   false
+  ],
+  "correct_request-95c9f060b3": [
+   0.39,
+   false
+  ],
+  "correct_request-ed470fecf8": [
+   0.46,
+   false
+  ],
+  "correct_request-a1d2d480b3": [
+   0.425,
+   false
+  ],
+  "correct_request-16a1a37f9f": [
+   0.2,
+   false
+  ],
+  "correct_request-c350b3160d": [
+   0.2,
+   false
+  ],
+  "correct_request-c350b3160d__final": [
+   0.25,
+   false
+  ],
+  "correct_request-97feb0bc12": [
+   0.483333,
+   false
+  ],
+  "correct_request-e90aef8906": [
+   0.25,
+   false
+  ],
+  "correct_request-ca5d62161d": [
+   0.46,
+   false
+  ],
+  "correct_request-ca5d62161d__final": [
+   0.25,
+   false
+  ],
+  "correct_request-96ebc10673": [
+   0.2,
+   false
+  ],
+  "correct_request-f91bc0943f": [
+   0.2,
+   false
+  ],
+  "missing_data-effc4498ba": [
+   0.285714,
+   false
+  ],
+  "missing_data-95a6460a32": [
+   0.285714,
+   false
+  ],
+  "correct_request-a1223d1317": [
+   0.2,
+   false
+  ],
+  "missing_data-2e38c1c300": [
+   0.285714,
+   false
+  ],
+  "correct_request-2a6a2b8621": [
+   0.2,
+   false
+  ],
+  "correct_request-d24fc404f5": [
+   0.25,
+   false
+  ],
+  "correct_request-dff5dee2a9": [
+   1.0,
+   true
+  ],
+  "correct_request-99869ae441": [
+   1.0,
+   true
+  ],
+  "correct_request-99869ae441__final": [
+   0.375,
+   false
+  ],
+  "correct_request-024d7a9a74": [
+   1.0,
+   true
+  ],
+  "correct_request-5ec3ca51a3": [
+   1.0,
+   true
+  ],
+  "missing_data-cee539c7c7": [
+   0.285714,
+   false
+  ],
+  "missing_data-626dad75b2": [
+   0.285714,
+   false
+  ],
+  "correct_request-a19715e4df": [
+   0.2,
+   false
+  ],
+  "missing_data-87d1e01b2b": [
+   0.285714,
+   false
+  ],
+  "correct_request-f83a97a14b": [
+   0.2,
+   false
+  ],
+  "missing_data-3f0cbc639a": [
+   0.285714,
+   false
+  ],
+  "correct_request-5d93ea76ee": [
+   0.425,
+   false
+  ],
+  "correct_request-5d93ea76ee__final": [
+   0.25,
+   false
+  ],
+  "correct_request-6ddecb2508": [
+   0.3375,
+   false
+  ],
+  "correct_request-5bc8789609": [
+   0.2,
+   false
+  ],
+  "correct_request-b0fcf47d4b": [
+   0.3375,
+   false
+  ],
+  "correct_request-b0fcf47d4b__final": [
+   0.25,
+   false
+  ],
+  "correct_request-43845c39d0": [
+   0.2,
+   false
+  ],
+  "missing_data-7e995ed2eb": [
+   0.285714,
+   false
+  ],
+  "correct_request-8c74e2711a": [
+   0.25,
+   false
+  ],
+  "missing_data-6557f6447b": [
+   0.285714,
+   false
+  ],
+  "correct_request-ba6d87b0ee": [
+   0.2,
+   false
+  ],
+  "correct_request-9d7ac472c8": [
+   0.32,
+   false
+  ],
+  "correct_request-9d7ac472c8__final": [
+   0.25,
+   false
+  ],
+  "correct_request-d4dbd928a1": [
+   0.2,
+   false
+  ],
+  "correct_request-ac6235c827": [
+   0.2,
+   false
+  ],
+  "correct_request-2505c0a3f0": [
+   0.25,
+   false
+  ],
+  "correct_request-ed036aa7ec": [
+   0.25,
+   false
+  ],
+  "correct_request-ed036aa7ec__final": [
+   0.25,
+   false
+  ],
+  "correct_request-9a7048ba0f": [
+   0.25,
+   false
+  ],
+  "correct_request-0bc39e8f92": [
+   0.2,
+   false
+  ],
+  "correct_request-0bc39e8f92__final": [
+   0.375,
+   false
+  ],
+  "correct_request-1eb0bef0fa": [
+   0.5125,
+   false
+  ],
+  "correct_request-c4fb888376": [
+   1.0,
+   true
+  ],
+  "correct_request-b9fd0d0a32": [
+   0.5125,
+   false
+  ],
+  "correct_request-b9fd0d0a32__final": [
+   0.375,
+   false
+  ],
+  "correct_request-a29aa98a88": [
+   0.2,
+   false
+  ],
+  "correct_request-b2968a4eb3": [
+   0.2,
+   false
+  ],
+  "correct_request-b2968a4eb3__final": [
+   0.25,
+   false
+  ],
+  "correct_request-47a756cc89": [
+   0.25,
+   false
+  ],
+  "correct_request-01b2c5a31b": [
+   0.425,
+   false
+  ],
+  "correct_request-01b2c5a31b__final": [
+   0.25,
+   false
+  ],
+  "correct_request-9d59c5e888": [
+   0.425,
+   false
+  ],
+  "correct_request-d677d47296": [
+   0.25,
+   false
+  ],
+  "correct_request-51c6f635b2": [
+   0.25,
+   false
+  ],
+  "correct_request-51c6f635b2__final": [
+   0.25,
+   false
+  ],
+  "correct_request-0067b3fd9b": [
+   0.2,
+   false
+  ],
+  "correct_request-49d460203a": [
+   0.2,
+   false
+  ],
+  "correct_request-901d47d2b5": [
+   0.2,
+   false
+  ],
+  "correct_request-901d47d2b5__final": [
+   0.25,
+   false
+  ],
+  "correct_request-650aac2331": [
+   0.2,
+   false
+  ],
+  "missing_data-d52c88bd87": [
+   0.285714,
+   false
+  ],
+  "correct_request-1f47d174b6": [
+   0.25,
+   false
+  ],
+  "correct_request-1f47d174b6__final": [
+   0.25,
+   false
+  ],
+  "correct_request-eb3dfeb831": [
+   0.25,
+   false
+  ],
+  "correct_request-84e5db9c03": [
+   0.25,
+   false
+  ],
+  "missing_data-952f305717": [
+   0.285714,
+   false
+  ],
+  "missing_data-3aa4f477e6": [
+   0.285714,
+   false
+  ],
+  "correct_request-e0392ce9a9": [
+   0.25,
+   false
+  ],
+  "missing_data-f5d5d85464": [
+   0.285714,
+   false
+  ],
+  "missing_data-2f4a298bea": [
+   0.285714,
+   false
+  ],
+  "missing_data-6da42d6791": [
+   0.285714,
+   false
+  ],
+  "missing_data-80a6e7b1f3": [
+   0.285714,
+   false
+  ],
+  "missing_data-d96e654cc7": [
+   0.285714,
+   false
+  ],
+  "missing_data-6a828d4b2e": [
+   0.285714,
+   false
+  ],
+  "missing_data-bf51c6ec6f": [
+   0.285714,
+   false
+  ],
+  "missing_data-6c6a2bc236": [
+   0.285714,
+   false
+  ],
+  "missing_data-e8969c62b9": [
+   0.285714,
+   false
+  ],
+  "missing_data-a90add6fff": [
+   0.285714,
+   false
+  ],
+  "missing_data-09cbd1905d": [
+   0.285714,
+   false
+  ],
+  "missing_data-9fd21a1195": [
+   0.285714,
+   false
+  ],
+  "missing_data-d247cbe3d8": [
+   0.285714,
+   false
+  ],
+  "missing_data-642e2fdfc8": [
+   0.285714,
+   false
+  ],
+  "missing_data-16e7dc96ac": [
+   0.285714,
+   false
+  ],
+  "missing_data-358c308afb": [
+   0.285714,
+   false
+  ],
+  "missing_data-91048ca380": [
+   0.285714,
+   false
+  ],
+  "wrong_units-4990d7dfa9": [
+   0.483333,
+   false
+  ],
+  "wrong_units-11a942238d": [
+   0.25,
+   false
+  ],
+  "wrong_units-11a942238d__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-c061e6b753": [
+   0.25,
+   false
+  ],
+  "wrong_units-c061e6b753__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-8657be5d29": [
+   0.25,
+   false
+  ],
+  "wrong_units-b6bc04045d": [
+   0.323529,
+   false
+  ],
+  "wrong_units-e0cd4ca782": [
+   0.425,
+   false
+  ],
+  "wrong_units-e0cd4ca782__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-1008f17d19": [
+   0.366667,
+   false
+  ],
+  "wrong_units-1008f17d19__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-58f913eaee": [
+   0.323529,
+   false
+  ],
+  "wrong_units-f5c432a4e8": [
+   0.425,
+   false
+  ],
+  "wrong_units-4533727af2": [
+   0.425,
+   false
+  ],
+  "wrong_units-6affe64131": [
+   0.352941,
+   false
+  ],
+  "wrong_units-a5e21ed4e3": [
+   0.352941,
+   false
+  ],
+  "wrong_units-5b9656b0eb": [
+   0.352941,
+   false
+  ],
+  "wrong_units-68fc4bcc4e": [
+   0.425,
+   false
+  ],
+  "wrong_units-68fc4bcc4e__final": [
+   0.375,
+   false
+  ],
+  "wrong_units-9799f453cf": [
+   0.235294,
+   false
+  ],
+  "wrong_units-731d848105": [
+   0.39,
+   false
+  ],
+  "wrong_units-731d848105__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-c2a2061e34": [
+   0.39,
+   false
+  ],
+  "wrong_units-c2a2061e34__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-d7cb225e86": [
+   0.366667,
+   false
+  ],
+  "wrong_units-eb753f9845": [
+   0.483333,
+   false
+  ],
+  "wrong_units-852f890d5b": [
+   0.5125,
+   false
+  ],
+  "wrong_units-5e244d9ead": [
+   0.2,
+   false
+  ],
+  "wrong_units-5e244d9ead__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-b6bb93d15a": [
+   0.425,
+   false
+  ],
+  "wrong_units-af69eb5c88": [
+   0.2,
+   false
+  ],
+  "wrong_units-af69eb5c88__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-8e26bd81fe": [
+   0.483333,
+   false
+  ],
+  "wrong_units-8e26bd81fe__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-12d138fbbe": [
+   0.483333,
+   false
+  ],
+  "wrong_units-493c9a875f": [
+   0.25,
+   false
+  ],
+  "wrong_units-1938f6c80b": [
+   0.25,
+   false
+  ],
+  "wrong_units-7f2dfdf6f9": [
+   0.25,
+   false
+  ],
+  "wrong_units-283d699da6": [
+   0.25,
+   false
+  ],
+  "wrong_units-283d699da6__final": [
+   0.375,
+   false
+  ],
+  "wrong_units-1330c61cda": [
+   0.425,
+   false
+  ],
+  "conflicting_data-ed1ec62cab": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-a98762b544": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-415f471bd9": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-1a80139b94": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-d9610ac6f2": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-7ae5ef3687": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-12ac4893ac": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-780858ee85": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-254b534f39": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-d1639bf1dc": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-3d8a3ec792": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-b7e05d4c80": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-9bfec06c7a": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-d0f1b82e4e": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-849bb3f365": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-3f92d4ec5b": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-da1fcecddc": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-e1c866e7eb": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-b844410930": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-a495c8e14b": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-98cd0aee73": [
+   0.428571,
+   false
+  ],
+  "conflicting_data-303412538b": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-7ea223f29b": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-ed4977ccb4": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-91b0d95d8c": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-d67b578335": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-1f118fff00": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-a265b8d98f": [
+   0.25,
+   false
+  ],
+  "conflicting_data-cbf888a38c": [
+   0.25,
+   false
+  ],
+  "conflicting_data-d47ef0b196": [
+   0.25,
+   false
+  ],
+  "conflicting_data-f02d80d69d": [
+   0.25,
+   false
+  ],
+  "conflicting_data-130222f48a": [
+   0.25,
+   false
+  ],
+  "conflicting_data-fb7bf2363e": [
+   0.25,
+   false
+  ],
+  "conflicting_data-a67a7d11fb": [
+   0.25,
+   false
+  ],
+  "conflicting_data-b650782822": [
+   0.25,
+   false
+  ],
+  "conflicting_data-c1e3fc7b9b": [
+   0.25,
+   false
+  ],
+  "conflicting_data-6ee884e389": [
+   0.25,
+   false
+  ],
+  "conflicting_data-df72dc80d4": [
+   0.25,
+   false
+  ],
+  "conflicting_data-a965033fdd": [
+   0.25,
+   false
+  ],
+  "ambiguous_request-63c58ec5ce": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-6fb53d3e21": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-5465b548e5": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-1b39895d2a": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-71d7243a25": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-5987995d4b": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-c4218320a2": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-552c391161": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-d460a5131e": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-500603577c": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-19ab81c70e": [
+   0.285714,
+   false
+  ],
+  "ambiguous_request-47213338ec": [
+   0.285714,
+   false
+  ],
+  "research-4a0fcf1b26": [
+   0.2,
+   false
+  ],
+  "research-4a0fcf1b26__final": [
+   0.25,
+   false
+  ],
+  "research-d42619a8b8": [
+   0.2,
+   false
+  ],
+  "research-5eb087f418": [
+   0.2,
+   false
+  ],
+  "research-5eb087f418__final": [
+   0.25,
+   false
+  ],
+  "research-6872e23303": [
+   0.2,
+   false
+  ],
+  "research-0f5a2d607f": [
+   0.2,
+   false
+  ],
+  "research-0f5a2d607f__final": [
+   0.25,
+   false
+  ],
+  "research-e82c9b848f": [
+   0.2,
+   false
+  ],
+  "research-f7562574b9": [
+   0.2,
+   false
+  ],
+  "research-f7562574b9__final": [
+   0.25,
+   false
+  ],
+  "research-6cdf423911": [
+   0.2,
+   false
+  ],
+  "research-03755441fc": [
+   0.2,
+   false
+  ],
+  "research-03755441fc__final": [
+   0.25,
+   false
+  ],
+  "research-e83d48bc23": [
+   0.2,
+   false
+  ],
+  "research-814d2d0f7e": [
+   0.2,
+   false
+  ],
+  "research-814d2d0f7e__final": [
+   0.25,
+   false
+  ],
+  "research-5d814b0586": [
+   0.2,
+   false
+  ],
+  "tool_failure-bc373fc24b": [
+   0.285714,
+   false
+  ],
+  "tool_failure-f8659873c1": [
+   0.285714,
+   false
+  ],
+  "tool_failure-d7f60d350e": [
+   0.285714,
+   false
+  ],
+  "tool_failure-1fe393af12": [
+   0.285714,
+   false
+  ],
+  "tool_failure-c0756870a0": [
+   0.285714,
+   false
+  ],
+  "tool_failure-0bcb9e6bf4": [
+   0.285714,
+   false
+  ],
+  "tool_failure-bc3449d7a8": [
+   0.285714,
+   false
+  ],
+  "tool_failure-05f854823e": [
+   0.285714,
+   false
+  ],
+  "tool_failure-5087c9f0f1": [
+   0.285714,
+   false
+  ],
+  "tool_failure-cf10c019c3": [
+   0.285714,
+   false
+  ],
+  "tool_failure-399ba5251c": [
+   0.285714,
+   false
+  ],
+  "tool_failure-ad9156a55c": [
+   0.285714,
+   false
+  ],
+  "tool_failure-882dfcd19f": [
+   0.285714,
+   false
+  ],
+  "tool_failure-f6908914fd": [
+   0.285714,
+   false
+  ],
+  "tool_failure-3011f20006": [
+   0.285714,
+   false
+  ],
+  "tool_failure-c9fd908076": [
+   0.285714,
+   false
+  ],
+  "tool_failure-298b9cdc39__final": [
+   0.25,
+   false
+  ],
+  "tool_failure-84d8f4377a__final": [
+   0.375,
+   false
+  ],
+  "tool_failure-321cae0640__final": [
+   0.375,
+   false
+  ],
+  "tool_failure-090ceb2187__final": [
+   0.375,
+   false
+  ],
+  "tool_failure-3bd0200a2b__final": [
+   0.25,
+   false
+  ],
+  "tool_failure-5050e10857__final": [
+   0.25,
+   false
+  ],
+  "tool_failure-5c4a3fb633__final": [
+   0.25,
+   false
+  ]
+ },
+ "records": [
+  {
+   "id": "ambiguous_request-19ab81c70e",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.1886,
+   "decision_latency_s": 0.0011,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-12ac4893ac",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_pipeline_contact_width",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_pipeline_contact_width",
+    "predicted_arguments": {
+     "diameter": 0.34
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_pipeline_contact_width' but expected clarify",
+     "arguments fail schema validation: 1 validation error for ContactWidthInput"
+    ]
+   },
+   "latency_s": 0.2829,
+   "decision_latency_s": 0.0196,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-0067b3fd9b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "porosity_voidratio",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_void_ratio_from_porosity' (expected 'porosity_voidratio')",
+     "arguments fail schema validation: 1 validation error for VoidRatioPorosityInput"
+    ]
+   },
+   "latency_s": 0.2346,
+   "decision_latency_s": 0.0017,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-09cbd1905d",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "stresses_stripload",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "stresses_stripload",
+    "predicted_arguments": {
+     "x": 1.2,
+     "width": 1.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'stresses_stripload' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for StressesStriploadInput"
+    ]
+   },
+   "latency_s": 0.3059,
+   "decision_latency_s": 0.0075,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-03755441fc",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "k0_frictionangle_mesri",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'k0_frictionangle_mesri' (expected 'search_local_documents')",
+     "arguments fail schema validation: 1 validation error for K0FrictionangleMesriInput"
+    ]
+   },
+   "latency_s": 0.2301,
+   "decision_latency_s": 0.0019,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-05f854823e",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "normalize_spt_test",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "normalize_spt_test",
+    "predicted_arguments": {
+     "raw_n": -14,
+     "depth": 3.5
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'normalize_spt_test' but expected reject",
+     "arguments fail schema validation: 1 validation error for NormalizeSPTInput"
+    ]
+   },
+   "latency_s": 0.2712,
+   "decision_latency_s": 0.0429,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.3333333333333333,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.366667,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "z": 13.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for StressesPointloadInput",
+     "argument mismatch: pointload: expected 1521.0, got None; poissonsratio: expected 0.32, got 0.3",
+     "unit conversion trap failed for 'pointload' (given 1.521 MN; expected 1521.0, got None)",
+     "tool execution failed: Tool 'calculate_stresses_point_load' input validation failed: 1 validation error for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.4243,
+   "decision_latency_s": 0.0022,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-1b39895d2a",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.3399,
+   "decision_latency_s": 0.0019,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-130222f48a",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "cyclicstrength_dsssand_relativedensity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'cyclicstrength_dsssand_relativedensity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for CyclicstrengthDsssandRelativedensityInput"
+    ]
+   },
+   "latency_s": 0.2816,
+   "decision_latency_s": 0.002,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "overburdencorrection_spt_liaowhitman",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.5,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.425,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "overburdencorrection_spt_liaowhitman",
+    "predicted_arguments": {
+     "N": 26
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for OverburdencorrectionSptLiaowhitmanInput",
+     "argument mismatch: sigma_vo_eff: expected 102.0, got None",
+     "tool execution failed: Tool 'overburdencorrection_spt_liaowhitman' input validation failed: 1 validation error for OverburdencorrectionSptLiaowhitmanInput"
+    ]
+   },
+   "latency_s": 0.233,
+   "decision_latency_s": 0.0074,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-16e7dc96ac",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "earthpressurecoefficients_poncelet",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_poncelet",
+    "predicted_arguments": {
+     "phi_eff": 30,
+     "interface_friction_angle": 20,
+     "wall_angle": 4
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'earthpressurecoefficients_poncelet' but expected clarify",
+     "arguments fail schema validation: 1 validation error for EarthpressurecoefficientsPonceletInput"
+    ]
+   },
+   "latency_s": 0.4844,
+   "decision_latency_s": 0.0196,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-03755441fc__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "k0_frictionangle_mesri",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'k0_frictionangle_mesri' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for K0FrictionangleMesriInput"
+    ]
+   },
+   "latency_s": 0.0014,
+   "decision_latency_s": 0.0014,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-090ceb2187__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "classify_cpt_soil_behavior",
+    "predicted_arguments": {
+     "qc_mpa": 24.7,
+     "fs_kpa": 175,
+     "depth": 14.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'classify_cpt_soil_behavior' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.0299,
+   "decision_latency_s": 0.0299,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "z": 13.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.0018,
+   "decision_latency_s": 0.0018,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-47213338ec",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.3083,
+   "decision_latency_s": 0.0015,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-1a80139b94",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "z": 4.9
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected clarify",
+     "arguments fail schema validation: 1 validation error for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.2919,
+   "decision_latency_s": 0.0076,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "overburdencorrection_spt_liaowhitman",
+    "predicted_arguments": {
+     "N": 26
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'overburdencorrection_spt_liaowhitman' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for OverburdencorrectionSptLiaowhitmanInput"
+    ]
+   },
+   "latency_s": 0.0015,
+   "decision_latency_s": 0.0015,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-1e05318583",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.2219,
+   "decision_latency_s": 0.0018,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_gmax_from_shear_wave_velocity' (expected 'search_local_documents')",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.2064,
+   "decision_latency_s": 0.0026,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-0bcb9e6bf4",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "calculate_pipeline_contact_width",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_pipeline_contact_width",
+    "predicted_arguments": {
+     "diameter": 0.56,
+     "penetration": -0.1
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_pipeline_contact_width' but expected reject",
+     "arguments fail schema validation: 1 validation error for ContactWidthInput"
+    ]
+   },
+   "latency_s": 0.2028,
+   "decision_latency_s": 0.0064,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-11a942238d",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "calculate_void_ratio_from_porosity",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {
+     "porosity": 28
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for VoidRatioPorosityInput",
+     "argument mismatch: porosity: expected 0.28, got 28",
+     "unit conversion trap failed for 'porosity' (given 28%; expected 0.28, got 28)",
+     "tool execution failed: Tool 'calculate_void_ratio_from_porosity' input validation failed: 1 validation error for VoidRatioPorosityInput"
+    ]
+   },
+   "latency_s": 0.5139,
+   "decision_latency_s": 0.0014,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-500603577c",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.1984,
+   "decision_latency_s": 0.0012,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-1f118fff00",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'unitweight_watercontent_saturated' but expected clarify",
+     "arguments fail schema validation: 1 validation error for UnitweightWatercontentSaturatedInput"
+    ]
+   },
+   "latency_s": 0.242,
+   "decision_latency_s": 0.0041,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-0bc39e8f92",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "earthpressurecoefficients_poncelet",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 1.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_frictionangle",
+    "predicted_arguments": {
+     "phi_eff": 23
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'earthpressurecoefficients_frictionangle' (expected 'earthpressurecoefficients_poncelet')"
+    ]
+   },
+   "latency_s": 0.3898,
+   "decision_latency_s": 0.0018,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-2e38c1c300",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "fs_kpa": 96,
+     "depth": 24.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify",
+     "arguments fail schema validation: 1 validation error for DeriveCPTParametersInput"
+    ]
+   },
+   "latency_s": 0.2278,
+   "decision_latency_s": 0.0059,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0022,
+   "decision_latency_s": 0.0022,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-1fe393af12",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected reject",
+     "arguments fail schema validation: 2 validation errors for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.189,
+   "decision_latency_s": 0.0031,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-11a942238d__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {
+     "porosity": 28
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_void_ratio_from_porosity' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for VoidRatioPorosityInput"
+    ]
+   },
+   "latency_s": 0.0022,
+   "decision_latency_s": 0.0021,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-5465b548e5",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.2967,
+   "decision_latency_s": 0.0019,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-254b534f39",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "normalize_spt_test",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "normalize_spt_test",
+    "predicted_arguments": {
+     "raw_n": 19,
+     "depth": 4.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'normalize_spt_test' but expected clarify"
+    ]
+   },
+   "latency_s": 0.3081,
+   "decision_latency_s": 0.0481,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-0bc39e8f92__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_frictionangle",
+    "predicted_arguments": {
+     "phi_eff": 23
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'earthpressurecoefficients_frictionangle' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.0019,
+   "decision_latency_s": 0.0019,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-2f4a298bea",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_bulk_unit_weight",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_bulk_unit_weight",
+    "predicted_arguments": {
+     "saturation": 0.47
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_bulk_unit_weight' but expected clarify",
+     "arguments fail schema validation: 1 validation error for BulkUnitWeightInput"
+    ]
+   },
+   "latency_s": 0.3422,
+   "decision_latency_s": 0.0026,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-4a0fcf1b26",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_gmax_from_shear_wave_velocity' (expected 'search_local_documents')",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.2499,
+   "decision_latency_s": 0.0269,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-298b9cdc39__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_earth_pressure_rankine",
+    "predicted_arguments": {
+     "top_angle": 26
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_earth_pressure_rankine' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for EarthPressureRankineInput"
+    ]
+   },
+   "latency_s": 0.0239,
+   "decision_latency_s": 0.0238,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-12d138fbbe",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.6666666666666666,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.483333,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "qc_mpa": 10.3,
+     "fs_kpa": 50
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for DeriveCPTParametersInput",
+     "argument mismatch: depth: expected 11.899392, got None",
+     "unit conversion trap failed for 'depth' (given 39.04 ft; expected 11.899392, got None)",
+     "tool execution failed: Tool 'derive_cpt_parameters' input validation failed: 1 validation error for DeriveCPTParametersInput"
+    ]
+   },
+   "latency_s": 0.3563,
+   "decision_latency_s": 0.0019,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-552c391161",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_bulk_unit_weight",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_bulk_unit_weight' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for BulkUnitWeightInput"
+    ]
+   },
+   "latency_s": 0.2366,
+   "decision_latency_s": 0.0014,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-303412538b",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "dryunitweight_watercontent",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_bulk_unit_weight",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_bulk_unit_weight' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for BulkUnitWeightInput"
+    ]
+   },
+   "latency_s": 0.2099,
+   "decision_latency_s": 0.0026,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-16a1a37f9f",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "normalize_spt_test",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "spt_N60_correction",
+    "predicted_arguments": {
+     "N": 44
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'spt_N60_correction' (expected 'normalize_spt_test')",
+     "arguments fail schema validation: 5 validation errors for SptN60CorrectionInput"
+    ]
+   },
+   "latency_s": 0.2095,
+   "decision_latency_s": 0.0204,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-358c308afb",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "dryunitweight_watercontent",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "bulkunitweight_dryunitweight",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'bulkunitweight_dryunitweight' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for BulkunitweightDryunitweightInput"
+    ]
+   },
+   "latency_s": 0.396,
+   "decision_latency_s": 0.0097,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-4a0fcf1b26__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0013,
+   "decision_latency_s": 0.0013,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-3011f20006",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "undrainedshearstrength_clay_radlunne",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'undrainedshearstrength_clay_radlunne' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for UndrainedshearstrengthClayRadlunneInput"
+    ]
+   },
+   "latency_s": 0.3813,
+   "decision_latency_s": 0.0027,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-1330c61cda",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 1.0,
+    "arguments": 0.5,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.425,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {
+     "water_content": 36,
+     "specific_gravity": 2.63
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "argument mismatch: water_content: expected 0.36, got 36.0",
+     "unit conversion trap failed for 'water_content' (given 36%; expected 0.36, got 36.0)",
+     "Groundhog result differs from expected for ['gamma [kN/m3]']"
+    ]
+   },
+   "latency_s": 0.3125,
+   "decision_latency_s": 0.0072,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-5987995d4b",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "lay_touchdown_factor",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'lay_touchdown_factor' but expected clarify",
+     "arguments fail schema validation: 5 validation errors for LayTouchdownFactorInput"
+    ]
+   },
+   "latency_s": 0.2017,
+   "decision_latency_s": 0.0013,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-3d8a3ec792",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "qc_mpa": 18.8,
+     "fs_kpa": 144,
+     "Nkt": 19.0
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify",
+     "arguments fail schema validation: 1 validation error for DeriveCPTParametersInput"
+    ]
+   },
+   "latency_s": 0.2104,
+   "decision_latency_s": 0.0054,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-19022a09b6__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_pipeline_contact_width",
+    "predicted_arguments": {
+     "diameter": 0.62,
+     "penetration": 0.266
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_pipeline_contact_width' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.0011,
+   "decision_latency_s": 0.0011,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-3aa4f477e6",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'unitweight_watercontent_saturated' but expected clarify",
+     "arguments fail schema validation: 1 validation error for UnitweightWatercontentSaturatedInput"
+    ]
+   },
+   "latency_s": 0.2657,
+   "decision_latency_s": 0.0031,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-5d814b0586",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "k0_frictionangle_mesri",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'k0_frictionangle_mesri' (expected 'search_local_documents')",
+     "arguments fail schema validation: 1 validation error for K0FrictionangleMesriInput"
+    ]
+   },
+   "latency_s": 0.244,
+   "decision_latency_s": 0.0014,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-321cae0640__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_earth_pressure_rankine",
+    "predicted_arguments": {
+     "phi_eff": 32
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_earth_pressure_rankine' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.002,
+   "decision_latency_s": 0.0019,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-1938f6c80b",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "primaryconsolidationsettlement_nc",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "primaryconsolidationsettlement_nc",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 5 validation errors for PrimaryconsolidationsettlementNcInput",
+     "argument mismatch: compression_index: expected 0.47, got None; effective_stress_increase: expected 54.0, got None; initial_effective_stress: expected 47.0, got None; initial_height: expected 4.498848, got None; initial_voidratio: expected 1.73, got None",
+     "unit conversion trap failed for 'initial_height' (given 14.76 ft; expected 4.498848, got None)",
+     "tool execution failed: Tool 'primaryconsolidationsettlement_nc' input validation failed: 5 validation errors for PrimaryconsolidationsettlementNcInput"
+    ]
+   },
+   "latency_s": 0.4112,
+   "decision_latency_s": 0.035,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-63c58ec5ce",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.2233,
+   "decision_latency_s": 0.0013,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-3f92d4ec5b",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "k0_frictionangle_mesri",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_frictionangle",
+    "predicted_arguments": {
+     "phi_eff": 33
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'earthpressurecoefficients_frictionangle' but expected clarify"
+    ]
+   },
+   "latency_s": 0.1843,
+   "decision_latency_s": 0.0014,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-1eb0bef0fa",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "earthpressurecoefficients_poncelet",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.75,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.5125,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_poncelet",
+    "predicted_arguments": {
+     "phi_eff": 28,
+     "wall_angle": 9,
+     "top_angle": 10
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for EarthpressurecoefficientsPonceletInput",
+     "argument mismatch: interface_friction_angle: expected 19.0, got None",
+     "tool execution failed: Tool 'earthpressurecoefficients_poncelet' input validation failed: 1 validation error for EarthpressurecoefficientsPonceletInput"
+    ]
+   },
+   "latency_s": 0.4464,
+   "decision_latency_s": 0.0059,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-3f0cbc639a",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "k0_frictionangle_mesri",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_earth_pressure_rankine",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_earth_pressure_rankine' but expected clarify",
+     "arguments fail schema validation: 1 validation error for EarthPressureRankineInput"
+    ]
+   },
+   "latency_s": 0.2541,
+   "decision_latency_s": 0.0016,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-5eb087f418",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_gmax_from_shear_wave_velocity' (expected 'search_local_documents')",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.2657,
+   "decision_latency_s": 0.002,
+   "n_model_calls": 4,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-399ba5251c",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "undrainedshearstrength_clay_radlunne",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'undrainedshearstrength_clay_radlunne' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for UndrainedshearstrengthClayRadlunneInput"
+    ]
+   },
+   "latency_s": 0.2027,
+   "decision_latency_s": 0.0043,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-283d699da6",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "compressionindex_watercontent_koppula",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 1.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "compressionindex_watercontent_koppula",
+    "predicted_arguments": {
+     "water_content": 20
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "argument mismatch: water_content: expected 0.2, got 20.0",
+     "unit conversion trap failed for 'water_content' (given 20%; expected 0.2, got 20.0)",
+     "Groundhog result differs from expected for ['Cc [-]', 'Cr [-]']"
+    ]
+   },
+   "latency_s": 8.8719,
+   "decision_latency_s": 0.0137,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-6fb53d3e21",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.2456,
+   "decision_latency_s": 0.0014,
+   "n_model_calls": 4,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-415f471bd9",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_stresses_circular_footing",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {
+     "footing_radius": 5.5
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.2612,
+   "decision_latency_s": 0.013,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-1f47d174b6",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "compressionindex_watercontent_koppula",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "compressionindex_watercontent_koppula",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for CompressionindexWatercontentKoppulaInput",
+     "argument mismatch: water_content: expected 0.38, got None",
+     "tool execution failed: Tool 'compressionindex_watercontent_koppula' input validation failed: 1 validation error for CompressionindexWatercontentKoppulaInput"
+    ]
+   },
+   "latency_s": 0.2397,
+   "decision_latency_s": 0.0099,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-522b6896e9",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_gmax_from_shear_wave_velocity",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {
+     "Vs": 332
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected clarify",
+     "arguments fail schema validation: 1 validation error for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.1789,
+   "decision_latency_s": 0.0055,
+   "n_model_calls": 4,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": "Maximum tool rounds reached.",
+   "usage": null,
+   "error": null
+  }
+ ]
+}

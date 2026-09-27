@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>soilprofile — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.general.soilprofile: 6 functions, 2 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="soilprofile — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.general.soilprofile: 6 functions, 2 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+</head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/" aria-current="page">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/general/">General</a></li>
+        <li><span aria-current="page">soilprofile</span></li>
+      </ol>
+    </nav>
+
+    <h1>soilprofile</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.general.soilprofile</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.general.soilprofile</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/general/soilprofile.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/general/soilprofiles.html">Soil profiles and gridscd</a>.</p>
+<p><strong>Classes:</strong> <a href="#soilprofile"><code>SoilProfile</code></a>, <a href="#calculationgrid"><code>CalculationGrid</code></a></p>
+<p><strong>Functions:</strong> <a href="#create_blank_soilprofile"><code>create_blank_soilprofile</code></a>, <a href="#read_excel"><code>read_excel</code></a>, <a href="#profile_from_dataframe"><code>profile_from_dataframe</code></a>, <a href="#plot_fence_diagram"><code>plot_fence_diagram</code></a>, <a href="#retrieve_geological_profile_dov"><code>retrieve_geological_profile_dov</code></a>, <a href="#retrieve_geological_profile_bro"><code>retrieve_geological_profile_bro</code></a></p>
+<p><a id="soilprofile"></a></p>
+<h2 id="class-soilprofile">class <code>SoilProfile</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="SoilProfile">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#soilprofile">General and utility functions › Soil profiles and grids › SoilProfile</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">SoilProfile</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>A SoilProfile object is a Pandas dataframe with specific functionality for geotechnical calculations. There is a column syntax requirement in which the columns with the top and bottom depth need to be defined for each layer. By default 'Depth from [m]' and 'Depth to [m]' are expected but this can be customised.</p>
+<p><a id="soilprofile-__init__"></a></p>
+<h3 id="soilprofile__init__"><code>SoilProfile.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Overrides the init method of a dataframe to check the correctness of the layering and to set the depth column names.</p>
+<p><a id="soilprofile-set_depthcolumn_name"></a></p>
+<h3 id="soilprofileset_depthcolumn_name"><code>SoilProfile.set_depthcolumn_name</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_depthcolumn_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Depth&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td></td>
+<td><code>'Depth'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="soilprofile-convert_depth_reference"></a></p>
+<h3 id="soilprofileconvert_depth_reference"><code>SoilProfile.convert_depth_reference</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">convert_depth_reference</span><span class="p">(</span><span class="n">newname</span><span class="o">=</span><span class="s1">&#39;Depth&#39;</span><span class="p">,</span> <span class="n">newunit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Converts the depth reference for a soil profile between one set of units (e.g. ft) to another (e.g. m)</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>newname</code></td>
+<td></td>
+<td></td>
+<td><code>'Depth'</code></td>
+<td>New name for the depth reference (default='Depth')</td>
+</tr>
+<tr>
+<td><code>newunit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>Name of the new unit (default=m)</td>
+</tr>
+<tr>
+<td><code>multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier to go from old to new depth unit (e.g. 0.3 to go from ft to m)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="soilprofile-check_profile"></a></p>
+<h3 id="soilprofilecheck_profile"><code>SoilProfile.check_profile</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">check_profile</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Check if the SoilProfile meets the requirements for calculations</p>
+<p><a id="soilprofile-set_position"></a></p>
+<h3 id="soilprofileset_position"><code>SoilProfile.set_position</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_position</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span> <span class="n">datum</span><span class="o">=</span><span class="s1">&#39;mLAT&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the position of a soil profile top in a given coordinate system.</p>
+<p>By default, srid 4326 is used which means easting is longitude and northing is latitude.</p>
+<p>The elevation is referenced to a chart datum for which mLAT (Lowest Astronomical Tide) is the default.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>easting</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>X-coordinate of the CPT position</td>
+</tr>
+<tr>
+<td><code>northing</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Y-coordinate of the CPT position</td>
+</tr>
+<tr>
+<td><code>elevation</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Elevation of the CPT position</td>
+</tr>
+<tr>
+<td><code>srid</code></td>
+<td></td>
+<td></td>
+<td><code>4326</code></td>
+<td>SRID of the coordinate system (see http://epsg.io)</td>
+</tr>
+<tr>
+<td><code>datum</code></td>
+<td></td>
+<td></td>
+<td><code>'mLAT'</code></td>
+<td>Chart datum used for the elevation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the corresponding attributes of the <code>PCPTProcessing</code> object</p>
+<p><a id="soilprofile-layer_transitions"></a></p>
+<h3 id="soilprofilelayer_transitions"><code>SoilProfile.layer_transitions</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">layer_transitions</span><span class="p">(</span><span class="n">include_top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Returns a Numpy array with the layer transition depths. Use the booleans include_top and include_bottom to in/exclude the top and bottom of the profile</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>include_top</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>include_bottom</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="soilprofile-adjust_layertransition"></a></p>
+<h3 id="soilprofileadjust_layertransition"><code>SoilProfile.adjust_layertransition</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">adjust_layertransition</span><span class="p">(</span><span class="n">currentdepth</span><span class="p">,</span> <span class="n">newdepth</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Adjusts the depth of a layer transition.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>currentdepth</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Current depth of the layer transition</td>
+</tr>
+<tr>
+<td><code>newdepth</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Desired new depth of the layer transition</td>
+</tr>
+<tr>
+<td><code>tolerance</code></td>
+<td></td>
+<td></td>
+<td><code>0.001</code></td>
+<td>Offset above and below <code>currentdepth</code> in which a layer transition is sought (to cope with number precision issues)</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="soilprofile-calculate_layerthickness"></a></p>
+<h3 id="soilprofilecalculate_layerthickness"><code>SoilProfile.calculate_layerthickness</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_layerthickness</span><span class="p">(</span><span class="n">layerthicknesscol</span><span class="o">=</span><span class="s1">&#39;Layer thickness [m]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Adds a column with the layer thickness to the soil profile</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layerthicknesscol</code></td>
+<td></td>
+<td></td>
+<td><code>'Layer thickness [m]'</code></td>
+<td>Name of the column with the layer thickness</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds a column with the layer thickness</p>
+<p><a id="soilprofile-calculate_center"></a></p>
+<h3 id="soilprofilecalculate_center"><code>SoilProfile.calculate_center</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_center</span><span class="p">(</span><span class="n">layercentercol</span><span class="o">=</span><span class="s1">&#39;Depth center [m]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Adds a column with the layer center depth to the soil profile</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layercentercol</code></td>
+<td></td>
+<td></td>
+<td><code>'Depth center [m]'</code></td>
+<td>Name of the column with the layer center</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds a column with the layer center</p>
+<p><a id="soilprofile-soil_parameters"></a></p>
+<h3 id="soilprofilesoil_parameters"><code>SoilProfile.soil_parameters</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">soil_parameters</span><span class="p">(</span><span class="n">condense_linear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Returns a list of soil parameters available in the soil profile. Soil parameters with linear variations are returned as a single soil parameter when the boolean <code>condense_linear</code> is set to True</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>condense_linear</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns a list of the soil parameters in the SoilProfile</p>
+<p><a id="soilprofile-numerical_soil_parameters"></a></p>
+<h3 id="soilprofilenumerical_soil_parameters"><code>SoilProfile.numerical_soil_parameters</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">numerical_soil_parameters</span><span class="p">(</span><span class="n">condense_linear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Returns a list of numerical soil parameters available in the soil profile. Numerical soil parameters have units between square brackets. Soil parameters with linear variations are returned as a single soil parameter when the boolean <code>condense_linear</code> is set to True</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>condense_linear</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns a list with the numerical soil parameters in the SoilProfile</p>
+<p><a id="soilprofile-string_soil_parameters"></a></p>
+<h3 id="soilprofilestring_soil_parameters"><code>SoilProfile.string_soil_parameters</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">string_soil_parameters</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Returns a list of string soil parameters available in the soil profile. String soil parameters have no square brackets.</p>
+<p><strong>Returns</strong></p>
+<p>Returns a list with the string soil parameters in the SoilProfile</p>
+<p><a id="soilprofile-check_linear_variation"></a></p>
+<h3 id="soilprofilecheck_linear_variation"><code>SoilProfile.check_linear_variation</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">check_linear_variation</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Check if a soil parameter varies linearly or not.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Boolean determining whether a soil parameter has a linear variation or not</p>
+<p><a id="soilprofile-insert_layer_transition"></a></p>
+<h3 id="soilprofileinsert_layer_transition"><code>SoilProfile.insert_layer_transition</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">insert_layer_transition</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Inserts a layer transition in the soil profile at a specific depth The profile layer is simply split and the properties of the given layer are assigned to the new layers above and below the transition. For linearly varying parameters, an interpolation is performed.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>depth</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="soilprofile-convert_depth_sign"></a></p>
+<h3 id="soilprofileconvert_depth_sign"><code>SoilProfile.convert_depth_sign</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">convert_depth_sign</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Inverts the sign of the depth from and depth to column. This function is useful when the profiles needs to be examined relative to LAT</p>
+<p><a id="soilprofile-shift_depths"></a></p>
+<h3 id="soilprofileshift_depths"><code>SoilProfile.shift_depths</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">shift_depths</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Shifts all layer coordinates downward or upward, depending on the sign of the given offset. The offset is added to the given coordinates</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>offset</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="soilprofile-soilparameter_series"></a></p>
+<h3 id="soilprofilesoilparameter_series"><code>SoilProfile.soilparameter_series</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">soilparameter_series</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Returns two lists (depths and corresponding parameter values) for plotting of a soil parameter vs depth. The routine first checks whether a valid parameter is provided. The lists are formatted such that variations at a layer interface are adequately plotted.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>A valid soil parameter with units</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Two lists (depths and corresponding parameter values)</p>
+<p><a id="soilprofile-map_soilprofile"></a></p>
+<h3 id="soilprofilemap_soilprofile"><code>SoilProfile.map_soilprofile</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">map_soilprofile</span><span class="p">(</span>
+    <span class="n">nodalcoords</span><span class="p">,</span>
+    <span class="n">target_depthkey</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span>
+    <span class="n">keys_to_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">invert_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">include_layertransitions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Maps the soilprofile to a grid. The depth coordinates to the grid are specified in a list or Numpy array (<code>nodalcoords</code>). The depth coordinates should be strictly ascending (no duplicates) and the minimum and maximum should be contained inside the soil profile bounds. Layer transitions can be included in the grid when <code>include_layertransitions=True</code>. All soil parameters are interpolated onto this grid.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nodalcoords</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>List or Numpy array with the nodal coordinates of the grid</td>
+</tr>
+<tr>
+<td><code>target_depthkey</code></td>
+<td></td>
+<td></td>
+<td><code>'z [m]'</code></td>
+<td>Name of the depth key in the resulting dataframe</td>
+</tr>
+<tr>
+<td><code>keys_to_map</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>List with the soilprofile keys to map</td>
+</tr>
+<tr>
+<td><code>invert_sign</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether to invert the sign after interpolation</td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>Offset by which the depth is shifted (added to the depth after sign conversion)</td>
+</tr>
+<tr>
+<td><code>include_layertransitions</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean to determine whether the layer transitions needs to be included in the grid (default=False)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns a dataframe with the full grid with soil parameters</p>
+<p><a id="soilprofile-plot_profile"></a></p>
+<h3 id="soilprofileplot_profile"><code>SoilProfile.plot_profile</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_profile</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">soiltypecolumn</span><span class="o">=</span><span class="s1">&#39;Soil type&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Generates a Plotly plot of the soil parameters vs depth. The panel on which the parameter is plotted is determined by how the parameters are passed to the function.</p>
+<p><code>parameters=(('qc [MPa]',), ('Dr [%]',))</code> will plot cone resistance in panel 1 and relative density in panel 2</p>
+<p><code>parameters=(('qc [MPa]', 'qt [MPa]'), ('Dr [%]'))</code> will plot cone resistance and total cone resistance in panel 1 and relative density in panel 2</p>
+<p>A column wihh the soil type is expected for the plotting of the log</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameters</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>List of parameters tuples for plotting</td>
+</tr>
+<tr>
+<td><code>soiltypecolumn</code></td>
+<td></td>
+<td></td>
+<td><code>'Soil type'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Additional keyword arguments for the <code>plot_with_log</code> function in the <code>general.plotting</code> module</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Plotly plot with mini-log and parameter values</p>
+<p><a id="soilprofile-selection_soilparameter"></a></p>
+<h3 id="soilprofileselection_soilparameter"><code>SoilProfile.selection_soilparameter</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">selection_soilparameter</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">depths</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">linearvariation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Function for automatic selection of a soil parameters in the layers of a soil profile based an a list of provided values. The selection can either be done for a constant value in the layer or a linear variation over the layer. Selection of a minimum, mean or average trend can be performed using the <code>rule</code> keyword</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Name of the parameter being selected (including unit in square brackets)</td>
+</tr>
+<tr>
+<td><code>depths</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Depths at which a measurement is available (list or Numpy array)</td>
+</tr>
+<tr>
+<td><code>values</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Values corresponding to the given depths (list or Numpy array)</td>
+</tr>
+<tr>
+<td><code>rule</code></td>
+<td></td>
+<td></td>
+<td><code>'mean'</code></td>
+<td>Which rule to use for the selection (select from <code>min</code>, <code>mean</code> and <code>max</code></td>
+</tr>
+<tr>
+<td><code>linearvariation</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether a linear variation needs to happen over the layer or not</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds one (constant value) or two (linear variation) columns to the dataframe</p>
+<p><a id="soilprofile-merge_layers"></a></p>
+<h3 id="soilprofilemerge_layers"><code>SoilProfile.merge_layers</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">merge_layers</span><span class="p">(</span><span class="n">layer_ids</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Merges two layers. Depending on the <code>keep</code> keyword, the top or bottom properties are retained for the merged layer</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layer_ids</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>List with the 2 IDs of the layers to be merged</td>
+</tr>
+<tr>
+<td><code>keep</code></td>
+<td></td>
+<td></td>
+<td><code>'top'</code></td>
+<td>String determining whether to retain the parameters of the top or bottom layer for the merged layer (select 'top' or 'bottom')</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Reduces the number of layers of the <code>SoilProfile</code> object</p>
+<p><a id="soilprofile-merge_soiltypes"></a></p>
+<h3 id="soilprofilemerge_soiltypes"><code>SoilProfile.merge_soiltypes</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">merge_soiltypes</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Merge adjacent layers with same soil type</p>
+<p><a id="soilprofile-remove_parameter"></a></p>
+<h3 id="soilprofileremove_parameter"><code>SoilProfile.remove_parameter</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">remove_parameter</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Removes a soil parameter from the dataframe</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td>unit</td>
+<td></td>
+<td>required</td>
+<td>Soil parameter to remove. For linear variations, simple use the expression <code>parameter</code>. The routine takes care of removing both the 'to' and 'from' columns</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Removes the requested soil parameter from the <code>SoilProfile</code> objec</p>
+<p><a id="soilprofile-convert_to_constant"></a></p>
+<h3 id="soilprofileconvert_to_constant"><code>SoilProfile.convert_to_constant</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">convert_to_constant</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Converts a linearly varying soil parameter to a parameter with constant value.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td>kN/m3</td>
+<td></td>
+<td>required</td>
+<td>Soil parameter to convert. Specify <code>Total unit weight</code> if the <code>SoilProfile</code> contains columns <code>Total unit weight from [kN/m3]</code> and <code>Total unit weight to [kN/m3]</code>.</td>
+</tr>
+<tr>
+<td><code>rule</code></td>
+<td>'min', 'mean', 'max'</td>
+<td></td>
+<td><code>'mean'</code></td>
+<td>Select from <code></code> to convert the linear variation to a constant value (default='mean')</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Creates a column for the soil parameter with constant value and removes the column with the linear variation</p>
+<p><a id="soilprofile-calculate_parameter_center"></a></p>
+<h3 id="soilprofilecalculate_parameter_center"><code>SoilProfile.calculate_parameter_center</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_parameter_center</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the value of a soil parameter at the center. The soil parameter needs to be a linearly varying numerical soil parameter.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Numerical soil parameter for which the value at the center needs to be computed.</td>
+</tr>
+<tr>
+<td><code>suffix</code></td>
+<td></td>
+<td></td>
+<td><code>'center'</code></td>
+<td>Suffix to use instead of <code>from</code> or <code>to</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds an extra column with <code>from</code> or <code>to</code> in the column name replaced by the chosen suffix</p>
+<p><a id="soilprofile-cut_profile"></a></p>
+<h3 id="soilprofilecut_profile"><code>SoilProfile.cut_profile</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">cut_profile</span><span class="p">(</span><span class="n">top_depth</span><span class="p">,</span> <span class="n">bottom_depth</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Returns a deep copy of the <code>SoilProfile</code> between the specified bounds</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>top_depth</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Top depth for cutting</td>
+</tr>
+<tr>
+<td><code>bottom_depth</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Bottom depth for cutting</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Deep copy of the <code>SoilProfile</code> between the specified bounds</p>
+<p><a id="soilprofile-depth_integration"></a></p>
+<h3 id="soilprofiledepth_integration"><code>SoilProfile.depth_integration</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">depth_integration</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">outputparameter</span><span class="p">,</span> <span class="n">start_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Integrate a certain parameter vs depth (e.g. unit weight to obtain vertical stress) Note: This routine is only implemented for parameters with a constant value in the layer.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Parameter to be integrated</td>
+</tr>
+<tr>
+<td><code>outputparameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Name of the output parameter (with units)</td>
+</tr>
+<tr>
+<td><code>start_value</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>Value at the top of the profile (default=0)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds a column to the <code>SoilProfile</code> object for the integrated parameter</p>
+<p><a id="soilprofile-calculate_overburden"></a></p>
+<h3 id="soilprofilecalculate_overburden"><code>SoilProfile.calculate_overburden</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_overburden</span><span class="p">(</span>
+    <span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">waterunitweight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">initial_vertical_total_stress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">totalunitweightcolumn</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span>
+    <span class="n">effectiveunitweightcolumn</span><span class="o">=</span><span class="s1">&#39;Effective unit weight [kN/m3]&#39;</span><span class="p">,</span>
+    <span class="n">waterunitweightcolumn</span><span class="o">=</span><span class="s1">&#39;Water unit weight [kN/m3]&#39;</span><span class="p">,</span>
+    <span class="n">totalverticalstresscolumn</span><span class="o">=</span><span class="s1">&#39;Vertical total stress [kPa]&#39;</span><span class="p">,</span>
+    <span class="n">effectiveverticalstresscolumn</span><span class="o">=</span><span class="s1">&#39;Vertical effective stress [kPa]&#39;</span><span class="p">,</span>
+    <span class="n">hydrostaticpressurecolumn</span><span class="o">=</span><span class="s1">&#39;Hydrostatic pressure [kPa]&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the overburden pressure (total and effective) for a <code>SoilProfile</code> object. The <code>SoilProfile</code> object needs to contain a column with the total unit weight. By default, this is <code>Total unit weight [kN/m3]</code>. If the water level does not correspond with a layer interface, an additional layer interface is created. Total and effective unit weights are calculated for each layer and the method <code>depth_integration</code> is used to calculate the total vertical stress, effective vertical stress and hydrostatic pressure.</p>
+<p>Note that vertical stress calculations in other units are possible, but the water unit weight then needs to be specified in consistent units.</p>
+<p>An initial value can be added to the total vertical stress to simulate the effect of e.g. surcharging.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>waterlevel</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Water level (default 0m)</td>
+</tr>
+<tr>
+<td><code>waterunitweight</code></td>
+<td>kN/m3</td>
+<td></td>
+<td><code>10</code></td>
+<td>Unit weight of the pore water (default=10kN/m3)</td>
+</tr>
+<tr>
+<td><code>initial_vertical_total_stress</code></td>
+<td>kPa</td>
+<td></td>
+<td><code>0</code></td>
+<td>Initial value of vertical total stress (default=0kPa)</td>
+</tr>
+<tr>
+<td><code>totalunitweightcolumn</code></td>
+<td>kN/m3</td>
+<td></td>
+<td><code>'Total unit weight [kN/m3]'</code></td>
+<td>Column name containing total unit weights (default='Total unit weight '</td>
+</tr>
+<tr>
+<td><code>effectiveunitweightcolumn</code></td>
+<td></td>
+<td></td>
+<td><code>'Effective unit weight [kN/m3]'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>waterunitweightcolumn</code></td>
+<td>kN/m3</td>
+<td></td>
+<td><code>'Water unit weight [kN/m3]'</code></td>
+<td>Output column with the water unit weight (default='Water unit weight ')</td>
+</tr>
+<tr>
+<td><code>totalverticalstresscolumn</code></td>
+<td>kPa</td>
+<td></td>
+<td><code>'Vertical total stress [kPa]'</code></td>
+<td>Total vertical stress column name (default='Total vertical stress ')</td>
+</tr>
+<tr>
+<td><code>effectiveverticalstresscolumn</code></td>
+<td>kPa</td>
+<td></td>
+<td><code>'Vertical effective stress [kPa]'</code></td>
+<td>Effective vertical stress column name (default='Vertical effective stress ')</td>
+</tr>
+<tr>
+<td><code>hydrostaticpressurecolumn</code></td>
+<td>kPa</td>
+<td></td>
+<td><code>'Hydrostatic pressure [kPa]'</code></td>
+<td>Hydrostatic pressure column name (default='Hydrostatic pressure ')</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds the column names from <code>totalverticalstresscolumn</code>, <code>effectiveverticalstresscolumn</code> and <code>hydrostaticpressurecolumn</code> to the <code>SoilProfile</code> object</p>
+<p><a id="soilprofile-applyfunction"></a></p>
+<h3 id="soilprofileapplyfunction"><code>SoilProfile.applyfunction</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">applyfunction</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">resultkey</span><span class="p">,</span> <span class="n">outputkey</span><span class="p">,</span> <span class="n">parametermapping</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Applies a groundhog function to a soil profile. The function is applied to each row of the soilprofile. The result is stored in a column with name <code>output</code>. <code>resultkey</code> determines which key of the function output dictionary is used as the result.</p>
+<p>The parameters of the function are mapped to columns of the soil profile using the parametermapping dictionary. The keys of this dictionary are the function arguments, the values are the corresponding columns of the soilprofile. For parameters with linear variation, this method only needs to be applied once and the soil parameter name (without from or to) needs to be supplied in the <code>parametermapping</code> dictionary.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>function</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Function to be applied</td>
+</tr>
+<tr>
+<td><code>resultkey</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Column name for the result (for parameters with linear variation, two result columns are created)</td>
+</tr>
+<tr>
+<td><code>outputkey</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>The key of the function output dictionary to be used for the result</td>
+</tr>
+<tr>
+<td><code>parametermapping</code></td>
+<td></td>
+<td></td>
+<td><code>{}</code></td>
+<td>Dictionary mapping parameters of the function to column names</td>
+</tr>
+<tr>
+<td><code>applyatcenter</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether the function needs to be applied at the center of the layer for a linearly varying parameter. A single output column will then be returned (default=False).</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Additional keyword arguments of the function which are not mapped to soil profile columns</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="soilprofile-parameter_at_depth"></a></p>
+<h3 id="soilprofileparameter_at_depth"><code>SoilProfile.parameter_at_depth</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">parameter_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">shallowest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the value for one of the <code>SoilProfile</code> parameters at a selected depth</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Selected depth</td>
+</tr>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>String or Numerical soil parameter (linear interpolation for linearly varying parameters)</td>
+</tr>
+<tr>
+<td><code>shallowest</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether at a layer interface, the shallowest value needs to be used (default=True).</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>The value of the parameter at the selected depth</p>
+<p><a id="soilprofile-select_soiltype"></a></p>
+<h3 id="soilprofileselect_soiltype"><code>SoilProfile.select_soiltype</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">select_soiltype</span><span class="p">(</span><span class="n">robertson</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Method for assigning soil types to layers. User input is expected. By default, this method works with Robertson soil types (<code>robertson=True</code>) which maps numbers from the Robertson charts to soil types and puts these descriptions in the <code>'Soil Type'</code> column. When <code>robertson=False</code>, the user can just type a self-chosen soil type name.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>robertson</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="calculationgrid"></a></p>
+<h2 id="class-calculationgrid">class <code>CalculationGrid</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="CalculationGrid">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#calculationgrid">General and utility functions › Soil profiles and grids › CalculationGrid</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">CalculationGrid</span><span class="p">(</span><span class="n">soilprofile</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">custom_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_layertransitions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>A <code>CalculationGrid</code> is an object which consist of a dataframe with nodes <code>.nodes</code> and a dataframe with elements <code>.elements</code>. Properties of the soil profile are mapped to the nodes and the elements to allow subsequent calculation. At layer transition nodes, the properties of the layer below are always assigned to the node.</p>
+<p><a id="calculationgrid-__init__"></a></p>
+<h3 id="calculationgrid__init__"><code>CalculationGrid.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">soilprofile</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">custom_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_layertransitions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Initializes the <code>CalculationGrid</code> object from a <code>SoilProfile</code> object. A nodes offset <code>dz</code> needs to be specified. Additional nodes are inserted at layer transitions by default (<code>include_layertransitions=True</code>). The user can also specify a NumPy array with custom_nodes (None by default). After initialization, the dataframes of nodal and elemental information are created. For properties varying linearly across a layer, the value of the property at the element center is also calculated and is given the name of the parameter (without from and to).</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>soilprofile</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>dz</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>custom_nodes</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>include_layertransitions</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="calculationgrid-set_nodes"></a></p>
+<h3 id="calculationgridset_nodes"><code>CalculationGrid.set_nodes</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_nodes</span><span class="p">(</span><span class="n">dz</span><span class="p">,</span> <span class="n">custom_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_layertransitions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dz</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>custom_nodes</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>include_layertransitions</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="calculationgrid-set_elements"></a></p>
+<h3 id="calculationgridset_elements"><code>CalculationGrid.set_elements</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_elements</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Create a dataframe with elements. Each element has a top and bottom node. The soil property value at bottom and top are calculated, as well as the values at the center of the element.</p>
+<p><a id="calculationgrid-soilparameter_series"></a></p>
+<h3 id="calculationgridsoilparameter_series"><code>CalculationGrid.soilparameter_series</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">soilparameter_series</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">ignore_linearvariation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Returns two lists (depths and corresponding parameter values) for plotting of a soil parameter vs depth. The routine first checks whether a valid parameter is provided. The lists are formatted such that variations at a layer interface are adequately plotted.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>A valid soil parameter with units</td>
+</tr>
+<tr>
+<td><code>ignore_linearvariation</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining if linear variations need to be ignored</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Two lists (depths and corresponding parameter values)</p>
+<p><a id="create_blank_soilprofile"></a></p>
+<h2 id="create_blank_soilprofile"><code>create_blank_soilprofile</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">create_blank_soilprofile</span><span class="p">(</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">soiltype</span><span class="o">=</span><span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">bulkunitweight</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Creates a SoilProfile object with a single layer. By default the soil type is set to <code>'Unknown'</code> and the bulk unit weight to 20kN/m3.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_depth</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Maximum depth for the SoilProfile object</td>
+</tr>
+<tr>
+<td><code>min_depth</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Minimum depth for the SoilProfile object</td>
+</tr>
+<tr>
+<td><code>soiltype</code></td>
+<td></td>
+<td></td>
+<td><code>'Unknown'</code></td>
+<td>Soil type for the layer</td>
+</tr>
+<tr>
+<td><code>bulkunitweight</code></td>
+<td>kN/m3</td>
+<td></td>
+<td><code>20</code></td>
+<td>Bulk unit weight for the layer</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="read_excel"></a></p>
+<h2 id="read_excel"><code>read_excel</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">read_excel</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">depth_key</span><span class="o">=</span><span class="s1">&#39;Depth&#39;</span><span class="p">,</span>
+    <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span>
+    <span class="n">column_mapping</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">depth_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>The method to read from Excel needs to be redefined for SoilProfile objects. The method allows for different depth keys (using the 'depth_key' and 'unit' keyword arguments Columns can also be renamed using the 'column_mapping' dictionary. The keys in this dictionary are the old column names and the values are the new column names.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td></td>
+<td></td>
+<td><code>''</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>depth_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Depth'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>column_mapping</code></td>
+<td></td>
+<td></td>
+<td><code>{}</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>depth_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="profile_from_dataframe"></a></p>
+<h2 id="profile_from_dataframe"><code>profile_from_dataframe</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">profile_from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">depth_key</span><span class="o">=</span><span class="s1">&#39;Depth&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">column_mapping</span><span class="o">=</span><span class="p">{})</span>
+</code></pre></div>
+
+<p>Creates a soil profile from a Pandas dataframe</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Dataframe to be converted</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td></td>
+<td></td>
+<td><code>''</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>depth_key</code></td>
+<td></td>
+<td></td>
+<td><code>'Depth'</code></td>
+<td>Column key to be used for depth (default = 'Depth')</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>Unit for the depth (default = 'm')</td>
+</tr>
+<tr>
+<td><code>column_mapping</code></td>
+<td></td>
+<td></td>
+<td><code>{}</code></td>
+<td>Dictionary for renaming columns. The keys in this dictionary are the old column names and the values are the new column names.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><code>SoilProfile</code> object created as a deep copy of the dataframe</p>
+<p><a id="plot_fence_diagram"></a></p>
+<h2 id="plot_fence_diagram"><code>plot_fence_diagram</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">plot_fence_diagram</span><span class="p">(</span>
+    <span class="n">profiles</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">latlon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">option</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
+    <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">band</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">extend_profile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">soiltypekey</span><span class="o">=</span><span class="s1">&#39;Soil type&#39;</span><span class="p">,</span>
+    <span class="n">plotmap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SILT&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;ROCK&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">},</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">logwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">distance_unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span>
+    <span class="n">return_layers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">xaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">yaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">general_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_annotations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Creates a longitudinal profile along selected soil profiles. A line is drawn from the first (smallest distance from origin) to the last location (greatest distance from origin) and the plot of the mini-logs with soil types is projected onto this line.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>profiles</code></td>
+<td></td>
+<td></td>
+<td><code>[]</code></td>
+<td>List with SoilProfile objects for which a log needs to be plotted</td>
+</tr>
+<tr>
+<td><code>latlon</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean defining whether coordinates are specified in latitude and longitude (defaulte=False). If this is the case, offsets are calculated using the <code>pyproj</code> package</td>
+</tr>
+<tr>
+<td><code>option</code></td>
+<td></td>
+<td></td>
+<td><code>'name'</code></td>
+<td>Determines whether soil profile names (<code>option='name'</code>) or tuples with coordinates (<code>option='coords'</code>) are used for the <code>start</code> and <code>end</code> arguments</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Soil profile name for the starting point or tuple of coordinates. If a SoilProfile name is used, the selected SoilProfile must be contained in <code>profiles</code>.</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Soil profile name for the end point or tuple of coordinates. If a SoilProfile name is used, the selected SoilProfile must be contained in <code>profiles</code>.</td>
+</tr>
+<tr>
+<td><code>band</code></td>
+<td></td>
+<td></td>
+<td><code>1000</code></td>
+<td>Offset from the line connecting start and end points in which soil profiles are considered for plotting (default=1000m)</td>
+</tr>
+<tr>
+<td><code>extend_profile</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the profile needs to be extended beyond the start and end points (default=False)</td>
+</tr>
+<tr>
+<td><code>soiltypekey</code></td>
+<td></td>
+<td></td>
+<td><code>'Soil type'</code></td>
+<td>Key for the soil type in the dataframes with layering (default="Soil type")</td>
+</tr>
+<tr>
+<td><code>plotmap</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether a map of locations needs to be plotted next to the profile (default=False)</td>
+</tr>
+<tr>
+<td><code>fillcolordict</code></td>
+<td></td>
+<td></td>
+<td><code>{'SAND': 'yellow', 'CLAY': 'brown', 'SILT': 'green', 'ROCK': 'grey'}</code></td>
+<td>Dictionary with fill colours (default yellow for 'SAND', brown from 'CLAY' and grey for 'ROCK')</td>
+</tr>
+<tr>
+<td><code>opacity</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Opacity of the layers (default = 1 for non-transparent behaviour)</td>
+</tr>
+<tr>
+<td><code>logwidth</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Width of the soil logs as an absolute value (default = 1)</td>
+</tr>
+<tr>
+<td><code>distance_unit</code></td>
+<td></td>
+<td></td>
+<td><code>'m'</code></td>
+<td>Unit for coordinates and elevation (default='m')</td>
+</tr>
+<tr>
+<td><code>return_layers</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether layers need to be returned. These layers can be used to updata another plot (e.g. CPT longitudinal profile) (default=False)</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the figure is shown (default=True)</td>
+</tr>
+<tr>
+<td><code>xaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with layout for the xaxis (default=None)</td>
+</tr>
+<tr>
+<td><code>yaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with layout for the xaxis (default=None)</td>
+</tr>
+<tr>
+<td><code>general_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with general layout options</td>
+</tr>
+<tr>
+<td><code>show_annotations</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether annotations need to be shown (default=True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Plotly figure object</p>
+<p><a id="retrieve_geological_profile_dov"></a></p>
+<h2 id="retrieve_geological_profile_dov"><code>retrieve_geological_profile_dov</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">retrieve_geological_profile_dov</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;g3dv3_L&#39;</span><span class="p">,</span> <span class="n">namecutoff</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Retrieves a geological profile at a location with given coordinates (x,y Lambert L72). The routine creates a soil profile, starting from the ground surface, with depth increasing downwards. The fillcolors for the geological layers are also returned.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>X-coordinate of the location in Lambert72 coordinates</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Y-coordinate of the location in Lambert72 coordinates</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td></td>
+<td></td>
+<td><code>'g3dv3_L'</code></td>
+<td>Type of model for stratigraphic information (see https://www.milieuinfo.be/confluence/display/DDOV/Virtuele+Boring+-+Virtueel+Profiel+API)</td>
+</tr>
+<tr>
+<td><code>namecutoff</code></td>
+<td></td>
+<td></td>
+<td><code>30</code></td>
+<td>Maximum number of characters for the geological units</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>soilprofile, fillcolors</p>
+<p><a id="retrieve_geological_profile_bro"></a></p>
+<h2 id="retrieve_geological_profile_bro"><code>retrieve_geological_profile_bro</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">retrieve_geological_profile_bro</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">zmin</span><span class="p">,</span> <span class="n">zmax</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;lithok&#39;</span><span class="p">,</span> <span class="n">namecutoff</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Retrieves a geological profile at a location with given coordinates (x,y EPSG 28992). The routine creates a soil profile, starting from the ground surface, with depth increasing downwards. The fillcolors for the geological layers are also returned.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>X-coordinate of the location in EPSG 28992 (RD) coordinates</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Y-coordinate of the location in EPSG 28992 (RD) coordinates</td>
+</tr>
+<tr>
+<td><code>zmin</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Minimum z coordinate in NAP</td>
+</tr>
+<tr>
+<td><code>zmax</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Maximum z coordinate in NAP</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td></td>
+<td></td>
+<td><code>'lithok'</code></td>
+<td>Type of model for stratigraphic information (choose from <code>'lithok'</code> or <code>'strat'</code>)</td>
+</tr>
+<tr>
+<td><code>namecutoff</code></td>
+<td></td>
+<td></td>
+<td><code>30</code></td>
+<td>Maximum number of characters for the geological units</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>soilprofile, fillcolors_plotly, fillcolors_matplotlib</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/general/soilprofile.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/general/soilprofiles.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/general/plotting/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Plotting</a><a class="next" href="/docs/groundhog/api/general/validation/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Validation</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#soilprofile">class SoilProfile</a></li>
+      <li class="lvl-2"><a href="#calculationgrid">class CalculationGrid</a></li>
+      <li class="lvl-2"><a href="#create_blank_soilprofile">create_blank_soilprofile</a></li>
+      <li class="lvl-2"><a href="#read_excel">read_excel</a></li>
+      <li class="lvl-2"><a href="#profile_from_dataframe">profile_from_dataframe</a></li>
+      <li class="lvl-2"><a href="#plot_fence_diagram">plot_fence_diagram</a></li>
+      <li class="lvl-2"><a href="#retrieve_geological_profile_dov">retrieve_geological_profile_dov</a></li>
+      <li class="lvl-2"><a href="#retrieve_geological_profile_bro">retrieve_geological_profile_bro</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+</body>
+</html>

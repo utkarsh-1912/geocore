@@ -1,26 +1,89 @@
-# Netlify configuration when deploying directly from the website/ directory
+# GeoCore website — Netlify configuration (used when the Netlify site's base directory is website/)
+# Pages are pre-built by website/_build/build.py and committed; Netlify only publishes them.
 [build]
   publish = "."
-  command = "echo 'GeoCore static site build ready'"
+  command = "echo 'GeoCore static site: HTML is pre-built (see website/README.md)'"
 
+# --- Routing ---------------------------------------------------------------
+# Old single-page docs URL -> new docs section. (force: the old file may still exist in history/caches)
 [[redirects]]
-  from = "/docs"
-  to = "/docs.html"
+  from = "/docs.html"
+  to = "/docs/"
+  status = 301
+  force = true
+
+# Pretty URLs for top-level pages (/about serves about.html). /docs/ is a real directory.
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
   status = 200
 
 [[redirects]]
-  from = "/docs/*"
-  to = "/docs.html"
+  from = "/privacy"
+  to = "/privacy.html"
   status = 200
 
+[[redirects]]
+  from = "/download"
+  to = "/download.html"
+  status = 200
+
+# Docs pages are directories (docs/<slug>/index.html), so /docs/<slug> and /docs/<slug>/ both resolve;
+# docs pages use root-absolute links, so either form works.
+# Unknown paths get the static 404.html automatically (no SPA fallback).
+
+# --- Headers -----------------------------------------------------------------
 [[headers]]
   for = "/*"
   [headers.values]
+    # Only same-origin assets; the download page reads release data from the public GitHub API.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Strict-Transport-Security = "max-age=31536000"
+
+# CSS/JS/icons are always referenced with a content hash (?v=...), so they can be cached for a year.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/icons.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
 
 [[headers]]
   for = "/public/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=604800"
+
+# Vendored libraries (KaTeX): CSS/JS are hash-referenced; fonts keep stable names, so cache for a week.
+[[headers]]
+  for = "/assets/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Groundhog figures used by the docs.
+[[headers]]
+  for = "/docs/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/docs/search-index.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

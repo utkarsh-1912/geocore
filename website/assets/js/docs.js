@@ -1,137 +1,144 @@
-/**
- * GeoCore Documentation Portal Interactive Engine
- * Author: Utkarsh Gupta
- * Copyright (c) 2026 GeoCore. All Rights Reserved.
+/*
+ * GeoCore docs — client-side search over docs/search-index.json and "On this page" highlighting.
+ * The index is fetched lazily the first time the search box is used.
+ * Index format: { "version": 1, "generated": "YYYY-MM-DD", "docs": [ { id, title, url, section, summary, headings[], body } ] }
+ * where url is relative to the site root (e.g. "docs/calculations/shallow-foundations.html").
  */
+(function () {
+  'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Copy Code Snippets
-  const codeBlocks = document.querySelectorAll('pre code');
-  codeBlocks.forEach(code => {
-    const pre = code.parentElement;
-    if (!pre.parentElement.classList.contains('code-wrapper')) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'relative group my-4';
-      pre.parentNode.insertBefore(wrapper, pre);
-      wrapper.appendChild(pre);
+  // ------------------------------------------------------------------ search
+  document.querySelectorAll('[data-docs-search]').forEach(function (form) {
+    var input = form.querySelector('input[type="search"]');
+    var list = form.querySelector('[data-search-results]');
+    var live = form.querySelector('[data-search-status]');
+    var root = form.getAttribute('data-root') || '';
+    var indexUrl = form.getAttribute('data-index');
+    var docs = null, loading = null;
 
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'absolute top-3 right-3 px-2.5 py-1 text-xs rounded bg-surface border border-border text-text-muted hover:text-text-main opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1 shadow-sm touch-target';
-      copyBtn.innerHTML = '<span>Copy</span>';
-
-      copyBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(code.innerText);
-          copyBtn.innerHTML = '<span class="text-green-500 font-medium">Copied!</span>';
-          setTimeout(() => {
-            copyBtn.innerHTML = '<span>Copy</span>';
-          }, 2000);
-        } catch (e) {
-          copyBtn.innerText = 'Failed';
-        }
-      });
-      wrapper.appendChild(copyBtn);
+    function load() {
+      if (docs) return Promise.resolve(docs);
+      if (!loading) {
+        loading = fetch(indexUrl, { credentials: 'same-origin' })
+          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+          .then(function (data) {
+            docs = (data.docs || []).map(function (d) {
+              return {
+                d: d,
+                title: (d.title || '').toLowerCase(),
+                heads: (d.headings || []).join(' ').toLowerCase(),
+                summary: (d.summary || '').toLowerCase(),
+                body: ((d.body || '') + ' ' + (d.section || '')).toLowerCase()
+              };
+            });
+            return docs;
+          })
+          .catch(function (e) { loading = null; throw e; });
+      }
+      return loading;
     }
-  });
 
-  // Instant Documentation Search (Desktop & Mobile)
-  const docsSearchInputs = document.querySelectorAll('#docs-search, #docs-search-mobile');
-  const docNavLinks = document.querySelectorAll('.doc-nav-item');
+    function score(entry, terms) {
+      var total = 0;
+      for (var i = 0; i < terms.length; i++) {
+        var t = terms[i], s = 0;
+        if (entry.title.indexOf(t) === 0) s += 12;
+        else if (entry.title.indexOf(t) > -1) s += 8;
+        if (entry.heads.indexOf(t) > -1) s += 4;
+        if (entry.summary.indexOf(t) > -1) s += 3;
+        if (entry.body.indexOf(t) > -1) s += 1;
+        if (!s) return 0; // every term must match somewhere
+        total += s;
+      }
+      return total;
+    }
 
-  docsSearchInputs.forEach(input => {
-    input.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      
-      // Sync other search inputs if any
-      docsSearchInputs.forEach(other => {
-        if (other !== input) other.value = e.target.value;
+    function hide() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); }
+
+    function show(results, q) {
+      list.textContent = '';
+      if (!results.length) {
+        var li = document.createElement('li');
+        li.className = 'empty';
+        li.textContent = 'No results for “' + q + '”.';
+        list.appendChild(li);
+      }
+      results.forEach(function (r) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = /^[a-z]+:/i.test(r.url) ? r.url : root + r.url;
+        a.textContent = r.title;
+        var small = document.createElement('small');
+        small.textContent = [r.section, r.summary].filter(Boolean).join(' — ');
+        a.appendChild(small);
+        li.appendChild(a);
+        list.appendChild(li);
       });
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      live.textContent = results.length ? results.length + ' results' : 'No results';
+    }
 
-      docNavLinks.forEach(link => {
-        const text = link.innerText.toLowerCase();
-        const parentSection = link.closest('.doc-nav-section');
-        if (!query || text.includes(query)) {
-          link.style.display = 'flex';
-        } else {
-          link.style.display = 'none';
-        }
+    function run() {
+      var q = input.value.trim();
+      if (q.length < 2) { hide(); live.textContent = ''; return; }
+      var terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+      load().then(function (all) {
+        var results = all
+          .map(function (e) { return { e: e, s: score(e, terms) }; })
+          .filter(function (x) { return x.s > 0; })
+          .sort(function (a, b) { return b.s - a.s; })
+          .slice(0, 8)
+          .map(function (x) { return x.e.d; });
+        show(results, q);
+      }, function () {
+        list.textContent = '';
+        var li = document.createElement('li');
+        li.className = 'empty';
+        li.textContent = 'Search is unavailable right now.';
+        list.appendChild(li);
+        list.hidden = false;
       });
+    }
 
-      // Filter section headings visibility
-      document.querySelectorAll('.doc-nav-section').forEach(sec => {
-        const visibleLinks = sec.querySelectorAll('.doc-nav-item[style="display: flex;"], .doc-nav-item:not([style*="display: none"])');
-        if (query && visibleLinks.length === 0) {
-          sec.style.display = 'none';
-        } else {
-          sec.style.display = 'block';
-        }
-      });
+    var timer;
+    input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 120); });
+    input.addEventListener('focus', function () { load().catch(function () {}); });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var first = list.querySelector('a');
+      if (first) window.location.href = first.href;
     });
-  });
-
-  // Mobile Docs Sidebar Drawer & Backdrop
-  const toggleDocsSidebar = document.getElementById('toggle-docs-sidebar');
-  const closeDocsSidebar = document.getElementById('close-docs-sidebar');
-  const docsSidebar = document.getElementById('docs-sidebar');
-  const docsBackdrop = document.getElementById('docs-backdrop');
-
-  function openSidebar() {
-    if (docsSidebar && docsBackdrop) {
-      docsSidebar.classList.remove('-translate-x-full');
-      docsBackdrop.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      if (window.lucide) window.lucide.createIcons();
-    }
-  }
-
-  function closeSidebar() {
-    if (docsSidebar && docsBackdrop) {
-      docsSidebar.classList.add('-translate-x-full');
-      docsBackdrop.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-  }
-
-  if (toggleDocsSidebar) toggleDocsSidebar.addEventListener('click', openSidebar);
-  if (closeDocsSidebar) closeDocsSidebar.addEventListener('click', closeSidebar);
-  if (docsBackdrop) docsBackdrop.addEventListener('click', closeSidebar);
-
-  // Close sidebar on clicking any navigation link
-  docNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      if (window.innerWidth < 1024) {
-        closeSidebar();
+    form.addEventListener('keydown', function (e) {
+      var links = Array.prototype.slice.call(list.querySelectorAll('a'));
+      var i = links.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown' && links.length) { e.preventDefault(); (links[i + 1] || links[0]).focus(); }
+      else if (e.key === 'ArrowUp' && links.length) { e.preventDefault(); if (i <= 0) input.focus(); else links[i - 1].focus(); }
+      else if (e.key === 'Escape') { hide(); input.focus(); }
+    });
+    document.addEventListener('click', function (e) { if (!form.contains(e.target)) hide(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === '/' && document.activeElement && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+        e.preventDefault();
+        input.focus();
       }
     });
   });
 
-  // ScrollSpy for Active Table of Contents
-  const observerOptions = {
-    root: null,
-    rootMargin: '-20% 0px -70% 0px',
-    threshold: 0
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        if (id) {
-          document.querySelectorAll('.toc-link').forEach(link => {
-            if (link.getAttribute('href') === `#${id}`) {
-              link.classList.add('text-primary', 'font-semibold', 'border-l-2', 'border-primary', 'pl-2');
-              link.classList.remove('text-text-muted');
-            } else {
-              link.classList.remove('text-primary', 'font-semibold', 'border-l-2', 'border-primary', 'pl-2');
-              link.classList.add('text-text-muted');
-            }
-          });
-        }
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('section[id], h2[id], h3[id]').forEach(elem => {
-    observer.observe(elem);
-  });
-});
+  // ------------------------------------------------------------------ table of contents highlight
+  var toc = document.querySelector('[data-toc]');
+  if (toc && 'IntersectionObserver' in window) {
+    var links = {};
+    toc.querySelectorAll('a[href^="#"]').forEach(function (a) { links[decodeURIComponent(a.getAttribute('href').slice(1))] = a; });
+    var headings = Object.keys(links).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    var visible = {};
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { visible[en.target.id] = en.isIntersecting; });
+      var active = null;
+      for (var i = 0; i < headings.length; i++) { if (visible[headings[i].id]) { active = headings[i].id; break; } }
+      if (!active) return;
+      Object.keys(links).forEach(function (id) { links[id].classList.toggle('is-active', id === active); });
+    }, { rootMargin: '-72px 0px -60% 0px' });
+    headings.forEach(function (h) { obs.observe(h); });
+  }
+})();

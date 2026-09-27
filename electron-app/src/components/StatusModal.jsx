@@ -79,8 +79,8 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                                     <div className={`w-3 h-3 rounded-full ${backendStatus === 'online' ? 'bg-primary animate-pulse' : 'bg-red-500'}`} />
                                     <span className="font-bold text-text-main">Backend Engine</span>
                                 </div>
-                                <span className={`px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest ${backendStatus === 'online' ? 'bg-primary/10 text-primary' : 'bg-red-500/10 text-red-500'}`}>
-                                    {backendStatus === 'online' ? 'Connected' : 'Disconnected'}
+                                <span className={`px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest ${backendStatus === 'online' ? 'bg-primary/10 text-primary' : backendStatus === 'connecting' ? 'bg-amber-500/10 text-amber-500' : 'bg-red-500/10 text-red-500'}`}>
+                                    {backendStatus === 'online' ? 'Connected' : backendStatus === 'connecting' ? 'Starting…' : 'Disconnected'}
                                 </span>
                             </div>
 

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial - Settlement calculations with groundhog — GeoCore Docs</title>
+  <meta name="description" content="groundhog tutorial notebook: Tutorial - Settlement calculations with groundhog.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Tutorial - Settlement calculations with groundhog — GeoCore Docs">
+  <meta property="og:description" content="groundhog tutorial notebook: Tutorial - Settlement calculations with groundhog.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/" aria-current="page">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/guides/">Groundhog Guides</a></li>
+        <li><a href="/docs/groundhog/tutorials/">Tutorials</a></li>
+        <li><span aria-current="page">Tutorial - Settlement calculations with groundhog</span></li>
+      </ol>
+    </nav>
+
+    <h1>Tutorial - Settlement calculations with <code>groundhog</code></h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+    <div class="prose docs-body"><p><code>groundhog</code> contains functionality to analyse the settlement of foundations under applied loads. Elastic stress solutions are available for strip foundation, circular foundations and rectangular foundations.</p>
+<p>Moreover, the basic functionality of <code>groundhog</code> for working with soil profiles and rapidly deriving correlations can be illustrated in this tutorial.</p>
+<p>In this example, we will derive the compression index <span class="math">\(C_c\)</span> and the recompression index <span class="math">\(C_r\)</span> based on measured unit weights for a saturated cohesive soil. We will use these values to calculate the primary consolidation settlement beneath a strip footing, circular footing and rectangular footing.</p>
+<h2 id="library-imports">Library imports</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_notebook_mode</span>
+<span class="n">init_notebook_mode</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="selection-of-soil-parameters">Selection of soil parameters</h2>
+<h3 id="loading-unit-weight-data">Loading unit weight data</h3>
+<p>Two data files are provided to specify a distribution of unit weight vs depth. Bulk unit weight <span class="math">\(\gamma\)</span> has been derived from a volume mass calculation and has also been derived from water content (for a saturated soil) using the following relation:</p>
+<div class="math-display">\[\gamma = \left( \frac{G_s \cdot (1 + w)}{1 + w \cdot G_s} \right) \cdot \gamma_w\]</div>
+<div class="highlight"><pre><span></span><code><span class="n">uw_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;Data/demo_settlement_uw.xlsx&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We can plot this data vs depth. We can see there is a reasonable amount of scatter in the first 0.5m.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">uw_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Bulk unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Method&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">][</span><span class="s1">&#39;xaxis1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Bulk unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">][</span><span class="s1">&#39;yaxis1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Depth below mudline [m]&#39;</span><span class="p">,</span> <span class="n">autorange</span><span class="o">=</span><span class="s1">&#39;reversed&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="definition-of-a-soil-profile-and-bulk-unit-weight-selection">Definition of a soil profile and bulk unit weight selection</h3>
+<p><code>groundhog</code> allows soil profile manipulations through the <code>SoilProfile</code> object. We can create a <code>SoilProfile</code> for soil parameter selection.</p>
+<p>Initially, we will model a profile with a 1m thick top layer overlying a layer extending to 2m depth. Below 2m, the unit weight increases further, so another layer transition is selected at 2m depth.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.soilprofile</span><span class="w"> </span><span class="kn">import</span> <span class="n">SoilProfile</span>
+</code></pre></div>
+
+<p>We can define the soil profile from a Python dictionary containing an array with the depths of the top of each layer, an array with the bottom of each layer and an array with the soil type of each layer.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span> <span class="o">=</span> <span class="n">SoilProfile</span><span class="p">({</span>
+    <span class="s2">&quot;Depth from [m]&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s2">&quot;Depth to [m]&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">],</span>
+    <span class="s2">&quot;Soil type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CLAY&quot;</span><span class="p">,</span> <span class="s2">&quot;CLAY&quot;</span><span class="p">,</span> <span class="s2">&quot;CLAY&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="n">sp</span>
+</code></pre></div>
+
+<p>The <code>SoilProfile</code> object has a <code>selection_soilparameter</code> which allows an automatic first eastimate of soil parameters in a profile. </p>
+<p>We will make an estimate based on the test data provided. By default, the average trend will be selected.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">selection_soilparameter</span><span class="p">(</span>
+    <span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span> <span class="n">depths</span><span class="o">=</span><span class="n">uw_data</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="n">uw_data</span><span class="p">[</span><span class="s1">&#39;Bulk unit weight [kN/m3]&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<p>The selection provided by the software can be used as an initial guess and the engineer can then modify the selected values.</p>
+<p>The choice of the program looks reasonable in the first layer. However, as this is normally consolidated clay, decreases of unit weight with depth are unlikely. So we will amend the first guess.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogPlot</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">uw_fig</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">})</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">uw_data</span><span class="p">[</span><span class="s1">&#39;Bulk unit weight [kN/m3]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">uw_data</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;selection&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ \gamma \ \text{[kN/m} ^3 \text{]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ z \ \text{[m]} $&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>We can have a look at the selected values:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<p>We can modify the unit weight in the layers. The syntax for this is Pandas syntax. Several tutorials are available online to start working with Pandas. The code below modifies the unit weight in the deepest layer by specifying a new user-defined bulk unit weight.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">17.5</span>
+</code></pre></div>
+
+<p>We can replot the selection. This shows that this is a reasonable selection.</p>
+<div class="highlight"><pre><span></span><code><span class="n">uw_fig</span> <span class="o">=</span> <span class="n">LogPlot</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">})</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">uw_data</span><span class="p">[</span><span class="s1">&#39;Bulk unit weight [kN/m3]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">uw_data</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">soilparameter_series</span><span class="p">(</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;selection&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">set_xaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ \gamma \ \text{[kN/m} ^3 \text{]} $&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">set_zaxis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$ z \ \text{[m]} $&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">uw_fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="calculation-of-initial-void-ratio-and-water-content">Calculation of initial void ratio and water content</h3>
+<p>The initial void ratio and water content can be derived from the bulk unit weight using the function <code>voidratio_bulkunitweight</code> in <code>groundhog</code>. This function calculates the void ratio and water content from bulk unit weight for a saturated soil using the following formulae.</p>
+<div class="math-display">\[\gamma = \left( \frac{G_s + S e}{1 + e} \right) \gamma_w\]</div>
+<div class="math-display">\[\implies e = \frac{\gamma_w G_s - \gamma}{\gamma - S \gamma_w}\]</div>
+<div class="math-display">\[w = \frac{S e}{G_s}\]</div>
+<p><code>SoilProfile</code> objects in <code>groundhog</code> have a method <code>applyfunction</code> which can apply any function to the rows of a soil profile. The parameters of the function are mapped to soil parameters in the dictionary <code>parametermapping</code>.</p>
+<p>We can apply this function twice, once for the calculation of void ratio (result key <code>'e [-]'</code> in the result of <code>voidratio_bulkunitweight</code>) and once for the calculation of water content (result key <code>'w [-]'</code> in the result of <code>voidratio_bulkunitweight</code>).</p>
+<p>We can print the resulting soil profile to the notebook.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.siteinvestigation.classification.phaserelations</span><span class="w"> </span><span class="kn">import</span> <span class="n">voidratio_bulkunitweight</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="err">?</span><span class="n">voidratio_bulkunitweight</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">applyfunction</span><span class="p">(</span>
+    <span class="n">function</span><span class="o">=</span><span class="n">voidratio_bulkunitweight</span><span class="p">,</span>
+    <span class="n">outputkey</span><span class="o">=</span><span class="s2">&quot;Void ratio [-]&quot;</span><span class="p">,</span> <span class="n">resultkey</span><span class="o">=</span><span class="s2">&quot;e [-]&quot;</span><span class="p">,</span>
+    <span class="n">parametermapping</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;bulkunitweight&#39;</span><span class="p">:</span> <span class="s2">&quot;Total unit weight [kN/m3]&quot;</span>
+    <span class="p">})</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">applyfunction</span><span class="p">(</span>
+    <span class="n">function</span><span class="o">=</span><span class="n">voidratio_bulkunitweight</span><span class="p">,</span>
+    <span class="n">outputkey</span><span class="o">=</span><span class="s2">&quot;Water content [-]&quot;</span><span class="p">,</span> <span class="n">resultkey</span><span class="o">=</span><span class="s2">&quot;w [-]&quot;</span><span class="p">,</span>
+    <span class="n">parametermapping</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;bulkunitweight&#39;</span><span class="p">:</span> <span class="s2">&quot;Total unit weight [kN/m3]&quot;</span>
+    <span class="p">})</span>
+<span class="n">sp</span>
+</code></pre></div>
+
+<p>The initial void ratio is required to calculate the settlements.</p>
+<h3 id="selection-of-gcmath7x-and-gcmath8x">Selection of <span class="math">\(C_c\)</span> and <span class="math">\(C_r\)</span></h3>
+<p>The compression index <span class="math">\(C_c\)</span> and recompression index <span class="math">\(C_r\)</span> describe the slope of the virgin compression line and the recompression line respectively in <span class="math">\(e - \log_{10} ( \sigma_v^{\prime} )\)</span> space:</p>
+<div class="math-display">\[\begin{aligned}C_c = - \frac{e_2 - e_1}{\log_{10} \left( \frac{\sigma^{\prime}_{v,2}}{\sigma^{\prime}_{v,1}} \right)} \quad \text{Virgin compression line} \\ C_r = - \frac{e_2 - e_1}{\log_{10} \left( \frac{\sigma^{\prime}_{v,2}}{\sigma^{\prime}_{v,1}} \right)} \quad \text{Recompression line}\end{aligned}\]</div>
+<p>Several correlations exist which correlate the compression and recompression indices with water content, void ratio, ...</p>
+<p><code>groundhog</code> implements the correlation <code>compressionindex_watercontent_koppula</code> which is based on a study by Koppula (1981) which found a direct relation between the compression index <span class="math">\(C_c\)</span> and the natural water content <span class="math">\(w\)</span>. The compression index is between 5 and 10 times higher than the recompression index <span class="math">\(C_r\)</span>. Here, we assume a ratio of 7.5 between both indices.</p>
+<p>We can again determine the indices using the <code>applyfunction</code> method on the <code>SoilProfile</code> object.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.siteinvestigation.correlations.cohesive</span><span class="w"> </span><span class="kn">import</span> <span class="n">compressionindex_watercontent_koppula</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">applyfunction</span><span class="p">(</span>
+    <span class="n">function</span><span class="o">=</span><span class="n">compressionindex_watercontent_koppula</span><span class="p">,</span>
+    <span class="n">outputkey</span><span class="o">=</span><span class="s2">&quot;Cc [-]&quot;</span><span class="p">,</span> <span class="n">resultkey</span><span class="o">=</span><span class="s2">&quot;Cc [-]&quot;</span><span class="p">,</span>
+    <span class="n">parametermapping</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;water_content&#39;</span><span class="p">:</span> <span class="s2">&quot;Water content [-]&quot;</span>
+    <span class="p">})</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">applyfunction</span><span class="p">(</span>
+    <span class="n">function</span><span class="o">=</span><span class="n">compressionindex_watercontent_koppula</span><span class="p">,</span>
+    <span class="n">outputkey</span><span class="o">=</span><span class="s2">&quot;Cr [-]&quot;</span><span class="p">,</span> <span class="n">resultkey</span><span class="o">=</span><span class="s2">&quot;Cr [-]&quot;</span><span class="p">,</span>
+    <span class="n">parametermapping</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;water_content&#39;</span><span class="p">:</span> <span class="s2">&quot;Water content [-]&quot;</span>
+    <span class="p">})</span>
+<span class="n">sp</span>
+</code></pre></div>
+
+<p>Note that this choice of indices should be benchmarked against or replaced by values obtained from oedometer tests.</p>
+<h3 id="selection-of-ocr">Selection of OCR</h3>
+<p>For the settlement calculation, an OCR also needs to be selected. Here, we will just assume a slightly overconsolidated clay (OCR=3) throughout the profile.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;OCR [-]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+</code></pre></div>
+
+<h2 id="settlement-calculation">Settlement calculation</h2>
+<p>Settlement calculations can be performed in <code>groundhog</code> using the <code>SettlementCalculation</code> class. This class implements the necessary functionality to set up the calculation, calculate the additional total stress due to the imposed surcharge and compute the settlements.</p>
+<h3 id="calculation-setup">Calculation setup</h3>
+<p>The starting point of the calculation is the soil profile.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<p>The calculation can be set up using this soil profile:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.shallowfoundations.settlement</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettlementCalculation</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">calc</span> <span class="o">=</span> <span class="n">SettlementCalculation</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="calculation-of-the-initial-stress-state">Calculation of the initial stress state</h3>
+<p>To initiate the calculation, the overburden stress needs to be calculated. This can be done by selecting the position of the watertable. Here, we selected a water table at surface (depth=0m).</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate_initial_state</span><span class="p">(</span><span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We can plot this initial state:</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">plot_initial_state</span><span class="p">(</span><span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">})</span>
+</code></pre></div>
+
+<h3 id="calculation-discretisation">Calculation discretisation</h3>
+<p>To perform the settlement calculation, a grid needs to be set up with a certain node spacing. Here, we will set a node spacing of 0.1m.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">create_grid</span><span class="p">(</span><span class="n">dz</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The properties are automatically mapped to the grid. We can check the nodal properties:</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="foundation-shape-and-dimensions">Foundation shape and dimensions</h3>
+<p>The shape and dimensions of the foundation can be set. Here a circular foundation with 1m diameter is specified.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">set_foundation</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s1">&#39;circular&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="stress-increase">Stress increase</h3>
+<p>The vertical effective stress increases for elastic halfspaces can be obtained using the formulae derived by Boussinesq.</p>
+<p><code>groundhog</code> implements the calculation of vertical effective stress increases below strip footings, the center of circular footings and the corner of a rectangular footing. The module <code>groundhog.shallowfoundations.stressdistribution</code> contains the necessary functions.</p>
+<p>The functions are applied to the selected grid with the foundation shape parameters as specified above by running the <code>calculate_foundation_stress</code> method. Here, a stress increase of 10kPa is imposed.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate_foundation_stress</span><span class="p">(</span><span class="n">applied_stress</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="settlement-calculation_1">Settlement calculation</h3>
+<p>When the initial and final stress state are known, the calculation can be executed. The settlement of each element is computed and is summed to provide the surface settlement.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The calculation output can be tabulated for checking:</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<p>However, plotting results is always more instructive. The results plot has two panels, the leftmost one showing the vertical effective stress at the start and end of the consolidation, the second showing the cumulative settlement in the soil. At the surface, the settlement value is the sum of settlements computed in each element.</p>
+<div class="highlight"><pre><span></span><code><span class="n">calc</span><span class="o">.</span><span class="n">plot_result</span><span class="p">()</span>
+</code></pre></div></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Settlement%20calculations%20with%20groundhog.ipynb">Upstream source (groundhog 0.15.0)</a></li><li>Notebook: <code>notebooks/Tutorial - Settlement calculations with groundhog.ipynb</code></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Tutorial - Pore pressure dissipation</a><a class="next" href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Tutorial - Shallow foundation capacity with groundhog</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#library-imports">Library imports</a></li>
+      <li class="lvl-2"><a href="#selection-of-soil-parameters">Selection of soil parameters</a></li>
+      <li class="lvl-3"><a href="#loading-unit-weight-data">Loading unit weight data</a></li>
+      <li class="lvl-3"><a href="#definition-of-a-soil-profile-and-bulk-unit-weight-selection">Definition of a soil profile and bulk unit weight selection</a></li>
+      <li class="lvl-3"><a href="#calculation-of-initial-void-ratio-and-water-content">Calculation of initial void ratio and water content</a></li>
+      <li class="lvl-3"><a href="#selection-of-gcmath7x-and-gcmath8x">Selection of C_c and C_r</a></li>
+      <li class="lvl-3"><a href="#selection-of-ocr">Selection of OCR</a></li>
+      <li class="lvl-2"><a href="#settlement-calculation">Settlement calculation</a></li>
+      <li class="lvl-3"><a href="#calculation-setup">Calculation setup</a></li>
+      <li class="lvl-3"><a href="#calculation-of-the-initial-stress-state">Calculation of the initial stress state</a></li>
+      <li class="lvl-3"><a href="#calculation-discretisation">Calculation discretisation</a></li>
+      <li class="lvl-3"><a href="#foundation-shape-and-dimensions">Foundation shape and dimensions</a></li>
+      <li class="lvl-3"><a href="#stress-increase">Stress increase</a></li>
+      <li class="lvl-3"><a href="#settlement-calculation_1">Settlement calculation</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

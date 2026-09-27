@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>spt_processing — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.siteinvestigation.insitutests.spt_processing: 0 functions, 1 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="spt_processing — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.siteinvestigation.insitutests.spt_processing: 0 functions, 1 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+</head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/" aria-current="page">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/siteinvestigation/">Site investigation</a></li>
+        <li><a href="/docs/groundhog/api/siteinvestigation/insitutests/">In-situ tests</a></li>
+        <li><span aria-current="page">spt_processing</span></li>
+      </ol>
+    </nav>
+
+    <h1>spt_processing</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.siteinvestigation.insitutests.spt_processing</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.insitutests.spt_processing</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/spt_processing.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/spt_processing.html">SPT processing class</a>.</p>
+<p><strong>Classes:</strong> <a href="#sptprocessing"><code>SPTProcessing</code></a></p>
+<p><a id="sptprocessing"></a></p>
+<h2 id="class-sptprocessing">class <code>SPTProcessing</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="SPTProcessing">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#sptprocessing">Site investigation › In-situ: SPT processing class › SPTProcessing</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">SPTProcessing</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The SPTProcessing class implements methods for reading, processing and presentation of Standard Penetration Test (SPT) data.</p>
+<p><a href="https://www.geoengineer.org/education/site-characterization-in-situ-testing-general/standard-penetration-testing-spt/">GeoEngineer</a> describes the SPT test as follows:</p>
+<p>Standard Penetration Test (SPT) is a simple and low-cost testing procedure widely used in geotechnical investigation to determine the relative density and angle of shearing resistance of cohesionless soils and also the strength of stiff cohesive soils.</p>
+<p>For this test, a borehole has to be drilled to the desired sampling depth. The split-spoon sampler that is attached to the drill rod is placed at the testing point. A hammer of 63.5 kg (140 lbs) is dropped repeatedly from a height of 76 cm (30 inches) driving the sampler into the ground until reaching a depth of 15 cm (6 inches). The number of the required blows is recorded. This procedure is repeated two more times until a total penetration of 45 cm (18 inches) is achieved. The number of blows required to penetrate the first 15 cm is called “seating drive” and the total number of blows required to penetrate the remaining 30 cm depth is known as the “standard penetration resistance”, or otherwise, the “N-value”. If the N-value exceeds 50 then the test is discontinued and is called a “refusal”. The interpreted results, with several corrections, are used to estimate the geotechnical engineering properties of the soil.</p>
+<p>Check the GeoEngineer website for more useful information and an insightful presentation by Paul W. Mayne on SPT hammer types.</p>
+<p>Data for checking and validation was provided by Ajay Sastri of GeoSyntec and Dennis O'Meara of Foundation Alternatives.</p>
+<p><img loading="lazy" decoding="async" alt="Working principle of the SPT (Mayne, 2016)" src="/docs/assets/groundhog/docs/site_investigation/images/spt_principle.png"></p>
+<p><em>Working principle of the SPT (Mayne, 2016)</em></p>
+<p>The SPT test is a simple and robust test but it has its drawbacks. For example, measurements are discontinuous, the application of SPT N number in soft clays and silts is not possible, the are energy inefficiency problems, ... The user needs to be aware of these issues at the onset of a SPT processing exercise.</p>
+<p><a id="sptprocessing-__init__"></a></p>
+<h3 id="sptprocessing__init__"><code>SPTProcessing.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Initialises a SPTProcessing object based on a title. Optionally, a geographical position can be defined. A dictionary for dumping unstructured data (<code>additionaldata</code>) is also available.</p>
+<p>An empty dataframe (<code>`.data</code>) is created for storing the SPT data`</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Title for the SPT test</td>
+</tr>
+<tr>
+<td><code>waterunitweight</code></td>
+<td></td>
+<td></td>
+<td><code>10</code></td>
+<td>Unit weight of water used for effective stress calculations (default=10.25kN/m3 for seawater)</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="sptprocessing-rename_columns"></a></p>
+<h3 id="sptprocessingrename_columns"><code>SPTProcessing.rename_columns</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">rename_columns</span><span class="p">(</span><span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">N_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fs_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>z_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>N_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>fs_key</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="sptprocessing-dropna_rows"></a></p>
+<h3 id="sptprocessingdropna_rows"><code>SPTProcessing.dropna_rows</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">dropna_rows</span><span class="p">()</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><a id="sptprocessing-load_excel"></a></p>
+<h3 id="sptprocessingload_excel"><code>SPTProcessing.load_excel</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_excel</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">N_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Loads SPT data from an Excel file. Specific column keys have to be provided for z and SPT N number. If column keys are not specified, the following keys are used:</p>
+<ul>
+<li>'z [m]' for depth below mudline</li>
+<li>'N [-]' for SPT N number</li>
+</ul>
+<p>Note that the SPT N number needs to be the raw field measurement. Further processing can be used for corrections.</p>
+<p>A multiplier can be specified to convert depth in ft to depth in m (<code>z_multiplier</code>=0.3048). All further SPT processing happens in m so this needs to be specified in case of working with depths in ft or other units. Other arguments for the <code>read_excel</code> function in Pandas can be specified as <code>**kwargs</code>.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Path to the Excel file</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>N_key</code></td>
+<td>-</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for SPT N number. Optional, default=None when 'N ' is the column key.</td>
+</tr>
+<tr>
+<td><code>z_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on depth to convert to meters (e.g. 0.3048 to convert from ft to m)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the read_excel function in Pandas (e.g. sheet_name, header, ...)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the columns 'z [m]' and 'N [-]' of the <code>.data</code> attribute</p>
+<p><a id="sptprocessing-load_pandas"></a></p>
+<h3 id="sptprocessingload_pandas"><code>SPTProcessing.load_pandas</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">load_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">z_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">N_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Loads SPT data from a Pandas dataframe. Specific column keys have to be provided for z and SPT N number. If column keys are not specified, the following keys are used:</p>
+<ul>
+<li>'z [m]' for depth below mudline</li>
+<li>'N [-]' for SPT N number</li>
+</ul>
+<p>Note that the SPT N number needs to be the raw field measurement. Further processing can be used for corrections.</p>
+<p>A multiplier can be specified to convert depth in ft to depth in m (<code>z_multiplier</code>=0.3048). All further SPT processing happens in m so this needs to be specified in case of working with depths in ft or other units. Other arguments for the <code>read_excel</code> function in Pandas can be specified as <code>**kwargs</code>.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Dataframe containing the SPT data</td>
+</tr>
+<tr>
+<td><code>z_key</code></td>
+<td>m</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for depth. Optional, default=None when 'z ' is the column key.</td>
+</tr>
+<tr>
+<td><code>N_key</code></td>
+<td>-</td>
+<td></td>
+<td><code>None</code></td>
+<td>Column key for SPT N number. Optional, default=None when 'N ' is the column key.</td>
+</tr>
+<tr>
+<td><code>z_multiplier</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Multiplier applied on depth to convert to meters (e.g. 0.3048 to convert from ft to m)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the read_excel function in Pandas (e.g. sheet_name, header, ...)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the columns 'z [m]' and 'N [-]' of the <code>.data</code> attribute</p>
+<p><a id="sptprocessing-map_properties"></a></p>
+<h3 id="sptprocessingmap_properties"><code>SPTProcessing.map_properties</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">map_properties</span><span class="p">(</span>
+    <span class="n">layer_profile</span><span class="p">,</span>
+    <span class="n">spt_profile</span><span class="o">=</span>   <span class="n">Depth</span> <span class="kn">from</span><span class="w"> </span><span class="p">[</span><span class="n">m</span><span class="p">]</span>  <span class="n">Depth</span> <span class="n">to</span> <span class="p">[</span><span class="n">m</span><span class="p">]</span>  <span class="o">...</span>  <span class="n">eta</span> <span class="n">S</span> <span class="p">[</span><span class="o">-</span><span class="p">]</span> <span class="n">eta</span> <span class="n">R</span> <span class="p">[</span><span class="o">-</span><span class="p">]</span>
+<span class="mi">0</span>               <span class="mi">0</span>            <span class="mi">20</span>  <span class="o">...</span>        <span class="n">NaN</span>       <span class="n">NaN</span>
+
+<span class="p">[</span><span class="mi">1</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">11</span> <span class="n">columns</span><span class="p">],</span>
+    <span class="n">initial_vertical_total_stress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vertical_total_stress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vertical_effective_stress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">rodlength_abovesoil</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">extend_spt_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">extend_layer_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Maps the soil properties defined in the layering and the cone properties to the grid defined by the cone data. The procedure also calculates the total and effective vertical stress. Note that pre-calculated arrays with total and effective vertical stress can also be supplied to the routine. These needs to have the same length as the array with SPT depth data.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layer_profile</code></td>
+<td>kN/m3</td>
+<td></td>
+<td>required</td>
+<td><code>SoilProfile</code> object with the layer properties (need to contain the soil parameter <code>Total unit weight</code></td>
+</tr>
+<tr>
+<td><code>spt_profile</code></td>
+<td></td>
+<td></td>
+<td><code>Depth from [m]  Depth to [m]  ...  eta S [-] eta R [-] 0               0            20  ...        NaN       NaN  [1 rows x 11 columns]</code></td>
+<td><code>SoilProfile</code> object with the spt test properties (default=<code>DEFAULT_SPT_PROPERTIES</code>)</td>
+</tr>
+<tr>
+<td><code>initial_vertical_total_stress</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>Initial vertical total stress at the highest point of the soil profile</td>
+</tr>
+<tr>
+<td><code>vertical_total_stress</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Pre-calculated total vertical stress at SPT depth nodes (default=None which will lead to calculation of total stress inside the routine)</td>
+</tr>
+<tr>
+<td><code>vertical_effective_stress</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Pre-calculated effective vertical stress at SPT depth nodes (default=None which will lead to calculation of total stress inside the routine)</td>
+</tr>
+<tr>
+<td><code>waterlevel</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Waterlevel in the soil (measured from soil surface), default = 0m</td>
+</tr>
+<tr>
+<td><code>rodlength_abovesoil</code></td>
+<td>m</td>
+<td></td>
+<td><code>1</code></td>
+<td>Rod length above soil surface level (used to calculate the rod length to the sampler), default = 1m</td>
+</tr>
+<tr>
+<td><code>extend_spt_profile</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the cone profile needs to be extended to go to the bottom of the SPT (default = True)</td>
+</tr>
+<tr>
+<td><code>extend_layer_profile</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the layer profile needs to be extended to the bottom of the SPT (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Expands the dataframe <code>.data</code> with additional columns for the SPT and soil properties</p>
+<p><a id="sptprocessing-apply_correlation"></a></p>
+<h3 id="sptprocessingapply_correlation"><code>SPTProcessing.apply_correlation</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">apply_correlation</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">apply_for_soiltypes</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Applies a correlation to the given SPT data. The name of the correlation needs to be chosen from the following available correlations. Each correlation corresponds to a function in the <code>spt_correlations</code> module. By default, the correlation is applied to the entire depth range. However, a restriction on the soil types to which the correlation can be applied can be specified with the <code>apply_for_soiltypes</code> keyword argument. A list with the soil types for which the correlation needs to be applied can be provided.</p>
+<ul>
+<li>Overburden correction Liao and Whitman (1986): <code>overburdencorrection_spt_liaowhitman</code>,</li>
+<li>Overburden correction ISO 22476-3: <code>overburdencorrection_spt_ISO</code></li>
+<li>N60 correction: <code>spt_N60_correction</code></li>
+<li>Relative density Kulhawy and Mayne (1990): <code>relativedensity_spt_kulhawymayne</code></li>
+<li>Relative density class Terzaghi and Peck (1967): <code>relativedensityclass_spt_terzaghipeck</code></li>
+<li>Undrained shear strength class Terzaghi and Peck (1967): <code>undrainedshearstrengthclass_spt_terzaghipeck</code></li>
+<li>Undrained shear strength Salgado (2008): <code>undrainedshearstrength_spt_salgado</code></li>
+<li>Friction angle Kulhawy and Mayne (1990): <code>frictionangle_spt_kulhawymayne</code></li>
+<li>Friction angle PHT (1974): <code>frictionangle_spt_PHT</code></li>
+</ul>
+<p>Note that certain correlations require either the application of preceding correlations</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Name of the correlation according to the list defined above</td>
+</tr>
+<tr>
+<td><code>outputs</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>a dict of keys and values where keys are the same as the keys in the correlation, values are the table headers you want</td>
+</tr>
+<tr>
+<td><code>apply_for_soiltypes</code></td>
+<td></td>
+<td></td>
+<td><code>'all'</code></td>
+<td>List with soil types to which the correlation needs the be applied.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the correlation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Adds a column with key <code>outkey</code> to the dataframe with SPT data</p>
+<p><a id="sptprocessing-plot_raw_spt"></a></p>
+<h3 id="sptprocessingplot_raw_spt"><code>SPTProcessing.plot_raw_spt</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_raw_spt</span><span class="p">(</span>
+    <span class="n">n_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">n_tick</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">z_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">z_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">return_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_margin</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">plot_layers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the raw SPT data using the Plotly package. This generates an interactive plot.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 100)</code></td>
+<td>Range for the SPT N number (default=(0, 100))</td>
+</tr>
+<tr>
+<td><code>n_tick</code></td>
+<td></td>
+<td></td>
+<td><code>10</code></td>
+<td>Tick interval for the SPT N number (default=10)</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for the depth (default=None for plotting from zero to maximum SPT depth)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick interval for depth (default=2m)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Height for the plot (default=700px)</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>700</code></td>
+<td>Width for the plot (default=700)</td>
+</tr>
+<tr>
+<td><code>return_fig</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the figure needs to be returned (True) or plotted (False)</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plot for the title (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td><code>{'t': 100, 'l': 50, 'b': 50}</code></td>
+<td>Margin for the plot (default=dict(t=100, l=50, b=50))</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Color to be used for plotting (default=None for default plotly colors)</td>
+</tr>
+<tr>
+<td><code>markersize</code></td>
+<td></td>
+<td></td>
+<td><code>5</code></td>
+<td>Size of the markers to be used (default=5)</td>
+</tr>
+<tr>
+<td><code>plot_layers</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether to show the layers (if available)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="sptprocessing-plot_properties_withlog"></a></p>
+<h3 id="sptprocessingplot_properties_withlog"><code>SPTProcessing.plot_properties_withlog</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_properties_withlog</span><span class="p">(</span>
+    <span class="n">prop_keys</span><span class="p">,</span>
+    <span class="n">plot_ranges</span><span class="p">,</span>
+    <span class="n">plot_ticks</span><span class="p">,</span>
+    <span class="n">legend_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">axis_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">showlayers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots SPT properties vs depth and includes a mini-log on the left-hand side. The minilog is composed based on the entries in the <code>Soil type</code> column of the layering</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prop_keys</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with the keys to be plotted. Keys in the same tuple are plotted on the same panel</td>
+</tr>
+<tr>
+<td><code>plot_ranges</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple of tuples with ranges for the panels of the plot</td>
+</tr>
+<tr>
+<td><code>plot_ticks</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Tuple with tick intervals for the plot panels</td>
+</tr>
+<tr>
+<td><code>legend_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used in the legend. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>axis_titles</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tuple with entries to be used as axis labels. If left blank, the keys are used</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the figure needs to be shown in the notebook (default=True)</td>
+</tr>
+<tr>
+<td><code>showlayers</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether layer positions need to be plotted (default=True)</td>
+</tr>
+<tr>
+<td><code>z_range</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Range for depths (optional, default is (0, maximum SPT depth)</td>
+</tr>
+<tr>
+<td><code>z_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick mark distance for SPT depth</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Plotly figure with mini-log</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/spt_processing.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/spt_processing.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>SPT corrections and correlations</a><a class="next" href="/docs/groundhog/api/siteinvestigation/labtesting/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Lab testing</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#sptprocessing">class SPTProcessing</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-__init__">SPTProcessing.__init__</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-rename_columns">SPTProcessing.rename_columns</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-dropna_rows">SPTProcessing.dropna_rows</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-load_excel">SPTProcessing.load_excel</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-load_pandas">SPTProcessing.load_pandas</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-map_properties">SPTProcessing.map_properties</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-apply_correlation">SPTProcessing.apply_correlation</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-plot_raw_spt">SPTProcessing.plot_raw_spt</a></li>
+      <li class="lvl-3"><a href="#sptprocessing-plot_properties_withlog">SPTProcessing.plot_properties_withlog</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+</body>
+</html>

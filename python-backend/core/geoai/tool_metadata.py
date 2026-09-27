@@ -80,7 +80,7 @@ TOOL_METADATA: Dict[str, Dict[str, Any]] = {
             "Cohesionless granular soil",
             "e_min <= e <= e_max"
         ],
-        "output_units": {"Dr": "%"}
+        "output_units": {"Dr": "-"}
     },
 
     # 3. Shallow Foundations

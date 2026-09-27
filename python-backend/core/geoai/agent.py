@@ -80,9 +80,13 @@ class AgentStreamEvent:
         return f"data: {json.dumps(data)}\n\n"
 
 class GeoAIAgent:
-    def __init__(self, provider: ModelProvider, registry: GeoAIToolRegistry):
+    def __init__(self, provider: ModelProvider, registry: GeoAIToolRegistry, max_tools: Optional[int] = None):
         self._provider = provider
         self._registry = registry
+        if max_tools is None:
+            from core.geoai.model_config import load_config
+            max_tools = load_config().max_tools
+        self._max_tools = max_tools
 
     def _build_messages(self, user_message: str, context: Optional[Dict[str, Any]] = None) -> Tuple[List[ChatMessage], List[dict]]:
         """Build initial message list and select relevant tools for the model."""
@@ -91,7 +95,7 @@ class GeoAIAgent:
             make_system_message(system_prompt),
             make_user_message(user_message)
         ]
-        tools_for_model = select_relevant_tools(user_message, context)
+        tools_for_model = select_relevant_tools(user_message, context, max_tools=self._max_tools)
         return messages, tools_for_model
 
     def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:

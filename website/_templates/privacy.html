@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block title %}Privacy — GeoCore{% endblock %}
+{% block description %}What the GeoCore desktop app and this website send over the network, and what is stored on your computer.{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div class="container">
+    <p class="eyebrow">{{ icon('shield') }}Privacy</p>
+    <h1>Privacy</h1>
+    <p class="lede">GeoCore has no accounts, no analytics and no telemetry. Your projects and calculations stay on your computer. This page lists every network request the desktop app can make, and what it stores locally.</p>
+    <p class="meta">Last updated <time datetime="{{ privacy_updated }}">27 September 2026</time> · applies to GeoCore {{ app_version }} and this website</p>
+  </div>
+</header>
+
+<div class="section">
+  <div class="container two-col">
+    <article class="prose">
+      <h2 id="summary">Summary</h2>
+      <ul>
+        <li>Calculations, plots, reports and GeoAI inference run locally. Project data is never uploaded.</li>
+        <li>The app contacts the internet for: <strong>update checks</strong> (GitHub), <strong>interface fonts</strong> (Google Fonts), and — only when you ask — <strong>AI model downloads</strong> (Hugging Face), <strong>two optional geological-profile lookups</strong> in Groundhog, and <strong>map tiles</strong> (OpenStreetMap) if you turn on the location map in two Groundhog profile plots. Map tile requests reveal the approximate location of your site.</li>
+        <li>Everything the app stores is in ordinary files on your computer that you can inspect or delete.</li>
+      </ul>
+      <p>This page was written by reading GeoCore’s source code. File references point to the repository at the time of writing so you can check them yourself.</p>
+
+      <h2 id="network">Network activity of the desktop app</h2>
+      <p>Any request to a server reveals your IP address and a user-agent string to that server; this is noted once here rather than repeated below. GeoCore does not add identifiers, usage data or project content to any request.</p>
+
+      <h3 id="net-updates">1. Update check — GitHub</h3>
+      <dl>
+        <dt>When</dt>
+        <dd>About 15 seconds after an installed (packaged) build starts. Development builds never check.</dd>
+        <dt>Where</dt>
+        <dd><code>github.com</code> and GitHub’s release-download hosts, for the <code>utkarsh-1912/geocore</code> repository.</dd>
+        <dt>What is sent</dt>
+        <dd>Standard requests for the latest release metadata (<code>latest.yml</code> / <code>latest-mac.yml</code>). If a newer version exists it is downloaded in the background and installed when you quit. On macOS, current builds are not code-signed with a Developer ID, so the update cannot install there.</dd>
+        <dt>Source</dt>
+        <dd><code>electron-app/electron/main.cjs:161–181</code> (<code>scheduleUpdateCheck</code>, using electron-updater); publish target in <code>electron-app/package.json</code> (<code>build.publish</code>).</dd>
+        <dt>To avoid it</dt>
+        <dd>Run offline or block the app in your firewall. Failures are ignored and the app keeps working.</dd>
+      </dl>
+
+      <h3 id="net-fonts">2. Interface fonts — Google Fonts</h3>
+      <dl>
+        <dt>When</dt>
+        <dd>Each time the app window loads, if the computer is online.</dd>
+        <dt>Where</dt>
+        <dd><code>fonts.googleapis.com</code> and <code>fonts.gstatic.com</code>.</dd>
+        <dt>What is sent</dt>
+        <dd>Requests for the Arima, Charm, Quicksand, Signika and Ubuntu font files. Google receives the standard request information described above.</dd>
+        <dt>Source</dt>
+        <dd><code>electron-app/index.html:9–13</code>.</dd>
+        <dt>To avoid it</dt>
+        <dd>Offline, the app falls back to system fonts and works normally. Blocking these two hosts in a firewall has the same effect.</dd>
+      </dl>
+
+      <h3 id="net-models">3. GeoAI model downloads — Hugging Face</h3>
+      <dl>
+        <dt>When</dt>
+        <dd>Only when you choose to download a model in GeoAI. Nothing is downloaded automatically.</dd>
+        <dt>Where</dt>
+        <dd><code>huggingface.co</code> and its file-delivery CDN. The files come from these public repositories:
+          {% for m in models %}<code>{{ m.repo_id }}</code>{{ ', ' if not loop.last else '.' }}{% endfor %}</dd>
+        <dt>What is sent</dt>
+        <dd>A request for the chosen model file, made by the <code>huggingface_hub</code> library (which identifies itself and its version in the user-agent). No prompts, questions or project data are sent — GeoAI inference happens entirely on your computer.</dd>
+        <dt>Source</dt>
+        <dd><code>python-backend/core/geoai/model_downloader.py:152</code> (<code>hf_hub_download</code>); the model list is <code>RECOMMENDED_MODELS</code> in the same file.</dd>
+        <dt>To avoid it</dt>
+        <dd>Copy a <code>.gguf</code> file into the models folder yourself (see below), or select a local file path in GeoAI.</dd>
+      </dl>
+
+      <h3 id="net-geology">4. Optional geological profile lookups — Flanders (DOV) and the Netherlands (GeoTOP)</h3>
+      <dl>
+        <dt>When</dt>
+        <dd>Only if you run one of two Groundhog functions that are part of the calculation list: <code>retrieve_geological_profile_dov</code> or <code>retrieve_geological_profile_bro</code>.</dd>
+        <dt>Where</dt>
+        <dd><code>services.dov.vlaanderen.be</code> (Databank Ondergrond Vlaanderen) and <code>www.dinodata.nl</code> (GeoTOP model via OPeNDAP).</dd>
+        <dt>What is sent</dt>
+        <dd>The coordinates you enter, to fetch the geological model at that location.</dd>
+        <dt>Source</dt>
+        <dd>Groundhog {{ groundhog_version }}: <code>groundhog/general/soilprofile.py:1397</code> (DOV) and <code>:1816–1823</code> (GeoTOP). The GeoTOP lookup also needs the optional <code>netCDF4</code> package, which is not in GeoCore’s requirements, so it is not expected to work in standard builds.</dd>
+      </dl>
+
+      <h3 id="net-map-tiles">5. Location map in profile plots — OpenStreetMap tiles</h3>
+      <dl>
+        <dt>When</dt>
+        <dd>Only when one of two Groundhog longitudinal-profile plots is drawn with its location map turned on: <code>plot_longitudinal_profile</code> (CPTs) or <code>plot_fence_diagram</code> (soil profiles), with <code>plotmap</code> set to true. <code>plotmap</code> is off by default. Having X/Y coordinates on the CPTs or soil profiles does not draw a map by itself, and <code>plot_combined_longitudinal_profile</code> ignores <code>plotmap</code>. In GeoCore {{ app_version }}, input validation rejects the CPT and soil-profile lists these plots need before Groundhog runs, and GeoAI has no tool for them. You should not see this request in practice yet. It is listed because the option is already in the app and will take effect once those inputs work.</dd>
+        <dt>Where</dt>
+        <dd><code>a.tile.openstreetmap.org</code> and <code>b.tile.openstreetmap.org</code>, OpenStreetMap’s public tile servers. The app window contacts them directly. No Mapbox account or token is involved. When we tested these plots in the app’s own charting library, no other map hosts were contacted: no Mapbox, map-font or icon (<code>unpkg.com</code>) requests.</dd>
+        <dt>What is sent</dt>
+        <dd>Requests for 256-pixel map images (tiles). Each tile address contains a zoom level and x/y tile coordinates (<code>/{z}/{x}/{y}.png</code>) that identify a fixed square of the Earth’s surface. <strong>The tile server can therefore infer the approximate location of your site.</strong> The map is centred on the average of the plotted locations at a fixed zoom (Groundhog ignores the <code>mapbox_zoom</code> input). In a test with three CPTs near Ghent, the first view loaded four tiles at zoom level 11, covering about 25 × 25 km around the site. Panning or zooming the map loads more tiles, and zooming in narrows the area they reveal. Your coordinates, CPT or profile names and test data are not sent; the markers and hover labels are drawn on your computer. The map treats X as longitude and Y as latitude, so the tiles match the real site when your coordinates are in degrees (WGS84).</dd>
+        <dt>Source</dt>
+        <dd>Groundhog {{ groundhog_version }}: <code>groundhog/siteinvestigation/insitutests/pcpt_processing.py:2707–2709</code> and <code>:2801–2805</code>; <code>groundhog/general/soilprofile.py:1214–1216</code> and <code>:1256–1260</code> (<code>mapbox_style='open-street-map'</code>). The tile addresses come from the <code>open-street-map</code> style built into plotly.js (<code>src/plots/mapbox/constants.js</code>), which the app window uses to draw charts. The inputs are defined in <code>electron-app/src/features/calculations/schemas/siteinvestigation.js</code> (<code>plotmap</code>, <code>mapbox_zoom</code>).</dd>
+        <dt>To avoid it</dt>
+        <dd>Leave <code>plotmap</code> off, which is the default. If you are offline or block these two hosts, nothing is sent, but the map panel has no background and the chart may report a map error.</dd>
+      </dl>
+
+      <h3 id="net-local">Local-only traffic</h3>
+      <p>The interface talks to GeoCore’s own engine over <code>http://127.0.0.1:8000</code>. The engine binds to the loopback address only (<code>python-backend/main.py:103</code>), so it is not reachable from other machines and this traffic never leaves your computer.</p>
+
+      <h3 id="net-none">What GeoCore does not do</h3>
+      <ul>
+        <li>No analytics, telemetry, crash reporting or advertising SDKs.</li>
+        <li>No accounts or sign-in.</li>
+        <li>No cloud AI: GeoAI never sends prompts or data to a remote model.</li>
+        <li>No web search. GeoAI’s research index is a local SQLite file built from documents on your computer.</li>
+      </ul>
+      <p>Links you click (for example to documentation or GitHub) open in your web browser and are covered by that site’s own policy.</p>
+
+      <h2 id="storage">Data stored on your computer</h2>
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
+          <tbody>
+            <tr><td>GeoAI settings (<code>geoai_config.json</code>)</td><td>Windows: <code>%APPDATA%\GeoCore\</code><br>macOS: <code>~/.geocore/</code></td></tr>
+            <tr><td>Downloaded GeoAI models (<code>*.gguf</code>, {{ model_min_mb|mb }}–{{ model_max_mb|mb }} each)</td><td>Windows: <code>%APPDATA%\GeoCore\models\</code><br>macOS: <code>~/.geocore/models/</code></td></tr>
+            <tr><td>GeoAI local document index (<code>geoai_research.db</code>), if used</td><td>Same folder as GeoAI settings</td></tr>
+            <tr><td>Calculation history, favourites, theme and GeoAI conversations (browser storage of the app window)</td><td>Windows: <code>%APPDATA%\GeoCore\</code><br>macOS: <code>~/Library/Application Support/GeoCore/</code></td></tr>
+            <tr><td>Saved objects such as soil profiles (<code>saved_objects.json</code>) and field-label overrides (<code>schema_overrides.json</code>)</td><td>The engine’s working folder, inside the GeoCore installation directory</td></tr>
+            <tr><td>Reports and exports (PDF, CSV, JSON)</td><td>Wherever you choose to save them</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>To remove all GeoCore data, uninstall the app and delete the folders listed above. GeoCore does not store data anywhere else.</p>
+
+      <h2 id="website">This website</h2>
+      <ul>
+        <li><strong>Hosting.</strong> The site is hosted on <a href="https://www.netlify.com/">Netlify</a>, which processes standard server logs (IP address, requested URL, user-agent, time) to deliver and protect the site, as described in <a href="https://www.netlify.com/privacy/">Netlify’s privacy policy</a>.</li>
+        <li><strong>No tracking.</strong> No cookies, analytics, advertising or third-party fonts or scripts. Fonts are your system’s own; icons and styles are served from this site.</li>
+        <li><strong>Download page.</strong> Your browser requests <code>api.github.com</code> directly to show the latest release, and files download from GitHub. GitHub receives the standard request information under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">its privacy statement</a>. The response is kept in your browser’s session storage for 10 minutes to avoid repeat requests.</li>
+        <li><strong>Local preferences.</strong> If you pick a light or dark theme, the choice is saved in your browser’s local storage (<code>geocore-theme</code>). It never leaves your device.</li>
+        <li><strong>Docs search.</strong> Search runs in your browser against a file downloaded from this site; what you type is not sent anywhere.</li>
+      </ul>
+
+      <h2 id="changes">Changes and questions</h2>
+      <p>If GeoCore’s network behaviour changes, this page will be updated along with the code. The history of this page is public in the <a href="{{ repo_url }}/commits/main/website">repository</a>. Questions or concerns: open an issue on <a href="{{ repo_url }}/issues">GitHub</a>.</p>
+    </article>
+
+    <aside class="two-col__aside">
+      <nav class="aside-nav" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#network">Network activity</a></li>
+          <li><a href="#storage">Data on your computer</a></li>
+          <li><a href="#website">This website</a></li>
+          <li><a href="#changes">Changes and questions</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</div>
+{% endblock %}

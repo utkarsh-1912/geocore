@@ -44,12 +44,28 @@ jobs:
           cache: 'npm'
           cache-dependency-path: electron-app/package-lock.json
 
+      # Install the local LLM runtime first from the prebuilt CPU wheel index so
+      # requirements.txt does not trigger a slow/fragile source build of llama.cpp.
+      - name: Install Local LLM Runtime (llama-cpp-python, CPU wheel)
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          if [ "${{ matrix.platform }}" = "win" ]; then
+            pip install llama-cpp-python --only-binary=llama-cpp-python --prefer-binary \
+              --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+          else
+            pip install llama-cpp-python --prefer-binary \
+              --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+          fi
+
       - name: Install Python Dependencies & PyInstaller
         run: |
           cd python-backend
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
+
+      - name: Verify Local LLM Runtime Imports
+        run: python -c "import llama_cpp; print('llama_cpp', llama_cpp.__version__)"
 
       - name: Freeze Python Backend with PyInstaller
         run: |
@@ -81,9 +97,13 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
+          # NSIS installer only (no portable build). latest*.yml + *.blockmap
+          # are required by electron-updater for in-app auto-updates.
           files: |
             electron-app/release/*.exe
             electron-app/release/*.dmg
             electron-app/release/*.zip
+            electron-app/release/*.blockmap
+            electron-app/release/latest*.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

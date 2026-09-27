@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stress distributions — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.shallowfoundations.stressdistribution: 6 functions, 0 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Stress distributions — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.shallowfoundations.stressdistribution: 6 functions, 0 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/" aria-current="page">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/shallowfoundations/">Shallow foundations</a></li>
+        <li><span aria-current="page">Stress distributions</span></li>
+      </ol>
+    </nav>
+
+    <h1>Stress distributions</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.shallowfoundations.stressdistribution</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.shallowfoundations.stressdistribution</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/shallowfoundations/stressdistribution.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/shallowfoundations/stressdistribution.html">Stress distributions</a>.</p>
+<p><strong>Functions:</strong> <a href="#stresses_pointload"><code>stresses_pointload</code></a>, <a href="#stresses_stripload"><code>stresses_stripload</code></a>, <a href="#stresses_circle"><code>stresses_circle</code></a>, <a href="#stresses_rectangle"><code>stresses_rectangle</code></a>, <a href="#stresses_lineload_retainingwall"><code>stresses_lineload_retainingwall</code></a>, <a href="#stresses_stripload_retainingwall"><code>stresses_stripload_retainingwall</code></a></p>
+<p><a id="stresses_pointload"></a></p>
+<h2 id="stresses_pointload"><code>stresses_pointload</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stresses_pointload">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stresses_pointload">Shallow foundations › Stress distributions › Point Load Stress</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stresses_pointload</span><span class="p">(</span><span class="n">pointload</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">poissonsratio</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the stresses at a point below a line load according the solution proposed by Boussinesq (1885). The vertical stress increase is calculated as well as the increases in radial and tangential stress</p>
+<div class="math-display">\[\Delta \sigma_z = \frac{3Q}{2 \pi z^2 \left[ 1 + \left( \frac{r}{z} \right)^2 \right]^{5/2}}\]</div>
+<div class="math-display">\[\Delta \sigma_r = \frac{Q}{2 \pi} \left( \frac{3 r^2 z}{(r^2 + z^2)^{5/2}} - \frac{1 - 2 \nu}{r^2 + z^2 + z \left( r^2 + z^2 \right)^{1/2}}\right)\]</div>
+<div class="math-display">\[\Delta \sigma_{\theta} = \frac{Q}{2 \pi} \left( 1 - 2 \nu \right) \left( \frac{z}{\left( r^2 + z^2 \right)^{3/2}} - \frac{1}{r^2 + z^2 + z \left( r^2 + z^2 \right)^{1/2} } \right)\]</div>
+<div class="math-display">\[\Delta \tau_{rz} = \frac{3 Q}{2 \pi} \left[ \frac{r z^2}{\left( r^2 + z^2 \right)^{5/2}} \right]\]</div>
+<p><img loading="lazy" decoding="async" alt="Nomenclature used for point load stress calculation (Budhu, 2011)" src="/docs/assets/groundhog/docs/shallowfoundations/images/stresses_pointload_1.png"></p>
+<p><em>Nomenclature used for point load stress calculation (Budhu, 2011)</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pointload</code></td>
+<td>kN</td>
+<td></td>
+<td>required</td>
+<td>Magnitude of the point load (<span class="math">\(Q\)</span>)</td>
+</tr>
+<tr>
+<td><code>z</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Vertical distance from the surface to the point where the stresses are calculated (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Radial distance from the surface to the point where the stresses are calculated (<span class="math">\(r\)</span>)</td>
+</tr>
+<tr>
+<td><code>poissonsratio</code></td>
+<td>-</td>
+<td>0.0 &lt;= poissonsratio &lt;= 0.5</td>
+<td>required</td>
+<td>Poisson's ratio (<span class="math">\(\nu\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta sigma z [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in vertical normal stress (<span class="math">\(\Delta \sigma_z\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta sigma r [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in radial normal stress (<span class="math">\(\Delta \sigma_r\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta sigma theta [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in tangential normal stress (<span class="math">\(\Delta \sigma_{\theta}\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta tau rz [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in shear stress in the rz plane (<span class="math">\(\Delta \tau_{rz}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011). Soil mechanics and foundation engineering</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="stresses_stripload"></a></p>
+<h2 id="stresses_stripload"><code>stresses_stripload</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stresses_stripload">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stresses_stripload">Shallow foundations › Stress distributions › Strip Load Stress</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stresses_stripload</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">imposedstress</span><span class="p">,</span> <span class="n">triangular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the stress redistribution at a point in the subsoil due to a strip load with a given width, applied at the surface.</p>
+<p>Two cases can be specified. By default, a uniform load is specified, but the stresses under a triangular load can also be calculated.</p>
+<div class="math-display">\[R_1 = \sqrt{x^2 + z^2}\]</div>
+<div class="math-display">\[R_2 = \sqrt{(x - B)^2 + z^2}\]</div>
+<div class="math-display">\[\cos \left(\alpha + \beta \right) = z / R_1\]</div>
+<div class="math-display">\[\cos \beta = z / R_2\]</div>
+<div class="math-display">\[\text{Uniform load}\]</div>
+<div class="math-display">\[\Delta \sigma_z = \frac{q_s}{\pi} \left[ \alpha + \sin \alpha \cos \left( \alpha + 2 \beta \right) \right]\]</div>
+<div class="math-display">\[\Delta \sigma_x = \frac{q_s}{\pi} \left[ \alpha - \sin \alpha \cos \left( \alpha + 2 \beta \right) \right]\]</div>
+<div class="math-display">\[\Delta \tau_{zx} = \frac{q_s}{\pi} \left[ \sin \alpha \sin \left( \alpha + 2 \beta \right) \right]\]</div>
+<div class="math-display">\[\text{Triangular load}\]</div>
+<div class="math-display">\[\Delta \sigma_z = \frac{q_s}{\pi} \left( \frac{x}{B} \alpha - \frac{1}{2} \sin 2 \beta \right)\]</div>
+<div class="math-display">\[\Delta \sigma_x = \frac{q_s}{\pi} \left( \frac{x}{B} \alpha - \frac{z}{B} \ln \frac{R_1^2}{R_2^2} + \frac{1}{2} \sin 2 \beta \right)\]</div>
+<div class="math-display">\[\Delta \tau_zx = \frac{q_s}{2 \pi} \left( 1 + \cos 2 \beta - 2 \frac{z}{B} \alpha \right)\]</div>
+<p><img loading="lazy" decoding="async" alt="Nomenclature for inputs in stress calculation due to a strip footing" src="/docs/assets/groundhog/docs/shallowfoundations/images/stresses_stripload_1.png"></p>
+<p><em>Nomenclature for inputs in stress calculation due to a strip footing</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>z</code></td>
+<td>m</td>
+<td>z &gt;= 0.0</td>
+<td>required</td>
+<td>Vertical distance from the soil surface (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Horizontal offset from the leftmost corner of the strip footing (<span class="math">\(x\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td>width &gt;= 0.0</td>
+<td>required</td>
+<td>Width of the strip footing (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>imposedstress</code></td>
+<td><span class="math">\(kN/m^2\)</span></td>
+<td></td>
+<td>required</td>
+<td>Maximum value of the imposed force per unit area (<span class="math">\(q_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>triangular</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether a triangular load pattern is applied</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta sigma z [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in vertical stress due to surface load (<span class="math">\(\Delta \sigma_z\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta sigma x [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in horizontal stress due to surface load (<span class="math">\(\Delta \sigma_x\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta tau zx [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in shear stress due to surface load (<span class="math">\(\Delta \tau_{zx}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011). Soil mechanics and foundation engineering</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="stresses_circle"></a></p>
+<h2 id="stresses_circle"><code>stresses_circle</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stresses_circle">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stresses_circle">Shallow foundations › Stress distributions › Circular Footing Stress</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stresses_circle</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">footing_radius</span><span class="p">,</span> <span class="n">imposedstress</span><span class="p">,</span> <span class="n">poissonsratio</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the stress distribution below a uniformly loaded circular foundation. The stresses are calculated below the center of the circular foundation</p>
+<div class="math-display">\[\Delta \sigma_z = q_s \left[ 1 - \left( \frac{1}{1 + (r_0 / z)^2} \right)^{3/2} \right]\]</div>
+<div class="math-display">\[\Delta \sigma_r = \Delta \sigma_{\theta} = \frac{q_s}{2} \left[ (1 + 2 \nu) - \frac{4 (1 + \nu)}{\sqrt{1 + (r_0 / z)^2}} + \frac{1}{\left[ 1 + (r_0 / z)^2 \right]^{3/2}} \right]\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>z</code></td>
+<td>m</td>
+<td>z &gt;= 0.0</td>
+<td>required</td>
+<td>Depth below the base of the foundation (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>footing_radius</code></td>
+<td>m</td>
+<td>footing_radius &gt;= 0.0</td>
+<td>required</td>
+<td>Radius of the circular foundation (<span class="math">\(r_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>imposedstress</code></td>
+<td>kPa</td>
+<td></td>
+<td>required</td>
+<td>Applied uniform stress to the circular footing (<span class="math">\(q_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>poissonsratio</code></td>
+<td>-</td>
+<td>0.0 &lt;= poissonsratio &lt;= 0.5</td>
+<td>required</td>
+<td>Poissons ratio for the soil material (<span class="math">\(\nu\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta sigma z [kPa]</code></td>
+<td>kPa</td>
+<td>Vertical stress increase (<span class="math">\(\Delta \sigma_z\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta sigma r [kPa]</code></td>
+<td>kPa</td>
+<td>Radial stress increase (<span class="math">\(\Delta \sigma_r\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011). Soil mechanics and foundation engineering</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="stresses_rectangle"></a></p>
+<h2 id="stresses_rectangle"><code>stresses_rectangle</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stresses_rectangle">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stresses_rectangle">Shallow foundations › Stress distributions › Rectangular Footing Stress</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stresses_rectangle</span><span class="p">(</span><span class="n">imposedstress</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the stresses under the corner of a uniformly loaded rectangular area. Stresses under other points can be calculated by subdividing the rectangular in smaller sub-rectangles and using superposition stresses (justified because the solution is elastic). E.g. the stresses under the center of a rectangle is calculated by subdividing the rectangle into four equal sub-areas and calculating the stress below the corner of each and summing them.</p>
+<div class="math-display">\[\Delta \sigma_z = \frac{q_s}{2 \pi} \left[ \tan^{-1} \frac{L B}{z R_3} + \frac{L B z}{R_3} \left( \frac{1}{R_1^2} + \frac{1}{R_2^2} \right) \right]\]</div>
+<div class="math-display">\[\Delta \sigma_x = \frac{q_s}{2 \pi} \left[ \tan^{-1} \frac{L B}{z R_3} - \frac{L B z}{R_1^2 R_3} \right]\]</div>
+<div class="math-display">\[\Delta \sigma_y = \frac{q_s}{2 \pi} \left[ \tan^{-1} \frac{L B}{z R_3} - \frac{L B z}{R_2^2 R_3} \right]\]</div>
+<div class="math-display">\[\Delta \tau_{zx} = \frac{q_s}{2 \pi} \left[ \frac{B}{R_2} - \frac{z^2 B}{R_1^2 R_3} \right]\]</div>
+<div class="math-display">\[\text{where}\]</div>
+<div class="math-display">\[R_1 = \sqrt{L^2 + z^2}\]</div>
+<div class="math-display">\[R_2 = \sqrt{B^2 + z^2}\]</div>
+<div class="math-display">\[R_3 = \sqrt{L^2 + B^2 + z^2}\]</div>
+<p><img loading="lazy" decoding="async" alt="Nomenclature used for calculation of stresses below the corner of a uniformly loaded rectangle" src="/docs/assets/groundhog/docs/shallowfoundations/images/stresses_rectangle_1.png"></p>
+<p><em>Nomenclature used for calculation of stresses below the corner of a uniformly loaded rectangle</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>imposedstress</code></td>
+<td>kPa</td>
+<td></td>
+<td>required</td>
+<td>Stress applied to the uniformly loaded area (<span class="math">\(q_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td>m</td>
+<td>length &gt;= 0.0</td>
+<td>required</td>
+<td>Dimension of the longest edge of the rectangle (<span class="math">\(L\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td>width &gt;= 0.0</td>
+<td>required</td>
+<td>Dimension of the shortest edge of the rectangle (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>z</code></td>
+<td>m</td>
+<td>z &gt;= 0.0</td>
+<td>required</td>
+<td>Depth below the footing (<span class="math">\(z\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta sigma z [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in vertical stress below the corner of the footing (<span class="math">\(\Delta \sigma_z\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta sigma x [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in horizontal stress in the width direction below the corner of the footing (<span class="math">\(\Delta \sigma_x\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta sigma y [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in horizontal stress in the length direction below the corner of the footing (<span class="math">\(\Delta \sigma_y\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta tau zx [kPa]</code></td>
+<td>kPa</td>
+<td>Increase in shear stress in the zx plane below the corner of the footing (<span class="math">\(\Delta \tau_{zx}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011). Soil mechanics and foundation engineering</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="stresses_lineload_retainingwall"></a></p>
+<h2 id="stresses_lineload_retainingwall"><code>stresses_lineload_retainingwall</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stresses_lineload_retainingwall">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stresses_lineload_retainingwall">Shallow foundations › Stress distributions › Line Load Stress (Retaining Wall)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stresses_lineload_retainingwall</span><span class="p">(</span><span class="n">lineload</span><span class="p">,</span> <span class="n">toe_depth</span><span class="p">,</span> <span class="n">horizontal_offset</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the elastic stress increase due to a line load (infinitely long out of plane) next to a buried earth-retaining structure.</p>
+<div class="math-display">\[\Delta \sigma_x = \frac{4 Q a^2 b}{\pi H_0 \left( a^2 + b^2 \right)^2}\]</div>
+<div class="math-display">\[\Delta P_x = \frac{2 Q}{\pi \left( a^2 + 1 \right)}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lineload</code></td>
+<td>kN/m</td>
+<td>lineload &gt;= 0.0</td>
+<td>required</td>
+<td>Magnitude of the applied line load (<span class="math">\(Q\)</span>)</td>
+</tr>
+<tr>
+<td><code>toe_depth</code></td>
+<td>m</td>
+<td>toe_depth &gt;= 0.0</td>
+<td>required</td>
+<td>Depth of the toe of the retaining wall (<span class="math">\(H_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>horizontal_offset</code></td>
+<td>m</td>
+<td>horizontal_offset &gt;= 0.0</td>
+<td>required</td>
+<td>Offset between the line load and the retaining structure (<span class="math">\(a H_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td>depth &gt;= 0.0</td>
+<td>required</td>
+<td>Depth considered for the calculation (cannot be deeper than the toe depth) (<span class="math">\(b H_0\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta sigma x [kPa]</code></td>
+<td>kPa</td>
+<td>Increase of horizontal stress [kPa] (<span class="math">\(\Delta \sigma_x\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta P x [kN/m]</code></td>
+<td>kN/m</td>
+<td>Increase of horizontal force [kN/m] (<span class="math">\(\Delta P_x\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011). Soil mechanics and foundation engineering</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="stresses_stripload_retainingwall"></a></p>
+<h2 id="stresses_stripload_retainingwall"><code>stresses_stripload_retainingwall</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stresses_stripload_retainingwall">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stresses_stripload_retainingwall">Shallow foundations › Stress distributions › Strip Load Stress (Retaining Wall)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stresses_stripload_retainingwall</span><span class="p">(</span>
+    <span class="n">imposedstress</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">,</span>
+    <span class="n">offset</span><span class="p">,</span>
+    <span class="n">toe_depth</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the elastic stress increase due to a strip load (infinitely long out of plane) at an offset from a buried earth-retaining structure.</p>
+<p>Note that all angles in the formulae are given in degrees.</p>
+<div class="math-display">\[\Delta \sigma_x = \frac{2 q_s}{\pi} \left( \beta - \sin \beta \cos 2 \alpha \right)\]</div>
+<div class="math-display">\[\Delta P_x = \frac{q_s}{90} \left[ H_0 \left( \theta_2 - \theta_1 \right) \right]\]</div>
+<div class="math-display">\[\bar{z} = \frac{H_0^2 \left( \theta_2 - \theta_1 \right) - \left( R_1 - R_2 \right) + 57.3 B H_0}{2 H_0 \left( \theta_2 - \theta_1 \right)}\]</div>
+<div class="math-display">\[\theta_1 = \tan^{-1} \left( \frac{a}{H_0} \right)\]</div>
+<div class="math-display">\[\theta_2 = \tan^{-1} \left( \frac{a + B}{H_0} \right)\]</div>
+<div class="math-display">\[R_1 = \left( a + B \right)^2 \left(90 -\theta_2 \right)\]</div>
+<div class="math-display">\[R_2 = a^2 \left( 90 - \theta_1 \right)\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>imposedstress</code></td>
+<td>kPa</td>
+<td>imposedstress &gt;= 0.0</td>
+<td>required</td>
+<td>Applied stress for the strip load (<span class="math">\(q_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td>width &gt;= 0.0</td>
+<td>required</td>
+<td>Width of the strip load (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td>m</td>
+<td>offset &gt;= 0.0</td>
+<td>required</td>
+<td>Shortest horizontal offset between the strip load and the retaining wall (<span class="math">\(a\)</span>)</td>
+</tr>
+<tr>
+<td><code>toe_depth</code></td>
+<td>m</td>
+<td>toe_depth &gt;= 0.0</td>
+<td>required</td>
+<td>Toe depth of the retaining structure (<span class="math">\(H_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td>depth &gt;= 0.0</td>
+<td>required</td>
+<td>Depth for the stress calculation (<span class="math">\(z\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta sigma x [kPa]</code></td>
+<td>kPa</td>
+<td>Increase of the lateral stress [kPa] (<span class="math">\(\Delta \sigma_x\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta P x [kN/m]</code></td>
+<td>kN/m</td>
+<td>Increase of lateral force [kN/m] (<span class="math">\(\Delta P_x\)</span>)</td>
+</tr>
+<tr>
+<td><code>z bar [m]</code></td>
+<td>m</td>
+<td>Application depth of the force [m] (<span class="math">\(\bar{z}\)</span>)</td>
+</tr>
+<tr>
+<td><code>theta 1 [deg]</code></td>
+<td>deg</td>
+<td>Angle theta 1 [deg] (<span class="math">\(\theta_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>theta 2 [deg]</code></td>
+<td>deg</td>
+<td>Angle theta 2 [deg] (<span class="math">\(\theta_2\)</span>)</td>
+</tr>
+<tr>
+<td><code>R 1 [m]</code></td>
+<td>m</td>
+<td>First offset [m] (<span class="math">\(R_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>R 2 [m]</code></td>
+<td>m</td>
+<td>Second offset [m] (<span class="math">\(R_2\)</span>)</td>
+</tr>
+<tr>
+<td><code>alpha [deg]</code></td>
+<td>deg</td>
+<td>Angle alpha [deg] (<span class="math">\(\alpha\)</span>)</td>
+</tr>
+<tr>
+<td><code>beta [deg]</code></td>
+<td>deg</td>
+<td>Angle beta [deg] (<span class="math">\(\beta\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011). Soil mechanics and foundation engineering</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/shallowfoundations/stressdistribution.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/shallowfoundations/stressdistribution.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/shallowfoundations/settlement/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Settlement</a><a class="next" href="/docs/groundhog/api/siteinvestigation/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Site investigation</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#stresses_pointload">stresses_pointload</a></li>
+      <li class="lvl-2"><a href="#stresses_stripload">stresses_stripload</a></li>
+      <li class="lvl-2"><a href="#stresses_circle">stresses_circle</a></li>
+      <li class="lvl-2"><a href="#stresses_rectangle">stresses_rectangle</a></li>
+      <li class="lvl-2"><a href="#stresses_lineload_retainingwall">stresses_lineload_retainingwall</a></li>
+      <li class="lvl-2"><a href="#stresses_stripload_retainingwall">stresses_stripload_retainingwall</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

@@ -5,7 +5,6 @@
 
 import React from 'react';
 import { Layers, Box, Shovel, FileText, Activity, Droplets, Database, Ruler, Zap, Anchor, Sparkles } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import logoFull from '../../assets/logo-2.png';
 import logoIcon from '../../assets/logoIcon.png';
@@ -48,6 +47,12 @@ export const Sidebar = ({
     onOpenGeoAI,
     isGeoAIActive
 }) => {
+    const statusStyle = backendStatus === 'online'
+        ? { text: 'text-primary', dot: 'bg-primary', label: 'Online' }
+        : backendStatus === 'connecting'
+            ? { text: 'text-amber-500', dot: 'bg-amber-500', label: 'Starting…' }
+            : { text: 'text-red-500', dot: 'bg-red-500', label: 'Offline' };
+
     return (
         <div className={`bg-surface border-r border-border flex flex-col h-full transition-all duration-300 ${collapsed ? 'w-[70px]' : 'w-64'}`}>
             <div className="h-13 flex items-center justify-center border-b border-border p-2">
@@ -127,14 +132,14 @@ export const Sidebar = ({
                 >
                     <div className={`flex items-center gap-3 ${collapsed ? '' : 'w-full'}`}>
                         <div className="relative flex items-center justify-center">
-                            <Activity size={20} className={backendStatus === 'online' ? 'text-primary' : 'text-red-500'} />
-                            <span className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full border-2 border-surface ${backendStatus === 'online' ? 'bg-primary' : 'bg-red-500'} ${backendStatus === 'online' ? 'animate-pulse' : ''}`} />
+                            <Activity size={20} className={statusStyle.text} />
+                            <span className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full border-2 border-surface ${statusStyle.dot} ${backendStatus === 'offline' ? '' : 'animate-pulse'}`} />
                         </div>
                         {!collapsed && (
                             <div className="flex flex-col text-left">
                                 <span className="text-xs font-bold text-text-main leading-tight">System Status</span>
-                                <span className={`text-[10px] uppercase font-bold tracking-wider ${backendStatus === 'online' ? 'text-primary' : 'text-red-500'}`}>
-                                    {backendStatus === 'online' ? 'Online' : 'Offline'}
+                                <span className={`text-[10px] uppercase font-bold tracking-wider ${statusStyle.text}`}>
+                                    {statusStyle.label}
                                 </span>
                             </div>
                         )}

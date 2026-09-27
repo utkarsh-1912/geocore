@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}About — GeoCore{% endblock %}
+{% block description %}Why GeoCore exists, how it is built, its GPLv3 licence, and credits — including the Groundhog library by Bruno Stuyts that performs every calculation.{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div class="container">
+    <p class="eyebrow">{{ icon('info') }}About</p>
+    <h1>Engineering software that shows its working</h1>
+    <p class="lede">GeoCore is an open-source desktop application for geotechnical engineers. It is written and maintained by Utkarsh Gupta, and it stands on Groundhog — the open-source geotechnical library by Bruno Stuyts.</p>
+  </div>
+</header>
+
+<div class="section">
+  <div class="container two-col">
+    <article class="prose">
+      <h2 id="mission">Mission</h2>
+      <p>Geotechnical calculations are often scattered across spreadsheets, scripts and closed tools that are hard to audit. GeoCore brings a large, documented library of methods into one desktop application, and keeps three promises while doing it:</p>
+      <dl>
+        <dt>Offline</dt>
+        <dd>Your project data stays on your computer. The application works without an internet connection; the few optional network features are listed on the <a href="{{ url('privacy.html') }}">privacy page</a>.</dd>
+        <dt>Deterministic</dt>
+        <dd>Numbers come from Groundhog functions with explicit inputs and units. The AI assistant does not do engineering arithmetic itself.</dd>
+        <dt>Grounded</dt>
+        <dd>A result should be traceable to a method, its inputs and, where possible, a published reference. When information is missing, the right answer is to ask, not to assume.</dd>
+      </dl>
+      <p>GeoCore is a tool to support engineering judgement. It does not certify a design as safe, and results should be checked by a qualified engineer.</p>
+
+      <h2 id="how-it-is-built">How it is built</h2>
+      <p>GeoCore is two programs packaged as one desktop app:</p>
+      <ul>
+        <li><strong>The interface</strong> — an <a href="https://www.electronjs.org/">Electron</a> shell running a <a href="https://react.dev/">React</a> application built with <a href="https://vite.dev/">Vite</a>. Charts use <a href="https://plotly.com/javascript/">Plotly.js</a>; reports use <a href="https://github.com/parallax/jsPDF">jsPDF</a>; spreadsheets are read with <a href="https://www.papaparse.com/">Papa Parse</a> and <a href="https://sheetjs.com/">SheetJS</a>.</li>
+        <li><strong>The engine</strong> — a Python service built with <a href="https://fastapi.tiangolo.com/">FastAPI</a> and bundled with PyInstaller. It listens only on your own machine (<code>127.0.0.1:8000</code>), discovers Groundhog’s functions and builds validated input forms for them. NumPy, SciPy and pandas do the numerical work underneath.</li>
+        <li><strong>GeoAI</strong> — an optional assistant inside the engine. A small language model runs locally through <a href="https://github.com/abetlen/llama-cpp-python">llama-cpp-python</a> (<a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>), selects a tool from a whitelisted, schema-validated registry, and passes the call to Groundhog. The model is swappable behind a provider interface rather than tied to one vendor.</li>
+      </ul>
+      <p>Releases are built by GitHub Actions for Windows and macOS and published on <a href="{{ releases_url }}">GitHub Releases</a>.</p>
+
+      <h2 id="open-source">Open source</h2>
+      <p>GeoCore is free software, licensed under the <a href="{{ repo_url }}/blob/main/LICENSE">GNU General Public License v3.0</a> — the same licence as Groundhog. You may use, study, share and modify it under the terms of that licence. It is provided without any warranty.</p>
+      <p>The source code, issue tracker and release history are on GitHub at <a href="{{ repo_url }}">utkarsh-1912/geocore</a>. Bug reports and suggestions are welcome as <a href="{{ repo_url }}/issues">issues</a>.</p>
+
+      <h2 id="credits">Credits</h2>
+      <div class="callout callout--primary">
+        {{ icon('calculator') }}
+        <div>
+          <p><strong>Groundhog</strong> by <strong>Bruno Stuyts</strong> performs every geotechnical calculation in GeoCore. It is a general-purpose, extensively documented Python package for onshore and offshore geotechnical engineering, released under the GNU GPLv3. GeoCore bundles Groundhog {{ groundhog_version }}.</p>
+          <p><a href="https://github.com/snakesonabrain/groundhog">Source on GitHub</a> · <a href="https://groundhog.readthedocs.io/">Documentation</a> · <a href="https://pypi.org/project/groundhog/">PyPI</a></p>
+        </div>
+      </div>
+      <p>The methods implemented in Groundhog are the work of the researchers credited in its documentation and function docstrings. When you rely on a result, cite the original method as well as the software.</p>
+      <p>GeoCore also builds on these open-source projects, each under its own licence:</p>
+      <ul>
+        <li>Electron, React, Vite, Tailwind CSS, Plotly.js, jsPDF, Papa Parse, SheetJS, Lucide icons, electron-updater</li>
+        <li>FastAPI, Uvicorn, Pydantic, NumPy, SciPy, pandas, Matplotlib, pyproj</li>
+        <li>llama.cpp and llama-cpp-python, and the Hugging Face Hub client for model downloads</li>
+      </ul>
+      <p>GeoAI’s optional models are published by their creators — the Qwen team (Qwen 2.5) and Google (Gemma 2) — under their own licences, which apply when you download and use them.</p>
+
+      <h2 id="author">Author</h2>
+      <p>GeoCore is designed and developed by <strong>Utkarsh Gupta</strong> (<a href="https://github.com/utkarsh-1912">@utkarsh-1912</a> on GitHub). The best way to get in touch about the software is through the project’s <a href="{{ repo_url }}/issues">GitHub issues</a>.</p>
+    </article>
+
+    <aside class="two-col__aside">
+      <nav class="aside-nav" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>
+          <li><a href="#mission">Mission</a></li>
+          <li><a href="#how-it-is-built">How it is built</a></li>
+          <li><a href="#open-source">Open source</a></li>
+          <li><a href="#credits">Credits</a></li>
+          <li><a href="#author">Author</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</div>
+{% endblock %}

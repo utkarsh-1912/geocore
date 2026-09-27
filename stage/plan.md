@@ -138,6 +138,28 @@ graph TD
 
 ---
 
+### Stage 9: Evaluation Harness & Registry-Validated Dataset (pre-fine-tuning gate, AGENTS.md §19-21, §31-32) 🚧
+- [x] **Deterministic scorer** (`core/geoai/eval/scoring.py`): `score_turn(example, model_response, *, registry=None, execute=False) -> ScoreBreakdown`. Criteria: action, tool, schema (real `input_model`), arguments (after `units.py` normalisation, rel. tol 1 %), no-invented-values (total capped at 0.5), wrong stated value (total capped at 0.25 + 0.35 x argument score), wrong tool (capped at 0.2), clarification, unit traps, optional end-to-end Groundhog execution, final-answer grounding, engineering caution. No LLM oracle. Accepts `ModelResponse`, OpenAI dicts or raw `<tool_call>` completions, so it is the GRPO reward (`reward(example, completion)`).
+- [x] **Runner** (`python -m core.geoai.eval.runner --provider heuristic|llama_cpp --model PATH --split test --out results.json`; `--compare BASE CAND`): real `GeoAIAgent` + Tool Registry path (state-mutating tools blocked), per-category pass rates, tool/argument/clarification accuracy, hallucinated-parameter rate, selector recall, p50/p95 latency, peak RAM.
+- [x] **Dataset scale-up** (`python -m core.geoai.training.scaleup`): ~2,450 seeded examples from 24 registered tools; every expected tool call executed through the registry (drops logged in `manifest.json`); group-wise stratified splits; test + gold held out of SFT; TRL/Unsloth ChatML (`messages` + `tools`). Output in `core/geoai/training/data/` (git-ignored).
+- [x] **Baselines** in `core/geoai/eval/results/` (runtime `max_tools=5`, `n_ctx=4096`, CPU):
+
+  | Run | n | Mean score | Strict pass | Tool sel. | Arg acc. | Clarify acc. | Halluc. param | p50 latency |
+  |---|---|---|---|---|---|---|---|---|
+  | Heuristic, full test split | 266 | 0.347 | 7.5 % | 69.4 % | 33.3 % | 0 % | 0 % | 0.24 s |
+  | Qwen2.5-1.5B Q4_K_M, `GEOAI_CHAT_FORMAT` unset | 20 | 0.627 | 15 % | 0 % | 0 % | 71 % | - | 60 s |
+  | Qwen2.5-1.5B Q4_K_M, `GEOAI_CHAT_FORMAT=native` | 20 | 0.636 | 40 % | 20 % | 13 % | 43 % | 17 % | 33 s |
+
+  The Qwen runs are provisional: 20 examples only, and the native run had 1 of 20 generations overflow `n_ctx` (a 5-tool prompt of about 3.3k tokens plus `max_tokens=1024`). Files named `superseded_*` came from the old 20-tool selector and should not be used.
+- [ ] **Blockers found before fine-tuning** (outside this stage's scope):
+  1. `LlamaCppProvider.generate` never passes `tool_choice` in the default (legacy `chatml-function-calling`) format, so llama-cpp-python drops the tools from the prompt: the local model cannot call any tool. `GEOAI_CHAT_FORMAT=native` avoids this.
+  2. `tool_selector.select_relevant_tools` misses the expected tool in ~40 % of generated tool requests (recall 0.595 on test).
+  3. Tool schemas are large. 20 tools were roughly 6-15k tokens (now capped to 5 tools); even 5 tools plus `max_tokens=1024` can exceed `n_ctx=4096`.
+  4. `calculate_relative_density` always returns NaN (schema field `voidratio` vs Groundhog `void_ratio`).
+  5. Auto-registered schemas (`extra='allow'`, `:math:` units) accept unknown keys and do not convert unit strings (e.g. `"0.55 rad"` becomes 0.55 deg).
+
+---
+
 ## Rules of Engagement
 
 1. **Deterministic Calculation Integrity**: Groundhog remains authoritative for all math. The SLM orchestrates and explains; it never computes equations directly in its prompt.

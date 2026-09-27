@@ -8,10 +8,12 @@ import importlib
 import groundhog
 from pydantic import create_model
 from typing import Any, Dict, List, Optional
-from . import wrappers
-from . import plotting_wrappers
-from . import labtesting_wrappers
 from . import manual_functions
+from .function_manifest import get_function_map
+
+# NOTE: wrappers / plotting_wrappers / labtesting_wrappers import heavy groundhog
+# modules (scipy, matplotlib, plotly); they are imported on first use via
+# _load_wrapper_module() so that backend start-up stays fast.
 
 def _safe_reload(mod):
     if not getattr(sys, 'frozen', False):
@@ -19,6 +21,15 @@ def _safe_reload(mod):
             importlib.reload(mod)
         except Exception:
             pass
+
+def _load_wrapper_module(name):
+    """Import core.<name> on first use; on later uses reload it (dev hot-reload, as before)."""
+    full_name = f"{__package__}.{name}"
+    if full_name in sys.modules:
+        mod = sys.modules[full_name]
+        _safe_reload(mod)
+        return mod
+    return importlib.import_module(full_name)
 
 class Registry:
     def __init__(self):
@@ -32,30 +43,14 @@ class Registry:
             pass
 
     def _scan_library(self):
-        """Scans the groundhog library for all submodules and functions."""
-        import pkgutil
-        import importlib
-        import inspect
-        import groundhog
+        """Collects all groundhog submodule functions/classes.
 
-        path = groundhog.__path__
-        prefix = groundhog.__name__ + "."
+        Uses the cached function manifest (lazy stand-ins, no groundhog module
+        imports) when it matches the installed groundhog; otherwise performs the
+        full eager scan. See core/function_manifest.py.
+        """
+        self.function_map.update(get_function_map())
 
-        for _, name, ispkg in pkgutil.walk_packages(path, prefix):
-            if ispkg:
-                continue
-            
-            try:
-                module = importlib.import_module(name)
-                for func_name, obj in inspect.getmembers(module):
-                    if (inspect.isfunction(obj) or inspect.isclass(obj)) and \
-                       getattr(obj, '__module__', '') == module.__name__:
-                        if not func_name.startswith("_"):
-                            self.function_map[func_name] = obj
-            except Exception as e:
-                # Some modules might fail to import due to missing optional dependencies
-                pass
-        
         # Scan manual_functions.py
         try:
             _safe_reload(manual_functions)
@@ -173,6 +168,8 @@ class Registry:
         return self.function_map.get(function_id)
 
     def execute_function(self, module_id: str, function_id: str, args: dict):
+        from .warmup import wait_for_warmup
+        wait_for_warmup()  # never import heavy modules concurrently with the start-up warm-up
         from .state import state_manager
         from core.geoai.validator import validate_and_coerce_inputs, GeoAIValidationError
         import pandas as pd
@@ -805,12 +802,12 @@ class Registry:
                 return {"error": f"Consolidation Function Error ({function_id}): {str(e)}"}
 
         if function_id == 'LogPlot':
-            _safe_reload(plotting_wrappers)
+            plotting_wrappers = _load_wrapper_module("plotting_wrappers")
             return plotting_wrappers.log_plot_wrapper(args)
 
         if function_id == 'plot_with_log':
             # Use dedicated wrapper for plotting
-            _safe_reload(plotting_wrappers)
+            plotting_wrappers = _load_wrapper_module("plotting_wrappers")
             return plotting_wrappers.plot_with_log_wrapper(args)
 
         if function_id == 'LogPlotMatplotlib':
@@ -946,87 +943,87 @@ class Registry:
                 return {"error": f"Settlement Calculation Error: {str(e)}"}
 
         if function_id == 'shallow_foundation_capacity_undrained':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.shallow_foundation_capacity_undrained_wrapper(args)
 
         if function_id == 'shallow_foundation_capacity_drained':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.shallow_foundation_capacity_drained_wrapper(args)
 
         if function_id == 'effectivearea_circle_api':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.effectivearea_circle_wrapper(args)
 
         if function_id == 'effectivearea_rectangle_api':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.effectivearea_rectangle_wrapper(args)
         
         if function_id == 'map_depth_properties':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.map_depth_properties_wrapper(args)
 
         if function_id == 'offsets_api':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.offsets_wrapper(args)
 
         if function_id == 'merge_two_dicts':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.merge_two_dicts_wrapper(args)
 
         if function_id == 'reverse_dict':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.reverse_dict_wrapper(args)
 
         if function_id == 'AxCapCalculation':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.axcap_calculation_wrapper(args)
 
         if function_id == 'DeBeerCalculation':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.debeer_calculation_wrapper(args)
 
         if function_id == 'KoppejanCalculation':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.koppejan_calculation_wrapper(args)
 
         if function_id == 'LCPC_Calculation':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.lcpc_calculation_wrapper(args)
 
         if function_id == 'PileSettlementCurves':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return wrappers.pile_settlement_curves_wrapper(args)
 
         # Lateral Response
         if function_id == 'pilegroupeffect_reesevanimpe':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.pilegroupeffect_reesevanimpe_wrapper(args))
 
         if function_id == 'reinforced_circularsection_inertia':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.reinforced_circularsection_inertia_wrapper(args))
 
         # Cavity Expansion
         if function_id == 'expansion_cylinder_tresca':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.expansion_cylinder_tresca_wrapper(args))
 
         if function_id == 'expansion_tresca_thicksphere':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.expansion_tresca_thicksphere_wrapper(args))
 
         if function_id == 'stress_cylinder_elastic_isotropic':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.stress_cylinder_elastic_isotropic_wrapper(args))
 
         # Negative Skin Friction
         if function_id == 'negativeskinfriction_pilegroup_zeevaertdebeer':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.negativeskinfriction_pilegroup_zeevaertdebeer_wrapper(args))
 
         # Pile Testing
         if function_id == 'piletest_chinkondler':
-            _safe_reload(wrappers)
+            wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.piletest_chinkondler_wrapper(args))
 
         # Generic Handler for Stateless Functions

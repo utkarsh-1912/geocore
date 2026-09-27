@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial - Shallow foundation capacity with groundhog — GeoCore Docs</title>
+  <meta name="description" content="The analysis of shallow foundation is a recurring task for geotechnical engineers.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Tutorial - Shallow foundation capacity with groundhog — GeoCore Docs">
+  <meta property="og:description" content="The analysis of shallow foundation is a recurring task for geotechnical engineers.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/" aria-current="page">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/guides/">Groundhog Guides</a></li>
+        <li><a href="/docs/groundhog/tutorials/">Tutorials</a></li>
+        <li><span aria-current="page">Tutorial - Shallow foundation capacity with groundhog</span></li>
+      </ol>
+    </nav>
+
+    <h1>Tutorial - Shallow foundation capacity with groundhog</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+    <div class="prose docs-body"><p>The analysis of shallow foundation is a recurring task for geotechnical engineers. While the problem at hand is rather simple (estimating the ultimate capacity of a foundation on soil) the governing equations contain several factors to account for foundation shape, depth, inclination and load inclination. Moreover, the interaction between horizontal and vertical load adds some complexity to the problem, especially for eccentrically loaded footings.</p>
+<p><code>groundhog</code> contains a robust implementation of the bearing capacity equations and allows for rapid sensitivity analysis of VH capacity for shallow foundations. The code was developed based on the implementation in the API RP2 GEO standard which is aimed at offshore shallow foundations.</p>
+<p><code>groundhog</code> has classes for drained and undrained analysis of shallow foundations (<code>ShallowFoundationCapacityDrained</code> and <code>ShallowFoundationCapacityUndrained</code> respectively) which allows a rapid an efficient definition of a shallow foundation analysis.</p>
+<p>We can import these classes:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.shallowfoundations.capacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShallowFoundationCapacityDrained</span><span class="p">,</span> <span class="n">ShallowFoundationCapacityUndrained</span>
+</code></pre></div>
+
+<p>In this tutorial, we will explore the capabilities of <code>groundhog</code>. First, the VH envelope for centrically loaded foundations at the surface will be developed for drained and undrained conditions. Subsequently, an eccentrically loaded foundation will be analysed.</p>
+<p>We can also set the style of Plotly to have a white background.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_notebook_mode</span>
+<span class="n">init_notebook_mode</span><span class="p">()</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;plotly_white&#39;</span>
+</code></pre></div>
+
+<h2 id="centrically-loaded-foundation">Centrically loaded foundation</h2>
+<p>When loads are applied to the center of the foundation, the maximum vertical bearing capacity can be mobilised. Any eccentricity will reduce the effective area of the foundation and this the available bearing capacity.</p>
+<p>Here, we will analyse a mudmat of 8m long and 5m wide (typical dimensions for pipeline end terminations in deepwater).</p>
+<div class="highlight"><pre><span></span><code><span class="n">LENGTH</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># m</span>
+<span class="n">WIDTH</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># m</span>
+</code></pre></div>
+
+<h3 id="undrained-conditions">Undrained conditions</h3>
+<p>Undrained soil behaviour occurs when excess pore water pressures generated during loading cannot dissipate fast enough. This will apply for short-term loading on most clays but also for rapid loading on sands with significant fines content. The rate of loading needs to be assessed in relation to the permeability of the soil to assess where a drained or undrained calculation should be performed.</p>
+<h4 id="setting-up-the-analysis">Setting up the analysis</h4>
+<p>We can create a <code>ShallowFoundationCapacityUndrained</code> to define the analysis. We can give a title to the analysis.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span> <span class="o">=</span> <span class="n">ShallowFoundationCapacityUndrained</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Undrained capacity for centric loading&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="specifying-foundation-dimensions">Specifying foundation dimensions</h4>
+<p>The foundation dimensions are easily specified using the <code>set_geometry</code> method. The default geometrical parameter are for rectangles but <code>groundhog</code> also encodes bearing capacity calculations for circular foundations.</p>
+<p>The <code>set_geometry</code> method calculates the foundation area.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">LENGTH</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">WIDTH</span><span class="p">)</span>
+<span class="n">undrained_centric</span><span class="o">.</span><span class="n">full_area</span>
+</code></pre></div>
+
+<h4 id="specifying-soil-parameters">Specifying soil parameters</h4>
+<p>For undrained conditions, total stress analysis is performed and the undrained shear strength of the soil is the governing strength parameter. <code>groundhog</code> implements bearing capacity equations for both constant and linearly increasing shear strength profiles with depth.</p>
+<p>Here, we will analyse a soil with a constant undrained shear strength <span class="math">\(S_u\)</span> = 10kPa. We also need to specify the total unit weight <span class="math">\(\gamma\)</span> of the soil. This is only used when the foundation is embedded. We will specify a total unit weight of 16kN/m<span class="math">\(^3\)</span>.</p>
+<p>For embedded foundations (e.g. skirted mudmats), the average undrained shear strength above the base can also be specified.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">set_soilparameters_undrained</span><span class="p">(</span><span class="n">unit_weight</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">su_base</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">su_increase</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="specifying-load-eccentricity">Specifying load eccentricity</h4>
+<p>The eccentricity of the load can be specified by measuring the offset between the center of the foundation and the load application point along the length and width axis. Here, we are analysing a centrically loaded foundation, so both eccentricities are zero.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eccentricity_length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="undrained-vertical-bearing-capacity">Undrained vertical bearing capacity</h4>
+<p>The ultimate net bearing pressure is given by the following equation:</p>
+<div class="math-display">\[q_u = N_c \cdot S_u \cdot K_c\]</div>
+<p>The factor <span class="math">\(K_c\)</span> combines the different bearing capacity factors. For this analysis case, only the shape factor is non-zero. The formula for the shape factor is as follows:</p>
+<div class="math-display">\[s_c = 0.18 \cdot (1 - 2 \cdot i_c) \cdot (B^{\prime} / L^{\prime})\]</div>
+<p>with the inclination factor <span class="math">\(i_c\)</span> being zero. So for this case, <span class="math">\(K_c\)</span> is given by:</p>
+<div class="math-display">\[K_c = 1 + s_c = 1 + 0.18 \cdot (B^{\prime} / L^{\prime})\]</div>
+<div class="highlight"><pre><span></span><code><span class="mf">5.14</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.18</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The ultimate net bearing pressure <span class="math">\(q_u\)</span> calculated with <code>groundhog</code> gives the exact same result. This hand-calc check is also included in the unit test suite for <code>groundhog</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">calculate_bearing_capacity</span><span class="p">()</span>
+<span class="n">undrained_centric</span><span class="o">.</span><span class="n">net_bearing_pressure</span>
+</code></pre></div>
+
+<p>We can also print the full output for the capacity analysis:</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">capacity</span>
+</code></pre></div>
+
+<h4 id="ultimate-sliding-capacity">Ultimate sliding capacity</h4>
+<p>The ultimate sliding capacity is obtained by simply multiplying the undrained shear strength at the base of the foundation by the base area. The attribute <code>sliding_full</code> gives the full sliding capacity (base resistance + possible contribution from embedded area of the foundation). In this case, the contribution from the embedded area is zero.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">calculate_sliding_capacity</span><span class="p">()</span>
+<span class="n">undrained_centric</span><span class="o">.</span><span class="n">sliding_full</span>
+</code></pre></div>
+
+<h4 id="bearing-capacity-envelope">Bearing capacity envelope</h4>
+<p>The interaction between vertical and horizontal load is described through a capacity envelope. The area inside this envelope shows the load combinations which can be carried by the foundation.</p>
+<p>Safety factors are also applied to the envelope. By default, a safety factor of 2 is used for bearing and 1.5 for sliding. This means that all vertical loads are divided by 2 and all horizontal loads by 1.5 resulting in a factored envelope.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric</span><span class="o">.</span><span class="n">calculate_envelope</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The envelope can be plotted using the <code>plot_envelope</code> method.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_centric_plot</span> <span class="o">=</span> <span class="n">undrained_centric</span><span class="o">.</span><span class="n">plot_envelope</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="drained-conditions">Drained conditions</h3>
+<p>Drained soil behaviour occurs when excess pore water pressures generated during loading can dissipate fast enough. This will apply for long-term loading. The rate of loading needs again to be assessed in relation to the permeability of the soil to assess where a drained or undrained calculation should be performed.</p>
+<h4 id="analysis-setup">Analysis setup</h4>
+<p>This is done by creating an object from the <code>ShallowFoundationCapacityDrained</code> class.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span> <span class="o">=</span> <span class="n">ShallowFoundationCapacityDrained</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Drained capacity for centric loading&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="geometry">Geometry</h4>
+<p>The same geometry is used:</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">LENGTH</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">WIDTH</span><span class="p">)</span>
+<span class="n">drained_centric</span><span class="o">.</span><span class="n">full_area</span>
+</code></pre></div>
+
+<h4 id="soil-parameters">Soil parameters</h4>
+<p>For drained analysis, we need to specify the effective unit weight, the effective friction angle of the soil beneath the base and the effective stress at base level. Here, we will model a surface foundation so this effective stress is zero.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">set_soilparameters_drained</span><span class="p">(</span><span class="n">effective_unit_weight</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">friction_angle</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">effective_stress_base</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="specifying-load-eccentricity_1">Specifying load eccentricity</h4>
+<p>The eccentricity of the load can be specified as for the undrained case.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_length</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eccentricity_width</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="drained-vertical-bearing-capacity">Drained vertical bearing capacity</h4>
+<p>The ultimate net bearing pressure is given by the following equation:</p>
+<div class="math-display">\[q_u = \left [ p_o^{\prime} (N_q - 1) K_q + 0.5 \gamma^{\prime} B^{\prime} N_{\gamma} K_{\gamma} \right ]\]</div>
+<p>For a surface foundation, <span class="math">\(p_o^{\prime}\)</span> is zero and only the second term is evaluated.</p>
+<p>The factors <span class="math">\(K_q\)</span> and <span class="math">\(K_{\gamma}\)</span> combine the different bearing capacity factors. For this analysis case, only the shape factor is non-zero. The formula for the shape factor is as follows:</p>
+<div class="math-display">\[s_{\gamma} = 1 - \left( 0.4 \cdot i_{\gamma} \cdot (B^{\prime} / L^{\prime}) \right)\]</div>
+<p>with the inclination factor <span class="math">\(i_{\gamma}\)</span> being zero. So for this case, <span class="math">\(K_{\gamma}\)</span> is given by:</p>
+<div class="math-display">\[K_{\gamma} = s_{\gamma}\]</div>
+<div class="highlight"><pre><span></span><code><span class="mf">0.5</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mf">56.17</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">8</span><span class="p">))</span>
+</code></pre></div>
+
+<p>The ultimate net bearing pressure <span class="math">\(q_u\)</span> calculated with <code>groundhog</code> gives almost the same result. The difference is due to the number of digits in the calculation of <span class="math">\(N_{\gamma}\)</span>. This hand-calc check is also included in the unit test suite for <code>groundhog</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">calculate_bearing_capacity</span><span class="p">()</span>
+<span class="n">drained_centric</span><span class="o">.</span><span class="n">net_bearing_pressure</span>
+</code></pre></div>
+
+<p>The full output of the capacity calculation can be printed.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">capacity</span>
+</code></pre></div>
+
+<h4 id="ultimate-sliding-capacity_1">Ultimate sliding capacity</h4>
+<p>The ultimate sliding capacity is dependent on the vertical load on the foundation. Therefore, this vertical load is specified. The base resistance is then obtained as the multiplication of this load with the tangent of the interface friction angle. If the interface friction angle is not specified, 5° is subtracted from the soil effective friction angle.</p>
+<p>The attribute <code>sliding_full</code> gives the full sliding capacity (base resistance + possible contribution from embedded area of the foundation). In this case, the contribution from the embedded area is zero.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="mi">1000</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">38</span> <span class="o">-</span> <span class="mi">5</span><span class="p">))</span>
+</code></pre></div>
+
+<p>This corresponds exactly with the <code>groundhog</code> solution.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">calculate_sliding_capacity</span><span class="p">(</span><span class="n">vertical_load</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">drained_centric</span><span class="o">.</span><span class="n">sliding_full</span>
+</code></pre></div>
+
+<h4 id="bearing-capacity-envelope_1">Bearing capacity envelope</h4>
+<p>The interaction between vertical and horizontal load is described through a capacity envelope. The area inside this envelope shows the load combinations which can be carried by the foundation.</p>
+<p>Safety factors are also applied to the envelope. By default, a safety factor of 2 is used for bearing and 1.5 for sliding. This means that all vertical loads are divided by 2 and all horizontal loads by 1.5 resulting in a factored envelope.</p>
+<p>Note that the failure envelope has a different shape to the undrained envelope. A sliding cut-off is also included.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric</span><span class="o">.</span><span class="n">calculate_envelope</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The envelope is plotted with the <code>plot_envelope</code> method.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_centric_plot</span> <span class="o">=</span> <span class="n">drained_centric</span><span class="o">.</span><span class="n">plot_envelope</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="eccentrically-loaded-foundation">Eccentrically loaded foundation</h2>
+<p>When a foundation is loaded eccentrically (e.g. due to moment loading of non-symmetric weight distribution), the failure envelope will shrink and the effective area needs to be taken into account.</p>
+<p>By specifying eccentricity along the lenght and width axes, <code>groundhog</code> can calculate the effective bearing area and take into account these eccentric loads to calculate the resulting bearing capacity envelope. </p>
+<p>We can repeat the undrained and drained example for a load which is applied 1m from the center in the length direction and 0.5m from the center in the width direction.</p>
+<h3 id="undrained-conditions_1">Undrained conditions</h3>
+<p>The analysis is reperformed using the same inputs except for the eccentricity.</p>
+<p>The effective area is calculated as:</p>
+<div class="math-display">\[A^{\prime} = L^{\prime} \cdot B^{\prime} = (L - 2 \cdot e_L) \cdot (B - 2 \cdot e_B)\]</div>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_eccentric</span> <span class="o">=</span> <span class="n">ShallowFoundationCapacityUndrained</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Undrained capacity for eccentric loading&quot;</span><span class="p">)</span>
+<span class="n">undrained_eccentric</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">LENGTH</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">WIDTH</span><span class="p">)</span>
+<span class="n">undrained_eccentric</span><span class="o">.</span><span class="n">set_soilparameters_undrained</span><span class="p">(</span><span class="n">unit_weight</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">su_base</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">su_increase</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">undrained_eccentric</span><span class="o">.</span><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">eccentricity_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">undrained_eccentric</span><span class="o">.</span><span class="n">effective_area</span>
+</code></pre></div>
+
+<p>We can see that the effective area is indeed correctly calculated.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_eccentric</span><span class="o">.</span><span class="n">calculate_envelope</span><span class="p">()</span>
+<span class="n">undrained_eccentric_plot</span> <span class="o">=</span> <span class="n">undrained_eccentric</span><span class="o">.</span><span class="n">plot_envelope</span><span class="p">(</span><span class="n">show_uncorrected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The maximum vertical bearing capacity is now significantly lower then for the centric case.</p>
+<p>We can also see that the envelope now has a horizontal portion. This is because the effective area is used for the vertical capacity calculation, while the full base area is used for the sliding capacity. Indeed, due to this horizontal capacity from the area outside the effective area, the full vertical capacity will be available until a certain horizontal load is achieved.</p>
+<h3 id="drained-conditions_1">Drained conditions</h3>
+<p>The analysis is reperformed using the same inputs except for the eccentricity.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_eccentric</span> <span class="o">=</span> <span class="n">ShallowFoundationCapacityDrained</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Drained capacity for eccentric loading&quot;</span><span class="p">)</span>
+<span class="n">drained_eccentric</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">LENGTH</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">WIDTH</span><span class="p">)</span>
+<span class="n">drained_eccentric</span><span class="o">.</span><span class="n">set_soilparameters_drained</span><span class="p">(</span><span class="n">effective_unit_weight</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">friction_angle</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">effective_stress_base</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">drained_eccentric</span><span class="o">.</span><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">eccentricity_width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">drained_eccentric</span><span class="o">.</span><span class="n">calculate_envelope</span><span class="p">()</span>
+<span class="n">drained_eccentric_plot</span> <span class="o">=</span> <span class="n">drained_eccentric</span><span class="o">.</span><span class="n">plot_envelope</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">drained_eccentric_plot</span><span class="p">,</span> <span class="s1">&#39;Images/drained_envelope_2.png&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The envelopes again show a significantly lower bearing capacity due to the eccentric loading. The fact that there is sliding capacity available outside the effective area again results in a horizontal portion of the envelope for the maximum vertical capacity.</p>
+<h2 id="skirted-foundation">Skirted foundation</h2>
+<p><code>groundhog</code> can also calculate the capacity envelope for skirted or base-embedded foundations.</p>
+<h3 id="undrained-capacity">Undrained capacity</h3>
+<p>The calculation for a surface foundation will be modified as follows:</p>
+<ul>
+<li>A depth factor is added the the vertical bearing capacity calculation</li>
+<li>For non-skirted, base embedded foundations a contribution from the total vertical stress at base level is taken into account</li>
+<li>For sliding resistance, the passive resistance on the embedded area of the skirt is taken into account</li>
+<li>The additional load eccentricity due to the embedment is taken into account.</li>
+</ul>
+<p>We can specify this analysis and calculate the bearing capacity envelope.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_embedded</span> <span class="o">=</span> <span class="n">ShallowFoundationCapacityUndrained</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Undrained capacity for embedded foundation&quot;</span><span class="p">)</span>
+<span class="n">undrained_embedded</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">LENGTH</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skirted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">undrained_embedded</span><span class="o">.</span><span class="n">set_soilparameters_undrained</span><span class="p">(</span><span class="n">unit_weight</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">su_base</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">su_increase</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">undrained_embedded</span><span class="o">.</span><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eccentricity_length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">undrained_embedded</span><span class="o">.</span><span class="n">calculate_sliding_capacity</span><span class="p">()</span>
+<span class="n">undrained_embedded</span><span class="o">.</span><span class="n">sliding</span>
+</code></pre></div>
+
+<p>The sliding calculation shows the additional contribution from passive resistance on the skirts.</p>
+<p>For the load inclination, the contribution from horizontal skirt resistance and base resistance outside the effective area are subtracted. Because of this, additional horizontal resistance is available for high vertical load levels compared to the surface footing case.</p>
+<div class="highlight"><pre><span></span><code><span class="n">undrained_embedded</span><span class="o">.</span><span class="n">calculate_envelope</span><span class="p">()</span>
+<span class="n">undrained_embedded_plot</span> <span class="o">=</span> <span class="n">undrained_embedded</span><span class="o">.</span><span class="n">plot_envelope</span><span class="p">(</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="s2">&quot;Undrained bearing capacity envelope for skirted foundation&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="drained-capacity">Drained capacity</h3>
+<p>The drained capacity is modified by the following aspects:</p>
+<ul>
+<li>Non-zero vertical effective stress at base level <span class="math">\(p_o^{\prime}\)</span> results in non-zero <span class="math">\(N_q\)</span> term</li>
+<li>A depth factor is applied in the vertical capacity calculation</li>
+<li>Passive resistance on the embedded skirt area is taken into account for the sliding resistance</li>
+</ul>
+<p>We can specify this analysis and calculate the bearing capacity envelope.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_embedded</span> <span class="o">=</span> <span class="n">ShallowFoundationCapacityDrained</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Drained capacity for embedded foundation&quot;</span><span class="p">)</span>
+<span class="n">drained_embedded</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">LENGTH</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skirted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">drained_embedded</span><span class="o">.</span><span class="n">set_soilparameters_drained</span><span class="p">(</span><span class="n">effective_unit_weight</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">friction_angle</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">effective_stress_base</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">drained_embedded</span><span class="o">.</span><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eccentricity_length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">drained_embedded</span><span class="o">.</span><span class="n">calculate_sliding_capacity</span><span class="p">(</span><span class="n">vertical_load</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">drained_embedded</span><span class="o">.</span><span class="n">sliding</span>
+</code></pre></div>
+
+<p>The sliding calculation shows the additional contribution from the passive resistance on the skirts.</p>
+<p>Calculating and plotting the drained bearing capacity envelope shows the additional vertical resistance due to the increased stresses at base level and the additional horizontal resistance due to the passive resistance on the skirts.</p>
+<div class="highlight"><pre><span></span><code><span class="n">drained_embedded</span><span class="o">.</span><span class="n">calculate_envelope</span><span class="p">()</span>
+<span class="n">drained_embedded_plot</span> <span class="o">=</span> <span class="n">drained_embedded</span><span class="o">.</span><span class="n">plot_envelope</span><span class="p">(</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="s2">&quot;Drained bearing capacity envelope for skirted foundation&quot;</span><span class="p">)</span>
+</code></pre></div></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Shallow%20foundation%20capacity%20with%20groundhog.ipynb">Upstream source (groundhog 0.15.0)</a></li><li>Notebook: <code>notebooks/Tutorial - Shallow foundation capacity with groundhog.ipynb</code></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Tutorial - Settlement calculations with ```groundhog```</a><a class="next" href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Tutorial - Soil profile objects in Groundhog</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#centrically-loaded-foundation">Centrically loaded foundation</a></li>
+      <li class="lvl-3"><a href="#undrained-conditions">Undrained conditions</a></li>
+      <li class="lvl-3"><a href="#drained-conditions">Drained conditions</a></li>
+      <li class="lvl-2"><a href="#eccentrically-loaded-foundation">Eccentrically loaded foundation</a></li>
+      <li class="lvl-3"><a href="#undrained-conditions_1">Undrained conditions</a></li>
+      <li class="lvl-3"><a href="#drained-conditions_1">Drained conditions</a></li>
+      <li class="lvl-2"><a href="#skirted-foundation">Skirted foundation</a></li>
+      <li class="lvl-3"><a href="#undrained-capacity">Undrained capacity</a></li>
+      <li class="lvl-3"><a href="#drained-capacity">Drained capacity</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

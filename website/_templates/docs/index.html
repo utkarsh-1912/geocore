@@ -1,0 +1,30 @@
+{% extends "docs_base.html" %}
+{% block docs_content %}
+<h1>{{ page.title }}</h1>
+<p class="lede">Install and use GeoCore, set up GeoAI, and look up every Groundhog method behind the calculations — with parameters, units, formulas and references.</p>
+
+<div class="doc-sections">
+  {% for section in docs_nav %}
+  <section class="card" aria-labelledby="{{ section.slug }}">
+    <span class="card__icon">{{ icon(section.icon or 'book') }}</span>
+    <h2 id="{{ section.slug }}" class="h-sub"><a class="card-title-link" href="{{ url(section.url) }}">{{ section.title }}</a></h2>
+    {% set kids = section.children or [] %}
+    {% if kids %}
+    <ul>
+      {% for node in kids[:7] %}
+      <li><a href="{{ url(node.url) }}">{{ node.title }}</a>{% if node.children %}<span class="badge">{{ node.children|length }}</span>{% endif %}</li>
+      {% endfor %}
+      {% if kids|length > 7 %}<li><a href="{{ url(section.url) }}">and {{ kids|length - 7 }} more…</a></li>{% endif %}
+    </ul>
+    {% else %}
+    <p><a href="{{ url(section.url) }}">Open {{ section.title }}</a></p>
+    {% endif %}
+  </section>
+  {% endfor %}
+</div>
+
+<div class="callout callout--primary docs-credit">
+  {{ icon('calculator') }}
+  <p>The Groundhog guides and API reference are adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later), matched to groundhog {{ groundhog_version }}. Each page links to its upstream source. See <a href="{{ url('docs/license/') }}">License &amp; Credits</a>.</p>
+</div>
+{% endblock %}

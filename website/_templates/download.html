@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}Download GeoCore for Windows and macOS{% endblock %}
+{% block description %}Download the latest GeoCore installer for Windows 10/11 or macOS. System requirements, installation steps, first-run notes and GeoAI model downloads.{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div class="container">
+    <p class="eyebrow">{{ icon('download') }}Download</p>
+    <h1>Download GeoCore</h1>
+    <p class="lede">Free and open source. Installers are built automatically from the public source code and published on GitHub Releases.</p>
+  </div>
+</header>
+
+<section class="section section--tight" id="download-app"
+         data-api="https://api.github.com/repos/utkarsh-1912/geocore/releases/latest"
+         data-releases="{{ releases_url }}"
+         data-icons="{{ asset('assets/icons.svg') }}"
+         aria-labelledby="dl-title">
+  <div class="container dl-hero">
+    <div class="card dl-primary">
+      <p class="dl-os">{{ icon('monitor') }}<span data-dl-os>Windows &amp; macOS</span></p>
+      <h2 id="dl-title">GeoCore <span data-dl-version class="skeleton">latest</span></h2>
+      <p class="dl-file" data-dl-file>Installers for Windows (.exe) and macOS (.dmg) are on the GitHub releases page.</p>
+      <p class="callout callout--info" data-dl-note hidden></p>
+      <div class="dl-actions">
+        <a class="btn btn--primary btn--lg" data-dl-button href="{{ releases_url }}/latest">{{ icon('download') }}<span data-dl-button-label>Download from GitHub</span></a>
+        <a class="btn btn--secondary btn--lg" data-dl-release-link href="{{ releases_url }}">{{ icon('github') }}All releases</a>
+      </div>
+      <p class="dl-status" data-dl-status role="status" aria-live="polite"></p>
+      <dl class="dl-meta">
+        <div><dt>Version</dt><dd><span data-dl-version-meta class="skeleton">—</span></dd></div>
+        <div><dt>Released</dt><dd><span data-dl-date class="skeleton">—</span></dd></div>
+        <div><dt>Size</dt><dd><span data-dl-size class="skeleton">—</span></dd></div>
+        <div><dt>Architecture</dt><dd><span data-dl-arch class="skeleton">—</span></dd></div>
+      </dl>
+    </div>
+
+    <div>
+      <h3>Other downloads</h3>
+      <div class="dl-others" data-dl-alternatives>
+        <a class="dl-other" href="{{ releases_url }}/latest">{{ icon('monitor') }}<span class="grow">Windows 10 / 11 (x64)<small>GeoCore-Setup-&lt;version&gt;.exe</small></span>{{ icon('external') }}</a>
+        <a class="dl-other" href="{{ releases_url }}/latest">{{ icon('laptop') }}<span class="grow">macOS — Apple silicon and Intel<small>GeoCore-&lt;version&gt;[-arm64].dmg</small></span>{{ icon('external') }}</a>
+      </div>
+      <p class="small muted dl-linux">No Linux build yet — see <a href="#source">running from source</a>.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section section--flush-top">
+  <div class="container">
+    <div class="grid grid--2 grid--start">
+      <section aria-labelledby="notes-title">
+        <h2 id="notes-title" class="h-sub" data-dl-notes-title>Release notes</h2>
+        <div class="release-notes" data-dl-notes>
+          <p class="muted">Release notes are shown here when GitHub is reachable. You can also read them on <a href="{{ releases_url }}">GitHub Releases</a>.</p>
+        </div>
+      </section>
+      <section aria-labelledby="files-title">
+        <h2 id="files-title" class="h-sub">All files in this release</h2>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th scope="col">File</th><th scope="col">Type</th><th scope="col">Size</th></tr></thead>
+            <tbody data-dl-assets>
+              <tr><td colspan="3">See all files on <a href="{{ releases_url }}/latest">GitHub Releases</a>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted"><code>.blockmap</code> and <code>latest*.yml</code> files are used by the in-app updater; you don’t need to download them.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="section section--alt">
+  <div class="container two-col">
+    <article class="prose">
+      <h2 id="requirements">System requirements</h2>
+      <div class="table-wrap">
+        <table class="data">
+          <tbody>
+            <tr><th scope="row">Operating system</th><td>Windows 10 or 11, 64-bit (x64)<br>macOS 12 Monterey or later</td></tr>
+            <tr><th scope="row">Processor</th><td>x64 on Windows; Apple silicon (arm64) or Intel (x64) on macOS. GeoAI runs on the CPU — no GPU is needed.</td></tr>
+            <tr><th scope="row">Memory</th><td>8 GB RAM recommended. With GeoAI, plan for the model’s size plus about 1–2 GB: 8 GB suits the {{ models|selectattr('size_mb', 'lt', 2500)|map(attribute='display_name')|join(', ') }} models; 16 GB is advisable for the larger ones.</td></tr>
+            <tr><th scope="row">Disk space</th><td>At least 1 GB free for the app, plus {{ model_min_mb|mb }}–{{ model_max_mb|mb }} for each GeoAI model you download.</td></tr>
+            <tr><th scope="row">Internet</th><td>Not required to run. Used only for update checks and optional model downloads — see <a href="{{ url('privacy.html') }}">Privacy</a>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Memory figures are guidance based on model file sizes, not measured benchmarks.</p>
+      <div class="callout callout--warn">
+        {{ icon('alert') }}
+        <p><strong>Intel Macs:</strong> release builds are produced on Apple silicon build machines, and the bundled Python calculation engine is compiled for the build machine’s processor. The Intel (x64) macOS package may therefore start without a working calculation engine. If you try it on an Intel Mac, please <a href="{{ repo_url }}/issues">report how it goes</a>.</p>
+      </div>
+
+      <h2 id="install">Install on Windows</h2>
+      <ol class="steps">
+        <li>Download <code>GeoCore-Setup-&lt;version&gt;.exe</code> and run it.</li>
+        <li><strong>SmartScreen:</strong> the installer is not code-signed yet, so Windows may show “Windows protected your PC”. Choose <em>More info</em> → <em>Run anyway</em>.</li>
+        <li>The installer is per-user and does not need administrator rights. You can change the install folder; it creates Start-menu and desktop shortcuts.</li>
+      </ol>
+
+      <h2 id="install-mac">Install on macOS</h2>
+      <ol class="steps">
+        <li>Download the <code>.dmg</code> for your Mac (<code>-arm64</code> for Apple silicon), open it and drag <strong>GeoCore</strong> to <strong>Applications</strong>.</li>
+        <li><strong>Gatekeeper:</strong> builds are ad-hoc signed but not notarised by Apple, so the first launch is blocked. Open <em>System Settings → Privacy &amp; Security</em> and choose <em>Open Anyway</em> for GeoCore.</li>
+        <li>If macOS reports that the app “is damaged”, the download quarantine flag is the cause. If you trust the download, clear it with:
+          <pre><code>xattr -dr com.apple.quarantine /Applications/GeoCore.app</code></pre>
+        </li>
+      </ol>
+
+      <h2 id="first-run">First run</h2>
+      <ul>
+        <li>GeoCore starts its calculation engine in the background when it opens; the first launch can take a little longer than later ones.</li>
+        <li><strong>Updates:</strong> installed builds check GitHub for a new version about 15 seconds after launch. On Windows, updates download in the background and install when you quit. On macOS, automatic updates need a signed build, so install new versions from this page.</li>
+        <li>Nothing else needs to be online. Without a network connection the update check simply fails and GeoCore works as normal.</li>
+      </ul>
+
+      <h2 id="geoai-models">GeoAI models</h2>
+      <p>GeoAI needs a local language model in GGUF format. Models are <strong>not</strong> included in the installer; you choose one inside GeoCore:</p>
+      <ol class="steps">
+        <li>Open <strong>GeoAI</strong> in GeoCore and open its model list.</li>
+        <li>Pick a model. GeoCore downloads it from Hugging Face into your models folder and makes it the active model.</li>
+        <li>Already have a <code>.gguf</code> file? Select it by path instead, or copy it into the models folder: <code>%APPDATA%\GeoCore\models</code> on Windows, <code>~/.geocore/models</code> on macOS.</li>
+      </ol>
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th scope="col">Model</th><th scope="col">Download</th><th scope="col">Source (Hugging Face)</th></tr></thead>
+          <tbody>
+            {% for m in models %}
+            <tr>
+              <td>{{ m.display_name }}</td>
+              <td class="num">{{ m.size_mb|mb }}</td>
+              <td><a href="https://huggingface.co/{{ m.repo_id }}">{{ m.repo_id }}</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">All models are 4-bit (Q4_K_M) quantisations. Each model is published under its creator’s licence. Model choice for GeoAI is still being benchmarked; the smallest model is the quickest place to start.</p>
+
+      <h2 id="source">Run from source</h2>
+      <p>On Linux, or to develop GeoCore, run it from source with Node.js 18+ and Python 3.10+. The <a href="{{ repo_url }}#-developer-quick-start">README</a> has step-by-step instructions.</p>
+    </article>
+    <aside class="two-col__aside">
+      <nav class="aside-nav" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>
+          <li><a href="#requirements">System requirements</a></li>
+          <li><a href="#install">Install on Windows</a></li>
+          <li><a href="#install-mac">Install on macOS</a></li>
+          <li><a href="#first-run">First run</a></li>
+          <li><a href="#geoai-models">GeoAI models</a></li>
+          <li><a href="#source">Run from source</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ asset('assets/js/download.js') }}" defer></script>{% endblock %}

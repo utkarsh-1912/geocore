@@ -3,6 +3,7 @@
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Body
 from .registry import registry
+from .warmup import wait_for_warmup_async
 import shutil
 import os
 import tempfile
@@ -21,6 +22,7 @@ def create_dynamic_router():
              raise HTTPException(status_code=400, detail="Function ID is required")
              
         # Execute via registry
+        await wait_for_warmup_async()
         result = registry.execute_function(module_id, function_id, args)
         
         if "error" in result:
@@ -69,6 +71,7 @@ def create_dynamic_router():
             
             # Execute SoilProfile creation through registry
             # We treat it as a function execution
+            await wait_for_warmup_async()
             result = registry.execute_function("general", "SoilProfile", {"data": tmp_path, "name": file.filename})
             
             # Clean up temp file (registry loads it into memory/df)
@@ -87,6 +90,7 @@ def create_dynamic_router():
             # Execute SoilProfile creation through registry
             # data should contain 'raw_data' (list of dicts) or conform to what registry expects
             # For consistency, we expect the frontend to send { "raw_data": [...] } or similar args
+            await wait_for_warmup_async()
             result = registry.execute_function("general", "SoilProfile", data)
             return result
         except Exception as e:

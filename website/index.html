@@ -1,832 +1,480 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>GeoCore — Modern Offline Geotechnical Engineering Workstation</title>
-  <meta name="description" content="Professional desktop geotechnical engineering suite powered by Groundhog. 213+ validated calculations, SoilProfile logging, 2D/3D visualization, and 100% offline security.">
-  <link rel="icon" type="image/png" href="assets/images/logoIcon.png">
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: ['class', '[data-theme="dark"]'],
-      theme: {
-        extend: {
-          colors: {
-            primary: 'var(--color-primary)',
-            'primary-light': 'var(--color-primary-light)',
-            secondary: 'var(--color-secondary)',
-            background: 'var(--color-bg)',
-            surface: 'var(--color-surface)',
-            'surface-elevated': 'var(--color-surface-elevated)',
-            border: 'var(--color-border)',
-            'text-main': 'var(--color-text-main)',
-            'text-muted': 'var(--color-text-muted)',
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Google Fonts: Inter & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Custom Theme Styles -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeoCore — Offline geotechnical engineering, built on Groundhog</title>
+  <meta name="description" content="GeoCore is a free, open-source desktop app for geotechnical engineers: 220 Groundhog calculations behind validated forms, plots and PDF reports, plus GeoAI, a local assistant that runs on your own machine.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="GeoCore — Offline geotechnical engineering, built on Groundhog">
+  <meta property="og:description" content="GeoCore is a free, open-source desktop app for geotechnical engineers: 220 Groundhog calculations behind validated forms, plots and PDF reports, plus GeoAI, a local assistant that runs on your own machine.">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <script src="assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="assets/css/site.css?v=133b3a4fa4">
 </head>
-<body class="bg-background text-text-main transition-colors duration-200">
+<body class="layout-default">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-40 glass-nav transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      
-      <!-- Brand Logo -->
-      <a href="index.html" class="flex items-center gap-2.5 group shrink-0">
-        <img src="assets/images/logoIcon.png" alt="GeoCore Logo" class="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-105">
-        <span class="font-bold text-base sm:text-lg tracking-tight flex items-center gap-1.5">
-          GeoCore <span class="text-[10px] px-1.5 py-0.5 rounded bg-primary/15 text-primary border border-primary/20 font-mono font-semibold uppercase">Desktop</span>
-        </span>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="./" aria-label="GeoCore home">
+        <img src="assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
       </a>
-
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-text-muted">
-        <a href="#features" class="hover:text-text-main transition-colors">Capabilities</a>
-        <a href="#calculator" class="hover:text-text-main transition-colors">Interactive Demo</a>
-        <a href="#modules" class="hover:text-text-main transition-colors">Modules (213+)</a>
-        <a href="#comparison" class="hover:text-text-main transition-colors">Why GeoCore</a>
-        <a href="docs.html" class="hover:text-primary transition-colors flex items-center gap-1.5 font-semibold text-text-main">
-          <i data-lucide="book-open" class="w-4 h-4 text-primary"></i> Documentation
-        </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="./" aria-current="page">Home</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="docs/">Docs</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
       </nav>
-
-      <!-- Action Group -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Theme Toggle -->
-        <button id="theme-toggle" class="p-2 sm:p-2.5 rounded-md hover:bg-surface border border-border text-text-muted hover:text-text-main transition-colors touch-target" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
-          <i data-lucide="sun" class="w-4 h-4 theme-sun-icon hidden"></i>
-          <i data-lucide="moon" class="w-4 h-4 theme-moon-icon"></i>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
         </button>
-
-        <!-- Desktop Download CTA -->
-        <a id="nav-download-btn" href="https://github.com/utkarsh-1912/geocore/releases" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-light rounded-md shadow-sm transition-all transform hover:-translate-y-0.5">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i> Download
-        </a>
-
-        <!-- Mobile Menu Hamburger Button -->
-        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md hover:bg-surface border border-border text-text-muted touch-target" aria-label="Open mobile menu">
-          <i data-lucide="menu" class="w-5 h-5"></i>
+        <a class="btn btn--primary" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
         </button>
       </div>
     </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="./" aria-current="page">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="docs/">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
   </header>
 
-  <!-- Mobile Drawer Backdrop -->
-  <div id="mobile-menu-backdrop" class="mobile-overlay hidden md:hidden"></div>
+  <main id="main" tabindex="-1">
 
-  <!-- Mobile Slide-In Side Drawer -->
-  <div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-surface border-l border-border shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
-    
-    <!-- Drawer Header -->
-    <div class="p-4 border-b border-border flex items-center justify-between bg-background">
-      <div class="flex items-center gap-2">
-        <img src="assets/images/logoIcon.png" alt="GeoCore" class="h-6 w-auto">
-        <span class="font-bold text-sm text-text-main">GeoCore Navigation</span>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-shield"></use></svg>Open source · GPLv3 · Windows &amp; macOS</p>
+      <h1 id="hero-title">Geotechnical calculations you can <span class="hl">check</span>, on your own machine.</h1>
+      <p class="lede">GeoCore is a desktop workstation for geotechnical engineers. It puts 220 functions from the open-source <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a> library behind validated forms, interactive plots and PDF reports — with GeoAI, an optional assistant that runs locally and hands every number to Groundhog.</p>
+      <div class="cluster hero__cta">
+        <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download for free</a>
+        <a class="btn btn--secondary btn--lg" href="docs/"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-book"></use></svg>Read the docs</a>
       </div>
-      <button id="mobile-menu-close-btn" class="p-1.5 rounded hover:bg-surface border border-border text-text-muted hover:text-text-main touch-target" aria-label="Close menu">
-        <i data-lucide="x" class="w-4 h-4"></i>
-      </button>
+      <p class="hero__meta">
+        <span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-lock"></use></svg>Works offline</span>
+        <span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-hash"></use></svg>220 Groundhog functions</span>
+        <span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-cpu"></use></svg>Local AI, no cloud</span>
+      </p>
     </div>
 
-    <!-- Drawer Navigation Links -->
-    <div class="flex-1 overflow-y-auto p-4 space-y-2 text-sm font-medium">
-      <a href="#features" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors">
-        <i data-lucide="shield-check" class="w-4 h-4 text-primary"></i> Capabilities
-      </a>
-      <a href="#calculator" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors">
-        <i data-lucide="calculator" class="w-4 h-4 text-primary"></i> Interactive Demo
-      </a>
-      <a href="#modules" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors">
-        <i data-lucide="layers" class="w-4 h-4 text-primary"></i> Modules Directory (213+)
-      </a>
-      <a href="#comparison" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-text-muted hover:text-text-main hover:bg-surface-elevated transition-colors">
-        <i data-lucide="bar-chart-2" class="w-4 h-4 text-primary"></i> Why GeoCore
-      </a>
-      <a href="docs.html" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-primary font-semibold hover:bg-primary/10 transition-colors">
-        <i data-lucide="book-open" class="w-4 h-4"></i> Documentation Portal
-      </a>
-    </div>
-
-    <!-- Drawer Footer Actions -->
-    <div class="p-4 border-t border-border bg-background space-y-3">
-      <a id="drawer-download-btn" href="https://github.com/utkarsh-1912/geocore/releases" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-semibold text-white bg-primary hover:bg-primary-light rounded-md shadow-sm transition-all">
-        <i data-lucide="download" class="w-3.5 h-3.5"></i> Download
-      </a>
-      <div class="text-[11px] text-center text-text-muted">
-        Windows (.exe / .zip) • macOS (.dmg)
+    <figure class="figure-panel" aria-labelledby="hero-figure-caption">
+      <div class="figure-panel__bar" aria-hidden="true">
+        <span class="figure-panel__dots"><i></i><i></i><i></i></span>
+        <span>CPT profile · soil behaviour</span>
       </div>
-    </div>
-
+      <svg viewBox="0 0 520 400" role="img" aria-labelledby="hero-svg-title">
+        <title id="hero-svg-title">Illustration of a cone penetration test profile: soil layers beside cone resistance and soil behaviour index plotted against depth.</title>
+        <!-- strata column -->
+        <rect class="ill-strata-1" x="24" y="40" width="100" height="80" rx="3"/>
+        <rect class="ill-strata-4" x="24" y="120" width="100" height="109"/>
+        <rect class="ill-strata-2" x="24" y="229" width="100" height="61"/>
+        <rect class="ill-strata-3" x="24" y="290" width="100" height="70" rx="3"/>
+        <text class="ill-text-strong" x="32" y="100">Sand</text>
+        <text class="ill-text-strong" x="32" y="180">Clay</text>
+        <text class="ill-text-strong" x="32" y="264">Silty sand</text>
+        <text class="ill-text-strong" x="32" y="330">Dense sand</text>
+        <line class="ill-water" x1="18" y1="70" x2="130" y2="70"/>
+        <text class="ill-text" x="96" y="64">GWT</text>
+        <!-- qc chart -->
+        <g aria-hidden="true">
+          <line class="ill-grid" x1="195" y1="40" x2="195" y2="360"/>
+          <line class="ill-grid" x1="240" y1="40" x2="240" y2="360"/>
+          <line class="ill-grid" x1="285" y1="40" x2="285" y2="360"/>
+          <line class="ill-grid" x1="150" y1="120" x2="330" y2="120"/>
+          <line class="ill-grid" x1="150" y1="200" x2="330" y2="200"/>
+          <line class="ill-grid" x1="150" y1="280" x2="330" y2="280"/>
+          <line class="ill-axis" x1="150" y1="40" x2="150" y2="360"/>
+          <line class="ill-axis" x1="150" y1="40" x2="330" y2="40"/>
+          <text class="ill-text" x="150" y="28">qc [MPa]</text>
+          <text class="ill-text" x="236" y="28">10</text>
+          <text class="ill-text" x="318" y="28">20</text>
+          <text class="ill-text" x="136" y="124" text-anchor="end">5</text>
+          <text class="ill-text" x="136" y="204" text-anchor="end">10</text>
+          <text class="ill-text" x="136" y="284" text-anchor="end">15</text>
+          <text class="ill-text" x="136" y="378" text-anchor="end">z [m]</text>
+          <polyline class="ill-trace" points="154,40 177,48 200,56 213,64 204,72 226,80 240,88 231,96 254,104 240,112 204,120 164,128 161,136 163,152 162,168 164,184 164,200 166,216 172,224 208,232 222,240 213,248 231,256 222,264 218,272 236,280 249,288 276,296 294,304 285,312 308,320 298,328 316,336 303,344 321,352 312,360"/>
+        </g>
+        <!-- Ic chart -->
+        <g aria-hidden="true">
+          <rect x="350" y="40" width="150" height="320" class="ill-card"/>
+          <line class="ill-grid" x1="400" y1="40" x2="400" y2="360"/>
+          <line class="ill-grid" x1="450" y1="40" x2="450" y2="360"/>
+          <line class="ill-grid" x1="350" y1="120" x2="500" y2="120"/>
+          <line class="ill-grid" x1="350" y1="200" x2="500" y2="200"/>
+          <line class="ill-grid" x1="350" y1="280" x2="500" y2="280"/>
+          <text class="ill-text" x="350" y="28">Ic [–]</text>
+          <text class="ill-text" x="396" y="28">2</text>
+          <text class="ill-text" x="446" y="28">3</text>
+          <polyline class="ill-trace-2" points="420,48 405,56 400,72 390,88 395,104 415,120 455,128 460,144 465,168 455,192 460,216 440,229 420,240 425,256 430,272 410,288 385,304 380,328 385,344 380,360"/>
+        </g>
+        <!-- provenance chip -->
+        <g aria-hidden="true">
+          <rect class="ill-card" x="182" y="146" width="140" height="50" rx="8"/>
+          <rect class="ill-chip" x="192" y="155" width="72" height="16" rx="8"/>
+          <text class="ill-chip-text" x="199" y="167">Groundhog</text>
+          <text class="ill-text" x="192" y="187">method · inputs · units</text>
+        </g>
+      </svg>
+      <figcaption id="hero-figure-caption">Illustration of a CPT interpretation — not a screenshot or real project data.</figcaption>
+    </figure>
   </div>
-
-  <!-- Hero Section -->
-  <section class="relative pt-12 sm:pt-20 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-    <div class="hero-glow"></div>
-
-    <div class="max-w-5xl mx-auto text-center relative z-10">
-      
-      <!-- Top Badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-[11px] sm:text-xs font-medium mb-6 sm:mb-8 max-w-full">
-        <i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0"></i>
-        <span class="truncate">100% Offline • 213+ Validated Routines</span>
-      </div>
-
-      <!-- Main Headline -->
-      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-main mb-4 sm:mb-6 leading-tight">
-        The Modern Workstation for <br class="hidden sm:inline">
-        <span class="gradient-text">Precision Geotechnical Engineering</span>
-      </h1>
-
-      <!-- Subtitle -->
-      <p class="text-sm sm:text-lg text-text-muted max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
-        Execute bearing capacity, axial pile design, CPT/SPT stratigraphy interpretation, and Eurocode 7 verification in a native desktop suite. Zero cloud dependencies, zero latency, 100% local engineering privacy.
-      </p>
-
-      <!-- CTA Action Buttons -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-3 w-full max-w-md sm:max-w-none mx-auto">
-        <a id="hero-download-btn" href="https://github.com/utkarsh-1912/geocore/releases" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs sm:text-sm font-semibold text-white bg-primary hover:bg-primary-light rounded-md shadow-lg shadow-primary/20 transition-all transform active:scale-95 touch-target">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Download GeoCore Workstation</span>
-        </a>
-        <a href="docs.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs sm:text-sm font-semibold text-text-main bg-surface hover:bg-surface-elevated border border-border rounded-md shadow-sm transition-all active:scale-95 touch-target">
-          <i data-lucide="book-open" class="w-4 h-4 text-primary"></i>
-          <span>Explore Documentation</span>
-        </a>
-        <a href="#calculator" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 text-xs sm:text-sm font-medium text-text-muted hover:text-text-main transition-colors touch-target">
-          <i data-lucide="play-circle" class="w-4 h-4"></i>
-          <span>Try Live Demo</span>
-        </a>
-      </div>
-      <div id="hero-download-subtext" class="text-xs text-text-muted mb-12 sm:mb-16">
-        Available for Windows (10/11) & macOS (Apple Silicon & Intel) • 100% Offline
-      </div>
-
-      <!-- App Preview Graphic Showcase -->
-      <div class="relative mx-auto max-w-5xl rounded-lg border border-border bg-surface p-1.5 sm:p-2 shadow-2xl overflow-hidden text-left">
-        <div class="bg-background rounded border border-border p-3.5 sm:p-6">
-          
-          <!-- Mock Header Bar -->
-          <div class="flex flex-wrap items-center justify-between pb-3 mb-4 border-b border-border gap-2">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block"></span>
-              <span class="text-[11px] sm:text-xs font-mono text-text-muted ml-1 truncate">GeoCore Workstation — SoilProfile & Bearing Capacity</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-mono text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded">Engine: Online</span>
-              <span class="hidden sm:inline-block text-[10px] font-mono text-text-muted bg-surface border border-border px-2 py-0.5 rounded">Ctrl + K</span>
-            </div>
-          </div>
-
-          <!-- Mock Workstation Split Grid -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            
-            <!-- Left: Parameter Input Form -->
-            <div class="lg:col-span-5 space-y-3">
-              <div class="flex items-center justify-between pb-1.5 border-b border-border">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-text-main">Input Parameters</span>
-                <span class="text-[11px] text-text-muted font-mono">Meyerhof (1963)</span>
-              </div>
-
-              <div class="space-y-2.5 text-xs">
-                <div>
-                  <label class="block text-text-muted mb-1 text-[11px]">Effective Friction Angle &phi;' [deg]</label>
-                  <input type="text" value="34.0" disabled class="w-full bg-surface border border-border rounded px-3 py-1.5 text-text-main font-mono text-xs">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-text-muted mb-1 text-[11px]">Width B [m]</label>
-                    <input type="text" value="2.5" disabled class="w-full bg-surface border border-border rounded px-3 py-1.5 text-text-main font-mono text-xs">
-                  </div>
-                  <div>
-                    <label class="block text-text-muted mb-1 text-[11px]">Embedment D_f [m]</label>
-                    <input type="text" value="1.5" disabled class="w-full bg-surface border border-border rounded px-3 py-1.5 text-text-main font-mono text-xs">
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-1">
-                <div class="p-3 bg-primary/10 border border-primary/20 rounded text-xs">
-                  <div class="text-primary font-bold text-[11px]">Ultimate Bearing Capacity q_ult</div>
-                  <div class="text-base sm:text-lg font-mono font-bold text-text-main mt-0.5">842.65 kPa</div>
-                  <div class="text-[10px] text-text-muted">Design Pressure q_des (FS = 3.0): 280.88 kPa</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right: Interactive Strata & Visualizer Mockup -->
-            <div class="lg:col-span-7 bg-surface rounded border border-border p-3.5 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-border">
-                  <span class="text-[11px] font-bold uppercase tracking-wider text-text-main">Stratigraphy & Stress</span>
-                  <span class="text-[10px] text-primary">Interactive Plotly CAD</span>
-                </div>
-
-                <!-- Strata Visualizer Preview -->
-                <div class="space-y-2">
-                  <div class="p-2.5 rounded bg-amber-500/10 border border-amber-500/20 text-xs flex justify-between items-center">
-                    <div>
-                      <span class="font-bold text-amber-600 dark:text-amber-400 text-xs">Layer 1: Dense Sand</span>
-                      <p class="text-[10px] text-text-muted">Depth: 0.0 – 4.5 m • &gamma; = 19.5 kN/m³ • &phi;' = 34°</p>
-                    </div>
-                    <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border shrink-0 ml-2">SPT N=28</span>
-                  </div>
-
-                  <div class="p-2.5 rounded bg-blue-500/10 border border-blue-500/20 text-xs flex justify-between items-center">
-                    <div>
-                      <span class="font-bold text-blue-600 dark:text-blue-400 text-xs">Layer 2: Stiff Silty Clay</span>
-                      <p class="text-[10px] text-text-muted">Depth: 4.5 – 12.0 m • &gamma; = 18.2 kN/m³ • c_u = 75 kPa</p>
-                    </div>
-                    <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border shrink-0 ml-2">CPT qc=3.2</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Export Bar Mock -->
-              <div class="mt-3 pt-2.5 border-t border-border flex flex-wrap items-center justify-between text-[11px] text-text-muted gap-2">
-                <div class="flex items-center gap-1.5">
-                  <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-500"></i>
-                  <span>Eurocode 7 EN 1997-1 Compliant</span>
-                </div>
-                <span class="font-medium text-text-main">Export: PDF | Excel | CSV</span>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Core Pillars / Capabilities -->
-  <section id="features" class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border bg-surface/40">
-    <div class="max-w-7xl mx-auto">
-      
-      <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-primary mb-2">Enterprise Grade Features</h2>
-        <h3 class="text-2xl sm:text-3xl font-extrabold text-text-main tracking-tight">Engineered for Geotechnical Professionals</h3>
-        <p class="text-text-muted text-xs sm:text-base mt-2.5">From offshore wind turbine monopiles to urban basement excavations, GeoCore delivers fast, rigorous, and auditable calculations.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        
-        <!-- Card 1 -->
-        <div class="geo-card p-5 sm:p-6 flex flex-col justify-between">
-          <div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mb-4">
-              <i data-lucide="calculator" class="w-5 h-5"></i>
-            </div>
-            <h4 class="text-base font-bold text-text-main mb-1.5">213+ Validated Routines</h4>
-            <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-              Complete coverage of Shallow Foundations, API RP 2A Axial Piles, Lateral p-y curves, Robertson CPT classification, and Soil Dynamics.
-            </p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-border/60 text-[11px] font-mono text-primary">Groundhog Core Engine</div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="geo-card p-5 sm:p-6 flex flex-col justify-between">
-          <div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mb-4">
-              <i data-lucide="lock" class="w-5 h-5"></i>
-            </div>
-            <h4 class="text-base font-bold text-text-main mb-1.5">100% Offline & Air-Gapped</h4>
-            <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-              Runs completely on your local workstation. Zero telemetry, zero cloud dependencies, keeping proprietary project data 100% confidential.
-            </p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-border/60 text-[11px] font-mono text-primary">Local-First Desktop App</div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="geo-card p-5 sm:p-6 flex flex-col justify-between">
-          <div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mb-4">
-              <i data-lucide="layers" class="w-5 h-5"></i>
-            </div>
-            <h4 class="text-base font-bold text-text-main mb-1.5">SoilProfile & LogPlot Studio</h4>
-            <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-              Define complex borehole stratigraphy, layer boundaries, CPT/SPT continuous profiles, and groundwater tables with instant SVG & Plotly rendering.
-            </p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-border/60 text-[11px] font-mono text-primary">Integrated Stratigraphy</div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="geo-card p-5 sm:p-6 flex flex-col justify-between">
-          <div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mb-4">
-              <i data-lucide="file-text" class="w-5 h-5"></i>
-            </div>
-            <h4 class="text-base font-bold text-text-main mb-1.5">Professional Reports</h4>
-            <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-              Export calculation deliverables directly to professional multi-page PDFs, Excel workbooks (.xlsx), CSV tables, and interactive HTML.
-            </p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-border/60 text-[11px] font-mono text-primary">Instant PDF / Excel Export</div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="geo-card p-5 sm:p-6 flex flex-col justify-between">
-          <div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mb-4">
-              <i data-lucide="command" class="w-5 h-5"></i>
-            </div>
-            <h4 class="text-base font-bold text-text-main mb-1.5">Keyboard-Driven Workflow</h4>
-            <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-              VS Code-style Command Palette (<code class="text-xs bg-surface border border-border px-1 py-0.5 rounded">Ctrl+K</code>), calculation history recall (<code class="text-xs bg-surface border border-border px-1 py-0.5 rounded">Ctrl+H</code>), and instant parameter autofill.
-            </p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-border/60 text-[11px] font-mono text-primary">Productivity First</div>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="geo-card p-5 sm:p-6 flex flex-col justify-between">
-          <div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mb-4">
-              <i data-lucide="sliders" class="w-5 h-5"></i>
-            </div>
-            <h4 class="text-base font-bold text-text-main mb-1.5">Custom Schema & Overrides</h4>
-            <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-              Tailor parameter names, input units, validation ranges, and calculation tooltips to match your company's geotechnical engineering standards.
-            </p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-border/60 text-[11px] font-mono text-primary">Full Extensibility</div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Interactive Live Geotechnical Calculator -->
-  <section id="calculator" class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
-    <div class="max-w-5xl mx-auto">
-      
-      <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-primary mb-2">Live Browser Playground</h2>
-        <h3 class="text-2xl sm:text-3xl font-extrabold text-text-main tracking-tight">Test Geotechnical Calculations Live</h3>
-        <p class="text-text-muted text-xs sm:text-base mt-2">Experience the precision of GeoCore's engineering formulations right inside your browser.</p>
-      </div>
-
-      <div class="geo-card overflow-hidden shadow-xl">
-        
-        <!-- Calculator Tab Header (Horizontal Touch Scroll on Mobile) -->
-        <div class="flex overflow-x-auto no-scrollbar border-b border-border bg-background p-2 gap-2 flex-nowrap">
-          <button id="calc-tab-rankine" class="active-calc-tab px-3.5 sm:px-4 py-2 text-xs font-semibold rounded bg-primary text-white transition-all flex items-center gap-1.5 shrink-0 touch-target">
-            <i data-lucide="layers" class="w-3.5 h-3.5"></i> Rankine Earth Pressure
-          </button>
-          <button id="calc-tab-gmax" class="px-3.5 sm:px-4 py-2 text-xs font-semibold rounded bg-surface text-text-muted hover:text-text-main transition-all flex items-center gap-1.5 shrink-0 touch-target">
-            <i data-lucide="activity" class="w-3.5 h-3.5"></i> Shear Modulus (Gmax)
-          </button>
-          <button id="calc-tab-void" class="px-3.5 sm:px-4 py-2 text-xs font-semibold rounded bg-surface text-text-muted hover:text-text-main transition-all flex items-center gap-1.5 shrink-0 touch-target">
-            <i data-lucide="database" class="w-3.5 h-3.5"></i> Void Ratio & Porosity
-          </button>
-        </div>
-
-        <!-- Panel 1: Rankine -->
-        <div id="calc-panel-rankine" class="p-4 sm:p-8">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8">
-            
-            <div class="md:col-span-6 space-y-3.5">
-              <h4 class="text-xs sm:text-sm font-bold text-text-main uppercase tracking-wider">Input Soil Parameters</h4>
-              
-              <div>
-                <label class="block text-xs font-medium text-text-muted mb-1">Effective Friction Angle &phi;' (deg)</label>
-                <input id="rankine-phi" type="number" value="32" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-medium text-text-muted mb-1">Unit Weight &gamma; (kN/m³)</label>
-                  <input id="rankine-gamma" type="number" value="18.5" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-text-muted mb-1">Depth z (m)</label>
-                  <input id="rankine-z" type="number" value="5.0" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-xs font-medium text-text-muted mb-1">Cohesion c' (kPa)</label>
-                <input id="rankine-c" type="number" value="0" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-              </div>
-            </div>
-
-            <!-- Output Box -->
-            <div class="md:col-span-6 bg-background rounded border border-border p-4 sm:p-6 flex flex-col justify-between">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-primary">Calculation Results</span>
-                
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 my-3 sm:my-4">
-                  <div class="p-3 rounded bg-surface border border-border">
-                    <span class="text-[10px] sm:text-[11px] text-text-muted block">Active Coeff. K_a</span>
-                    <span id="res-ka" class="text-base sm:text-lg font-mono font-bold text-text-main">0.307</span>
-                  </div>
-                  <div class="p-3 rounded bg-surface border border-border">
-                    <span class="text-[10px] sm:text-[11px] text-text-muted block">Passive Coeff. K_p</span>
-                    <span id="res-kp" class="text-base sm:text-lg font-mono font-bold text-text-main">3.255</span>
-                  </div>
-                </div>
-
-                <div class="space-y-2 text-xs font-mono">
-                  <div class="flex justify-between p-2 rounded bg-surface/50 border border-border/50">
-                    <span class="text-text-muted">Active Pressure &sigma;'_a:</span>
-                    <span id="res-sigma-a" class="font-bold text-primary">28.40 kPa</span>
-                  </div>
-                  <div class="flex justify-between p-2 rounded bg-surface/50 border border-border/50">
-                    <span class="text-text-muted">Passive Pressure &sigma;'_p:</span>
-                    <span id="res-sigma-p" class="font-bold text-text-main">301.09 kPa</span>
-                  </div>
-                </div>
-              </div>
-
-              <p class="text-[11px] text-text-muted mt-3 sm:mt-4">
-                Formulation: K_a = tan²(45° - &phi;'/2), &sigma;'_a = K_a &gamma; z - 2c'&radic;K_a
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Panel 2: Gmax -->
-        <div id="calc-panel-gmax" class="p-4 sm:p-8 hidden">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8">
-            <div class="md:col-span-6 space-y-3.5">
-              <h4 class="text-xs sm:text-sm font-bold text-text-main uppercase tracking-wider">Soil Dynamic Parameters</h4>
-              <div>
-                <label class="block text-xs font-medium text-text-muted mb-1">Shear Wave Velocity V_s (m/s)</label>
-                <input id="gmax-vs" type="number" value="250" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-text-muted mb-1">Total Unit Weight &gamma; (kN/m³)</label>
-                <input id="gmax-gamma" type="number" value="19.0" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-              </div>
-            </div>
-
-            <div class="md:col-span-6 bg-background rounded border border-border p-4 sm:p-6 flex flex-col justify-between">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-primary">Dynamic Results</span>
-                <div class="p-3.5 sm:p-4 rounded bg-surface border border-border my-3 sm:my-4">
-                  <span class="text-[10px] sm:text-[11px] text-text-muted block">Small-Strain Shear Modulus G_max</span>
-                  <span id="res-gmax" class="text-xl sm:text-2xl font-mono font-bold text-primary">121.05 MPa</span>
-                </div>
-                <div class="text-xs font-mono flex justify-between p-2 rounded bg-surface/50 border border-border/50">
-                  <span class="text-text-muted">Soil Bulk Density &rho;:</span>
-                  <span id="res-rho" class="font-bold text-text-main">1936.8 kg/m³</span>
-                </div>
-              </div>
-              <p class="text-[11px] text-text-muted mt-3 sm:mt-4">Formulation: G_max = &rho; &middot; V_s² where &rho; = &gamma; / g</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Panel 3: Void Ratio -->
-        <div id="calc-panel-void" class="p-4 sm:p-8 hidden">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8">
-            <div class="md:col-span-6 space-y-3.5">
-              <h4 class="text-xs sm:text-sm font-bold text-text-main uppercase tracking-wider">Phase Relationships</h4>
-              <div>
-                <label class="block text-xs font-medium text-text-muted mb-1">Porosity n (fraction, e.g. 0.38)</label>
-                <input id="void-porosity" type="number" step="0.01" value="0.38" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-text-muted mb-1">Specific Gravity of Solids G_s</label>
-                <input id="void-gs" type="number" step="0.01" value="2.65" class="w-full bg-background border border-border rounded px-3 py-2 text-base sm:text-sm font-mono text-text-main focus:outline-none focus:border-primary">
-              </div>
-            </div>
-
-            <div class="md:col-span-6 bg-background rounded border border-border p-4 sm:p-6 flex flex-col justify-between">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-primary">Volumetric Results</span>
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 my-3 sm:my-4">
-                  <div class="p-3 rounded bg-surface border border-border">
-                    <span class="text-[10px] sm:text-[11px] text-text-muted block">Void Ratio e</span>
-                    <span id="res-e" class="text-base sm:text-lg font-mono font-bold text-primary">0.613</span>
-                  </div>
-                  <div class="p-3 rounded bg-surface border border-border">
-                    <span class="text-[10px] sm:text-[11px] text-text-muted block">Dry Unit Weight &gamma;_d</span>
-                    <span id="res-gamma-dry" class="text-base sm:text-lg font-mono font-bold text-text-main">16.12 kN/m³</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-[11px] text-text-muted mt-3 sm:mt-4">Formulation: e = n / (1 - n), &gamma;_d = (G_s &middot; &gamma;_w) / (1 + e)</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Comprehensive Geotechnical Modules Explorer -->
-  <section id="modules" class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border bg-surface/30">
-    <div class="max-w-7xl mx-auto">
-      
-      <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-primary mb-2">Modular Architecture</h2>
-        <h3 class="text-2xl sm:text-3xl font-extrabold text-text-main tracking-tight">10 Core Geotechnical Engineering Domains</h3>
-        <p class="text-text-muted text-xs sm:text-base mt-2">Comprehensive computational library spanning onshore, nearshore, and offshore geotechnical applications.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-        
-        <!-- Shallow Foundations -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="layers" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">42 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Shallow Foundations</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">Bearing capacity (Terzaghi, Meyerhof, Hansen, Vesic), elastic settlement, and effective area under eccentric load.</p>
-          <a href="docs.html#shallow-foundations" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Deep Foundations -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="box" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">48 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Deep Foundations</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">Axial capacity of driven & bored piles, API RP 2A sand/clay methods, CPT-based methods (UWA, ICP), and lateral p-y curves.</p>
-          <a href="docs.html#deep-foundations" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Site Investigation -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="search" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">35 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Site Investigation & CPT</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">CPT data processing, Robertson (1990/2009) Soil Behavior Type (SBT), SPT N_60 corrections, and pore pressure dissipation.</p>
-          <a href="docs.html#site-investigation" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Soil Dynamics -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="activity" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">20 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Soil Dynamics</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">Small-strain shear modulus G_max, shear wave velocity V_s correlations, and cyclic modulus reduction curves.</p>
-          <a href="docs.html#soil-dynamics" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Eurocode 7 -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="ruler" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">15 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Eurocode 7 Standards</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">EN 1997-1 Design Approaches (DA1, DA2, DA3), material partial factors &gamma;_M, and characteristic fractile estimation.</p>
-          <a href="docs.html#eurocode-7" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Consolidation -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="droplets" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">16 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Consolidation & Settlement</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">Terzaghi 1D consolidation theory, c_v calculation via Casagrande/Taylor, primary and secondary creep settlement.</p>
-          <a href="docs.html#consolidation" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Excavations & Retaining -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="hammer" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">14 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Excavations & Retaining</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">Rankine & Coulomb earth pressure, cantilever sheet pile wall embedment, and strutted excavation apparent pressure envelopes.</p>
-          <a href="docs.html#excavations" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-        <!-- Pipelines -->
-        <div class="geo-card p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="p-2 rounded bg-primary/10 text-primary"><i data-lucide="anchor" class="w-4 h-4"></i></span>
-            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface border border-border">12 Tools</span>
-          </div>
-          <h4 class="font-bold text-sm text-text-main mb-1">Subsea Pipelines & Anchors</h4>
-          <p class="text-xs text-text-muted leading-relaxed mb-3">Pipeline-soil interaction, contact width, vertical penetration resistance, and lateral breakout capacity.</p>
-          <a href="docs.html#pipelines" class="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1 touch-target">Read Guide &rarr;</a>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Comparison Matrix (Optimized Horizontal Scroll on Mobile) -->
-  <section id="comparison" class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
-    <div class="max-w-5xl mx-auto">
-      
-      <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-primary mb-2">Engineering Value</h2>
-        <h3 class="text-2xl sm:text-3xl font-extrabold text-text-main tracking-tight">Why Choose GeoCore?</h3>
-        <p class="text-text-muted text-xs sm:text-base mt-2">See how GeoCore compares to fragmented spreadsheets and cloud subscription tools.</p>
-      </div>
-
-      <!-- Mobile swipe hint -->
-      <div class="sm:hidden text-center mb-2 text-[11px] text-text-muted flex items-center justify-center gap-1">
-        <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-primary"></i>
-        <span>Swipe horizontally to view full matrix</span>
-      </div>
-
-      <div class="geo-card overflow-x-auto shadow-sm">
-        <table class="w-full text-left text-xs border-collapse min-w-[550px]">
-          <thead>
-            <tr class="border-b border-border bg-background text-text-muted uppercase text-[10px] sm:text-[11px]">
-              <th class="p-3 sm:p-4 font-semibold">Feature / Capability</th>
-              <th class="p-3 sm:p-4 font-bold text-primary">GeoCore Desktop</th>
-              <th class="p-3 sm:p-4 font-semibold">Cloud SaaS Tools</th>
-              <th class="p-3 sm:p-4 font-semibold">Excel Spreadsheets</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-border">
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="p-3 sm:p-4 font-medium text-text-main">Data Privacy & Security</td>
-              <td class="p-3 sm:p-4 font-semibold text-green-500">100% Offline (Local)</td>
-              <td class="p-3 sm:p-4 text-text-muted">Cloud Hosted (Risk)</td>
-              <td class="p-3 sm:p-4 text-text-muted">Local Files</td>
-            </tr>
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="p-3 sm:p-4 font-medium text-text-main">Calculation Inventory</td>
-              <td class="p-3 sm:p-4 font-semibold text-primary">213+ Verified Tools</td>
-              <td class="p-3 sm:p-4 text-text-muted">10–30 Limited Tools</td>
-              <td class="p-3 sm:p-4 text-text-muted">Fragmented</td>
-            </tr>
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="p-3 sm:p-4 font-medium text-text-main">SoilProfile Stratigraphy Studio</td>
-              <td class="p-3 sm:p-4 font-semibold text-green-500">Integrated Object Layering</td>
-              <td class="p-3 sm:p-4 text-text-muted">Rarely Included</td>
-              <td class="p-3 sm:p-4 text-text-muted">Manual VBA Code</td>
-            </tr>
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="p-3 sm:p-4 font-medium text-text-main">Interactive CAD / Plotly Graphics</td>
-              <td class="p-3 sm:p-4 font-semibold text-green-500">Built-in Dynamic Plots</td>
-              <td class="p-3 sm:p-4 text-text-muted">Basic Charts</td>
-              <td class="p-3 sm:p-4 text-text-muted">Static Charts</td>
-            </tr>
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="p-3 sm:p-4 font-medium text-text-main">Code & Unit Customization</td>
-              <td class="p-3 sm:p-4 font-semibold text-green-500">Full Schema Customization</td>
-              <td class="p-3 sm:p-4 text-text-muted">Fixed Locked UI</td>
-              <td class="p-3 sm:p-4 text-text-muted">Prone to formula breakage</td>
-            </tr>
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="p-3 sm:p-4 font-medium text-text-main">Deliverable Export Formats</td>
-              <td class="p-3 sm:p-4 font-semibold text-green-500">PDF, Excel, CSV, JSON</td>
-              <td class="p-3 sm:p-4 text-text-muted">PDF Only</td>
-              <td class="p-3 sm:p-4 text-text-muted">XLSX Only</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Download Section -->
-  <section id="download" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border bg-gradient-to-b from-surface/50 to-background">
-    <div class="max-w-5xl mx-auto text-center">
-      
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-5 sm:mb-6">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-        <span>Native Desktop Releases (Windows & macOS)</span>
-      </div>
-
-      <h2 class="text-2xl sm:text-4xl font-extrabold text-text-main tracking-tight mb-3 sm:mb-4">
-        Ready to Supercharge Your Geotechnical Workflows?
-      </h2>
-      <p class="text-text-muted text-xs sm:text-base max-w-2xl mx-auto mb-8 sm:mb-10">
-        Download the standalone installer or portable package for Windows 10/11 or macOS. No license keys, no cloud dependencies, 100% offline privacy.
-      </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 max-w-4xl mx-auto mb-8 sm:mb-10 text-left">
-        
-        <!-- Windows Installer -->
-        <div id="download-card-win" class="geo-card p-5 sm:p-6 bg-surface flex flex-col justify-between relative transition-all">
-          <div class="detected-badge hidden absolute -top-2.5 right-4 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-            Detected OS
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <i data-lucide="monitor" class="w-6 h-6 text-primary"></i>
-              <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">Windows</span>
-            </div>
-            <h4 class="font-bold text-sm text-text-main mb-1">Windows Setup (.exe)</h4>
-            <p class="text-xs text-text-muted mb-4">Official installer for Windows 10/11 (64-bit) with automatic Start menu & desktop shortcuts.</p>
-          </div>
-          <a href="https://github.com/utkarsh-1912/geocore/releases" data-release-link class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded bg-primary text-white text-xs font-semibold hover:bg-primary-light transition-all shadow-sm touch-target">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Setup (.exe)
-          </a>
-        </div>
-
-        <!-- Windows Portable ZIP -->
-        <div class="geo-card p-5 sm:p-6 bg-surface flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <i data-lucide="archive" class="w-6 h-6 text-text-muted"></i>
-              <span class="text-xs font-mono text-text-muted px-2 py-0.5 rounded bg-background border border-border">Portable</span>
-            </div>
-            <h4 class="font-bold text-sm text-text-main mb-1">Windows Portable (.zip)</h4>
-            <p class="text-xs text-text-muted mb-4">Extract and run without administrator privileges or system installation.</p>
-          </div>
-          <a href="https://github.com/utkarsh-1912/geocore/releases" data-release-link class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded bg-surface border border-border text-text-main text-xs font-semibold hover:bg-surface-elevated transition-all touch-target">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download ZIP (.zip)
-          </a>
-        </div>
-
-        <!-- macOS Package -->
-        <div id="download-card-mac" class="geo-card p-5 sm:p-6 bg-surface flex flex-col justify-between relative transition-all">
-          <div class="detected-badge hidden absolute -top-2.5 right-4 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-            Detected OS
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <i data-lucide="apple" class="w-6 h-6 text-primary"></i>
-              <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">macOS</span>
-            </div>
-            <h4 class="font-bold text-sm text-text-main mb-1">macOS Package (.dmg)</h4>
-            <p class="text-xs text-text-muted mb-4">Universal macOS build optimized for Apple Silicon (M1/M2/M3/M4) & Intel Macs.</p>
-          </div>
-          <a href="https://github.com/utkarsh-1912/geocore/releases" data-release-link class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded bg-primary text-white text-xs font-semibold hover:bg-primary-light transition-all shadow-sm touch-target">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download for Mac (.dmg)
-          </a>
-        </div>
-
-      </div>
-
-      <div class="text-xs text-text-muted flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-        <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i> Windows 10/11 & macOS</span>
-        <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i> 100% Local Privacy</span>
-        <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i> Direct GitHub Release Builds</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="border-t border-border bg-surface py-10 sm:py-12 px-4 sm:px-6 lg:px-8 text-xs text-text-muted">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-      
-      <div class="flex items-center gap-3 text-center sm:text-left">
-        <img src="assets/images/logoIcon.png" alt="GeoCore" class="h-6 w-auto">
+</section>
+
+<section class="section section--tight section--alt" aria-labelledby="principles-title">
+  <div class="container">
+    <h2 id="principles-title" class="visually-hidden">Principles</h2>
+    <div class="principles">
+      <div class="principle">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-lock"></use></svg></span>
         <div>
-          <span class="font-bold text-text-main">GeoCore Workstation</span>
-          <p class="text-[11px] text-text-muted">Commercial Geotechnical Engineering Suite</p>
+          <h3>Offline by default</h3>
+          <p>Calculations, plots, reports and GeoAI run on your computer. Nothing about your project is uploaded. <a href="privacy.html">See every network call.</a></p>
         </div>
       </div>
-
-      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-medium text-xs">
-        <a href="index.html" class="hover:text-text-main transition-colors touch-target">Home</a>
-        <a href="#features" class="hover:text-text-main transition-colors touch-target">Features</a>
-        <a href="#modules" class="hover:text-text-main transition-colors touch-target">Modules</a>
-        <a href="docs.html" class="hover:text-primary transition-colors touch-target">Documentation</a>
-        <a href="#download" class="hover:text-text-main transition-colors touch-target">Download</a>
+      <div class="principle">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-calculator"></use></svg></span>
+        <div>
+          <h3>Deterministic results</h3>
+          <p>Every number comes from a Groundhog function with explicit inputs and units — the same inputs always give the same answer.</p>
+        </div>
       </div>
-
-      <div class="text-center sm:text-right">
-        <p>© 2026 GeoCore. All Rights Reserved.</p>
-        <p class="text-[11px] text-text-muted mt-0.5">Designed & Developed by <span class="font-semibold text-text-main">Utkarsh Gupta</span></p>
+      <div class="principle">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg></span>
+        <div>
+          <h3>Open and inspectable</h3>
+          <p>GeoCore and Groundhog are both GPLv3. You can read the method behind any result, down to the source code.</p>
+        </div>
       </div>
+    </div>
+  </div>
+</section>
 
+<section class="section" id="features" aria-labelledby="features-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-layers"></use></svg>Capabilities</p>
+      <h2 id="features-title">The Groundhog library, organised for daily work</h2>
+      <p>GeoCore exposes 220 Groundhog 0.15.0 functions and classes, grouped the way Groundhog groups them. Each one gets a form with units and validation, results you can plot, and an export.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card domain-card" id="domain-siteinvestigation">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-cpt"></use></svg></span>
+          <span class="count"><strong>86</strong> functions</span>
+        </div>
+        <h3>Site investigation &amp; in-situ testing</h3>
+        <p>CPT and SPT processing, soil classification, phase relations, lab testing and parameter correlations.</p>
+        <ul class="bullets">
+<li>PCPT normalisation &amp; Robertson (Ic) classification</li><li>SPT N60 and overburden corrections</li><li>Shear-wave velocity from CPT (7 correlations)</li><li>PSD and plasticity charts</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-soildynamics">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-waves"></use></svg></span>
+          <span class="count"><strong>40</strong> functions</span>
+        </div>
+        <h3>Soil dynamics &amp; liquefaction</h3>
+        <p>CPT-based liquefaction triggering, cyclic behaviour of clays and sands, and small-strain stiffness.</p>
+        <ul class="bullets">
+<li>Robertson &amp; Wride (1998), Idriss &amp; Boulanger (2008), Boulanger &amp; Idriss (2014), Robertson &amp; Cabal (2022)</li><li>Andersen cyclic contour diagrams (DSS, triaxial)</li><li>Darendeli modulus reduction</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-shallowfoundations">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-layers"></use></svg></span>
+          <span class="count"><strong>26</strong> functions</span>
+        </div>
+        <h3>Shallow foundations</h3>
+        <p>Drained and undrained capacity, sliding, bearing capacity factors, stress distribution and settlement.</p>
+        <ul class="bullets">
+<li>Vertical and sliding capacity (API)</li><li>N-gamma: Meyerhof, Vesic, Davis &amp; Booker</li><li>Stresses under point, strip, rectangular and circular loads</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-deepfoundations">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-pile"></use></svg></span>
+          <span class="count"><strong>20</strong> functions</span>
+        </div>
+        <h3>Deep foundations</h3>
+        <p>Axial pile capacity from CPT and unit resistance methods, load testing and pile groups.</p>
+        <ul class="bullets">
+<li>LCPC, Koppejan and De Beer methods</li><li>API RP 2GEO and Alm &amp; Hamre unit friction / end bearing</li><li>Negative skin friction (Zeevaert–De Beer)</li><li>Chin–Kondler load-test extrapolation</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-general">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-database"></use></svg></span>
+          <span class="count"><strong>27</strong> functions</span>
+        </div>
+        <h3>Soil profiles, AGS &amp; utilities</h3>
+        <p>SoilProfile objects, calculation grids, log plots, AGS conversion and input validation.</p>
+        <ul class="bullets">
+<li>SoilProfile and CalculationGrid</li><li>AGS 3.1 / 4 conversion</li><li>LogPlot depth plots</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-pipelinescables">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-anchor"></use></svg></span>
+          <span class="count"><strong>6</strong> functions</span>
+        </div>
+        <h3>Pipelines &amp; cables</h3>
+        <p>On-bottom stability inputs for subsea pipelines and cables.</p>
+        <ul class="bullets">
+<li>Drained and undrained embedment</li><li>Contact width and penetrated area</li><li>Lay touchdown factor</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-excavations">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-trench"></use></svg></span>
+          <span class="count"><strong>5</strong> functions</span>
+        </div>
+        <h3>Excavations &amp; retaining</h3>
+        <p>Earth pressure coefficients and soil-mix wall stiffness.</p>
+        <ul class="bullets">
+<li>Rankine and Poncelet coefficients</li><li>Soil-mix bending stiffness (two methods)</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-consolidation">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-droplets"></use></svg></span>
+          <span class="count"><strong>4</strong> functions</span>
+        </div>
+        <h3>Consolidation &amp; groundwater</h3>
+        <p>One-dimensional consolidation and groundwater flow.</p>
+        <ul class="bullets">
+<li>Finite-difference 1D consolidation</li><li>Degree of consolidation</li><li>Unconfined aquifer conductivity</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-constitutivemodels">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-curve"></use></svg></span>
+          <span class="count"><strong>3</strong> functions</span>
+        </div>
+        <h3>Constitutive models</h3>
+        <p>Element-level constitutive behaviour.</p>
+        <ul class="bullets">
+<li>Mohr–Coulomb triaxial compression / extension</li><li>Hardening Soil</li>        </ul>
+      </article>
+      <article class="card domain-card" id="domain-standards">
+        <div class="card__head">
+          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-ruler"></use></svg></span>
+          <span class="count"><strong>3</strong> functions</span>
+        </div>
+        <h3>Standards (Eurocode 7)</h3>
+        <p>Characteristic values and partial factoring according to Eurocode 7.</p>
+        <ul class="bullets">
+<li>STR/GEO partial factors</li><li>Characteristic values: constant value and linear trend</li>        </ul>
+      </article>
+    </div>
+    <p class="domain-total">
+      <strong>220</strong>
+      <span>functions and classes in total, counted from GeoCore’s calculation registry. Method details and references are in the <a href="https://groundhog.readthedocs.io/">Groundhog documentation</a>.</span>
+    </p>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="workflow-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-sliders"></use></svg>Workflow</p>
+      <h2 id="workflow-title">From input to report without leaving the app</h2>
+    </div>
+    <div class="grid grid--2">
+      <div class="feature">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-sliders"></use></svg></span>
+        <div><h3>Validated input forms</h3><p>Parameters come with units, defaults and range checks. Invalid values are caught before a calculation runs, and labels can be adjusted with schema overrides.</p></div>
+      </div>
+      <div class="feature">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-database"></use></svg></span>
+        <div><h3>Soil profiles as reusable objects</h3><p>Build a SoilProfile once — by hand or from a spreadsheet — and reuse it across calculations that need layered input.</p></div>
+      </div>
+      <div class="feature">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chart"></use></svg></span>
+        <div><h3>Interactive plots</h3><p>Results render as interactive Plotly charts, drawn from a copy of Plotly bundled with the app.</p></div>
+      </div>
+      <div class="feature">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-file-text"></use></svg></span>
+        <div><h3>Reports and exports</h3><p>Export a PDF report with inputs, results and the captured chart, or save results as CSV or JSON.</p></div>
+      </div>
+      <div class="feature">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-history"></use></svg></span>
+        <div><h3>History and favourites</h3><p>Recent calculations are kept locally so you can recall inputs (<kbd>Ctrl</kbd>&nbsp;<kbd>H</kbd>), and favourite modules stay one click away.</p></div>
+      </div>
+      <div class="feature">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-search"></use></svg></span>
+        <div><h3>Command palette</h3><p>Jump to any calculation from the keyboard with <kbd>Ctrl</kbd>&nbsp;<kbd>K</kbd> (<kbd>⌘</kbd>&nbsp;<kbd>K</kbd> on macOS).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="geoai" aria-labelledby="geoai-title">
+  <div class="container geoai">
+    <div>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-sparkles"></use></svg>GeoAI</p>
+      <h2 id="geoai-title">An assistant that calls the calculation — it doesn’t guess it</h2>
+      <p class="lede">GeoAI is a local assistant built into GeoCore. A small language model reads your question and chooses a tool; Groundhog does the engineering arithmetic. If an input is missing, GeoAI should ask rather than invent it.</p>
+      <ul class="checklist">
+        <li>Runs on your CPU through <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>, using open GGUF models (Qwen and Gemma families).</li>
+        <li>Models are downloaded only when you choose one (986 MB to 5.3 GB) and stored on your computer.</li>
+        <li>The model can only call whitelisted, schema-validated tools — never arbitrary code, shell or files.</li>
+        <li>With no model installed, GeoAI falls back to simpler rule-based tool selection.</li>
+      </ul>
+      <div class="callout callout--info">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-info"></use></svg>
+        <p>GeoAI is under active development. Treat its answers as a starting point for engineering judgement, not a substitute for it.</p>
+      </div>
+    </div>
+    <ol class="flow" aria-label="How a GeoAI request is handled">
+      <li><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div></li>
+      <li><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div></li>
+      <li><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div></li>
+      <li class="is-det"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div></li>
+      <li><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section--alt" id="integrations" aria-labelledby="integrations-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-plug"></use></svg>Integrations</p>
+      <h2 id="integrations-title">Works with the data and tools you already use</h2>
+      <p>Everything below ships with GeoCore today. Labels show whether an integration works entirely on your device or uses the network.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-calculator"></use></svg></span>
+        <h3>Groundhog</h3>
+        <p>The calculation engine: Bruno Stuyts’ open-source geotechnical library (v0.15.0), bundled with the app.</p>
+        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">GPLv3</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-database"></use></svg></span>
+        <h3>AGS 3.1 and AGS 4</h3>
+        <p>Import AGS files through Groundhog’s AGS converter and pull out groups such as SCPT or GEOL as tables.</p>
+        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.ags</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-cpt"></use></svg></span>
+        <h3>CPT and SPT data</h3>
+        <p>Process cone penetration and standard penetration test data with Groundhog’s PCPT and SPT processing tools and correlations.</p>
+        <div class="where"><span class="badge badge--primary">On device</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-table"></use></svg></span>
+        <h3>CSV and Excel</h3>
+        <p>Load tabular input from .csv, .xlsx or .xls files; export results as CSV or JSON.</p>
+        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.csv · .xlsx · .xls · .json</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-file-text"></use></svg></span>
+        <h3>PDF reports</h3>
+        <p>Generate a report with inputs, results table and chart, created in the app with jsPDF.</p>
+        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.pdf</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-cpu"></use></svg></span>
+        <h3>Local GGUF models</h3>
+        <p>Qwen 2.5 and Gemma 2 models via llama.cpp, downloaded from Hugging Face on request — or point GeoAI at any .gguf file you already have.</p>
+        <div class="where"><span class="badge badge--primary">Runs on device</span><span class="badge badge--info">Download uses network</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-refresh"></use></svg></span>
+        <h3>GitHub Releases updates</h3>
+        <p>Installed builds check GitHub Releases shortly after launch; on Windows, a new version downloads in the background and installs when you quit. Offline, the check simply fails quietly.</p>
+        <div class="where"><span class="badge badge--info">Uses network</span><span class="badge">electron-updater</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-chart"></use></svg></span>
+        <h3>Plotly charts</h3>
+        <p>Interactive, zoomable result plots rendered by a copy of Plotly.js that ships inside the app.</p>
+        <div class="where"><span class="badge badge--primary">On device</span></div>
+      </article>
+      <article class="card integration">
+        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-code"></use></svg></span>
+        <h3>Open source on GitHub</h3>
+        <p>Read the code, file issues and follow releases. Build from source on any platform with Node.js and Python.</p>
+        <div class="where"><span class="badge">GPLv3</span><a class="badge" href="https://github.com/utkarsh-1912/geocore">utkarsh-1912/geocore</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <h2>Try GeoCore on your next calculation</h2>
+        <p>Free and open source for Windows 10/11 and macOS. No account, no licence key.</p>
+      </div>
+      <div class="cluster">
+        <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <a class="btn btn--secondary btn--lg" href="about.html">About the project</a>
+      </div>
+    </div>
+  </div>
+</section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="./">
+            <img src="assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="index.html#integrations">Integrations</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="assets/js/main.js"></script>
-  <script>
-    lucide.createIcons();
-  </script>
+  <script src="assets/js/site.js?v=118a059abb" defer></script>
 </body>
 </html>

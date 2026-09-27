@@ -1,0 +1,747 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "label": "qwen2.5-1.5b-q4km-native-maxtools5",
+  "provider": "llama_cpp",
+  "model_info": {
+   "provider": "llama_cpp",
+   "model_path": "C:\\Users\\utkar\\AppData\\Roaming/GeoCore/models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+   "loaded": true,
+   "n_ctx": 4096,
+   "n_gpu_layers": 0,
+   "chat_format": "native",
+   "lora_adapter": null
+  },
+  "split": "test",
+  "limit": 20,
+  "turn_type": null,
+  "mode": "decision",
+  "n_ctx": 4096,
+  "llama_tool_choice": "provider",
+  "dataset_generator_version": "1.0.0",
+  "dataset_seed": 20260926,
+  "timestamp_utc": "2026-09-27T04:15:47+00:00",
+  "python": "3.13.1",
+  "platform": "win32"
+ },
+ "metrics": {
+  "n": 20,
+  "mean_score": 0.636,
+  "strict_pass_rate": 0.4,
+  "action_accuracy": 0.65,
+  "tool_selection_accuracy": 0.2,
+  "tool_selection_accuracy_incl_equivalent": 0.2,
+  "argument_accuracy": 0.1333,
+  "schema_valid_rate": 0.8333,
+  "clarification_accuracy": 0.4286,
+  "clarification_keyword_score": 0.4286,
+  "hallucinated_parameter_rate": 0.1667,
+  "hallucinated_tool_rate": 0.0,
+  "unit_trap_accuracy": 0.0,
+  "execution_match_rate": 0.0,
+  "final_answer_grounding": 0.7857,
+  "caution_violation_rate": 0.0,
+  "selector_recall": 0.4,
+  "error_rate": 0.05,
+  "latency_p50_s": 33.0132,
+  "latency_p95_s": 149.04,
+  "decision_latency_p50_s": 31.7126,
+  "decision_latency_p95_s": 148.5219,
+  "per_category": {
+   "ambiguous_request": {
+    "n": 2,
+    "pass_rate": 1.0,
+    "mean_score": 1.0,
+    "action_accuracy": 1.0
+   },
+   "conflicting_data": {
+    "n": 2,
+    "pass_rate": 0.5,
+    "mean_score": 0.7143,
+    "action_accuracy": 0.5
+   },
+   "correct_request": {
+    "n": 4,
+    "pass_rate": 0.25,
+    "mean_score": 0.5083,
+    "action_accuracy": 0.75
+   },
+   "missing_data": {
+    "n": 2,
+    "pass_rate": 0.5,
+    "mean_score": 0.7143,
+    "action_accuracy": 0.5
+   },
+   "research": {
+    "n": 4,
+    "pass_rate": 0.25,
+    "mean_score": 0.5208,
+    "action_accuracy": 0.5
+   },
+   "tool_failure": {
+    "n": 4,
+    "pass_rate": 0.25,
+    "mean_score": 0.5655,
+    "action_accuracy": 0.5
+   },
+   "turn:decision": {
+    "n": 13,
+    "pass_rate": 0.3077,
+    "mean_score": 0.4784,
+    "action_accuracy": 0.4615
+   },
+   "turn:final_answer": {
+    "n": 7,
+    "pass_rate": 0.5714,
+    "mean_score": 0.9286,
+    "action_accuracy": 1.0
+   },
+   "wrong_units": {
+    "n": 2,
+    "pass_rate": 0.5,
+    "mean_score": 0.7417,
+    "action_accuracy": 1.0
+   }
+  },
+  "model_load_s": 3.66,
+  "peak_memory_mb": 1673.2,
+  "memory_at_start_mb": 98.8,
+  "wall_time_s": 1153.5
+ },
+ "per_example": {
+  "ambiguous_request-19ab81c70e": [
+   1.0,
+   true
+  ],
+  "conflicting_data-12ac4893ac": [
+   0.428571,
+   false
+  ],
+  "correct_request-0067b3fd9b": [
+   0.2,
+   false
+  ],
+  "correct_request-01b2c5a31b__final": [
+   0.833333,
+   false
+  ],
+  "missing_data-09cbd1905d": [
+   1.0,
+   true
+  ],
+  "research-03755441fc": [
+   0.125,
+   false
+  ],
+  "research-03755441fc__final": [
+   1.0,
+   true
+  ],
+  "tool_failure-05f854823e": [
+   0.142857,
+   false
+  ],
+  "tool_failure-090ceb2187__final": [
+   1.0,
+   true
+  ],
+  "wrong_units-1008f17d19": [
+   0.483333,
+   false
+  ],
+  "wrong_units-1008f17d19__final": [
+   1.0,
+   true
+  ],
+  "ambiguous_request-1b39895d2a": [
+   1.0,
+   true
+  ],
+  "conflicting_data-130222f48a": [
+   1.0,
+   true
+  ],
+  "correct_request-01b2c5a31b": [
+   0.0,
+   false
+  ],
+  "correct_request-0bc39e8f92__final": [
+   1.0,
+   true
+  ],
+  "missing_data-16e7dc96ac": [
+   0.428571,
+   false
+  ],
+  "research-0f5a2d607f": [
+   0.125,
+   false
+  ],
+  "research-0f5a2d607f__final": [
+   0.833333,
+   false
+  ],
+  "tool_failure-0bcb9e6bf4": [
+   0.285714,
+   false
+  ],
+  "tool_failure-298b9cdc39__final": [
+   0.833333,
+   false
+  ]
+ },
+ "records": [
+  {
+   "id": "conflicting_data-12ac4893ac",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_pipeline_contact_width",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_pipeline_contact_width",
+    "predicted_arguments": {
+     "diameter": 0.34,
+     "penetration": 0.102
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_pipeline_contact_width' but expected clarify"
+    ]
+   },
+   "latency_s": 31.9917,
+   "decision_latency_s": 29.7356,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 550,
+    "completion_tokens": 77,
+    "total_tokens": 627
+   },
+   "error": null
+  },
+  {
+   "id": "correct_request-0067b3fd9b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "porosity_voidratio",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 1.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {
+     "porosity": 0.62
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_void_ratio_from_porosity' (expected 'porosity_voidratio')"
+    ]
+   },
+   "latency_s": 34.0348,
+   "decision_latency_s": 33.2464,
+   "n_model_calls": 1,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1056,
+    "completion_tokens": 29,
+    "total_tokens": 1085
+   },
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['CN [-]']"
+    ]
+   },
+   "latency_s": 51.6871,
+   "decision_latency_s": 51.687,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The corrected value for N1, considering the Liao-Whitman correction, is 25.74383611739353. This value is based on the input parameters provided: an SPT N value of 26 and an effective overburden stress of 102 kPa. The calculation is performed using the Groundhog Deterministic Geotechnical Routine (overburdencorrection_spt_liaowhitman) method, which is part of the Groundhog Open-Source Geotechnical ",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 578,
+    "completion_tokens": 151,
+    "total_tokens": 729
+   },
+   "error": null
+  },
+  {
+   "id": "research-03755441fc",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 0.0,
+    "tool": 0.0,
+    "schema": null,
+    "arguments": 0.0,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.125,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "expected a tool call to 'search_local_documents', got a text synthesize"
+    ]
+   },
+   "latency_s": 53.8446,
+   "decision_latency_s": 53.398,
+   "n_model_calls": 1,
+   "expected_tool_offered": false,
+   "response_text": "I'm sorry, but I don't have direct access to your documents or databases. However, I can guide you on how to find references for K0 in overconsolidated clays. \n\nYou can search for \"K0 in overconsolidated clays\" in your engineering literature, such as journals, books, or online databases like Google Scholar, IEEE Xplore, or ASCE. \n\nIf you provide me with the specific details or keywords, I can help",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1366,
+    "completion_tokens": 103,
+    "total_tokens": 1469
+   },
+   "error": null
+  },
+  {
+   "id": "tool_failure-05f854823e",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "normalize_spt_test",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 0.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.142857,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "spt_N60_correction",
+    "predicted_arguments": {
+     "N": "-14",
+     "borehole_diameter": "60.0",
+     "rod_length": "10.0",
+     "country": "Japan",
+     "hammertype": "Safety",
+     "hammerrelease": "Free fall",
+     "samplertype": "Standard sampler",
+     "eta_H": "50.0",
+     "eta_B": "1.0",
+     "eta_S": "0.8",
+     "eta_R": "0.75"
+    },
+    "invented_params": [
+     "borehole_diameter",
+     "eta_B",
+     "eta_H",
+     "eta_R",
+     "eta_S",
+     "rod_length"
+    ],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'spt_N60_correction' but expected reject",
+     "invented values for parameters not given in prompt/context: ['borehole_diameter', 'eta_B', 'eta_H', 'eta_R', 'eta_S', 'rod_length']"
+    ]
+   },
+   "latency_s": 146.1821,
+   "decision_latency_s": 145.6682,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 3614,
+    "completion_tokens": 118,
+    "total_tokens": 3732
+   },
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 1.0,
+    "arguments": 0.6666666666666666,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.483333,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "pointload": 1521000000,
+     "z": 13.2,
+     "r": 0,
+     "poissonsratio": 0.32
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "argument mismatch: pointload: expected 1521.0, got 1521000000.0",
+     "unit conversion trap failed for 'pointload' (given 1.521 MN; expected 1521.0, got 1521000000.0)",
+     "Groundhog result differs from expected for ['delta sigma r [kPa]', 'delta sigma theta [kPa]', 'delta sigma z [kPa]']"
+    ]
+   },
+   "latency_s": 118.5261,
+   "decision_latency_s": 117.8986,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 3252,
+    "completion_tokens": 61,
+    "total_tokens": 3313
+   },
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "overburdencorrection_spt_liaowhitman",
+   "score": {
+    "action": 0.0,
+    "tool": 0.0,
+    "schema": null,
+    "arguments": 0.0,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.0,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "empty",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "empty response"
+    ]
+   },
+   "latency_s": 0.7377,
+   "decision_latency_s": 0.0695,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": "RuntimeError: Generation failed: Requested tokens (4280) exceed context window of 4096"
+  },
+  {
+   "id": "missing_data-16e7dc96ac",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "earthpressurecoefficients_poncelet",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_earth_pressure_rankine",
+    "predicted_arguments": {
+     "phi_eff": 30.0,
+     "wall_angle": 4.0,
+     "top_angle": 0.0
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_earth_pressure_rankine' but expected clarify"
+    ]
+   },
+   "latency_s": 15.2184,
+   "decision_latency_s": 14.4944,
+   "n_model_calls": 1,
+   "expected_tool_offered": false,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 613,
+    "completion_tokens": 47,
+    "total_tokens": 660
+   },
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 0.0,
+    "tool": 0.0,
+    "schema": null,
+    "arguments": 0.0,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.125,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "expected a tool call to 'search_local_documents', got a text synthesize"
+    ]
+   },
+   "latency_s": 106.7315,
+   "decision_latency_s": 106.1694,
+   "n_model_calls": 1,
+   "expected_tool_offered": false,
+   "response_text": "The literature provides several correlations for the small-strain stiffness Gmax, which is related to the shear wave velocity (Vs) and the unit weight (gamma) of the soil. These correlations are typically derived from CPT (cone penetration test) data and are used to estimate Gmax for different soil types.\n\nHere are some common correlations:\n\n1. **Correlation 1:**\n   \\[\n   G_{max} = \\rho \\cdot Vs^2",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 620,
+    "completion_tokens": 758,
+    "total_tokens": 1378
+   },
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['no ']"
+    ]
+   },
+   "latency_s": 15.5474,
+   "decision_latency_s": 15.5473,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The literature does not provide a specific small-strain stiffness Gmax correlation for CPT (Core Penetration Test) data. The search for this correlation did not yield any results. This could be due to the lack of a well-documented or widely accepted empirical relationship for Gmax in the CPT context. For practical purposes, engineers often rely on empirical correlations or empirical models that ar",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 406,
+    "completion_tokens": 114,
+    "total_tokens": 520
+   },
+   "error": null
+  },
+  {
+   "id": "tool_failure-0bcb9e6bf4",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "calculate_pipeline_contact_width",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_pipeline_contact_width",
+    "predicted_arguments": {
+     "diameter": 0.56,
+     "penetration": -0.1
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_pipeline_contact_width' but expected reject",
+     "arguments fail schema validation: 1 validation error for ContactWidthInput"
+    ]
+   },
+   "latency_s": 11.7578,
+   "decision_latency_s": 11.3476,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 524,
+    "completion_tokens": 36,
+    "total_tokens": 560
+   },
+   "error": null
+  },
+  {
+   "id": "tool_failure-298b9cdc39__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['nan']"
+    ]
+   },
+   "latency_s": 13.7613,
+   "decision_latency_s": 13.7612,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The calculation for Ka and Kp using Rankine theory with the given parameters is not possible due to the missing input parameters. Please provide the angle of internal friction (phi_eff) and the backfill slope angle (top_angle) to proceed with the calculation.",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 619,
+    "completion_tokens": 52,
+    "total_tokens": 671
+   },
+   "error": null
+  }
+ ]
+}

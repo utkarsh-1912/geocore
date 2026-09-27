@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cavity expansion methods for cast in-situ piles — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.deepfoundations.boreholestability.cavityexpansion: 3 functions, 0 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Cavity expansion methods for cast in-situ piles — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.deepfoundations.boreholestability.cavityexpansion: 3 functions, 0 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/" aria-current="page">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/deepfoundations/">Deep foundations</a></li>
+        <li><a href="/docs/groundhog/api/deepfoundations/boreholestability/">Borehole stability</a></li>
+        <li><span aria-current="page">Cavity expansion methods for cast in-situ piles</span></li>
+      </ol>
+    </nav>
+
+    <h1>Cavity expansion methods for cast in-situ piles</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.deepfoundations.boreholestability.cavityexpansion</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.deepfoundations.boreholestability.cavityexpansion</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/boreholestability/cavityexpansion.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/piles/cavityexpansion.html">Cavity expansion methods for cast in-situ piles</a>.</p>
+<p><strong>Functions:</strong> <a href="#stress_cylinder_elastic_isotropic"><code>stress_cylinder_elastic_isotropic</code></a>, <a href="#expansion_tresca_thicksphere"><code>expansion_tresca_thicksphere</code></a>, <a href="#expansion_cylinder_tresca"><code>expansion_cylinder_tresca</code></a></p>
+<p><a id="stress_cylinder_elastic_isotropic"></a></p>
+<h2 id="stress_cylinder_elastic_isotropic"><code>stress_cylinder_elastic_isotropic</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="stress_cylinder_elastic_isotropic">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#stress_cylinder_elastic_isotropic">Pile calculations › Cavity expansion methods › Elastic Cylinder Stress (Isotropic)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">stress_cylinder_elastic_isotropic</span><span class="p">(</span>
+    <span class="n">radius</span><span class="p">,</span>
+    <span class="n">internal_pressure</span><span class="p">,</span>
+    <span class="n">farfield_pressure</span><span class="p">,</span>
+    <span class="n">borehole_radius</span><span class="p">,</span>
+    <span class="n">shear_modulus</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the radial and tangential stress around a cylindrical borehole under internal pressure, in a soil mass with isotropic virgin stress conditions in the given plane</p>
+<div class="math-display">\[\frac{d \sigma_{r}}{dr} + \frac{\left(\sigma_{r} - \sigma_{\theta} \right)}{r} = 0\]</div>
+<div class="math-display">\[\begin{aligned}\sigma_r | _{r=a} = p \\
+\sigma_r | _{r=a} = p_0\end{aligned}\]</div>
+<div class="math-display">\[\sigma_{r} = p_0 + \left( p - p_0 \right) \cdot \left( \frac{a}{r} \right)^2\]</div>
+<div class="math-display">\[\sigma_{\theta} = p_0 - \left( p - p_0 \right) \cdot \left( \frac{a}{r} \right)^2\]</div>
+<p><img loading="lazy" decoding="async" alt="Basic sketch of the cavity expansion problem" src="/docs/assets/groundhog/docs/piles/images/stress_elastic_isotropic.png"></p>
+<p><em>Basic sketch of the cavity expansion problem</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>radius</code></td>
+<td>m</td>
+<td>radius &gt;= 0.0</td>
+<td>required</td>
+<td>Radius or radii at which to calculate the stresses (float or NumPy array) (<span class="math">\(r\)</span>)</td>
+</tr>
+<tr>
+<td><code>internal_pressure</code></td>
+<td>kPa</td>
+<td>internal_pressure &gt;= 0.0</td>
+<td>required</td>
+<td>Internal pressure on the borehole (<span class="math">\(p\)</span>)</td>
+</tr>
+<tr>
+<td><code>farfield_pressure</code></td>
+<td>kPa</td>
+<td>farfield_pressure &gt;= 0.0</td>
+<td>required</td>
+<td>Far-field pressure, equal to the virgin horizontal stress (<span class="math">\(p_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>borehole_radius</code></td>
+<td>m</td>
+<td>borehole_radius &gt;= 0.0</td>
+<td>required</td>
+<td>Radius of the borehole (<span class="math">\(a\)</span>)</td>
+</tr>
+<tr>
+<td><code>shear_modulus</code></td>
+<td>kPa</td>
+<td>shear_modulus &gt;= 0.0 (optional, default=np.nan). If unspecified, radial displacements are not calculated</td>
+<td><code>nan</code></td>
+<td>Shear modulus used to calculate the radial displacement (<span class="math">\(G\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>radial stress [kPa]</code></td>
+<td>kPa</td>
+<td>Radial stress at the specified radii (<span class="math">\(\sigma_r\)</span>)</td>
+</tr>
+<tr>
+<td><code>tangential stress [kPa]</code></td>
+<td>kPa</td>
+<td>Tangential stress at the specified radii (<span class="math">\(\sigma_{\theta}\)</span>)</td>
+</tr>
+<tr>
+<td><code>radial displacement [m]</code></td>
+<td>m</td>
+<td>Radial displacement (calculated if shear modulus is specified) (<span class="math">\(u\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Yu, H.-S., 2000. Cavity Expansion Methods in Geomechanics. Springer-Science+Business Media, B.V.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="expansion_tresca_thicksphere"></a></p>
+<h2 id="expansion_tresca_thicksphere"><code>expansion_tresca_thicksphere</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="expansion_tresca_thicksphere">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#expansion_tresca_thicksphere">Pile calculations › Cavity expansion methods › Thick Sphere Expansion (Tresca)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">expansion_tresca_thicksphere</span><span class="p">(</span>
+    <span class="n">undrained_shear_strength</span><span class="p">,</span>
+    <span class="n">internal_radius</span><span class="p">,</span>
+    <span class="n">external_radius</span><span class="p">,</span>
+    <span class="n">internal_pressure</span><span class="p">,</span>
+    <span class="n">external_pressure</span><span class="p">,</span>
+    <span class="n">youngs_modulus</span><span class="p">,</span>
+    <span class="n">poissons_ratio</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the stresses for cavity expansion around a thick-walled sphere in Tresca material.</p>
+<p>The plastic radius is first calculated from the pressure boundary conditions. Using this plastic radius, the stresses in the elastic and plastic region are calculated.</p>
+<div class="math-display">\[\text{Elastic solutions}\]</div>
+<div class="math-display">\[\sigma_r = -p_0 - (p - p_0) \frac{\left( \frac{b_0}{r} \right)^3 - 1}{\left( \frac{b_0}{a_0} \right)^3 - 1}\]</div>
+<div class="math-display">\[\sigma_{\theta} = \sigma_{\phi} = -p_0 + (p - p_0) \frac{\frac{1}{2} \left( \frac{b_0}{r} \right)^3 - 1}{\left( \frac{b_0}{a_0} \right)^3 - 1}\]</div>
+<div class="math-display">\[u = r - r_0 = \frac{p - p_0}{E} \frac{(1 - 2 \nu) r + \frac{(1 + \nu) b_0^3}{2 r^2}}{\left( \frac{b_0}{a_0} \right)^3 - 1}\]</div>
+<div class="math-display">\[\text{Yield criterion}\]</div>
+<div class="math-display">\[\sigma_1 - \sigma_3 = 2 \cdot S_u\]</div>
+<div class="math-display">\[\text{Internal pressure for yielding } (\sigma_1 = \sigma_{\theta}, \sigma_3 = \sigma_r)\]</div>
+<div class="math-display">\[p = p_{1y} = p_0 + \frac{4 \cdot S_u}{3} \left[ 1 - \left( \frac{a_0}{b_0} \right)^3 \right]\]</div>
+<div class="math-display">\[\text{Displacement at internal and external boundaries}\]</div>
+<div class="math-display">\[u |_{r=a_0} = \frac{2 \cdot S_u \cdot a_0}{E} \left[ \frac{2 \cdot (1 - 2 \nu) \cdot a_0^3 }{3 \cdot b_0^3} + \frac{1 + \nu}{3} \right]\]</div>
+<div class="math-display">\[u |_{r=b_0} = \frac{2 \cdot S_u \cdot (1 - \nu) \cdot a_0 }{E \cdot b_0^2}\]</div>
+<div class="math-display">\[\text{Stresses and displacements in the elastic region after yielding}\]</div>
+<div class="math-display">\[\sigma_r = - \frac{4 \cdot S_u \cdot c^3}{3 \cdot b_0^3} \left[ \left( \frac{b_0}{r} \right)^3 - 1 \right] - p_0\]</div>
+<div class="math-display">\[\sigma_{\theta} = \sigma_{\phi} = \frac{4 \cdot S_u \cdot c^3}{3 \cdot b_0^3} \left[ \frac{1}{2} \left( \frac{b_0}{r} \right)^3 + 1 \right] - p_0\]</div>
+<div class="math-display">\[u = \frac{4 \cdot S_u \cdot c^3}{3 \cdot E \cdot b_0^3} \left[ (1 - 2 \nu) \cdot r + \frac{(1 + \nu) b_0^3}{2 \cdot r^2} \right]\]</div>
+<div class="math-display">\[\text{Stresses in the plastic region}\]</div>
+<div class="math-display">\[\sigma_r = - 4 \cdot S_u \cdot \ln \left( \frac{c}{r} \right) - \frac{4 \cdot S_u}{3} \left[ 1 - \left( \frac{c}{b_0} \right)^3 \right] - p_0\]</div>
+<div class="math-display">\[\sigma_{\theta} = 2 \cdot S_u - 4 \cdot S_u \cdot \ln \left( \frac{c}{r} \right) - \frac{4 \cdot S_u}{3} \cdot \left[ 1 - \left( \frac{c}{b_0} \right)^3 \right] - p_0\]</div>
+<div class="math-display">\[\text{The pressure required to generate a plastic radius is thus}\]</div>
+<div class="math-display">\[p = 4 \cdot S_u \cdot \ln \left( \frac{c}{a} \right) + \frac{4 \cdot S_u}{3} \left[ 1 - \left( \frac{c}{b_0} \right)^3 \right] + p_0\]</div>
+<div class="math-display">\[\text{Expansion of the boundary}\]</div>
+<div class="math-display">\[\left( \frac{a}{a_0} \right)^3 = 1 + \frac{6 (1 - \nu) S_u c^3}{E \cdot a_0^3} - \frac{4 (1 - 2 \nu) S_u}{E} \left[ 3 \ln \left( \frac{c}{a_0} \right) + 1 - \left( \frac{c}{b_0} \right)^3 \right]\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>undrained_shear_strength</code></td>
+<td>kPa</td>
+<td>undrained_shear_strength &gt;= 0.0</td>
+<td>required</td>
+<td>Undrained shear strength of the material surrounding the spherical cavity (<span class="math">\(S_u\)</span>)</td>
+</tr>
+<tr>
+<td><code>internal_radius</code></td>
+<td>m</td>
+<td>internal_radius &gt;= 0.0</td>
+<td>required</td>
+<td>Initial internal radius of the spherical cavity (<span class="math">\(a_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>external_radius</code></td>
+<td>m</td>
+<td>external_radius &gt;= 0.0</td>
+<td>required</td>
+<td>Initial external radius of the region (<span class="math">\(b_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>internal_pressure</code></td>
+<td>kPa</td>
+<td>internal_pressure &gt;= 0.0</td>
+<td>required</td>
+<td>Internal pressure applied on the inside of the sphere (<span class="math">\(p\)</span>)</td>
+</tr>
+<tr>
+<td><code>external_pressure</code></td>
+<td>kPa</td>
+<td>external_pressure &gt;= 0.0</td>
+<td>required</td>
+<td>External pressure on the outside of the sphere (<span class="math">\(p_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>youngs_modulus</code></td>
+<td>kPa</td>
+<td>youngs_modulus &gt;= 0.0</td>
+<td>required</td>
+<td>Young's modulus of the material (<span class="math">\(E\)</span>)</td>
+</tr>
+<tr>
+<td><code>poissons_ratio</code></td>
+<td>-</td>
+<td>0 &lt;= poissons_ratio &lt;= 0.5</td>
+<td>required</td>
+<td>Poisson's ratio of the material (<span class="math">\(\nu\)</span>)</td>
+</tr>
+<tr>
+<td><code>seed</code></td>
+<td>-</td>
+<td></td>
+<td><code>100</code></td>
+<td>Number of radii at which stresses and displacements are calculated</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>elastic radii [m]</code></td>
+<td>m</td>
+<td>Radii at which elastic stresses are calculated</td>
+</tr>
+<tr>
+<td><code>elastic_radial_stress [kPa]</code></td>
+<td>kPa</td>
+<td>Radial stresses for purely elastic deformation (<span class="math">\(\sigma_{r,elastic}\)</span>)</td>
+</tr>
+<tr>
+<td><code>elastic_tangential_stress [kPa]</code></td>
+<td>kPa</td>
+<td>Tangential stresses for purely elastic deformation (<span class="math">\(\sigma_{\theta,elastic}\)</span>)</td>
+</tr>
+<tr>
+<td><code>elastic_radial_displacement [m]</code></td>
+<td>m</td>
+<td>Radial displacement for purely elastic deformation (<span class="math">\(u_{elastic}\)</span>)</td>
+</tr>
+<tr>
+<td><code>yielding_pressure [kPa]</code></td>
+<td>kPa</td>
+<td>Internal pressure which initiates yield (<span class="math">\(p_{1y}\)</span>)</td>
+</tr>
+<tr>
+<td><code>plastic_radius [m]</code></td>
+<td>m</td>
+<td>Radius of the plastic zone for the given internal and external pressures (<span class="math">\(c\)</span>)</td>
+</tr>
+<tr>
+<td><code>elastoplastic_radii [m]</code></td>
+<td>m</td>
+<td>Radii at which elastoplastic stresses are calculated (equal amount of point inside and outside the plastic radius)</td>
+</tr>
+<tr>
+<td><code>elastoplastic_radial_stress [kPa]</code></td>
+<td>kPa</td>
+<td>Radial stresses for Tresca soil (<span class="math">\(\sigma_r\)</span>)</td>
+</tr>
+<tr>
+<td><code>elastoplastic_tangential_stress [kPa]</code></td>
+<td>kPa</td>
+<td>Tangential stresses for Tresca soil (<span class="math">\(\sigma_{\theta}\)</span>)</td>
+</tr>
+<tr>
+<td><code>expanded_radius [m]</code></td>
+<td>m</td>
+<td>Radius of the internal wall after expansion (<span class="math">\(a\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Yu, H.-S., 2000. Cavity Expansion Methods in Geomechanics. Springer-Science+Business Media, B.V.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="expansion_cylinder_tresca"></a></p>
+<h2 id="expansion_cylinder_tresca"><code>expansion_cylinder_tresca</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="expansion_cylinder_tresca">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#expansion_cylinder_tresca">Pile calculations › Cavity expansion methods › Cylinder Expansion (Tresca)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">expansion_cylinder_tresca</span><span class="p">(</span>
+    <span class="n">insitu_pressure</span><span class="p">,</span>
+    <span class="n">borehole_pressure</span><span class="p">,</span>
+    <span class="n">diameter</span><span class="p">,</span>
+    <span class="n">undrained_shear_strength</span><span class="p">,</span>
+    <span class="n">shear_modulus</span><span class="p">,</span>
+    <span class="n">poissons_ratio</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">max_radius_multiplier</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="n">number_radii</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the cavity expansion for a cylinder in Tresca material. The relation between borehole radius + plastic radius and pressure differential is calculated first.</p>
+<p>This relation is then used to evaluate where the imposed pressure lies, whether it causes any plasticity around the borehole and whether it does not cause overall borehole failure.</p>
+<p>The stresses for the given pressure are then calculated.</p>
+<div class="math-display">\[\text{Elastic properties}\]</div>
+<div class="math-display">\[n = \frac{4 \cdot S_u \cdot (1 - \nu^2) }{E}\]</div>
+<div class="math-display">\[E = 2 \cdot G \cdot (1 + \nu)\]</div>
+<div class="math-display">\[\text{Plastic radius and wall radius expansion during plastic deformation}\]</div>
+<div class="math-display">\[\left( \frac{c}{a} \right)^2 = \left( \frac{a_0}{a} \right)^2 + \frac{1}{n} \cdot \left[ 1 - \left( \frac{a_0}{a} \right)^2 \right]\]</div>
+<div class="math-display">\[\frac{p - p_0}{2 \cdot S_u} = \frac{1}{2} + \frac{1}{2} \cdot \ln \left[ \frac{G}{S_u} \cdot \left( 1 - \left( \frac{a_0}{a} \right)^2 \right) + \left( \frac{a_0}{a} \right)^2 \right]\]</div>
+<div class="math-display">\[\text{Elastic stresses and displacements can be calculated by taking the limit for the outer radius going to infinity}\]</div>
+<div class="math-display">\[\sigma_r = - p_0 - (p - p_0) \cdot \frac{\frac{b_0^2}{r^2} - 1}{\frac{b_0^2}{a_0^2} - 1}  \implies \sigma_r = -p_0 - (p - p_0) \cdot \frac{a_0^2}{r^2}\]</div>
+<div class="math-display">\[\sigma_{\theta} = -p_0 + (p - p_0) \cdot \frac{\frac{b_0^2}{r^2} + 1}{\frac{b_0^2}{a_0^2} - 1} \implies \sigma_{\theta} = -p_0 + (p - p_0) \cdot \frac{a_0^2}{r^2}\]</div>
+<div class="math-display">\[u = \frac{(1 + \nu) \cdot (p - p_0)}{E} \cdot \frac{a_0^2}{b_0^2 - a_0^2} \cdot \left[ (1 - 2 \cdot \nu) \cdot r + \frac{b_0^2}{r} \right] \implies u = \frac{(1 + \nu) \cdot (p - p_0)}{E} \cdot \frac{a_0^2}{r}\]</div>
+<div class="math-display">\[\text{The plasticity critertion can be expressed as:}\]</div>
+<div class="math-display">\[\sigma_{r,r=a_0} - \sigma_{theta,r=a_0} = 2 \cdot S_u \implies -(p - p_0)  = S_u\]</div>
+<div class="math-display">\[\text{The elastic stresses and displacements outside of the plastic zone can be written as:}\]</div>
+<div class="math-display">\[\sigma_r = -\frac{S_u \cdot c^2}{b_0^2} \cdot \left( \frac{b_0^2}{r^2} - 1 \right) - p_0 \implies \sigma_r = -\frac{S_u \cdot c^2}{r^2} - p_0\]</div>
+<div class="math-display">\[\sigma_{\theta} = \frac{S_u \cdot c^2}{b_0^2} \cdot \left( \frac{b_0^2}{r^2} + 1 \right) - p_0 \implies \sigma_{\theta} = \frac{S_u \cdot c^2}{r^2} - p_0\]</div>
+<div class="math-display">\[u = \frac{(1 + \nu) \cdot S_u \cdot c^2}{E \cdot b_0^2} \cdot \left[ (1 - 2 \cdot \nu) \cdot r + \frac{b_0^2}{r} \right] \implies u = \frac{(1 + \nu) \cdot S_u \cdot c^2}{E} \cdot \frac{1}{r}\]</div>
+<div class="math-display">\[\text{Stresses in the plastic zone:}\]</div>
+<div class="math-display">\[\sigma_r = -p_0 - S_u - 2 \cdot S_u \cdot \ln \left( \frac{c}{r} \right)\]</div>
+<div class="math-display">\[\sigma_{\theta} = -p_0 + S_u - 2 \cdot S_u \cdot \ln \left( \frac{c}{r} \right)\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>insitu_pressure</code></td>
+<td>kPa</td>
+<td>insitu_pressure &gt;= 0.0</td>
+<td>required</td>
+<td>Isotropic horizontal stress in the soil mass before borehole excavation (<span class="math">\(p_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>borehole_pressure</code></td>
+<td>kPa</td>
+<td>borehole_pressure &gt;= 0.0</td>
+<td>required</td>
+<td>Pressure on the borehole wall due to drilling fluids or concrete (<span class="math">\(p\)</span>)</td>
+</tr>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td>diameter &gt;= 0.0</td>
+<td>required</td>
+<td>Borehole initial diameter (equations are formulated in terms of radius but diameter is more convenient as input) (<span class="math">\(2 \cdot a_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>undrained_shear_strength</code></td>
+<td>kPa</td>
+<td>undrained_shear_strength &gt;= 0.0</td>
+<td>required</td>
+<td>Undrained shear strength of the material surrounding the borehole (<span class="math">\(S_u\)</span>)</td>
+</tr>
+<tr>
+<td><code>shear_modulus</code></td>
+<td>kPa</td>
+<td>shear_modulus &gt;= 0.0</td>
+<td>required</td>
+<td>Shear modulus of the material surrounding the borehole (<span class="math">\(G\)</span>)</td>
+</tr>
+<tr>
+<td><code>poissons_ratio</code></td>
+<td>-</td>
+<td>0.0 &lt;= poissons_ratio &lt;= 0.5</td>
+<td><code>0.5</code></td>
+<td>Poissons ratio of the material surrounding the borehole (default for undrained material)) (<span class="math">\(\nu\)</span>)</td>
+</tr>
+<tr>
+<td><code>max_radius_multiplier</code></td>
+<td>-</td>
+<td>max_radius_multiplier &gt;= 1.0</td>
+<td><code>10.0</code></td>
+<td>Multiplier on borehole radius for determining the maximum extent of the calculation</td>
+</tr>
+<tr>
+<td><code>number_radii</code></td>
+<td>-</td>
+<td></td>
+<td><code>250</code></td>
+<td>Number of radii considered for the calculation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yielding</code></td>
+<td></td>
+<td>Boolean determining whether plastic deformation is taking place or not</td>
+</tr>
+<tr>
+<td><code>pressure expansion function</code></td>
+<td></td>
+<td>Dictionary with the pressure-expansion relation with keys <code>expansion [m]</code> and <code>pressure difference [kPa]</code></td>
+</tr>
+<tr>
+<td><code>yielding pressure [kPa]</code></td>
+<td>kPa</td>
+<td>Borehole pressure at which yield occurs</td>
+</tr>
+<tr>
+<td><code>radii [m]</code></td>
+<td>m</td>
+<td>Numpy array with radii used for the stress and displacement calculation</td>
+</tr>
+<tr>
+<td><code>radial stresses [kPa]</code></td>
+<td>kPa</td>
+<td>Numpy array with the radial stresses around the borehole</td>
+</tr>
+<tr>
+<td><code>tangential stresses [kPa]</code></td>
+<td>kPa</td>
+<td>Numpy array with the tangential stresses around the borehole</td>
+</tr>
+<tr>
+<td><code>elastic wall expansion [m]</code></td>
+<td>m</td>
+<td>Borehole elastic wall expansion</td>
+</tr>
+<tr>
+<td><code>plastic wall expansion [m]</code></td>
+<td>m</td>
+<td>Borehole plastic wall expansion (<span class="math">\(a - a_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>plastic radius [m]</code></td>
+<td>m</td>
+<td>Radius of the plastic zone (<span class="math">\(c\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Yu, H.-S., 2000. Cavity Expansion Methods in Geomechanics. Springer-Science+Business Media, B.V.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/boreholestability/cavityexpansion.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/piles/cavityexpansion.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/deepfoundations/boreholestability/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Borehole stability</a><a class="next" href="/docs/groundhog/api/deepfoundations/lateralresponse/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Lateral response</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#stress_cylinder_elastic_isotropic">stress_cylinder_elastic_isotropic</a></li>
+      <li class="lvl-2"><a href="#expansion_tresca_thicksphere">expansion_tresca_thicksphere</a></li>
+      <li class="lvl-2"><a href="#expansion_cylinder_tresca">expansion_cylinder_tresca</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

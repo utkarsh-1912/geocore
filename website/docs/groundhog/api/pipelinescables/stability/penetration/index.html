@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pipeline and cable penetration — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.pipelinescables.stability.penetration: 6 functions, 0 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Pipeline and cable penetration — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.pipelinescables.stability.penetration: 6 functions, 0 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/" aria-current="page">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/pipelinescables/">Pipelines and cables</a></li>
+        <li><a href="/docs/groundhog/api/pipelinescables/stability/">Stability</a></li>
+        <li><span aria-current="page">Pipeline and cable penetration</span></li>
+      </ol>
+    </nav>
+
+    <h1>Pipeline and cable penetration</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.pipelinescables.stability.penetration</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.pipelinescables.stability.penetration</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/pipelinescables/stability/penetration.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/pipelinescables/penetration.html">Pipeline and cable penetration</a>.</p>
+<p><strong>Functions:</strong> <a href="#contactwidth"><code>contactwidth</code></a>, <a href="#penetratedarea"><code>penetratedarea</code></a>, <a href="#embedment_undrained_method1"><code>embedment_undrained_method1</code></a>, <a href="#embedment_undrained_method2"><code>embedment_undrained_method2</code></a>, <a href="#embedment_drained"><code>embedment_drained</code></a>, <a href="#lay_touchdown_factor"><code>lay_touchdown_factor</code></a></p>
+<p><a id="contactwidth"></a></p>
+<h2 id="contactwidth"><code>contactwidth</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="contactwidth">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#contactwidth">Pipelines and cables › Pipeline and cable stability › Contact Width</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">contactwidth</span><span class="p">(</span><span class="n">diameter</span><span class="p">,</span> <span class="n">penetration</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the contact width depending on the pipeline penetration. The contact width increases until the pipeline penetration reaches half of the diameter</p>
+<div class="math-display">\[B = 2 \cdot \sqrt{D \cdot z - z^2} \quad \text{for } z &lt; D/2\]</div>
+<div class="math-display">\[B=D \quad \text{for } z \geq D/2\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td>0.0 &lt;= diameter &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline or cable diameter (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td>0.0 &lt;= penetration &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline or cable penetration (<span class="math">\(z\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B [m]</code></td>
+<td>m</td>
+<td>Contact width of the pipeline or cable with the soil [m] (<span class="math">\(B\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>DNV-RP-F114</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="penetratedarea"></a></p>
+<h2 id="penetratedarea"><code>penetratedarea</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="penetratedarea">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#penetratedarea">Pipelines and cables › Pipeline and cable stability › Penetrated Area</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">penetratedarea</span><span class="p">(</span><span class="n">diameter</span><span class="p">,</span> <span class="n">penetration</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the penetrated area of the pipeline below the seabed. Note that for penetrations above half of the diameter, the entire displaced area of soil is counted, not just the submerged pipeline area.</p>
+<div class="math-display">\[A_{bm} = \arcsin \left( \frac{B}{D} \right) \cdot \frac{D^2}{4} - B \cdot \frac{D}{4} \cdot \cos \left( \arcsin(B/D) \right) \quad \text{for } z&lt;D/2\]</div>
+<div class="math-display">\[A_{bm} = \frac{\pi \cdot D^2}{8} + D \cdot \left( z - D/2 \right) \quad \text{for } z \geq D/2\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td>0.0 &lt;= diameter &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline or cable diameter (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td>0.0 &lt;= penetration &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline penetration (<span class="math">\(z\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Abm [m2]</code></td>
+<td>m2</td>
+<td>Penetrated cross-sectional area of the pipeline or cable [m2] (<span class="math">\(A_{bm}\)</span>)</td>
+</tr>
+<tr>
+<td><code>B [m]</code></td>
+<td>m</td>
+<td>Contact width (intermediate output of the calculation) [m] (<span class="math">\(B\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>DNV-RP-F114</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="embedment_undrained_method1"></a></p>
+<h2 id="embedment_undrained_method1"><code>embedment_undrained_method1</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="embedment_undrained_method1">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#embedment_undrained_method1">Pipelines and cables › Pipeline and cable stability › Embedment (Undrained Method 1)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">embedment_undrained_method1</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="p">,</span>
+    <span class="n">undrained_shear_strength</span><span class="p">,</span>
+    <span class="n">k_su</span><span class="p">,</span>
+    <span class="n">gamma_eff</span><span class="p">,</span>
+    <span class="n">penetration</span><span class="p">,</span>
+    <span class="n">Nc</span><span class="o">=</span><span class="mf">5.14</span><span class="p">,</span>
+    <span class="n">roughness</span><span class="o">=</span><span class="mf">0.67</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates pipeline embedment in soil which behaves in an undrained manner.</p>
+<p>Method 1 uses bearing capacity theory to calculate the embedment where the submerged weight of the pipeline is in equilibrium with the vertical bearing capacity of the soil. The method works in soil with linearly increasing undrained strength. The method includes a depth correction factor and a buoyancy term.</p>
+<p>Note that the method assumes quasi-static pipeline penetration. In reality load concentration effects at the touchdown point and dynamic lay effects will lead to increased penetration.</p>
+<p>This formula calculates the bearing capacity for a specified depth. For determining the pipeline penetration, a root finding routine needs to be applied to find the penetration where the bearing capacity is in equilbrium with the submerged weight of the pipeline.</p>
+<div class="math-display">\[Q_v = Q_{v0} \cdot \left( 1 + d_{ca} \right) + \gamma^{\prime} \cdot A_{bm}\]</div>
+<div class="math-display">\[Q_{v0} = F \cdot \left( N_c \cdot s_{u,0} + \rho \cdot B/4 \right) \cdot B\]</div>
+<div class="math-display">\[z_{su,0} = 0 \quad \text{for } z &lt; \frac{D}{2} \cdot \left( 1 - \frac{\sqrt{2}}{2} \right)\]</div>
+<div class="math-display">\[z_{su,0} = z + \frac{D}{2} \cdot \left( \sqrt{2} - 1 \right) - \frac{B}{2} \quad \text{for } z \geq \frac{D}{2} \cdot \left( 1 - \frac{\sqrt{2}}{2} \right)\]</div>
+<div class="math-display">\[s_{u,0} = s_{u,z=0} + \rho \cdot z_{s_{u,0}}\]</div>
+<div class="math-display">\[d_{ca} = 0.3 \cdot \frac{s_{u,1}}{s_{u,2}} \cdot \arctan \left( \frac{z_{s_{u,0}}}{B} \right)\]</div>
+<div class="math-display">\[s_{u,1} = \frac{s_{u,z=0} + s_{u,0}}{2}\]</div>
+<div class="math-display">\[s_{u,2} = \frac{Q_{v0}}{B \cdot N_c}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td>0.01 &lt;= diameter &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline diameter (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>undrained_shear_strength</code></td>
+<td>kPa</td>
+<td>0.0 &lt;= undrained_shear_strength &lt;= 500.0</td>
+<td>required</td>
+<td>Undrained shear strength at the seabed (<span class="math">\(s_(u,z=0}\)</span>)</td>
+</tr>
+<tr>
+<td><code>k_su</code></td>
+<td>kPa/m</td>
+<td>0.0 &lt;= k_su &lt;= 10.0</td>
+<td>required</td>
+<td>Linear rate of undrained shear strength increase (<span class="math">\(\rho\)</span>)</td>
+</tr>
+<tr>
+<td><code>gamma_eff</code></td>
+<td>kN/m3</td>
+<td>2.0 &lt;= gamma_eff &lt;= 12.0</td>
+<td>required</td>
+<td>Submerged unit weight (<span class="math">\(kN/m3\)</span>)</td>
+</tr>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td>0.0 &lt;= penetration &lt;= 2.0</td>
+<td>required</td>
+<td>Penetration depth for which the pipeline penetration is calculated (<span class="math">\(m\)</span>)</td>
+</tr>
+<tr>
+<td><code>Nc</code></td>
+<td>-</td>
+<td>4.0 &lt;= Nc &lt;= 9.0</td>
+<td><code>5.14</code></td>
+<td>Bearing capacity factor (<span class="math">\(N_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>roughness</code></td>
+<td>-</td>
+<td>0.0 &lt;= roughness &lt;= 1.0</td>
+<td><code>0.67</code></td>
+<td>Measure for the roughness of the pipe of cable (<span class="math">\(r\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F [-]</code></td>
+<td>-</td>
+<td>Roughness correction factor [-] (<span class="math">\(F\)</span>)</td>
+</tr>
+<tr>
+<td><code>z_su0 [m]</code></td>
+<td>m</td>
+<td>Reference z-level for depth effects [m] (<span class="math">\(z_(s_{u,0}}\)</span>)</td>
+</tr>
+<tr>
+<td><code>B [m]</code></td>
+<td>m</td>
+<td>Contact width [m] (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>su0 [kPa]</code></td>
+<td>kPa</td>
+<td>Undrained shear strength at the reference z-level [kPa] (<span class="math">\(s_{u,0}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Abm [m2]</code></td>
+<td>m2</td>
+<td>Penetrated cross-sectional area of the pipe [m2] (<span class="math">\(A_{bm}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Qv0 [kN/m]</code></td>
+<td>kN/m</td>
+<td>Bearing capacity (excluding depth effects and buoyancy) [kN/m] (<span class="math">\(Q_{v0}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Qv [kN/m]</code></td>
+<td>kN/m</td>
+<td>Bearing capacity (including depth and buoyancy effect) [kN/m] (<span class="math">\(Q_v\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>DNV-RP-F114</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="embedment_undrained_method2"></a></p>
+<h2 id="embedment_undrained_method2"><code>embedment_undrained_method2</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="embedment_undrained_method2">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#embedment_undrained_method2">Pipelines and cables › Pipeline and cable stability › Embedment (Undrained Method 2)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">embedment_undrained_method2</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="p">,</span>
+    <span class="n">penetration</span><span class="p">,</span>
+    <span class="n">undrained_shear_strength</span><span class="p">,</span>
+    <span class="n">gamma_eff</span><span class="p">,</span>
+    <span class="n">calibration_factor_1</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+    <span class="n">calibration_factor_2</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">calibration_factor_3</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
+    <span class="n">calibration_factor_4</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">calibration_factor_5</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the pipeline penetration for deepwater soft clay. The formulation contains a component for soil resistance to pipeline penetration, the second term accounts for buoyancy effects with enhancement to fit the data.</p>
+<p>For very high embedment (more than half of the diameter), the method may underestimate the penetration resistance.</p>
+<p>Note that the undrained shear strength at the pipeline invert level is used, so this might have to be calculated or derived from e.g. T-bar tests.</p>
+<p>This formula calculates the penetration resistance for a specified depth. For determining the pipeline penetration, a root finding routine needs to be applied to find the penetration where the penetration resistance is in equilbrium with the submerged weight of the pipeline.</p>
+<div class="math-display">\[Q_v = \left[ \min \left( 6 \cdot \left( \frac{z}{D} \right)^{0.25}; 3.4 \cdot \left( \frac{10 \cdot z}{D} \right)^{0.5} \right) + 1.5 \cdot \frac{\gamma^{\prime} \cdot A_{bm}}{D \cdot s_u} \right] \cdot D \cdot s_u\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td>0.0 &lt;= diameter &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeliine diameter (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td>0.0 &lt;= penetration &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline penetration (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>undrained_shear_strength</code></td>
+<td>kPa</td>
+<td>0.0 &lt;= undrained_shear_strength &lt;= 50.0</td>
+<td>required</td>
+<td>Undrained shear strength at the pipeline invert level (<span class="math">\(s_u\)</span>)</td>
+</tr>
+<tr>
+<td><code>gamma_eff</code></td>
+<td>kN/m3</td>
+<td>2.0 &lt;= gamma_eff &lt;= 12.0</td>
+<td>required</td>
+<td>Submerged unit weight of the soil (<span class="math">\(\gamma^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_1</code></td>
+<td>-</td>
+<td></td>
+<td><code>6.0</code></td>
+<td>First calibration factor (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_2</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.25</code></td>
+<td>Second calibration factor (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_3</code></td>
+<td>-</td>
+<td></td>
+<td><code>3.4</code></td>
+<td>Third calibration factor (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_4</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.5</code></td>
+<td>Fourth calibration factor (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor_5</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.5</code></td>
+<td>Calibration factor on then buoyancy term (<span class="math">\(-\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Qv [kN/m]</code></td>
+<td>kN/m</td>
+<td>Pipeline penetration resistance [kN/m] (<span class="math">\(Q_v\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>DNV-RP-F114</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="embedment_drained"></a></p>
+<h2 id="embedment_drained"><code>embedment_drained</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="embedment_drained">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#embedment_drained">Pipelines and cables › Pipeline and cable stability › Embedment (Drained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">embedment_drained</span><span class="p">(</span>
+    <span class="n">penetration</span><span class="p">,</span>
+    <span class="n">gamma_eff</span><span class="p">,</span>
+    <span class="n">phi_eff</span><span class="p">,</span>
+    <span class="n">diameter</span><span class="p">,</span>
+    <span class="n">roughness_factor</span><span class="o">=</span><span class="mf">0.67</span><span class="p">,</span>
+    <span class="n">Ngamma_theory</span><span class="o">=</span><span class="s1">&#39;Vesic&#39;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates pipeline embedment in drained conditions using bearing capacity theory. The vertical force required to penetrate the pipe to a given embedment is calculated.</p>
+<p>Note that there is no embedment effect as long as the pipeline is within the active Rankine zone.</p>
+<p>Bearing capacity factors are taken in accordance with shallow foundation theory.</p>
+<div class="math-display">\[Q_v = 0.5 \cdot \gamma^{\prime} \cdot N_{\gamma} \cdot B^2 + z_0 \cdot \gamma^{\prime} \cdot N_q \cdot d_q \cdot B\]</div>
+<div class="math-display">\[z_0 = 0 \quad \text{for } z &lt; \frac{D}{2} \cdot \left[ 1 - \cos \left( \frac{\pi}{4} + \frac{\varphi^{\prime}}{2} \right) \right]\]</div>
+<div class="math-display">\[z_0 = z - \frac{D}{2} + \left[ \frac{D/2}{\sin \left( \pi/4 + \varphi^{\prime}/2 \right)} - B/2 \right] \cdot \tan \left( \frac{\pi}{4} + \frac{\varphi^{\prime}}{2} \right)  \quad \text{for } z \geq \frac{D}{2} \cdot \left[ 1 - \cos \left( \frac{\pi}{4} + \frac{\varphi^{\prime}}{2} \right) \right]\]</div>
+<div class="math-display">\[d_q = 1 + 1.2 \cdot \frac{z_0}{B} \cdot \tan \varphi^{\prime} \cdot \left( 1 - \sin \varphi^{\prime} \right)^2\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td>0.0 &lt;= penetration &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline or cable penetration below virgin seabed (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>gamma_eff</code></td>
+<td>kN/m3</td>
+<td>3.0 &lt;= gamma_eff &lt;= 12.0</td>
+<td>required</td>
+<td>Submerged unit weight of the soil (<span class="math">\(\gamma^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>phi_eff</code></td>
+<td>deg</td>
+<td>15.0 &lt;= phi_eff &lt;= 50.0</td>
+<td>required</td>
+<td>Effective friction angle of the soil (<span class="math">\(\varphi^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td>0.0 &lt;= diameter &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline or cable diameter (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>roughness_factor</code></td>
+<td>-</td>
+<td>0.0 &lt;= roughness_factor &lt;= 1.0</td>
+<td><code>0.67</code></td>
+<td>Pipeline roughness factor where 0 is fully smooth and 1 is fully rough, used when theory for <span class="math">\(N_{\gamma}\)</span> is set to <code>'DavisBooker'</code> (<span class="math">\(R_{inter}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Ngamma_theory</code></td>
+<td></td>
+<td>one of <code>Vesic</code>, <code>Meyerhof</code>, <code>DavisBooker</code></td>
+<td><code>'Vesic'</code></td>
+<td>Select the theoretical formulate of bearing capacity factor Ngamma</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Nq [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor for stress level [-] (<span class="math">\(N_q\)</span>)</td>
+</tr>
+<tr>
+<td><code>Ngamma [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor for unit weight [-] (<span class="math">\(N_{\gamma}\)</span>)</td>
+</tr>
+<tr>
+<td><code>B [m]</code></td>
+<td>m</td>
+<td>Pipe-soil contact width [m] (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>z0 [m]</code></td>
+<td>m</td>
+<td>Reference depth level [m] (<span class="math">\(z_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>dq [-]</code></td>
+<td>-</td>
+<td>Factor accounting for depth effects [-] (<span class="math">\(d_q\)</span>)</td>
+</tr>
+<tr>
+<td><code>Qv [kN/m]</code></td>
+<td>kN/m</td>
+<td>Vertical force required for penetration to depth z [kN/m] (<span class="math">\(Q_v\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>DNV-RP-F114</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="lay_touchdown_factor"></a></p>
+<h2 id="lay_touchdown_factor"><code>lay_touchdown_factor</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="lay_touchdown_factor">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#lay_touchdown_factor">Pipelines and cables › Pipeline and cable stability › Lay Touchdown Factor</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">lay_touchdown_factor</span><span class="p">(</span>
+    <span class="n">penetration</span><span class="p">,</span>
+    <span class="n">submerged_weight</span><span class="p">,</span>
+    <span class="n">seabed_stiffness</span><span class="p">,</span>
+    <span class="n">lay_tension</span><span class="p">,</span>
+    <span class="n">bending_stiffness</span><span class="p">,</span>
+    <span class="n">calibration_factor1</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">calibration_factor2</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the load concentration factor at the touchdown point. Load concentration at this point leads to additional pipeline embedment over the static embedment. Pipeline weight, bending stiffness and effective lay tension during pipelay contribute to this factor.</p>
+<p>The equation is derived by modelling a catenary hanging off a vessel, touching down on a seabed with linearly increasing resistance with penetration depth. There is a minimum lay tension for this equation to apply (see Equations).</p>
+<p>The lay tension can be uncertain, so it is best to consider a range of values.</p>
+<p>The calculation is performed by first calculating seabed stiffness from the static penetration and then plugging this value into the amplification factor equation. Both curves are a function of pipeline embedment. The penetration depth accounting for amplification and the laydown factor are found at the intersection of both curves.</p>
+<div class="math-display">\[k_{lay} = 0.6 + 0.4 \cdot \left( \frac{EI \cdot k \cdot W_i}{z_{ini} \cdot T_0^2} \right)^{0.25} \geq 1 \quad \text{for } T_0 &gt; \left[ 3 \cdot \sqrt{EI} \cdot W_i \right]^{2/3}\]</div>
+<div class="math-display">\[k = Q_v \ W_i\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td>0.0 &lt;= penetration &lt;= 2.0</td>
+<td>required</td>
+<td>Pipeline penetration after laying (<span class="math">\(z_{ini}\)</span>)</td>
+</tr>
+<tr>
+<td><code>submerged_weight</code></td>
+<td>kN/m</td>
+<td>submerged_weight &gt;= 0.0</td>
+<td>required</td>
+<td>Submerged weight of the pipeline during installation (<span class="math">\(W_i\)</span>)</td>
+</tr>
+<tr>
+<td><code>seabed_stiffness</code></td>
+<td>kN/m/m</td>
+<td>seabed_stiffness &gt;= 0.0</td>
+<td>required</td>
+<td>Stiffness of the seabed (penetration resistance divided by penetration) (<span class="math">\(k=Q_v/W_i\)</span>)</td>
+</tr>
+<tr>
+<td><code>lay_tension</code></td>
+<td>kN</td>
+<td>lay_tension &gt;= 0.0</td>
+<td>required</td>
+<td>Lay tension during laydown (<span class="math">\(T_0\)</span>)</td>
+</tr>
+<tr>
+<td><code>bending_stiffness</code></td>
+<td>kNm2</td>
+<td>bending_stiffness &gt;= 0.0</td>
+<td>required</td>
+<td>Bending stiffness of the pipeline (<span class="math">\(EI\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor1</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.6</code></td>
+<td>First calibration factor (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>calibration_factor2</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.4</code></td>
+<td>Second calibration factor (<span class="math">\(-\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k_lay [-]</code></td>
+<td>-</td>
+<td>Lay amplification factor [-] (<span class="math">\(k_{lay}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>DNV-RP-F114</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/pipelinescables/stability/penetration.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/pipelinescables/penetration.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/pipelinescables/stability/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Stability</a><a class="next" href="/docs/groundhog/api/shallowfoundations/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Shallow foundations</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#contactwidth">contactwidth</a></li>
+      <li class="lvl-2"><a href="#penetratedarea">penetratedarea</a></li>
+      <li class="lvl-2"><a href="#embedment_undrained_method1">embedment_undrained_method1</a></li>
+      <li class="lvl-2"><a href="#embedment_undrained_method2">embedment_undrained_method2</a></li>
+      <li class="lvl-2"><a href="#embedment_drained">embedment_drained</a></li>
+      <li class="lvl-2"><a href="#lay_touchdown_factor">lay_touchdown_factor</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

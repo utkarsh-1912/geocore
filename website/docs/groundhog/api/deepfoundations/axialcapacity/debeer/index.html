@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>debeer — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.deepfoundations.axialcapacity.debeer: 0 functions, 1 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="debeer — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.deepfoundations.axialcapacity.debeer: 0 functions, 1 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/" aria-current="page">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/deepfoundations/">Deep foundations</a></li>
+        <li><a href="/docs/groundhog/api/deepfoundations/axialcapacity/">Axial capacity</a></li>
+        <li><span aria-current="page">debeer</span></li>
+      </ol>
+    </nav>
+
+    <h1>debeer</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.deepfoundations.axialcapacity.debeer</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.deepfoundations.axialcapacity.debeer</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/debeer.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/piles/debeer.html">De Beer and Eurocode 7 calculations</a>.</p>
+<p><strong>Classes:</strong> <a href="#debeercalculation"><code>DeBeerCalculation</code></a></p>
+<p><a id="debeercalculation"></a></p>
+<h2 id="class-debeercalculation">class <code>DeBeerCalculation</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="DeBeerCalculation">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#debeercalculation">Pile calculations › De Beer and Eurocode 7 calculations › De Beer Calculation</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">DeBeerCalculation</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">qc</span><span class="p">,</span> <span class="n">diameter_pile</span><span class="p">,</span> <span class="n">diameter_cone</span><span class="o">=</span><span class="mf">0.0357</span><span class="p">)</span>
+</code></pre></div>
+
+<p><a id="debeercalculation-__init__"></a></p>
+<h3 id="debeercalculation__init__"><code>DeBeerCalculation.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">qc</span><span class="p">,</span> <span class="n">diameter_pile</span><span class="p">,</span> <span class="n">diameter_cone</span><span class="o">=</span><span class="mf">0.0357</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Initializes a pile base resistance calculation according to De Beer's method. Lists or Numpy arrays of depth and cone resistance need to be supplied to the routine as well as the diameter of the pile and the cone. The depth spacing does not need to be equal to the spacing required by De Beer's method. The <code>resample_data</code> method is used after calculation initialisation to remap the data onto a 0.2m grid.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>List or Numpy array with depths</td>
+</tr>
+<tr>
+<td><code>qc</code></td>
+<td>MPa</td>
+<td></td>
+<td>required</td>
+<td>List or Numpy array with cone resistance values same list length as depth array</td>
+</tr>
+<tr>
+<td><code>diameter_pile</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Diameter of the pile</td>
+</tr>
+<tr>
+<td><code>diameter_cone</code></td>
+<td>m</td>
+<td></td>
+<td><code>0.0357</code></td>
+<td>Diameter of the cone, the cone diameter is 0.0357 for a standard cone</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="debeercalculation-resample_data"></a></p>
+<h3 id="debeercalculationresample_data"><code>DeBeerCalculation.resample_data</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">resample_data</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Resampling of the data to the required spacing (default=0.2m for mechanical cone) can be performed for e.g. piezocone data.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spacing</code></td>
+<td></td>
+<td></td>
+<td><code>0.2</code></td>
+<td>Spacing used for calculation of De Beer's method</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><a id="debeercalculation-set_soil_layers"></a></p>
+<h3 id="debeercalculationset_soil_layers"><code>DeBeerCalculation.set_soil_layers</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_soil_layers</span><span class="p">(</span>
+    <span class="n">soilprofile</span><span class="p">,</span>
+    <span class="n">soiltypecolumn</span><span class="o">=</span><span class="s1">&#39;Soil type&#39;</span><span class="p">,</span>
+    <span class="n">tertiaryclaycolumn</span><span class="o">=</span><span class="s1">&#39;Tertiary clay&#39;</span><span class="p">,</span>
+    <span class="n">totalunitweightcolumn</span><span class="o">=</span><span class="s1">&#39;Total unit weight [kN/m3]&#39;</span><span class="p">,</span>
+    <span class="n">water_level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">total_unit_weight_dry</span><span class="o">=</span><span class="mf">15.696</span><span class="p">,</span>
+    <span class="n">total_unit_weight_wet</span><span class="o">=</span><span class="mf">19.62</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the soil type for the pile resistance calculation. For the shaft resistance calculation, a column 'Soil type' is required.</p>
+<p>The calculation of overburden pressure is included in this routine. According to the Belgian practice, a total unit weight of 15.696<span class="math">\(kN/m^3\)</span> is used for dry soil and a unit weight of 19.62<span class="math">\(kN/m^3\)</span> for wet soil. An array with total unit weights for each soil layer can be specified (<code>total_unit_weight</code>) to override these defaults. If the water level is not at a layer interface, this array need to contain an additional entry to account for the difference between the dry and wet unit weight in the layer containing the water table.</p>
+<p>The unit weight used in De Beer's base resistance calculation is the total unit weight above the water table and the effective unit weight below.</p>
+<p>The soil types need to be specified in accordance with Table 4 of the paper Design of deepfoundations - Belgian practice (Huybrechts et al, 2016).</p>
+<p>Finally, it is possible to specify whether each layer is tertiary clay or not using an array of Booleans. Occurence of stiff tertiary clays can be taken into account by specifying the array <code>tertiary_clay</code>.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>soilprofile</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>SoilProfile object containing the layer definitions. The SoilProfile should con</td>
+</tr>
+<tr>
+<td><code>soiltypecolumn</code></td>
+<td></td>
+<td></td>
+<td><code>'Soil type'</code></td>
+<td>Name of the column containing the soil type, select from "Clay", "Loam (silt)", "Sandy clay / loam (silt)", "Clayey sand / loam (silt)" and "Sand"</td>
+</tr>
+<tr>
+<td><code>tertiaryclaycolumn</code></td>
+<td></td>
+<td></td>
+<td><code>'Tertiary clay'</code></td>
+<td>Name of the column containing the booleans determining whether the layer is Tertiary clay or not</td>
+</tr>
+<tr>
+<td><code>totalunitweightcolumn</code></td>
+<td></td>
+<td></td>
+<td><code>'Total unit weight [kN/m3]'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>water_level</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Water level used for the effective stress calculation , default = 0 for water level at surface</td>
+</tr>
+<tr>
+<td><code>total_unit_weight_dry</code></td>
+<td></td>
+<td></td>
+<td><code>15.696</code></td>
+<td>Dry unit weight used for all soils (default=15.696<span class="math">\(kN/m^3\)</span>)</td>
+</tr>
+<tr>
+<td><code>total_unit_weight_wet</code></td>
+<td></td>
+<td></td>
+<td><code>19.62</code></td>
+<td>Wet unit weight used for all soils (default=19.62<span class="math">\(kN/m^3\)</span>)</td>
+</tr>
+<tr>
+<td><code>water_unit_weight</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Unit weight of water used for the calculations (default=10<span class="math">\(kN/m^3\)</span>)</td>
+</tr>
+<tr>
+<td><code>total_unit_weight</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Array with total unit weight for each soil layer. Specifying this array will override the defaults (default=<code>None</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="debeercalculation-phi_func"></a></p>
+<h3 id="debeercalculationphi_func"><code>DeBeerCalculation.phi_func</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">phi_func</span><span class="p">()</span>
+</code></pre></div>
+
+<p>This function implements the Equations 22 and 23 of the original paper by De Beer for the calculation of the friction angle from the cone tip resistance and the vertical effective stress level</p>
+<p>resistance to vertical effective stress.</p>
+<div class="math-display">\[V_{b,d} = \frac{q_c}{p_o}\]</div>
+<div class="math-display">\[V_{b,d} = 1.3 \cdot \exp \left( 2 \cot \pi \cdot \tan \varphi \right) \tan ^2 \left( \frac{\pi}{4} + \frac{\varphi}{2} \right)\]</div>
+<p><strong>Returns</strong></p>
+<p>An interpolation function providing the friction angle as a function of the ratio of cone tip</p>
+<p><a id="debeercalculation-optimisation_func"></a></p>
+<h3 id="debeercalculationoptimisation_func"><code>DeBeerCalculation.optimisation_func</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">optimisation_func</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">hd</span><span class="p">,</span> <span class="n">frictionangle</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This function is used to find the angle beta for the failure mechanism for CPT and pile. The function implements Equation 60 of the original paper by De Beer. To obtain the value of beta, the result of evaluating Equation 60 is compared to the actual h/d or h/D and the root is found.</p>
+<div class="math-display">\[\left( \frac{h}{d} \right)_3 = \frac{\tan \left( \frac{\pi}{4} + \frac{\varphi}{2} \right) \cdot \exp \left( \frac{\pi}{2} \cdot \tan \varphi \right) \cdot \sin \left( \beta \cdot \exp(\beta \cdot \tan \varphi) \right)}{1 + \delta \cdot \sin(2 \cdot \varphi)}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>beta</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Value of beta to be found</td>
+</tr>
+<tr>
+<td><code>hd</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Value of h/D for the pile or h/d for the CPT</td>
+</tr>
+<tr>
+<td><code>frictionangle</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Friction angle derived from Equations 22 and 23 of De Beer's paper</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Difference of the calculated and specified value of h/D or h/d</p>
+<p><a id="debeercalculation-stress_correction"></a></p>
+<h3 id="debeercalculationstress_correction"><code>DeBeerCalculation.stress_correction</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">stress_correction</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">po</span><span class="p">,</span> <span class="n">diameter_pile</span><span class="p">,</span> <span class="n">diameter_cone</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">hcrit</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the stress correction in De Beer's method</p>
+<div class="math-display">\[h^{\prime}_{crit} = h_{crit} \cdot D / d\]</div>
+<div class="math-display">\[q_{r,crit} = \frac{1 + \frac{\gamma \cdot h_{crit}^{\prime}}{2 \cdot p_o}}{1 + \frac{\gamma \cdot h_{crit}}{2 \cdot p_o}} \cdot q_{c,crit}\]</div>
+<p>:returns Ultimate bearing resistance for the cone [MPa]</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc</code></td>
+<td>MPa</td>
+<td></td>
+<td>required</td>
+<td>Cone tip resistance</td>
+</tr>
+<tr>
+<td><code>po</code></td>
+<td>kPa</td>
+<td></td>
+<td>required</td>
+<td>Overburden pressure at the depth of the start of the increase</td>
+</tr>
+<tr>
+<td><code>diameter_pile</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Diameter of the pile</td>
+</tr>
+<tr>
+<td><code>diameter_cone</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Diameter of the cone rod</td>
+</tr>
+<tr>
+<td><code>gamma</code></td>
+<td>kN/m3</td>
+<td></td>
+<td>required</td>
+<td>Unit weight of the soil (total above the water table, effective below)</td>
+</tr>
+<tr>
+<td><code>hcrit</code></td>
+<td>m</td>
+<td></td>
+<td><code>0.2</code></td>
+<td>Distance to cone tip used in De Beer's method (default=0.2)</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="debeercalculation-calculate_base_resistance"></a></p>
+<h3 id="debeercalculationcalculate_base_resistance"><code>DeBeerCalculation.calculate_base_resistance</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_base_resistance</span><span class="p">(</span><span class="n">vanimpecorrection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hcrit</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the base resistance for any pile diameter.</p>
+<p>If the pile diameter is not a multiple of 0.2m, the unit base resistance for diameters which are a multiple of 0.2m above and below the given diameter are calculated. Linear interpolation is then used to obtain the end result</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vanimpecorrection</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the upward correction according to De Beer's paper (default) or Van Impe (multiplier of 2) needs to be applied.</td>
+</tr>
+<tr>
+<td><code>hcrit</code></td>
+<td></td>
+<td></td>
+<td><code>0.2</code></td>
+<td><span class="math">\(h_{crit}\)</span> adopted for De Beer's calculation (based on the mechanical cone). Default=0.2m</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets two dataframes <code>calc_1</code> and <code>calc_2</code>, one for the multiple of 0.2m lower than the given diameter and one for the multiple of 0.2m higher than the given diameter. Finally, the attribute <code>qb</code> is set through linear interpolation.</p>
+<p><a id="debeercalculation-calculate_base_resistance_standard_diameter"></a></p>
+<h3 id="debeercalculationcalculate_base_resistance_standard_diameter"><code>DeBeerCalculation.calculate_base_resistance_standard_diameter</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_base_resistance_standard_diameter</span><span class="p">(</span>
+    <span class="n">pile_diameter</span><span class="p">,</span>
+    <span class="n">vanimpecorrection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">hcrit</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the base resistance according to De Beer's method for a pile diameter which is a multiple of 0.2m. The calculation happens in five steps:</p>
+<ul>
+<li>Step 1: Correct the cone resistance for the different failure surface for a pile and a CPT using Equation 62 from De Beer's paper. This correction is especially necessary for the shallow layer where the angle beta is lower than 90°</li>
+<li>Step 2: Apply a correction for the different stress level for a pile compared to a CPT</li>
+<li>Step 3: Account for the transition from weaker the stronger layers by working downward along the CPT trace. The increase of resistance will be slower for a pile compared to a CPT</li>
+<li>Step 4: Account for the transition from stronger to weaker layers by working through the CPT trace from the bottom up. A weaker layer will be felt sooner by the model pile than by the CPT</li>
+<li>Step 5: Take the average unit base resistance for one diameter below the given level. The average value should note be greater than <span class="math">\(q_{p,q+1}\)</span> at the given level.</li>
+</ul>
+<div class="math-display">\[\text{Step 1}\]</div>
+<div class="math-display">\[q_{p,(1)} = \frac{q_c}{\exp \left( 2 \cdot ( \beta_c - \beta_p ) \cdot \tan \varphi \right) }\]</div>
+<div class="math-display">\[\text{Step 2}\]</div>
+<div class="math-display">\[A = \frac{1 + \frac{\gamma \cdot h_{crit}^{\prime}}{2 \cdot p_o}}{1 + \frac{\gamma \cdot h_{crit}}{2 \cdot p_o}}\]</div>
+<div class="math-display">\[\text{if } A \cdot q_{p,(1)} &gt; q_c \implies A \cdot q_{p,(1)} = q_c\]</div>
+<div class="math-display">\[\text{Step 3}\]</div>
+<div class="math-display">\[q_{p,j+1} = q_{p,j} + \left[ A \cdot q_{p,(1),j+1} - q_{p,j} \right] \cdot \frac{d}{D}\]</div>
+<div class="math-display">\[\text{if } q_{p,j+1} &gt; q_{p,(1),j+1} \implies q_{p,j+1} = q_{p,(1),j+1}\]</div>
+<div class="math-display">\[\text{Step 4}\]</div>
+<div class="math-display">\[q_{p,q+1} = q_{p,q} + \left[ (q_{p,j+1})_{q+1} - q_{p,q} \right] \cdot \frac{d}{D}\]</div>
+<div class="math-display">\[\text{According to Van Impe:}\]</div>
+<div class="math-display">\[q_{p,q+1} = q_{p,q} + 2 \cdot \left[ (q_{p,j+1})_{q+1} - q_{p,q} \right] \cdot \frac{d}{D}\]</div>
+<div class="math-display">\[\text{if } q_{p,q+1} &gt; (q_{p,j+1})_{q+1} \implies q_{p,q+1} = (q_{p,j+1})_{q+1}\]</div>
+<p>For numerical stability, rows with zero cone resistance at the top of the cone resistance trace are discarded.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pile_diameter</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Diameter of the pile as a multiple of 0.2m</td>
+</tr>
+<tr>
+<td><code>vanimpecorrection</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the upward correction according to De Beer's original paper (default) or Van Impe (multiplier of 2) needs to be taken into account.</td>
+</tr>
+<tr>
+<td><code>hcrit</code></td>
+<td></td>
+<td></td>
+<td><code>0.2</code></td>
+<td><span class="math">\(h_{crit}\)</span> adopted for De Beer's calculation (based on the mechanical cone). Default=0.2m</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns a dataframe <code>calc</code> with the different correction stages</p>
+<p><a id="debeercalculation-plot_base_resistance"></a></p>
+<h3 id="debeercalculationplot_base_resistance"><code>DeBeerCalculation.plot_base_resistance</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_base_resistance</span><span class="p">(</span>
+    <span class="n">selected_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_standard_diameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">plot_margin</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">x_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">x_tick</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">y_tick</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">legend_orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span>
+    <span class="n">legend_x</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">legend_y</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the base resistance construction according to De Beer</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selected_depth</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Depth at which the base resistance is requested (default=None for no such depth)</td>
+</tr>
+<tr>
+<td><code>show_standard_diameters</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the traces of De Beer base unit base resistance computed for diameters which are multiples of 0.2m need to be shown or not (default=False)</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Title of the plot (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>800</code></td>
+<td>Height for the plot (default=800px)</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>600</code></td>
+<td>Width of the plot (default=600px)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td><code>{'t': 100, 'l': 50, 'b': 50}</code></td>
+<td>Margin for the plot. (default=<code>dict(t=100, l=50, b=50)</code></td>
+</tr>
+<tr>
+<td><code>show_fig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether this figure is shown or not (default=<code>True</code>)</td>
+</tr>
+<tr>
+<td><code>x_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plotting range for the cone resistance (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>x_tick</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tick interval for the cone resistance (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>y_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plotting range for the depth (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>y_tick</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tick interval for the depth (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>legend_orientation</code></td>
+<td></td>
+<td></td>
+<td><code>'h'</code></td>
+<td>Orientation of the legend (default=<code>'h'</code> for horizontal)</td>
+</tr>
+<tr>
+<td><code>legend_x</code></td>
+<td></td>
+<td></td>
+<td><code>0.05</code></td>
+<td>x Position of the legend (default=0.05 for 5% from plot left edge)</td>
+</tr>
+<tr>
+<td><code>legend_y</code></td>
+<td></td>
+<td></td>
+<td><code>-0.05</code></td>
+<td>y Position of the legend (default=-0.05 for 5% below plot bottom)</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether trace names and axis titles are shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Creates the Plotly figure <code>base_plot</code> as an attribute of the object</p>
+<p><a id="debeercalculation-correct_shaft_qc"></a></p>
+<h3 id="debeercalculationcorrect_shaft_qc"><code>DeBeerCalculation.correct_shaft_qc</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">correct_shaft_qc</span><span class="p">(</span><span class="n">cone_type</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Corrects the cone resistance for the effect of the cone type according to Belgian practice. A correction factor is applied for the mechanical cones M1, M2 and M4</p>
+<p><img loading="lazy" decoding="async" alt="Correction factors to be used according to Belgian practice" src="/docs/assets/groundhog/docs/piles/images/conetype_correction_be.png"></p>
+<p><em>Correction factors to be used according to Belgian practice</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cone_type</code></td>
+<td></td>
+<td></td>
+<td><code>'E'</code></td>
+<td>Cone type. Select from 'M1', 'M2', 'M4', 'E', 'U'</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="debeercalculation-calculate_average_qc"></a></p>
+<h3 id="debeercalculationcalculate_average_qc"><code>DeBeerCalculation.calculate_average_qc</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_average_qc</span><span class="p">(</span><span class="n">qc_avg_override</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the average cone resistance in each layer for shaft resistance calculation. If <code>qc_avg_override</code> is used, the calculation is discarded and the specified value is set</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc_avg_override</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>List with average qc values in MPa in the layers with soil types specified in <code>set_soil_type</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="debeercalculation-calculate_unit_shaft_friction"></a></p>
+<h3 id="debeercalculationcalculate_unit_shaft_friction"><code>DeBeerCalculation.calculate_unit_shaft_friction</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_unit_shaft_friction</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Calculates the unit shaft friction according to the Belgian practice.</p>
+<p>Note the importance of using correct units. The cone resistance is provided in MPa whereas the unit shaft friction is calculated in kPa</p>
+<div class="math-display">\[q_s = 1000 \cdot \eta_p^* \cdot q_{c,avg}\]</div>
+<p><img loading="lazy" decoding="async" alt="Unit shaft friction according to Belgian practice" src="/docs/assets/groundhog/docs/piles/images/unit_shaft_friction_be.png"></p>
+<p><em>Unit shaft friction according to Belgian practice</em></p>
+<p><a id="debeercalculation-plot_unit_shaft_friction"></a></p>
+<h3 id="debeercalculationplot_unit_shaft_friction"><code>DeBeerCalculation.plot_unit_shaft_friction</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_unit_shaft_friction</span><span class="p">(</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">plot_margin</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">x_ranges</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">160</span><span class="p">)),</span>
+    <span class="n">x_ticks</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">y_tick</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">legend_orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span>
+    <span class="n">legend_x</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">legend_y</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the qc averaging and the unit shaft friction following from this</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Title of the plot (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>800</code></td>
+<td>Height for the plot (default=800px)</td>
+</tr>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>600</code></td>
+<td>Width of the plot (default=600px)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td><code>{'t': 100, 'l': 50, 'b': 50}</code></td>
+<td>Margin for the plot. (default=<code>dict(t=100, l=50, b=50)</code></td>
+</tr>
+<tr>
+<td><code>show_fig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether this figure is shown or not (default=<code>True</code>)</td>
+</tr>
+<tr>
+<td><code>x_ranges</code></td>
+<td></td>
+<td></td>
+<td><code>(None, (0, 160))</code></td>
+<td>Plotting range for the cone resistance (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>x_ticks</code></td>
+<td></td>
+<td></td>
+<td><code>(None, None)</code></td>
+<td>Tick interval for the cone resistance (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>y_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Plotting range for the depth (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>y_tick</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Tick interval for the depth (default=None for Plotly defaults)</td>
+</tr>
+<tr>
+<td><code>legend_orientation</code></td>
+<td></td>
+<td></td>
+<td><code>'h'</code></td>
+<td>Orientation of the legend (default=<code>'h'</code> for horizontal)</td>
+</tr>
+<tr>
+<td><code>legend_x</code></td>
+<td></td>
+<td></td>
+<td><code>0.05</code></td>
+<td>x Position of the legend (default=0.05 for 5% from plot left edge)</td>
+</tr>
+<tr>
+<td><code>legend_y</code></td>
+<td></td>
+<td></td>
+<td><code>-0.05</code></td>
+<td>y Position of the legend (default=-0.05 for 5% below plot bottom)</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Creates the Plotly figure <code>unit_shaft_plot</code> as an attribute of the object</p>
+<p><a id="debeercalculation-set_shaft_base_factors"></a></p>
+<h3 id="debeercalculationset_shaft_base_factors"><code>DeBeerCalculation.set_shaft_base_factors</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_shaft_base_factors</span><span class="p">(</span>
+    <span class="n">alpha_b_tertiary_clay</span><span class="p">,</span>
+    <span class="n">alpha_b_other</span><span class="p">,</span>
+    <span class="n">alpha_s_tertiary_clay</span><span class="p">,</span>
+    <span class="n">alpha_s_other</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the shaft and base factors according to Belgian practice. The factors are not determined automatically but need to be specified by the user based on the Belgian practice. The factors are obtained by fitting the results from static pile load tests. Factors for tertiary OC clay and other soil types need to be defined.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alpha_b_tertiary_clay</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Base factor for overconsolidated tertiary clay</td>
+</tr>
+<tr>
+<td><code>alpha_b_other</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Base factor for other soil types</td>
+</tr>
+<tr>
+<td><code>alpha_s_tertiary_clay</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Shaft factor for overconsolidated tertiary clay</td>
+</tr>
+<tr>
+<td><code>alpha_s_other</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Shaft factor for other soil types</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="debeercalculation-calculate_pile_resistance"></a></p>
+<h3 id="debeercalculationcalculate_pile_resistance"><code>DeBeerCalculation.calculate_pile_resistance</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_pile_resistance</span><span class="p">(</span>
+    <span class="n">pile_penetration</span><span class="p">,</span>
+    <span class="n">base_area</span><span class="p">,</span>
+    <span class="n">circumference</span><span class="p">,</span>
+    <span class="n">beta_base</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">lambda_base</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">epsilon_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the pile capacity for a given penetration. In Eurocode 7 terms, this is the calculated pile resistance.</p>
+<p>The unit base resistance according to De Beer is interpolated from the previous calculation and correction factors for material, base shape and enlarged bases are taken into account. Note that the pile base area entered by the user determines whether a tubular pile behaves in a coring or plugged manner. The shaft resistance is calculated based on the unit shaft resistance calculated previously.</p>
+<div class="math-display">\[R_b = \alpha_b \cdot \epsilon_b \cdot \beta \cdot \lambda \cdot A_b \cdot q_b\]</div>
+<div class="math-display">\[\epsilon_b =
+      \begin{cases}
+        \max \left( 1 - 0.01 \cdot \left( \frac{D_{b,eq}}{D_{CPT}} - 1 \right); 0.476 \right)       &amp; \quad \text{in tertiary OC clay}\\
+        1  &amp; \quad \text{in all other soil types}
+      \end{cases}\]</div>
+<div class="math-display">\[R_s = \kappa_s \cdot \Sum \left( \alpha_{s,i} \cdot h_i \cdot q_{s,i} \right)\]</div>
+<div class="math-display">\[R_c = R_s + R_b\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pile_penetration</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Pile penetration below the soil surface</td>
+</tr>
+<tr>
+<td><code>base_area</code></td>
+<td>m2</td>
+<td></td>
+<td>required</td>
+<td>Area of the pile base to be used for the base resistance calculation</td>
+</tr>
+<tr>
+<td><code>circumference</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Circumference of the pile shaft</td>
+</tr>
+<tr>
+<td><code>beta_base</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Beta factor taking into account the shape of the pile base (default=1 for circular debeer)</td>
+</tr>
+<tr>
+<td><code>lambda_base</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Lambda factor taking into account enlarged pile bases (default=1 for uniform cross-sections)</td>
+</tr>
+<tr>
+<td><code>epsilon_b</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Factor taking into account pile bases in stiff tertiary clay (default=1 for pile based not in stiff Tertiary clay)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the following attributes of the DeBeerCalculation object:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qb</code></td>
+<td>kPa</td>
+<td>Unit base resistance (<span class="math">\(q_b\)</span>)</td>
+</tr>
+<tr>
+<td><code>epsilon_b</code></td>
+<td></td>
+<td>Factor epsilon_b used in the base resistance calculation</td>
+</tr>
+<tr>
+<td><code>Rb</code></td>
+<td>kN</td>
+<td>Base resistance (<span class="math">\(R_b\)</span>)</td>
+</tr>
+<tr>
+<td><code>Rs</code></td>
+<td>kN</td>
+<td>Shaft resistance (<span class="math">\(R_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>Rc</code></td>
+<td>kN</td>
+<td>Calculated pile resistance (<span class="math">\(R_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>capacity_calc</code></td>
+<td></td>
+<td>Pandas dataframe with the data used for the calculation, contains the components of shaft resistance</td>
+</tr>
+</tbody>
+</table></div></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/debeer.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/piles/debeer.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>axcap</a><a class="next" href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Unit end bearing</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#debeercalculation">class DeBeerCalculation</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-__init__">DeBeerCalculation.__init__</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-resample_data">DeBeerCalculation.resample_data</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-set_soil_layers">DeBeerCalculation.set_soil_layers</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-phi_func">DeBeerCalculation.phi_func</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-optimisation_func">DeBeerCalculation.optimisation_func</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-stress_correction">DeBeerCalculation.stress_correction</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-calculate_base_resistance">DeBeerCalculation.calculate_base_resistance</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-calculate_base_resistance_standard_diameter">DeBeerCalculation.calculate_base_resistance_standard_diameter</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-plot_base_resistance">DeBeerCalculation.plot_base_resistance</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-correct_shaft_qc">DeBeerCalculation.correct_shaft_qc</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-calculate_average_qc">DeBeerCalculation.calculate_average_qc</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-calculate_unit_shaft_friction">DeBeerCalculation.calculate_unit_shaft_friction</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-plot_unit_shaft_friction">DeBeerCalculation.plot_unit_shaft_friction</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-set_shaft_base_factors">DeBeerCalculation.set_shaft_base_factors</a></li>
+      <li class="lvl-3"><a href="#debeercalculation-calculate_pile_resistance">DeBeerCalculation.calculate_pile_resistance</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

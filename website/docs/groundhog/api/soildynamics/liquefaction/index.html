@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liquefaction — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.soildynamics.liquefaction: 5 functions, 0 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Liquefaction — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.soildynamics.liquefaction: 5 functions, 0 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/" aria-current="page">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/soildynamics/">Soil dynamics</a></li>
+        <li><span aria-current="page">Liquefaction</span></li>
+      </ol>
+    </nav>
+
+    <h1>Liquefaction</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.soildynamics.liquefaction</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.soildynamics.liquefaction</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/soildynamics/liquefaction.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/soildynamics/liquefaction.html">Liquefaction</a>.</p>
+<p><strong>Functions:</strong> <a href="#cyclicstressratio_moss"><code>cyclicstressratio_moss</code></a>, <a href="#liquefaction_robertsonfear"><code>liquefaction_robertsonfear</code></a>, <a href="#liquefactionprobability_moss"><code>liquefactionprobability_moss</code></a>, <a href="#liquefactionprobability_saye"><code>liquefactionprobability_saye</code></a>, <a href="#cyclicstressratio_youd"><code>cyclicstressratio_youd</code></a></p>
+<p><a id="cyclicstressratio_moss"></a></p>
+<h2 id="cyclicstressratio_moss"><code>cyclicstressratio_moss</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="cyclicstressratio_moss">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#cyclicstressratio_moss">Soil dynamics › Liquefaction › Moss (2006) Cyclic Stress Ratio</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">cyclicstressratio_moss</span><span class="p">(</span>
+    <span class="n">sigma_vo</span><span class="p">,</span>
+    <span class="n">sigma_vo_eff</span><span class="p">,</span>
+    <span class="n">magnitude</span><span class="p">,</span>
+    <span class="n">acceleration</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">gravity</span><span class="o">=</span><span class="mf">9.81</span><span class="p">,</span>
+    <span class="n">rd_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">DWF_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the equivalent uniform cyclic stress ratio (CSR) based on the technique by Seed and Idriss (1971). Earthquake events are scaled to an equivalent event with magnitude of 7.5 using a magnitude-correlated duration weighting factor (DWF).</p>
+<p>The formulation of DWF from Cetin et al (2004) is used which is based on a SPT-based liquefaction database with the formulation being valid for magnitudes between 5.5 and 8.5.</p>
+<p>The non-linear shear mass participation factor formulation from Cetin et al (2004) is used. This depends on the depth of the layer of interest, the earthquake magnitude and the maximum horizontal ground acceleration. The formula uses the acceleration in units of gravity.</p>
+<p>The paper on which this equation is based offers a discussion on the variability on each of the terms.</p>
+<div class="math-display">\[CSR = \frac{\tau_{avg}}{\sigma_v^{\prime}} = 0.65 \cdot \frac{a_{max}}{g} \cdot \frac{\sigma_v}{\sigma_v^{\prime}} \cdot r_d\]</div>
+<div class="math-display">\[CSR^{*} = CSR_{M_w=7.5}=\frac{CSR}{DWF_{M_w}}\]</div>
+<div class="math-display">\[DWF_{M_w} = 17.84 \cdot M_w^{-1.43}\]</div>
+<div class="math-display">\[\begin{aligned}r_d = \frac{\left[ 1 + \frac{-9.147 - 4.173 \cdot a_{max} + 0.652 \cdot M_w}{10.567 + 0.089 \cdot e^{0.089 \cdot \left( -z \cdot 3.28 - 7.760 \cdot a_{max} + 78.576 \right)}} \right]}{\left[ 1 + \frac{-9.147 - 4.173 \cdot a_{max} + 0.652 \cdot M_w}{10.567 + 0.089 \cdot e^{0.089 \cdot (-7.760 \cdot a_{max} + 78.576)}} \right]} \\ z \geq 20m\end{aligned}\]</div>
+<div class="math-display">\[\begin{aligned}r_d = \frac{\left[ 1 + \frac{-9.147 - 4.173 \cdot a_{max} + 0.652 \cdot M_w}{10.567 + 0.089 \cdot e^{0.089 \cdot \left( -z \cdot 3.28 - 7.760 \cdot a_{max} + 78.576 \right)}} \right]}{\left[ 1 + \frac{-9.147 - 4.173 \cdot a_{max} + 0.652 \cdot M_w}{10.567 + 0.089 \cdot e^{0.089 \cdot (-7.760 \cdot a_{max} + 78.576)}} \right]} - 0.0014 \cdot (z \cdot 3.28 - 65) \\ z &lt; 20m\end{aligned}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sigma_vo</code></td>
+<td>kPa</td>
+<td>sigma_vo &gt;= 0.0</td>
+<td>required</td>
+<td>Total vertical stress at the depth of interest (<span class="math">\(\sigma_v\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_vo_eff</code></td>
+<td>kPa</td>
+<td>sigma_vo_eff &gt;= 0.0</td>
+<td>required</td>
+<td>Effective vertical stress at the depth of interest (<span class="math">\(\sigma_v^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>magnitude</code></td>
+<td>-</td>
+<td>5.5 &lt;= magnitude &lt;= 8.5</td>
+<td>required</td>
+<td>Earthquake magnitude (<span class="math">\(M_w\)</span>)</td>
+</tr>
+<tr>
+<td><code>acceleration</code></td>
+<td>m/s2</td>
+<td>acceleration &gt;= 0.0</td>
+<td>required</td>
+<td>Maximum horizontal acceleration at the soil surface (<span class="math">\(a_{max}\)</span>)</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td>depth &gt;= 0.0</td>
+<td>required</td>
+<td>Depth at which CSR is calculated (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>gravity</code></td>
+<td>m/s2</td>
+<td>9.8 &lt;= gravity &lt;= 10.0</td>
+<td><code>9.81</code></td>
+<td>Acceleration due to gravity (<span class="math">\(g\)</span>)</td>
+</tr>
+<tr>
+<td><code>rd_override</code></td>
+<td>-</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Override for direct specification of rd (<span class="math">\(r_d\)</span>)</td>
+</tr>
+<tr>
+<td><code>DWF_override</code></td>
+<td>-</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Override for direct specification of DWF (<span class="math">\(DWF\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CSR [-]</code></td>
+<td>-</td>
+<td>Uncorrected cyclic stress ratio (<span class="math">\(CSR\)</span>)</td>
+</tr>
+<tr>
+<td><code>CSR* [-]</code></td>
+<td>-</td>
+<td>Equivalent uniform cyclic stress ratio (for magnitude 7.5 event) (<span class="math">\(CSR^{*}\)</span>)</td>
+</tr>
+<tr>
+<td><code>DWF [-]</code></td>
+<td>-</td>
+<td>Magnitude-correlated duration weighting factor (<span class="math">\(DWF\)</span>)</td>
+</tr>
+<tr>
+<td><code>rd [-]</code></td>
+<td>-</td>
+<td>Nonlinear shear mass participation factor (<span class="math">\(r_d\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Moss et al (2006) CPT-Based Probabilistic and Deterministic Assessment of In Situ Seismic Soil Liquefaction Potential. Journal of Geotechnical &amp; Geoenvironmental Engineering, 132(8)</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="liquefaction_robertsonfear"></a></p>
+<h2 id="liquefaction_robertsonfear"><code>liquefaction_robertsonfear</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="liquefaction_robertsonfear">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#liquefaction_robertsonfear">Soil dynamics › Liquefaction › Robertson &amp; Fear (1995) Liquefaction</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">liquefaction_robertsonfear</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">sigma_vo_eff</span><span class="p">,</span> <span class="n">CSR</span><span class="p">,</span> <span class="n">atmospheric_pressure</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates whether cyclic liquefaction can be triggered based on the normalised cone tip resistance and the cyclic shear stress ratio imposed on the soil by the earthquake event.</p>
+<p>For earthquake magnitudes different from 7.5, CSR<span class="math">\(^*\)</span> should be used.</p>
+<p>Note that this correlation was developed for clean sands and does not include any modifications for fines content.</p>
+<p>It should also be noted that the correlation is based on averaged cone resistance values from field cases. So it applied to raw cone resistance data, they might be too conservative.</p>
+<div class="math-display">\[q_{c1} = (q_c / p_a) ( p_a /  \sigma_{vo}^{\prime} )^{0.5}\]</div>
+<p><img loading="lazy" decoding="async" alt="Dataset supporting the liquefaction triggering function" src="/docs/assets/groundhog/docs/soildynamics/images/liquefaction_robertsonfear_1.png"></p>
+<p><em>Dataset supporting the liquefaction triggering function</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc</code></td>
+<td>MPa</td>
+<td>0.0 &lt;= qc &lt;= 120.0</td>
+<td>required</td>
+<td>Cone tip resistance (<span class="math">\(q_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_vo_eff</code></td>
+<td>kPa</td>
+<td>sigma_vo_eff &gt;= 0.0</td>
+<td>required</td>
+<td>Vertical effective stress (<span class="math">\(\sigma_{vo}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>CSR</code></td>
+<td>-</td>
+<td>0.073 &lt;= CSR &lt;= 0.49</td>
+<td>required</td>
+<td>Seismic shear stress ratio (<span class="math">\(CSR = \tau_{avg} / \sigma_{vo}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>atmospheric_pressure</code></td>
+<td>kPa</td>
+<td>90.0 &lt;= atmospheric_pressure &lt;= 110.0</td>
+<td><code>100.0</code></td>
+<td>Atmospheric pressure used for normalisation (<span class="math">\(p_a\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc1 [-]</code></td>
+<td>-</td>
+<td>Normalised dimensionless cone resistance (<span class="math">\(q_{c1}\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc1 liquefaction [-]</code></td>
+<td>-</td>
+<td>Normalised dimensionless cone tip resistance for which liquefaction is just triggered at the given CSR (<span class="math">\(q_{c1,liq}\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc liquefaction [MPa]</code></td>
+<td>MPa</td>
+<td>Cone tip resistance for which liquefaction is just triggered at the given CSR (<span class="math">\(q_{c,liq}\)</span>)</td>
+</tr>
+<tr>
+<td><code>liquefaction</code></td>
+<td></td>
+<td>Liquefaction occurs?</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Robertson, P. K., and C. E. Fear. "Application of CPT to evaluate liquefaction potential." CPT’95, Linkoping (1995): 57-79.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="liquefactionprobability_moss"></a></p>
+<h2 id="liquefactionprobability_moss"><code>liquefactionprobability_moss</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="liquefactionprobability_moss">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#liquefactionprobability_moss">Soil dynamics › Liquefaction › Moss (2006) Liquefaction Probability</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">liquefactionprobability_moss</span><span class="p">(</span>
+    <span class="n">qc</span><span class="p">,</span>
+    <span class="n">sigma_vo_eff</span><span class="p">,</span>
+    <span class="n">Rf</span><span class="p">,</span>
+    <span class="n">CSR</span><span class="p">,</span>
+    <span class="n">CSR_star</span><span class="p">,</span>
+    <span class="n">Pa</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+    <span class="n">delta_qc_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">c_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">x1</span><span class="o">=</span><span class="mf">0.78</span><span class="p">,</span>
+    <span class="n">x2</span><span class="o">=-</span><span class="mf">0.33</span><span class="p">,</span>
+    <span class="n">y1</span><span class="o">=-</span><span class="mf">0.32</span><span class="p">,</span>
+    <span class="n">y2</span><span class="o">=-</span><span class="mf">0.35</span><span class="p">,</span>
+    <span class="n">y3</span><span class="o">=</span><span class="mf">0.49</span><span class="p">,</span>
+    <span class="n">z1</span><span class="o">=</span><span class="mf">1.21</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the probability of liquefaction according to Moss et al. The cone tip resistance is normalised to a standard effective overburden pressure of 100kPa.</p>
+<p>The liquefaction probability is based on a database of case studies using Bayesian updating. The probability contours are digitised from the published figure and interpolation between the different values of normalised tip resistance for a given CSR is performed.</p>
+<p>The calculation of the normalisation exponent <span class="math">\(c\)</span> is performed iteratively, or an override can be specified. While a normalisation exponent of 0.5 is generally assumed, performing the calculation results in a much better statistical fit.</p>
+<p>Soils with an increased friction ratio shows less potential for liquefaction. This is accounted for by modifying the normalised cone resistance using the friction ratio. The bound for modifying the friction ratio are 0.5 - 5%. Below 0.5%, there is no correction and above 5%, the correction for Rf=5% is applied.</p>
+<p>It should also be noted that the correlation is based on averaged cone resistance values from field cases. So it applied to raw cone resistance data, they might be too conservative.</p>
+<div class="math-display">\[q_{c,1} = q_c \left( \frac{p_a}{\sigma_{vo}^{\prime}} \right)^{c}\]</div>
+<div class="math-display">\[c = f_1 \cdot \left( \frac{R_f}{f_3} \right)^{f_2}\]</div>
+<div class="math-display">\[f_1 = x_1 \cdot q_c^{x_2}\]</div>
+<div class="math-display">\[f_2 = -(y_1 \cdot q_c^{y_2} + y_3 )\]</div>
+<div class="math-display">\[f_3 = abs( \log_{10}(10 + q_c )^{z_1}\]</div>
+<div class="math-display">\[\Delta q_c = \alpha_1 \cdot \ln (CSR) + \alpha_2\]</div>
+<div class="math-display">\[\alpha_1 = 0.38 \cdot R_f - 0.19\]</div>
+<div class="math-display">\[\alpha_2 = 1.46 \cdot R_f - 0.73\]</div>
+<p><img loading="lazy" decoding="async" alt="Contours of liquefaction probability according to Moss et al (2006)" src="/docs/assets/groundhog/docs/soildynamics/images/liquefactionprobability_moss_1.png"></p>
+<p><em>Contours of liquefaction probability according to Moss et al (2006)</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qc</code></td>
+<td>MPa</td>
+<td>0.0 &lt;= qc &lt;= 120.0</td>
+<td>required</td>
+<td>Cone tip resistance (<span class="math">\(q_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_vo_eff</code></td>
+<td>kPa</td>
+<td>sigma_vo_eff &gt;= 0.0</td>
+<td>required</td>
+<td>Vertical effective stress at depth of interest (<span class="math">\(\sigma_{vo}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Rf</code></td>
+<td>pct</td>
+<td>0.0 &lt;= Rf &lt;= 10.0</td>
+<td>required</td>
+<td>Friction ratio (<span class="math">\(R_f\)</span>)</td>
+</tr>
+<tr>
+<td><code>CSR</code></td>
+<td>-</td>
+<td>0.0 &lt;= CSR &lt;= 0.6</td>
+<td>required</td>
+<td>Cyclic shear stress ratio (<span class="math">\(CSR\)</span>)</td>
+</tr>
+<tr>
+<td><code>CSR_star</code></td>
+<td>-</td>
+<td>0.0 &lt;= CSR_star &lt;= 0.6</td>
+<td>required</td>
+<td>Equivalent uniform cyclic stress ratio (for magnitude 7.5 event) (<span class="math">\(CSR^{*}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Pa</code></td>
+<td>kPa</td>
+<td>90.0 &lt;= Pa &lt;= 110.0</td>
+<td><code>100.0</code></td>
+<td>Atmospheric pressure (<span class="math">\(p_a\)</span>)</td>
+</tr>
+<tr>
+<td><code>delta_qc_override</code></td>
+<td>MPa</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Override for the correction to the normalised cone tip resistance (<span class="math">\(\Delta q_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>c_override</code></td>
+<td>-</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Override for the normalisation exponent (<span class="math">\(c\)</span>)</td>
+</tr>
+<tr>
+<td><code>x1</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.78</code></td>
+<td>Factor x1 (<span class="math">\(x_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>x2</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.33</code></td>
+<td>Factor x2 (<span class="math">\(x_2\)</span>)</td>
+</tr>
+<tr>
+<td><code>y1</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.32</code></td>
+<td>Factor y1 (<span class="math">\(y_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>y2</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.35</code></td>
+<td>Factor y2 (<span class="math">\(y_2\)</span>)</td>
+</tr>
+<tr>
+<td><code>y3</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.49</code></td>
+<td>Factor y3 (<span class="math">\(y_3\)</span>)</td>
+</tr>
+<tr>
+<td><code>z1</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.21</code></td>
+<td>Factor z1 (<span class="math">\(z_1\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pl [pct]</code></td>
+<td>pct</td>
+<td>Liquefaction probability (<span class="math">\(P_L\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc_5 [MPa]</code></td>
+<td>MPa</td>
+<td>Cone tip resistance for 5% probability of liquefaction (<span class="math">\(q_{c,P_{L,5\%}}\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc_95 [MPa]</code></td>
+<td>MPa</td>
+<td>Cone tip resistance for 95% probability of liquefaction (<span class="math">\(q_{c,P_{L,95\%}}\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc1 [MPa]</code></td>
+<td>MPa</td>
+<td>Normalised cone tip resistance (<span class="math">\(q_{c,1}\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc1mod [MPa]</code></td>
+<td>MPa</td>
+<td>Modified normalised cone tip resistance (<span class="math">\(q_{c,1} + \Delta q_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>c [-]</code></td>
+<td>-</td>
+<td>Normalisation exponent</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Moss et al (2006) CPT-Based Probabilistic and Deterministic Assessment of In Situ Seismic Soil Liquefaction Potential. Journal of Geotechnical &amp; Geoenvironmental Engineering, 132(8)</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="liquefactionprobability_saye"></a></p>
+<h2 id="liquefactionprobability_saye"><code>liquefactionprobability_saye</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="liquefactionprobability_saye">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#liquefactionprobability_saye">Soil dynamics › Liquefaction › Saye (2017) Liquefaction Probability</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">liquefactionprobability_saye</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="p">,</span>
+    <span class="n">qc</span><span class="p">,</span>
+    <span class="n">sigma_vo_eff</span><span class="p">,</span>
+    <span class="n">CSR</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">,</span>
+    <span class="n">atmospheric_pressure</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+    <span class="n">deltaQ_nominator</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="n">deltaQ_denominator</span><span class="o">=</span><span class="mf">0.67</span><span class="p">,</span>
+    <span class="n">exponent_qcnormalised</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">Cq_limit</span><span class="o">=</span><span class="mf">1.7</span><span class="p">,</span>
+    <span class="n">mcrr_coefficient1</span><span class="o">=</span><span class="mf">178.0</span><span class="p">,</span>
+    <span class="n">mcrr_coefficient2</span><span class="o">=</span><span class="mf">3.349</span><span class="p">,</span>
+    <span class="n">mcrr_limit</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">deltaQ_limit</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+    <span class="n">Pl_coefficient1</span><span class="o">=</span><span class="mf">1.34</span><span class="p">,</span>
+    <span class="n">exactsoildata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Current engineering practice employs clean sand-based procedures to evaluate liquefaction triggering in nonplastic, coarse-grained soils and low-plasticity, fine-grained soils below level or mildly-sloping ground. Furthermore, existing empirical liquefaction triggering procedures treat all clean sands (fines content &lt;5%) as identical.</p>
+<p>Saye et al propose an alternative approach in which the slope of the CPT data in Qt vs fs/sigma_voprime space is used to assess the liquefaction probability. This approach has been shown to produce more meaningful results in soils with significant fines content</p>
+<div class="math-display">\[\Delta_Q = \frac{Q_t + 10}{\frac{f_s}{\sigma_{vo}^{\prime}} + 0.67}\]</div>
+<div class="math-display">\[\hat{m}_{CRR} = \frac{\hat{\Delta}_Q}{178 \cdot \hat{\Delta}_Q - 3.349} \leq 0.1 \ \text{for} \ \Delta_Q \geq 20\]</div>
+<div class="math-display">\[\frac{q_{c1}}{P_a} = C_q \cdot \left( \frac{q_c}{P_a} \right)\]</div>
+<div class="math-display">\[C_q = \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^n \leq 1.7\]</div>
+<div class="math-display">\[P_L = \Phi \left[ - \frac{ \left( \hat{m}_{CRR} \cdot \left( \frac{q_{c1}}{P_a} \right) - 1.34 \right) - \log_{10} \left(  CSR_{7.5} \right) }{\sigma} \right]\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Qt</code></td>
+<td>-</td>
+<td>1.0 &lt;= Qt &lt;= 1000.0</td>
+<td>required</td>
+<td>Normalised cone tip resistance (<span class="math">\(Q_t\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc</code></td>
+<td>MPa</td>
+<td>0.0 &lt;= qc &lt;= 100.0</td>
+<td>required</td>
+<td>Cone tip resistance (<span class="math">\(q_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_vo_eff</code></td>
+<td>kPa</td>
+<td>0.0 &lt;= sigma_vo_eff &lt;= 1000.0</td>
+<td>required</td>
+<td>Vertical effective stress (<span class="math">\(\sigma_{vo}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>CSR</code></td>
+<td>-</td>
+<td>0.0 &lt;= CSR &lt;= 1.0</td>
+<td>required</td>
+<td>Cyclic stress ratio for magnitude 7.5 event (<span class="math">\(CSR_{7.5}\)</span>)</td>
+</tr>
+<tr>
+<td><code>fs</code></td>
+<td>MPa</td>
+<td>0.0 &lt;= fs &lt;= 10.0</td>
+<td>required</td>
+<td>Sleeve friction (<span class="math">\(f_s\)</span>)</td>
+</tr>
+<tr>
+<td><code>atmospheric_pressure</code></td>
+<td>kPa</td>
+<td></td>
+<td><code>100.0</code></td>
+<td>Atmospheric pressure (<span class="math">\(P_a\)</span>)</td>
+</tr>
+<tr>
+<td><code>deltaQ_nominator</code></td>
+<td>-</td>
+<td></td>
+<td><code>10.0</code></td>
+<td>Term in the nominator for deltaQ</td>
+</tr>
+<tr>
+<td><code>deltaQ_denominator</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.67</code></td>
+<td>Term in the denominator for deltaQ</td>
+</tr>
+<tr>
+<td><code>exponent_qcnormalised</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.5</code></td>
+<td>Exponent in the normalisation for qc (<span class="math">\(n\)</span>)</td>
+</tr>
+<tr>
+<td><code>Cq_limit</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.7</code></td>
+<td>Maximum value for Cq</td>
+</tr>
+<tr>
+<td><code>mcrr_coefficient1</code></td>
+<td>-</td>
+<td></td>
+<td><code>178.0</code></td>
+<td>First calibration coefficient in the formula for mCRR</td>
+</tr>
+<tr>
+<td><code>mcrr_coefficient2</code></td>
+<td>-</td>
+<td></td>
+<td><code>3.349</code></td>
+<td>Second calibration coefficient in the formula for mCRR</td>
+</tr>
+<tr>
+<td><code>mcrr_limit</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.1</code></td>
+<td>Maximum value for mCRR</td>
+</tr>
+<tr>
+<td><code>deltaQ_limit</code></td>
+<td>-</td>
+<td></td>
+<td><code>20.0</code></td>
+<td>Minimum value for DeltaQ</td>
+</tr>
+<tr>
+<td><code>Pl_coefficient1</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.34</code></td>
+<td>Coefficient in the equation for liquefaction probability</td>
+</tr>
+<tr>
+<td><code>exactsoildata</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the standard deviation for exact or uncertain soil data needs to be used</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DeltaQ [-]</code></td>
+<td>-</td>
+<td>Value for DeltaQ (<span class="math">\(\Delta_Q\)</span>)</td>
+</tr>
+<tr>
+<td><code>qc1 [-]</code></td>
+<td>-</td>
+<td>Normalised cone tip resistance (<span class="math">\(q_{c1}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Cq [-]</code></td>
+<td>-</td>
+<td>Value for multiplier in qc normalisation (<span class="math">\(C_q\)</span>)</td>
+</tr>
+<tr>
+<td><code>mCRR [-]</code></td>
+<td>-</td>
+<td>Median estimate for mCRR, slope in graph of normalised cone resistance vs CSR (<span class="math">\(\hat{m}_{CRR}\)</span>)</td>
+</tr>
+<tr>
+<td><code>PL [-]</code></td>
+<td>-</td>
+<td>Estimated liquefaction probability based on the common origin approach (<span class="math">\(P_L\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Saye, Steven R., Scott M. Olson, and Kevin W. Franke. "Common-Origin Approach to Assess Level-Ground Liquefaction Susceptibility and Triggering in CPT-Compatible Soils Using Δ Q." Journal of Geotechnical and Geoenvironmental Engineering 147.7 (2021): 04021046.</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="cyclicstressratio_youd"></a></p>
+<h2 id="cyclicstressratio_youd"><code>cyclicstressratio_youd</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="cyclicstressratio_youd">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#cyclicstressratio_youd">Soil dynamics › Liquefaction › Youd (2001) Cyclic Stress Ratio</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">cyclicstressratio_youd</span><span class="p">(</span>
+    <span class="n">acceleration</span><span class="p">,</span>
+    <span class="n">sigma_vo</span><span class="p">,</span>
+    <span class="n">sigma_vo_eff</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">magnitude</span><span class="p">,</span>
+    <span class="n">gravity</span><span class="o">=</span><span class="mf">9.81</span><span class="p">,</span>
+    <span class="n">msf_exponent_nominator</span><span class="o">=</span><span class="mf">2.24</span><span class="p">,</span>
+    <span class="n">msf_exponent_denominator</span><span class="o">=</span><span class="mf">2.56</span><span class="p">,</span>
+    <span class="n">rd_factor1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">rd_factor2</span><span class="o">=</span><span class="mf">0.00765</span><span class="p">,</span>
+    <span class="n">rd_factor3</span><span class="o">=</span><span class="mf">1.174</span><span class="p">,</span>
+    <span class="n">rd_factor4</span><span class="o">=</span><span class="mf">0.0267</span><span class="p">,</span>
+    <span class="n">rd_transitiondepth</span><span class="o">=</span><span class="mf">9.15</span><span class="p">,</span>
+    <span class="n">rd_maxdepth</span><span class="o">=</span><span class="mf">23.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the cyclic stress ratio adjusted to a magnitude 7.5 earthquake using the simplified equation (Seed and Idriss 1971; Whitman 1971) and the adjustments recommended by Youd et al. (2001).</p>
+<p>This formulation is used in the common-origin approach by Saye et al (2021) to calculate the adjusted cyclic shear stress ratio for assessment of liquefaction probability.</p>
+<div class="math-display">\[CSR_{7.5} = \frac{CSR}{MSF} = \frac{\tau_{avg} / \sigma_{vo}^{\prime}}{MSF} = \frac{0.65 \cdot \left(
+\frac{a_{max}}{g} \right) \cdot \left( \frac{\sigma_{vo}}{\sigma_{vo}^{\prime}} \right) \cdot r_d}{MSF}\]</div>
+<div class="math-display">\[MSF = \frac{10^{2.24}}{M^{2.56}}\]</div>
+<div class="math-display">\[r_d = \begin{cases}
+    1.0 - 0.00765 \cdot z, &amp; \text{for } z &lt; 9.15m \\
+    1.174 - 0.0267 \cdot z, &amp; \text{for } 9.15m \leq z &lt; 23m
+\end{cases}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>acceleration</code></td>
+<td>m/s2</td>
+<td>acceleration &gt;= 0.0</td>
+<td>required</td>
+<td>Maximum horizontal acceleration at the soil surface (<span class="math">\(a_{max}\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_vo</code></td>
+<td>kPa</td>
+<td>0.0 &lt;= sigma_vo &lt;= 500.0</td>
+<td>required</td>
+<td>Vertical total stress at the depth considered (<span class="math">\(\sigma_{vo}\)</span>)</td>
+</tr>
+<tr>
+<td><code>sigma_vo_eff</code></td>
+<td>kPa</td>
+<td>0.0 &lt;= sigma_vo_eff &lt;= 250.0</td>
+<td>required</td>
+<td>Vertical effective stress at the depth considered (<span class="math">\(\sigma_{vo}^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td>0.0 &lt;= depth &lt;= 23.0</td>
+<td>required</td>
+<td>Depth considered for the assessment (<span class="math">\(z\)</span>)</td>
+</tr>
+<tr>
+<td><code>magnitude</code></td>
+<td>-</td>
+<td>0.0 &lt;= magnitude &lt;= 8.5</td>
+<td>required</td>
+<td>Earthquake magnitude (<span class="math">\(M\)</span>)</td>
+</tr>
+<tr>
+<td><code>gravity</code></td>
+<td>m/s2</td>
+<td>9.8 &lt;= gravity &lt;= 10.0</td>
+<td><code>9.81</code></td>
+<td>Acceleration due to gravity (<span class="math">\(g\)</span>)</td>
+</tr>
+<tr>
+<td><code>msf_exponent_nominator</code></td>
+<td>-</td>
+<td></td>
+<td><code>2.24</code></td>
+<td>Exponent in the nominator of the equation for MSF</td>
+</tr>
+<tr>
+<td><code>msf_exponent_denominator</code></td>
+<td>-</td>
+<td></td>
+<td><code>2.56</code></td>
+<td>Exponent in the denominator of the equation for MSF</td>
+</tr>
+<tr>
+<td><code>rd_factor1</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.0</code></td>
+<td>First calibration factor for shallow portion of rd</td>
+</tr>
+<tr>
+<td><code>rd_factor2</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.00765</code></td>
+<td>Second calibration factor for shallow portion of rd</td>
+</tr>
+<tr>
+<td><code>rd_factor3</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.174</code></td>
+<td>First calibration factor for deep portion of rd</td>
+</tr>
+<tr>
+<td><code>rd_factor4</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.0267</code></td>
+<td>Second calibration factor for deep portion of rd</td>
+</tr>
+<tr>
+<td><code>rd_transitiondepth</code></td>
+<td>-</td>
+<td></td>
+<td><code>9.15</code></td>
+<td>Transition depth for rd</td>
+</tr>
+<tr>
+<td><code>rd_maxdepth</code></td>
+<td>-</td>
+<td></td>
+<td><code>23.0</code></td>
+<td>Max depth for rd</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CSR [-]</code></td>
+<td>-</td>
+<td>Cyclic stress ratio (uncorrected) (<span class="math">\(CSR\)</span>)</td>
+</tr>
+<tr>
+<td><code>CSR* [-]</code></td>
+<td>-</td>
+<td>Cyclic stress ratio corrected to 7.5 magnitude event (<span class="math">\(CSR_{7.5}\)</span>)</td>
+</tr>
+<tr>
+<td><code>MSF [-]</code></td>
+<td>-</td>
+<td>Magnitude scaling factor (<span class="math">\(MSF\)</span>)</td>
+</tr>
+<tr>
+<td><code>rd [-]</code></td>
+<td>-</td>
+<td>Depth reduction factor (<span class="math">\(r_d\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Youd, T. L., et al. 2001. Liquefaction resistance of soils: Summary report from the 1996 NCEER and 1998 NCEER=NSF workshops on evaluation of liquefaction resistance of soils.” J. Geotech. Geoenviron. Eng. 127 (10): 817–833. https://doi.org/10.1061/(ASCE)1090-0241(2001)127:10(817).</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/soildynamics/liquefaction.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/soildynamics/liquefaction.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/soildynamics/cyclicbehaviour/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Cyclic behaviour</a><a class="next" href="/docs/groundhog/api/soildynamics/soilproperties/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Dynamic soil property correlations</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#cyclicstressratio_moss">cyclicstressratio_moss</a></li>
+      <li class="lvl-2"><a href="#liquefaction_robertsonfear">liquefaction_robertsonfear</a></li>
+      <li class="lvl-2"><a href="#liquefactionprobability_moss">liquefactionprobability_moss</a></li>
+      <li class="lvl-2"><a href="#liquefactionprobability_saye">liquefactionprobability_saye</a></li>
+      <li class="lvl-2"><a href="#cyclicstressratio_youd">cyclicstressratio_youd</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

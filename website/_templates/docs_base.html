@@ -1,0 +1,152 @@
+{#-
+  Docs layout: left navigation / content / right "On this page". Extends base.html via the `layout` hook.
+  Context contract (see website/README.md):
+    docs_nav : list of nav nodes {title, url?, children?, status?, external?, slug?, icon?, summary?, key?}
+    page     : {title, url, description?, title_html?, body_html?, toc[], breadcrumbs[], prev?, next?,
+                trail_urls[], has_math?, meta?, source?, updated?}
+  Child templates may override {% block docs_content %} (defaults to page.body_html).
+-#}
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — GeoCore Docs{% endblock %}
+{% block description %}{{ page.description or ('GeoCore documentation: ' ~ page.title) }}{% endblock %}
+{% block body_class %}layout-docs{% endblock %}
+{% block head %}
+  {% if page.has_math %}<link rel="stylesheet" href="{{ asset('assets/vendor/katex/katex.min.css') }}">{% endif %}
+{% endblock %}
+
+{% macro nav_link(node) %}
+  {% set is_external = node.external or node.url.startswith('http') %}
+  <a href="{{ node.url if is_external else url(node.url) }}"{% if node.url == page.url %} aria-current="page"{% endif %}>
+    <span>{{ node.title }}</span>{% if is_external %}{{ icon('external') }}{% endif %}
+  </a>
+{% endmacro %}
+
+{% macro nav_tree(nodes, level) %}
+<ul>
+  {% for node in nodes %}
+  <li>
+    {% if node.children %}
+      <details{% if node.url in page.trail_urls or node.url == page.url %} open{% endif %}>
+        <summary>{% if node.url %}{{ nav_link(node) }}{% else %}<span class="planned">{{ node.title }}</span>{% endif %}</summary>
+        {{ nav_tree(node.children, level + 1) }}
+      </details>
+    {% elif node.url %}
+      {{ nav_link(node) }}
+    {% else %}
+      <span class="planned">{{ node.title }}{% if node.status == 'planned' %} <small>soon</small>{% endif %}</span>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endmacro %}
+
+{% block layout %}
+<div class="container docs-layout{% if not page.toc %} docs-layout--no-toc{% endif %}">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span>{{ icon('menu') }}
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="{{ root }}" data-index="{{ url('docs/search-index.json') }}">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        {{ icon('search') }}
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        {% for section in docs_nav %}
+        <h2>{% if section.url %}<a href="{{ url(section.url) }}"{% if section.url == page.url %} aria-current="page"{% endif %}>{{ section.title }}</a>{% else %}{{ section.title }}{% endif %}</h2>
+        {% if section.children %}{{ nav_tree(section.children, 1) }}{% endif %}
+        {% endfor %}
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    {% if page.breadcrumbs %}
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        {% for crumb in page.breadcrumbs %}
+        <li>{% if crumb.url %}<a href="{{ url(crumb.url) }}">{{ crumb.title }}</a>{% else %}<span>{{ crumb.title }}</span>{% endif %}</li>
+        {% endfor %}
+        <li><span aria-current="page">{{ page.title }}</span></li>
+      </ol>
+    </nav>
+    {% endif %}
+
+    {% block docs_content %}
+    <h1>{% if page.title_html %}{{ page.title_html | safe }}{% else %}{{ page.title }}{% endif %}</h1>
+    {% set m = page.meta %}
+    {% if m and (m.module or m.geocore_available or m.origin == 'groundhog') %}
+    <p class="docs-meta">
+      {% if m.origin == 'groundhog' %}<span class="badge badge--accent">groundhog {{ m.groundhog_version }}</span>{% endif %}
+      {% if m.module %}<code>{{ m.module }}</code>{% endif %}
+      {% if m.geocore_available %}<span class="gc-badge gc-available">Available in GeoCore</span>{% endif %}
+    </p>
+    {% endif %}
+    <div class="prose docs-body">{{ page.body_html | safe }}</div>
+    {% endblock %}
+
+    {% set m = page.meta %}
+    {% if m %}
+    <aside class="attribution{% if m.origin == 'groundhog' %} attribution--upstream{% endif %}" aria-label="Source and licence">
+      {{ icon('scale') }}
+      <div>
+        {% if m.origin == 'groundhog' %}
+        <p><strong>Source:</strong> adapted from the groundhog documentation by {{ m.author }}, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>{{ m.license }}</code>).</p>
+        <ul class="attribution__links">
+          {% if m.source_url %}<li><a href="{{ m.source_url }}">Upstream source (groundhog {{ m.groundhog_version }})</a></li>{% endif %}
+          {% for u in m.upstream_docs_urls %}<li><a href="{{ u }}">Upstream documentation{% if m.upstream_docs_urls|length > 1 %} ({{ loop.index }}){% endif %}</a></li>{% endfor %}
+          {% if m.notebook %}<li>Notebook: <code>{{ m.notebook }}</code></li>{% endif %}
+        </ul>
+        {% if m.edited_by_geocore %}<p class="attribution__note"><strong>Edited by GeoCore:</strong> {{ m.edit_note or 'converted and restructured for this site.' }}</p>{% endif %}
+        {% else %}
+        <p><strong>GeoCore documentation</strong> by {{ m.author }}, licensed under the <a href="{{ repo_url }}/blob/main/LICENSE">GNU GPL v3</a>.
+          {% if m.source_url %}<a href="{{ m.source_url }}">Source</a>{% endif %}</p>
+        {% if m.sources %}<p class="attribution__note">Written from: {% for s in m.sources %}<code>{{ s }}</code>{{ ', ' if not loop.last }}{% endfor %}</p>{% endif %}
+        {% endif %}
+      </div>
+    </aside>
+    {% endif %}
+
+    {% if page.source or page.updated %}
+    <p class="docs-source">
+      {% if page.source %}Source: {% if page.source.url %}<a href="{{ page.source.url }}">{{ page.source.label }}</a>{% else %}{{ page.source.label }}{% endif %}{% endif %}
+      {% if page.source and page.updated %} · {% endif %}
+      {% if page.updated %}Last updated <time datetime="{{ page.updated }}">{{ page.updated }}</time>{% endif %}
+    </p>
+    {% endif %}
+
+    {% if page.prev or page.next %}
+    <nav class="pager" aria-label="Previous and next pages">
+      {% if page.prev %}<a class="prev" href="{{ url(page.prev.url) }}" rel="prev"><small>{{ icon('chevron-left') }}Previous</small>{{ page.prev.title }}</a>{% endif %}
+      {% if page.next %}<a class="next" href="{{ url(page.next.url) }}" rel="next"><small>Next{{ icon('chevron-right') }}</small>{{ page.next.title }}</a>{% endif %}
+    </nav>
+    {% endif %}
+  </main>
+
+  {% if page.toc %}
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      {% for item in page.toc %}
+      <li class="lvl-{{ item.level or 2 }}"><a href="#{{ item.id }}">{{ item.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ asset('assets/js/docs.js') }}" defer></script>
+  {% if page.has_math %}
+  <script src="{{ asset('assets/vendor/katex/katex.min.js') }}" defer></script>
+  <script src="{{ asset('assets/vendor/katex/contrib/auto-render.min.js') }}" defer></script>
+  <script src="{{ asset('assets/js/math.js') }}" defer></script>
+  {% endif %}
+{% endblock %}

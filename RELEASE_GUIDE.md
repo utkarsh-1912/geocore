@@ -44,11 +44,32 @@ git push origin main --tags
 ### Step 3: Automated Build Verification
 1. Navigate to your repository on GitHub: `https://github.com/utkarsh-1912/geocore/actions`
 2. Select the **Build & Release GeoCore** workflow.
-3. Once completed, a draft release will be automatically created under `https://github.com/utkarsh-1912/geocore/releases` containing:
-   - `GeoCore-Setup-1.0.0.exe` (Windows Installer)
-   - `GeoCore-1.0.0.portable.exe` (Windows Portable)
-   - `GeoCore-1.0.0.dmg` (macOS Installer)
-   - `GeoCore-1.0.0-mac.zip` (macOS Compressed Application)
+3. Once completed, a release will be automatically created under `https://github.com/utkarsh-1912/geocore/releases` containing:
+   - `GeoCore-Setup-1.0.0.exe` (Windows Installer, per-user, no admin required)
+   - `GeoCore-1.0.0-<arch>.dmg` (macOS Installer)
+   - `GeoCore-1.0.0-<arch>-mac.zip` (macOS Compressed Application)
+   - `latest.yml`, `latest-mac.yml`, `*.blockmap` (auto-update metadata — must stay attached to the release)
+
+> **No portable build.** The Windows portable target was removed: it self-extracted the whole app
+> (including the ~0.5 GB Python engine) to `%TEMP%` on every launch, which made startup very slow.
+> The NSIS installer extracts once at install time and starts fast.
+
+### Auto-updates
+Installed builds check GitHub Releases (`utkarsh-1912/geocore`) ~15 s after launch using `electron-updater`,
+download a newer version in the background and install it when the app quits. The check is skipped in
+development, and any failure (offline machine, no release) is ignored — GeoCore keeps working offline.
+Local builds never publish (`--publish never`); only the CI workflow uploads release assets.
+Note: macOS auto-update requires a properly code-signed app; ad-hoc signed builds will not self-update.
+
+### Local LLM runtime (GeoAI)
+The release workflow installs the prebuilt CPU wheel of `llama-cpp-python` before `requirements.txt`
+and `main.spec` bundles `llama_cpp` plus its native `ggml`/`llama` libraries. To reproduce locally:
+```bash
+cd python-backend
+venv/Scripts/python.exe -m pip install llama-cpp-python --prefer-binary --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+```
+If `llama_cpp` is not installed when running PyInstaller, the build prints a warning and GeoAI falls back to
+the heuristic provider. Models (`.gguf`) are not bundled; they are downloaded to `%APPDATA%\GeoCore\models`.
 
 ---
 
@@ -66,7 +87,7 @@ cd ../electron-app
 npm run build
 npm run dist:win
 ```
-*Output location*: `electron-app/release/GeoCore Setup 1.0.0.exe`
+*Output location*: `electron-app/release/GeoCore-Setup-1.0.0.exe`
 
 ### macOS Executable Build
 Run on a Mac (Intel or Apple Silicon):
@@ -80,7 +101,7 @@ cd ../electron-app
 npm run build
 npm run dist:mac
 ```
-*Output location*: `electron-app/release/GeoCore-1.0.0.dmg`
+*Output location*: `electron-app/release/GeoCore-1.0.0-<arch>.dmg`
 
 ---
 

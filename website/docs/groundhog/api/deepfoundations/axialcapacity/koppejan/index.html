@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>koppejan — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.deepfoundations.axialcapacity.koppejan: 0 functions, 1 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="koppejan — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.deepfoundations.axialcapacity.koppejan: 0 functions, 1 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/" aria-current="page">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/deepfoundations/">Deep foundations</a></li>
+        <li><a href="/docs/groundhog/api/deepfoundations/axialcapacity/">Axial capacity</a></li>
+        <li><span aria-current="page">koppejan</span></li>
+      </ol>
+    </nav>
+
+    <h1>koppejan</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.deepfoundations.axialcapacity.koppejan</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.deepfoundations.axialcapacity.koppejan</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/koppejan.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/piles/koppejan.html">Koppejan pile resistance calculations</a>.</p>
+<p><strong>Classes:</strong> <a href="#koppejancalculation"><code>KoppejanCalculation</code></a></p>
+<p><a id="koppejancalculation"></a></p>
+<h2 id="class-koppejancalculation">class <code>KoppejanCalculation</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="KoppejanCalculation">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#koppejancalculation">Pile calculations › Koppejan pile resistance › Koppejan Calculation</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">KoppejanCalculation</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">qc</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">penetration</span><span class="p">)</span>
+</code></pre></div>
+
+<p><a id="koppejancalculation-__init__"></a></p>
+<h3 id="koppejancalculation__init__"><code>KoppejanCalculation.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">qc</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">penetration</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Initializes a pile calculation according to Koppejan</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>depth</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Array with the depth coordinates (ascending)</td>
+</tr>
+<tr>
+<td><code>qc</code></td>
+<td>MPa</td>
+<td></td>
+<td>required</td>
+<td>Array with corresponding cone resistance values</td>
+</tr>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Pile diameter</td>
+</tr>
+<tr>
+<td><code>penetration</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Pile penetration (tip depth below mudline)</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="koppejancalculation-set_layer_properties"></a></p>
+<h3 id="koppejancalculationset_layer_properties"><code>KoppejanCalculation.set_layer_properties</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_layer_properties</span><span class="p">(</span><span class="n">layer_data</span><span class="p">,</span> <span class="n">waterlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">waterunitweight</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Creates the layering used for further interpretation of the PCPT profile. A dataframe with a layering definition needs to be provided Typically, total unit weight is provided as a minimum. Linear variations over the depth range are also allowed. Other properties may be provided as required by the correlations. The water level needs to be defined for calculation of the vertical effective stress profile.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layer_data</code></td>
+<td>m</td>
+<td></td>
+<td>required</td>
+<td>Pandas dataframe with layering definition. As a minimum the keys 'Depth from ', 'Depth to [m]' and 'Total unit weight [kN/m3]' need to be provided.</td>
+</tr>
+<tr>
+<td><code>waterlevel</code></td>
+<td></td>
+<td></td>
+<td><code>0</code></td>
+<td>Level below soil surface (&gt;=0m) where the watertable starts, default = 0m for fully saturated conditions</td>
+</tr>
+<tr>
+<td><code>waterunitweight</code></td>
+<td>kN/m2</td>
+<td></td>
+<td><code>10</code></td>
+<td>Unit weight of water used for the calculation Default = 10kN/m3</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the attribute <code>layerdata</code></p>
+<p><a id="koppejancalculation-map_properties"></a></p>
+<h3 id="koppejancalculationmap_properties"><code>KoppejanCalculation.map_properties</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">map_properties</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Maps the soil properties defined in the layering to the grid defined by the cone data.</p>
+<p><strong>Returns</strong></p>
+<p>Expands the dataframe <code>.data</code> with additional columns for the soil properties</p>
+<p><a id="koppejancalculation-calculate_side_friction"></a></p>
+<h3 id="koppejancalculationcalculate_side_friction"><code>KoppejanCalculation.calculate_side_friction</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_side_friction</span><span class="p">(</span><span class="n">alpha_s</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the side friction for a pile according to Koppejan's method.</p>
+<p>The maximum shaft friction is then given by the following formula:</p>
+<div class="math-display">\[\tau_{s,max} = \alpha_s \cdot \min(q_c, q_{c,lim})\]</div>
+<p>Note that <span class="math">\(\tau_{s,max}\)</span> is given in kPa so a conversion factor from MPa to kPa is required.</p>
+<p>The shaft resistance is then obtained by integrating the maximum shaft friction over the pile length and the outer shaft perimeter:</p>
+<div class="math-display">\[F_{r,s} = \int_{0}^{L} dT = \int_{0}^{L} \tau_{s,max}(z) \cdot \pi \cdot D \cdot dz\]</div>
+<p>This equation can easily be discretised for the numerical calculation of the shaft resistance.</p>
+<p>The value of <span class="math">\(\alpha_s\)</span> depends on the pile type and can be read from the table below</p>
+<p><img loading="lazy" decoding="async" alt="<span class="math">\(\alpha_s\)</span> and <span class="math">\(\alpha_b\)</span> factors for Koppejan calculation" src="/docs/assets/groundhog/docs/piles/images/koppejan_alphas.png"></p>
+<p><em><span class="math">\(\alpha_s\)</span> and <span class="math">\(\alpha_b\)</span> factors for Koppejan calculation</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alpha_s</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>The value of the shaft friction coefficient for the given pile type (as found in the table)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Expands the <code>data</code> attribute with columns <code>'tau s max [kPa]'</code>, <code>'dT [kN/m]'</code>, <code>'Frs [kN]'</code></p>
+<p><a id="koppejancalculation-calculate_base_resistance"></a></p>
+<h3 id="koppejancalculationcalculate_base_resistance"><code>KoppejanCalculation.calculate_base_resistance</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_base_resistance</span><span class="p">(</span>
+    <span class="n">alpha_p</span><span class="p">,</span>
+    <span class="n">base_coefficient</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">crosssection_coefficient</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">coring</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">wall_thickness</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the pile base resistance according to Koppejans method. The unit base resistance is obtained using Koppejan's construction.</p>
+<p><img loading="lazy" decoding="async" alt="Zone of influence at pile base according to Koppejan" src="/docs/assets/groundhog/docs/piles/images/koppejan_base_theory.png"></p>
+<p><em>Zone of influence at pile base according to Koppejan</em></p>
+<p><span class="math">\(q_{cII}\)</span> is obtained by taking the average cone resistance in a window varying from 0.7D to 4D. The size of this window is chosen such that <span class="math">\(q_{cII}\)</span> is minimized. The reason for varying the maximum depth of this window is that weaker layers up to a certain depth below the pile tip will have an influence on the pile resistance. A weaker layer at a certain depth below the pile tip will lead to a lower value for <span class="math">\(q_{cII}\)</span> as the averaging window expands.</p>
+<p>The value of <span class="math">\(q_{c,I}\)</span> is obtained by taking the average along the same path as <span class="math">\(q_{c,II}\)</span> but the cone resistance can never increase as one moves up from the cone resistance at the bottom of the averaging window.</p>
+<p><span class="math">\(q_{cIII}\)</span> accounts for the averaging effect in the soil above the pile tip. The averaging window ranges from the pile tip to 8D above the pile tip.</p>
+<p>Similar to <span class="math">\(q_{cI}\)</span>, the cone resistance should never increase as one moves up through the averaging window.</p>
+<p>The unit base resistance is then calculates as:</p>
+<div class="math-display">\[q_{c,avg} = \frac{0.5 \cdot (q_{cI} + q_{cII}) + q_{cIII}}{2}\]</div>
+<p>Additional multipliers are applied for the effect of a non-uniform pile profile along the length:</p>
+<p><img loading="lazy" decoding="async" alt="Dimensions considered for non-uniform deepfoundations" src="/docs/assets/groundhog/docs/piles/images/base_increase.png"></p>
+<p><em>Dimensions considered for non-uniform deepfoundations</em></p>
+<p><img loading="lazy" decoding="async" alt="Chart for coefficient <span class="math">\(\beta\)</span> for a non-uniform pile" src="/docs/assets/groundhog/docs/piles/images/base_coefficient.png"></p>
+<p><em>Chart for coefficient <span class="math">\(\beta\)</span> for a non-uniform pile</em></p>
+<p>and for non-circular cross-sections.</p>
+<p><img loading="lazy" decoding="async" alt="Chart for coefficient <span class="math">\(s\)</span> for a non-circular cross-sections" src="/docs/assets/groundhog/docs/piles/images/crosssection_coefficient.png"></p>
+<p><em>Chart for coefficient <span class="math">\(s\)</span> for a non-circular cross-sections</em></p>
+<p>A coefficient <span class="math">\(\alpha_p\)</span> needs to be selected to account for the pile type. The pile base resistance is then given as:</p>
+<div class="math-display">\[q_{b,max} = \alpha_p \cdot \beta \cdot s \cdot q_{c,avg} \leq 15 \text{MPa}\]</div>
+<p>The base resisance is then obtained by multiplying the maximum unit end bearing by the pile tip area. Note that coring tubular deepfoundations can also be calculated. In this case <code>coring</code> needs to be set to <code>True</code> and a <code>wall_thickness</code> needs to be provided.</p>
+<p>:param Boolean determining whether the pile behaves in a coring manner (default=False) :param Wall thickness [mm]. Only needs to be specified for coring deepfoundations</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alpha_p</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Coefficient for the base resistance based on pile type (see table in <code>calculate_side_friction</code> method</td>
+</tr>
+<tr>
+<td><code>base_coefficient</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Coefficient for enlarged bases (default=1 for a uniform pile)</td>
+</tr>
+<tr>
+<td><code>crosssection_coefficient</code></td>
+<td></td>
+<td></td>
+<td><code>1</code></td>
+<td>Coefficient for non-circular cross-sections (default=1 for a circular cross-section</td>
+</tr>
+<tr>
+<td><code>coring</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>wall_thickness</code></td>
+<td></td>
+<td></td>
+<td><code>nan</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Creates the base resistance construction and sets the attribute <code>Frb</code></p>
+<p><a id="koppejancalculation-plot_shaft_resistance"></a></p>
+<h3 id="koppejancalculationplot_shaft_resistance"><code>KoppejanCalculation.plot_shaft_resistance</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_shaft_resistance</span><span class="p">(</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_margin</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">x_ranges</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)),</span>
+    <span class="n">x_ticks</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+    <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">y_tick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">legend_orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span>
+    <span class="n">legend_x</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">legend_y</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>800</code></td>
+<td>Width of the plot (default = 800px)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>600</code></td>
+<td>Height of the plot (default = 600px)</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Title of the plot (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td><code>{'t': 100, 'l': 50, 'b': 50}</code></td>
+<td>Margins for the plot (default=<code>dict(t=50, l=50, b=50)</code></td>
+</tr>
+<tr>
+<td><code>show_fig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the plot is shown or not</td>
+</tr>
+<tr>
+<td><code>x_ranges</code></td>
+<td></td>
+<td></td>
+<td><code>((0, 50), (0, 250), (0, 50), (0, 2000))</code></td>
+<td>List of tuples with the ranges for the x-axes of the plot</td>
+</tr>
+<tr>
+<td><code>x_ticks</code></td>
+<td></td>
+<td></td>
+<td><code>(10, 50, 10, 400)</code></td>
+<td>Tick mark intervals for the x-axes</td>
+</tr>
+<tr>
+<td><code>y_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range for the y-axis (default=None which causes <code>autorange=reversed</code> to be used</td>
+</tr>
+<tr>
+<td><code>y_tick</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Tick mark interval for the y-axis</td>
+</tr>
+<tr>
+<td><code>legend_orientation</code></td>
+<td></td>
+<td></td>
+<td><code>'h'</code></td>
+<td>Orientation of the plot legend (default = <code>'h'</code>)</td>
+</tr>
+<tr>
+<td><code>legend_x</code></td>
+<td></td>
+<td></td>
+<td><code>0.05</code></td>
+<td>x-coordinate of the legend (plot is between 0 and 1, default=0.05 to start at an offset from the left edge)</td>
+</tr>
+<tr>
+<td><code>legend_y</code></td>
+<td></td>
+<td></td>
+<td><code>-0.05</code></td>
+<td>y-coordinate of the legend (plot is between 0 and 1, default=-0.05 to be below the plot)</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the attribute <code>shaft_fig</code> of the <code>KoppejanCalculation</code> object</p>
+<p><a id="koppejancalculation-plot_baseconstruction"></a></p>
+<h3 id="koppejancalculationplot_baseconstruction"><code>KoppejanCalculation.plot_baseconstruction</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_baseconstruction</span><span class="p">(</span>
+    <span class="n">plot_width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">plot_height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot_margin</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">x_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+    <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">latex_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plots the Koppejan base resistance construction</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plot_width</code></td>
+<td></td>
+<td></td>
+<td><code>500</code></td>
+<td>Width of the plot (default=500px)</td>
+</tr>
+<tr>
+<td><code>plot_height</code></td>
+<td></td>
+<td></td>
+<td><code>600</code></td>
+<td>Height of the plot (default=600px)</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Title of the plot (default=None)</td>
+</tr>
+<tr>
+<td><code>plot_margin</code></td>
+<td></td>
+<td></td>
+<td><code>{'t': 50, 'l': 50, 'b': 50}</code></td>
+<td>Margins used for the plot (default=dict(t=50, l=50, b=50))</td>
+</tr>
+<tr>
+<td><code>show_fig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the plot needs to be displayed (default=True)</td>
+</tr>
+<tr>
+<td><code>x_range</code></td>
+<td></td>
+<td></td>
+<td><code>(0, 50)</code></td>
+<td>Range of x-values to be used for the plotting (default=0-50)</td>
+</tr>
+<tr>
+<td><code>y_range</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Range of y-values to be used for the plotting (default=None which causes <code>reversed</code> to be used</td>
+</tr>
+<tr>
+<td><code>latex_titles</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether axis titles should be shown as LaTeX (default = True)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the attribute <code>base_fig</code> of the <code>KoppejanCalculation</code> object</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/koppejan.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/piles/koppejan.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Unit end bearing</a><a class="next" href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>lcpc</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#koppejancalculation">class KoppejanCalculation</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-__init__">KoppejanCalculation.__init__</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-set_layer_properties">KoppejanCalculation.set_layer_properties</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-map_properties">KoppejanCalculation.map_properties</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-calculate_side_friction">KoppejanCalculation.calculate_side_friction</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-calculate_base_resistance">KoppejanCalculation.calculate_base_resistance</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-plot_shaft_resistance">KoppejanCalculation.plot_shaft_resistance</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation-plot_baseconstruction">KoppejanCalculation.plot_baseconstruction</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

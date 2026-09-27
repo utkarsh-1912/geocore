@@ -18,6 +18,7 @@ import { GeoAILogo } from './components/common/GeoAILogo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GEOTECHNICAL_MODULES } from './config/geotechnicalModules';
 import { getSchema } from './features/calculations/schemas';
+import { api } from './api/client';
 import { generatePDF, downloadCSV, downloadJSON } from './utils/exportUtils';
 import { Toaster, toast } from 'sonner';
 import html2canvas from 'html2canvas';
@@ -121,24 +122,48 @@ const MainLayout = () => {
   }, []);
 
   // Health Check Effect
+  // The bundled engine takes a few seconds to boot after the window appears.
+  // Until it has answered once (or the startup grace period expires) we stay in
+  // 'connecting' ("Engine starting...") and poll with backoff; afterwards we
+  // poll steadily and report 'offline' on failure.
   useEffect(() => {
+    const STARTUP_GRACE_MS = 90000;
+    const STEADY_INTERVAL_MS = 5000;
+    const startedAt = Date.now();
+    let everOnline = false;
+    let delay = 500;
+    let timer = null;
+    let cancelled = false;
+
     const checkHealth = async () => {
+      let healthy = false;
       try {
-        const response = await fetch('http://127.0.0.1:8000/health');
-        if (response.ok) {
-          setBackendStatus('online');
-        } else {
-          setBackendStatus('offline');
-        }
-      } catch (err) {
-        setBackendStatus('offline');
-        console.log("Health Check Failed (Offline):", err);
+        healthy = await api.health();
+      } catch {
+        healthy = false;
       }
+      if (cancelled) return;
+
+      if (healthy) {
+        everOnline = true;
+        setBackendStatus('online');
+      } else if (everOnline || Date.now() - startedAt > STARTUP_GRACE_MS) {
+        setBackendStatus('offline');
+      }
+
+      if (everOnline) {
+        delay = STEADY_INTERVAL_MS;
+      } else {
+        delay = Math.min(Math.round(delay * 1.5), STEADY_INTERVAL_MS);
+      }
+      timer = setTimeout(checkHealth, delay);
     };
 
     checkHealth();
-    const interval = setInterval(checkHealth, 5000); // Check every 5s
-    return () => clearInterval(interval);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, []);
 
   // Search Effect
@@ -405,8 +430,11 @@ const MainLayout = () => {
       });
     } catch (error) {
       console.error("Calculation Error:", error);
+      const engineStarting = backendStatus === 'connecting' && error instanceof TypeError;
       setCalculationResults({
-        error: error.message || 'Calculation failed',
+        error: engineStarting
+          ? 'The calculation engine is still starting. Please try again in a few seconds.'
+          : (error.message || 'Calculation failed'),
         details: error.details || []
       });
     } finally {
@@ -476,7 +504,7 @@ const MainLayout = () => {
   const getStatusMessage = () => {
     if (backendStatus === 'online') return "Engine Ready";
     if (backendStatus === 'offline') return "Engine Offline (Starting Offline Mode...)";
-    return "Connecting to Engine...";
+    return "Engine starting...";
   };
 
   // HomeView function selection handler

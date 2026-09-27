@@ -78,7 +78,7 @@ class VoidRatioPorosityOutput(GeoAIBaseModel):
 
 # --- relative_density ---
 class RelativeDensityInput(GeoAIBaseModel):
-    voidratio: float = GeotechnicalField(
+    void_ratio: float = GeotechnicalField(
         ...,
         gt=0.01,
         unit="-",

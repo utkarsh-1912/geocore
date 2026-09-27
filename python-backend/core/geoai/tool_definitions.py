@@ -3,12 +3,6 @@ Standard Tool Definitions for GeoAI
 Binds Groundhog functions to the Tool Registry with canonical schemas.
 """
 from typing import Optional, Dict, Any, List
-import groundhog.siteinvestigation.classification.phaserelations as pr
-import groundhog.shallowfoundations.stressdistribution as sd
-import groundhog.soildynamics.soilproperties as dp
-import groundhog.excavations.basic as ep
-import groundhog.pipelinescables.stability.penetration as pipe
-import groundhog.consolidation.groundwaterflow.pumpingtests as gw
 
 from core.geoai.tool_registry import tool_registry, geoai_tool
 from core.geoai.schemas.classification import (
@@ -36,6 +30,7 @@ from core.geoai.schemas.expanded import (
     output_model=BulkUnitWeightOutput
 )
 def calculate_bulk_unit_weight(**kwargs):
+    import groundhog.siteinvestigation.classification.phaserelations as pr
     return pr.bulkunitweight(**kwargs)
 
 
@@ -48,6 +43,7 @@ def calculate_bulk_unit_weight(**kwargs):
     output_model=VoidRatioPorosityOutput
 )
 def calculate_void_ratio_from_porosity(**kwargs):
+    import groundhog.siteinvestigation.classification.phaserelations as pr
     return pr.voidratio_porosity(**kwargs)
 
 
@@ -60,6 +56,7 @@ def calculate_void_ratio_from_porosity(**kwargs):
     output_model=RelativeDensityOutput
 )
 def calculate_relative_density(**kwargs):
+    import groundhog.siteinvestigation.classification.phaserelations as pr
     return pr.relative_density(**kwargs)
 
 
@@ -72,6 +69,7 @@ def calculate_relative_density(**kwargs):
     output_model=StressesCircleOutput
 )
 def calculate_stresses_circular_footing(**kwargs):
+    import groundhog.shallowfoundations.stressdistribution as sd
     return sd.stresses_circle(**kwargs)
 
 
@@ -84,6 +82,7 @@ def calculate_stresses_circular_footing(**kwargs):
     output_model=StressesPointloadOutput
 )
 def calculate_stresses_point_load(**kwargs):
+    import groundhog.shallowfoundations.stressdistribution as sd
     return sd.stresses_pointload(**kwargs)
 
 
@@ -96,6 +95,7 @@ def calculate_stresses_point_load(**kwargs):
     output_model=GmaxShearWaveVelocityOutput
 )
 def calculate_gmax_from_shear_wave_velocity(**kwargs):
+    import groundhog.soildynamics.soilproperties as dp
     return dp.gmax_shearwavevelocity(**kwargs)
 
 
@@ -108,6 +108,7 @@ def calculate_gmax_from_shear_wave_velocity(**kwargs):
     output_model=EarthPressureRankineOutput
 )
 def calculate_earth_pressure_rankine(**kwargs):
+    import groundhog.excavations.basic as ep
     return ep.earthpressurecoefficients_rankine(**kwargs)
 
 
@@ -120,6 +121,7 @@ def calculate_earth_pressure_rankine(**kwargs):
     output_model=ContactWidthOutput
 )
 def calculate_pipeline_contact_width(**kwargs):
+    import groundhog.pipelinescables.stability.penetration as pipe
     return pipe.contactwidth(**kwargs)
 
 
@@ -132,6 +134,7 @@ def calculate_pipeline_contact_width(**kwargs):
     output_model=HydraulicConductivityUnconfinedOutput
 )
 def calculate_hydraulic_conductivity_unconfined(**kwargs):
+    import groundhog.consolidation.groundwaterflow.pumpingtests as gw
     return gw.hydraulicconductivity_unconfinedaquifer(**kwargs)
 
 

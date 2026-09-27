@@ -1,0 +1,5 @@
+# Generated GeoAI SFT/eval datasets (regenerate with:
+#   python -m core.geoai.training.scaleup --out core/geoai/training/data)
+# Large JSONL files are not committed.
+*
+!.gitignore

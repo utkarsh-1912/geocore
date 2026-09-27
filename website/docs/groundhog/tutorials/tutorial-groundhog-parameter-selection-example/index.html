@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Groundhog parameter selection example — GeoCore Docs</title>
+  <meta name="description" content="This notebook illustrates how geotechnical parameters can be selected with groundhog using the automatic selection and the LogPlotMatplotlib functionality.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Groundhog parameter selection example — GeoCore Docs">
+  <meta property="og:description" content="This notebook illustrates how geotechnical parameters can be selected with groundhog using the automatic selection and the LogPlotMatplotlib functionality.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/" aria-current="page">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/guides/">Groundhog Guides</a></li>
+        <li><a href="/docs/groundhog/tutorials/">Tutorials</a></li>
+        <li><span aria-current="page">Groundhog parameter selection example</span></li>
+      </ol>
+    </nav>
+
+    <h1>Groundhog parameter selection example</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+    <div class="prose docs-body"><p>This notebook illustrates how geotechnical parameters can be selected with <code>groundhog</code> using the automatic selection and the <code>LogPlotMatplotlib</code> functionality.</p>
+<h2 id="stratigraphy">Stratigraphy</h2>
+<p>We will need to use the <code>qt</code> plotting backend to allow interactive plotting.</p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">qt</span>
+</code></pre></div>
+
+<p>We will read a <code>SoilProfile</code> object using the <code>read_excel</code> method from the <code>soilprofile</code> module. This methods reads Excel files with a proper definition of stratigraphy and imports them as a <code>SoilProfile</code> object.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.soilprofile</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_excel</span>
+</code></pre></div>
+
+<p>A <code>SoilProfile</code> with the name <code>sp</code> is loaded from the Excel file <code>bh_log.xlsx</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span> <span class="o">=</span> <span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;Data/bh_log.xlsx&#39;</span><span class="p">)</span>
+<span class="n">sp</span>
+</code></pre></div>
+
+<h2 id="undrained-shear-strength-data">Undrained shear strength data</h2>
+<p>We can import undrained shear strength data from various sources; hand-held tools, UU and CU triaxial and DSS. Undrained shear strength can also be calculated from CPT data using a cone factor <span class="math">\(N_{kt}\)</span>.</p>
+<h3 id="data-from-hand-held">Data from hand-held</h3>
+<p>We will import the data using the Pandas library. The data from measurements with hand-held tools is stored in the file <code>su_handtools_1.xlsx</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">su_handtools_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;Data/su_handtools_1.xlsx&#39;</span><span class="p">)</span>
+<span class="n">su_handtools_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="from-cu-tests">From CU tests</h3>
+<p>The data from consolidated undrained triaxial tests is stored in the file <code>cu_1.xlsx</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">su_cu_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;Data/cu_1.xlsx&#39;</span><span class="p">)</span>
+<span class="n">su_cu_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="uu-tests">UU tests</h3>
+<p>Import the data for unconsolidated undrained triaxial testing from the file <code>uu_1.xlsx</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">su_uu_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;Data/uu_1.xlsx&#39;</span><span class="p">)</span>
+<span class="n">su_uu_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="dss-tests">DSS tests</h3>
+<p>For constant volume direct simple shear testing, used <code>dss_cv_1.xlsx</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">su_dss_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;Data/dss_cv_1.xlsx&#39;</span><span class="p">)</span>
+<span class="n">su_dss_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="cpt-tests">CPT tests</h3>
+<p>CPT data can be used to calculate the undrained strength. We will import CPT data for which the undrained shear strength has already been calculated.</p>
+<p>Note that Python is also very useful to determine the <span class="math">\(N_{kt}\)</span> factor for undrained shear strength calculation from CPT data, but this is beyond the scope of this tutorial.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.siteinvestigation.insitutests.pcpt_processing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCPTProcessing</span>
+</code></pre></div>
+
+<p>The CPT data can be imported from the file <code>cpt.xlsx</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">pcpt</span> <span class="o">=</span> <span class="n">PCPTProcessing</span><span class="p">(</span><span class="s1">&#39;CPT&#39;</span><span class="p">)</span>
+<span class="n">pcpt</span><span class="o">.</span><span class="n">load_excel</span><span class="p">(</span><span class="s1">&#39;Data/cpt.xlsx&#39;</span><span class="p">)</span>
+<span class="n">pcpt</span><span class="o">.</span><span class="n">plot_raw_pcpt</span><span class="p">(</span><span class="n">latex_titles</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Based on the CPT data, we can see that there are clay layers in the profile. We will work on the data from the clay layer between 8.2m and 49m.</p>
+<p>We can select the <span class="math">\(S_u\)</span> data for this clay layer only.</p>
+<div class="highlight"><pre><span></span><code><span class="n">cpt_su</span> <span class="o">=</span> <span class="n">pcpt</span><span class="o">.</span><span class="n">data</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">pcpt</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">8.2</span><span class="p">)</span> <span class="o">&amp;</span> 
+    <span class="p">(</span><span class="n">pcpt</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">49</span><span class="p">)][[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">,</span> <span class="s1">&#39;Su [kPa]&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cpt_su</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="plotting-all-data">Plotting all data</h3>
+<p>To allow parameter selection, we need to open the <code>LogPlotMatplotlib</code> object in a separate window.</p>
+<p>We will create the plot from the available <code>SoilProfile</code> (<code>sp</code>) and will add traces for each each of the data sources. Axis titles and ranges are also customised.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">groundhog.general.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogPlotMatplotlib</span>
+
+<span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>You can close the plot after inspecting it.</p>
+<h2 id="automatic-selection-with-selection_soilparameter">Automatic selection with <code>selection_soilparameter</code></h2>
+<p>We can run the <code>.selection_soilparameter</code> method on the CPT data for fully automated soil parameter selection. This will select a trend based on the conditions set by the keyword arguments. Constant values or linear variations can be used. A minimum, mean or maximum can be selected.</p>
+<p>Note that automated selections are not always the best choice, so always inspect the results of an automated parameter selection process.</p>
+<h3 id="mean-constant-value">Mean constant value</h3>
+<p>First, we select a mean value in each layer based on the <span class="math">\(S_u\)</span> values from the CPT.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">selection_soilparameter</span><span class="p">(</span>
+    <span class="n">parameter</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span>
+    <span class="n">depths</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<p>The selected values can be plotted in the <code>LogPlotMatplotlib</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span><span class="n">parametername</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>You can close this plot after inspecting it.</p>
+<p>You can also see the numerical values of the selected <span class="math">\(S_u\)</span> in each layer:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<p>We remove this column with automatically selected <span class="math">\(S_u\)</span> values again to demonstrate alternative selection methods.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">remove_parameter</span><span class="p">(</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="linearly-varying-mean-value">Linearly varying mean value</h3>
+<p><code>groundhog</code> can also fit linear relations in each layer with the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">selection_soilparameter</span><span class="p">(</span>
+    <span class="n">parameter</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span>
+    <span class="n">depths</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">linearvariation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The results can again be displayed.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span><span class="n">parametername</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>You can close the plot after inspecting it.</p>
+<p>When showing the table for the <code>SoilProfile</code>, you can see that two columns are created; one with the value at the top of the layer (<code>Su from [kPa]</code>), the other with the value at the bottom of the layer (<code>Su to [kPa]</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<p>We will again remove these columns with selected values to demonstrate alternative methods of selection.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">remove_parameter</span><span class="p">(</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="constant-minimum-value">Constant minimum value</h3>
+<p><code>groundhog</code> can also estimate conservative values by taking the minimum in each layer.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">selection_soilparameter</span><span class="p">(</span>
+    <span class="n">parameter</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span>
+    <span class="n">depths</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">rule</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We can visualise this selection:</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span><span class="n">parametername</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The parameters chosen in this way can be very sensitive to local minima. Close the plot after inspecting it.</p>
+<p>The numerical values of the selection can also be shown.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<p>Remove the column with selected minimum values before proceeding to manual <span class="math">\(S_u\)</span> selection.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">remove_parameter</span><span class="p">(</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="manual-selection">Manual selection</h2>
+<p>The user can click on a plot with <span class="math">\(S_u\)</span> data to create their own parameter profiles.</p>
+<p>First generate the <code>LogPlotMatplotlib</code>with the available <span class="math">\(S_u\)</span> data on it.</p>
+<p>Don't close this plot window as it needs to stay open for the parameter selection.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mf">80.9</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>You can select additional layers by clicking on the positions where you want to place additional layers. The <code>select_layering</code> method has a <code>stop_threshold</code> parameter which defines where you need to click to stop the layer selection process. If you click where <span class="math">\(S_u\)</span> &gt; 25kPa, additional layers will get selected. If you click below that value, the layer selection will stop.</p>
+<p>Try it out by running the following command and clicking on the plot.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span><span class="o">.</span><span class="n">select_layering</span><span class="p">(</span><span class="n">stop_threshold</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div>
+
+<p>You can now also select the values of <span class="math">\(S_u\)</span> manually in each layer. The <code>select_linear</code> method allows the selection of linear trends in each layer. Click through all the layers from top to bottom. Click first on the value at the top of the layer and then on the value at the bottom of the layer. If you click below the <code>nan_tolerance</code>, NaN will be selected (e.g. for <span class="math">\(S_u\)</span> in a sand layer).</p>
+<p>Try it out by running the following command and clicking on the plot.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span><span class="o">.</span><span class="n">select_linear</span><span class="p">(</span><span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">parametername</span><span class="o">=</span><span class="s1">&#39;Su&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;kPa&#39;</span><span class="p">,</span> <span class="n">nan_tolerance</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div>
+
+<p>You can now show the numerical values of the manually selected <span class="math">\(S_u\)</span> trend.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<p>To demonstrate the selection of constant values, we first remove the selected <span class="math">\(S_u\)</span> profile from the previous step.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">remove_parameter</span><span class="p">(</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Then, we regenerate the plot in which we will select <span class="math">\(S_u\)</span> (note that the additional layers do not disappear).</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mf">80.9</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The <code>select_constant</code> method works in the same way as the <code>select_linear</code> method but we only need to click once in each layer.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span><span class="o">.</span><span class="n">select_constant</span><span class="p">(</span><span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">parametername</span><span class="o">=</span><span class="s1">&#39;Su&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;kPa&#39;</span><span class="p">,</span> <span class="n">nan_tolerance</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">sp</span>
+</code></pre></div>
+
+<h2 id="visualization-of-selected-parameters">Visualization of selected parameters</h2>
+<p>Finally, we can create summary plot of the selected geotechnical parameters.</p>
+<div class="highlight"><pre><span></span><code><span class="n">logplot</span> <span class="o">=</span> <span class="n">LogPlotMatplotlib</span><span class="p">(</span>
+   <span class="n">soilprofile</span><span class="o">=</span><span class="n">sp</span><span class="p">,</span>
+   <span class="n">no_panels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+   <span class="n">fillcolordict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SAND&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND/CLAY&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">})</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_handtools_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Handtools&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Su peak q [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_cu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Su peak [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_uu_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Failure shear stress [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">su_dss_results</span><span class="p">[</span><span class="s1">&#39;Depth [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DSS&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">],</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">cpt_su</span><span class="p">[</span><span class="s1">&#39;z [m]&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;From CPT&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">add_soilparameter_trace</span><span class="p">(</span><span class="n">parametername</span><span class="o">=</span><span class="s1">&#39;Su [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ S_u $ [kPa]&#39;</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_title</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;$ z $ [m]&#39;</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_xaxis_range</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">panel_no</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">set_zaxis_range</span><span class="p">(</span><span class="n">min_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">logplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="export-of-selection">Export of selection</h2>
+<div class="highlight"><pre><span></span><code><span class="n">sp</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s1">&#39;Data/selected_su.xlsx&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;openpyxl&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>: 
+</code></pre></div></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Groundhog%20parameter%20selection%20example.ipynb">Upstream source (groundhog 0.15.0)</a></li><li>Notebook: <code>notebooks/Tutorial - Groundhog parameter selection example.ipynb</code></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>gINT data import in Python for Windows</a><a class="next" href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Tutorial - Loading AGS data using ```groundhog```</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#stratigraphy">Stratigraphy</a></li>
+      <li class="lvl-2"><a href="#undrained-shear-strength-data">Undrained shear strength data</a></li>
+      <li class="lvl-3"><a href="#data-from-hand-held">Data from hand-held</a></li>
+      <li class="lvl-3"><a href="#from-cu-tests">From CU tests</a></li>
+      <li class="lvl-3"><a href="#uu-tests">UU tests</a></li>
+      <li class="lvl-3"><a href="#dss-tests">DSS tests</a></li>
+      <li class="lvl-3"><a href="#cpt-tests">CPT tests</a></li>
+      <li class="lvl-3"><a href="#plotting-all-data">Plotting all data</a></li>
+      <li class="lvl-2"><a href="#automatic-selection-with-selection_soilparameter">Automatic selection with selection_soilparameter</a></li>
+      <li class="lvl-3"><a href="#mean-constant-value">Mean constant value</a></li>
+      <li class="lvl-3"><a href="#linearly-varying-mean-value">Linearly varying mean value</a></li>
+      <li class="lvl-3"><a href="#constant-minimum-value">Constant minimum value</a></li>
+      <li class="lvl-2"><a href="#manual-selection">Manual selection</a></li>
+      <li class="lvl-2"><a href="#visualization-of-selected-parameters">Visualization of selected parameters</a></li>
+      <li class="lvl-2"><a href="#export-of-selection">Export of selection</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

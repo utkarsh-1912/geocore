@@ -1,0 +1,2922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shallow foundation capacity — GeoCore Docs</title>
+  <meta name="description" content="API reference for groundhog.shallowfoundations.capacity: 13 functions, 3 classes.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Shallow foundation capacity — GeoCore Docs">
+  <meta property="og:description" content="API reference for groundhog.shallowfoundations.capacity: 13 functions, 3 classes.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li><a href="/docs/" aria-current="page">Docs</a></li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>piletesting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>lateral</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details open>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/" aria-current="page">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+<ul>
+  <li>
+        <a href="/docs/changelog/groundhog/">
+    <span>groundhog changelog</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/groundhog/api/">Groundhog API Reference</a></li>
+        <li><a href="/docs/groundhog/api/shallowfoundations/">Shallow foundations</a></li>
+        <li><span aria-current="page">Shallow foundation capacity</span></li>
+      </ol>
+    </nav>
+
+    <h1>Shallow foundation capacity</h1>
+    <p class="docs-meta">
+<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.shallowfoundations.capacity</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.shallowfoundations.capacity</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/shallowfoundations/capacity.py">View source</a>.</p>
+<p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/shallowfoundations/capacity.html">Shallow foundation capacity</a>.</p>
+<p><strong>Classes:</strong> <a href="#shallowfoundationcapacity"><code>ShallowFoundationCapacity</code></a>, <a href="#shallowfoundationcapacityundrained"><code>ShallowFoundationCapacityUndrained</code></a>, <a href="#shallowfoundationcapacitydrained"><code>ShallowFoundationCapacityDrained</code></a></p>
+<p><strong>Functions:</strong> <a href="#verticalcapacity_undrained_api"><code>verticalcapacity_undrained_api</code></a>, <a href="#verticalcapacity_drained_api"><code>verticalcapacity_drained_api</code></a>, <a href="#slidingcapacity_undrained_api"><code>slidingcapacity_undrained_api</code></a>, <a href="#slidingcapacity_drained_api"><code>slidingcapacity_drained_api</code></a>, <a href="#effectivearea_rectangle_api"><code>effectivearea_rectangle_api</code></a>, <a href="#effectivearea_circle_api"><code>effectivearea_circle_api</code></a>, <a href="#envelope_drained_api"><code>envelope_drained_api</code></a>, <a href="#envelope_undrained_api"><code>envelope_undrained_api</code></a>, <a href="#nq_frictionangle_sand"><code>nq_frictionangle_sand</code></a>, <a href="#ngamma_frictionangle_vesic"><code>ngamma_frictionangle_vesic</code></a>, <a href="#ngamma_frictionangle_meyerhof"><code>ngamma_frictionangle_meyerhof</code></a>, <a href="#ngamma_frictionangle_davisbooker"><code>ngamma_frictionangle_davisbooker</code></a>, <a href="#failuremechanism_prandtl"><code>failuremechanism_prandtl</code></a></p>
+<p><a id="shallowfoundationcapacity"></a></p>
+<h2 id="class-shallowfoundationcapacity">class <code>ShallowFoundationCapacity</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">ShallowFoundationCapacity</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</code></pre></div>
+
+<p><a id="shallowfoundationcapacity-__init__"></a></p>
+<h3 id="shallowfoundationcapacity__init__"><code>ShallowFoundationCapacity.__init__</code></h3>
+<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Generates a ShallowFoundationCapacity object. All shared functionality for drained and undrained analysis is set in this class. The drained and undrained capacity analyses inherit from this class.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Title for the analysis</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="shallowfoundationcapacity-set_geometry"></a></p>
+<h3 id="shallowfoundationcapacityset_geometry"><code>ShallowFoundationCapacity.set_geometry</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_geometry</span><span class="p">(</span>
+    <span class="n">option</span><span class="o">=</span><span class="s1">&#39;rectangle&#39;</span><span class="p">,</span>
+    <span class="n">length</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">skirted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the geometry of the shallow foundation.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>option</code></td>
+<td></td>
+<td></td>
+<td><code>'rectangle'</code></td>
+<td>Geometrical option. Choose from <code>'rectangle'</code> and <code>'circle'</code></td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td>m</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Largest foundation dimension, specify for rectangular foundation (<span class="math">\(L\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Shortest foundation dimension, specify for rectangular foundation (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>diameter</code></td>
+<td>m</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Diameter of the foundation, specify for circular foundation (<span class="math">\(2 \ cdot R\)</span>)</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>m</td>
+<td></td>
+<td><code>0</code></td>
+<td>Depth from the soil surface to the base of the foundation (default=0m) (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>skirted</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether seabed penetrating skirts are used or not (default=False)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the geometrical properties of the analysis</p>
+<p><a id="shallowfoundationcapacity-set_eccentricity"></a></p>
+<h3 id="shallowfoundationcapacityset_eccentricity"><code>ShallowFoundationCapacity.set_eccentricity</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_eccentricity</span><span class="p">(</span><span class="n">eccentricity_width</span><span class="p">,</span> <span class="n">eccentricity_length</span><span class="o">=</span><span class="n">nan</span><span class="p">)</span>
+</code></pre></div>
+
+<p>When a foundation is loaded out of its center, it will lose some of its bearing capacity. For a rectangular foundation, eccentricity can be measured in the direction of the width (<span class="math">\(e_B\)</span>) and in the direction of the length (<span class="math">\(e_L\)</span>). For a circular foundation, only the eccentricty in the direction of the width needs to be specified.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eccentricity_width</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>Eccentricity in width direction for rectangular foundation or eccentricity for a circular foundation</td>
+</tr>
+<tr>
+<td><code>eccentricity_length</code></td>
+<td></td>
+<td></td>
+<td><code>nan</code></td>
+<td>Eccentricity in length direction for rectangular foundation, ignored for circular foundation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Calculates the effective area of the foundation</p>
+<p><a id="shallowfoundationcapacity-plot_envelope"></a></p>
+<h3 id="shallowfoundationcapacityplot_envelope"><code>ShallowFoundationCapacity.plot_envelope</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_envelope</span><span class="p">(</span>
+    <span class="n">show_factored</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_uncorrected</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">xaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">yaxis_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">general_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plot the bearing capacity envelope using Plotly. This method contains the shared code for drained and undrained bearing capacity envelope plotting.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_factored</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the factored envelope is shown</td>
+</tr>
+<tr>
+<td><code>show_uncorrected</code></td>
+<td></td>
+<td></td>
+<td><code>False</code></td>
+<td>Boolean determining whether the uncorrected envelope is shown</td>
+</tr>
+<tr>
+<td><code>xaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with custom layout for the X-axis</td>
+</tr>
+<tr>
+<td><code>yaxis_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with custom layout for the Y-axis</td>
+</tr>
+<tr>
+<td><code>general_layout</code></td>
+<td></td>
+<td></td>
+<td><code>None</code></td>
+<td>Dictionary with custom general layout</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Boolean determining whether the figure is shown or not</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Returns a Plotly figure with the bearing capacity envelopes</p>
+<p><a id="shallowfoundationcapacityundrained"></a></p>
+<h2 id="class-shallowfoundationcapacityundrained">class <code>ShallowFoundationCapacityUndrained</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="shallow_foundation_capacity_undrained">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#shallow_foundation_capacity_undrained">Shallow foundations › Shallow foundation capacity › Undrained Capacity Analysis</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">ShallowFoundationCapacityUndrained</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><a id="shallowfoundationcapacityundrained-set_soilparameters_undrained"></a></p>
+<h3 id="shallowfoundationcapacityundrainedset_soilparameters_undrained"><code>ShallowFoundationCapacityUndrained.set_soilparameters_undrained</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_soilparameters_undrained</span><span class="p">(</span><span class="n">unit_weight</span><span class="p">,</span> <span class="n">su_base</span><span class="p">,</span> <span class="n">su_increase</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">su_above_base</span><span class="o">=</span><span class="n">nan</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the soil parameters for undrained vertical bearing capacity and horizontal sliding analysis. Note that unit weight is used to assess the stress at base level, so the average unit weight above base level should be used</p>
+<p>If the average undrained shear strength above base level is unspecified, the undrained shear strength at base level is used.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unit_weight</code></td>
+<td>kN/m3</td>
+<td>12&lt;=unit_weight&lt;=22</td>
+<td>required</td>
+<td>Unit weight of the soil, used to calculate stress at base level (<span class="math">\(\gamma\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=su_base</td>
+<td>required</td>
+<td>Undrained shear strength at foundation base level (<span class="math">\(S_{uo}\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_increase</code></td>
+<td>kPa/m</td>
+<td>0.0&lt;=su_increase</td>
+<td><code>0.0</code></td>
+<td>Linear increase in undrained shear strength (optional, default=0.0) (<span class="math">\(\kappa\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_above_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=su_above_base</td>
+<td><code>nan</code></td>
+<td>Average undrained shear strength above base level (optional, default=np.nan) (<span class="math">\(s_{u,ave}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the soil parameters for the analysis</p>
+<p><a id="shallowfoundationcapacityundrained-calculate_bearing_capacity"></a></p>
+<h3 id="shallowfoundationcapacityundrainedcalculate_bearing_capacity"><code>ShallowFoundationCapacityUndrained.calculate_bearing_capacity</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_bearing_capacity</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the vertical bearing capacity for undrained (short term) conditions</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Additional arguments for the <code>verticalcapacity_undrained_api</code> function (see function documentation)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><code>capacity</code> attribute contains the results of the analysis, <code>ultimate_capacity</code> gives the ultimate capacity in kN, <code>net_bearing_pressure</code> gives the net ultimate bearing pressure <span class="math">\(q_u\)</span> in kPa</p>
+<p><a id="shallowfoundationcapacityundrained-calculate_sliding_capacity"></a></p>
+<h3 id="shallowfoundationcapacityundrainedcalculate_sliding_capacity"><code>ShallowFoundationCapacityUndrained.calculate_sliding_capacity</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_sliding_capacity</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the sliding capacity for undrained (short term) conditions</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Additional arguments for the <code>slidingcapacity_undrained_api</code> function (see function documentation)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><code>sliding</code> attribute contains the results of the analysis, <code>sliding_base_only</code> gives the sliding capacity at the foundation base <span class="math">\(H_d\)</span> in kN, <code>sliding_full</code> gives the ultimate sliding resistance considering both base sliding and passive resistance <span class="math">\(H_d + \Delta H\)</span> in kN</p>
+<p><a id="shallowfoundationcapacityundrained-calculate_envelope"></a></p>
+<h3 id="shallowfoundationcapacityundrainedcalculate_envelope"><code>ShallowFoundationCapacityUndrained.calculate_envelope</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_envelope</span><span class="p">(</span><span class="n">factor_sliding</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">factor_bearing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the bearing capacity envelope for undrained (short term conditions). This envelope describes the interaction between vertical and horizontal load and the resulting VH capacity. The envelope is factored with a factor for vertical bearing capacity (default=2) and a factor for sliding capacity (default=1.5).</p>
+<p>This method applied the <code>envelope_undrained_api</code> function.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factor_sliding</code></td>
+<td></td>
+<td></td>
+<td><code>1.5</code></td>
+<td>Safety factor for vertical bearing capacity (default=2)</td>
+</tr>
+<tr>
+<td><code>factor_bearing</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Safety factor for sliding capacity (default=1.5)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the <code>envelope_undrained_api</code> function</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets a number of attributes</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>envelope_V_unfactored</code></td>
+<td></td>
+<td>V points for the unfactored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_H_unfactored</code></td>
+<td></td>
+<td>H points for the unfactored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_V_factored</code></td>
+<td></td>
+<td>V points for the factored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_H_factored</code></td>
+<td></td>
+<td>H points for the factored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_V_uncorrected</code></td>
+<td></td>
+<td>V points for the uncorrected envelope (not accounting for effective area component only) [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_H_uncorrected</code></td>
+<td></td>
+<td>H points for the uncorrected envelope (not accounting for effective area component only) [kN]</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="shallowfoundationcapacityundrained-plot_envelope"></a></p>
+<h3 id="shallowfoundationcapacityundrainedplot_envelope"><code>ShallowFoundationCapacityUndrained.plot_envelope</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_envelope</span><span class="p">(</span><span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_title</span><span class="o">=</span><span class="s1">&#39;Undrained bearing capacity envelope&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Plot the undrained bearing capacity envelope using Plotly.</p>
+<p>Supplements the method from the parent class with specific statements for undrained conditions.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>'Undrained bearing capacity envelope'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="shallowfoundationcapacitydrained"></a></p>
+<h2 id="class-shallowfoundationcapacitydrained">class <code>ShallowFoundationCapacityDrained</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="shallow_foundation_capacity_drained">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#shallow_foundation_capacity_drained">Shallow foundations › Shallow foundation capacity › Drained Capacity Analysis</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">ShallowFoundationCapacityDrained</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+
+<p>No upstream documentation.</p>
+<p><a id="shallowfoundationcapacitydrained-set_soilparameters_drained"></a></p>
+<h3 id="shallowfoundationcapacitydrainedset_soilparameters_drained"><code>ShallowFoundationCapacityDrained.set_soilparameters_drained</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">set_soilparameters_drained</span><span class="p">(</span><span class="n">effective_unit_weight</span><span class="p">,</span> <span class="n">friction_angle</span><span class="p">,</span> <span class="n">effective_stress_base</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Sets the soil parameters for drained vertical bearing capacity and horizontal sliding analysis. Note that effective unit weight is used. Because the vertical effective stress at base level can be different from the virgin effective stress, it is specified directly</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>effective_unit_weight</code></td>
+<td>kN/m3</td>
+<td>2&lt;=effective_unit_weight&lt;=12</td>
+<td>required</td>
+<td>Effective unit weight of the soil (<span class="math">\(\gamma^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>friction_angle</code></td>
+<td>deg</td>
+<td>20&lt;=friction_angle&lt;=50</td>
+<td>required</td>
+<td>Effective friction angle for the soil below foundation base level (<span class="math">\(\varphi^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_stress_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=effective_stress_base</td>
+<td>required</td>
+<td>Vertical effective stress at base (or skirt tip) level (<span class="math">\(\sigma_{v0}^{\prime}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets the soil parameters for the analysis</p>
+<p><a id="shallowfoundationcapacitydrained-calculate_bearing_capacity"></a></p>
+<h3 id="shallowfoundationcapacitydrainedcalculate_bearing_capacity"><code>ShallowFoundationCapacityDrained.calculate_bearing_capacity</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_bearing_capacity</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the vertical bearing capacity for drained (long term) conditions</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Additional arguments for the <code>verticalcapacity_drained_api</code> function (see function documentation)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><code>capacity</code> attribute contains the results of the analysis, <code>ultimate_capacity</code> gives the ultimate capacity in kN, <code>net_bearing_pressure</code> gives the net ultimate bearing pressure <span class="math">\(q_u\)</span> in kPa</p>
+<p><a id="shallowfoundationcapacitydrained-calculate_sliding_capacity"></a></p>
+<h3 id="shallowfoundationcapacitydrainedcalculate_sliding_capacity"><code>ShallowFoundationCapacityDrained.calculate_sliding_capacity</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_sliding_capacity</span><span class="p">(</span><span class="n">vertical_load</span><span class="p">,</span> <span class="n">interface_frictionangle</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the sliding capacity for drained (long term) conditions</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vertical_load</code></td>
+<td></td>
+<td></td>
+<td>required</td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>interface_frictionangle</code></td>
+<td></td>
+<td></td>
+<td><code>nan</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Additional arguments for the <code>slidingcapacity_drained_api</code> function (see function documentation)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p><code>sliding</code> attribute contains the results of the analysis, <code>sliding_base_only</code> gives the sliding capacity at the foundation base <span class="math">\(H_d\)</span> in kN, <code>sliding_full</code> gives the ultimate sliding resistance considering both base sliding and passive resistance <span class="math">\(H_d + \Delta H\)</span> in kN</p>
+<p><a id="shallowfoundationcapacitydrained-calculate_envelope"></a></p>
+<h3 id="shallowfoundationcapacitydrainedcalculate_envelope"><code>ShallowFoundationCapacityDrained.calculate_envelope</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">calculate_envelope</span><span class="p">(</span><span class="n">factor_sliding</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">factor_bearing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the bearing capacity envelope for drained (long term conditions). This envelope describes the interaction between vertical and horizontal load and the resulting VH capacity. The envelope is factored with a factor for vertical bearing capacity (default=2) and a factor for sliding capacity (default=1.5).</p>
+<p>This method applied the <code>envelope_drained_api</code> function.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factor_sliding</code></td>
+<td></td>
+<td></td>
+<td><code>1.5</code></td>
+<td>Safety factor for vertical bearing capacity (default=2)</td>
+</tr>
+<tr>
+<td><code>factor_bearing</code></td>
+<td></td>
+<td></td>
+<td><code>2</code></td>
+<td>Safety factor for sliding capacity (default=1.5)</td>
+</tr>
+<tr>
+<td><code>kwargs</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Optional keyword arguments for the <code>envelope_undrained_api</code> function</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sets a number of attributes</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>envelope_V_unfactored</code></td>
+<td></td>
+<td>V points for the unfactored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_H_unfactored</code></td>
+<td></td>
+<td>H points for the unfactored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_V_factored</code></td>
+<td></td>
+<td>V points for the factored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_H_factored</code></td>
+<td></td>
+<td>H points for the factored envelope [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_V_uncorrected</code></td>
+<td></td>
+<td>V points for the uncorrected envelope (not accounting for effective area component only) [kN]</td>
+</tr>
+<tr>
+<td><code>envelope_H_uncorrected</code></td>
+<td></td>
+<td>H points for the uncorrected envelope (not accounting for effective area component only) [kN]</td>
+</tr>
+<tr>
+<td><code>sliding_cutoff_V</code></td>
+<td></td>
+<td>V points for the sliding cutoff [kN]</td>
+</tr>
+<tr>
+<td><code>sliding_cutoff_H</code></td>
+<td></td>
+<td>H points for the sliding cutoff [kN]</td>
+</tr>
+<tr>
+<td><code>sliding_cutoff_V_factored</code></td>
+<td></td>
+<td>V points for the sliding cutoff factored [kN]</td>
+</tr>
+<tr>
+<td><code>sliding_cutoff_H_factored</code></td>
+<td></td>
+<td>H points for the sliding cutoff factored [kN]</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="shallowfoundationcapacitydrained-plot_envelope"></a></p>
+<h3 id="shallowfoundationcapacitydrainedplot_envelope"><code>ShallowFoundationCapacityDrained.plot_envelope</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">plot_envelope</span><span class="p">(</span>
+    <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_cutoff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">plot_title</span><span class="o">=</span><span class="s1">&#39;Drained bearing capacity envelope&#39;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Plot the drained bearing capacity envelope using Plotly.</p>
+<p>Supplements the method from the parent class with specific statements for undrained conditions.</p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>show_cutoff</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>No upstream documentation.</td>
+</tr>
+<tr>
+<td><code>plot_title</code></td>
+<td></td>
+<td></td>
+<td><code>'Drained bearing capacity envelope'</code></td>
+<td>No upstream documentation.</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="verticalcapacity_undrained_api"></a></p>
+<h2 id="verticalcapacity_undrained_api"><code>verticalcapacity_undrained_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="verticalcapacity_undrained_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#verticalcapacity_undrained_api">Shallow foundations › Shallow foundation capacity › Vertical Capacity (Undrained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">verticalcapacity_undrained_api</span><span class="p">(</span>
+    <span class="n">effective_length</span><span class="p">,</span>
+    <span class="n">effective_width</span><span class="p">,</span>
+    <span class="n">su_base</span><span class="p">,</span>
+    <span class="n">su_increase</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">su_above_base</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">base_depth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">skirted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">base_sigma_v</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">roughness</span><span class="o">=</span><span class="mf">0.67</span><span class="p">,</span>
+    <span class="n">horizontal_load</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">foundation_inclination</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">ground_surface_inclination</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">bearing_capacity_factor</span><span class="o">=</span><span class="mf">5.14</span><span class="p">,</span>
+    <span class="n">factor_f_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the vertical capacity for a shallow foundation in clay with constant or linearly increasing undrained shear strength according to API RP 2GEO.</p>
+<p>The correction factor consists of a shape factor, a depth factor and three inclination factors. In the case of linearly increasing shear strenght, an additional factor F is used which can either be calculated from the foundation roughness (default) or specified directly.</p>
+<p>NOTE:  The relevancy of using the depth factor (<span class="math">\(d_c\)</span>) should be evaluated in each case. If the installation procedure and/or other foundation aspects, such as scour, do not allow for the required mobilization of shear stresses in the soil above foundation base level, it is recommended that (<span class="math">\(d_c\)</span>) = 0. In particular, it is recommended that (<span class="math">\(d_c\)</span>) = 0 if the horizontal load leads to mobilization of significant passive earth pressure between seafloor and foundation base level.</p>
+<p>NOTE: (<span class="math">\(H^{\prime}\)</span>) in the equation for inclination factor refers to the load applied to the effective area component of the base only. This corresponds to the total lateral load applied to the foundation minus any soil resistance acting on the foundation above skirt tip level as outlined in A.7.2.1, and minus any lateral resistance that may be carried by shearing at skirt tip level outside the effective area. This value is an input to the function.</p>
+<p>NOTE: For embedded foundations, the eccentricity is affected by the load inclination and increases with embedment. The modified eccentricity is found by calculating the intersection between the loading direction and the base depth level.</p>
+<p>NOTE: For skirted foundations, a separate assessment is required to check whether the skirt spacing is small enough to rely on the undrained shear strenght at skirt tip level.</p>
+<p>NOTE: In the assessment for non-skirted, base embedded foundation, the overburden pressure needs to be included in the vertical capacity assessment</p>
+<div class="math-display">\[q_u = s_u \cdot N_c \cdot K_c \quad \text{ (constant)}\]</div>
+<div class="math-display">\[q_u = F \cdot \left( s_{uo} \cdot N_c + \frac{\kappa \cdot B^{\prime}}{4} \right) \cdot K_c  \quad \text{ (linearly increasing) }\]</div>
+<div class="math-display">\[Q_d = (s_u \cdot N_c \cdot K_c + \sigma_{vo}) \cdot A^{\prime} \quad \text{ (constant)}\]</div>
+<div class="math-display">\[Q_d = \left[ F \cdot \left( s_{uo} \cdot N_c + \frac{\kappa \cdot B^{\prime}}{4} \right) \cdot K_c + \sigma_{vo} \right] \cdot A^{\prime}  \quad \text{ (linearly increasing) }\]</div>
+<div class="math-display">\[\text{Exclude the }  \sigma_{vo} \text{ term for skirted foundations}\]</div>
+<div class="math-display">\[K_c = 1 + s_c + d_c  - i_c - b_c - g_c\]</div>
+<div class="math-display">\[\text{Correction factors constant undrained shear strength}\]</div>
+<div class="math-display">\[s_c = 0.18 \cdot (1 - 2 \cdot i_c) \cdot (B^{\prime} / L^{\prime})\]</div>
+<div class="math-display">\[d_c = 0.3 \cdot \arctan ( D / B^{\prime})\]</div>
+<div class="math-display">\[i_c = 0.5 - 0.5 \cdot [1 - H^{\prime} / (A^{\prime} \cdot s_u)]^{0.5}\]</div>
+<div class="math-display">\[b_c = 2 \cdot \nu / (\pi + 2) \approx 0.4 \cdot \nu\]</div>
+<div class="math-display">\[g_c = 2 \cdot \beta / (\pi + 2) \approx 0.4 \cdot \beta\]</div>
+<div class="math-display">\[\text{Correction factors linearly increasing undrained shear strength}\]</div>
+<div class="math-display">\[F \approx a + b \cdot x - ((c + b \cdot x)^2 + d^2)^{0.5}\]</div>
+<div class="math-display">\[x = \frac{\kappa \cdot B^{\prime}}{s_{uo}}\]</div>
+<div class="math-display">\[s_c = s_{cv} (1 - 2 \cdot i_c) (B^{\prime} / L^{\prime})\]</div>
+<div class="math-display">\[d_c = 0.3 \cdot (s_{u,ave} / s_{u,2}) \cdot \arctan( D / B^{\prime})\]</div>
+<div class="math-display">\[s_{u,2} = F \cdot (N_c \cdot s_{uo} + \kappa \cdot B^{\prime} / 4) / N_c\]</div>
+<div class="math-display">\[i_c = 0.5 - 0.5 \cdot [1 -H^{\prime}/(A^{\prime} \cdot s_u)]^{0.5}\]</div>
+<div class="math-display">\[b_c = 2 \cdot \nu / (\pi + 2) \approx 0.4 \cdot \nu\]</div>
+<div class="math-display">\[g_c = 2 \cdot \beta / (\pi + 2) \approx 0.4 \cdot \beta\]</div>
+<div class="math-display">\[\text{Correction for horizontal load}\]</div>
+<div class="math-display">\[H^{\prime} = H_{total} - H_{d,outside} / \gamma_{sliding} - \Delta H / \gamma_{sliding}\]</div>
+<p><img loading="lazy" decoding="async" alt="API correction factors for linear shear strength increase" src="/docs/assets/groundhog/docs/shallowfoundations/images/api_correction_factor_undrained_linear.png"></p>
+<p><em>API correction factors for linear shear strength increase</em></p>
+<p><img loading="lazy" decoding="async" alt="API inclination factor definition" src="/docs/assets/groundhog/docs/shallowfoundations/images/api_inclination_factors.png"></p>
+<p><em>API inclination factor definition</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>effective_length</code></td>
+<td>m</td>
+<td>0.0&lt;=effective_length</td>
+<td>required</td>
+<td>Effective length of the foundation (<span class="math">\(L^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_width</code></td>
+<td>m</td>
+<td>0.0&lt;=effective_width</td>
+<td>required</td>
+<td>Minimum effective lateral dimension (<span class="math">\(B^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=su_base</td>
+<td>required</td>
+<td>Undrained shear strength at foundation base level (<span class="math">\(S_{uo}\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_increase</code></td>
+<td>kPa/m</td>
+<td>0.0&lt;=su_increase</td>
+<td><code>0.0</code></td>
+<td>Linear increase in undrained shear strength (optional, default=0.0) (<span class="math">\(\kappa\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_above_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=su_above_base</td>
+<td><code>nan</code></td>
+<td>Average undrained shear strength above base level (optional, default=np.nan) (<span class="math">\(s_{u,ave}\)</span>)</td>
+</tr>
+<tr>
+<td><code>base_depth</code></td>
+<td>m</td>
+<td>0.0&lt;=base_depth</td>
+<td><code>0.0</code></td>
+<td>Depth to the base of the foundation (optional, default=0.0) (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>skirted</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Determines whether a foundation is skirted or base-embedded without skirts</td>
+</tr>
+<tr>
+<td><code>base_sigma_v</code></td>
+<td>kPa</td>
+<td>base_sigma_v &gt;= 0.0</td>
+<td><code>0.0</code></td>
+<td>Vertical total stress at base level. Only used for non-skirted base-embedded foundations (<span class="math">\(\sigma_{vo}\)</span>)</td>
+</tr>
+<tr>
+<td><code>roughness</code></td>
+<td>-</td>
+<td>0.0&lt;=roughness&lt;=1.0</td>
+<td><code>0.67</code></td>
+<td>Value for roughness (0.0 for fully smooth, 1.0 for fully rough) (optional, default=0.67) (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>horizontal_load</code></td>
+<td>kN</td>
+<td>0.0&lt;=horizontal_load</td>
+<td><code>0.0</code></td>
+<td>Horizontal load acting on effective area of foundation (optional, default=0.0) (<span class="math">\(H^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>foundation_inclination</code></td>
+<td>deg</td>
+<td>-90.0&lt;=foundation_inclination&lt;=90.0</td>
+<td><code>0.0</code></td>
+<td>Foundation inclination as defined in figure (optional, default=0.0) (<span class="math">\(\nu\)</span>)</td>
+</tr>
+<tr>
+<td><code>ground_surface_inclination</code></td>
+<td>deg</td>
+<td>-90.0&lt;=ground_surface_inclination&lt;=90.0</td>
+<td><code>0.0</code></td>
+<td>Ground surface inclination as defined in figure (optional, default=0.0) (<span class="math">\(\beta\)</span>)</td>
+</tr>
+<tr>
+<td><code>bearing_capacity_factor</code></td>
+<td>-</td>
+<td>3.0&lt;=bearing_capacity_factor&lt;=12.0</td>
+<td><code>5.14</code></td>
+<td>Bearing capacity factor (optional, default=5.14) (<span class="math">\(N_c\)</span>)</td>
+</tr>
+<tr>
+<td><code>factor_f_override</code></td>
+<td>-</td>
+<td>0.0&lt;=factor_f_override&lt;=2.0</td>
+<td><code>nan</code></td>
+<td>Direct specification of the factor F (optional, default=np.nan) (<span class="math">\(F\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Net bearing pressure (<span class="math">\(q_u\)</span>) [<span class="math">\(kPa\)</span>], Vertical capacity (<span class="math">\(Q_d\)</span>) [<span class="math">\(kN\)</span>], Combined correction factor (<span class="math">\(K_c\)</span>) [<span class="math">\(-\)</span>], Shape factor (<span class="math">\(s_c\)</span>) [<span class="math">\(-\)</span>], Depth factor (<span class="math">\(d_c\)</span>) [<span class="math">\(-\)</span>], Load inclination factor (<span class="math">\(i_c\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor (<span class="math">\(b_c\)</span>) [<span class="math">\(-\)</span>], Ground inclination factor (<span class="math">\(g_c\)</span>) [<span class="math">\(-\)</span>], Correction factor for shear strength increase (<span class="math">\(F\)</span>) [<span class="math">\(-\)</span>]</p>
+<p>Return type: <code>Python dictionary with keys ['qu [kPa]', 'vertical_capacity [kN]','K_c [-]','s_c [-]','d_c [-]','i_c [-]','b_c [-]','g_c [-]','F [-]']</code></p>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="verticalcapacity_drained_api"></a></p>
+<h2 id="verticalcapacity_drained_api"><code>verticalcapacity_drained_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="verticalcapacity_drained_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#verticalcapacity_drained_api">Shallow foundations › Shallow foundation capacity › Vertical Capacity (Drained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">verticalcapacity_drained_api</span><span class="p">(</span>
+    <span class="n">vertical_effective_stress</span><span class="p">,</span>
+    <span class="n">effective_friction_angle</span><span class="p">,</span>
+    <span class="n">effective_unit_weight</span><span class="p">,</span>
+    <span class="n">effective_length</span><span class="p">,</span>
+    <span class="n">effective_width</span><span class="p">,</span>
+    <span class="n">base_depth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">skirted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">load_inclination</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">foundation_inclination</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">ground_surface_inclination</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the vertical capacity for a shallow foundation in sand with effective friction angle characterized from drained triaxial tests. For constructing an envelope, this value needs to be multiplied by the tangent of the inclination to obtain the H-coordinate of the envelope point.</p>
+<p>The correction factor consists of a shape factor, a depth factor and three inclination factors for both <span class="math">\(K_q\)</span> and <span class="math">\(K_gamma\)</span>.</p>
+<p>NOTE: <span class="math">\(H/Q\)</span> corresponds to the tangent of the load inclination. For constructing an envelope, load inclinations should be varied from 0.0 to 90.0</p>
+<p>NOTE:  The relevancy of using the depth factors should be evaluated in each case. If the installation procedure and/or other foundation aspects, such as scour, do not allow for the required mobilization of shear stresses in the soil above foundation base level, it is recommended that depth factors are set to zero. In particular, it is recommended that d = 0 if the horizontal load leads to mobilization of significant passive earth pressure between seafloor and foundation base level.</p>
+<p>NOTE: <span class="math">\(H\)</span> in the equation for inclination factor refers to the load applied to the effective area component of the base only. This corresponds to the total lateral load applied to the foundation minus any soil resistance acting on the foundation above skirt tip level as outlined in A.7.2.1, and minus any lateral resistance that may be carried by shearing at skirt tip level outside the effective area.</p>
+<p>NOTE: For embedded foundations, the eccentricity is affected by the load inclination and increases with embedment. The modified eccentricity is found by calculating the intersection between the loading direction and the base depth level.</p>
+<p>NOTE: For non-skirted, base embedded foundations, the contribution of overburden pressure needs to be taken into account. In the equations in the standard, (Nq - 1) needs to be replaced by Nq</p>
+<div class="math-display">\[q_u = p_o^{\prime} (N_q - 1) K_q + 0.5 \gamma^{\prime} B^{\prime} N_{\gamma} K_{\gamma}\]</div>
+<div class="math-display">\[Q_d^{\prime} = \left[ p_o^{\prime} (N_q - 1) K_q + 0.5 \gamma^{\prime} B^{\prime} N_{\gamma} K_{\gamma} \right] A^{\prime}\]</div>
+<div class="math-display">\[\text{Use }  N_q \text{ instead of } (N_q - 1) \text{ for non-skirted, base embedded foundations}\]</div>
+<div class="math-display">\[N_q = \exp \left [ \pi \tan \phi^{\prime} \right ] (\tan^2 (45^{\circ} + \phi^{\prime}/2))\]</div>
+<div class="math-display">\[N_{\gamma} = 1.5 \left ( N_q - 1 \right) \tan \phi^{\prime}\]</div>
+<div class="math-display">\[K_q = i_q \cdot s_q \cdot d_q \cdot b_q \cdot g_q\]</div>
+<div class="math-display">\[K_{\gamma} = i_{\gamma} \cdot s_{\gamma} \cdot d_{\gamma} \cdot b_{\gamma} \cdot g_{\gamma}\]</div>
+<div class="math-display">\[i_q = \left [ 1 -0.5 (H/Q) \right]^5\]</div>
+<div class="math-display">\[i_{\gamma} = \left[ 1-0.7 (H/Q) \right]^5\]</div>
+<div class="math-display">\[s_q = 1+i_q ( B^{\prime} / L^{\prime} ) \sin \phi^{\prime}\]</div>
+<div class="math-display">\[s_{\gamma} = 1 - 0.4 i_{\gamma} ( B^{\prime} / L^{\prime} )\]</div>
+<div class="math-display">\[d_q = 1 + 1.2 (D/B^{\prime}) \tan \phi^{\prime} (1 - \sin \phi^{\prime})^2\]</div>
+<div class="math-display">\[d_{\gamma} = 1\]</div>
+<div class="math-display">\[b_q = e^{-2 \nu \tan \phi^{\prime}}\]</div>
+<div class="math-display">\[b_{\gamma} = e^{-2.7 \nu \tan \phi^{\prime}}\]</div>
+<div class="math-display">\[g_q = g_{\gamma} = (1 - 0.5 \tan \beta)^5\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vertical_effective_stress</code></td>
+<td>kPa</td>
+<td>0.0&lt;=vertical_effective_stress</td>
+<td>required</td>
+<td>Vertical effect stress at depth corresponding to foundation base (<span class="math">\(p_o^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_friction_angle</code></td>
+<td>deg</td>
+<td>20.0&lt;=effective_friction_angle&lt;=50.0</td>
+<td>required</td>
+<td>Effective friction angle (for appropriate stress level at foundatoin base) (<span class="math">\(\phi^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_unit_weight</code></td>
+<td>kN/m3</td>
+<td>3.0&lt;=effective_unit_weight&lt;=12.0</td>
+<td>required</td>
+<td>Effective unit weight at foundation base (<span class="math">\(\gamma^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_length</code></td>
+<td>m</td>
+<td>0.0&lt;=effective_length</td>
+<td>required</td>
+<td>Effective length of the footing (<span class="math">\(L^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_width</code></td>
+<td>m</td>
+<td>0.0&lt;=effective_width</td>
+<td>required</td>
+<td>Minimum effective lateral dimension (<span class="math">\(B^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>base_depth</code></td>
+<td>m</td>
+<td>0.0&lt;=base_depth</td>
+<td><code>0.0</code></td>
+<td>Depth of the foundation base (optional, default=0.0) (<span class="math">\(D\)</span>)</td>
+</tr>
+<tr>
+<td><code>skirted</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Determines whether a foundation is skirted or base-embedded without skirts</td>
+</tr>
+<tr>
+<td><code>load_inclination</code></td>
+<td>deg</td>
+<td>0.0&lt;=load_inclination</td>
+<td><code>0.0</code></td>
+<td>Inclination of the load taking into account horizontal load on effective area of base only (optional, default=0.0) (<span class="math">\(H^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>foundation_inclination</code></td>
+<td>deg</td>
+<td>-90.0&lt;=foundation_inclination&lt;=90.0</td>
+<td><code>0.0</code></td>
+<td>Foundation inclination as defined in figure (optional, default=0.0) (<span class="math">\(\nu\)</span>)</td>
+</tr>
+<tr>
+<td><code>ground_surface_inclination</code></td>
+<td>deg</td>
+<td>-90.0&lt;=ground_surface_inclination&lt;=90.0</td>
+<td><code>0.0</code></td>
+<td>Ground surface inclination as defined in figure (optional, default=0.0) (<span class="math">\(\beta\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Vertical capacity of the footing (<span class="math">\(Q_d\)</span>) [<span class="math">\(kN\)</span>], Bearing capacity factor for frictional resistance (<span class="math">\(N_q\)</span>) [<span class="math">\(-\)</span>], Bearing capacity factor for unit weight (<span class="math">\(N_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Combined correction factor for frictional resistance (<span class="math">\(K_q\)</span>) [<span class="math">\(-\)</span>], Combined correction factor for unit weight (<span class="math">\(K_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Shape factor frictional (<span class="math">\(s_q\)</span>) [<span class="math">\(-\)</span>], Shape factor unit weight (<span class="math">\(s_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Depth factor frictional (<span class="math">\(d_q\)</span>) [<span class="math">\(-\)</span>], Depth factor unit weight (<span class="math">\(d_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Inclination factor frictional (<span class="math">\(i_q\)</span>) [<span class="math">\(-\)</span>], Inclination factor unit weight (<span class="math">\(i_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor frictional (<span class="math">\(b_q\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor unit weight (<span class="math">\(b_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Soil surface inclination factor frictional (<span class="math">\(g_q\)</span>) [<span class="math">\(-\)</span>], Soil surface inclination factor unit weight (<span class="math">\(g_gamma\)</span>) [<span class="math">\(-\)</span>]</p>
+<p>Return type: <code>Python dictionary with keys ['vertical_capacity [kN]','N_q [-]','N_gamma [-]','K_q [-]','K_gamma [-]','s_q [-]','s_gamma [-]','d_q [-]','d_gamma [-]','i_q [-]','i_gamma [-]','b_q [-]','b_gamma [-]','g_q [-]','g_gamma [-]']</code></p>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="slidingcapacity_undrained_api"></a></p>
+<h2 id="slidingcapacity_undrained_api"><code>slidingcapacity_undrained_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="slidingcapacity_undrained_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#slidingcapacity_undrained_api">Shallow foundations › Shallow foundation capacity › Sliding Capacity (Undrained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">slidingcapacity_undrained_api</span><span class="p">(</span>
+    <span class="n">su_base</span><span class="p">,</span>
+    <span class="n">foundation_area</span><span class="p">,</span>
+    <span class="n">su_above_base</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">embedded_section_area</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">soil_reaction_coefficient</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the undrained sliding capacity for a shallow foundation on clay, the contribution of skirt resistance is taken into account.</p>
+<div class="math-display">\[H_d = S_{uo} \cdot A\]</div>
+<div class="math-display">\[\Delta H = K_{ru} \cdot (S_{u,ave}) \cdot A_h\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>su_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=su_base</td>
+<td>required</td>
+<td>Undrained shear strength at foundation base level (<span class="math">\(S_{uo}\)</span>)</td>
+</tr>
+<tr>
+<td><code>foundation_area</code></td>
+<td>m2</td>
+<td>0.0&lt;=foundation_area</td>
+<td>required</td>
+<td>Actual foundation area (not the effective area!) (<span class="math">\(A\)</span>)</td>
+</tr>
+<tr>
+<td><code>su_above_base</code></td>
+<td>kPa</td>
+<td>0.0&lt;=su_skirts</td>
+<td><code>0.0</code></td>
+<td>Average undrained shear strength along the skirt depth (optional, default=0.0) (<span class="math">\(S_{u,ave}\)</span>)</td>
+</tr>
+<tr>
+<td><code>embedded_section_area</code></td>
+<td>m2</td>
+<td>0.0&lt;=embedded_section_area</td>
+<td><code>0.0</code></td>
+<td>Embedded vertical cross-sectional area of foundation (optional, default=0.0) (<span class="math">\(A_h\)</span>)</td>
+</tr>
+<tr>
+<td><code>soil_reaction_coefficient</code></td>
+<td>-</td>
+<td>1.0&lt;=soil_reaction_coefficient&lt;=6.0</td>
+<td><code>4.0</code></td>
+<td>Soil reaction coefficient Kru. A value of 4 is recommended for full contact. If active soil resistance cannot be relied upon, the factor should be reduced to 2 (optional, default=4.0) (<span class="math">\(K_{ru}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Sliding capacity (combined) (<span class="math">\(H_d + \Delta H\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance on the foundation base (<span class="math">\(H_d\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance due to active and passive resistance of the skirts (<span class="math">\(\Delta H\)</span>) [<span class="math">\(kN\)</span>]</p>
+<p>Return type: <code>Python dictionary with keys ['sliding_capacity [kN]','base_resistance [kN]','skirt_resistance [kN]']</code></p>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="slidingcapacity_drained_api"></a></p>
+<h2 id="slidingcapacity_drained_api"><code>slidingcapacity_drained_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="slidingcapacity_drained_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#slidingcapacity_drained_api">Shallow foundations › Shallow foundation capacity › Sliding Capacity (Drained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">slidingcapacity_drained_api</span><span class="p">(</span>
+    <span class="n">vertical_load</span><span class="p">,</span>
+    <span class="n">effective_friction_angle</span><span class="p">,</span>
+    <span class="n">effective_unit_weight</span><span class="p">,</span>
+    <span class="n">embedded_section_area</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">depth_to_base</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">reaction_factor_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the drained sliding capacity for a shallow foundation. The base resistance is increased for passive and active soil resistance derived from skirts.</p>
+<div class="math-display">\[H_d^{\prime} = Q \cdot \tan \phi^{\prime}\]</div>
+<div class="math-display">\[\Delta H = 0.5 \cdot K_{rd} \cdot \gamma^{\prime} \cdot D_b \cdot A_h\]</div>
+<div class="math-display">\[K_{rd} = K_p - (1/K_p)\]</div>
+<div class="math-display">\[K_p = \tan^2 (45^{\circ} + 0.5 \phi^{\prime})\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vertical_load</code></td>
+<td>kN</td>
+<td>0.0&lt;=vertical_load</td>
+<td>required</td>
+<td>Actual vertical load during relevant loading condition (<span class="math">\(Q\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_friction_angle</code></td>
+<td>deg</td>
+<td>20.0&lt;=effective_friction_angle&lt;=50.0</td>
+<td>required</td>
+<td>Effective friction angle (for appropriate stress level at foundation base) (<span class="math">\(\phi^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_unit_weight</code></td>
+<td>kN/m3</td>
+<td>3.0&lt;=effective_unit_weight&lt;=12.0</td>
+<td>required</td>
+<td>Effective unit weight (<span class="math">\(\gamma^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>embedded_section_area</code></td>
+<td>m2</td>
+<td>0.0&lt;=embedded_section_area</td>
+<td><code>0.0</code></td>
+<td>Embedded vertical cross-sectional area of foundation (optional, default=0.0) (<span class="math">\(A_h\)</span>)</td>
+</tr>
+<tr>
+<td><code>depth_to_base</code></td>
+<td>m</td>
+<td>0.0&lt;=depth_to_base</td>
+<td><code>0.0</code></td>
+<td>Depth below seafloor to base level (optional, default=0.0) (<span class="math">\(D_b\)</span>)</td>
+</tr>
+<tr>
+<td><code>reaction_factor_override</code></td>
+<td>-</td>
+<td>0.0&lt;=reaction_factor_override</td>
+<td><code>nan</code></td>
+<td>Drained horizontal reaction factor (optional, default=np.nan) (<span class="math">\(K_{rd}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Combined sliding capacity due to base and skirt resistance (<span class="math">\(H_d + \Delta H\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance due to base friction (<span class="math">\(H_d\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance due to active and passive resistance of the skirts (<span class="math">\(\Delta H\)</span>) [<span class="math">\(kN\)</span>], Reaction factor (<span class="math">\(K_{rd}\)</span>) [<span class="math">\(-\)</span>], Passive resistance factor (<span class="math">\(K_p\)</span>) [<span class="math">\(-\)</span>]</p>
+<p>Return type: <code>Python dictionary with keys ['sliding_capacity [kN]','base_capacity [kN]','skirt_capacity [kN]','K_rd [-]','K_p [-]']</code></p>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="effectivearea_rectangle_api"></a></p>
+<h2 id="effectivearea_rectangle_api"><code>effectivearea_rectangle_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="effectivearea_rectangle_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#effectivearea_rectangle_api">Shallow foundations › Shallow foundation capacity › Effective Area (Rectangular)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">effectivearea_rectangle_api</span><span class="p">(</span>
+    <span class="n">length</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">,</span>
+    <span class="n">vertical_load</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">moment_length</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">moment_width</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">eccentricity_length</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">eccentricity_width</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the reduced area of a rectangular footing to account for eccentricty of the load. Eccentricities can either be specified from a moment or defined directly.</p>
+<p>NOTE: In the assessment of eccentricity for shallow foundations on undrained soil, the V can include the weight of soil plug inside the skirts</p>
+<div class="math-display">\[e_1 = \frac{M_1}{Q}\]</div>
+<div class="math-display">\[e_2 = \frac{M_2}{Q}\]</div>
+<div class="math-display">\[L^{\prime} = L - 2 \cdot e_1\]</div>
+<div class="math-display">\[B^{\prime} = B - 2 \cdot e_2\]</div>
+<div class="math-display">\[A^{\prime} = B^{\prime} \cdot L^{\prime}\]</div>
+<p><img loading="lazy" decoding="async" alt="Effective area of a rectangular mudmat" src="/docs/assets/groundhog/docs/shallowfoundations/images/api_reduced_area_rectangle.png"></p>
+<p><em>Effective area of a rectangular mudmat</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>length</code></td>
+<td>m</td>
+<td>0.0&lt;=length</td>
+<td>required</td>
+<td>Longest foundation dimension (<span class="math">\(L\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td>0.0&lt;=width</td>
+<td>required</td>
+<td>Shortest foundation dimension (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>vertical_load</code></td>
+<td>kN</td>
+<td>0.001&lt;=vertical_load</td>
+<td><code>nan</code></td>
+<td>Actual vertical load during relevant loading condition (optional, default=np.nan) (<span class="math">\(Q\)</span>)</td>
+</tr>
+<tr>
+<td><code>moment_length</code></td>
+<td>kNm</td>
+<td>0.0&lt;=moment_length</td>
+<td><code>nan</code></td>
+<td>Overturning moment aligned with longest foundation dimension (optional, default=np.nan) (<span class="math">\(M_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>moment_width</code></td>
+<td>kNm</td>
+<td>0.0&lt;=moment_width</td>
+<td><code>nan</code></td>
+<td>Overturning moment aligned with shortest foundation dimension (optional, default=np.nan) (<span class="math">\(M_2\)</span>)</td>
+</tr>
+<tr>
+<td><code>eccentricity_length</code></td>
+<td>m</td>
+<td>0.0&lt;=eccentricity_length</td>
+<td><code>nan</code></td>
+<td>Eccentricity (direct specification) in the longest foundation direction (optional, default=np.nan) (<span class="math">\(e_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>eccentricity_width</code></td>
+<td>m</td>
+<td>0.0&lt;=eccentricity_width</td>
+<td><code>nan</code></td>
+<td>Eccentricity (direct specification) in the shortest foundation direction (optional, default=np.nan) (<span class="math">\(e_2\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Effective area used to calculate mudmat capacity (<span class="math">\(A^{\prime}\)</span>) [<span class="math">\(m2\)</span>], Effective length (<span class="math">\(L^{\prime}\)</span>) [<span class="math">\(m\)</span>], Effective width (<span class="math">\(B^{\prime}\)</span>) [<span class="math">\(m\)</span>], Eccentricity in the length direction (<span class="math">\(e_1\)</span>) [<span class="math">\(m\)</span>], Eccentricity in the width direction (<span class="math">\(e_2\)</span>) [<span class="math">\(m\)</span>]</p>
+<p>Return type: <code>Python dictionary with keys ['effective_area [m2]','effective_length [m]','effective_width [m]','eccentricity_length [m]','eccentricity_width [m]']</code></p>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="effectivearea_circle_api"></a></p>
+<h2 id="effectivearea_circle_api"><code>effectivearea_circle_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="effectivearea_circle_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#effectivearea_circle_api">Shallow foundations › Shallow foundation capacity › Effective Area (Circular)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">effectivearea_circle_api</span><span class="p">(</span>
+    <span class="n">foundation_radius</span><span class="p">,</span>
+    <span class="n">vertical_load</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">overturning_moment</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">eccentricity</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the reduced area for a circular foundation to account for load eccentricity. Eccentricity can either be specified through an overturning moment or with direct specification of eccentricity.</p>
+<p>NOTE: In the assessment of eccentricity for shallow foundations on undrained soil, the V can include the weight of soil plug inside the skirts</p>
+<div class="math-display">\[A^{\prime} = 2s=B^{\prime} L^{\prime}\]</div>
+<div class="math-display">\[L^{\prime}=\left( 2s \sqrt{\frac{R+e_2}{R-e_2}} \right)^{1/2}\]</div>
+<div class="math-display">\[B^{\prime} = L^{\prime} \sqrt{\frac{R-e_2}{R+e_2}}\]</div>
+<div class="math-display">\[s = \frac{\pi R^2}{2}-[e_2 \cdot (\sqrt{R^2-e_2^2}) + R^2 \arcsin(\frac{e_2}{R})]\]</div>
+<p><img loading="lazy" decoding="async" alt="Reduced area for a circular foundation" src="/docs/assets/groundhog/docs/shallowfoundations/images/api_reduced_area_circle.png"></p>
+<p><em>Reduced area for a circular foundation</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>foundation_radius</code></td>
+<td>m</td>
+<td>0.01&lt;=foundation_radius</td>
+<td>required</td>
+<td>Radius of the circular foundation (<span class="math">\(R\)</span>)</td>
+</tr>
+<tr>
+<td><code>vertical_load</code></td>
+<td>kN</td>
+<td>0.01&lt;=vertical_load</td>
+<td><code>nan</code></td>
+<td>Actual vertical load during relevant loading condition (optional, default=np.nan) (<span class="math">\(Q\)</span>)</td>
+</tr>
+<tr>
+<td><code>overturning_moment</code></td>
+<td>kNm</td>
+<td>0.0&lt;=overturning_moment</td>
+<td><code>nan</code></td>
+<td>Overturning moment acting on the foundation (optional, default=np.nan) (<span class="math">\(M\)</span>)</td>
+</tr>
+<tr>
+<td><code>eccentricity</code></td>
+<td>m</td>
+<td>0.0&lt;=eccentricity</td>
+<td><code>nan</code></td>
+<td>Eccentricity (direct specification) (optional, default=np.nan) (<span class="math">\(e_2\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Effective area used for capacity calculation (<span class="math">\(A^{\prime}\)</span>) [<span class="math">\(m2\)</span>], Effective length  (<span class="math">\(L^{\prime}\)</span>) [<span class="math">\(m\)</span>], Effective width (<span class="math">\(B^{\prime}\)</span>) [<span class="math">\(m\)</span>], Parameter s (<span class="math">\(s\)</span>) [<span class="math">\(m2\)</span>], Eccentricity used for the calculation (<span class="math">\(e_2\)</span>) [<span class="math">\(m\)</span>]</p>
+<p>Return type: <code>Python dictionary with keys ['effective_area [m2]','effectve length [m]','effective_width [m]','s [m2]','eccentricity [m]']</code></p>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="envelope_drained_api"></a></p>
+<h2 id="envelope_drained_api"><code>envelope_drained_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="envelope_drained_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#envelope_drained_api">Shallow foundations › Shallow foundation capacity › Envelope (Drained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">envelope_drained_api</span><span class="p">(</span>
+    <span class="n">vertical_effective_stress</span><span class="p">,</span>
+    <span class="n">effective_friction_angle</span><span class="p">,</span>
+    <span class="n">effective_unit_weight</span><span class="p">,</span>
+    <span class="n">effective_length</span><span class="p">,</span>
+    <span class="n">effective_width</span><span class="p">,</span>
+    <span class="n">full_area</span><span class="p">,</span>
+    <span class="n">factor_sliding</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">factor_bearing</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">effective_friction_angle_sliding</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates a drained failure envelope for shallow foundations according to API RP 2GEO. Note that optional keyword arguments can be specified as documented in the function <code>verticalcapacity_drained_api</code>.</p>
+<p>The envelope is calculated be varying the inclination of the load. Note that the equation for inclination factor will become negative for large inclinations. These values are filtered from the envelope.</p>
+<p>We derive the ultimate horizontal load in bearing from the equation for inclination but need to remember that this should only account for the horizontal capacity on the effective area.</p>
+<p>A sliding cut-off is also calculated based on the ultimate sliding resistance.</p>
+<div class="math-display">\[\tan(\text{inclination}) = \frac{H_{eff}}{Q} = \frac{H - H_{\text{outside eff}} - \Delta H}{Q}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vertical_effective_stress</code></td>
+<td>kPa</td>
+<td>0.0&lt;=vertical_effective_stress</td>
+<td>required</td>
+<td>Vertical effect stress at depth corresponding to foundation base (<span class="math">\(p_o^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_friction_angle</code></td>
+<td>deg</td>
+<td>20.0&lt;=effective_friction_angle&lt;=50.0</td>
+<td>required</td>
+<td>Effective friction angle for bearing failure (for appropriate stress level at foundation base) (<span class="math">\(\phi^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_unit_weight</code></td>
+<td>kN/m3</td>
+<td>3.0&lt;=effective_unit_weight&lt;=12.0</td>
+<td>required</td>
+<td>Effective unit weight at foundation base (<span class="math">\(\gamma^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_length</code></td>
+<td>m</td>
+<td>0.0&lt;=effective_length</td>
+<td>required</td>
+<td>Effective length of the footing (<span class="math">\(L^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_width</code></td>
+<td>m</td>
+<td>0.0&lt;=effective_width</td>
+<td>required</td>
+<td>Minimum effective lateral dimension (<span class="math">\(B^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>full_area</code></td>
+<td><span class="math">\(m^2\)</span></td>
+<td>0.0&lt;=full_area</td>
+<td>required</td>
+<td>Full base area of the foundation (<span class="math">\(A_b\)</span>)</td>
+</tr>
+<tr>
+<td><code>factor_sliding</code></td>
+<td>-</td>
+<td>factor_sliding &gt;= 1.0</td>
+<td><code>1.5</code></td>
+<td>Resistance factor for sliding, applied to the H component of the sliding cutoff (<span class="math">\(\gamma_{sliding}\)</span>)</td>
+</tr>
+<tr>
+<td><code>factor_bearing</code></td>
+<td>-</td>
+<td>factor_bearing &gt;= 1.0</td>
+<td><code>2.0</code></td>
+<td>Resistance factor for bearing failure, applied to the V component of the envelope (<span class="math">\(\gamma_{bearing}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_friction_angle_sliding</code></td>
+<td>deg</td>
+<td>15.0&lt;=effective_friction_angle&lt;=45.0</td>
+<td><code>nan</code></td>
+<td>Effective friction angle for sliding failure (for appropriate stress level at foundation base). If unspecified, the effective friction angle of soil - 5° is used (<span class="math">\(\delta^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td>0.0&lt;=width</td>
+<td></td>
+<td>Minimum true lateral dimension (<span class="math">\(B\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Envelope V unfactored [kN]</code></td>
+<td>kN</td>
+<td>Unfactored vertical capacities for the envelope (<span class="math">\(V\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope H unfactored [kN]</code></td>
+<td>kN</td>
+<td>Unfactored horizontal capacities for the envelope (<span class="math">\(H^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope V factored [kN]</code></td>
+<td>kN</td>
+<td>Factored vertical capacities for the envelope (<span class="math">\(V / \gamma_v\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope H factored [kN]</code></td>
+<td>kN</td>
+<td>Factored horizontal capacities for the envelope (<span class="math">\(H / \gamma_h\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope V uncorrected [kN]</code></td>
+<td>kN</td>
+<td>Vertical capacities for the envelope without accounting for effective area component only (<span class="math">\(V\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope H uncorrected [kN]</code></td>
+<td>kN</td>
+<td>Horizontal capacities for the envelope without accounting for effective area component only (<span class="math">\(H\)</span>)</td>
+</tr>
+<tr>
+<td><code>Sliding cutoff V [kN]</code></td>
+<td>kN</td>
+<td>Vertical capacities for sliding cutoff</td>
+</tr>
+<tr>
+<td><code>Sliding cutoff H [kN]</code></td>
+<td>kN</td>
+<td>Horizontal capacities for sliding cutoff</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="envelope_undrained_api"></a></p>
+<h2 id="envelope_undrained_api"><code>envelope_undrained_api</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="envelope_undrained_api">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#envelope_undrained_api">Shallow foundations › Shallow foundation capacity › Envelope (Undrained)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">envelope_undrained_api</span><span class="p">(</span>
+    <span class="n">su_base</span><span class="p">,</span>
+    <span class="n">full_area</span><span class="p">,</span>
+    <span class="n">effective_length</span><span class="p">,</span>
+    <span class="n">effective_width</span><span class="p">,</span>
+    <span class="n">factor_sliding</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">factor_bearing</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the undrained failure envelope according to API RP 2GEO. It is important to note than only the horizontal load acting on the effective area is taken into account for the envelope. To achieve this, the horizontal load points for the envelope are selected between 0 and the total horizontal capacity (including contributions from skirt resistance and total base area).</p>
+<p>Subsequently, a load inclination is calculated using only the effective area component of this horizontal load (subtract skirt resistance and horizontal capacity outside effective area). This inclination is used in the vertical capacity equation (through the inclination factor).</p>
+<p>The envelope is calculated twice, first without correction for additional eccentricity at base level and next with a correction for this additional eccentricity. This two step approach is required since the load inclination is not known a priori.</p>
+<p>To override the behaviour of the bearing and sliding capacity functions, use the optional keywords arguments defined in the function definitions of <code>slidingcapacity_undrained_api</code> and <code>verticalcapacity_undrained_api</code></p>
+<div class="math-display">\[\Delta e = D \cdot \tan \theta\]</div>
+<p><img loading="lazy" decoding="async" alt="Undrained failure envelope" src="/docs/assets/groundhog/docs/shallowfoundations/images/envelope_undrained_api_1.png"></p>
+<p><em>Undrained failure envelope</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>su_base</code></td>
+<td>kPa</td>
+<td>0.0 &lt;= su_base &lt;= 1000.0</td>
+<td>required</td>
+<td>Undrained shear strength at the foundation base (<span class="math">\(S_{uo}\)</span>)</td>
+</tr>
+<tr>
+<td><code>full_area</code></td>
+<td><span class="math">\(m^2\)</span></td>
+<td>full_area &gt;= 0.0</td>
+<td>required</td>
+<td>Total area at the base length (<span class="math">\(A_b\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_length</code></td>
+<td>m</td>
+<td>effective_length &gt;= 0.0</td>
+<td>required</td>
+<td>Effective length (<span class="math">\(L^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>effective_width</code></td>
+<td>m</td>
+<td>effective_width &gt;= 0.0</td>
+<td>required</td>
+<td>Effective width (<span class="math">\(B^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>factor_sliding</code></td>
+<td>-</td>
+<td>factor_sliding &gt;= 1.0</td>
+<td><code>1.5</code></td>
+<td>Resistance factor for sliding, applied to the H component of the envelope (<span class="math">\(\gamma_{sliding}\)</span>)</td>
+</tr>
+<tr>
+<td><code>factor_bearing</code></td>
+<td>-</td>
+<td>factor_bearing &gt;= 1.0</td>
+<td><code>2.0</code></td>
+<td>Resistance factor for bearing failure, applied to the V component of the envelope (<span class="math">\(\gamma_{bearing}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Envelope V unfactored [kN]</code></td>
+<td>kN</td>
+<td>List with unfactored vertical capacities for the envelope (<span class="math">\(V\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope H unfactored [kN]</code></td>
+<td>kN</td>
+<td>List with unfactored horizontal capacities for the envelope (<span class="math">\(H\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope V factored [kN]</code></td>
+<td>kN</td>
+<td>List with factored vertical capacities for the envelope (<span class="math">\(V_{factored}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope H factored [kN]</code></td>
+<td>kN</td>
+<td>List with factored horizontal capacities for the envelope (<span class="math">\(H_{factored}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope V uncorrected [kN]</code></td>
+<td>kN</td>
+<td>List with vertical capacities for the envelope, not corrected for the additional eccentricity (<span class="math">\(V_{uncorrected}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Envelope H uncorrected [kN]</code></td>
+<td>kN</td>
+<td>List with horizontal capacities for the envelope, not corrected for the additional eccentricity (<span class="math">\(H_{uncorrected}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Sliding capacity</code></td>
+<td></td>
+<td>Dictionary with details for the sliding capacity calculation</td>
+</tr>
+<tr>
+<td><code>Bearing capacity</code></td>
+<td></td>
+<td>Dictionary with details for the bearing capacity calculation for purely vertical load</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>API RP 2GEO, 2011. API RP 2GEO Geotechnical and Foundation Design Considerations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="nq_frictionangle_sand"></a></p>
+<h2 id="nq_frictionangle_sand"><code>nq_frictionangle_sand</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="nq_frictionangle_sand">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#nq_frictionangle_sand">Shallow foundations › Shallow foundation capacity › N_q (Sand)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">nq_frictionangle_sand</span><span class="p">(</span><span class="n">friction_angle</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculate the bearing capacity factor Nq from the friction angle</p>
+<div class="math-display">\[N_q = e^{\pi \tan \phi_p^{\prime}} \tan^2 \left( 45^{\circ} + \frac{ \phi_p^{\prime}}{2} \right)\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>friction_angle</code></td>
+<td>deg</td>
+<td>20.0 &lt;= friction_angle &lt;= 50.0</td>
+<td>required</td>
+<td>Peak effective friction angle (<span class="math">\(\phi_p^{\prime}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Nq [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor (<span class="math">\(N_q\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011) Introduction to soil mechanics and foundations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="ngamma_frictionangle_vesic"></a></p>
+<h2 id="ngamma_frictionangle_vesic"><code>ngamma_frictionangle_vesic</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="ngamma_frictionangle_vesic">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ngamma_frictionangle_vesic">Shallow foundations › Shallow foundation capacity › N_gamma (Vesic)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">ngamma_frictionangle_vesic</span><span class="p">(</span><span class="n">friction_angle</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the bearing capacity factor Ngamma according to the equation proposed by Vesic (1973). Note that alternative formulations are available.</p>
+<div class="math-display">\[N_{\gamma} = 2 (N_q + 1) \tan \phi_p^{\prime}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>friction_angle</code></td>
+<td>deg</td>
+<td>20.0 &lt;= friction_angle &lt;= 50.0</td>
+<td>required</td>
+<td>Peak drained friction angle (<span class="math">\(\phi_p^{\prime}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ngamma [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor (<span class="math">\(N_{\gamma}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011) Introduction to soil mechanics and foundations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="ngamma_frictionangle_meyerhof"></a></p>
+<h2 id="ngamma_frictionangle_meyerhof"><code>ngamma_frictionangle_meyerhof</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="ngamma_frictionangle_meyerhof">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ngamma_frictionangle_meyerhof">Shallow foundations › Shallow foundation capacity › N_gamma (Meyerhof)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">ngamma_frictionangle_meyerhof</span><span class="p">(</span><span class="n">friction_angle</span><span class="p">,</span> <span class="n">frictionangle_multiplier</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the bearing capacity factor Ngamma according to the equation proposed by Meyerhof (1976). This formulation is more conservative compared to the Vesic formulation.</p>
+<div class="math-display">\[N_{\gamma} = (N_q - 1) \tan (1.4 \phi_p^{\prime})\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>friction_angle</code></td>
+<td>deg</td>
+<td>20.0 &lt;= friction_angle &lt;= 50.0</td>
+<td>required</td>
+<td>Peak drained friction angle (<span class="math">\(\phi_p^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>frictionangle_multiplier</code></td>
+<td>-</td>
+<td></td>
+<td><code>1.4</code></td>
+<td>Multiplier on the friction angle (<span class="math">\(\alpha_1\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ngamma [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor (<span class="math">\(N_{\gamma}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011) Introduction to soil mechanics and foundations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="ngamma_frictionangle_davisbooker"></a></p>
+<h2 id="ngamma_frictionangle_davisbooker"><code>ngamma_frictionangle_davisbooker</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="ngamma_frictionangle_davisbooker">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ngamma_frictionangle_davisbooker">Shallow foundations › Shallow foundation capacity › N_gamma (Davis &amp; Booker)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">ngamma_frictionangle_davisbooker</span><span class="p">(</span>
+    <span class="n">friction_angle</span><span class="p">,</span>
+    <span class="n">roughness_factor</span><span class="p">,</span>
+    <span class="n">multiplier_smooth</span><span class="o">=</span><span class="mf">0.0663</span><span class="p">,</span>
+    <span class="n">multiplier_rough</span><span class="o">=</span><span class="mf">0.1054</span><span class="p">,</span>
+    <span class="n">multiplier_exp_smooth</span><span class="o">=</span><span class="mf">9.3</span><span class="p">,</span>
+    <span class="n">multiplier_exp_rough</span><span class="o">=</span><span class="mf">9.6</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the bearing capacity factor Ngamma according to the equation proposed by Davis and Booker (1971). This formulation is based on a more refined plasticity method and takes the roughness into account. This method is preferred in principle.</p>
+<div class="math-display">\[N_{\gamma} = \begin{cases}
+    0.1054 \exp (9.6 \phi_p^{\prime})       &amp; \quad \text{for rough footings}\\
+    0.0663 \exp(9.3 \phi_p^{\prime})  &amp; \quad \text{for smooth footings}
+  \end{cases}\]</div>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>friction_angle</code></td>
+<td>deg</td>
+<td>20.0 &lt;= friction_angle &lt;= 50.0</td>
+<td>required</td>
+<td>Peak drained friction angle (<span class="math">\(\phi_p^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>roughness_factor</code></td>
+<td>-</td>
+<td>0.0 &lt;= roughness_factor &lt;= 1.0</td>
+<td>required</td>
+<td>Footing roughness factor where 0 is fully smooth and 1 is fully rough (<span class="math">\(R_{inter}\)</span>)</td>
+</tr>
+<tr>
+<td><code>multiplier_smooth</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.0663</code></td>
+<td>Multiplier for smooth footings (<span class="math">\(\alpha_1\)</span>)</td>
+</tr>
+<tr>
+<td><code>multiplier_rough</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.1054</code></td>
+<td>Multiplier for rough footings (<span class="math">\(\alpha_2\)</span>)</td>
+</tr>
+<tr>
+<td><code>multiplier_exp_smooth</code></td>
+<td>-</td>
+<td></td>
+<td><code>9.3</code></td>
+<td>Multiplier on exponential term for smooth footings (<span class="math">\(\alpha_3\)</span>)</td>
+</tr>
+<tr>
+<td><code>multiplier_exp_rough</code></td>
+<td>-</td>
+<td></td>
+<td><code>9.6</code></td>
+<td>Multiplier on exponential term for roughfootings (<span class="math">\(\alpha_4\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ngamma [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor (<span class="math">\(N_{\gamma}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Ngamma_smooth [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor for smooth footing (<span class="math">\(N_{\gamma,smooth}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Ngamma_rough [-]</code></td>
+<td>-</td>
+<td>Bearing capacity factor for rough footing (<span class="math">\(N_{\gamma,rough}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2011) Introduction to soil mechanics and foundations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="failuremechanism_prandtl"></a></p>
+<h2 id="failuremechanism_prandtl"><code>failuremechanism_prandtl</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="failuremechanism_prandtl">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#failuremechanism_prandtl">Shallow foundations › Shallow foundation capacity › Failure Mechanism (Prandtl)</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">failuremechanism_prandtl</span><span class="p">(</span><span class="n">friction_angle</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the shape of the Prandtl failure mechanism for a given friction angle. The failure mechanisms consists of a cone-shaped wedge which is pushed into the soil and a log-spiral extending from the edge of the cone to a line perpendicular to it. Another triangular wedge is formed between the log-spiral and the surface.</p>
+<p>This procedure calculates the failure mechanism as a series of (X, Y) points. Only the outer edge for the right-hand side of the figure is taken. The left-hand side can easily be obtained by flipping the figure along the Y-axis.</p>
+<p>A Plotly plot with fixed aspect ratio is shown by default but the generation of this plot can be disables using the showfig boolean.</p>
+<div class="math-display">\[\theta = \frac{\pi}{4} + \frac{\varphi^{\prime}}{2}\]</div>
+<div class="math-display">\[r = r_0 \cdot e^{\frac{\pi}{2} \tan \varphi^{\prime}}\]</div>
+<p><img loading="lazy" decoding="async" alt="Prandtl failure surface (after Budhu, 2010)" src="/docs/assets/groundhog/docs/shallowfoundations/images/failuremechanism_prandtl_1.png"></p>
+<p><em>Prandtl failure surface (after Budhu, 2010)</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>friction_angle</code></td>
+<td>deg</td>
+<td>0.0 &lt;= friction_angle &lt;= 60.0</td>
+<td>required</td>
+<td>Sand angle of internal friction (<span class="math">\(\varphi^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>m</td>
+<td>width &gt;= 0.0</td>
+<td>required</td>
+<td>Width of the footing (full width) (<span class="math">\(B\)</span>)</td>
+</tr>
+<tr>
+<td><code>showfig</code></td>
+<td></td>
+<td></td>
+<td><code>True</code></td>
+<td>Boolean determining whether the plot of the failure surface is shown</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>X [m]</code></td>
+<td>m</td>
+<td>List with X-coordinates of the points forming the failure surface (<span class="math">\(X\)</span>)</td>
+</tr>
+<tr>
+<td><code>Y [m]</code></td>
+<td>m</td>
+<td>List with Y-coordinates of the points forming the failure surface (<span class="math">\(Y\)</span>)</td>
+</tr>
+<tr>
+<td><code>fig</code></td>
+<td></td>
+<td>Plotly figure showing the failure surface</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Budhu (2010). Soil Mechanics and Foundations</li>
+</ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
+
+    <aside class="attribution attribution--upstream" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
+      <div>
+        <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
+        <ul class="attribution__links">
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/shallowfoundations/capacity.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/shallowfoundations/capacity.html">Upstream documentation</a></li>        </ul>
+<p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/groundhog/api/shallowfoundations/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-left"></use></svg>Previous</small>Shallow foundations</a><a class="next" href="/docs/groundhog/api/shallowfoundations/settlement/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-chevron-right"></use></svg></small>Settlement</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#shallowfoundationcapacity">class ShallowFoundationCapacity</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacity-__init__">ShallowFoundationCapacity.__init__</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacity-set_geometry">ShallowFoundationCapacity.set_geometry</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacity-set_eccentricity">ShallowFoundationCapacity.set_eccentricity</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacity-plot_envelope">ShallowFoundationCapacity.plot_envelope</a></li>
+      <li class="lvl-2"><a href="#shallowfoundationcapacityundrained">class ShallowFoundationCapacityUndrained</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacityundrained-set_soilparameters_undrained">ShallowFoundationCapacityUndrained.set_soilparameters_undrained</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacityundrained-calculate_bearing_capacity">ShallowFoundationCapacityUndrained.calculate_bearing_capacity</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacityundrained-calculate_sliding_capacity">ShallowFoundationCapacityUndrained.calculate_sliding_capacity</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacityundrained-calculate_envelope">ShallowFoundationCapacityUndrained.calculate_envelope</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacityundrained-plot_envelope">ShallowFoundationCapacityUndrained.plot_envelope</a></li>
+      <li class="lvl-2"><a href="#shallowfoundationcapacitydrained">class ShallowFoundationCapacityDrained</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacitydrained-set_soilparameters_drained">ShallowFoundationCapacityDrained.set_soilparameters_drained</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacitydrained-calculate_bearing_capacity">ShallowFoundationCapacityDrained.calculate_bearing_capacity</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacitydrained-calculate_sliding_capacity">ShallowFoundationCapacityDrained.calculate_sliding_capacity</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacitydrained-calculate_envelope">ShallowFoundationCapacityDrained.calculate_envelope</a></li>
+      <li class="lvl-3"><a href="#shallowfoundationcapacitydrained-plot_envelope">ShallowFoundationCapacityDrained.plot_envelope</a></li>
+      <li class="lvl-2"><a href="#verticalcapacity_undrained_api">verticalcapacity_undrained_api</a></li>
+      <li class="lvl-2"><a href="#verticalcapacity_drained_api">verticalcapacity_drained_api</a></li>
+      <li class="lvl-2"><a href="#slidingcapacity_undrained_api">slidingcapacity_undrained_api</a></li>
+      <li class="lvl-2"><a href="#slidingcapacity_drained_api">slidingcapacity_drained_api</a></li>
+      <li class="lvl-2"><a href="#effectivearea_rectangle_api">effectivearea_rectangle_api</a></li>
+      <li class="lvl-2"><a href="#effectivearea_circle_api">effectivearea_circle_api</a></li>
+      <li class="lvl-2"><a href="#envelope_drained_api">envelope_drained_api</a></li>
+      <li class="lvl-2"><a href="#envelope_undrained_api">envelope_undrained_api</a></li>
+      <li class="lvl-2"><a href="#nq_frictionangle_sand">nq_frictionangle_sand</a></li>
+      <li class="lvl-2"><a href="#ngamma_frictionangle_vesic">ngamma_frictionangle_vesic</a></li>
+      <li class="lvl-2"><a href="#ngamma_frictionangle_meyerhof">ngamma_frictionangle_meyerhof</a></li>
+      <li class="lvl-2"><a href="#ngamma_frictionangle_davisbooker">ngamma_frictionangle_davisbooker</a></li>
+      <li class="lvl-2"><a href="#failuremechanism_prandtl">failuremechanism_prandtl</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=118a059abb" defer></script>
+  <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

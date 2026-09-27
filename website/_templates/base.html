@@ -1,0 +1,127 @@
+{#-
+  GeoCore base layout.
+  Blocks:   title, description, head, content, layout, scripts, body_class
+  Variables provided by build.py: root, url(), asset(), icon(), nav_active, site_name, repo_url, releases_url, year
+  Layout hook: override {% block layout %} to replace the <main> wrapper (docs_base.html does this);
+  {% block body_class %} adds a class on <body> (e.g. "layout-docs").
+-#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}GeoCore{% endblock %}</title>
+  <meta name="description" content="{% block description %}GeoCore is an open-source, offline desktop application for geotechnical engineering, built on the Groundhog library.{% endblock %}">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url('assets/images/favicon-32.png') }}">
+  <link rel="apple-touch-icon" href="{{ url('assets/images/apple-touch-icon.png') }}">
+  <script src="{{ asset('assets/js/theme-init.js') }}"></script>
+  <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}layout-default{% endblock %}">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  {% set nav_items = [
+    ('home', 'Home', ''),
+    ('features', 'Features', 'index.html#features'),
+    ('docs', 'Docs', 'docs/'),
+    ('download', 'Download', 'download.html'),
+    ('about', 'About', 'about.html'),
+  ] %}
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="{{ url('') }}" aria-label="GeoCore home">
+        <img src="{{ url('assets/images/logo-icon-64.png') }}" alt="" width="30" height="30">
+        <span>GeoCore</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          {% for key, label, href in nav_items %}
+          <li><a href="{{ url(href) }}"{% if key == nav_active %} aria-current="page"{% endif %}>{{ label }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="{{ repo_url }}" aria-label="GeoCore on GitHub" title="GeoCore on GitHub">{{ icon('github') }}</a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          {{ icon('moon', 'icon icon-moon') }}{{ icon('sun', 'icon icon-sun') }}
+        </button>
+        <a class="btn btn--primary" href="{{ url('download.html') }}">{{ icon('download') }}Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed">{{ icon('menu') }}</span><span data-when="open">{{ icon('x') }}</span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        {% for key, label, href in nav_items %}
+        <li><a href="{{ url(href) }}"{% if key == nav_active %} aria-current="page"{% endif %}>{{ label }}{{ icon('chevron-right') }}</a></li>
+        {% endfor %}
+      </ul>
+      <a class="btn btn--primary btn--lg" href="{{ url('download.html') }}">{{ icon('download') }}Download GeoCore</a>
+    </nav>
+  </header>
+
+  {% block layout %}
+  <main id="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+  {% endblock %}
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="{{ url('') }}">
+            <img src="{{ url('assets/images/logo-icon-64.png') }}" alt="" width="26" height="26" loading="lazy">
+            <span>GeoCore</span>
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="{{ url('index.html#features') }}">Features</a></li>
+            <li><a href="{{ url('index.html#integrations') }}">Integrations</a></li>
+            <li><a href="{{ url('download.html') }}">Download</a></li>
+            <li><a href="{{ url('docs/') }}">Documentation</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="{{ url('about.html') }}">About</a></li>
+            <li><a href="{{ repo_url }}">Source on GitHub</a></li>
+            <li><a href="{{ releases_url }}">Releases</a></li>
+            <li><a href="{{ repo_url }}/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="{{ url('privacy.html') }}">Privacy</a></li>
+            <li><a href="{{ repo_url }}/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="{{ url('about.html#credits') }}">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© {{ year }} Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="{{ url('docs/license/') }}">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ asset('assets/js/site.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
