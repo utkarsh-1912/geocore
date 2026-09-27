@@ -230,3 +230,93 @@ def test_selector_recall_on_eval_val_regression():
     assert res["recall"][5] >= 0.97
     assert res["recall"][3] >= 0.95
     assert res["recall"][1] >= 0.90
+
+
+# ---------------------------------------------------------------- natural phrasing (generalisation)
+
+@pytest.mark.parametrize("words", [
+    ("liquefy", "liquefies", "liquefied", "liquefiable", "liquefaction"),
+    ("dense", "density"),
+    ("settle", "settled", "settlement"),
+    ("consolidate", "consolidated", "consolidation"),
+    ("sensitive", "sensitivity"),
+    ("permeable", "permeability"),
+    ("classify", "classified", "classification"),
+    ("slide", "sliding"),
+])
+def test_stemmer_joins_verb_adjective_and_noun_forms(words):
+    assert len({tr.stem(w) for w in words}) == 1, {w: tr.stem(w) for w in words}
+
+
+def test_stemmer_leaves_look_alike_words_alone():
+    assert tr.stem("water") == "water" and tr.stem("paper") == "paper" and tr.stem("resistance") == "resist"
+    assert tr.stem("embed") == "embed" and tr.stem("n60") == "n60"
+
+
+@pytest.mark.parametrize("text,words", [
+    ("M7.5 event, PGA 0.3g", ("earthquake magnitude", "peak ground acceleration")),
+    ("Mw 6.5", ("earthquake magnitude",)),
+    ("E from the SPT", ("youngs modulus",)),
+    ("e = 0.62 and w = 22%", ("void ratio", "water content")),
+    ("what's e?", ("void ratio",)),
+    ("N = 18", ("blow count",)),
+    ("want kN/m3", ("unit weight",)),
+])
+def test_notation_is_expanded_case_sensitively(text, words):
+    out = tr.normalize_notation(text)
+    for w in words:
+        assert w in out
+
+
+def test_notation_does_not_fire_on_lengths_or_prose():
+    assert "magnitude" not in tr.normalize_notation("a 5 m deep excavation with M 10 m spacing")
+    assert "void ratio" not in tr.normalize_notation("see e.g. the report")
+    assert "magnitude" not in tr.normalize_notation("M5 kN")
+
+
+def test_unseparated_abbreviations_share_concepts():
+    assert "~min_void_ratio" in tr.analyze("emin 0.45") and "~min_void_ratio" in tr.analyze("e_min", identifier=True)
+    assert "~cone_resistance" in tr.analyze("cone tip 2 MPa")
+    assert "~sleeve_friction" in tr.analyze("sleeve 45 kPa")
+    assert "~seismic" in tr.analyze("PGA of 0.2")
+
+
+def test_shorter_phrase_inside_longer_match_is_suppressed():
+    terms = tr.analyze("standard penetration test")
+    assert "~spt" in terms and "~research" not in terms
+    assert "~research" in tr.analyze("which standard covers this?")
+
+
+def test_query_head_finds_the_requested_quantity():
+    assert tr.query_head("porosity is 38% - what's e?") == "what's e"
+    assert tr.query_head("turn a void ratio of 0.85 into porosity") == "porosity"
+    assert tr.query_head("saturated sample, w = 40%, void ratio?").strip() == "void ratio"
+
+
+@pytest.mark.parametrize("query,family", [
+    ("will it liquefy? M7.5, PGA 0.3g, sand at 6 m", ("liquef", "csr_", "crr_", "cyclicstressratio")),
+    ("how dense is this sand? e = 0.62, emin 0.48, emax 0.91", ("relative_density",)),
+    ("what soil is this? cone tip 2.1 MPa, sleeve 45 kPa at 8 m", ("soil_behavior", "soilclass", "behaviourindex")),
+])
+def test_colloquial_questions_reach_the_right_family(query, family):
+    names = _names(ts.select_relevant_tools(query, max_tools=5))
+    assert any(key in n.lower() for n in names[:3] for key in family), names
+
+
+def test_research_questions_prefer_search_over_indexing():
+    names = _names(ts.select_relevant_tools("what does the research say about set-up of driven piles in clay?",
+                                            max_tools=3))
+    assert names[0] == "search_local_documents"
+    names = _names(ts.select_relevant_tools("index this site investigation report into the library", max_tools=3))
+    assert "index_document_text" in names
+
+
+def test_selector_recall_on_natural_dev_set_regression():
+    from core.geoai.eval.selector_recall import load_split, selector_recall
+
+    res = selector_recall(load_split("natural"), (1, 3, 5))
+    assert res["n"] >= 60
+    # Achieved 0.975 / 0.988 / 1.000 when tuned on this set (it is a dev set, not a blind test).
+    assert res["recall"][5] >= 0.95
+    assert res["recall"][3] >= 0.93
+    assert res["recall"][1] >= 0.88

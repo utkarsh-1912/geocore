@@ -11,8 +11,40 @@ if (process.platform === 'win32') {
 let mainWindow;
 let pythonProcess;
 
+// Must match the renderer header: `h-13` (52px) including its 1px bottom
+// border. The overlay stops 1px short so the header border stays visible
+// under the native window controls.
+const TITLE_BAR_HEIGHT = 52;
+const TITLE_BAR_OVERLAY_HEIGHT = TITLE_BAR_HEIGHT - 1;
+
+// Mirrors --color-surface / --color-text-muted in src/index.css so the native
+// minimise / maximise / close buttons blend into the header.
+const TITLE_BAR_THEMES = {
+  dark: { color: '#151c18', symbolColor: '#a1aca5' },
+  light: { color: '#ffffff', symbolColor: '#56625b' },
+};
+
+// macOS traffic lights are ~14px tall; centre them in the header.
+const MAC_TRAFFIC_LIGHT_POSITION = { x: 18, y: Math.round((TITLE_BAR_HEIGHT - 14) / 2) };
+
+function titleBarOverlayFor(isDark) {
+  return { ...(isDark ? TITLE_BAR_THEMES.dark : TITLE_BAR_THEMES.light), height: TITLE_BAR_OVERLAY_HEIGHT };
+}
+
+// Keep the native window-controls overlay in sync with the app theme.
+// Registered once so re-creating the window (macOS `activate`) does not stack listeners.
+ipcMain.on('set-title-bar-overlay', (event, { isDark } = {}) => {
+  if (process.platform === 'darwin' || !mainWindow || mainWindow.isDestroyed()) return;
+  try {
+    mainWindow.setTitleBarOverlay(titleBarOverlayFor(Boolean(isDark)));
+  } catch (e) {
+    console.error('Failed to update titleBarOverlay:', e);
+  }
+});
+
 function createWindow() {
   const isWin = process.platform === 'win32';
+  const isMac = process.platform === 'darwin';
   const iconCandidates = isWin
     ? [
         path.join(__dirname, '../public/icon.ico'),
@@ -35,7 +67,7 @@ function createWindow() {
     minWidth: 968,
     minHeight: 480,
     show: false,
-    backgroundColor: '#080c14',
+    backgroundColor: '#0e1311',
     icon: appIcon,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -43,29 +75,14 @@ function createWindow() {
       contextIsolation: true,
     },
     titleBarStyle: 'hidden', // Custom title bar
-    titleBarOverlay: {
-      color: '#1f2937',
-      symbolColor: '#9ca3af',
-      height: 48
-    },
+    // macOS draws traffic lights on the left; Windows/Linux draw an overlay on the right.
+    ...(isMac
+      ? { trafficLightPosition: MAC_TRAFFIC_LIGHT_POSITION }
+      : { titleBarOverlay: titleBarOverlayFor(true) }),
   });
 
-  // Dynamic Window Controls Overlay Theme Sync
-  ipcMain.on('set-title-bar-overlay', (event, { isDark }) => {
-    if (mainWindow && !mainWindow.isDestroyed() && process.platform === 'win32') {
-      try {
-        mainWindow.setTitleBarOverlay({
-          color: isDark ? '#1f2937' : '#ffffff',
-          symbolColor: isDark ? '#9ca3af' : '#4b5563',
-          height: 48
-        });
-      } catch (e) {
-        console.error('Failed to update titleBarOverlay:', e);
-      }
-    }
-  });
-
-  mainWindow.setIcon(appIcon);
+  // BrowserWindow#setIcon exists only on Windows/Linux; macOS uses the bundle icon.
+  if (!isMac) mainWindow.setIcon(appIcon);
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();

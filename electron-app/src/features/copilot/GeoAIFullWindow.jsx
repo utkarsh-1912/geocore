@@ -22,6 +22,7 @@ import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
 import { buildChatHistory } from './chatHistory';
+import { MarkdownText } from './MarkdownText';
 import { toast } from 'sonner';
 
 const formatBytes = (bytes) => {
@@ -291,6 +292,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             const streamResponse = await api.geoaiChatStream(text, currentContext, history);
             const reader = streamResponse.body.getReader();
             const decoder = new TextDecoder();
+            let sseBuffer = '';
 
             const aiMessageId = Date.now() + 1;
             let accumulatedText = '';
@@ -310,8 +312,9 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 const { done, value } = await reader.read();
                 if (done) break;
 
-                const chunk = decoder.decode(value, { stream: true });
-                const lines = chunk.split('\n');
+                sseBuffer += decoder.decode(value, { stream: true });
+                const lines = sseBuffer.split('\n');
+                sseBuffer = lines.pop(); // an event split across chunks completes on the next read
 
                 for (const line of lines) {
                     if (!line.startsWith('data: ')) continue;
@@ -838,14 +841,14 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                             <GeoAILogo size={26} variant="badge" className="mt-0.5 shrink-0" />
                                         )}
 
-                                        <div className={`max-w-[88%] space-y-1.5 ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                                        <div className={`max-w-[88%] min-w-0 space-y-1.5 ${isEditing ? 'w-full' : ''}`}>
                                             {isEditing ? (
                                                 /* Inline Edit Box */
                                                 <motion.div
                                                     initial={{ opacity: 0, y: 4 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ duration: 0.15, ease: 'easeOut' }}
-                                                    className="w-[min(560px,80vw)] bg-surface border border-border rounded-md shadow-sm focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/15 transition-[border-color,box-shadow] duration-200"
+                                                    className="w-full bg-surface border border-border rounded-md shadow-sm focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/15 transition-[border-color,box-shadow] duration-200"
                                                 >
                                                     <textarea
                                                         ref={editTextareaRef}
@@ -910,9 +913,13 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                                 )}
                                                             </div>
                                                         ) : (
-                                                            <div className="whitespace-pre-wrap break-words">
-                                                                {msg.text}
-                                                            </div>
+                                                            msg.sender === 'ai' ? (
+                                                                <MarkdownText text={msg.text} />
+                                                            ) : (
+                                                                <div className="whitespace-pre-wrap break-words">
+                                                                    {msg.text}
+                                                                </div>
+                                                            )
                                                         )}
                                                     </div>
 

@@ -25,6 +25,12 @@
         "dev"
       ],
       "port": 5173
+    },
+    {
+      "name": "backend",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["python-backend/main.py"],
+      "port": 8000
     }
   ]
 }

@@ -173,6 +173,14 @@ export const api = {
         return handleResponse(response);
     },
 
+    geoaiWarmup: async () => {
+        const response = await fetchWithTimeout('/api/geoai/warmup', {
+            method: 'POST',
+            timeout: 5000
+        });
+        return handleResponse(response);
+    },
+
     // Schema Overrides
     getSchemaOverrides: async () => {
         const response = await fetchWithTimeout('/api/schema/overrides');

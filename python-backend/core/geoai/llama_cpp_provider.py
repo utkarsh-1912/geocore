@@ -150,24 +150,30 @@ def parse_tool_calls(text: Optional[str]) -> Tuple[str, List[ToolCall]]:
     return (content if calls else text), calls
 
 
-_THINK_BLOCK = re.compile(r"<think>.*?(?:</think>|$)\s*", re.DOTALL)
-
-
 def strip_thinking(text: str) -> str:
-    """Drop <think>...</think> reasoning blocks (Qwen3/SmolLM3) from a completion."""
-    return _THINK_BLOCK.sub("", text).strip() if "<think>" in text else text
+    """
+    Drop <think>...</think> reasoning blocks (Qwen3/Qwen3.5/SmolLM3) from a completion,
+    including empty and unterminated blocks and a leading block whose "<think>" was part of
+    the prompt (Qwen3.5 prefills it when thinking is on). Same filter as streaming uses.
+    """
+    if "<think>" not in text and "</think>" not in text:
+        return text
+    close, open_ = text.find(ThinkStreamFilter.CLOSE), text.find(ThinkStreamFilter.OPEN)
+    f = ThinkStreamFilter(start_inside=close >= 0 and (open_ < 0 or close < open_))
+    return (f.feed(text) + f.flush()).strip()
 
 
 class ThinkStreamFilter:
     """
-    Streaming counterpart of ``strip_thinking``: drops <think>...</think> blocks (also empty or
-    unterminated ones) from a sequence of text deltas, holding back a possibly partial tag.
+    Removes <think>...</think> blocks (also empty or unterminated ones) from a sequence of
+    text deltas, holding back a possibly partial tag. ``strip_thinking`` is the one-shot use.
+    ``start_inside``: the prompt already opened the block (template prefilled "<think>").
     """
     OPEN, CLOSE = "<think>", "</think>"
 
-    def __init__(self):
+    def __init__(self, start_inside: bool = False):
         self._buf = ""
-        self._inside = False
+        self._inside = start_inside
         self._lstrip = True  # drop whitespace at the start and after a closed block
 
     @staticmethod
@@ -213,6 +219,11 @@ class ThinkStreamFilter:
         rest = "" if self._inside else self._out(self._buf)
         self._buf = ""
         return rest
+
+
+# Stop strings for a turn that offers tools (native/prompted formats): the model must never
+# write the tool response itself. The EOS/<|im_end|> stop comes from the chat template.
+TOOL_TURN_STOP = ("<tool_response>",)
 
 
 # Backwards-compatible name (tests, fine-tune tooling).
@@ -507,6 +518,10 @@ class LlamaCppProvider(ModelProvider):
         }
         if tools and self._chat_format != "prompted":
             kwargs["tools"] = tools
+        if tools and self._chat_format in _TEMPLATE_FORMATS:
+            # A tool-call turn is over once the call is written; small models sometimes go on to
+            # invent the tool's reply. Stopping there saves tokens and keeps fake results out.
+            kwargs["stop"] = list(TOOL_TURN_STOP)
 
         try:
             response = self._model.create_chat_completion(**kwargs)
@@ -590,6 +605,10 @@ class LlamaCppProvider(ModelProvider):
         try:
             response_stream = self._model.create_chat_completion(**kwargs)
             think_filter = ThinkStreamFilter()
+            # With thinking on, a template may prefill "<think>" (Qwen3.5), so a block can close
+            # without having opened in the output: hold the text and strip it once complete.
+            hold_all = self._thinking_switch and not getattr(self.config, "disable_thinking", True)
+            held = ""
 
             for chunk in response_stream:
                 choice = chunk["choices"][0]
@@ -597,7 +616,10 @@ class LlamaCppProvider(ModelProvider):
                 finish_reason = choice.get("finish_reason")
 
                 delta_content = delta.get("content")
-                if delta_content is not None or finish_reason is not None:
+                if hold_all:
+                    held += delta_content or ""
+                    delta_content = (strip_thinking(held) or None) if finish_reason is not None else None
+                elif delta_content is not None or finish_reason is not None:
                     delta_content = think_filter.feed(delta_content)
                     if finish_reason is not None:
                         delta_content += think_filter.flush()

@@ -63,7 +63,7 @@ def _calculation_record(tool: Dict[str, Any]) -> Optional[str]:
                 record["output_units"] = prov["output_units"]
             if prov.get("method"):
                 record["method"] = prov["method"]
-    return "[Calculation record] " + json.dumps(record, default=str)
+    return "[Calculation record] " + json.dumps(record, default=str, ensure_ascii=False)
 
 
 def history_to_messages(history: Optional[List[Dict[str, Any]]]) -> List[ChatMessage]:
@@ -267,15 +267,22 @@ class GeoAIAgent:
             
             full_content = ""
             tool_calls = []
-            
+            # A direct answer (no tool call) gets the same guards as the explanation round.
+            cleaner = AnswerStreamCleaner(tools_used)
+
             for chunk in stream:
                 if chunk.delta_content:
                     full_content += chunk.delta_content
-                    yield AgentStreamEvent(type='token', content=chunk.delta_content)
+                    text = cleaner.feed(chunk.delta_content)
+                    if text:
+                        yield AgentStreamEvent(type='token', content=text)
                 if chunk.delta_tool_calls:
                     tool_calls.extend(chunk.delta_tool_calls)
-            
+
             if not tool_calls:
+                text = cleaner.flush()
+                if text:
+                    yield AgentStreamEvent(type='token', content=text)
                 yield AgentStreamEvent(type='done')
                 return
                 

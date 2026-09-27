@@ -962,6 +962,10 @@ class Registry:
             wrappers = _load_wrapper_module("wrappers")
             return wrappers.map_depth_properties_wrapper(args)
 
+        if function_id == 'check_layer_overlap':
+            wrappers = _load_wrapper_module("wrappers")
+            return wrappers.check_layer_overlap_wrapper(args)
+
         if function_id == 'offsets_api':
             wrappers = _load_wrapper_module("wrappers")
             return wrappers.offsets_wrapper(args)

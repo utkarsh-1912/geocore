@@ -19,6 +19,10 @@ class MockProvider(ModelProvider):
         return ModelResponse(content="Default response", tool_calls=None, finish_reason="stop", usage=None)
 
     def generate_stream(self, messages, tools=None, temperature=0.1, max_tokens=1024):
+        # stream_chunks: one list of chunks replayed on every call, or a list of per-call lists.
+        if self.stream_chunks and isinstance(self.stream_chunks[0], list):
+            yield from self.stream_chunks.pop(0)
+            return
         for chunk in self.stream_chunks:
             yield chunk
 
@@ -214,12 +218,13 @@ def test_run_stream_direct_answer():
 
 def test_run_stream_tool_call_flow():
     tool_call = ToolCall(id="stream_t1", function_name="calc_tool", arguments={"v": 1})
+    # Turn 1 streams the tool call; turn 2 (the explanation) streams prose, which the agent
+    # now streams too instead of a blocking generate() call.
     provider = MockProvider(
         stream_chunks=[
-            StreamChunk(delta_tool_calls=[tool_call])
-        ],
-        responses=[
-            ModelResponse(content="Final response after tool", tool_calls=None, finish_reason="stop")
+            [StreamChunk(delta_tool_calls=[tool_call])],
+            [StreamChunk(delta_content="Final response "), StreamChunk(delta_content="after tool"),
+             StreamChunk(finish_reason="stop")],
         ]
     )
     registry = MockRegistry(results={"calc_tool": {"out": 2}})

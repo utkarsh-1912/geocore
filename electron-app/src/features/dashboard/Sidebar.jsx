@@ -9,6 +9,7 @@ import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { getCategoryIcon } from '../../config/categoryIcons';
 import logoFull from '../../assets/logo-2.png';
 import logoIcon from '../../assets/logoIcon.png';
+import { IS_MAC } from '../../utils/platform';
 
 /**
  * Tooltip for the collapsed rail. Rendered with fixed positioning so the
@@ -73,11 +74,14 @@ export const Sidebar = ({
 
     return (
         <aside className={`bg-surface border-r border-border flex flex-col h-full shrink-0 transition-[width] duration-300 ${collapsed ? 'w-[64px]' : 'w-60'}`}>
-            <div className="h-13 shrink-0 flex items-center justify-center border-b border-border px-3">
+            {/* Part of the window title bar: draggable, and on macOS it hosts the
+                traffic lights, so the logo shifts right (or hides when collapsed). */}
+            <div className={`h-13 shrink-0 flex items-center border-b border-border ${IS_MAC ? 'justify-end pl-[84px] pr-3' : 'justify-center px-3'}`}
+                style={{ WebkitAppRegion: 'drag' }}>
                 {collapsed ? (
-                    <img src={logoIcon} alt="GeoCore" className="h-8 w-8 object-contain" />
+                    !IS_MAC && <img src={logoIcon} alt="GeoCore" className="h-8 w-8 object-contain" draggable={false} />
                 ) : (
-                    <img src={logoFull} alt="GeoCore" className="h-9 object-contain" />
+                    <img src={logoFull} alt="GeoCore" className={`${IS_MAC ? 'h-7' : 'h-9'} min-w-0 object-contain`} draggable={false} />
                 )}
             </div>
 

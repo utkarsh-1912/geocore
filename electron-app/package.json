@@ -67,7 +67,11 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "GeoCore"
+      "shortcutName": "GeoCore",
+      "include": "installer/installer.nsh",
+      "installerSidebar": "installer/installerSidebar.bmp",
+      "uninstallerSidebar": "installer/uninstallerSidebar.bmp",
+      "installerHeader": "installer/installerHeader.bmp"
     },
     "mac": {
       "target": [

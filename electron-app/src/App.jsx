@@ -28,6 +28,7 @@ import { Preloader } from './components/Preloader';
 import { GeoAICopilot } from './features/copilot/GeoAICopilot';
 import { GeoAIFullWindow } from './features/copilot/GeoAIFullWindow';
 import { CommandPalette } from './features/command/CommandPalette';
+import { IS_MAC } from './utils/platform';
 
 const ICON_BUTTON = 'h-8 w-8 shrink-0 flex items-center justify-center rounded text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors';
 
@@ -591,8 +592,8 @@ const MainLayout = () => {
       />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-13 shrink-0 border-b border-border flex items-center justify-between gap-3 px-3 drag-region bg-surface transition-colors duration-300 relative z-20"
-          style={{ paddingRight: '140px', WebkitAppRegion: 'drag' }}>
+        <header className={`h-13 shrink-0 border-b border-border flex items-center justify-between gap-3 px-3 drag-region bg-surface transition-colors duration-300 relative z-20 ${IS_MAC ? (sidebarOpen ? '' : 'pl-6') : 'pr-[146px]'}`}
+          style={{ WebkitAppRegion: 'drag' }}>
 
           <div className="flex items-center gap-2 no-drag min-w-0 flex-1" style={{ WebkitAppRegion: 'no-drag' }}>
             <button
@@ -676,7 +677,7 @@ const MainLayout = () => {
             >
               <Search size={15} />
               <span className="flex-1 text-left truncate">Search calculations…</span>
-              <kbd className="font-sans text-[10px] font-semibold px-1.5 py-0.5 rounded border border-border bg-surface text-text-muted">Ctrl K</kbd>
+              <kbd className="font-sans text-[10px] font-semibold px-1.5 py-0.5 rounded border border-border bg-surface text-text-muted">{IS_MAC ? '⌘K' : 'Ctrl K'}</kbd>
             </button>
             <button onClick={() => setCommandPaletteOpen(true)} className={`${ICON_BUTTON} md:hidden`} title="Search & Commands (Ctrl+K)" aria-label="Search">
               <Search size={18} />
@@ -693,7 +694,7 @@ const MainLayout = () => {
             </button>
 
             {/* Separator between app icons and native window controls (- [] x) */}
-            <div className="h-5 w-px bg-border mx-2 shrink-0" />
+            {!IS_MAC && <div className="h-5 w-px bg-border ml-2 shrink-0" />}
           </div>
         </header>
 

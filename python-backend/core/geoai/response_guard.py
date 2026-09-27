@@ -144,20 +144,31 @@ def fix_result_units(text: Optional[str], tools_used: Iterable[Dict[str, Any]]) 
 
 
 _RECORD_LINE = re.compile(r"^[ \t]*\[Calculation record\].*$\n?", re.MULTILINE)
+# A record echoed after other text on the same line ("... [Calculation record] {...}");
+# a plain mention of the tag without a JSON payload is kept.
+_RECORD_INLINE = re.compile(r"[ \t]*\[Calculation record\][ \t]*\{[^\n]*")
+_RECORD_INLINE_DONE = re.compile(r"[ \t]*\[Calculation record\][ \t]*\{[^\n]*(?=\n)")
+_RECORD_INLINE_OPEN = re.compile(r"\[Calculation record\][ \t]*(?:\{|$)")
+# Models copy JSON-escaped text from tool results ("EC7 §9.5"); show the character.
+_UNICODE_ESCAPE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
 
 def strip_calculation_records(text: Optional[str]) -> str:
     """Remove echoed history records (agent.history_to_messages) from a model answer."""
-    return _RECORD_LINE.sub("", text or "").strip()
+    return _RECORD_INLINE.sub("", _RECORD_LINE.sub("", text or "")).strip()
+
+
+def unescape_unicode(text: str) -> str:
+    """Replace literal JSON escapes such as \\u00a7 with the character they encode."""
+    return _UNICODE_ESCAPE.sub(lambda m: chr(int(m.group(1), 16)), text)
 
 
 def clean_answer(text: Optional[str], tools_used: Optional[Iterable[Dict[str, Any]]] = None) -> str:
     """Apply all guards to a final answer."""
-    return fix_result_units(collapse_repetition(strip_calculation_records(text)), tools_used or [])
+    cleaned = collapse_repetition(strip_calculation_records(text))
+    return unescape_unicode(fix_result_units(cleaned, tools_used or []))
 
 
-_THINK_OPEN, _THINK_CLOSE = "<think>", "</think>"
-_THINK_ANY = re.compile(r"<think>.*?(?:</think>|$)", re.DOTALL)
 _RECORD_TAG = "[Calculation record]"
 _RECORD_LINE_DONE = re.compile(r"^[ \t]*\[Calculation record\][^\n]*\n", re.MULTILINE)
 _RECORD_LINE_START = re.compile(r"^[ \t]*\[Calculation record\]", re.MULTILINE)
@@ -167,8 +178,9 @@ class AnswerStreamCleaner:
     """
     Incremental ``clean_answer`` for a streamed final answer: text is released one whole
     sentence at a time, with the same guards applied per sentence (verbatim repeats dropped,
-    echoed [Calculation record] lines removed, result units corrected, <think> blocks
-    removed). ``feed`` returns the text that is safe to show now; ``flush`` returns the rest.
+    echoed [Calculation record] lines removed, result units corrected). <think> blocks are
+    removed earlier by the model provider. ``feed`` returns the text that is safe to show
+    now; ``flush`` returns the rest.
     """
 
     def __init__(self, tools_used: Optional[Iterable[Dict[str, Any]]] = None):
@@ -211,7 +223,7 @@ class AnswerStreamCleaner:
             self._seen.append(key)
         if "\n" in sep:
             sentence = sentence.rstrip(" \t")
-        text = fix_result_units(sentence, self._tools)
+        text = unescape_unicode(fix_result_units(sentence, self._tools))
         if not self._started:
             text = text.lstrip()
             if not text:
@@ -222,14 +234,11 @@ class AnswerStreamCleaner:
 
     def _drain(self, final: bool) -> str:
         buf = self._buf
-        if _THINK_OPEN in buf:
-            if _THINK_CLOSE not in buf.split(_THINK_OPEN, 1)[1] and not final:
-                return ""  # wait for the reasoning block to close
-            buf = _THINK_ANY.sub("", buf)
         # Echoed calculation records are whole lines: drop complete ones, hold a partial one.
         # (a sentinel keeps "^" from matching at the buffer start when that is mid-line)
         lead = "" if self._line_start else "\x00"
         buf = (_RECORD_LINE if final else _RECORD_LINE_DONE).sub("", lead + buf)[len(lead):]
+        buf = (_RECORD_INLINE if final else _RECORD_INLINE_DONE).sub("", buf)
         hold_from = len(buf)
         if not final:
             line_start = buf.rfind("\n") + 1
@@ -239,6 +248,13 @@ class AnswerStreamCleaner:
                 hold_from = record.start() - len(lead)
             elif line and (line_start or self._line_start) and _RECORD_TAG.startswith(line[:len(_RECORD_TAG)]):
                 hold_from = line_start
+            # an inline record, or a tag that may still be arriving mid-line
+            inline = _RECORD_INLINE_OPEN.search(buf)
+            tag_at = buf.rfind("[")
+            if inline:
+                hold_from = min(hold_from, inline.start())
+            elif tag_at >= 0 and _RECORD_TAG.startswith(buf[tag_at:]):
+                hold_from = min(hold_from, tag_at)
         work, held = buf[:hold_from], buf[hold_from:]
         pieces = _SENTENCE_BREAK.split(work)  # [sentence, sep, sentence, sep, ..., rest]
         rest = pieces.pop()

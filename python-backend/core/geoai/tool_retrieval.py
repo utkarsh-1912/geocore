@@ -231,10 +231,13 @@ _NOTATION: Tuple[Tuple["re.Pattern", str], ...] = (
     (re.compile(r"(?<![\w.])\d*\.\d+\s?g\b"), " peak ground acceleration "),
     # single-letter symbols whose case carries meaning
     (re.compile(r"(?<![\w'])E(?![\w'.-])"), " youngs modulus "),
-    (re.compile(r"(?<![\w'])e(?=\s*(?:=|:|<|>|≈|of\s+\d|is\s+\d|\d))"), " void ratio "),
+    (re.compile(r"(?<![\w'])e(?=\s*(?:=|:|<|>|≈|of\s+\d|is\s+\d|\d|\?))"), " void ratio "),
     (re.compile(r"(?<![\w'])w(?=\s*(?:=|:|of\s+\d|is\s+\d))"), " water content "),
     (re.compile(r"(?<![\w'])n(?=\s*(?:=|:|of\s+\d|is\s+\d))"), " porosity "),
     (re.compile(r"(?<![\w'])N(?![\w'.-])"), " blow count "),
+    # units that name the quantity ("... want kN/m3" asks for a unit weight)
+    (re.compile(r"(?i)\bkN\s*/\s*m\s*(?:3|\^3|³)"), " kN/m3 unit weight "),
+    (re.compile(r"(?i)\b(?:Mg|t|kg)\s*/\s*m\s*(?:3|\^3|³)|\bg\s*/\s*cm\s*(?:3|\^3|³)"), " density "),
 )
 
 
@@ -281,6 +284,12 @@ GEOTECH_SYNONYMS: Dict[str, Tuple[str, ...]] = {
     "soil_classification": ("what soil", "which soil", "soil type", "type of soil", "kind of soil",
                             "soil class", "soil classification", "soil behavior"),
     "consolidation_coefficient": ("cv", "ch", "coefficient of consolidation", "consolidation coefficient"),
+    "consolidation_degree": ("degree of consolidation", "average degree of consolidation", "time factor",
+                             "percent consolidated", "consolidation time", "how far along", "how long until"),
+    "modulus_reduction": ("modulus reduction", "modulus degradation", "stiffness degradation",
+                          "stiffness reduction", "g gmax", "reduction curve", "degradation curve", "drop off",
+                          "decay with strain"),
+    "ingest": ("index", "ingest", "upload", "add to the library", "add to the index"),
     "preconsolidation": ("pc", "preconsolidation pressure", "preconsolidation stress", "yield stress"),
     "negative_skin_friction": ("downdrag", "drag load", "negative skin friction", "negative shaft friction"),
     "eurocode": ("ec7", "eurocode", "eurocode 7", "en 1997", "en1997", "partial factor", "design approach",
@@ -316,7 +325,7 @@ GEOTECH_SYNONYMS: Dict[str, Tuple[str, ...]] = {
     "pipeline": ("pipeline", "pipe", "subsea pipeline", "cable"),
     "embedment": ("embedment", "penetration", "embedment depth", "penetration depth", "sink", "sinkage"),
     "point_load": ("point load", "concentrated load", "column load", "concentrated force"),
-    "strip_load": ("strip load", "strip footing", "line load", "strip foundation"),
+    "strip_load": ("strip load", "strip footing", "line load", "strip foundation", "embankment"),
     "stress_increase": ("stress increase", "stress increment", "stress distribution", "induced stress",
                         "stress redistribution", "vertical stress"),
     "pumping_test": ("pumping test", "pumping well", "observation well", "drawdown", "aquifer", "well test"),
@@ -566,7 +575,8 @@ def _returned_quantities(returns: str) -> str:
     """Keep only the quantity names/descriptions of ``- 'Nq [-]': Bearing capacity factor``."""
     keys = re.findall(r"-\s*'([^']+)'\s*:\s*([^\n]*)", returns)
     if keys:
-        return " ".join(f"{re.sub(r'\[[^\]]*\]', ' ', k)} {d}" for k, d in keys)
+        # No backslashes inside the f-string expression: that is a SyntaxError before Python 3.12.
+        return " ".join(re.sub(r"\[[^\]]*\]", " ", k) + f" {d}" for k, d in keys)
     return returns
 
 
@@ -679,28 +689,46 @@ def build_cards(tools: Sequence[Any], parameters_by_name: Dict[str, Dict[str, An
 
 _REQUEST_CUES = frozenset({"what", "how", "calculate", "compute", "estimate", "determine", "derive", "find", "get",
                            "convert", "classify", "interpret", "correct", "normalise", "normalize", "evaluate",
-                           "check", "obtain", "need", "work"})
+                           "check", "obtain", "need", "work", "whats", "want"})
+#: "convert / turn / change A to|into B" asks for B.
+_CONVERSION_VERBS = frozenset({"convert", "turn", "change", "transform", "translate"})
 #: Words that end the requested quantity and start the inputs / conditions.
 _HEAD_DELIMITERS = frozenset({"from", "if", "given", "with", "using", "for", "based", "when", "where", "at",
                               "data", "inputs", "input", "below", "under", "beneath", "via", "by", "in", "on"})
 
 
+def _cue_tokens(text: str) -> List[str]:
+    """One lower-case token per whitespace word ("what's" -> "whats") so positions line up."""
+    return [re.sub(r"[^a-z0-9]", "", w.lower()) for w in re.findall(r"[A-Za-z0-9'()\-]+", text)]
+
+
 def query_head(query: str) -> str:
     """The part of a request that names the wanted quantity.
 
-    Takes the first sentence with a request cue and cuts it at the first
-    delimiter ("from", "if", "given", "with", ...).  "convert A to B" -> "B".
+    Takes the first sentence with a request cue, starts at the last cue
+    ("porosity is 38% - what's e?" -> "what's e") and cuts at the first
+    delimiter ("from", "if", "given", "with", ...).  "convert/turn A to|into B"
+    -> "B".  A terse question without a cue ("..., void ratio?") -> last clause.
     """
-    sentences = [s for s in re.split(r"(?<=[.?!:])\s+", query or "") if s.strip()]
+    text = (query or "").replace("\u2019", "'")
+    sentences = [s for s in re.split(r"(?<=[.?!:])\s+", text) if s.strip()]
     if not sentences:
         return ""
-    chosen = next((s for s in sentences if _REQUEST_CUES & set(raw_tokens(s))), sentences[0])
+    chosen = next((s for s in sentences if _REQUEST_CUES & set(_cue_tokens(s))), None)
+    if chosen is None:
+        chosen = sentences[-1]
+        if chosen.rstrip().endswith("?"):
+            chosen = re.split(r"[,;]| - ", chosen)[-1]
     toks = re.findall(r"[A-Za-z0-9'()\-]+", chosen)
     low = [t.lower() for t in toks]
-    if "convert" in low:
-        for sep in ("to", "into"):
-            if sep in low[low.index("convert"):]:
-                return " ".join(toks[low.index(sep, low.index("convert")) + 1:])
+    for i, lw in enumerate(low):
+        if lw in _CONVERSION_VERBS:
+            for j in range(i + 1, len(low)):
+                if low[j] in ("to", "into"):
+                    return " ".join(toks[j + 1:])
+    cue_pos = [i for i, w in enumerate(_cue_tokens(" ".join(toks))) if w in _REQUEST_CUES]
+    if cue_pos and cue_pos[-1] > 0:
+        toks, low = toks[cue_pos[-1]:], low[cue_pos[-1]:]
     head = []
     for tok, lw in zip(toks, low):
         if lw in _HEAD_DELIMITERS and head:

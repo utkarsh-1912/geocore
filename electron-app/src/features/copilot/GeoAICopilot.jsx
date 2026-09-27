@@ -16,6 +16,7 @@ import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { Button } from '../../components/ui/Button';
 import { api } from '../../api/client';
 import { buildChatHistory } from './chatHistory';
+import { MarkdownText } from './MarkdownText';
 
 export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, currentContext }) => {
     const [messages, setMessages] = useState([
@@ -45,6 +46,13 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
         }
     }, [messages, isOpen]);
 
+    // Load the local model in the background so the first question doesn't pay the load time.
+    useEffect(() => {
+        if (isOpen) {
+            api.geoaiWarmup().catch(() => {});
+        }
+    }, [isOpen]);
+
     const handleSendMessage = async (textToSend) => {
         const text = textToSend || inputValue;
         if (!text.trim() || isLoading) return;
@@ -66,6 +74,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
             const streamResponse = await api.geoaiChatStream(text, currentContext, history);
             const reader = streamResponse.body.getReader();
             const decoder = new TextDecoder();
+            let sseBuffer = '';
             
             aiMessageId = Date.now() + 1;
             let accumulatedText = '';
@@ -84,8 +93,9 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                 const { done, value } = await reader.read();
                 if (done) break;
                 
-                const chunk = decoder.decode(value, { stream: true });
-                const lines = chunk.split('\n');
+                sseBuffer += decoder.decode(value, { stream: true });
+                const lines = sseBuffer.split('\n');
+                sseBuffer = lines.pop(); // an event split across chunks completes on the next read
                 
                 for (const line of lines) {
                     if (!line.startsWith('data: ')) continue;
@@ -227,9 +237,13 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                                         )}
                                     </div>
                                 ) : (
-                                    <div className="text-xs whitespace-pre-wrap leading-relaxed">
-                                        {msg.text}
-                                    </div>
+                                    msg.sender === 'ai' ? (
+                                        <MarkdownText text={msg.text} className="text-xs leading-relaxed" />
+                                    ) : (
+                                        <div className="text-xs whitespace-pre-wrap leading-relaxed">
+                                            {msg.text}
+                                        </div>
+                                    )
                                 )}
 
                                 {/* Tool Result Card */}

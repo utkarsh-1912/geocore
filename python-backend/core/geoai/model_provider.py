@@ -125,7 +125,7 @@ def make_tool_result_message(tool_call_id: str, tool_name: str, result: Any) -> 
         content_str = result
     else:
         try:
-            content_str = json.dumps(result)
+            content_str = json.dumps(result, ensure_ascii=False)
         except Exception:
             content_str = str(result)
             

@@ -308,14 +308,16 @@ def test_answer_stream_cleaner_matches_clean_answer_for_any_chunking():
     loop = "The soil behaviour type index Ic is 1.31. "
     texts = [
         "Qt is 360.99 kPa. " + loop + "\n\nThis indicates sand. " + loop * 5 + "The soil beha",
-        "<think>\n\n</think>\n\nThe result is 5.2 kN/m3. [Calculation record] inline stays\n"
+        "The result is 5.2 kN/m3. [Calculation record] inline stays\n"
         "[Calculation record] {\"tool\": \"x\"}\nMore text, fine.\n- bullet one\n- bullet two",
         "Line one\nLine two.\n\n\nValue 1.31 kPa!",
+        "Ka is 0.283. Active state full ... [Calculation record] {\"tool\": \"x\", \"Kp\": -1.5}\n"
+        "Per EN 1997-1 \\u00a79.5 [see note]. Done.",
         "",
     ]
     rng = random.Random(0)
     for text in texts:
-        expected = clean_answer(text.replace("<think>\n\n</think>\n\n", ""), tools)
+        expected = clean_answer(text, tools)
         for _ in range(100):
             c, out, i = AnswerStreamCleaner(tools), "", 0
             while i < len(text):
@@ -331,3 +333,50 @@ def test_answer_stream_cleaner_releases_sentences_early():
     assert c.feed("First sentence is here.") == ""  # may still be followed by more of the separator
     assert c.feed(" Second") == "First sentence is here."
     assert c.flush() == " Second"
+
+
+# ---------------- one think-stripping mechanism, stop strings, prompt prefix ----------------
+
+@pytest.mark.parametrize("text,expected", [
+    ("<think>\nhmm\n</think>\n\nAnswer", "Answer"),
+    ("<think>\n\n</think>\n\nAnswer", "Answer"),  # empty block (enable_thinking=False output)
+    ("<think>unterminated", ""),
+    ("reasoning prefilled by the template\n</think>\n\nAnswer", "Answer"),  # Qwen3.5 thinking on
+    ("No thinking", "No thinking"),
+    ("  keep  as is  ", "  keep  as is  "),
+])
+def test_strip_thinking_uses_stream_filter_semantics(text, expected):
+    from core.geoai.llama_cpp_provider import strip_thinking
+    assert strip_thinking(text) == expected
+
+
+def test_tool_turn_has_stop_strings_answer_turn_does_not(tmp_path):
+    from core.geoai.llama_cpp_provider import TOOL_TURN_STOP
+    base = write_fake_base(tmp_path / "m.gguf", **{"tokenizer.chat_template": "{% if tools %}x{% endif %}"})
+    fake = _fake_llama('<tool_call>\n{"name": "x", "arguments": {}}\n</tool_call>')
+    with patch.dict(sys.modules, {"llama_cpp": fake}):
+        p = LlamaCppProvider(GeoAIModelConfig(model_path=str(base), chat_format=None))
+        resp = p.generate([make_user_message("q")], tools=[{"type": "function", "function": {"name": "x"}}])
+        assert fake.Llama.return_value.create_chat_completion.call_args.kwargs["stop"] == list(TOOL_TURN_STOP)
+        p.generate([make_user_message("q")])
+        assert "stop" not in fake.Llama.return_value.create_chat_completion.call_args.kwargs
+    assert resp.tool_calls[0].function_name == "x"
+
+
+def test_stream_with_thinking_on_holds_until_complete(tmp_path):
+    base = write_fake_base(tmp_path / "qwen35-like.gguf", **{"tokenizer.chat_template": QWEN3_LIKE})
+    fake = _fake_llama(stream_deltas=["reasoning that the template", " opened\n</think>\n\n", "Zone 7."])
+    with patch.dict(sys.modules, {"llama_cpp": fake}):
+        p = LlamaCppProvider(GeoAIModelConfig(model_path=str(base), chat_format=None, disable_thinking=False))
+        chunks = [c.delta_content for c in p.generate_stream([make_user_message("q")]) if c.delta_content]
+    assert chunks == ["Zone 7."]
+
+
+def test_static_system_prompt_is_the_prefix_of_every_request_prompt():
+    # Warm-up prefills build_system_prompt(None); llama.cpp reuses it only if every request's
+    # system text starts with exactly that static part (dynamic context goes after it).
+    from core.geoai.system_prompt import build_system_prompt
+    static = build_system_prompt(None)
+    ctx = {"activeFunction": "classify_cpt_soil_behavior", "activeCategory": "CPT",
+           "project_context": "### ACTIVE PROJECT CONTEXT\n- Project: X"}
+    assert build_system_prompt(ctx).startswith(static)

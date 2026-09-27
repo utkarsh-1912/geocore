@@ -85,11 +85,14 @@ body {
     background-color: color-mix(in srgb, var(--color-primary) 28%, transparent);
 }
 
-/* Visible, consistent keyboard focus (mouse clicks stay ring-free). */
-:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-    border-radius: 4px;
+/* Visible, consistent keyboard focus (mouse clicks stay ring-free).
+   Layered as base so components can override it with utilities
+   (e.g. inputs that show focus on their container instead). */
+@layer base {
+    :focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+    }
 }
 
 .tabular-nums {

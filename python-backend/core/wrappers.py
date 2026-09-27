@@ -46,6 +46,52 @@ def map_depth_properties_wrapper(args):
         "message": "Properties mapped successfully."
     }
 
+def check_layer_overlap_wrapper(args):
+    """
+    Wrapper for check_layer_overlap.
+    Resolves the SoilProfile ID from state_manager and reports gaps/overlaps
+    (groundhog returns None on success and mutates the index in place).
+    """
+    from .state import state_manager
+    from groundhog.general.validation import check_layer_overlap
+
+    profile_id = args.get('df')
+    profile = state_manager.get(profile_id)
+    if not isinstance(profile, SoilProfile):
+        return {"error": f"SoilProfile with ID {profile_id} not found."}
+
+    raise_error = args.get('raise_error', True)
+    if isinstance(raise_error, str):
+        raise_error = raise_error.strip().lower() == 'true'
+
+    def _key(name):
+        val = args.get(name)
+        return val if isinstance(val, str) and val.strip() else None
+
+    # groundhog defaults to 'z from [m]'/'z to [m]', but SoilProfiles use their own
+    # depth columns (e.g. 'Depth from [m]'), so default to those instead.
+    z_from_key = _key('z_from_key') or getattr(profile, 'depth_from_col', None)
+    z_to_key = _key('z_to_key') or getattr(profile, 'depth_to_col', None)
+    df = profile.copy()
+    for key in (z_from_key or "z from [m]", z_to_key or "z to [m]"):
+        if key not in df.columns:
+            return {"error": f"Column '{key}' not found in SoilProfile. Available columns: {', '.join(map(str, df.columns))}"}
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        try:
+            check_layer_overlap(df, raise_error=bool(raise_error), z_from_key=z_from_key, z_to_key=z_to_key)
+        except ValueError as e:
+            return {"error": f"Layer check failed: {e}"}
+
+    issues = [str(w.message) for w in caught]
+    return {
+        "layers_checked": len(df),
+        "gaps_or_overlaps": len(issues),
+        "message": "Layer issues found." if issues else "No gaps or overlaps between layers.",
+        "warnings": issues,
+    }
+
 def offsets_wrapper(args):
     """
     Wrapper for offsets.

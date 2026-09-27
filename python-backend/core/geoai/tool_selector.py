@@ -205,7 +205,10 @@ def rank_tools(query: str, context: Optional[Dict[str, Any]] = None) -> List[Tup
         # Soft boosts (never filters).  A literature/document question about a topic
         # ("guidance on pile skin friction") favours research tools over the topic's
         # calculators; otherwise inferred engineering domains are favoured.
-        research = "~research" in index.analyze_query(query) and not _NUMERIC_INPUT.search(query)
+        query_terms = index.analyze_query(query)
+        research = "~research" in query_terms and not _NUMERIC_INPUT.search(query)
+        # Asking the library ("what does the literature say") vs adding to it ("index this report").
+        ingest = "~ingest" in query_terms
         domains = [] if research else [d for d in infer_categories(query) if d != "research"]
         markers: Set[str] = set().union(*(DOMAIN_MARKERS.get(d, set()) for d in domains)) if domains else set()
         for i, name in enumerate(index.names):
@@ -214,7 +217,8 @@ def rank_tools(query: str, context: Optional[Dict[str, Any]] = None) -> List[Tup
             tool_markers = _tool_markers(tools[name]) if name in tools else set()
             if markers and tool_markers & markers:
                 scores[i] += DOMAIN_BOOST * top
-            if research and "research" in tool_markers:
+            is_ingest_tool = "~ingest" in index.cards[i].fields.get("name", ())
+            if research and "research" in tool_markers and ingest == is_ingest_tool:
                 scores[i] += RESEARCH_BOOST * top
             if index.cards[i].canonical:
                 scores[i] *= 1.0 + CANONICAL_BONUS

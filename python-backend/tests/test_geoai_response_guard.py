@@ -213,3 +213,26 @@ def test_agent_drops_null_optional_arguments():
 
 def test_clean_answer_without_tools_only_collapses():
     assert clean_answer("Pressure 12.5 kPa. " + LOOP * 3) == "Pressure 12.5 kPa. " + LOOP.strip()
+
+
+def test_clean_answer_strips_inline_echoed_calculation_record():
+    text = 'Ka is 0.283; active state full ... [Calculation record] {"tool": "x", "results": {"Kp": -1.569}}'
+    assert clean_answer(text) == "Ka is 0.283; active state full ..."
+    assert clean_answer("See the [Calculation record] above.") == "See the [Calculation record] above."
+
+
+def test_clean_answer_unescapes_json_unicode_escapes():
+    assert clean_answer("EN 1997-1:2004 Eurocode 7 \u00a79.5") == "EN 1997-1:2004 Eurocode 7 §9.5"
+
+
+def test_agent_stream_cleans_direct_answer_without_tool_call():
+    # A repeated question answered from history: the model echoes the history record.
+    answer = ('Ka = 0.2827 per Eurocode 7 \u00a79.5.\n'
+              '[Calculation record] {"tool": "calculate_earth_pressure_rankine", "results": {"Kp": -1.569}}')
+    provider = RecordingProvider([], stream_chunks=[StreamChunk(delta_content=answer[i:i + 5])
+                                                    for i in range(0, len(answer), 5)])
+    agent = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5)
+
+    events = list(agent.run_stream("Calculate Ka for phi = 34 deg"))
+    assert "".join(e.content for e in events if e.type == "token") == "Ka = 0.2827 per Eurocode 7 \u00a79.5."
+    assert events[-1].type == "done"
