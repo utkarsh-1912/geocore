@@ -129,7 +129,7 @@ export const ParameterChipsSelector = ({ name, value, availableColumns, onChange
                             disabled={disabled}
                             className={`px-2.5 py-1 rounded text-xs font-medium transition-all flex items-center gap-1.5 ${
                                 isSelected
-                                    ? 'bg-primary text-white shadow-sm ring-1 ring-primary'
+                                    ? 'bg-primary text-on-primary shadow-sm ring-1 ring-primary'
                                     : 'bg-surface border border-border text-text-main hover:border-primary/50 hover:bg-primary/5'
                             }`}
                         >

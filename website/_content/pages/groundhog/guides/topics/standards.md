@@ -14,7 +14,7 @@ geocore_edit_note: Upstream toctree/autodoc structure restructured into a single
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/standards/standards_toplevel.html
 ---
 
-This page mirrors the structure of the upstream groundhog documentation for *Standards* and links each topic to the API reference.
+This page follows the structure of the upstream groundhog documentation for *Standards*. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.
 
 ## Eurocode 7
 
@@ -24,10 +24,44 @@ Upstream page: [Eurocode 7](https://groundhog.readthedocs.io/en/main/standards/e
 
 Upstream page: [Parameter selection](https://groundhog.readthedocs.io/en/main/standards/parameter_selection.html)
 
-- Module [`groundhog.standards.eurocode7.parameter_selection`](/docs/groundhog/api/standards/eurocode7/parameter_selection): [`constant_value`](/docs/groundhog/api/standards/eurocode7/parameter_selection#constant_value), [`linear_trend`](/docs/groundhog/api/standards/eurocode7/parameter_selection#linear_trend)
+Module [`groundhog.standards.eurocode7.parameter_selection`](/docs/groundhog/api/standards/eurocode7/parameter_selection). Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.
+
+#### constant_value
+
+Function [`constant_value`](/docs/groundhog/api/standards/eurocode7/parameter_selection#constant_value).
+
+Selects the characteristic value from a set of measurements using Eurocode 7 rules.
+
+$$
+X_k = X_{mean} \cdot \left( 1 - k_n \cdot V_x \right)
+$$
+
+$$
+V_x \text{unknown}: k_{n,mean} = t_{n-1}^{0.95} \sqrt{ \frac{1}{n} }, \ k_{n,low} = t_{n-1}^{0.95} \sqrt{ \frac{1}{n} + 1}
+$$
+
+*1 more formula in the full reference.*
+
+#### linear_trend
+
+Function [`linear_trend`](/docs/groundhog/api/standards/eurocode7/parameter_selection#linear_trend).
+
+Selects the characteristic value from a set of measurements using Eurocode 7 rules.
+
+$$
+x^{*} = \bar{x} + b ( z - \bar{z} )
+$$
+
+$$
+\bar{x} = \frac{1}{n} \left( x_1 + x_2 + ... + x_n \right)
+$$
+
+*8 more formulas in the full reference.*
 
 ### Partial factor selection
 
 Upstream page: [Partial factor selection](https://groundhog.readthedocs.io/en/main/standards/factors.html)
 
-- Class [`Eurocode7_factoring_STR_GEO`](/docs/groundhog/api/standards/eurocode7/factors#eurocode7_factoring_str_geo) (`groundhog.standards.eurocode7.factors`)
+#### Eurocode7_factoring_STR_GEO
+
+Class [`Eurocode7_factoring_STR_GEO`](/docs/groundhog/api/standards/eurocode7/factors#eurocode7_factoring_str_geo).

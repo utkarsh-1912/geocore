@@ -12,7 +12,7 @@ import time
 import os
 import logging
 from typing import Dict, Any, Optional
-from threading import RLock
+from threading import RLock, Thread
 
 try:
     import psutil
@@ -34,6 +34,8 @@ class ModelLifecycleManager:
         self._provider: Optional[ModelProvider] = None
         self._last_access_time: float = time.time()
         self._lock = RLock()
+        self._warming = False
+        self._idle_watch: Optional[Thread] = None
 
     def set_provider(self, provider: ModelProvider) -> None:
         with self._lock:
@@ -45,7 +47,58 @@ class ModelLifecycleManager:
             self._last_access_time = time.time()
             if self._provider is None:
                 self._provider = self._create_provider()
+            self._ensure_idle_watch()
             return self._provider
+
+    def _ensure_idle_watch(self) -> None:
+        """Start (once) a daemon thread that applies the idle timeout while the app runs."""
+        if self._idle_watch is not None and self._idle_watch.is_alive():
+            return
+        interval = max(1.0, min(60.0, self.idle_timeout_seconds / 4))
+
+        def _watch():
+            while True:
+                time.sleep(interval)
+                try:
+                    self.check_idle_and_unload()
+                except Exception as e:  # never let the watcher die silently mid-session
+                    logger.warning(f"GeoAI idle check failed: {e}")
+
+        self._idle_watch = Thread(target=_watch, name="geoai-idle-unload", daemon=True)
+        self._idle_watch.start()
+
+    def warm_up(self, background: bool = True) -> Dict[str, Any]:
+        """
+        Load the model ahead of the first request (e.g. when the GeoAI panel opens) and
+        evaluate the static system prompt into the KV cache, so the first answer does not pay
+        the model load (~8 s on a laptop CPU). The idle timeout still unloads it when unused.
+        """
+        with self._lock:
+            provider = self.get_provider()
+            if not hasattr(provider, "warm_up"):
+                return {"status": "not_required", "loaded": provider.is_loaded()}
+            if self._warming:
+                return {"status": "warming", "loaded": False}
+            if provider.is_loaded():
+                return {"status": "loaded", "loaded": True}
+            self._warming = True
+
+        def _run():
+            try:
+                from core.geoai.system_prompt import build_system_prompt
+                provider.warm_up(build_system_prompt(None))
+            except Exception as e:
+                logger.warning(f"GeoAI warm-up failed: {e}")
+            finally:
+                with self._lock:
+                    self._warming = False
+                    self._last_access_time = time.time()
+
+        if background:
+            Thread(target=_run, name="geoai-warm-up", daemon=True).start()
+            return {"status": "warming", "loaded": False}
+        _run()
+        return {"status": "loaded" if provider.is_loaded() else "failed", "loaded": provider.is_loaded()}
 
     def touch(self) -> None:
         """Mark provider as recently used."""

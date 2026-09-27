@@ -178,7 +178,7 @@ const SchemaEditor = ({ isOpen, onClose, field, onSave, functionId }) => {
                         <div className="p-4 border-t border-border bg-background flex gap-2 shrink-0">
                             <button
                                 onClick={handleSave}
-                                className="flex-1 bg-primary hover:bg-primary/90 text-white rounded py-2 text-sm font-medium flex items-center justify-center gap-2 transition-colors shadow-sm"
+                                className="flex-1 bg-primary hover:bg-primary/90 text-on-primary rounded py-2 text-sm font-medium flex items-center justify-center gap-2 transition-colors shadow-sm"
                             >
                                 <Save size={16} /> Save Changes
                             </button>

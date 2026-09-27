@@ -81,52 +81,95 @@ def _british_to_american(word: str) -> str:
     return word
 
 
-@functools.lru_cache(maxsize=8192)
-def stem(word: str) -> str:
-    """Tiny deterministic English suffix stripper (Porter-lite).
+#: Derivational suffixes -> replacement, longest first (Porter step 2-4 style).
+#: Verb, adjective and noun forms of one concept end up on the same root:
+#: liquefy/liquefies/liquefiable/liquefaction -> "liquef", dense/density -> "dens",
+#: settle/settlement -> "settl", consolidate/consolidation -> "consolid",
+#: permeable/permeability -> "perme", sensitive/sensitivity -> "sensit".
+_DERIVATIONAL: Tuple[Tuple[str, str], ...] = tuple(sorted((
+    ("ification", "ify"), ("efaction", "efy"), ("ization", "ize"), ("ational", "ate"), ("fulness", ""),
+    ("iveness", "ive"), ("ousness", ""), ("ability", ""), ("ibility", ""), ("ivity", "ive"), ("ation", "ate"),
+    ("ition", ""), ("ssion", "ss"), ("ction", "ct"), ("ment", ""), ("ness", ""), ("ance", ""), ("ence", ""),
+    ("able", ""), ("ible", ""), ("ical", ""), ("ity", ""), ("ive", ""), ("ous", ""), ("ize", ""), ("ate", ""),
+    ("ify", ""), ("ion", ""), ("ant", ""), ("ent", ""), ("al", ""), ("ic", ""), ("ly", ""), ("y", ""),
+), key=lambda kv: (-len(kv[0]), kv[0])))
 
-    Only has to map inflections of the same word onto one key, e.g.
-    ``settlement/settle/settlements``, ``calculated/calculation``,
-    ``normalised/normalization``, ``stresses/stress``, ``behaviour/behavior``.
-    """
-    w = word
-    if len(w) <= 3 or not w.isalpha():
-        return _british_to_american(w)
-    # 1. plurals, then British -> American spelling ("behaviours" -> "behaviour" -> "behavior")
+#: Minimum root length left after stripping a derivational suffix.
+_MIN_ROOT = 3
+#: Words whose trailing letters look like suffixes but are not ("water" is not "wat" + "er").
+_STEM_EXCEPTIONS = frozenset({
+    "water", "layer", "diameter", "parameter", "meter", "center", "under", "over", "after", "other", "filter",
+    "shear", "clay", "gravity", "only", "early", "apply", "supply", "fly", "dry", "ply", "silty", "sandy",
+    "ratio", "strain", "cement", "segment", "element", "moment", "pavement", "basement", "tension", "pension",
+    "station", "stationary", "method", "index", "analysis", "basis", "axis", "gas", "lens", "series",
+    "ultimate", "estimate", "plate", "rate", "gate", "state", "late", "date", "coefficient", "gradient",
+    "percent", "content", "current", "event", "agent", "patent", "extent", "constant", "plant", "slant",
+    "equivalent", "different", "permanent", "ancient", "silent", "recent",
+})
+_NOT_PAST = frozenset({"embed", "bed", "shed", "red", "bled", "led", "fed", "wed"})
+_SHORT_FORMS = {"sandy": "sand", "silty": "silt", "dry": "dry", "clayey": "clay", "gravelly": "gravel"}
+
+
+def _strip_inflection(w: str) -> str:
+    """Plurals, 3rd person, -ed, -ing (Porter step 1)."""
     if w.endswith("ies") and len(w) > 4:
-        w = w[:-3] + "y"
-    elif w.endswith("sses"):
-        w = w[:-2]
-    elif w.endswith("s") and not w.endswith(("ss", "us", "is")):
+        return w[:-3] + "y"
+    if w.endswith("ied") and len(w) > 4:
+        return w[:-3] + "y"
+    if w.endswith("sses"):
+        return w[:-2]
+    if w.endswith("s") and not w.endswith(("ss", "us", "is", "ys")) and len(w) > 3:
         w = w[:-1]
-    w = _british_to_american(w)
-    # 2. -ing / -ed (+ undouble "embedded" -> "embed")
+        return w
     for suf in ("ing", "ed"):
-        if w.endswith(suf) and len(w) - len(suf) >= 3:
+        if suf == "ed" and (w.endswith("eed") or w in _NOT_PAST):
+            continue
+        if w.endswith(suf) and len(w) - len(suf) >= 3 and re.search(r"[aeiouy]", w[: -len(suf)]):
             w = w[: -len(suf)]
-            if len(w) > 3 and w[-1] == w[-2] and w[-1] not in "lsz":
+            if w.endswith(("at", "iz", "bl", "fy")):          # consolidated -> consolidate
+                return w + "e" if not w.endswith("fy") else w
+            if len(w) > 3 and w[-1] == w[-2] and w[-1] not in "lsz":   # embedded -> embed
                 w = w[:-1]
+            elif len(w) >= 3 and w[-1] not in "aeiouywx" and w[-2] in "aeiou" and w[-3] not in "aeiou"                     and len(w) <= 4:
+                w = w + "e"                                   # sliding -> slide, based -> base
+            return w
+    return w
+
+
+@functools.lru_cache(maxsize=16384)
+def stem(word: str) -> str:
+    """Small deterministic, morphology-aware English stemmer (Porter-style).
+
+    Maps inflected and derived forms of one word onto one key:
+    settle/settles/settled/settlement, liquefy/liquefiable/liquefaction,
+    dense/density, consolidated/consolidation, normalised/normalization,
+    classify/classification, behaviour/behavior.  Symbols with digits
+    (n60, k0, d10) and words of <= 3 letters are left alone.
+    """
+    w = _british_to_american(word)
+    if len(w) <= 3 or not w.isalpha():
+        return w
+    if w in _SHORT_FORMS:
+        return _SHORT_FORMS[w]
+    w = _british_to_american(_strip_inflection(w))
+    if w in _STEM_EXCEPTIONS:
+        return w
+    # Up to three derivational passes: "normalization" -> "normalize" -> "normal" -> "norm".
+    for _ in range(3):
+        for suf, rep in _DERIVATIONAL:
+            if w.endswith(suf) and len(w) - len(suf) >= _MIN_ROOT and re.search(r"[aeiouy]", w[: -len(suf)]):
+                w = w[: -len(suf)] + rep
+                break
+        else:
             break
-    # 3. derivational suffixes
-    if w.endswith("ification"):
-        w = w[:-9] + "ify"
-    elif w.endswith("ifi") and len(w) > 5:          # classified -> classifi (after -ed)
-        w = w[:-1] + "y"
-    elif w.endswith("ssion"):
-        w = w[:-3]
-    elif w.endswith("ction"):
-        w = w[:-3]
-    elif w.endswith("ation") and len(w) > 6:
-        w = w[:-5] + "ate"
-    for suf in ("ment", "ness", "ity"):
-        if w.endswith(suf) and len(w) - len(suf) >= 4:
-            w = w[: -len(suf)]
-            break
-    # 4. trailing e, and -izate -> -iz (normalization == normalize)
+        if w in _STEM_EXCEPTIONS:
+            return w
     if len(w) > 4 and w.endswith("e"):
         w = w[:-1]
-    if w.endswith("izat"):
-        w = w[:-2]
+    if len(w) > 4 and w.endswith("y"):
+        w = w[:-1]
+    if len(w) > 4 and w.endswith("i"):                     # liquefiable -> liquefi -> liquef
+        w = w[:-1]
     return w
 
 
@@ -180,6 +223,29 @@ def raw_tokens(text: str) -> List[str]:
     return [_SYMBOL_ALIASES.get(t, t) for t in out]
 
 
+#: Case-sensitive engineering notation -> words (applied before lower-casing).
+_NOTATION: Tuple[Tuple["re.Pattern", str], ...] = (
+    # earthquake magnitude "M7.5", "Mw 6.5", "Mw=7"
+    (re.compile(r"\bM[wWsL]?\s*=?\s*[4-9](?:\.\d+)?(?![\d.]*\s*(?i:m\b|mm\b|kn\b|kpa\b|mpa\b))"), " earthquake magnitude "),
+    # accelerations in g: "0.3g", "0.25 g"
+    (re.compile(r"(?<![\w.])\d*\.\d+\s?g\b"), " peak ground acceleration "),
+    # single-letter symbols whose case carries meaning
+    (re.compile(r"(?<![\w'])E(?![\w'.-])"), " youngs modulus "),
+    (re.compile(r"(?<![\w'])e(?=\s*(?:=|:|<|>|≈|of\s+\d|is\s+\d|\d))"), " void ratio "),
+    (re.compile(r"(?<![\w'])w(?=\s*(?:=|:|of\s+\d|is\s+\d))"), " water content "),
+    (re.compile(r"(?<![\w'])n(?=\s*(?:=|:|of\s+\d|is\s+\d))"), " porosity "),
+    (re.compile(r"(?<![\w'])N(?![\w'.-])"), " blow count "),
+)
+
+
+def normalize_notation(text: str) -> str:
+    """Expand case-sensitive engineering notation (``E``, ``e =``, ``M7.5``, ``0.3g``) to words."""
+    t = text or ""
+    for pattern, words in _NOTATION:
+        t = pattern.sub(words, t)
+    return t
+
+
 def _is_number(tok: str) -> bool:
     return tok.isdigit()
 
@@ -195,15 +261,30 @@ STOPWORDS = frozenset(stem(w) for w in _STOPWORDS_RAW.split()) | frozenset(_STOP
 #: stemmed token sequence; a match adds the concept token ``~<group>``.
 GEOTECH_SYNONYMS: Dict[str, Tuple[str, ...]] = {
     "relative_density": ("relative density", "dr", "density index"),
-    "cone_resistance": ("cone resistance", "cone tip resistance", "tip resistance", "qc", "qt",
-                        "corrected cone resistance"),
-    "sleeve_friction": ("sleeve friction", "fs", "local friction"),
+    "min_void_ratio": ("emin", "e min", "minimum void ratio", "min void ratio"),
+    "max_void_ratio": ("emax", "e max", "maximum void ratio", "max void ratio"),
+    "cone_resistance": ("cone resistance", "cone tip resistance", "tip resistance", "qc", "qt", "cone tip",
+                        "corrected cone resistance", "qnet", "net cone resistance"),
+    "normalized_cone_resistance": ("qc1n", "qc1ncs", "qtn", "qtncs", "qtn cs", "normalized cone resistance",
+                                   "clean sand equivalent", "clean sand"),
+    "sleeve_friction": ("sleeve friction", "fs", "local friction", "sleeve"),
     "friction_ratio": ("friction ratio", "rf", "fr"),
     "sbt_index": ("soil behaviour type index", "soil behavior type", "soil behaviour type", "ic", "sbt",
                   "sbtn", "behaviour index", "behaviour type"),
     "cpt": ("cpt", "cptu", "pcpt", "cone penetration test", "cone penetration", "piezocone", "cone test",
             "cone data"),
-    "spt": ("spt", "standard penetration test", "blow count", "n60", "n1 60", "spt n", "n value"),
+    "spt": ("spt", "standard penetration test", "blow count", "blows", "n60", "n1 60", "spt n", "n value"),
+    "youngs_modulus": ("youngs modulus", "young modulus", "young s modulus", "elastic modulus",
+                       "modulus of elasticity", "drained modulus"),
+    "seismic": ("pga", "amax", "a max", "peak ground acceleration", "ground acceleration", "magnitude",
+                "earthquake magnitude", "earthquake", "quake", "seismic", "mw", "ground motion"),
+    "soil_classification": ("what soil", "which soil", "soil type", "type of soil", "kind of soil",
+                            "soil class", "soil classification", "soil behavior"),
+    "consolidation_coefficient": ("cv", "ch", "coefficient of consolidation", "consolidation coefficient"),
+    "preconsolidation": ("pc", "preconsolidation pressure", "preconsolidation stress", "yield stress"),
+    "negative_skin_friction": ("downdrag", "drag load", "negative skin friction", "negative shaft friction"),
+    "eurocode": ("ec7", "eurocode", "eurocode 7", "en 1997", "en1997", "partial factor", "design approach",
+                 "da1", "da2", "da3", "limit state"),
     "undrained_strength": ("su", "cu", "undrained shear strength", "undrained strength", "undrained cohesion"),
     "friction_angle": ("phi", "friction angle", "angle of shearing resistance", "angle of internal friction",
                        "shearing resistance angle", "internal friction angle"),
@@ -218,7 +299,7 @@ GEOTECH_SYNONYMS: Dict[str, Tuple[str, ...]] = {
     "liquefaction": ("csr", "crr", "cyclic stress ratio", "cyclic resistance ratio", "liquefaction",
                      "liquefaction triggering", "factor of safety against liquefaction"),
     "water_content": ("water content", "moisture content", "natural water content"),
-    "unit_weight": ("unit weight", "gamma", "unit weight of soil"),
+    "unit_weight": ("unit weight", "gamma", "unit weight of soil", "how heavy", "weight per cubic meter"),
     "saturation": ("degree of saturation", "saturation", "sr"),
     "specific_gravity": ("specific gravity", "gs", "specific gravity of solids"),
     "compression_index": ("compression index", "cc"),
@@ -226,13 +307,14 @@ GEOTECH_SYNONYMS: Dict[str, Tuple[str, ...]] = {
                                "compressibility", "constrained modulus"),
     "ocr": ("ocr", "overconsolidation ratio", "over consolidation ratio", "overconsolidated"),
     "effective_overburden": ("vertical effective stress", "effective overburden", "effective overburden stress",
-                             "overburden stress", "sigma v0", "sigmav0", "effective vertical stress"),
+                             "overburden stress", "sigma v0", "sigmav0", "effective vertical stress", "sigma v",
+                             "p0"),
     "pore_pressure": ("u2", "pore pressure", "pore water pressure", "excess pore pressure"),
     "grain_size": ("d10", "effective grain size", "effective size", "grain size"),
     "footing": ("footing", "foundation", "shallow foundation", "spread footing", "raft"),
     "pile": ("pile", "deep foundation", "shaft", "caisson"),
     "pipeline": ("pipeline", "pipe", "subsea pipeline", "cable"),
-    "embedment": ("embedment", "penetration", "embedment depth", "penetration depth"),
+    "embedment": ("embedment", "penetration", "embedment depth", "penetration depth", "sink", "sinkage"),
     "point_load": ("point load", "concentrated load", "column load", "concentrated force"),
     "strip_load": ("strip load", "strip footing", "line load", "strip foundation"),
     "stress_increase": ("stress increase", "stress increment", "stress distribution", "induced stress",
@@ -248,7 +330,7 @@ GEOTECH_SYNONYMS: Dict[str, Tuple[str, ...]] = {
                  "document", "documents", "report", "reports", "guidance", "research", "source", "sources",
                  "compare", "comparison", "versus", "review", "citation", "cite", "technical note", "library",
                  "evidence", "summarise", "summary", "search", "state of the art", "best practice", "say about",
-                 "says about"),
+                 "says about", "research say", "standard", "code of practice", "guideline", "find papers"),
 }
 
 _CONCEPT_PREFIX = "~"
@@ -325,15 +407,23 @@ class ConceptMatcher:
             lst.sort(key=lambda item: (-len(item[0]), item[1]))
 
     def concepts(self, stems: Sequence[str]) -> List[str]:
-        found: List[str] = []
-        covered_until: Dict[str, int] = {}
+        """Concept tokens for all phrase matches, except a phrase lying strictly inside a longer
+        match ("standard" inside "standard penetration test", "friction angle" inside
+        "effective friction angle" of the same concept)."""
+        matches: List[Tuple[int, int, str]] = []
         for i, tok in enumerate(stems):
             for seq, concept in self._by_first.get(tok, ()):
-                if covered_until.get(concept, -1) > i:
-                    continue                         # "effective friction angle" != 2 x friction angle
                 if tuple(stems[i:i + len(seq)]) == seq:
-                    found.append(concept)
-                    covered_until[concept] = i + len(seq)
+                    matches.append((i, i + len(seq), concept))
+        found: List[str] = []
+        seen: set = set()
+        for start, end, concept in matches:
+            if any(s2 <= start and end <= e2 and (e2 - s2) > (end - start) for s2, e2, _ in matches):
+                continue
+            if (start, concept) in seen:
+                continue
+            seen.add((start, concept))
+            found.append(concept)
         return found
 
 
@@ -404,7 +494,7 @@ def analyze(text: str, vocab: Optional[frozenset] = None, identifier: bool = Fal
             if vocab:
                 words.extend(segment_compound(part, vocab))
     else:
-        for tok in raw_tokens(text):
+        for tok in raw_tokens(normalize_notation(text)):
             words.append(tok)
             if vocab and len(tok) >= 8 and tok not in vocab:
                 words.extend(segment_compound(tok, vocab))
@@ -733,7 +823,7 @@ def get_index(registry: Any, definitions_factory: Callable[[], List[Dict[str, An
     ``formatter`` turns a raw tool definition into its prompt form (cached per tool).
     """
     global _INDEX, _INDEX_KEY
-    key = registry_signature(registry)
+    key = (registry_signature(registry), definitions_factory, formatter)
     if _INDEX is not None and _INDEX_KEY == key:
         return _INDEX
     with _INDEX_LOCK:

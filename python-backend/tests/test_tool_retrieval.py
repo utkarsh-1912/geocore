@@ -15,7 +15,7 @@ def _names(tools):
 
 
 def _index():
-    return tr.get_index(tool_registry, ts.generate_openai_tool_definitions)
+    return ts._index()
 
 
 # ---------------------------------------------------------------- normalisation

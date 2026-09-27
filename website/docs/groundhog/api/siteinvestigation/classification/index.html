@@ -139,6 +139,11 @@
 
   </li>
   <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
         <a href="/docs/geoai/tools/">
     <span>GeoAI tools</span>  </a>
 
@@ -813,8 +818,30 @@
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
     <div class="prose docs-body"><p>Package <code>groundhog.siteinvestigation.classification</code> in groundhog 0.15.0.</p>
 <ul>
-<li><a href="/docs/groundhog/api/siteinvestigation/classification/categories/">Soil classes and categories</a> — API reference for groundhog.siteinvestigation.classification.categories: 4 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">Phase relations</a> — API reference for groundhog.siteinvestigation.classification.phaserelations: 14 functions, 0 classes.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/categories/">Soil classes and categories</a> — API reference for groundhog.siteinvestigation.classification.categories: 4 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/categories/#relativedensity_categories"><code>relativedensity_categories</code></a>: Categorizes relative densities according to the following definition:</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/categories/#su_categories"><code>su_categories</code></a>: Classifies undrained shear strength in a number of categories.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/categories/#uscs_categories"><code>uscs_categories</code></a>: Provides the verbose description for soil type codes according to USCS.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/categories/#samplequality_voidratio_lunne"><code>samplequality_voidratio_lunne</code></a>: Determines the sample quality for clays based on the change in void ratio when consolidating the sample back to the initial vertical effective stress.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">Phase relations</a> — API reference for groundhog.siteinvestigation.classification.phaserelations: 14 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_porosity"><code>voidratio_porosity</code></a>: Converts a void ratio into a porosity</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#porosity_voidratio"><code>porosity_voidratio</code></a>: Calculates the porosity of sample from the void ratio</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#saturation_watercontent"><code>saturation_watercontent</code></a>: Calculates the saturation of a sample from the water content, the specific gravity and the void ratio</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#bulkunitweight"><code>bulkunitweight</code></a>: Calculates the bulk unit weight from specific gravity, void ratio and saturation</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#dryunitweight_watercontent"><code>dryunitweight_watercontent</code></a>: Calculates the dry unit weight of the sample from the water content and the bulk unit weight</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_drydensity"><code>voidratio_drydensity</code></a>: Calculates void ratio when the specific gravity and the dry density are known</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#bulkunitweight_dryunitweight"><code>bulkunitweight_dryunitweight</code></a>: Calculates the bulk unit weight from the dry unit weight and the water content</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#relative_density"><code>relative_density</code></a>: Calculates the relative density for a cohesionless sample from the measured void ratio, comparing it to the void ratio at minimum and maximum density.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_bulkunitweight"><code>voidratio_bulkunitweight</code></a>: Calculates the void ratio from the bulk unit weight for a soil with varying saturation.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#unitweight_watercontent_saturated"><code>unitweight_watercontent_saturated</code></a>: Calculates the bulk unit weight from water content for a saturated soil.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#density_unitweight"><code>density_unitweight</code></a>: Converts unit weight (in kN/m3) to density (in kg/m3)</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#unitweight_density"><code>unitweight_density</code></a>: Converts density (in kg/m3) to unit weight (kN/m3)</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#watercontent_voidratio"><code>watercontent_voidratio</code></a>: Calculates the water content of a sample from it's void ratio.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_watercontent"><code>voidratio_watercontent</code></a>: Calculates the void ratio of a sample from the water content.</li>
+</ul>
+</li>
 </ul></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">

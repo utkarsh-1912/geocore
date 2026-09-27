@@ -139,6 +139,11 @@
 
   </li>
   <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
         <a href="/docs/geoai/tools/">
     <span>GeoAI tools</span>  </a>
 
@@ -812,11 +817,48 @@
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
     <div class="prose docs-body"><p>Package <code>groundhog.general</code> in groundhog 0.15.0.</p>
 <ul>
-<li><a href="/docs/groundhog/api/general/agsconversion/">agsconversion</a> — API reference for groundhog.general.agsconversion: 0 functions, 1 classes.</li>
-<li><a href="/docs/groundhog/api/general/parameter_mapping/">Parameter mapping</a> — API reference for groundhog.general.parameter_mapping: 6 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/general/plotting/">Plotting</a> — API reference for groundhog.general.plotting: 2 functions, 2 classes.</li>
-<li><a href="/docs/groundhog/api/general/soilprofile/">soilprofile</a> — API reference for groundhog.general.soilprofile: 6 functions, 2 classes.</li>
-<li><a href="/docs/groundhog/api/general/validation/">Validation</a> — API reference for groundhog.general.validation: 7 functions, 1 classes.</li>
+<li><a href="/docs/groundhog/api/general/agsconversion/">agsconversion</a> — API reference for groundhog.general.agsconversion: 0 functions, 1 classes.<ul>
+<li><a href="/docs/groundhog/api/general/agsconversion/#agsconverter"><code>AGSConverter</code></a></li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/">Parameter mapping</a> — API reference for groundhog.general.parameter_mapping: 6 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/#map_depth_properties"><code>map_depth_properties</code></a>: Maps properties defined in a dataframe with layers to a dataframe with nodal depth positions.</li>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/#merge_two_dicts"><code>merge_two_dicts</code></a>: Merges two dictionaries</li>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/#reverse_dict"><code>reverse_dict</code></a>: Turn dictionary keys into values and values into keys</li>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/#latlon_distance"><code>latlon_distance</code></a>: Calculates the offset in meters from two pairs of coordinates specified in longitude and latitude (WGS84)</li>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/#get_projected_point"><code>get_projected_point</code></a>: Finds the coordinates of a point projected onto a line</li>
+<li><a href="/docs/groundhog/api/general/parameter_mapping/#offsets"><code>offsets</code></a>: Calculates the offset between a point and a line joining a given start- and endpoint.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/general/plotting/">Plotting</a> — API reference for groundhog.general.plotting: 2 functions, 2 classes.<ul>
+<li><a href="/docs/groundhog/api/general/plotting/#plot_with_log"><code>plot_with_log</code></a>: Plots a given number of traces in a plot with a soil mini-log on the left hand side.</li>
+<li><a href="/docs/groundhog/api/general/plotting/#logplot"><code>LogPlot</code></a>: Class for planneled plots with a minilog on the side.</li>
+<li><a href="/docs/groundhog/api/general/plotting/#logplotmatplotlib"><code>LogPlotMatplotlib</code></a>: Class for planneled plots with a minilog on the side, using the Matplotlib plotting backend</li>
+<li><a href="/docs/groundhog/api/general/plotting/#peak_picker"><code>peak_picker</code></a>: Generates an interactive Matplotlib plot which allows you to pick the peak from a graph with e.g.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/">soilprofile</a> — API reference for groundhog.general.soilprofile: 6 functions, 2 classes.<ul>
+<li><a href="/docs/groundhog/api/general/soilprofile/#soilprofile"><code>SoilProfile</code></a>: A SoilProfile object is a Pandas dataframe with specific functionality for geotechnical calculations.</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#create_blank_soilprofile"><code>create_blank_soilprofile</code></a>: Creates a SoilProfile object with a single layer.</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#read_excel"><code>read_excel</code></a>: The method to read from Excel needs to be redefined for SoilProfile objects.</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#profile_from_dataframe"><code>profile_from_dataframe</code></a>: Creates a soil profile from a Pandas dataframe</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#plot_fence_diagram"><code>plot_fence_diagram</code></a>: Creates a longitudinal profile along selected soil profiles.</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#calculationgrid"><code>CalculationGrid</code></a>: A CalculationGrid is an object which consist of a dataframe with nodes .nodes and a dataframe with elements .elements.</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#retrieve_geological_profile_dov"><code>retrieve_geological_profile_dov</code></a>: Retrieves a geological profile at a location with given coordinates (x,y Lambert L72).</li>
+<li><a href="/docs/groundhog/api/general/soilprofile/#retrieve_geological_profile_bro"><code>retrieve_geological_profile_bro</code></a>: Retrieves a geological profile at a location with given coordinates (x,y EPSG 28992).</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/general/validation/">Validation</a> — API reference for groundhog.general.validation: 7 functions, 1 classes.<ul>
+<li><a href="/docs/groundhog/api/general/validation/#validate_float"><code>validate_float</code></a>: Validates whether a variable can be used as a floating point number and whether it is within specified bounds If a value equals one of the bounds, the validation passes</li>
+<li><a href="/docs/groundhog/api/general/validation/#validate_integer"><code>validate_integer</code></a>: Validates whether a variable can be used as an integer and whether it is within specified bounds If a value equals one of the bounds, the validation passes</li>
+<li><a href="/docs/groundhog/api/general/validation/#validate_boolean"><code>validate_boolean</code></a>: Validates whether a variable can be used as a boolean</li>
+<li><a href="/docs/groundhog/api/general/validation/#validate_string"><code>validate_string</code></a>: Validates whether a variable can be used as a string.</li>
+<li><a href="/docs/groundhog/api/general/validation/#validate_list"><code>validate_list</code></a>: Validates whether a list contains numbers.</li>
+<li><a href="/docs/groundhog/api/general/validation/#map_args"><code>map_args</code></a>: Constructs a data structure with all parameters, their values and the validation parameters which need to be used during validation.</li>
+<li><a href="/docs/groundhog/api/general/validation/#validator"><code>Validator</code></a>: The Validator has the following features</li>
+<li><a href="/docs/groundhog/api/general/validation/#check_layer_overlap"><code>check_layer_overlap</code></a>: Checks possible overlap on a dataframe</li>
+</ul>
+</li>
 </ul></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">

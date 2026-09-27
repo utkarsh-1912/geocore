@@ -104,7 +104,7 @@ export const HelpModal = ({ isOpen, onClose }) => {
                         <div className="p-3 bg-background/80 border-t border-border flex justify-end">
                             <button
                                 onClick={onClose}
-                                className="px-4 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary/90 transition-all shadow-sm"
+                                className="px-4 py-1.5 bg-primary text-on-primary text-xs font-semibold rounded hover:bg-primary/90 transition-all shadow-sm"
                             >
                                 Got it
                             </button>

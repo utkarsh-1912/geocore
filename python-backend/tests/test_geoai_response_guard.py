@@ -38,6 +38,18 @@ def test_collapse_repetition_keeps_normal_text_and_short_repeats():
     assert collapse_repetition(text) == text
 
 
+def test_collapse_repetition_never_drops_decimals_or_list_items():
+    # Regression: live Qwen2.5-1.5B output was truncated to "Qt: 360." / "Bq: -0.".
+    text = ("Zone 7.\n- **Normalized Cone Resistance (Qt)**: 360.996\n- **Bq Index**: -0.003127\n"
+            "- **Ic**: 1.27\nThe method is Robertson (1990/2009). Qt = 360.99 and Ic = 1.27.")
+    assert collapse_repetition(text) == text
+
+
+def test_collapse_repetition_preserves_all_text_without_repeats():
+    text = "Result: su = 85.4 kPa (Nkt = 14). phi' = 32.5 deg!\n\nSee e.g. Robertson 2009"
+    assert collapse_repetition(text) == text
+
+
 def test_collapse_repetition_handles_empty():
     assert collapse_repetition(None) == ""
     assert collapse_repetition("") == ""
@@ -150,19 +162,30 @@ def test_agent_passes_history_and_cleans_final_answer():
     assert resp.response_text == "Qt is 360.99. " + LOOP.strip()
 
 
-def test_agent_stream_cleans_explanation_and_caps_tokens():
+def test_agent_stream_streams_cleaned_explanation_and_caps_tokens():
     tc = ToolCall(id="c1", function_name="classify_cpt_soil_behavior", arguments={"qc_mpa": 14.2, "fs_kpa": 65, "depth": 4.5})
-    provider = RecordingProvider(
-        [ModelResponse(content="Bq is -0.0031 kPa. " + LOOP * 20, tool_calls=None, finish_reason="length")],
-        stream_chunks=[StreamChunk(delta_tool_calls=[tc], finish_reason="tool_calls")],
-    )
+    answer = "Bq is -0.0031 kPa. Zone 7 is dense sand.\n" + LOOP * 20
+    turns = [[StreamChunk(delta_tool_calls=[tc], finish_reason="tool_calls")],
+             [StreamChunk(delta_content=answer[i:i + 7]) for i in range(0, len(answer), 7)]
+             + [StreamChunk(finish_reason="length")]]
+    stream_calls = []
+
+    class StreamingProvider(RecordingProvider):
+        def generate_stream(self, messages, tools=None, temperature=0.1, max_tokens=1024):
+            stream_calls.append({"tools": tools, "max_tokens": max_tokens})
+            yield from turns.pop(0)
+
+    provider = StreamingProvider([])
     registry = MockRegistry(results={"classify_cpt_soil_behavior": CPT_RESULT})
     agent = GeoAIAgent(provider, registry, max_tools=5)
 
     events = list(agent.run_stream("Classify CPT", history=[{"role": "user", "content": "hi"}]))
     tokens = [e.content for e in events if e.type == "token"]
-    assert tokens == ["Bq is -0.0031. " + LOOP.strip()]
-    assert provider.calls[-1]["max_tokens"] == EXPLANATION_MAX_TOKENS
+    assert len(tokens) >= 3  # released sentence by sentence, not as one block
+    assert "".join(tokens).rstrip() == clean_answer(answer, CPT_TOOLS_USED)
+    assert "".join(tokens).rstrip() == "Bq is -0.0031. Zone 7 is dense sand.\n" + LOOP.strip()
+    assert stream_calls[-1] == {"tools": None, "max_tokens": EXPLANATION_MAX_TOKENS}
+    assert events[-1].type == "done" and not provider.calls  # explanation no longer non-streaming
 
 
 def test_clean_answer_strips_echoed_calculation_record():

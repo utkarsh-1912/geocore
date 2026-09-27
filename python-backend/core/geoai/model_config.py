@@ -38,6 +38,11 @@ def _env_chat_format() -> Optional[str]:
     return os.environ.get("GEOAI_CHAT_FORMAT") or None
 
 
+def _env_disable_thinking() -> bool:
+    """GEOAI_THINKING=1/true/yes/on enables reasoning traces; default (unset) is off."""
+    return os.environ.get("GEOAI_THINKING", "").strip().lower() not in ("1", "true", "yes", "on")
+
+
 @dataclass
 class GeoAIModelConfig:
     model_path: Optional[str] = None  # Absolute path to GGUF file
@@ -66,9 +71,47 @@ class GeoAIModelConfig:
     # Tools offered per request. Each schema is ~390 tokens, so 20 tools overflow n_ctx=4096;
     # on eval_test recall@5 is 0.569 vs 0.590 at 20. Must match finetune.config.max_tools.
     max_tools: int = 5
-    # Append the "/no_think" soft switch for GGUFs whose chat template has an enable_thinking
-    # switch (Qwen3, SmolLM3); reasoning traces are slow on CPU and GeoAI plans in one line.
-    disable_thinking: bool = True
+    # Suppress reasoning traces for GGUFs whose chat template has an enable_thinking switch
+    # (Qwen3, Qwen3.5, SmolLM3): the template is rendered with enable_thinking=False (as in
+    # fine-tuning), falling back to the "/no_think" soft switch; <think> blocks are stripped
+    # from answers either way. Traces cost tens of seconds per turn on a CPU and GeoAI plans in
+    # one line. Env: GEOAI_THINKING=1 turns thinking on.
+    disable_thinking: bool = field(default_factory=_env_disable_thinking)
+    # --- CPU inference performance (see resolve_thread_counts) ---
+    # Threads for token generation (n_threads) and prompt processing (n_threads_batch).
+    # None = auto. Env: GEOAI_N_THREADS / GEOAI_N_THREADS_BATCH.
+    n_threads: Optional[int] = None
+    n_threads_batch: Optional[int] = None
+    # Prompt-processing batch size (tokens per llama_decode call). Env: GEOAI_N_BATCH.
+    n_batch: int = 512
+    # Generation caps per agent phase. A tool-call turn is ~40-120 tokens and a clarification
+    # question is similar; the post-tool answer is a few short paragraphs. Env:
+    # GEOAI_DECISION_MAX_TOKENS / GEOAI_ANSWER_MAX_TOKENS.
+    decision_max_tokens: int = 512
+    answer_max_tokens: int = 512
+
+
+def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
+    """
+    (n_threads, n_threads_batch) for llama.cpp on this machine.
+
+    Explicit config values win. Auto: generation is memory-bandwidth bound and stalls on the
+    slowest thread, so it uses the physical core count (hyper-threads add contention);
+    prompt processing is compute bound and uses every logical CPU. Both leave nothing to
+    the rest of the desktop only while a request is running.
+    """
+    logical = os.cpu_count() or 4
+    physical = None
+    try:
+        import psutil  # optional dependency (already used by lifecycle/diagnostics)
+        physical = psutil.cpu_count(logical=False)
+    except Exception:
+        pass
+    physical = physical or max(1, logical // 2)
+    n = config.n_threads if config.n_threads and config.n_threads > 0 else physical
+    nb = config.n_threads_batch if config.n_threads_batch and config.n_threads_batch > 0 else logical
+    return n, nb
+
 
 def get_config_dir() -> Path:
     """Returns the config directory path and creates it if it doesn't exist."""
@@ -134,6 +177,16 @@ def load_config() -> GeoAIModelConfig:
             config.max_tools = int(os.environ["GEOAI_MAX_TOOLS"])
         except ValueError:
             logger.warning("Invalid value for GEOAI_MAX_TOOLS, keeping default.")
+    if "GEOAI_THINKING" in os.environ:
+        config.disable_thinking = _env_disable_thinking()
+    for env, attr in (("GEOAI_N_THREADS", "n_threads"), ("GEOAI_N_THREADS_BATCH", "n_threads_batch"),
+                      ("GEOAI_N_BATCH", "n_batch"), ("GEOAI_DECISION_MAX_TOKENS", "decision_max_tokens"),
+                      ("GEOAI_ANSWER_MAX_TOKENS", "answer_max_tokens")):
+        if env in os.environ:
+            try:
+                setattr(config, attr, int(os.environ[env]))
+            except ValueError:
+                logger.warning(f"Invalid value for {env}, keeping default.")
 
     return config
 

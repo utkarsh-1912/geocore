@@ -67,7 +67,7 @@ class GeoAITool:
         except Exception as e:
             raise GeoAIValidationError(f"Tool '{self.name}' input validation failed: {str(e)}")
 
-        call_args = validated_inputs.model_dump(exclude_unset=False)
+        call_args = validated_inputs.geoai_call_kwargs()
 
         # 2. Execute authoritative Groundhog function
         res = self.func(**call_args)
@@ -140,6 +140,10 @@ class GeoAIToolRegistry:
 
     def get_tool(self, name: str) -> Optional[GeoAITool]:
         return self._tools.get(name)
+
+    def tool_count(self) -> int:
+        """Number of registered tools (cheap; list_tools() builds every JSON schema)."""
+        return len(self._tools)
 
     def list_tools(self) -> List[Dict[str, Any]]:
         return [

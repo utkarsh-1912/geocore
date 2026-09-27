@@ -76,9 +76,12 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     "qwen2.5-7b-instruct": {
         "family": "qwen",
         "display_name": "Qwen 2.5 (7B Instruct)",
-        "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF",
-        "filename": "qwen2.5-7b-instruct-q4_k_m.gguf",
-        "size_mb": 4400,
+        # The official Qwen repo splits Q4_K_M into 2 shards; this is a verified single file.
+        "repo_id": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+        "filename": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+        "size_mb": 4466,
+        "size_bytes": 4683074240,
+        "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423",
         "description": "Maximum capability (7B) for complex geotechnical synthesis, CPT profiling & tool orchestration",
         "recommended_for": "High-end workstations with dedicated GPU/VRAM acceleration"
     },

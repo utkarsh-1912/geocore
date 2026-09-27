@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
   <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
-</head>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -136,6 +136,11 @@
   <li>
         <a href="/docs/geoai/model-setup/">
     <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
 
   </li>
   <li>
@@ -811,27 +816,274 @@
     <h1>Soil dynamics</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>Soil dynamics</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>Soil dynamics</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="liquefaction">Liquefaction</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/soildynamics/liquefaction.html">Liquefaction</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/soildynamics/liquefaction/"><code>groundhog.soildynamics.liquefaction</code></a>: <a href="/docs/groundhog/api/soildynamics/liquefaction/#cyclicstressratio_moss"><code>cyclicstressratio_moss</code></a>, <a href="/docs/groundhog/api/soildynamics/liquefaction/#liquefaction_robertsonfear"><code>liquefaction_robertsonfear</code></a>, <a href="/docs/groundhog/api/soildynamics/liquefaction/#liquefactionprobability_moss"><code>liquefactionprobability_moss</code></a>, <a href="/docs/groundhog/api/soildynamics/liquefaction/#liquefactionprobability_saye"><code>liquefactionprobability_saye</code></a>, <a href="/docs/groundhog/api/soildynamics/liquefaction/#cyclicstressratio_youd"><code>cyclicstressratio_youd</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/soildynamics/liquefaction/"><code>groundhog.soildynamics.liquefaction</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="cyclicstressratio_moss">cyclicstressratio_moss</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/liquefaction/#cyclicstressratio_moss"><code>cyclicstressratio_moss</code></a>.</p>
+<p>Calculates the equivalent uniform cyclic stress ratio (CSR) based on the technique by Seed and Idriss (1971).</p>
+<div class="math-display">\[CSR = \frac{\tau_{avg}}{\sigma_v^{\prime}} = 0.65 \cdot \frac{a_{max}}{g} \cdot \frac{\sigma_v}{\sigma_v^{\prime}} \cdot r_d\]</div>
+<div class="math-display">\[CSR^{*} = CSR_{M_w=7.5}=\frac{CSR}{DWF_{M_w}}\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Moss et al (2006) CPT-Based Probabilistic and Deterministic Assessment of In Situ Seismic Soil Liquefaction Potential. Journal of Geotechnical &amp; Geoenvironmental Engineering, 132(8)</p>
+<h3 id="liquefaction_robertsonfear">liquefaction_robertsonfear</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/liquefaction/#liquefaction_robertsonfear"><code>liquefaction_robertsonfear</code></a>.</p>
+<p>Calculates whether cyclic liquefaction can be triggered based on the normalised cone tip resistance and the cyclic shear stress ratio imposed on the soil by the earthquake event.</p>
+<div class="math-display">\[q_{c1} = (q_c / p_a) ( p_a /  \sigma_{vo}^{\prime} )^{0.5}\]</div>
+<p><em>Reference:</em> Robertson, P. K., and C. E. Fear. "Application of CPT to evaluate liquefaction potential." CPT’95, Linkoping (1995): 57-79.</p>
+<h3 id="liquefactionprobability_moss">liquefactionprobability_moss</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/liquefaction/#liquefactionprobability_moss"><code>liquefactionprobability_moss</code></a>.</p>
+<p>Calculates the probability of liquefaction according to Moss et al.</p>
+<div class="math-display">\[q_{c,1} = q_c \left( \frac{p_a}{\sigma_{vo}^{\prime}} \right)^{c}\]</div>
+<div class="math-display">\[c = f_1 \cdot \left( \frac{R_f}{f_3} \right)^{f_2}\]</div>
+<p><em>6 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Moss et al (2006) CPT-Based Probabilistic and Deterministic Assessment of In Situ Seismic Soil Liquefaction Potential. Journal of Geotechnical &amp; Geoenvironmental Engineering, 132(8)</p>
+<h3 id="liquefactionprobability_saye">liquefactionprobability_saye</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/liquefaction/#liquefactionprobability_saye"><code>liquefactionprobability_saye</code></a>.</p>
+<p>Current engineering practice employs clean sand-based procedures to evaluate liquefaction triggering in nonplastic, coarse-grained soils and low-plasticity, fine-grained soils below level or mildly-sloping ground.</p>
+<div class="math-display">\[\Delta_Q = \frac{Q_t + 10}{\frac{f_s}{\sigma_{vo}^{\prime}} + 0.67}\]</div>
+<div class="math-display">\[\hat{m}_{CRR} = \frac{\hat{\Delta}_Q}{178 \cdot \hat{\Delta}_Q - 3.349} \leq 0.1 \ \text{for} \ \Delta_Q \geq 20\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Saye, Steven R., Scott M. Olson, and Kevin W. Franke. "Common-Origin Approach to Assess Level-Ground Liquefaction Susceptibility and Triggering in CPT-Compatible Soils Using Δ Q." Journal of Geotechnical and Geoenvironmental Engineering 147.7 (2021): 04021046.</p>
+<h3 id="cyclicstressratio_youd">cyclicstressratio_youd</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/liquefaction/#cyclicstressratio_youd"><code>cyclicstressratio_youd</code></a>.</p>
+<p>Calculates the cyclic stress ratio adjusted to a magnitude 7.5 earthquake using the simplified equation (Seed and Idriss 1971; Whitman 1971) and the adjustments recommended by Youd et al.</p>
+<div class="math-display">\[CSR_{7.5} = \frac{CSR}{MSF} = \frac{\tau_{avg} / \sigma_{vo}^{\prime}}{MSF} = \frac{0.65 \cdot \left(
+\frac{a_{max}}{g} \right) \cdot \left( \frac{\sigma_{vo}}{\sigma_{vo}^{\prime}} \right) \cdot r_d}{MSF}\]</div>
+<div class="math-display">\[MSF = \frac{10^{2.24}}{M^{2.56}}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Youd, T. L., et al. 2001. Liquefaction resistance of soils: Summary report from the 1996 NCEER and 1998 NCEER=NSF workshops on evaluation of liquefaction resistance of soils.” J. Geotech. Geoenviron. Eng. 127 (10): 817–833. https://doi.org/10.1061/(ASCE)1090-0241(2001)127:10(817).</p>
 <h2 id="cyclic-behaviour">Cyclic behaviour</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/soildynamics/cyclicbehaviour.html">Cyclic behaviour</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/"><code>groundhog.soildynamics.cyclicbehaviour</code></a>: <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cycliccontours_dssclay_andersen"><code>cycliccontours_dssclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotcycliccontours_dssclay_andersen"><code>plotcycliccontours_dssclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cycliccontours_triaxialclay_andersen"><code>cycliccontours_triaxialclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotcycliccontours_triaxialclay_andersen"><code>plotcycliccontours_triaxialclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#strainaccumulation_dssclay_andersen"><code>strainaccumulation_dssclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotstrainaccumulation_dssclay_andersen"><code>plotstrainaccumulation_dssclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#strainaccumulation_triaxialclay_andersen"><code>strainaccumulation_triaxialclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotstrainaccumulation_triaxialclay_andersen"><code>plotstrainaccumulation_triaxialclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#porepressureaccumulation_dssclay_andersen"><code>porepressureaccumulation_dssclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotporepressureaccumulation_dssclay_andersen"><code>plotporepressureaccumulation_dssclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#porepressureaccumulation_triaxialclay_andersen"><code>porepressureaccumulation_triaxialclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotporepressureaccumulation_triaxialclay_andersen"><code>plotporepressureaccumulation_triaxialclay_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#strainaccumulation_dsssand_andersen"><code>strainaccumulation_dsssand_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotstrainaccumulation_dsssand_andersen"><code>plotstrainaccumulation_dsssand_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotporepressureaccumulation_dsssand_andersen"><code>plotporepressureaccumulation_dsssand_andersen</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cyclicstrength_dsssand_relativedensity"><code>cyclicstrength_dsssand_relativedensity</code></a>, <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cyclicstrength_dsssand_watercontent"><code>cyclicstrength_dsssand_watercontent</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/"><code>groundhog.soildynamics.cyclicbehaviour</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="cycliccontours_dssclay_andersen">cycliccontours_dssclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cycliccontours_dssclay_andersen"><code>cycliccontours_dssclay_andersen</code></a>.</p>
+<p>Calculates the number of cycles to failure for a cyclic DSS test with a given combination of average and cyclic shear stress for a sample with a given undrained shear strength.</p>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotcycliccontours_dssclay_andersen">plotcycliccontours_dssclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotcycliccontours_dssclay_andersen"><code>plotcycliccontours_dssclay_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the cyclic contours for DSS tests on normally consolidated Drammen clay</p>
+<h3 id="cycliccontours_triaxialclay_andersen">cycliccontours_triaxialclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cycliccontours_triaxialclay_andersen"><code>cycliccontours_triaxialclay_andersen</code></a>.</p>
+<p>Calculates the number of cycles to failure for cyclic triaxial test with a given combination of average and cyclic shear stress for a sample with a given undrained shear strength.</p>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotcycliccontours_triaxialclay_andersen">plotcycliccontours_triaxialclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotcycliccontours_triaxialclay_andersen"><code>plotcycliccontours_triaxialclay_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the cyclic contours for triaxial tests on normally consolidated Drammen clay</p>
+<h3 id="strainaccumulation_dssclay_andersen">strainaccumulation_dssclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#strainaccumulation_dssclay_andersen"><code>strainaccumulation_dssclay_andersen</code></a>.</p>
+<p>Calculates the strain accumulation for a normally consolidated clay sample under symmetrical cyclic loading (no average shear stress) in a DSS test.</p>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotstrainaccumulation_dssclay_andersen">plotstrainaccumulation_dssclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotstrainaccumulation_dssclay_andersen"><code>plotstrainaccumulation_dssclay_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the strain accumulation contours for DSS tests on normally consolidated Drammen clay</p>
+<h3 id="strainaccumulation_triaxialclay_andersen">strainaccumulation_triaxialclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#strainaccumulation_triaxialclay_andersen"><code>strainaccumulation_triaxialclay_andersen</code></a>.</p>
+<p>Calculates the cyclic and average strain accumulation for a normally consolidated clay sample under symmetrical cyclic loading (no average shear stress) in a cyclic triaxial test.</p>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotstrainaccumulation_triaxialclay_andersen">plotstrainaccumulation_triaxialclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotstrainaccumulation_triaxialclay_andersen"><code>plotstrainaccumulation_triaxialclay_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the strain accumulation contours for triaxial tests on normally consolidated Drammen clay with symmetrical loading</p>
+<h3 id="porepressureaccumulation_dssclay_andersen">porepressureaccumulation_dssclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#porepressureaccumulation_dssclay_andersen"><code>porepressureaccumulation_dssclay_andersen</code></a>.</p>
+<p>Calculates the excess pore pressure accumulation for a normally consolidated clay sample under symmetrical cyclic loading (no average shear stress) in a DSS test.</p>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotporepressureaccumulation_dssclay_andersen">plotporepressureaccumulation_dssclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotporepressureaccumulation_dssclay_andersen"><code>plotporepressureaccumulation_dssclay_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the excess pore pressure accumulation contours for cyclic DSS tests on normally consolidated Drammen clay with symmetrical loading</p>
+<h3 id="porepressureaccumulation_triaxialclay_andersen">porepressureaccumulation_triaxialclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#porepressureaccumulation_triaxialclay_andersen"><code>porepressureaccumulation_triaxialclay_andersen</code></a>.</p>
+<p>Calculates the excess pore pressure accumulation for a normally consolidated clay sample under symmetrical cyclic loading (no average shear stress) in a cyclic triaxial test.</p>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotporepressureaccumulation_triaxialclay_andersen">plotporepressureaccumulation_triaxialclay_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotporepressureaccumulation_triaxialclay_andersen"><code>plotporepressureaccumulation_triaxialclay_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the excess pore pressure accumulation contours for cyclic triaxial tests on normally consolidated Drammen clay with symmetrical loading</p>
+<h3 id="strainaccumulation_dsssand_andersen">strainaccumulation_dsssand_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#strainaccumulation_dsssand_andersen"><code>strainaccumulation_dsssand_andersen</code></a>.</p>
+<p>Calculates the strain accumulation as a function of the cyclic shear stress level and the number of cycles for normally consolidated sand and silt in a symmetrical cyclic DSS test (no average shear stress) for different…</p>
+<div class="math-display">\[\sigma_{ref}^{\prime} = p_a \cdot ( \sigma_{vc}^{\prime} / p_a ) ^ n\]</div>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="plotstrainaccumulation_dsssand_andersen">plotstrainaccumulation_dsssand_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotstrainaccumulation_dsssand_andersen"><code>plotstrainaccumulation_dsssand_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the cyclic strain accumulation contours for cyclic DSS tests on normally consolidated sand or silt with symmetrical loading</p>
+<h3 id="plotporepressureaccumulation_dsssand_andersen">plotporepressureaccumulation_dsssand_andersen</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#plotporepressureaccumulation_dsssand_andersen"><code>plotporepressureaccumulation_dsssand_andersen</code></a>.</p>
+<p>Returns a Plotly figure with the permanent excess pore pressure accumulation contours for cyclic DSS tests on normally consolidated sand or silt with symmetrical loading</p>
+<h3 id="cyclicstrength_dsssand_relativedensity">cyclicstrength_dsssand_relativedensity</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cyclicstrength_dsssand_relativedensity"><code>cyclicstrength_dsssand_relativedensity</code></a>.</p>
+<p>Calculates the DSS cyclic strength of sand, defined as the ratio of cyclic shear stress to reference normal stress for failure at 10 cycles.</p>
+<div class="math-display">\[\sigma_{ref}^{\prime} = p_a \cdot ( \sigma_{ref}^{\prime} / p_a )^n\]</div>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
+<h3 id="cyclicstrength_dsssand_watercontent">cyclicstrength_dsssand_watercontent</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/#cyclicstrength_dsssand_watercontent"><code>cyclicstrength_dsssand_watercontent</code></a>.</p>
+<p>Calculates the DSS cyclic strength of sand, defined as the ratio of cyclic shear stress to reference normal stress for failure at 10 cycles.</p>
+<div class="math-display">\[\sigma_{ref}^{\prime} = p_a \cdot ( \sigma_{ref}^{\prime} / p_a )^n\]</div>
+<p><em>Reference:</em> Andersen, K.H. (2015). Cyclic soil parameters for offshore foundation design. The 3rd McClelland Lecture. Conference: Frontiers in Offshore Geotechnics III.</p>
 <h2 id="dynamic-soil-property-correlations">Dynamic soil property correlations</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/soildynamics/soilproperties.html">Dynamic soil property correlations</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/soildynamics/soilproperties/"><code>groundhog.soildynamics.soilproperties</code></a>: <a href="/docs/groundhog/api/soildynamics/soilproperties/#modulusreduction_plasticity_ishibashi"><code>modulusreduction_plasticity_ishibashi</code></a>, <a href="/docs/groundhog/api/soildynamics/soilproperties/#gmax_shearwavevelocity"><code>gmax_shearwavevelocity</code></a>, <a href="/docs/groundhog/api/soildynamics/soilproperties/#dampingratio_sandgravel_seed"><code>dampingratio_sandgravel_seed</code></a>, <a href="/docs/groundhog/api/soildynamics/soilproperties/#modulusreduction_darendeli"><code>modulusreduction_darendeli</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/soildynamics/soilproperties/"><code>groundhog.soildynamics.soilproperties</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="modulusreduction_plasticity_ishibashi">modulusreduction_plasticity_ishibashi</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/soilproperties/#modulusreduction_plasticity_ishibashi"><code>modulusreduction_plasticity_ishibashi</code></a>.</p>
+<p>Calculates the modulus reduction curve (G/Gmax) as a function of shear strain.</p>
+<div class="math-display">\[\frac{G}{G_{max}} = K \left( \gamma, \text{PI} \right) \left( \sigma_m^{\prime} \right)^{m \left( \gamma, \text{PI} \right) - m_0}\]</div>
+<div class="math-display">\[K \left( \gamma, \text{PI} \right) = 0.5 \left[ 1 + \tanh \left[ \ln \left( \frac{0.000102 + n ( \text{PI} )}{\gamma} \right)^{0.492} \right] \right]\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Ishibashi, I., &amp; Zhang, X. (1993). Unified dynamic shear moduli and damping ratios of sand and clay. Soils and foundations, 33(1), 182-191.</p>
+<h3 id="gmax_shearwavevelocity">gmax_shearwavevelocity</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/soilproperties/#gmax_shearwavevelocity"><code>gmax_shearwavevelocity</code></a>.</p>
+<p>Calculates the small-strain shear modulus (shear strain &lt; 1e-4%) from the shear wave velocity and the bulk unit weight if the soil based on elastic theory.</p>
+<div class="math-display">\[G_{max} = \rho \cdot V_s^2\]</div>
+<div class="math-display">\[\rho = \gamma / g\]</div>
+<p><em>Reference:</em> Robertson, P.K. and Cabal, K.L. (2015). Guide to Cone Penetration Testing for Geotechnical Engineering. 6th edition. Gregg Drilling &amp; Testing, Inc.</p>
+<h3 id="dampingratio_sandgravel_seed">dampingratio_sandgravel_seed</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/soilproperties/#dampingratio_sandgravel_seed"><code>dampingratio_sandgravel_seed</code></a>.</p>
+<p>Damping ratios for sand are compiled from a dataset comprising several sands and gravels.</p>
+<p><em>Reference:</em> Seed, H. B., Wong, R. T., Idriss, I. M., &amp; Tokimatsu, K. (1986). Moduli and damping factors for dynamic analyses of cohesionless soils. Journal of geotechnical engineering, 112(11), 1016-1032.</p>
+<h3 id="modulusreduction_darendeli">modulusreduction_darendeli</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/soilproperties/#modulusreduction_darendeli"><code>modulusreduction_darendeli</code></a>.</p>
+<p>Darendeli (2001) proposed a comprehensive framework for estimating the modulus reduction curve and damping curve for sand, fine sand, silt and clay based on extensive laboratory testing.</p>
+<div class="math-display">\[\frac{G}{G_{max}} = \frac{1}{1 + \left( \frac{\gamma}{\gamma_r} \right)^a}\]</div>
+<div class="math-display">\[\gamma_r = \left( \phi_1 + \phi_2 \cdot PI \cdot OCR^{\phi_3} \right) \cdot \sigma_0^{\prime \phi_4}\]</div>
+<p><em>7 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Darendeli, M. B. (2001). Development of a new family of normalized modulus reduction and material damping curves. The university of Texas at Austin.</p>
 <h2 id="cpt-liquefaction">CPT Liquefaction</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/soildynamics/cptliquefaction.html">CPT Liquefaction</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/soildynamics/cptliquefaction/"><code>groundhog.soildynamics.cptliquefaction</code></a>: <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#fos_liquefaction"><code>fos_liquefaction</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_robertson_cabal_2022"><code>csr_robertson_cabal_2022</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_robertson_wride_1998"><code>csr_robertson_wride_1998</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_idriss_boulanger_2008"><code>csr_idriss_boulanger_2008</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_boulanger_idriss_2014"><code>csr_boulanger_idriss_2014</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_robertson_cabal_2022"><code>crr_robertson_cabal_2022</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_robertson_wride_1998"><code>crr_robertson_wride_1998</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_idriss_boulanger_2008"><code>crr_idriss_boulanger_2008</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_boulanger_idriss_2014"><code>crr_boulanger_idriss_2014</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_robertson_cabal_2022"><code>Qtn_cs_robertson_cabal_2022</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_robertson_wride_1998"><code>Qtn_cs_robertson_wride_1998</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_idriss_boulanger_2008"><code>Qtn_cs_idriss_boulanger_2008</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_boulanger_idriss_2014"><code>Qtn_cs_boulanger_idriss_2014</code></a>, <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#liquefaction_strains_zhang"><code>liquefaction_strains_zhang</code></a></li>
-</ul></div>
+<p>Module <a href="/docs/groundhog/api/soildynamics/cptliquefaction/"><code>groundhog.soildynamics.cptliquefaction</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="fos_liquefaction">fos_liquefaction</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#fos_liquefaction"><code>fos_liquefaction</code></a>.</p>
+<p>Calculates the Factor of Safety (FoS) for liquefaction assessment.</p>
+<div class="math-display">\[FoS = \min \left( \frac{CRR}{CSR} \cdot MSF \cdot K_{\sigma}, 5 \right)\]</div>
+<div class="math-display">\[\text{If } \sigma_v^{\prime} = \sigma_v, \text{ then } FoS = 5\]</div>
+<p><em>Reference:</em> Youd, T. L., et al. (2001). Liquefaction Resistance of Soils: Summary Report from the 1996 NCEER and 1998 NCEER/NSF Workshops on Evaluation of Liquefaction Resistance of Soils. Journal of Geotechnical and Geoenvironmental Engineering, 127(10).; Idriss, I. M., &amp; Boulanger, R. W. (2008). Soil Liquefaction During Earthquakes. Earthquake Engineering Research Institute.</p>
+<h3 id="csr_robertson_cabal_2022">csr_robertson_cabal_2022</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_robertson_cabal_2022"><code>csr_robertson_cabal_2022</code></a>.</p>
+<p>Calculates the Cyclic Stress Ratio (CSR) and Magnitude Scaling Factor (MSF) following the methodology outlined by Robertson and Cabal (2022).</p>
+<div class="math-display">\[CSR = 0.65 \cdot a_{max} \cdot \frac{\sigma_v}{\sigma_v^{\prime}} \cdot r_d\]</div>
+<div class="math-display">\[r_d = \begin{cases}
+1.0 - 0.00765 \cdot z &amp; \text{if } z &lt; 9.15 \, m \\
+1.174 - 0.0267 \cdot z &amp; \text{if } 9.15 \, m \leq z &lt; 23 \, m \\
+0.744 - 0.008 \cdot z &amp; \text{if } 23 \, m \leq z &lt; 30 \, m \\
+0.5 &amp; \text{if } z \geq 30 \, m
+\end{cases}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Robertson, P. K., &amp; Cabal, K. L. (2022). Guide to Cone Penetration Testing for Geotechnical Engineering. Gregg Drilling &amp; Testing, Inc.; Seed, H. B., &amp; Idriss, I. M. (1971). Simplified Procedure for Evaluating Soil Liquefaction Potential. Journal of the Soil Mechanics and Foundations Division, 97(9).</p>
+<h3 id="csr_robertson_wride_1998">csr_robertson_wride_1998</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_robertson_wride_1998"><code>csr_robertson_wride_1998</code></a>.</p>
+<p>Calculates the Cyclic Stress Ratio (CSR) and Magnitude Scaling Factor (MSF) following the methodology outlined by Robertson and Wride (1998).</p>
+<div class="math-display">\[CSR = 0.65 \cdot a_{max} \cdot \frac{\sigma_v}{\sigma_v^{\prime}} \cdot r_d\]</div>
+<div class="math-display">\[r_d = \begin{cases}
+1.0 - 0.00765 \cdot z &amp; \text{if } z &lt; 9.15 \, m \\
+1.174 - 0.0267 \cdot z &amp; \text{if } 9.15 \, m \leq z &lt; 23 \, m \\
+0.744 - 0.008 \cdot z &amp; \text{if } 23 \, m \leq z &lt; 30 \, m \\
+0.5 &amp; \text{if } z \geq 30 \, m
+\end{cases}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Robertson, P. K., &amp; Wride, C. E. (1998). Evaluating Cyclic Liquefaction Potential Using the Cone Penetration Test. Canadian Geotechnical Journal, 35(3).; Seed, H. B., &amp; Idriss, I. M. (1971). Simplified Procedure for Evaluating Soil Liquefaction Potential. Journal of the Soil Mechanics and Foundations Division, 97(9).</p>
+<h3 id="csr_idriss_boulanger_2008">csr_idriss_boulanger_2008</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_idriss_boulanger_2008"><code>csr_idriss_boulanger_2008</code></a>.</p>
+<p>Calculates the Cyclic Stress Ratio (CSR) and Magnitude Scaling Factor (MSF) following the methodology outlined by Idriss and Boulanger (2008).</p>
+<div class="math-display">\[CSR = 0.65 \cdot a_{max} \cdot \frac{\sigma_v}{\sigma_v^{\prime}} \cdot r_d\]</div>
+<div class="math-display">\[MSF = \min \left( 6.9 \cdot e^{-M_w / 4} - 0.058, 1.8 \right)\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Idriss, I. M., &amp; Boulanger, R. W. (2008). Soil Liquefaction During Earthquakes. Earthquake Engineering Research Institute.; Seed, H. B., &amp; Idriss, I. M. (1971). Simplified Procedure for Evaluating Soil Liquefaction Potential. Journal of the Soil Mechanics and Foundations Division, 97(9).</p>
+<h3 id="csr_boulanger_idriss_2014">csr_boulanger_idriss_2014</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#csr_boulanger_idriss_2014"><code>csr_boulanger_idriss_2014</code></a>.</p>
+<p>Calculates the Cyclic Stress Ratio (CSR) and Magnitude Scaling Factor (MSF) following the methodology outlined by Boulanger and Idriss (2014).</p>
+<div class="math-display">\[CSR = 0.65 \cdot a_{max} \cdot \frac{\sigma_v}{\sigma_v^{\prime}} \cdot r_d\]</div>
+<div class="math-display">\[\alpha = -1.012 - 1.126 \cdot \sin \left( \frac{z}{11.73} + 5.133 \right)\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Boulanger, R. W., &amp; Idriss, I. M. (2014). CPT and SPT Liquefaction Triggering Procedures. Report No. UCD/CGM-14/01, University of California, Davis.; Seed, H. B., &amp; Idriss, I. M. (1971). Simplified Procedure for Evaluating Soil Liquefaction Potential. Journal of the Soil Mechanics and Foundations Division, 97(9).</p>
+<h3 id="crr_robertson_cabal_2022">crr_robertson_cabal_2022</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_robertson_cabal_2022"><code>crr_robertson_cabal_2022</code></a>.</p>
+<p>Calculates the Cyclic Resistance Ratio (CRR) and Overburden Correction Factor (K_{\sigma}) based on the methodology outlined by Robertson and Cabal (2022).</p>
+<div class="math-display">\[CRR = \begin{cases}
+0.833 \cdot \left( \frac{Q_{tn,cs}}{1000} \right) + 0.05 &amp; \text{if } Q_{tn,cs} &lt; 50 \\
+93 \cdot \left( \frac{Q_{tn,cs}}{1000} \right)^3 + 0.08 &amp; \text{if } 50 \leq Q_{tn,cs} &lt; 160 \\
+\infty &amp; \text{if } Q_{tn,cs} \geq 160
+\end{cases}\]</div>
+<div class="math-display">\[K_{\sigma} = 1\]</div>
+<p><em>Reference:</em> Robertson, P. K., &amp; Cabal, K. L. (2022). Guide to Cone Penetration Testing for Geotechnical Engineering. Gregg Drilling &amp; Testing, Inc.</p>
+<h3 id="crr_robertson_wride_1998">crr_robertson_wride_1998</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_robertson_wride_1998"><code>crr_robertson_wride_1998</code></a>.</p>
+<p>Calculates the Cyclic Resistance Ratio (CRR) and Overburden Correction Factor (K_{\sigma}) based on the methodology outlined by Robertson and Wride (1998).</p>
+<div class="math-display">\[CRR = \begin{cases}
+0.833 \cdot \left( \frac{Q_{tn,cs}}{1000} \right) + 0.05 &amp; \text{if } Q_{tn,cs} &lt; 50 \\
+93 \cdot \left( \frac{Q_{tn,cs}}{1000} \right)^3 + 0.08 &amp; \text{if } 50 \leq Q_{tn,cs} &lt; 160 \\
+\infty &amp; \text{if } Q_{tn,cs} \geq 160
+\end{cases}\]</div>
+<div class="math-display">\[K_{\sigma} = \begin{cases}
+1.0 &amp; \text{if } \sigma_v^{\prime} &lt; 100 \, kPa \\
+\min \left( \left( \frac{\sigma_v^{\prime}}{P_a} \right)^{f_{K_{\sigma}} - 1}, 1 \right) &amp; \text{otherwise}
+\end{cases}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Robertson, P. K., &amp; Wride, C. E. (1998). Evaluating Cyclic Liquefaction Potential Using the Cone Penetration Test. Canadian Geotechnical Journal, 35(3).; Youd, T. L., et al. (2001). Liquefaction Resistance of Soils: Summary Report from the 1996 NCEER and 1998 NCEER/NSF Workshops on Evaluation of Liquefaction Resistance of Soils. Journal of Geotechnical and Geoenvironmental Engineering, 127(10).</p>
+<h3 id="crr_idriss_boulanger_2008">crr_idriss_boulanger_2008</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_idriss_boulanger_2008"><code>crr_idriss_boulanger_2008</code></a>.</p>
+<p>Calculates the Cyclic Resistance Ratio (CRR) and Overburden Correction Factor (K_{\sigma}) based on the methodology outlined by Idriss and Boulanger (2008).</p>
+<div class="math-display">\[CRR = \min \left( \exp \left( \frac{Q_{tn,cs}}{540} + \left( \frac{Q_{tn,cs}}{67} \right)^2 - \left( \frac{Q_{tn,cs}}{80} \right)^3 + \left( \frac{Q_{tn,cs}}{114} \right)^4 - 3 \right), 0.6 \right)\]</div>
+<div class="math-display">\[C_{\sigma} = \min \left( \frac{1}{37.3 - 8.27 \cdot \min(Q_{tn,cs}, 211)^{0.264}}, 0.3 \right)\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Idriss, I. M., &amp; Boulanger, R. W. (2008). Soil Liquefaction During Earthquakes. Earthquake Engineering Research Institute.</p>
+<h3 id="crr_boulanger_idriss_2014">crr_boulanger_idriss_2014</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#crr_boulanger_idriss_2014"><code>crr_boulanger_idriss_2014</code></a>.</p>
+<p>Calculates the Cyclic Resistance Ratio (CRR) and Overburden Correction Factor (K_{\sigma}) based on the methodology outlined by Boulanger and Idriss (2014).</p>
+<div class="math-display">\[CRR = \min \left( \exp \left( \frac{Q_{tn,cs}}{113} + \left( \frac{Q_{tn,cs}}{1000} \right)^2 - \left( \frac{Q_{tn,cs}}{140} \right)^3 + \left( \frac{Q_{tn,cs}}{137} \right)^4 - 2.80 \right), 0.6 \right)\]</div>
+<div class="math-display">\[C_{\sigma} = \frac{1}{37.3 - 8.27 \cdot \min(Q_{tn,cs}, 211)^{0.264}}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Boulanger, R. W., &amp; Idriss, I. M. (2014). CPT and SPT Liquefaction Triggering Procedures. Report No. UCD/CGM-14/01, University of California, Davis.</p>
+<h3 id="qtn_cs_robertson_cabal_2022">Qtn_cs_robertson_cabal_2022</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_robertson_cabal_2022"><code>Qtn_cs_robertson_cabal_2022</code></a>.</p>
+<p>Calculates the normalized cone penetration resistance with fines correction (Q_{tn,cs}) based on the methodology outlined by Robertson and Cabal (2022).</p>
+<div class="math-display">\[K_c = \begin{cases}
+1.0 &amp; \text{if } I_c \leq 1.7 \\
+1.0 &amp; \text{if } 1.7 &lt; I_c &lt; 2.36 \text{ and } F_r &lt; 0.5 \\
+15 - \frac{14}{1 + \left( \frac{I_c}{2.95} \right)^{11}} &amp; \text{otherwise}
+\end{cases}\]</div>
+<div class="math-display">\[n = \min \left( 1, 0.381 \cdot I_c + 0.05 \cdot \left( \frac{\sigma_v^{\prime}}{P_a} \right) - 0.15 \right)\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Robertson, P. K., &amp; Cabal, K. L. (2022). Guide to Cone Penetration Testing for Geotechnical Engineering. Gregg Drilling &amp; Testing, Inc.</p>
+<h3 id="qtn_cs_robertson_wride_1998">Qtn_cs_robertson_wride_1998</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_robertson_wride_1998"><code>Qtn_cs_robertson_wride_1998</code></a>.</p>
+<p>Calculates the normalized cone penetration resistance with fines correction (Q_{tn,cs}) based on the methodology outlined by Robertson and Wride (1998).</p>
+<div class="math-display">\[C_Q = \min \left( \left( \frac{P_a}{\sigma_v} \right)^{0.5}, 2 \right)\]</div>
+<div class="math-display">\[q_{c1N} = \frac{q_c}{0.001 P_a} \cdot C_Q\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Robertson, P. K., &amp; Wride, C. E. (1998). Evaluating cyclic liquefaction potential using the cone penetration test. Canadian Geotechnical Journal, 35(3), 442-459.</p>
+<h3 id="qtn_cs_idriss_boulanger_2008">Qtn_cs_idriss_boulanger_2008</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_idriss_boulanger_2008"><code>Qtn_cs_idriss_boulanger_2008</code></a>.</p>
+<p>Calculates the normalized cone penetration resistance with fines correction (Q_{tn,cs}) based on the methodology outlined by Idriss and Boulanger (2008).</p>
+<div class="math-display">\[q_{c1N} = \max \left( \min \left( \frac{q_c}{0.001 P_a}, 254 \right), 21 \right)\]</div>
+<div class="math-display">\[m = 1.338 - 0.249 \cdot (q_{c1N})^{0.264}\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Idriss, I. M., &amp; Boulanger, R. W. (2008). Soil liquefaction during earthquakes. Earthquake Engineering Research Institute.</p>
+<h3 id="qtn_cs_boulanger_idriss_2014">Qtn_cs_boulanger_idriss_2014</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#qtn_cs_boulanger_idriss_2014"><code>Qtn_cs_boulanger_idriss_2014</code></a>.</p>
+<p>Calculates the normalized cone penetration resistance with fines correction (Q_{tn,cs}) based on the methodology outlined by Boulanger and Idriss (2014).</p>
+<div class="math-display">\[FC = \min \left( \max \left( 80 \cdot (I_c + C_{FC}) - 137, 0 \right), 100 \right)\]</div>
+<div class="math-display">\[C_N = \min \left( \left( \frac{P_a}{\sigma_v^{\prime}} \right)^m, 1.7 \right)\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Boulanger, R. W., &amp; Idriss, I. M. (2014). CPT and SPT liquefaction triggering procedures. Report No. UCD/CGM-14/01, Center for Geotechnical Modeling, Department of Civil &amp; Environmental Engineering, University of California, Davis.</p>
+<h3 id="liquefaction_strains_zhang">liquefaction_strains_zhang</h3>
+<p>Function <a href="/docs/groundhog/api/soildynamics/cptliquefaction/#liquefaction_strains_zhang"><code>liquefaction_strains_zhang</code></a>.</p>
+<p>Calculates liquefaction-induced strains (volumetric and lateral) for level ground and lateral spreading based on the methodologies of Zhang et al.</p>
+<div class="math-display">\[\epsilon_{liq} =
+\begin{cases}
+102 \cdot Q_{tn,cs}^{-0.82}, &amp; 0.0 \leq FoS_{liq} \leq 0.55, 33 \leq Q_{tn,cs} \leq 200 \\
+2411 \cdot Q_{tn,cs}^{-1.45}, &amp; 0.55 &lt; FoS_{liq} \leq 0.65, 147 &lt; Q_{tn,cs} \leq 200 \\
+1690 \cdot Q_{tn,cs}^{-1.46}, &amp; 0.75 &lt; FoS_{liq} \leq 0.85, 80 &lt; Q_{tn,cs} \leq 200 \\
+5.8, &amp; Q_{tn,cs} &lt; 33, FoS_{liq} &lt; 1 \\
+\end{cases}\]</div>
+<div class="math-display">\[\gamma_{liq} =
+\begin{cases}
+3.26 \cdot FoS_{liq}^{-1.80}, &amp; D_r \geq 0.8, 0.7 \leq FoS_{liq} &lt; 2.0 \\
+6.2, &amp; D_r \geq 0.8, FoS_{liq} &lt; 0.7 \\
+3.58 \cdot FoS_{liq}^{-4.42}, &amp; D_r \geq 0.5, 0.66 \leq FoS_{liq} &lt; 2.0 \\
+250 (1 - FoS_{liq}) + 3.5, &amp; 0.81 \leq FoS_{liq} &lt; 1.0 \\
+51.2, &amp; FoS_{liq} &lt; 0.81 \\
+0, &amp; \text{otherwise}
+\end{cases}\]</div>
+<p><em>Reference:</em> Zhang, L., Robertson, P. K., &amp; Brachman, R. W. I. (2002). Estimating liquefaction-induced ground settlements from CPT for level ground. <em>Canadian Geotechnical Journal, 39</em>(5), 1168-1180.; Zhang, L., Robertson, P. K., &amp; Brachman, R. W. I. (2004). Estimating liquefaction-induced lateral displacements using the standard penetration test or cone penetration test. <em>Journal of Geotechnical and Geoenvironmental Engineering, 130</em>(8), 861-871.</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -906,5 +1158,8 @@
 
   <script src="/assets/js/site.js?v=118a059abb" defer></script>
   <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
 </body>
 </html>

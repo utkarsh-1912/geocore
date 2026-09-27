@@ -138,7 +138,7 @@ def validate_and_coerce_inputs(function_id: str, raw_args: Dict[str, Any]) -> Tu
     try:
         instance = input_cls(**sanitized)
         # Convert back to dict for Groundhog execution
-        validated_dict = instance.model_dump(exclude_unset=False)
+        validated_dict = instance.geoai_call_kwargs()
         validated_dict.update(passthrough)
         return validated_dict, instance
     except GeoAIValidationError:

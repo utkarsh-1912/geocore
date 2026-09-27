@@ -65,6 +65,10 @@
           "slug": "geoai/model-setup"
         },
         {
+          "title": "Model benchmarks",
+          "slug": "geoai/model-benchmarks"
+        },
+        {
           "title": "GeoAI tools",
           "slug": "geoai/tools"
         },

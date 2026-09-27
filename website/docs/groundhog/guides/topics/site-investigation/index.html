@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
   <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
-</head>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -136,6 +136,11 @@
   <li>
         <a href="/docs/geoai/model-setup/">
     <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
 
   </li>
   <li>
@@ -811,76 +816,492 @@
     <h1>Site investigation</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>Site investigation</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>Site investigation</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="soil-classification">Soil classification</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/classification_toplevel.html">Soil classification</a></p>
 <h3 id="phase-relations">Phase relations</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/phaserelations.html">Phase relations</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/"><code>groundhog.siteinvestigation.classification.phaserelations</code></a>: <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_porosity"><code>voidratio_porosity</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#porosity_voidratio"><code>porosity_voidratio</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#saturation_watercontent"><code>saturation_watercontent</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#bulkunitweight"><code>bulkunitweight</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#dryunitweight_watercontent"><code>dryunitweight_watercontent</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_drydensity"><code>voidratio_drydensity</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#bulkunitweight_dryunitweight"><code>bulkunitweight_dryunitweight</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#relative_density"><code>relative_density</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_bulkunitweight"><code>voidratio_bulkunitweight</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#unitweight_watercontent_saturated"><code>unitweight_watercontent_saturated</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#density_unitweight"><code>density_unitweight</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#unitweight_density"><code>unitweight_density</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#watercontent_voidratio"><code>watercontent_voidratio</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_watercontent"><code>voidratio_watercontent</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/"><code>groundhog.siteinvestigation.classification.phaserelations</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="voidratio_porosity">voidratio_porosity</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_porosity"><code>voidratio_porosity</code></a>.</p>
+<p>Converts a void ratio into a porosity</p>
+<div class="math-display">\[e = \frac{V_{voids}}{V_{solids}}\]</div>
+<div class="math-display">\[n = \frac{V_{voids}}{V_{total}}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="porosity_voidratio">porosity_voidratio</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#porosity_voidratio"><code>porosity_voidratio</code></a>.</p>
+<p>Calculates the porosity of sample from the void ratio</p>
+<div class="math-display">\[n = \frac{e}{e+1}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="saturation_watercontent">saturation_watercontent</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#saturation_watercontent"><code>saturation_watercontent</code></a>.</p>
+<p>Calculates the saturation of a sample from the water content, the specific gravity and the void ratio</p>
+<div class="math-display">\[S = \frac{V_{water}}{V_{voids}} = \frac{w \cdot G_s}{e}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="bulkunitweight">bulkunitweight</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#bulkunitweight"><code>bulkunitweight</code></a>.</p>
+<p>Calculates the bulk unit weight from specific gravity, void ratio and saturation</p>
+<div class="math-display">\[\gamma = \frac{W}{V} = \left( \frac{G_s + S \cdot e}{1+e} \right) \cdot \gamma_w\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="dryunitweight_watercontent">dryunitweight_watercontent</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#dryunitweight_watercontent"><code>dryunitweight_watercontent</code></a>.</p>
+<p>Calculates the dry unit weight of the sample from the water content and the bulk unit weight</p>
+<div class="math-display">\[\gamma_d = \frac{W_s}{V} = \left( \frac{G_s}{1+e} \right) \cdot \gamma_w = \frac{\gamma}{1 + w}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="voidratio_drydensity">voidratio_drydensity</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_drydensity"><code>voidratio_drydensity</code></a>.</p>
+<p>Calculates void ratio when the specific gravity and the dry density are known</p>
+<div class="math-display">\[e = G_s \cdot \frac{\rho_w}{\rho_d} - 1\]</div>
+<p><em>Reference:</em> Budhu (2011) Introduction to soil mechanics and foundations.</p>
+<h4 id="bulkunitweight_dryunitweight">bulkunitweight_dryunitweight</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#bulkunitweight_dryunitweight"><code>bulkunitweight_dryunitweight</code></a>.</p>
+<p>Calculates the bulk unit weight from the dry unit weight and the water content</p>
+<div class="math-display">\[\gamma = (1+w) \cdot \gamma_d\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="relative_density">relative_density</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#relative_density"><code>relative_density</code></a>.</p>
+<p>Calculates the relative density for a cohesionless sample from the measured void ratio, comparing it to the void ratio at minimum and maximum density.</p>
+<div class="math-display">\[D_r = \frac{e - e_{min}}{e_{max} - e_{min}}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="voidratio_bulkunitweight">voidratio_bulkunitweight</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_bulkunitweight"><code>voidratio_bulkunitweight</code></a>.</p>
+<p>Calculates the void ratio from the bulk unit weight for a soil with varying saturation.</p>
+<div class="math-display">\[\gamma = \left( \frac{G_s + S e}{1 + e} \right) \gamma_w\]</div>
+<div class="math-display">\[\implies e = \frac{\gamma_w G_s - \gamma}{\gamma - S \gamma_w}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="unitweight_watercontent_saturated">unitweight_watercontent_saturated</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#unitweight_watercontent_saturated"><code>unitweight_watercontent_saturated</code></a>.</p>
+<p>Calculates the bulk unit weight from water content for a saturated soil.</p>
+<div class="math-display">\[S \cdot e = w \cdot G_s\]</div>
+<div class="math-display">\[\gamma = \left( \frac{G_s + S \cdot e}{1 + e} \right) \cdot \gamma_w\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> UGent In-house practice</p>
+<h4 id="density_unitweight">density_unitweight</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#density_unitweight"><code>density_unitweight</code></a>.</p>
+<p>Converts unit weight (in kN/m3) to density (in kg/m3)</p>
+<div class="math-display">\[\rho = \frac{\gamma}{g}\]</div>
+<p><em>Reference:</em> Budhu (2011) Introduction to soil mechanics and foundations.</p>
+<h4 id="unitweight_density">unitweight_density</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#unitweight_density"><code>unitweight_density</code></a>.</p>
+<p>Converts density (in kg/m3) to unit weight (kN/m3)</p>
+<div class="math-display">\[\gamma = \rho \cdot g\]</div>
+<p><em>Reference:</em> Budhu (2011) Introduction to soil mechanics and foundations.</p>
+<h4 id="watercontent_voidratio">watercontent_voidratio</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#watercontent_voidratio"><code>watercontent_voidratio</code></a>.</p>
+<p>Calculates the water content of a sample from it's void ratio.</p>
+<div class="math-display">\[w = \frac{S \cdot e}{G_s}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
+<h4 id="voidratio_watercontent">voidratio_watercontent</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/#voidratio_watercontent"><code>voidratio_watercontent</code></a>.</p>
+<p>Calculates the void ratio of a sample from the water content.</p>
+<div class="math-display">\[e = \frac{w \cdot G_s}{S}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundation engineering</p>
 <h3 id="soil-classes-and-categories">Soil classes and categories</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/categories.html">Soil classes and categories</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/classification/categories/"><code>groundhog.siteinvestigation.classification.categories</code></a>: <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#relativedensity_categories"><code>relativedensity_categories</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#su_categories"><code>su_categories</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#uscs_categories"><code>uscs_categories</code></a>, <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#samplequality_voidratio_lunne"><code>samplequality_voidratio_lunne</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/classification/categories/"><code>groundhog.siteinvestigation.classification.categories</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="relativedensity_categories">relativedensity_categories</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#relativedensity_categories"><code>relativedensity_categories</code></a>.</p>
+<p>Categorizes relative densities according to the following definition:</p>
+<div class="math-display">\[D_r = \frac{e - e_{min}}{e_{max} - e_{min}}\]</div>
+<p><em>Reference:</em> API RP2 GEO</p>
+<h4 id="su_categories">su_categories</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#su_categories"><code>su_categories</code></a>.</p>
+<p>Classifies undrained shear strength in a number of categories.</p>
+<p><em>Reference:</em> BS 5930:2015, ASTM D-2488</p>
+<h4 id="uscs_categories">uscs_categories</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#uscs_categories"><code>uscs_categories</code></a>.</p>
+<p>Provides the verbose description for soil type codes according to USCS.</p>
+<p><em>Reference:</em> USCS</p>
+<h4 id="samplequality_voidratio_lunne">samplequality_voidratio_lunne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/classification/categories/#samplequality_voidratio_lunne"><code>samplequality_voidratio_lunne</code></a>.</p>
+<p>Determines the sample quality for clays based on the change in void ratio when consolidating the sample back to the initial vertical effective stress.</p>
+<p><em>Reference:</em> Lunne, T., et al. "Effects of sample disturbance on consolidation behaviour of soft marine Norwegian clays." Geotechnical and geophysical site characterization: proceedings of the third international conference on site characterization ISC. Vol. 3. 2008.</p>
 <h2 id="soil-parameter-correlations">Soil parameter correlations</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/correlations_toplevel.html">Soil parameter correlations</a></p>
 <h3 id="all-soil-types">All soil types</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/correlations_general.html">All soil types</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/correlations/general/"><code>groundhog.siteinvestigation.correlations.general</code></a>: <a href="/docs/groundhog/api/siteinvestigation/correlations/general/#acousticimpedance_bulkunitweight_chen"><code>acousticimpedance_bulkunitweight_chen</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/general/#shearwavevelocity_compressionindex_cha"><code>shearwavevelocity_compressionindex_cha</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/general/#k0_frictionangle_mesri"><code>k0_frictionangle_mesri</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/correlations/general/"><code>groundhog.siteinvestigation.correlations.general</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="acousticimpedance_bulkunitweight_chen">acousticimpedance_bulkunitweight_chen</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/general/#acousticimpedance_bulkunitweight_chen"><code>acousticimpedance_bulkunitweight_chen</code></a>.</p>
+<p>Several authors have researched the correlation between porosity and acoustic impedance.</p>
+<div class="math-display">\[I =1.315 \cdot 10^{-4} \cdot n^4 - 3.776 \cdot 10^{-2} \cdot n^3 + 4.201 \cdot n^2 - 2.450 \cdot 10^2 \cdot n + 8.603 \cdot 10^3\]</div>
+<div class="math-display">\[e = \frac{\gamma_w G_s - \gamma}{\gamma - S \gamma_w}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Chen et al (2021). Machine Learning Based Digital Integration of Geotechnical and Ultra-High Frequency Geophysical Data for Offshore Site Characterizations. Journal of Geotechnical and Geoenvironmental Engineering.</p>
+<h4 id="shearwavevelocity_compressionindex_cha">shearwavevelocity_compressionindex_cha</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/general/#shearwavevelocity_compressionindex_cha"><code>shearwavevelocity_compressionindex_cha</code></a>.</p>
+<p>Shear wave velocity is dependent on the stiffness of the soil skeleton which is in turn affected by the compression index C_c.</p>
+<div class="math-display">\[V_s = \sqrt{\frac{G}{\rho}} = \alpha \left( \frac{\sigma_{\perp}^{\prime} + \sigma_{\parallel}^{\prime}}{2 \ \text{kPa}} \right)^{\beta}\]</div>
+<div class="math-display">\[\alpha = 13.5 (\text{m/s}) \cdot C_c^{-0.63}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Cha et al (2014). Small-Strain Stiffness, Shear-Wave Velocity and Soil Compressibilitys. Journal of Geotechnical and Geoenvironmental Engineering.</p>
+<h4 id="k0_frictionangle_mesri">k0_frictionangle_mesri</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/general/#k0_frictionangle_mesri"><code>k0_frictionangle_mesri</code></a>.</p>
+<p>Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated sand and clay.</p>
+<div class="math-display">\[K_0 = \left( 1 - \sin \varphi_{cv}^{\prime} \right) \text{OCR}^{\sin \varphi_{cv}^{\prime}}\]</div>
+<p><em>Reference:</em> Mesri and Hayat (1993) The coefficient of earth pressure at rest. Canadian Geotechnical Journal. 30(4), 647-666</p>
 <h3 id="cohesive-soils">Cohesive soils</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/cohesive.html">Cohesive soils</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/"><code>groundhog.siteinvestigation.correlations.cohesive</code></a>: <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#k0_plasticity_kenney"><code>k0_plasticity_kenney</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/"><code>groundhog.siteinvestigation.correlations.cohesive</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="compressionindex_watercontent_koppula">compressionindex_watercontent_koppula</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></a>.</p>
+<p>Based on an evaluation of the compression index of clays and eight other soil mechanics parameters, Koppula (1981) concluded that the best fit was obtain using a direct relation with natural water content.</p>
+<div class="math-display">\[C_c = w_n\]</div>
+<div class="math-display">\[C_c / C_r = 5 \ \text{to} \ 10\]</div>
+<p><em>Reference:</em> Koppula SD (1981) Statistical evaluation of compression index. Geotech Test J ASTM 4(2):68–73</p>
+<h4 id="frictionangle_plasticityindex">frictionangle_plasticityindex</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></a>.</p>
+<p>Based on a dataset of soft to stiff clays, a correlation between plasticity index and drained friction angle of clay is proposed.</p>
+<p><em>Reference:</em> Terzaghi, K., Peck, R. B., &amp; Mesri, G. (1996). Soil mechanics in engineering practice. John Wiley &amp; Sons.</p>
+<h4 id="cv_liquidlimit_usnavy">cv_liquidlimit_usnavy</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></a>.</p>
+<p>Calculates an estimate of the coefficient of consolidation based on the liquid limit of a clay.</p>
+<p><em>Reference:</em> U.S. Navy (1982) Soil mechanics – design manual 7.1, Department of the Navy, Naval Facilities Engineering Command, U.S. Government Printing Office, Washington, DC</p>
+<h4 id="gmax_plasticityocr_andersen">gmax_plasticityocr_andersen</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></a>.</p>
+<p>Calculates the small-strain shear modulus for cohesive soils based on plasticity index, effective overburden pressure and OCR.</p>
+<div class="math-display">\[\frac{G_{max}}{\sigma_{ref}^{\prime}} = \left( 30 + \frac{75}{\frac{I_p}{100} + 0.03} \right) \cdot OCR^{0.5}\]</div>
+<div class="math-display">\[\sigma_{ref}^{\prime} = P_a \cdot \left( \sigma_{0}^{\prime}  / P_a \right)^{0.9}\]</div>
+<p><em>Reference:</em> Andersen KH. Cyclic soil parameters for offshore foundation design. The Third ISSMGE McClelland Lecture. In: Meyer V, editor. Proc. Int. Symp. Frontiers in offshore geotechnics, ISFOG 2015. London: Taylor and Francis; 2015. 5–82.</p>
+<h4 id="k0_plasticity_kenney">k0_plasticity_kenney</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#k0_plasticity_kenney"><code>k0_plasticity_kenney</code></a>.</p>
+<p>Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated clay.</p>
+<div class="math-display">\[K_{0,NC} = 0.19 + 0.233 \log_{10} I_p\]</div>
+<div class="math-display">\[I_p = -281 \log_{10} \left( 1.85 \lambda \right)\]</div>
+<p><em>Reference:</em> Alpan (1967) THE EMPIRICAL EVALUATION OF THE COEFFICIENT K0 AND K0R. Soils and Foundations. Volume 7, Issue 1</p>
 <h3 id="cohesionless-soils">Cohesionless soils</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/cohesionless.html">Cohesionless soils</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/"><code>groundhog.siteinvestigation.correlations.cohesionless</code></a>: <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#gmax_sand_hardinblack"><code>gmax_sand_hardinblack</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#permeability_d10_hazen"><code>permeability_d10_hazen</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#hssmall_parameters_sand"><code>hssmall_parameters_sand</code></a>, <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#stress_dilatancy_bolton"><code>stress_dilatancy_bolton</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/"><code>groundhog.siteinvestigation.correlations.cohesionless</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="gmax_sand_hardinblack">gmax_sand_hardinblack</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#gmax_sand_hardinblack"><code>gmax_sand_hardinblack</code></a>.</p>
+<p>Calculates the small-strain shear modulus of sand based on the correlation proposed with initial void ratio and stress level suggested by Hardin and Black (1968).</p>
+<div class="math-display">\[G_{max} = \frac{B p_{ref}^{\prime}}{0.3 + 0.7 e_0^2} \sqrt{\frac{p^{\prime}}{p_{ref}^{\prime}}}\]</div>
+<p><em>Reference:</em> Hardin, B.O. and Black W.L. 1968. Vibration modulus of normally consolidated clay Journal of Soil Mechanics and Foundations Div, 94(SM2), 353-369.</p>
+<h4 id="permeability_d10_hazen">permeability_d10_hazen</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#permeability_d10_hazen"><code>permeability_d10_hazen</code></a>.</p>
+<p>Calculates the permeability of a granular soil based on its grain size.</p>
+<div class="math-display">\[k = C_{10} \cdot D_{10}^2\]</div>
+<p><em>Reference:</em> Terzaghi, K., Peck, R. B., &amp; Mesri, G. (1996). Soil mechanics in engineering practice. John Wiley &amp; Sons.</p>
+<h4 id="hssmall_parameters_sand">hssmall_parameters_sand</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#hssmall_parameters_sand"><code>hssmall_parameters_sand</code></a>.</p>
+<p>Calculates the constitutive parameters for the HS Small model in PLAXIS as a function of relative density.</p>
+<div class="math-display">\[\gamma_{unsat} = 15 + 4 \cdot \frac{D_r}{100}\]</div>
+<div class="math-display">\[\gamma_{sat} = 19 + 1.6 \cdot \frac{D_r}{100}\]</div>
+<p><em>9 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Brinkgreve, R. B. J., Engin, E., &amp; Engin, H. K. (2010). Validation of empirical formulas to derive model parameters for sands. Numerical methods in geotechnical engineering, 137- 142.</p>
+<h4 id="stress_dilatancy_bolton">stress_dilatancy_bolton</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#stress_dilatancy_bolton"><code>stress_dilatancy_bolton</code></a>.</p>
+<p>Cohesionless soils with sufficiently high relative density will tend to dilate but dilation can be suppressed by the stress on the sample.</p>
+<div class="math-display">\[I_R = D_r \left( Q - \ln p^{\prime} \right) - R\]</div>
+<div class="math-display">\[\varphi_{max}^{\prime} - \varphi_{crit}^{\prime} = 0.8 \phi_{max} = 5 I_R \ \ \text{plane strain}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Bolton, M. D. "The strength and dilatancy of sands." Geotechnique 36.1 (1986): 65-78.</p>
 <h2 id="in-situ-tests">In-situ tests</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/insitutests_toplevel.html">In-situ tests</a></p>
 <h3 id="pcpt-processing-class">PCPT processing class</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_class.html">PCPT processing class</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/#pcptprocessing"><code>PCPTProcessing</code></a> (<code>groundhog.siteinvestigation.insitutests.pcpt_processing</code>)</li>
-</ul>
+<h4 id="pcptprocessing">PCPTProcessing</h4>
+<p>Class <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/#pcptprocessing"><code>PCPTProcessing</code></a>.</p>
+<p>The PCPTProcessing class implements methods for reading, processing and presentation of PCPT data.</p>
 <h3 id="pcpt-functions">PCPT functions</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_functions.html">PCPT functions</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/"><code>groundhog.siteinvestigation.insitutests.pcpt_correlations</code></a>: <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#pcpt_normalisations"><code>pcpt_normalisations</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#soilclass_robertson"><code>soilclass_robertson</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#ic_soilclass_robertson"><code>ic_soilclass_robertson</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#behaviourindex_pcpt_robertsonwride"><code>behaviourindex_pcpt_robertsonwride</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_sand_rixstokoe"><code>gmax_sand_rixstokoe</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_clay_maynerix"><code>gmax_clay_maynerix</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_ncsand_baldi"><code>relativedensity_ncsand_baldi</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_ocsand_baldi"><code>relativedensity_ocsand_baldi</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#coneresistance_ocsand_baldi"><code>coneresistance_ocsand_baldi</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_sand_jamiolkowski"><code>relativedensity_sand_jamiolkowski</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#frictionangle_sand_kulhawymayne"><code>frictionangle_sand_kulhawymayne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#undrainedshearstrength_clay_radlunne"><code>undrainedshearstrength_clay_radlunne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#frictionangle_overburden_kleven"><code>frictionangle_overburden_kleven</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#ocr_cpt_lunne"><code>ocr_cpt_lunne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#sensitivity_frictionratio_lunne"><code>sensitivity_frictionratio_lunne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#unitweight_mayne"><code>unitweight_mayne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_ic_robertsoncabal"><code>vs_ic_robertsoncabal</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#k0_sand_mayne"><code>k0_sand_mayne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_cpt_puechen"><code>gmax_cpt_puechen</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#behaviourindex_pcpt_nonnormalised"><code>behaviourindex_pcpt_nonnormalised</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#drainedsecantmodulus_sand_bellotti"><code>drainedsecantmodulus_sand_bellotti</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_voidratio_maynerix"><code>gmax_voidratio_maynerix</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_andrus"><code>vs_cpt_andrus</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_hegazymayne"><code>vs_cpt_hegazymayne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_longdonohue"><code>vs_cpt_longdonohue</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#soiltype_vs_longodonohue"><code>soiltype_vs_longodonohue</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cptd50_karrayetal"><code>vs_cptd50_karrayetal</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_wrideetal"><code>vs_cpt_wrideetal</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_tonniandsimonini"><code>vs_cpt_tonniandsimonini</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_mcgannetal"><code>vs_cpt_mcgannetal</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#constrainedmodulus_pcpt_robertson"><code>constrainedmodulus_pcpt_robertson</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_stressdependent_stuyts"><code>vs_stressdependent_stuyts</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#dissipation_test_teh"><code>dissipation_test_teh</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#clippingdepths_qc1n_tianlehane"><code>clippingdepths_qc1N_tianlehane</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/"><code>groundhog.siteinvestigation.insitutests.pcpt_correlations</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="pcpt_normalisations">pcpt_normalisations</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#pcpt_normalisations"><code>pcpt_normalisations</code></a>.</p>
+<p>Carried out the necessary normalisation and correction on PCPT data to allow calculation of derived parameters and soil type classification.</p>
+<div class="math-display">\[q_c = q_c^* + d \cdot a \cdot \gamma_w\]</div>
+<div class="math-display">\[q_t = q_c + u_2 \cdot (1 - a)\]</div>
+<p><em>10 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Lunne, T., Robertson, P.K., Powell, J.J.M., 1997. Cone penetration testing in geotechnical practice. E &amp; FN Spon.</p>
+<h4 id="soilclass_robertson">soilclass_robertson</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#soilclass_robertson"><code>soilclass_robertson</code></a>.</p>
+<p>Provides soil type classification according to the soil behaviour type index by Robertson and Wride.</p>
+<p><em>Reference:</em> Fugro guidance on PCPT interpretation</p>
+<h4 id="ic_soilclass_robertson">ic_soilclass_robertson</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#ic_soilclass_robertson"><code>ic_soilclass_robertson</code></a>.</p>
+<p>Provides soil type classification according to the soil behaviour type index by Robertson and Wride.</p>
+<p><em>Reference:</em> Fugro guidance on PCPT interpretation</p>
+<h4 id="behaviourindex_pcpt_robertsonwride">behaviourindex_pcpt_robertsonwride</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#behaviourindex_pcpt_robertsonwride"><code>behaviourindex_pcpt_robertsonwride</code></a>.</p>
+<p>Calculates the soil behaviour index according to Robertson and Wride (1998).</p>
+<div class="math-display">\[\begin{aligned}Cn = \min(1.7, \left(\frac{P_a}{\sigma_{vo}^{\prime}}\right)^n)
+Q_{tn} = \frac{q_t - \sigma_{vo}}{P_a} \cdot Cn
+\\
+n = 0.381 \cdot I_c + 0.05 \cdot \frac{\sigma_{vo}^{\prime}}{P_a} - 0.15 \ \text{where} \ n \leq 1
+\\
+I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1.22 \right)^2 }\end{aligned}\]</div>
+<p><em>Reference:</em> Fugro guidance on PCPT interpretation</p>
+<h4 id="gmax_sand_rixstokoe">gmax_sand_rixstokoe</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_sand_rixstokoe"><code>gmax_sand_rixstokoe</code></a>.</p>
+<p>Calculates the small-strain shear modulus for uncemented silica sand based on cone resistance and vertical effective stress.</p>
+<div class="math-display">\[G_{max} = 1634 \cdot (q_c)^{0.25} \cdot (\sigma_{vo}^{\prime})^{0.375}\]</div>
+<p><em>Reference:</em> Rix, G.J. and Stokoe, K.H. (II) (1991), “Correlation of Initial Tangent Modulus and Cone Penetration Resistance”, in Huang, A.B. (Ed.), Calibration Chamber Testing: Proceedings of the First International Symposium on Calibration Chamber Testing ISOCCTI, Potsdam, New York, 28-29 June 1991, Elsevier Science Publishing Company, New York, pp. 351-362.</p>
+<h4 id="gmax_clay_maynerix">gmax_clay_maynerix</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_clay_maynerix"><code>gmax_clay_maynerix</code></a>.</p>
+<p>Mayne and Rix (1993) determined a relationship between small-strain shear modulus and cone tip resistance by studying 481 data sets from 31 sites all over the world.</p>
+<div class="math-display">\[G_{max} = 2.78 \cdot q_c^{1.335}\]</div>
+<p><em>Reference:</em> Mayne, P.W. and Rix, G.J. (1993), “Gmax-qc Relationships for Clays”, Geotechnical Testing Journal, Vol. 16, No. 1, pp. 54-60.</p>
+<h4 id="relativedensity_ncsand_baldi">relativedensity_ncsand_baldi</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_ncsand_baldi"><code>relativedensity_ncsand_baldi</code></a>.</p>
+<p>Calculates the relative density for normally consolidated sand based on calibration chamber tests on silica sand.</p>
+<div class="math-display">\[D_r = \frac{1}{2.41} \cdot \ln \left[ \frac{q_c}{157 \cdot \left( \sigma_{vo}^{\prime} \right)^{0.55} } \right]\]</div>
+<p><em>Reference:</em> Baldi et al 1986.</p>
+<h4 id="relativedensity_ocsand_baldi">relativedensity_ocsand_baldi</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_ocsand_baldi"><code>relativedensity_ocsand_baldi</code></a>.</p>
+<p>Calculates the relative density for overconsolidated sand based on calibration chamber tests on silica sand.</p>
+<div class="math-display">\[D_r = \frac{1}{2.61} \cdot \ln \left[ \frac{q_c}{181 \cdot \left( \sigma_{m}^{\prime} \right)^{0.55} } \right]\]</div>
+<div class="math-display">\[\sigma_{m}^{\prime} = \frac{\sigma_{vo}^{\prime} + 2 \cdot K_o \ cdot \sigma_{h0}^{\prime}}{3}\]</div>
+<p><em>Reference:</em> Baldi et al 1986.</p>
+<h4 id="coneresistance_ocsand_baldi">coneresistance_ocsand_baldi</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#coneresistance_ocsand_baldi"><code>coneresistance_ocsand_baldi</code></a>.</p>
+<p>Calculates the cone resistance for a given relative density for overconsolidated sand based on calibration chamber tests on silica sand.</p>
+<div class="math-display">\[D_r = \frac{1}{2.61} \cdot \ln \left[ \frac{q_c}{181 \cdot \left( \sigma_{m}^{\prime} \right)^{0.55} } \right]\]</div>
+<div class="math-display">\[\sigma_{m}^{\prime} = \frac{\sigma_{vo}^{\prime} + 2 \cdot K_o \cdot \sigma_{m}^{\prime}}{3}\]</div>
+<p><em>Reference:</em> Baldi et al 1986.</p>
+<h4 id="relativedensity_sand_jamiolkowski">relativedensity_sand_jamiolkowski</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_sand_jamiolkowski"><code>relativedensity_sand_jamiolkowski</code></a>.</p>
+<p>Jamiolkowksi et al formulated a correlation for the relative density of dry sand based on calibration chamber tests.</p>
+<div class="math-display">\[D_{r,dry} = \frac{1}{2.96} \cdot \ln \left[ \frac{q_c / P_a}{24.94 \cdot \left( \frac{\sigma_{m}^{\prime}}{P_a} \right)^{0.46} } \right]\]</div>
+<div class="math-display">\[D_{r,sat} = \left( 1 + \frac{-1.87 + 2.32 \cdot \ln \left[ \frac{q_c}{\sqrt{P_a + \sigma_{vo}^{\prime}}} \right] }{100} \right) \cdot D_{r,dry}\]</div>
+<p><em>Reference:</em> Jamiolkowski, M., Lo Presti, D.C.F. and Manassero, M. (2003), "Evaluation of Relative Density and Shear Strength of Sands from CPT and DMT", in Germaine, J.T., Sheahan, T.C. and Whitman, R.V. (Eds.), Soil Behavior and Soft Ground Construction: Proceedings of the Symposium, October 5-6, 2001, Cambridge, Massachusetts, Geotechnical Special Publication, No. 119, American Society of Civil Engineers, Reston, pp. 201-238.</p>
+<h4 id="frictionangle_sand_kulhawymayne">frictionangle_sand_kulhawymayne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#frictionangle_sand_kulhawymayne"><code>frictionangle_sand_kulhawymayne</code></a>.</p>
+<p>Determines the friction angle for sand based on calibration chamber tests.</p>
+<div class="math-display">\[\varphi^{\prime} = 17.6 + 11.0 \cdot \log_{10} \left[  \frac{q_t / P_a}{ \sqrt{\sigma_{vo}^{\prime} / P_a}} \right]\]</div>
+<p><em>Reference:</em> Kulhawy, F.H. and Mayne, P.H. (1990), “Manual on Estimating Soil Properties for Foundation Design”, Electric Power Research Institute EPRI, Palo Alto, EPRI Report, EL-6800.</p>
+<h4 id="undrainedshearstrength_clay_radlunne">undrainedshearstrength_clay_radlunne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#undrainedshearstrength_clay_radlunne"><code>undrainedshearstrength_clay_radlunne</code></a>.</p>
+<p>Calculates the undrained shear strength of clay from net cone tip resistance.</p>
+<div class="math-display">\[S_u = \frac{q_{net}}{N_k}\]</div>
+<p><em>Reference:</em> Rad, N.S. and Lunne, T. (1988), "Direct Correlations between Piezocone Test Results and Undrained Shear Strength of Clay", in De Ruiter, J. (Ed.), Penetration Testing 1988: Proceedings of the First International Symposium on Penetration Testing, ISOPT-1, Orlando, 20-24 March 1988, Vol. 2, A.A. Balkema, Rotterdam, pp. 911-917.</p>
+<h4 id="frictionangle_overburden_kleven">frictionangle_overburden_kleven</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#frictionangle_overburden_kleven"><code>frictionangle_overburden_kleven</code></a>.</p>
+<p>This function calculates the friction angle according to the chart proposed by Kleven (1986).</p>
+<p><em>Reference:</em> Lunne, T., Robertson, P.K., Powell, J.J.M. (1997). Cone penetration testing in geotechnical practice.  SPON press</p>
+<h4 id="ocr_cpt_lunne">ocr_cpt_lunne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#ocr_cpt_lunne"><code>ocr_cpt_lunne</code></a>.</p>
+<p>Calculates the overconsolidation ratio (OCR) for clay based on normalised CPT properties.</p>
+<p><em>Reference:</em> Lunne, T., Robertson, P.K., Powell, J.J.M., 1997. Cone penetration testing in geotechnical practice. E &amp; FN Spon.</p>
+<h4 id="sensitivity_frictionratio_lunne">sensitivity_frictionratio_lunne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#sensitivity_frictionratio_lunne"><code>sensitivity_frictionratio_lunne</code></a>.</p>
+<p>Calculates the sensitivity of clay from the friction ratio according to Rad and Lunne (1986).</p>
+<p><em>Reference:</em> Lunne, T., Robertson, P.K., Powell, J.J.M., 1997. Cone penetration testing in geotechnical practice. E &amp; FN Spon.</p>
+<h4 id="unitweight_mayne">unitweight_mayne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#unitweight_mayne"><code>unitweight_mayne</code></a>.</p>
+<p>Estimates the total unit weight for sand, clay and silt from CPT measurements.</p>
+<div class="math-display">\[\gamma = 1.95 \cdot \gamma_w \cdot \left( \frac{\sigma_{vo}^{\prime}}{P_a} \right)^{0.06} \cdot \left( \frac{f_t}{P_a} \right)^{0.06}\]</div>
+<p><em>Reference:</em> P.W. Mayne ; J. Peuchen ; D. Bouwmeester (2010). Soil unit weight estimation from CPTs - 2nd International Symposium on Cone Penetration Testing, Huntington Beach, CA, USA. Volume 2&amp;3: Technical Papers, Session 2: Interpretation, Paper No. 5</p>
+<h4 id="vs_ic_robertsoncabal">vs_ic_robertsoncabal</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_ic_robertsoncabal"><code>vs_ic_robertsoncabal</code></a>.</p>
+<p>Calculates shear wave velocity based on a correlation with total cone resistance and soil behaviour type index.</p>
+<div class="math-display">\[V_s = \left[ \alpha_{vs} (q_t - \sigma_{vo}) / P_a \right]^{0.5}\]</div>
+<div class="math-display">\[\alpha_{vs} = 10^{0.55 \cdot I_c + 1.68}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Robertson, P.K. and Cabal, K.L. (2015). Guide to Cone Penetration Testing for Geotechnical Engineering. 6th edition. Gregg Drilling &amp; Testing, Inc.</p>
+<h4 id="k0_sand_mayne">k0_sand_mayne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#k0_sand_mayne"><code>k0_sand_mayne</code></a>.</p>
+<p>Calculates the lateral coefficient of earth pressure at rest based on calibration chamber tests on clean sands.</p>
+<div class="math-display">\[K_0 = 0.192 \cdot \left( \frac{q_t}{P_a} \right)^{0.22} \cdot \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^{0.31} \cdot \text{OCR}^{0.27}\]</div>
+<div class="math-display">\[\text{The maximum value for } K_0 \text{ can be obtained as}:\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Mayne (2007) NCHRP SYNTHESIS 368. Cone Penetration Testing. A Synthesis of Highway Practice.</p>
+<h4 id="gmax_cpt_puechen">gmax_cpt_puechen</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_cpt_puechen"><code>gmax_cpt_puechen</code></a>.</p>
+<p>Calculates the small-strain modulus based on CPT data.</p>
+<div class="math-display">\[G_{max} = b \cdot \left( 1 + 4 \cdot B_q \right) \cdot 1.634 \cdot q_c^{0.25} \cdot \sigma_{vo}^{\prime \ 0.375}\]</div>
+<p><em>Reference:</em> Puechen et al (2020). Characteristic values for geotechnical design of offshore monopiles in sandy soils - Case study. ISFOG2020</p>
+<h4 id="behaviourindex_pcpt_nonnormalised">behaviourindex_pcpt_nonnormalised</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#behaviourindex_pcpt_nonnormalised"><code>behaviourindex_pcpt_nonnormalised</code></a>.</p>
+<p>Calculates the non-normalised soil behaviour type index.</p>
+<div class="math-display">\[I_{SBT} = \sqrt{ \left( 3.47 - \log ( q_c / P_a ) \right)^2 + \left( \log R_f + 1.22 \right)^2}\]</div>
+<p><em>Reference:</em> Fugro guidance on PCPT interpretation</p>
+<h4 id="drainedsecantmodulus_sand_bellotti">drainedsecantmodulus_sand_bellotti</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#drainedsecantmodulus_sand_bellotti"><code>drainedsecantmodulus_sand_bellotti</code></a>.</p>
+<p>Calculates the drained secant modulus for various types of sand for an average strain of 0.1 percent.</p>
+<div class="math-display">\[q_{c1} = \left( \frac{q_c}{P_a} \right) \cdot \sqrt{ \frac{P_a}{\sigma_{vo}^{\prime}} }\]</div>
+<div class="math-display">\[\sigma_{mo}^{\prime} = \frac{(1 + 2 \cdot K_0) \cdot \sigma_{vo}^{\prime}}{3}\]</div>
+<p><em>Reference:</em> Bellotti, R., Ghionna, V. N., Jamiolkowski, M., Lancellotta, R., &amp; Robertson, P. K. (1989). Shear strength of sand from CPT. In Congrès international de mécanique des sols et des travaux de fondations. 12 (pp. 179-184).</p>
+<h4 id="gmax_voidratio_maynerix">gmax_voidratio_maynerix</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_voidratio_maynerix"><code>gmax_voidratio_maynerix</code></a>.</p>
+<p>Calculates the small-strain shear modulus for clay based on the void ratio of the material.</p>
+<div class="math-display">\[G_{max} = 99.5 \cdot (P_a)^{0.305} \cdot \frac{q_c^{0.695}}{e_0^{1.130}}\]</div>
+<p><em>Reference:</em> Mayne, P.W. and Rix, G.J. (1993), “Gmax-qc Relationships for Clays”, Geotechnical Testing Journal, Vol. 16, No. 1, pp. 54-60.</p>
+<h4 id="vs_cpt_andrus">vs_cpt_andrus</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_andrus"><code>vs_cpt_andrus</code></a>.</p>
+<p>Calculates shear wave velocity from CPT measurements based on a relation calibrated on 229 measurements of which the majority are S-PCPT with some cross-hole tests and suspension logger measurements.</p>
+<div class="math-display">\[\text{Holocene}\]</div>
+<div class="math-display">\[V_s = 2.27 \cdot q_t^{0.412} \cdot I_c^{0.989} \cdot z^{0.033} \cdot ASF\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Andrus, R.D., Mohanan, N.P., Piratheepan, P., Ellis, B.S., Holzer, T.L., 2007. Predicting Shear-wave velocity from cone penetration resistance, in: Paper No. 1454. Presented at the 4th International Conference on Earthquake Geotechnical Engineering, Thessaloniki, Greece.</p>
+<h4 id="vs_cpt_hegazymayne">vs_cpt_hegazymayne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_hegazymayne"><code>vs_cpt_hegazymayne</code></a>.</p>
+<p>The correlation between shear wave velocity and CPT properties developed by Hegazy and Mayne was based on a global databased from 73 sites with different soil conditions including sands, clays, soil mixtures and mine ta…</p>
+<div class="math-display">\[Q_{t,N} = \frac{q_t - \sigma_{vo}}{\sigma_{vo}^{\prime}}\]</div>
+<div class="math-display">\[I_c = \left[ (3.47 - \log Q_{t,N} )^2 + ( \log F_r + 1.22 )^2 \right]^{0.5}\]</div>
+<p><em>5 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Hegazy and Mayne (2006). A Global Statistical Correlation between Shear Wave Velocity and Cone Penetration Data.</p>
+<h4 id="vs_cpt_longdonohue">vs_cpt_longdonohue</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_longdonohue"><code>vs_cpt_longdonohue</code></a>.</p>
+<p>The authors propose a correlation between shear wave velocity and CPT properties based on high-quality CPT tests and Gmax obtained from S-PCPT, MASW, cross-hole and block sampling.</p>
+<div class="math-display">\[V_s = 1.961 \cdot q_t^{0.579} \cdot \left( 1 + B_q \right)^{1.202}\]</div>
+<p><em>Reference:</em> Long, M. and Donohue, S. (2010). Characterisation of Norwegian marine clays with combined shear wave velocity and CPTU data. Canadian Geotechnical Journal.</p>
+<h4 id="soiltype_vs_longodonohue">soiltype_vs_longodonohue</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#soiltype_vs_longodonohue"><code>soiltype_vs_longodonohue</code></a>.</p>
+<p>Determines the soil type based on measured shear wave velocity and normalised cone resistance.</p>
+<div class="math-display">\[V_{s,1} = \frac{V_s}{\left( \frac{\sigma_{vo}^{\prime}}{P_a} \right)^{0.5}}\]</div>
+<p><em>Reference:</em> Long and Donohue (2010). Characterisation of Norwegian marine clays with combined shear wave velocity and CPTU data.</p>
+<h4 id="vs_cptd50_karrayetal">vs_cptd50_karrayetal</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cptd50_karrayetal"><code>vs_cptd50_karrayetal</code></a>.</p>
+<p>This correlation between Vs and normalised cone tip resistance takes into account the influence of median grain size.</p>
+<div class="math-display">\[q_{c1} = q_c \cdot \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^{0.5}\]</div>
+<div class="math-display">\[V_{s1} = V_s \cdot \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^{0.25}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Karray, M., Lefebvre, G., Ethier, Y., Bigras, A. (2011). Influence of particle size on the correlation between shear wave velocity and cone tip resistance. Canadian Geotechnical Journal.</p>
+<h4 id="vs_cpt_wrideetal">vs_cpt_wrideetal</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_wrideetal"><code>vs_cpt_wrideetal</code></a>.</p>
+<p>Calculates shear wave velocity based on normalised cone tip resistance based on test data from the CANLEX project.</p>
+<div class="math-display">\[q_{c1} = q_c \cdot \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^{0.5}\]</div>
+<div class="math-display">\[V_{s1} = V_s \cdot \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^{0.25}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> C.E. (Fear) Wride, P.K. Robertson, K.W. Biggar, R.G. Campanella, B.A. Hofmann, J.M.O. Hughes, A. Küpper, and D.J. Woeller (2000). Interpretation of in situ test results from the CANLEX sites. Canadian Geotechnical Journal.</p>
+<h4 id="vs_cpt_tonniandsimonini">vs_cpt_tonniandsimonini</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_tonniandsimonini"><code>vs_cpt_tonniandsimonini</code></a>.</p>
+<p>The authors propose a correlation between CPT properties and shear wave velocity for the Treporti site near Venice, Italy which consist mostly of silty sediments.</p>
+<div class="math-display">\[V_{s1} = 10^{ \left( 0.80 \cdot I_c - 1.17 \right) } \cdot Q_{tn}\]</div>
+<div class="math-display">\[V_{s1} = V_s \cdot \left( \frac{P_a}{\sigma_{vo}^{\prime}} \right)^{0.25}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<p><em>Reference:</em> Tonni, L., Simonini, P. (2013). Shear wave velocity as function of cone penetration test measurements in sand and silt mixtures. Engineering Geology.</p>
+<h4 id="vs_cpt_mcgannetal">vs_cpt_mcgannetal</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_mcgannetal"><code>vs_cpt_mcgannetal</code></a>.</p>
+<p>The authors develop a correlation between shear wave velocity and CPT properties based on Christchurch-specific general soils.</p>
+<div class="math-display">\[\text{Christchurch general soils}\]</div>
+<div class="math-display">\[V_s = 18.4 \cdot q_t^{0.144} \cdot f_s^{0.083} \cdot z^{0.278}\]</div>
+<p><em>5 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> McGann, Christopher R., et al. "Development of an empirical correlation for predicting shear wave velocity of Christchurch soils from cone penetration test data." Soil Dynamics and Earthquake Engineering 75 (2015): 66-75.</p>
+<h4 id="constrainedmodulus_pcpt_robertson">constrainedmodulus_pcpt_robertson</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#constrainedmodulus_pcpt_robertson"><code>constrainedmodulus_pcpt_robertson</code></a>.</p>
+<p>Calculates the one-dimensional constrained modulus.</p>
+<div class="math-display">\[M = \alpha_M \cdot \left( q_t - \sigma_{v0} \right)\]</div>
+<div class="math-display">\[\text{when } I_c &gt; 2.2 \text{:}\]</div>
+<p><em>5 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> CPT guide - 7th edition - Robertson and Cabal (2022)</p>
+<h4 id="vs_stressdependent_stuyts">vs_stressdependent_stuyts</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_stressdependent_stuyts"><code>vs_stressdependent_stuyts</code></a>.</p>
+<p>Calculates the shear wave velocity using the calibrated power-law expression proposed by Stuyts et al (2024).</p>
+<div class="math-display">\[V_s = {\alpha} \left( \frac{\sigma_{vo}^{\prime}}{1 \text{kPa}} \right)^{\beta} = 10^{a_0 + a_1 \cdot I_c} \left( \frac{\sigma_{vo}^{\prime}}{1 \text{kPa}} \right)^{a_2 + a_3 \cdot \log_{10}(\alpha)}\]</div>
+<div class="math-display">\[V_s = 10^{2.075 - 0.213 \cdot I_c} \left( \frac{\sigma_{vo}^{\prime}}{1 \text{kPa}} \right)^{0.77 - 0.25 \cdot \log_{10}(\alpha)}\]</div>
+<p><em>Reference:</em> Stuyts, B.; Weijtjens, W.; Jurado, C.S.; Devriendt, C.; Kheffache, A. A Critical Review of Cone Penetration Test-Based Correlations for Estimating Small-Strain Shear Modulus in North Sea Soils. Geotechnics 2024, 4, 604-635. https://doi.org/10.3390/geotechnics4020033</p>
+<h4 id="dissipation_test_teh">dissipation_test_teh</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#dissipation_test_teh"><code>dissipation_test_teh</code></a>.</p>
+<p>Calculates the pore pressure dissipation from a dissipation tests in clay according to the normalised dissipation curves proposed by Teh &amp; Houlsby (1991).</p>
+<div class="math-display">\[T^{*} = \frac{c_h \cdot t}{a^2 \cdot \sqrt{I_r}}\]</div>
+<p><em>Reference:</em> Teh, C. I., &amp; Houlsby, G. T. (1991). An analytical study of the cone penetration test in clay. Geotechnique, 41(1), 17-34.</p>
+<h4 id="clippingdepths_qc1n_tianlehane">clippingdepths_qc1N_tianlehane</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#clippingdepths_qc1n_tianlehane"><code>clippingdepths_qc1N_tianlehane</code></a>.</p>
+<p>Calculates the depths where the normalised cone resistance reaches steady values in weak over strong layer systems based on the equations proposed by Tian and Lehane (2025).</p>
+<div class="math-display">\[\begin{aligned}q_{c1N}=q_{c1N,0} - \tanh \left[ a_w z^* \right] \left( q_{c1N,0} - q_{c1N,W} \right) \quad \text{in weak layer} \\
+q_{c1N}=q_{c1N,0} + \tanh \left[ a_s z^* \right] \left( q_{c1N,S} - q_{c1N,0} \right) \quad \text{in strong layer} \\
+a_s = 0.7 r^2 + 0.15 \\
+a_w = a_s + 0.4r &lt; 1 \\
+r = \frac{q_{c1N,W}}{q_{c1N,S}} \\
+z^* = \frac{z-H_t}{d_c} \\
+q_{c1N,0} = \eta q_{c1N,S} \\
+\eta = 0.96 r^{0.64} \quad 0&lt;r&lt;0.95\end{aligned}\]</div>
+<p><em>Reference:</em> Tian, Y. and Lehane, B. (2025). The influence of soil layering and penetrometer diameter on penetration resistance. Canadian Geotechnical Journal, DOI: 10.1139/cgj-2024-0491</p>
 <h3 id="spt-processing-class">SPT processing class</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/spt_processing.html">SPT processing class</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/#sptprocessing"><code>SPTProcessing</code></a> (<code>groundhog.siteinvestigation.insitutests.spt_processing</code>)</li>
-</ul>
+<h4 id="sptprocessing">SPTProcessing</h4>
+<p>Class <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/#sptprocessing"><code>SPTProcessing</code></a>.</p>
+<p>The SPTProcessing class implements methods for reading, processing and presentation of Standard Penetration Test (SPT) data.</p>
 <h3 id="spt-corrections-and-correlations">SPT corrections and correlations</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/spt_correlations.html">SPT corrections and correlations</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/"><code>groundhog.siteinvestigation.insitutests.spt_correlations</code></a>: <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#overburdencorrection_spt_liaowhitman"><code>overburdencorrection_spt_liaowhitman</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#spt_n60_correction"><code>spt_N60_correction</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#relativedensity_spt_kulhawymayne"><code>relativedensity_spt_kulhawymayne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrength_spt_salgado"><code>undrainedshearstrength_spt_salgado</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#frictionangle_spt_kulhawymayne"><code>frictionangle_spt_kulhawymayne</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#relativedensityclass_spt_terzaghipeck"><code>relativedensityclass_spt_terzaghipeck</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#overburdencorrection_spt_iso"><code>overburdencorrection_spt_ISO</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#frictionangle_spt_pht"><code>frictionangle_spt_PHT</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#youngsmodulus_spt_aashto"><code>youngsmodulus_spt_AASHTO</code></a>, <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrengthclass_spt_terzaghipeck"><code>undrainedshearstrengthclass_spt_terzaghipeck</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/"><code>groundhog.siteinvestigation.insitutests.spt_correlations</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="overburdencorrection_spt_liaowhitman">overburdencorrection_spt_liaowhitman</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#overburdencorrection_spt_liaowhitman"><code>overburdencorrection_spt_liaowhitman</code></a>.</p>
+<p>Applies a correction to the SPT N value to account for the effect of effective overburden pressure in granular soils.</p>
+<div class="math-display">\[N_1 = C_N \cdot N\]</div>
+<div class="math-display">\[C_N = \left[ \frac{1}{ \left( \frac{\sigma_{vo}^{\prime}}{P_a} \right) } \right]^{0.5}\]</div>
+<p><em>Reference:</em> Liao SSC, Whitman RV (1986) Overburden correction factors for SPT in sand. J Geotech Eng ASCE 112(3):373–377</p>
+<h4 id="spt_n60_correction">spt_N60_correction</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#spt_n60_correction"><code>spt_N60_correction</code></a>.</p>
+<p>The performance of the SPT in a given soil type depends on the efficiency of energy transmission to the soil.</p>
+<div class="math-display">\[N_{60} = \frac{N \cdot \eta_H \cdot \eta_B \cdot \eta_S \cdot \eta_R}{60}\]</div>
+<p><em>Reference:</em> J. Ameratunga et al., Correlations of Soil and Rock Properties in Geotechnical Engineering, Developments in Geotechnical Engineering, DOI 10.1007/978-81-322-2629-1_4</p>
+<h4 id="relativedensity_spt_kulhawymayne">relativedensity_spt_kulhawymayne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#relativedensity_spt_kulhawymayne"><code>relativedensity_spt_kulhawymayne</code></a>.</p>
+<p>Estimates relative density from SPT test.</p>
+<div class="math-display">\[\text{Unaged, normally consolidated sand}\]</div>
+<div class="math-display">\[D_r = \sqrt{\frac{(N_1)_{60}}{60 + 25 \cdot \log_{10} ( d_{50} )}}\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Kulhawy FH, Mayne PW (1990) Manual on estimating soil properties for foundation design. Electric Power Research Institute, Palo Alto</p>
+<h4 id="undrainedshearstrength_spt_salgado">undrainedshearstrength_spt_salgado</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrength_spt_salgado"><code>undrainedshearstrength_spt_salgado</code></a>.</p>
+<p>Calculates undrained shear strength based on plasticity index and SPT number (corrected to 60% energy ratio).</p>
+<div class="math-display">\[\frac{S_u}{P_a} = \alpha^{\prime} \cdot N_{60}\]</div>
+<p><em>Reference:</em> Salgado R (2008) The engineering of foundations. McGraw-Hill, New York</p>
+<h4 id="frictionangle_spt_kulhawymayne">frictionangle_spt_kulhawymayne</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#frictionangle_spt_kulhawymayne"><code>frictionangle_spt_kulhawymayne</code></a>.</p>
+<p>Kulhawy and Mayne approximated the chart for friction angle selection from SPT using the formula given below.</p>
+<div class="math-display">\[\phi = \tan^{-1} \left[ \frac{N}{12.2 +20.3 \cdot \left( \frac{\sigma_{v0}^{\prime}}{P_a} \right)} \right]^{0.34}\]</div>
+<p><em>Reference:</em> Kulhawy FH, Mayne PW (1990) Manual on estimating soil properties for foundation design. Electric Power Research Institute, Palo Alto</p>
+<h4 id="relativedensityclass_spt_terzaghipeck">relativedensityclass_spt_terzaghipeck</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#relativedensityclass_spt_terzaghipeck"><code>relativedensityclass_spt_terzaghipeck</code></a>.</p>
+<p>Defines the relative density class for SPT measurements in cohesionless soils based on the uncorrected N-number</p>
+<p><em>Reference:</em> Terzaghi K, Peck RB (1967) Soil mechanics in engineering practice, 2nd edn. Wiley, New York</p>
+<h4 id="overburdencorrection_spt_iso">overburdencorrection_spt_ISO</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#overburdencorrection_spt_iso"><code>overburdencorrection_spt_ISO</code></a>.</p>
+<p>Corrects the SPT N number or corrected N number (N_{60}) for the effect of overburden pressure in granular soils.</p>
+<div class="math-display">\[C_N = \sqrt{\frac{98}{\sigma_{v0}^{\prime}}}\]</div>
+<p><em>Reference:</em> BS EN ISO 22476-3</p>
+<h4 id="frictionangle_spt_pht">frictionangle_spt_PHT</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#frictionangle_spt_pht"><code>frictionangle_spt_PHT</code></a>.</p>
+<p>Correlation proposed by Peck, Hanson and Thornburn (1974) and mentioned by Wolff (1989)</p>
+<div class="math-display">\[\varphi^{\prime} = 27.1 + 0.3 \cdot \left( N_1 \right)_{60} - 0.00054 \cdot \left( N_1 \right)_{60}^2\]</div>
+<p><em>Reference:</em> Peck, Hanson and Thornburn (1974). Foundation Engineering.</p>
+<h4 id="youngsmodulus_spt_aashto">youngsmodulus_spt_AASHTO</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#youngsmodulus_spt_aashto"><code>youngsmodulus_spt_AASHTO</code></a>.</p>
+<p>Calculates the Young's modulus based on corrected SPT number for various soil types.</p>
+<p><em>Reference:</em> AASHTO 1997 - LRFD</p>
+<h4 id="undrainedshearstrengthclass_spt_terzaghipeck">undrainedshearstrengthclass_spt_terzaghipeck</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrengthclass_spt_terzaghipeck"><code>undrainedshearstrengthclass_spt_terzaghipeck</code></a>.</p>
+<p>Defines the relative density class for SPT measurements in cohesionless soils based on the uncorrected N-number</p>
+<p><em>Reference:</em> Terzaghi K, Peck RB (1967) Soil mechanics in engineering practice, 2nd edn. Wiley, New York</p>
 <h2 id="laboratory-testing">Laboratory testing</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/labtests_toplevel.html">Laboratory testing</a></p>
 <h3 id="sample-preparation">Sample preparation</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/samplepreparation.html">Sample preparation</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/"><code>groundhog.siteinvestigation.labtesting.samplepreparation</code></a>: <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/#undercompaction_cohesionless_ladd"><code>undercompaction_cohesionless_ladd</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/"><code>groundhog.siteinvestigation.labtesting.samplepreparation</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="undercompaction_cohesionless_ladd">undercompaction_cohesionless_ladd</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/#undercompaction_cohesionless_ladd"><code>undercompaction_cohesionless_ladd</code></a>.</p>
+<p>When soil sample have to be reconstituted to a specific relative density, the sample is generally prepared in several layers of equal mass and tamping or vibration is used to obtain the desired volume in the sample moul…</p>
+<div class="math-display">\[U_i = U_1 - \left[ \frac{U_1 - U_N}{N - 1} \cdot (i - 1) \right]\]</div>
+<div class="math-display">\[h_i = \frac{H_0}{N} \left[ (i - 1) + (1 + U_i) \right]\]</div>
+<p><em>Reference:</em> R. Ladd, "Preparing Test Specimens Using Undercompaction," Geotechnical Testing Journal 1, no. 1 (1978): 16-23. https://doi.org/10.1520/GTJ10364J</p>
 <h3 id="index-tests">Index tests</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/indextests.html">Index tests</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/#plasticitychart"><code>PlasticityChart</code></a> (<code>groundhog.siteinvestigation.labtesting.indextests</code>)</li>
-<li>Class <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/#psdchart"><code>PSDChart</code></a> (<code>groundhog.siteinvestigation.labtesting.indextests</code>)</li>
-</ul>
+<h4 id="plasticitychart">PlasticityChart</h4>
+<p>Class <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/#plasticitychart"><code>PlasticityChart</code></a>.</p>
+<p>Class for plasticity chart</p>
+<h4 id="psdchart">PSDChart</h4>
+<p>Class <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/#psdchart"><code>PSDChart</code></a>.</p>
+<p>Class for plotting of grain size distribution data</p>
 <h3 id="compressibility">Compressibility</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/compressibility.html">Compressibility</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/"><code>groundhog.siteinvestigation.labtesting.compressibility</code></a>: <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/#selectpoints"><code>selectpoints</code></a>, <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/#roottimemethod"><code>roottimemethod</code></a>, <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/#logtimemethod"><code>logtimemethod</code></a></li>
-</ul></div>
+<p>Module <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/"><code>groundhog.siteinvestigation.labtesting.compressibility</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="selectpoints">selectpoints</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/#selectpoints"><code>selectpoints</code></a>.</p>
+<h4 id="roottimemethod">roottimemethod</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/#roottimemethod"><code>roottimemethod</code></a>.</p>
+<p>Calculates the root-time construction for determining the coefficient of consolidation for an oedometer test (or any other soil mechanical test involving consolidation).</p>
+<div class="math-display">\[c_v = \frac{0.848 H_{dr}^2}{t_{90}}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p>
+<h4 id="logtimemethod">logtimemethod</h4>
+<p>Function <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/#logtimemethod"><code>logtimemethod</code></a>.</p>
+<p>Calculates the log-time construction for determining the coefficient of consolidation for an oedometer test (or any other soil mechanical test involving consolidation).</p>
+<div class="math-display">\[c_v = \frac{0.197 H_{dr}^2}{t_{50}}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -967,5 +1388,8 @@
 
   <script src="/assets/js/site.js?v=118a059abb" defer></script>
   <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
 </body>
 </html>

@@ -21,7 +21,7 @@ from .model_provider import (
     make_user_message,
     make_system_message
 )
-from .response_guard import clean_answer, collapse_repetition
+from .response_guard import AnswerStreamCleaner, clean_answer, collapse_repetition
 from .tool_registry import GeoAIToolRegistry
 from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
@@ -35,6 +35,8 @@ EXPLANATION_MAX_TOKENS = 512
 # Prior conversation turns replayed to the model (small models need a short context).
 MAX_HISTORY_TURNS = 6
 MAX_HISTORY_CHARS = 600
+# Share of the model context window the offered tool schemas may occupy (approximate tokens).
+TOOL_SCHEMA_BUDGET_FRACTION = 0.45
 
 
 def _compact_value(v: Any) -> Any:
@@ -149,13 +151,23 @@ class AgentStreamEvent:
         return f"data: {json.dumps(data)}\n\n"
 
 class GeoAIAgent:
-    def __init__(self, provider: ModelProvider, registry: GeoAIToolRegistry, max_tools: Optional[int] = None):
+    def __init__(self, provider: ModelProvider, registry: GeoAIToolRegistry, max_tools: Optional[int] = None,
+                 tool_schema_token_budget: Optional[float] = None):
         self._provider = provider
         self._registry = registry
+        from core.geoai.model_config import load_config
+        config = load_config()
         if max_tools is None:
-            from core.geoai.model_config import load_config
-            max_tools = load_config().max_tools
+            max_tools = config.max_tools
+        if tool_schema_token_budget is None:
+            tool_schema_token_budget = TOOL_SCHEMA_BUDGET_FRACTION * config.n_ctx
+        # Generation caps: the tool-selection turn (a call or a clarification) vs the answer
+        # written after tool results. They bound runaway generations (p95 latency).
+        self._decision_max_tokens = config.decision_max_tokens
+        self._answer_max_tokens = config.answer_max_tokens
         self._max_tools = max_tools
+        # A few Groundhog schemas are ~1k tokens; cap their total so the prompt fits n_ctx.
+        self._tool_schema_token_budget = tool_schema_token_budget
 
     def _build_messages(self, user_message: str, context: Optional[Dict[str, Any]] = None,
                         history: Optional[List[Dict[str, Any]]] = None) -> Tuple[List[ChatMessage], List[dict]]:
@@ -165,7 +177,8 @@ class GeoAIAgent:
         messages.extend(history_to_messages(history))
         messages.append(make_user_message(user_message))
         tools_for_model = select_relevant_tools(_tool_selection_query(user_message, history), context,
-                                                max_tools=self._max_tools)
+                                                max_tools=self._max_tools,
+                                                max_schema_tokens=self._tool_schema_token_budget)
         return messages, tools_for_model
 
     def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -206,7 +219,7 @@ class GeoAIAgent:
                 messages=messages,
                 tools=tools_for_model,
                 temperature=0.1,
-                max_tokens=1024
+                max_tokens=self._decision_max_tokens if round_num == 0 else self._answer_max_tokens
             )
             
             if response.finish_reason != 'tool_calls' or not response.tool_calls:
@@ -231,7 +244,7 @@ class GeoAIAgent:
                 tools_for_model = None
         
         messages.append(make_user_message("Please summarize the results from the tools used."))
-        final = self._provider.generate(messages=messages, tools=None, max_tokens=EXPLANATION_MAX_TOKENS)
+        final = self._provider.generate(messages=messages, tools=None, max_tokens=self._answer_max_tokens)
         return AgentResponse(
             response_text=clean_answer(final.content, tools_used) or "Maximum tool rounds reached.",
             tools_used=tools_used,
@@ -249,7 +262,7 @@ class GeoAIAgent:
                 messages=messages,
                 tools=tools_for_model,
                 temperature=0.1,
-                max_tokens=1024
+                max_tokens=self._decision_max_tokens
             )
             
             full_content = ""
@@ -278,13 +291,24 @@ class GeoAIAgent:
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
                 
-            # For explanation round after tools, use non-streaming generate() and yield full text as a single token event
-            final = self._provider.generate(messages=messages, tools=None, max_tokens=EXPLANATION_MAX_TOKENS)
-            yield AgentStreamEvent(type='token', content=clean_answer(final.content, tools_used))
+            # Explanation round: stream the prose, released sentence by sentence through the
+            # same guards clean_answer applies (repeats, echoed records, result units).
+            yield from self._stream_answer(messages, tools_used)
             yield AgentStreamEvent(type='done')
             return
-            
+
         messages.append(make_user_message("Please summarize the results from the tools used."))
-        final = self._provider.generate(messages=messages, tools=None, max_tokens=EXPLANATION_MAX_TOKENS)
+        final = self._provider.generate(messages=messages, tools=None, max_tokens=self._answer_max_tokens)
         yield AgentStreamEvent(type='token', content=clean_answer(final.content, tools_used) or "Maximum tool rounds reached.")
         yield AgentStreamEvent(type='done')
+
+    def _stream_answer(self, messages: List[ChatMessage], tools_used: List[Dict[str, Any]]) -> Iterator[AgentStreamEvent]:
+        cleaner = AnswerStreamCleaner(tools_used)
+        for chunk in self._provider.generate_stream(messages=messages, tools=None, temperature=0.1,
+                                                    max_tokens=self._answer_max_tokens):
+            text = cleaner.feed(chunk.delta_content)
+            if text:
+                yield AgentStreamEvent(type='token', content=text)
+        text = cleaner.flush()
+        if text:
+            yield AgentStreamEvent(type='token', content=text)

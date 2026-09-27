@@ -53,7 +53,7 @@ export const ConfirmationModal = ({
         },
         primary: {
             iconBg: 'bg-primary/10 text-primary border-primary/20',
-            buttonBg: 'bg-primary hover:bg-primary/90 text-white',
+            buttonBg: 'bg-primary hover:bg-primary/90 text-on-primary',
         }
     }[variant] || {
         iconBg: 'bg-red-500/10 text-red-500 border-red-500/20',

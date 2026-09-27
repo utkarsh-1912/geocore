@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
   <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
-</head>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -136,6 +136,11 @@
   <li>
         <a href="/docs/geoai/model-setup/">
     <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
 
   </li>
   <li>
@@ -811,12 +816,30 @@
     <h1>Excavations</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>Excavations</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>Excavations</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="earth-pressure-coefficients">Earth pressure coefficients</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/excavations/basic.html">Earth pressure coefficients</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/excavations/basic/"><code>groundhog.excavations.basic</code></a>: <a href="/docs/groundhog/api/excavations/basic/#earthpressurecoefficients_frictionangle"><code>earthpressurecoefficients_frictionangle</code></a>, <a href="/docs/groundhog/api/excavations/basic/#earthpressurecoefficients_poncelet"><code>earthpressurecoefficients_poncelet</code></a>, <a href="/docs/groundhog/api/excavations/basic/#earthpressurecoefficients_rankine"><code>earthpressurecoefficients_rankine</code></a></li>
-</ul></div>
+<p>Module <a href="/docs/groundhog/api/excavations/basic/"><code>groundhog.excavations.basic</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="earthpressurecoefficients_frictionangle">earthpressurecoefficients_frictionangle</h3>
+<p>Function <a href="/docs/groundhog/api/excavations/basic/#earthpressurecoefficients_frictionangle"><code>earthpressurecoefficients_frictionangle</code></a>.</p>
+<p>Calculates coefficient of active and passive earth pressure based on a construction with Mohr's circle.</p>
+<div class="math-display">\[K_a = \frac{1 - \sin \varphi^{\prime}}{1 + \sin \varphi^{\prime}}\]</div>
+<div class="math-display">\[K_p = \frac{1 + \sin \varphi^{\prime}}{1 - \sin \varphi^{\prime}}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p>
+<h3 id="earthpressurecoefficients_poncelet">earthpressurecoefficients_poncelet</h3>
+<p>Function <a href="/docs/groundhog/api/excavations/basic/#earthpressurecoefficients_poncelet"><code>earthpressurecoefficients_poncelet</code></a>.</p>
+<p>Calculates the active and passive earth pressure coefficients for a retaining wall with friction (characterised by an interface friction angle) and an inclination to the vertical.</p>
+<div class="math-display">\[K_{aC} = \frac{\cos ^2 (\varphi^{\prime} - \eta)}{\cos ^2 \eta \cos (\eta + \delta) \left[  1 + \left( \frac{\sin (\varphi^{\prime} + \delta) \sin (\varphi^{\prime} - \beta)}{\cos (\eta + \delta) \cos (\eta - \beta)}\right)^{0.5} \right]^2}\]</div>
+<div class="math-display">\[K_{pC} = \frac{\cos ^2 (\varphi^{\prime} + \eta)}{\cos ^2 \eta \cos (\eta - \delta) \left[  1 - \left( \frac{\sin (\varphi^{\prime} + \delta) \sin (\varphi^{\prime} + \beta)}{\cos (\eta - \delta) \cos (\eta - \beta)}\right)^{0.5} \right]^2}\]</div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p>
+<h3 id="earthpressurecoefficients_rankine">earthpressurecoefficients_rankine</h3>
+<p>Function <a href="/docs/groundhog/api/excavations/basic/#earthpressurecoefficients_rankine"><code>earthpressurecoefficients_rankine</code></a>.</p>
+<p>The expressions for an inclined wall with sloping ground are developed by Rankine (1857) and Chu (1991).</p>
+<div class="math-display">\[K_{aR} = \frac{\cos (\beta - \eta) \sqrt{1 + \sin ^2 \varphi^{\prime} - 2 \sin \varphi^{\prime} \cos \omega_a }}{\cos ^2 \eta \left( \cos \beta + \sqrt{\sin ^2 \varphi^{\prime} - \sin ^2 \beta} \right)}\]</div>
+<div class="math-display">\[K_{pR} = \frac{\cos (\beta - \eta) \sqrt{1 + \sin ^2 \varphi^{\prime} + 2 \sin \varphi^{\prime} \cos \omega_p }}{\cos ^2 \eta \left( \cos \beta - \sqrt{\sin ^2 \varphi^{\prime} - \sin ^2 \beta} \right)}\]</div>
+<p><em>8 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -837,6 +860,9 @@
     <h2 id="toc-title">On this page</h2>
     <ul data-toc>
       <li class="lvl-2"><a href="#earth-pressure-coefficients">Earth pressure coefficients</a></li>
+      <li class="lvl-3"><a href="#earthpressurecoefficients_frictionangle">earthpressurecoefficients_frictionangle</a></li>
+      <li class="lvl-3"><a href="#earthpressurecoefficients_poncelet">earthpressurecoefficients_poncelet</a></li>
+      <li class="lvl-3"><a href="#earthpressurecoefficients_rankine">earthpressurecoefficients_rankine</a></li>
     </ul>
   </aside>
 </div>
@@ -888,5 +914,8 @@
 
   <script src="/assets/js/site.js?v=118a059abb" defer></script>
   <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
 </body>
 </html>

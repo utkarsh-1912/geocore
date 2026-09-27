@@ -108,7 +108,7 @@ export const UnitBadge = ({ unit, currentValue, onConvertValue, className = '' }
                 onClick={() => handleUnitSelect(u)}
                 className={`w-full text-left px-2 py-1 rounded flex items-center justify-between font-mono text-[11px] transition-colors ${
                   u === cleanUnit
-                    ? 'bg-primary text-white font-bold'
+                    ? 'bg-primary text-on-primary font-bold'
                     : 'text-text-main hover:bg-primary/10 hover:text-primary'
                 }`}
               >

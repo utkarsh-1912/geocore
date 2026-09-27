@@ -81,7 +81,7 @@ def _geoai_summary() -> Dict[str, Any]:
         pass
     try:
         from core.geoai.tool_registry import tool_registry
-        summary["tools_registered"] = len(tool_registry.list_tools())
+        summary["tools_registered"] = tool_registry.tool_count()
     except Exception:
         pass
     return summary

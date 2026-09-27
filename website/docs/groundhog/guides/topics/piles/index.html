@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
   <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
-</head>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -136,6 +136,11 @@
   <li>
         <a href="/docs/geoai/model-setup/">
     <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
 
   </li>
   <li>
@@ -811,47 +816,114 @@
     <h1>Pile calculations</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>Pile calculations</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>Pile calculations</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="unit-skin-friction">Unit skin friction</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/skinfriction.html">Unit skin friction</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/"><code>groundhog.deepfoundations.axialcapacity.skinfriction</code></a>: <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#api_unit_shaft_friction_sand_rp2geo"><code>API_unit_shaft_friction_sand_rp2geo</code></a>, <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#api_unit_shaft_friction_clay"><code>API_unit_shaft_friction_clay</code></a>, <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#unitskinfriction_sand_almhamre"><code>unitskinfriction_sand_almhamre</code></a>, <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#unitskinfriction_clay_almhamre"><code>unitskinfriction_clay_almhamre</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/"><code>groundhog.deepfoundations.axialcapacity.skinfriction</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="api_unit_shaft_friction_sand_rp2geo">API_unit_shaft_friction_sand_rp2geo</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#api_unit_shaft_friction_sand_rp2geo"><code>API_unit_shaft_friction_sand_rp2geo</code></a>.</p>
+<p>Calculates unit skin friction according to the beta method in API RP 2GEO.</p>
+<div class="math-display">\[f(z) = \beta \cdot p'_o(z)\]</div>
+<p><em>Reference:</em> API RP 2GEO, API RP 2GEO Geotechnical and Foundation Design Considerations, 2011</p>
+<h3 id="api_unit_shaft_friction_clay">API_unit_shaft_friction_clay</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#api_unit_shaft_friction_clay"><code>API_unit_shaft_friction_clay</code></a>.</p>
+<p>Calculates unit skin friction according to the alpha method in API RP 2GEO.</p>
+<div class="math-display">\[f(z) = \alpha \cdot S_u\]</div>
+<div class="math-display">\[\begin{aligned}\alpha = 0.5 \cdot \psi^{-0.5} &amp; \quad \text{for } \psi \leq 1.0\end{aligned}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> API RP 2GEO, API RP 2GEO Geotechnical and Foundation Design Considerations, 2011.</p>
+<h3 id="unitskinfriction_sand_almhamre">unitskinfriction_sand_almhamre</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#unitskinfriction_sand_almhamre"><code>unitskinfriction_sand_almhamre</code></a>.</p>
+<p>Calculates the unit skin friction in sand according to the method by Alm &amp; Hamre.</p>
+<div class="math-display">\[f_s = f_{s,res} + (f_{s,i} - f_{s,res}) \cdot e^{k \cdot (z-z_{tip})}\]</div>
+<div class="math-display">\[k = \frac{\sqrt{q_t / \sigma_{vo}^{\prime}}}{80}\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Alm, T., Hamre, L., 2001. Soil model for pile driveability predictions based on CPT interpretations. Presented at the International Conference On Soil Mechanics and Foundation Engineering. Alm, T., Hamre, L., 1998. Soil model for driveability predictions. Presented at the OTC 8835, Annual Offshore Technology Conference, Houston, Texas, p. 13.</p>
+<h3 id="unitskinfriction_clay_almhamre">unitskinfriction_clay_almhamre</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/#unitskinfriction_clay_almhamre"><code>unitskinfriction_clay_almhamre</code></a>.</p>
+<p>Calculates the unit skin friction in clay according to the method by Alm &amp; Hamre.</p>
+<div class="math-display">\[f_s = f_{s,res} + (f_{s,i} - f_{s,res}) \cdot e^{k \cdot (z-z_{tip})}\]</div>
+<div class="math-display">\[k = \frac{\sqrt{q_t / \sigma_{vo}^{\prime}}}{80}\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Alm, T., Hamre, L., 2001. Soil model for pile driveability predictions based on CPT interpretations. Presented at the International Conference On Soil Mechanics and Foundation Engineering. Alm, T., Hamre, L., 1998. Soil model for driveability predictions. Presented at the OTC 8835, Annual Offshore Technology Conference, Houston, Texas, p. 13.</p>
 <h2 id="unit-end-bearing">Unit end bearing</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/endbearing.html">Unit end bearing</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/"><code>groundhog.deepfoundations.axialcapacity.endbearing</code></a>: <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#api_unit_end_bearing_clay"><code>API_unit_end_bearing_clay</code></a>, <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#api_unit_end_bearing_sand_rp2geo"><code>API_unit_end_bearing_sand_rp2geo</code></a>, <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#unitendbearing_sand_almhamre"><code>unitendbearing_sand_almhamre</code></a>, <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#unitendbearing_clay_almhamre"><code>unitendbearing_clay_almhamre</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/"><code>groundhog.deepfoundations.axialcapacity.endbearing</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="api_unit_end_bearing_clay">API_unit_end_bearing_clay</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#api_unit_end_bearing_clay"><code>API_unit_end_bearing_clay</code></a>.</p>
+<p>Calculates unit end bearing in clay according to API RP 2 GEO.</p>
+<div class="math-display">\[q = N_c \cdot S_u\]</div>
+<p><em>Reference:</em> API RP 2GEO, API RP 2GEO Geotechnical and Foundation Design Considerations, 2011</p>
+<h3 id="api_unit_end_bearing_sand_rp2geo">API_unit_end_bearing_sand_rp2geo</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#api_unit_end_bearing_sand_rp2geo"><code>API_unit_end_bearing_sand_rp2geo</code></a>.</p>
+<p>Calculates unit end bearing in sand according to API RP2 GEO.</p>
+<div class="math-display">\[q = N_q \cdot p'_{o,tip}\]</div>
+<p><em>Reference:</em> API RP 2GEO, API RP 2GEO Geotechnical and Foundation Design Considerations, 2011</p>
+<h3 id="unitendbearing_sand_almhamre">unitendbearing_sand_almhamre</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#unitendbearing_sand_almhamre"><code>unitendbearing_sand_almhamre</code></a>.</p>
+<p>Calculates unit end bearing in sand according to Alm &amp; Hamre.</p>
+<div class="math-display">\[q_{b,sand} = 0.15 \cdot q_t \cdot \left( \frac{q_t}{\sigma_{vo}^{\prime}} \right)^{0.2}\]</div>
+<p><em>Reference:</em> Alm, T., Hamre, L., 2001. Soil model for pile driveability predictions based on CPT interpretations. Presented at the International Conference On Soil Mechanics and Foundation Engineering. Alm, T., Hamre, L., 1998. Soil model for driveability predictions. Presented at the OTC 8835, Annual Offshore Technology Conference, Houston, Texas, p. 13.</p>
+<h3 id="unitendbearing_clay_almhamre">unitendbearing_clay_almhamre</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/#unitendbearing_clay_almhamre"><code>unitendbearing_clay_almhamre</code></a>.</p>
+<p>Calculates unit end bearing in clay according to Alm &amp; Hamre.</p>
+<div class="math-display">\[q_{b,clay} = 0.6 \cdot q_t\]</div>
+<p><em>Reference:</em> Alm, T., Hamre, L., 2001. Soil model for pile driveability predictions based on CPT interpretations. Presented at the International Conference On Soil Mechanics and Foundation Engineering. Alm, T., Hamre, L., 1998. Soil model for driveability predictions. Presented at the OTC 8835, Annual Offshore Technology Conference, Houston, Texas, p. 13.</p>
 <h2 id="axial-capacity-calculations">Axial capacity calculations</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/axcap.html">Axial capacity calculations</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/#axcapcalculation"><code>AxCapCalculation</code></a> (<code>groundhog.deepfoundations.axialcapacity.axcap</code>)</li>
-</ul>
+<h3 id="axcapcalculation">AxCapCalculation</h3>
+<p>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/#axcapcalculation"><code>AxCapCalculation</code></a>.</p>
 <h2 id="de-beer-and-eurocode-7-calculations">De Beer and Eurocode 7 calculations</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/debeer.html">De Beer and Eurocode 7 calculations</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/#debeercalculation"><code>DeBeerCalculation</code></a> (<code>groundhog.deepfoundations.axialcapacity.debeer</code>)</li>
-</ul>
+<h3 id="debeercalculation">DeBeerCalculation</h3>
+<p>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/#debeercalculation"><code>DeBeerCalculation</code></a>.</p>
 <h2 id="koppejan-pile-resistance-calculations">Koppejan pile resistance calculations</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/koppejan.html">Koppejan pile resistance calculations</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/#koppejancalculation"><code>KoppejanCalculation</code></a> (<code>groundhog.deepfoundations.axialcapacity.koppejan</code>)</li>
-</ul>
+<h3 id="koppejancalculation">KoppejanCalculation</h3>
+<p>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/#koppejancalculation"><code>KoppejanCalculation</code></a>.</p>
 <h2 id="pile-settlement">Pile settlement</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/settlement.html">Pile settlement</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/"><code>groundhog.deepfoundations.axialresponse.settlement</code></a>: <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/#pile_settlement_curves"><code>pile_settlement_curves</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/"><code>groundhog.deepfoundations.axialresponse.settlement</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="pile_settlement_curves">pile_settlement_curves</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/#pile_settlement_curves"><code>pile_settlement_curves</code></a>.</p>
+<p>Calculates the pile settlement curve for pile shaft and pile base from empirical trends established based on axial pile load tests.</p>
+<div class="math-display">\[F_{mob} = a + \frac{b-a}{1 + \left( \frac{\delta_{pile} \ \text{or} \ \delta_{pile}/D}{c} \right)^d}\]</div>
+<p><em>Reference:</em> Syllabus geotechnics</p>
 <h2 id="cavity-expansion-methods-for-cast-in-situ-piles">Cavity expansion methods for cast in-situ piles</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/cavityexpansion.html">Cavity expansion methods for cast in-situ piles</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/"><code>groundhog.deepfoundations.boreholestability.cavityexpansion</code></a>: <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/#stress_cylinder_elastic_isotropic"><code>stress_cylinder_elastic_isotropic</code></a>, <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/#expansion_tresca_thicksphere"><code>expansion_tresca_thicksphere</code></a>, <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/#expansion_cylinder_tresca"><code>expansion_cylinder_tresca</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/"><code>groundhog.deepfoundations.boreholestability.cavityexpansion</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="stress_cylinder_elastic_isotropic">stress_cylinder_elastic_isotropic</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/#stress_cylinder_elastic_isotropic"><code>stress_cylinder_elastic_isotropic</code></a>.</p>
+<p>Calculates the radial and tangential stress around a cylindrical borehole under internal pressure, in a soil mass with isotropic virgin stress conditions in the given plane</p>
+<div class="math-display">\[\frac{d \sigma_{r}}{dr} + \frac{\left(\sigma_{r} - \sigma_{\theta} \right)}{r} = 0\]</div>
+<div class="math-display">\[\begin{aligned}\sigma_r | _{r=a} = p \\
+\sigma_r | _{r=a} = p_0\end{aligned}\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Yu, H.-S., 2000. Cavity Expansion Methods in Geomechanics. Springer-Science+Business Media, B.V.</p>
+<h3 id="expansion_tresca_thicksphere">expansion_tresca_thicksphere</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/#expansion_tresca_thicksphere"><code>expansion_tresca_thicksphere</code></a>.</p>
+<p>Calculates the stresses for cavity expansion around a thick-walled sphere in Tresca material.</p>
+<div class="math-display">\[\text{Elastic solutions}\]</div>
+<div class="math-display">\[\sigma_r = -p_0 - (p - p_0) \frac{\left( \frac{b_0}{r} \right)^3 - 1}{\left( \frac{b_0}{a_0} \right)^3 - 1}\]</div>
+<p><em>20 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Yu, H.-S., 2000. Cavity Expansion Methods in Geomechanics. Springer-Science+Business Media, B.V.</p>
+<h3 id="expansion_cylinder_tresca">expansion_cylinder_tresca</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/#expansion_cylinder_tresca"><code>expansion_cylinder_tresca</code></a>.</p>
+<p>Calculates the cavity expansion for a cylinder in Tresca material.</p>
+<div class="math-display">\[\text{Elastic properties}\]</div>
+<div class="math-display">\[n = \frac{4 \cdot S_u \cdot (1 - \nu^2) }{E}\]</div>
+<p><em>17 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Yu, H.-S., 2000. Cavity Expansion Methods in Geomechanics. Springer-Science+Business Media, B.V.</p>
 <h2 id="negative-skin-friction">Negative skin friction</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/negativeskinfriction.html">Negative skin friction</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/"><code>groundhog.deepfoundations.axialcapacity.negativeskinfriction</code></a>: <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/#negativeskinfriction_pilegroup_zeevaertdebeer"><code>negativeskinfriction_pilegroup_zeevaertdebeer</code></a></li>
-</ul></div>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/"><code>groundhog.deepfoundations.axialcapacity.negativeskinfriction</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="negativeskinfriction_pilegroup_zeevaertdebeer">negativeskinfriction_pilegroup_zeevaertdebeer</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/#negativeskinfriction_pilegroup_zeevaertdebeer"><code>negativeskinfriction_pilegroup_zeevaertdebeer</code></a>.</p>
+<p>Calculates the negative skin friction for a pile in a pile group according to the method of Zeevaert en De Beer.</p>
+<div class="math-display">\[\frac{d \sigma_v^{\prime}}{dz} = \gamma^{\prime} - \tau \cdot \frac{O_s}{A}\]</div>
+<div class="math-display">\[m = K_0 \cdot \tan \delta^{\prime} \cdot \frac{O_s}{A}\]</div>
+<p><em>4 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Zeevaert - De Beer (1966)</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -872,13 +944,29 @@
     <h2 id="toc-title">On this page</h2>
     <ul data-toc>
       <li class="lvl-2"><a href="#unit-skin-friction">Unit skin friction</a></li>
+      <li class="lvl-3"><a href="#api_unit_shaft_friction_sand_rp2geo">API_unit_shaft_friction_sand_rp2geo</a></li>
+      <li class="lvl-3"><a href="#api_unit_shaft_friction_clay">API_unit_shaft_friction_clay</a></li>
+      <li class="lvl-3"><a href="#unitskinfriction_sand_almhamre">unitskinfriction_sand_almhamre</a></li>
+      <li class="lvl-3"><a href="#unitskinfriction_clay_almhamre">unitskinfriction_clay_almhamre</a></li>
       <li class="lvl-2"><a href="#unit-end-bearing">Unit end bearing</a></li>
+      <li class="lvl-3"><a href="#api_unit_end_bearing_clay">API_unit_end_bearing_clay</a></li>
+      <li class="lvl-3"><a href="#api_unit_end_bearing_sand_rp2geo">API_unit_end_bearing_sand_rp2geo</a></li>
+      <li class="lvl-3"><a href="#unitendbearing_sand_almhamre">unitendbearing_sand_almhamre</a></li>
+      <li class="lvl-3"><a href="#unitendbearing_clay_almhamre">unitendbearing_clay_almhamre</a></li>
       <li class="lvl-2"><a href="#axial-capacity-calculations">Axial capacity calculations</a></li>
+      <li class="lvl-3"><a href="#axcapcalculation">AxCapCalculation</a></li>
       <li class="lvl-2"><a href="#de-beer-and-eurocode-7-calculations">De Beer and Eurocode 7 calculations</a></li>
+      <li class="lvl-3"><a href="#debeercalculation">DeBeerCalculation</a></li>
       <li class="lvl-2"><a href="#koppejan-pile-resistance-calculations">Koppejan pile resistance calculations</a></li>
+      <li class="lvl-3"><a href="#koppejancalculation">KoppejanCalculation</a></li>
       <li class="lvl-2"><a href="#pile-settlement">Pile settlement</a></li>
+      <li class="lvl-3"><a href="#pile_settlement_curves">pile_settlement_curves</a></li>
       <li class="lvl-2"><a href="#cavity-expansion-methods-for-cast-in-situ-piles">Cavity expansion methods for cast in-situ piles</a></li>
+      <li class="lvl-3"><a href="#stress_cylinder_elastic_isotropic">stress_cylinder_elastic_isotropic</a></li>
+      <li class="lvl-3"><a href="#expansion_tresca_thicksphere">expansion_tresca_thicksphere</a></li>
+      <li class="lvl-3"><a href="#expansion_cylinder_tresca">expansion_cylinder_tresca</a></li>
       <li class="lvl-2"><a href="#negative-skin-friction">Negative skin friction</a></li>
+      <li class="lvl-3"><a href="#negativeskinfriction_pilegroup_zeevaertdebeer">negativeskinfriction_pilegroup_zeevaertdebeer</a></li>
     </ul>
   </aside>
 </div>
@@ -930,5 +1018,8 @@
 
   <script src="/assets/js/site.js?v=118a059abb" defer></script>
   <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
 </body>
 </html>

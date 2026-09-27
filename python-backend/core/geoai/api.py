@@ -213,6 +213,16 @@ def select_active_model(payload: Dict[str, Any] = Body(...)):
     return {"status": "model_selected", "config": config.__dict__}
 
 
+@router.post("/warmup")
+def warm_up_model():
+    """
+    Loads the local model in the background (call when the GeoAI panel opens) so the first
+    question does not wait for the model load. Returns immediately; the idle timeout still
+    releases the weights when GeoAI is not used.
+    """
+    return lifecycle_manager.warm_up(background=True)
+
+
 @router.get("/memory")
 def get_memory_info():
     """Returns desktop process RAM usage and model load status."""

@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
   <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
-</head>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -136,6 +136,11 @@
   <li>
         <a href="/docs/geoai/model-setup/">
     <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
 
   </li>
   <li>
@@ -811,19 +816,28 @@
     <h1>Standards</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>Standards</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>Standards</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="eurocode-7">Eurocode 7</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/standards/eurocode7_toplevel.html">Eurocode 7</a></p>
 <h3 id="parameter-selection">Parameter selection</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/standards/parameter_selection.html">Parameter selection</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/"><code>groundhog.standards.eurocode7.parameter_selection</code></a>: <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/#constant_value"><code>constant_value</code></a>, <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/#linear_trend"><code>linear_trend</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/"><code>groundhog.standards.eurocode7.parameter_selection</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="constant_value">constant_value</h4>
+<p>Function <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/#constant_value"><code>constant_value</code></a>.</p>
+<p>Selects the characteristic value from a set of measurements using Eurocode 7 rules.</p>
+<div class="math-display">\[X_k = X_{mean} \cdot \left( 1 - k_n \cdot V_x \right)\]</div>
+<div class="math-display">\[V_x \text{unknown}: k_{n,mean} = t_{n-1}^{0.95} \sqrt{ \frac{1}{n} }, \ k_{n,low} = t_{n-1}^{0.95} \sqrt{ \frac{1}{n} + 1}\]</div>
+<p><em>1 more formula in the full reference.</em></p>
+<h4 id="linear_trend">linear_trend</h4>
+<p>Function <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/#linear_trend"><code>linear_trend</code></a>.</p>
+<p>Selects the characteristic value from a set of measurements using Eurocode 7 rules.</p>
+<div class="math-display">\[x^{*} = \bar{x} + b ( z - \bar{z} )\]</div>
+<div class="math-display">\[\bar{x} = \frac{1}{n} \left( x_1 + x_2 + ... + x_n \right)\]</div>
+<p><em>8 more formulas in the full reference.</em></p>
 <h3 id="partial-factor-selection">Partial factor selection</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/standards/factors.html">Partial factor selection</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/standards/eurocode7/factors/#eurocode7_factoring_str_geo"><code>Eurocode7_factoring_STR_GEO</code></a> (<code>groundhog.standards.eurocode7.factors</code>)</li>
-</ul></div>
+<h4 id="eurocode7_factoring_str_geo">Eurocode7_factoring_STR_GEO</h4>
+<p>Class <a href="/docs/groundhog/api/standards/eurocode7/factors/#eurocode7_factoring_str_geo"><code>Eurocode7_factoring_STR_GEO</code></a>.</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -897,5 +911,8 @@
 
   <script src="/assets/js/site.js?v=118a059abb" defer></script>
   <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
 </body>
 </html>

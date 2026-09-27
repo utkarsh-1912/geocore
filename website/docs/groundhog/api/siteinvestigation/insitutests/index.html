@@ -139,6 +139,11 @@
 
   </li>
   <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
         <a href="/docs/geoai/tools/">
     <span>GeoAI tools</span>  </a>
 
@@ -813,11 +818,71 @@
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
     <div class="prose docs-body"><p>Package <code>groundhog.siteinvestigation.insitutests</code> in groundhog 0.15.0.</p>
 <ul>
-<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">PCPT functions</a> — API reference for groundhog.siteinvestigation.insitutests.pcpt_correlations: 34 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">pcpt_processing</a> — API reference for groundhog.siteinvestigation.insitutests.pcpt_processing: 2 functions, 2 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">read_site_data</a> — API reference for groundhog.siteinvestigation.insitutests.read_site_data: 1 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">SPT corrections and correlations</a> — API reference for groundhog.siteinvestigation.insitutests.spt_correlations: 10 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">spt_processing</a> — API reference for groundhog.siteinvestigation.insitutests.spt_processing: 0 functions, 1 classes.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">PCPT functions</a> — API reference for groundhog.siteinvestigation.insitutests.pcpt_correlations: 34 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#pcpt_normalisations"><code>pcpt_normalisations</code></a>: Carried out the necessary normalisation and correction on PCPT data to allow calculation of derived parameters and soil type classification.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#soilclass_robertson"><code>soilclass_robertson</code></a>: Provides soil type classification according to the soil behaviour type index by Robertson and Wride.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#ic_soilclass_robertson"><code>ic_soilclass_robertson</code></a>: Provides soil type classification according to the soil behaviour type index by Robertson and Wride.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#behaviourindex_pcpt_robertsonwride"><code>behaviourindex_pcpt_robertsonwride</code></a>: Calculates the soil behaviour index according to Robertson and Wride (1998).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_sand_rixstokoe"><code>gmax_sand_rixstokoe</code></a>: Calculates the small-strain shear modulus for uncemented silica sand based on cone resistance and vertical effective stress.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_clay_maynerix"><code>gmax_clay_maynerix</code></a>: Mayne and Rix (1993) determined a relationship between small-strain shear modulus and cone tip resistance by studying 481 data sets from 31 sites all over the world.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_ncsand_baldi"><code>relativedensity_ncsand_baldi</code></a>: Calculates the relative density for normally consolidated sand based on calibration chamber tests on silica sand.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_ocsand_baldi"><code>relativedensity_ocsand_baldi</code></a>: Calculates the relative density for overconsolidated sand based on calibration chamber tests on silica sand.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#coneresistance_ocsand_baldi"><code>coneresistance_ocsand_baldi</code></a>: Calculates the cone resistance for a given relative density for overconsolidated sand based on calibration chamber tests on silica sand.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#relativedensity_sand_jamiolkowski"><code>relativedensity_sand_jamiolkowski</code></a>: Jamiolkowksi et al formulated a correlation for the relative density of dry sand based on calibration chamber tests.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#frictionangle_sand_kulhawymayne"><code>frictionangle_sand_kulhawymayne</code></a>: Determines the friction angle for sand based on calibration chamber tests.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#undrainedshearstrength_clay_radlunne"><code>undrainedshearstrength_clay_radlunne</code></a>: Calculates the undrained shear strength of clay from net cone tip resistance.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#frictionangle_overburden_kleven"><code>frictionangle_overburden_kleven</code></a>: This function calculates the friction angle according to the chart proposed by Kleven (1986).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#ocr_cpt_lunne"><code>ocr_cpt_lunne</code></a>: Calculates the overconsolidation ratio (OCR) for clay based on normalised CPT properties.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#sensitivity_frictionratio_lunne"><code>sensitivity_frictionratio_lunne</code></a>: Calculates the sensitivity of clay from the friction ratio according to Rad and Lunne (1986).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#unitweight_mayne"><code>unitweight_mayne</code></a>: Estimates the total unit weight for sand, clay and silt from CPT measurements.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_ic_robertsoncabal"><code>vs_ic_robertsoncabal</code></a>: Calculates shear wave velocity based on a correlation with total cone resistance and soil behaviour type index.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#k0_sand_mayne"><code>k0_sand_mayne</code></a>: Calculates the lateral coefficient of earth pressure at rest based on calibration chamber tests on clean sands.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_cpt_puechen"><code>gmax_cpt_puechen</code></a>: Calculates the small-strain modulus based on CPT data.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#behaviourindex_pcpt_nonnormalised"><code>behaviourindex_pcpt_nonnormalised</code></a>: Calculates the non-normalised soil behaviour type index.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#drainedsecantmodulus_sand_bellotti"><code>drainedsecantmodulus_sand_bellotti</code></a>: Calculates the drained secant modulus for various types of sand for an average strain of 0.1 percent.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#gmax_voidratio_maynerix"><code>gmax_voidratio_maynerix</code></a>: Calculates the small-strain shear modulus for clay based on the void ratio of the material.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_andrus"><code>vs_cpt_andrus</code></a>: Calculates shear wave velocity from CPT measurements based on a relation calibrated on 229 measurements of which the majority are S-PCPT with some cross-hole tests and suspension logger measurements.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_hegazymayne"><code>vs_cpt_hegazymayne</code></a>: The correlation between shear wave velocity and CPT properties developed by Hegazy and Mayne was based on a global databased from 73 sites with different soil conditions including sands, clays, soil mixtures and mine ta…</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_longdonohue"><code>vs_cpt_longdonohue</code></a>: The authors propose a correlation between shear wave velocity and CPT properties based on high-quality CPT tests and Gmax obtained from S-PCPT, MASW, cross-hole and block sampling.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#soiltype_vs_longodonohue"><code>soiltype_vs_longodonohue</code></a>: Determines the soil type based on measured shear wave velocity and normalised cone resistance.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cptd50_karrayetal"><code>vs_cptd50_karrayetal</code></a>: This correlation between Vs and normalised cone tip resistance takes into account the influence of median grain size.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_wrideetal"><code>vs_cpt_wrideetal</code></a>: Calculates shear wave velocity based on normalised cone tip resistance based on test data from the CANLEX project.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_tonniandsimonini"><code>vs_cpt_tonniandsimonini</code></a>: The authors propose a correlation between CPT properties and shear wave velocity for the Treporti site near Venice, Italy which consist mostly of silty sediments.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_cpt_mcgannetal"><code>vs_cpt_mcgannetal</code></a>: The authors develop a correlation between shear wave velocity and CPT properties based on Christchurch-specific general soils.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#constrainedmodulus_pcpt_robertson"><code>constrainedmodulus_pcpt_robertson</code></a>: Calculates the one-dimensional constrained modulus.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#vs_stressdependent_stuyts"><code>vs_stressdependent_stuyts</code></a>: Calculates the shear wave velocity using the calibrated power-law expression proposed by Stuyts et al (2024).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#dissipation_test_teh"><code>dissipation_test_teh</code></a>: Calculates the pore pressure dissipation from a dissipation tests in clay according to the normalised dissipation curves proposed by Teh &amp; Houlsby (1991).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/#clippingdepths_qc1n_tianlehane"><code>clippingdepths_qc1N_tianlehane</code></a>: Calculates the depths where the normalised cone resistance reaches steady values in weak over strong layer systems based on the equations proposed by Tian and Lehane (2025).</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">pcpt_processing</a> — API reference for groundhog.siteinvestigation.insitutests.pcpt_processing: 2 functions, 2 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/#insitutestprocessing"><code>InsituTestProcessing</code></a>: Abstract base class for the processing of in-situ tests.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/#pcptprocessing"><code>PCPTProcessing</code></a>: The PCPTProcessing class implements methods for reading, processing and presentation of PCPT data.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/#plot_longitudinal_profile"><code>plot_longitudinal_profile</code></a>: Creates a longitudinal profile along selected CPTs.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/#plot_combined_longitudinal_profile"><code>plot_combined_longitudinal_profile</code></a>: Creates a longitudinal profile along selected CPTs and SoilProfile objects.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">read_site_data</a> — API reference for groundhog.siteinvestigation.insitutests.read_site_data: 1 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/#read_ags"><code>read_ags</code></a>: Reads AGS data from a file and extracts the data for a given groupname into a DataFrame.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">SPT corrections and correlations</a> — API reference for groundhog.siteinvestigation.insitutests.spt_correlations: 10 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#overburdencorrection_spt_liaowhitman"><code>overburdencorrection_spt_liaowhitman</code></a>: Applies a correction to the SPT N value to account for the effect of effective overburden pressure in granular soils.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#spt_n60_correction"><code>spt_N60_correction</code></a>: The performance of the SPT in a given soil type depends on the efficiency of energy transmission to the soil.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#relativedensity_spt_kulhawymayne"><code>relativedensity_spt_kulhawymayne</code></a>: Estimates relative density from SPT test.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrength_spt_salgado"><code>undrainedshearstrength_spt_salgado</code></a>: Calculates undrained shear strength based on plasticity index and SPT number (corrected to 60% energy ratio).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#frictionangle_spt_kulhawymayne"><code>frictionangle_spt_kulhawymayne</code></a>: Kulhawy and Mayne approximated the chart for friction angle selection from SPT using the formula given below.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#relativedensityclass_spt_terzaghipeck"><code>relativedensityclass_spt_terzaghipeck</code></a>: Defines the relative density class for SPT measurements in cohesionless soils based on the uncorrected N-number</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#overburdencorrection_spt_iso"><code>overburdencorrection_spt_ISO</code></a>: Corrects the SPT N number or corrected N number (N_{60}) for the effect of overburden pressure in granular soils.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#frictionangle_spt_pht"><code>frictionangle_spt_PHT</code></a>: Correlation proposed by Peck, Hanson and Thornburn (1974) and mentioned by Wolff (1989)</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#youngsmodulus_spt_aashto"><code>youngsmodulus_spt_AASHTO</code></a>: Calculates the Young's modulus based on corrected SPT number for various soil types.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrengthclass_spt_terzaghipeck"><code>undrainedshearstrengthclass_spt_terzaghipeck</code></a>: Defines the relative density class for SPT measurements in cohesionless soils based on the uncorrected N-number</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">spt_processing</a> — API reference for groundhog.siteinvestigation.insitutests.spt_processing: 0 functions, 1 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/#sptprocessing"><code>SPTProcessing</code></a>: The SPTProcessing class implements methods for reading, processing and presentation of Standard Penetration Test (SPT) data.</li>
+</ul>
+</li>
 </ul></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">

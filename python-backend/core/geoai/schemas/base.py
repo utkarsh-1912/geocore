@@ -73,6 +73,10 @@ class GeoAIBaseModel(BaseModel):
         populate_by_name=True
     )
 
+    def geoai_call_kwargs(self) -> Dict[str, Any]:
+        """Keyword arguments forwarded to the tool callable (validated, unit-normalised)."""
+        return self.model_dump(exclude_unset=False)
+
     @classmethod
     def geoai_accepted_keys(cls) -> Dict[str, str]:
         """Map every accepted input key (field name + validation aliases) to its field name."""

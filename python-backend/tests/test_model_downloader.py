@@ -152,7 +152,7 @@ def test_resolve_url():
     )
 
 
-@pytest.mark.parametrize("model_id", ["qwen3.5-2b", "qwen3-1.7b", "qwen2.5-1.5b-instruct"])
+@pytest.mark.parametrize("model_id", ["qwen3.5-2b", "qwen3-1.7b", "qwen2.5-1.5b-instruct", "qwen2.5-7b-instruct"])
 def test_benchmark_candidates_are_pinned(model_id):
     info = md.RECOMMENDED_MODELS[model_id]
     for key in ("family", "display_name", "repo_id", "filename", "size_mb", "description", "recommended_for"):

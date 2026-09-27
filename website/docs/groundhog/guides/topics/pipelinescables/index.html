@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
   <link rel="stylesheet" href="/assets/css/site.css?v=133b3a4fa4">
-</head>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -136,6 +136,11 @@
   <li>
         <a href="/docs/geoai/model-setup/">
     <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
 
   </li>
   <li>
@@ -811,14 +816,49 @@
     <h1>Pipelines and cables</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>Pipelines and cables</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>Pipelines and cables</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="pipeline-and-cable-stability">Pipeline and cable stability</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/pipelinescables/stability_toplevel.html">Pipeline and cable stability</a></p>
 <h3 id="pipeline-and-cable-penetration">Pipeline and cable penetration</h3>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/pipelinescables/penetration.html">Pipeline and cable penetration</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/pipelinescables/stability/penetration/"><code>groundhog.pipelinescables.stability.penetration</code></a>: <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#contactwidth"><code>contactwidth</code></a>, <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#penetratedarea"><code>penetratedarea</code></a>, <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#embedment_undrained_method1"><code>embedment_undrained_method1</code></a>, <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#embedment_undrained_method2"><code>embedment_undrained_method2</code></a>, <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#embedment_drained"><code>embedment_drained</code></a>, <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#lay_touchdown_factor"><code>lay_touchdown_factor</code></a></li>
-</ul></div>
+<p>Module <a href="/docs/groundhog/api/pipelinescables/stability/penetration/"><code>groundhog.pipelinescables.stability.penetration</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h4 id="contactwidth">contactwidth</h4>
+<p>Function <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#contactwidth"><code>contactwidth</code></a>.</p>
+<p>Calculates the contact width depending on the pipeline penetration.</p>
+<div class="math-display">\[B = 2 \cdot \sqrt{D \cdot z - z^2} \quad \text{for } z &lt; D/2\]</div>
+<div class="math-display">\[B=D \quad \text{for } z \geq D/2\]</div>
+<p><em>Reference:</em> DNV-RP-F114</p>
+<h4 id="penetratedarea">penetratedarea</h4>
+<p>Function <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#penetratedarea"><code>penetratedarea</code></a>.</p>
+<p>Calculates the penetrated area of the pipeline below the seabed.</p>
+<div class="math-display">\[A_{bm} = \arcsin \left( \frac{B}{D} \right) \cdot \frac{D^2}{4} - B \cdot \frac{D}{4} \cdot \cos \left( \arcsin(B/D) \right) \quad \text{for } z&lt;D/2\]</div>
+<div class="math-display">\[A_{bm} = \frac{\pi \cdot D^2}{8} + D \cdot \left( z - D/2 \right) \quad \text{for } z \geq D/2\]</div>
+<p><em>Reference:</em> DNV-RP-F114</p>
+<h4 id="embedment_undrained_method1">embedment_undrained_method1</h4>
+<p>Function <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#embedment_undrained_method1"><code>embedment_undrained_method1</code></a>.</p>
+<p>Calculates pipeline embedment in soil which behaves in an undrained manner.</p>
+<div class="math-display">\[Q_v = Q_{v0} \cdot \left( 1 + d_{ca} \right) + \gamma^{\prime} \cdot A_{bm}\]</div>
+<div class="math-display">\[Q_{v0} = F \cdot \left( N_c \cdot s_{u,0} + \rho \cdot B/4 \right) \cdot B\]</div>
+<p><em>6 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> DNV-RP-F114</p>
+<h4 id="embedment_undrained_method2">embedment_undrained_method2</h4>
+<p>Function <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#embedment_undrained_method2"><code>embedment_undrained_method2</code></a>.</p>
+<p>Calculates the pipeline penetration for deepwater soft clay.</p>
+<div class="math-display">\[Q_v = \left[ \min \left( 6 \cdot \left( \frac{z}{D} \right)^{0.25}; 3.4 \cdot \left( \frac{10 \cdot z}{D} \right)^{0.5} \right) + 1.5 \cdot \frac{\gamma^{\prime} \cdot A_{bm}}{D \cdot s_u} \right] \cdot D \cdot s_u\]</div>
+<p><em>Reference:</em> DNV-RP-F114</p>
+<h4 id="embedment_drained">embedment_drained</h4>
+<p>Function <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#embedment_drained"><code>embedment_drained</code></a>.</p>
+<p>Calculates pipeline embedment in drained conditions using bearing capacity theory.</p>
+<div class="math-display">\[Q_v = 0.5 \cdot \gamma^{\prime} \cdot N_{\gamma} \cdot B^2 + z_0 \cdot \gamma^{\prime} \cdot N_q \cdot d_q \cdot B\]</div>
+<div class="math-display">\[z_0 = 0 \quad \text{for } z &lt; \frac{D}{2} \cdot \left[ 1 - \cos \left( \frac{\pi}{4} + \frac{\varphi^{\prime}}{2} \right) \right]\]</div>
+<p><em>2 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> DNV-RP-F114</p>
+<h4 id="lay_touchdown_factor">lay_touchdown_factor</h4>
+<p>Function <a href="/docs/groundhog/api/pipelinescables/stability/penetration/#lay_touchdown_factor"><code>lay_touchdown_factor</code></a>.</p>
+<p>Calculates the load concentration factor at the touchdown point.</p>
+<div class="math-display">\[k_{lay} = 0.6 + 0.4 \cdot \left( \frac{EI \cdot k \cdot W_i}{z_{ini} \cdot T_0^2} \right)^{0.25} \geq 1 \quad \text{for } T_0 &gt; \left[ 3 \cdot \sqrt{EI} \cdot W_i \right]^{2/3}\]</div>
+<div class="math-display">\[k = Q_v \ W_i\]</div>
+<p><em>Reference:</em> DNV-RP-F114</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -891,5 +931,8 @@
 
   <script src="/assets/js/site.js?v=118a059abb" defer></script>
   <script src="/assets/js/docs.js?v=ad440a51c4" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
 </body>
 </html>

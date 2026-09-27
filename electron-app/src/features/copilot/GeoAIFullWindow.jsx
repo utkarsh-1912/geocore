@@ -395,15 +395,24 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         }
     };
 
+    // Grow a textarea with its content (capped by its CSS max-height).
+    const autoGrow = (el) => {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = `${el.scrollHeight}px`;
+    };
+
     const startEditing = (msg) => {
         setEditingMsgId(msg.id);
         setEditingText(msg.text);
-        setTimeout(() => {
-            if (editTextareaRef.current) {
-                editTextareaRef.current.focus();
-                editTextareaRef.current.selectionStart = editTextareaRef.current.value.length;
+        requestAnimationFrame(() => {
+            const el = editTextareaRef.current;
+            if (el) {
+                autoGrow(el);
+                el.focus();
+                el.selectionStart = el.selectionEnd = el.value.length;
             }
-        }, 50);
+        });
     };
 
     const cancelEditing = () => {
@@ -525,7 +534,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     <div className="h-13 border-b border-border px-3 flex items-center justify-between gap-2 shrink-0 bg-surface">
                         <button
                             onClick={createNewChat}
-                            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+                            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 transition-colors shadow-sm"
                         >
                             <Plus size={14} />
                             <span>New Chat</span>
@@ -722,7 +731,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                         <button
                                                             onClick={() => handleSelectModel(model)}
                                                             disabled={downloadStatus?.status === 'downloading'}
-                                                            className="w-full py-1.5 px-3 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
+                                                            className="w-full py-1.5 px-3 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
                                                         >
                                                             <Download size={12} />
                                                             <span>Install ({model.size_mb} MB)</span>
@@ -749,7 +758,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                         <button
                                                             onClick={() => handleSelectModel(model)}
                                                             disabled={downloadStatus?.status === 'downloading'}
-                                                            className="w-full py-1.5 px-3 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
+                                                            className="w-full py-1.5 px-3 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
                                                         >
                                                             <Download size={12} />
                                                             <span>Install ({model.size_mb} MB)</span>
@@ -832,86 +841,107 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                         <div className={`max-w-[88%] space-y-1.5 ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
                                             {isEditing ? (
                                                 /* Inline Edit Box */
-                                                <div className="w-full bg-surface border border-primary rounded p-3 space-y-2 text-xs shadow-sm">
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 4 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                                                    className="w-[min(560px,80vw)] bg-surface border border-border rounded-md shadow-sm focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/15 transition-[border-color,box-shadow] duration-200"
+                                                >
                                                     <textarea
                                                         ref={editTextareaRef}
                                                         value={editingText}
-                                                        onChange={(e) => setEditingText(e.target.value)}
-                                                        rows={2}
-                                                        className="w-full resize-none bg-background border border-border rounded p-2 text-xs text-text-main focus:outline-none focus:border-primary"
+                                                        onChange={(e) => {
+                                                            setEditingText(e.target.value);
+                                                            autoGrow(e.target);
+                                                        }}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter' && !e.shiftKey) {
+                                                                e.preventDefault();
+                                                                submitEdit(msg.id);
+                                                            } else if (e.key === 'Escape') {
+                                                                e.stopPropagation();
+                                                                cancelEditing();
+                                                            }
+                                                        }}
+                                                        rows={1}
+                                                        aria-label="Edit message"
+                                                        className="block w-full resize-none bg-transparent px-3.5 pt-3 pb-1 text-xs leading-relaxed text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none max-h-60"
                                                     />
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        <button
-                                                            onClick={cancelEditing}
-                                                            className="px-2.5 py-1 text-xs text-text-muted hover:text-text-main rounded border border-border hover:bg-background"
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                        <button
-                                                            onClick={() => submitEdit(msg.id)}
-                                                            disabled={!editingText.trim()}
-                                                            className="px-3 py-1 text-xs bg-primary text-white rounded hover:bg-primary/90 font-medium disabled:opacity-40"
-                                                        >
-                                                            Save & Resubmit
-                                                        </button>
+                                                    <div className="flex items-center justify-between gap-3 px-2.5 pb-2.5 pt-1">
+                                                        <span className="text-[10px] text-text-subtle pl-1">
+                                                            <kbd className="font-sans font-semibold">Enter</kbd> to resend · <kbd className="font-sans font-semibold">Esc</kbd> to cancel
+                                                        </span>
+                                                        <div className="flex items-center gap-1.5">
+                                                            <button
+                                                                onClick={cancelEditing}
+                                                                className="px-2.5 py-1 text-xs font-medium text-text-muted hover:text-text-main rounded hover:bg-surface-muted transition-colors"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                            <button
+                                                                onClick={() => submitEdit(msg.id)}
+                                                                disabled={!editingText.trim() || editingText.trim() === msg.text.trim()}
+                                                                className="px-3 py-1 text-xs bg-primary text-on-primary rounded hover:bg-primary/90 font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                                            >
+                                                                Resend
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </motion.div>
                                             ) : (
                                                 /* Standard Message Bubble */
-                                                <div
-                                                    className={`p-3.5 rounded text-xs leading-relaxed relative ${
-                                                        msg.sender === 'user'
-                                                            ? 'bg-primary text-white shadow-xs'
-                                                            : 'bg-surface border border-border text-text-main shadow-xs'
-                                                    }`}
-                                                >
-                                                    {msg.sender === 'ai' && !msg.text ? (
-                                                        <div className="flex items-center gap-2 text-text-muted">
-                                                            {isLoading ? (
-                                                                <>
-                                                                    <RefreshCw size={12} className="animate-spin text-primary" />
-                                                                    <span>Reasoning and executing Groundhog calculation...</span>
-                                                                </>
-                                                            ) : (
-                                                                <span>No response received.</span>
-                                                            )}
-                                                        </div>
-                                                    ) : (
-                                                        <div className="whitespace-pre-wrap">
-                                                            {msg.text}
-                                                        </div>
-                                                    )}
+                                                <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                                                    <div
+                                                        className={`px-3.5 py-2.5 rounded-md text-xs leading-relaxed transition-colors ${
+                                                            msg.sender === 'user'
+                                                                ? 'bg-primary/10 border border-primary/20 text-text-main rounded-br-sm'
+                                                                : 'bg-surface border border-border text-text-main shadow-xs rounded-bl-sm'
+                                                        }`}
+                                                    >
+                                                        {msg.sender === 'ai' && !msg.text ? (
+                                                            <div className="flex items-center gap-2 text-text-muted">
+                                                                {isLoading ? (
+                                                                    <>
+                                                                        <RefreshCw size={12} className="animate-spin text-primary" />
+                                                                        <span>Reasoning and executing Groundhog calculation...</span>
+                                                                    </>
+                                                                ) : (
+                                                                    <span>No response received.</span>
+                                                                )}
+                                                            </div>
+                                                        ) : (
+                                                            <div className="whitespace-pre-wrap break-words">
+                                                                {msg.text}
+                                                            </div>
+                                                        )}
+                                                    </div>
 
-                                                    {/* Message Actions & Timestamp */}
-                                                    <div className={`flex items-center justify-between pt-2 mt-2 border-t text-[10px] ${
-                                                        msg.sender === 'user' 
-                                                            ? 'border-white/20 text-white/80' 
-                                                            : 'border-border/40 text-text-muted'
-                                                    }`}>
+                                                    {/* Timestamp & actions (actions appear on hover) */}
+                                                    <div className={`flex items-center gap-2.5 mt-1 px-1 text-[10px] text-text-subtle ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}>
                                                         <span>{msg.timestamp}</span>
-
-                                                        <div className="flex items-center gap-2">
-                                                            {msg.sender === 'user' && !isLoading && (
-                                                                <button
-                                                                    onClick={() => startEditing(msg)}
-                                                                    title="Edit prompt"
-                                                                    className="hover:underline flex items-center gap-1 opacity-80 hover:opacity-100"
-                                                                >
-                                                                    <Pencil size={10} />
-                                                                    <span>Edit</span>
-                                                                </button>
-                                                            )}
-
-                                                            {msg.sender === 'ai' && !isLoading && (
-                                                                <button
-                                                                    onClick={() => handleCopy(msg.text)}
-                                                                    className="hover:text-text-main transition-colors flex items-center gap-1"
-                                                                >
-                                                                    <Copy size={11} />
-                                                                    <span>Copy</span>
-                                                                </button>
-                                                            )}
-                                                        </div>
+                                                        {!isLoading && (
+                                                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+                                                                {msg.sender === 'user' ? (
+                                                                    <button
+                                                                        onClick={() => startEditing(msg)}
+                                                                        title="Edit prompt"
+                                                                        className="flex items-center gap-1 hover:text-text-main transition-colors"
+                                                                    >
+                                                                        <Pencil size={10} />
+                                                                        <span>Edit</span>
+                                                                    </button>
+                                                                ) : msg.text ? (
+                                                                    <button
+                                                                        onClick={() => handleCopy(msg.text)}
+                                                                        title="Copy response"
+                                                                        className="flex items-center gap-1 hover:text-text-main transition-colors"
+                                                                    >
+                                                                        <Copy size={10} />
+                                                                        <span>Copy</span>
+                                                                    </button>
+                                                                ) : null}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             )}
@@ -976,7 +1006,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
                 {/* --- Bottom Input Box --- */}
                 <div className="border-t border-border bg-surface px-4 py-3 shrink-0 flex items-center justify-center">
-                    <div className="w-full max-w-4xl flex items-end gap-2 bg-background border border-border focus-within:border-primary rounded p-2 transition-colors shadow-xs">
+                    <div className="w-full max-w-4xl flex items-end gap-2 bg-background border border-border focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/15 rounded-md p-2 transition-[border-color,box-shadow] duration-200 shadow-xs">
                         <textarea
                             ref={textareaRef}
                             value={inputValue}
@@ -987,13 +1017,13 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             onKeyDown={handleKeyDown}
                             rows={1}
                             placeholder="Enter geotechnical query, soil parameters, or calculation request..."
-                            className="flex-1 resize-none bg-transparent px-2 py-1 text-xs text-text-main placeholder:text-text-muted focus:outline-none max-h-40 leading-relaxed"
+                            className="flex-1 resize-none bg-transparent px-2 py-1 text-xs text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none max-h-40 leading-relaxed"
                         />
 
                         <button
                             onClick={() => handleSendMessage()}
                             disabled={!inputValue.trim() || isLoading}
-                            className="p-2 bg-primary text-white rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0 flex items-center justify-center h-8 w-8"
+                            className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0 flex items-center justify-center h-8 w-8"
                         >
                             <Send size={14} />
                         </button>
@@ -1080,7 +1110,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                             disabled={downloadStatus?.status === 'downloading'}
                                             className={`px-3 py-1.5 rounded text-xs font-semibold shrink-0 transition-colors flex items-center gap-1 ${
                                                 model.is_installed
-                                                    ? 'bg-primary text-white hover:bg-primary/90'
+                                                    ? 'bg-primary text-on-primary hover:bg-primary/90'
                                                     : 'border border-primary text-primary hover:bg-primary/10'
                                             }`}
                                         >
@@ -1122,7 +1152,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                         <button
                                             onClick={handleCustomGgufLink}
                                             disabled={!customGgufPath.trim() || isLinkingCustom}
-                                            className="px-2.5 py-1 bg-primary text-white rounded text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-40 shrink-0"
+                                            className="px-2.5 py-1 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-40 shrink-0"
                                         >
                                             Link
                                         </button>

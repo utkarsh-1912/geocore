@@ -139,6 +139,11 @@
 
   </li>
   <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
         <a href="/docs/geoai/tools/">
     <span>GeoAI tools</span>  </a>
 
@@ -811,33 +816,82 @@
     <h1>General and utility functions</h1>
     <p class="docs-meta">
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
-    <div class="prose docs-body"><p>This page mirrors the structure of the upstream groundhog documentation for <em>General and utility functions</em> and links each topic to the API reference.</p>
+    <div class="prose docs-body"><p>This page follows the structure of the upstream groundhog documentation for <em>General and utility functions</em>. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.</p>
 <h2 id="soil-profiles-and-gridscd">Soil profiles and gridscd</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/general/soilprofiles.html">Soil profiles and gridscd</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/general/soilprofile/#soilprofile"><code>SoilProfile</code></a> (<code>groundhog.general.soilprofile</code>)</li>
-<li>Class <a href="/docs/groundhog/api/general/soilprofile/#calculationgrid"><code>CalculationGrid</code></a> (<code>groundhog.general.soilprofile</code>)</li>
-</ul>
+<h3 id="soilprofile">SoilProfile</h3>
+<p>Class <a href="/docs/groundhog/api/general/soilprofile/#soilprofile"><code>SoilProfile</code></a>.</p>
+<p>A SoilProfile object is a Pandas dataframe with specific functionality for geotechnical calculations.</p>
+<h3 id="calculationgrid">CalculationGrid</h3>
+<p>Class <a href="/docs/groundhog/api/general/soilprofile/#calculationgrid"><code>CalculationGrid</code></a>.</p>
+<p>A CalculationGrid is an object which consist of a dataframe with nodes .nodes and a dataframe with elements .elements.</p>
 <h2 id="plotting">Plotting</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/general/plotting.html">Plotting</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/general/plotting/"><code>groundhog.general.plotting</code></a>: <a href="/docs/groundhog/api/general/plotting/#plot_with_log"><code>plot_with_log</code></a>, <a href="/docs/groundhog/api/general/plotting/#logplot"><code>LogPlot</code></a>, <a href="/docs/groundhog/api/general/plotting/#logplotmatplotlib"><code>LogPlotMatplotlib</code></a>, <a href="/docs/groundhog/api/general/plotting/#peak_picker"><code>peak_picker</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/general/plotting/"><code>groundhog.general.plotting</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="plot_with_log">plot_with_log</h3>
+<p>Function <a href="/docs/groundhog/api/general/plotting/#plot_with_log"><code>plot_with_log</code></a>.</p>
+<p>Plots a given number of traces in a plot with a soil mini-log on the left hand side.</p>
+<h3 id="logplot">LogPlot</h3>
+<p>Class <a href="/docs/groundhog/api/general/plotting/#logplot"><code>LogPlot</code></a>.</p>
+<p>Class for planneled plots with a minilog on the side.</p>
+<h3 id="logplotmatplotlib">LogPlotMatplotlib</h3>
+<p>Class <a href="/docs/groundhog/api/general/plotting/#logplotmatplotlib"><code>LogPlotMatplotlib</code></a>.</p>
+<p>Class for planneled plots with a minilog on the side, using the Matplotlib plotting backend</p>
+<h3 id="peak_picker">peak_picker</h3>
+<p>Function <a href="/docs/groundhog/api/general/plotting/#peak_picker"><code>peak_picker</code></a>.</p>
+<p>Generates an interactive Matplotlib plot which allows you to pick the peak from a graph with e.g.</p>
 <h2 id="validation">Validation</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/general/validation.html">Validation</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/general/validation/"><code>groundhog.general.validation</code></a>: <a href="/docs/groundhog/api/general/validation/#validate_float"><code>validate_float</code></a>, <a href="/docs/groundhog/api/general/validation/#validate_integer"><code>validate_integer</code></a>, <a href="/docs/groundhog/api/general/validation/#validate_boolean"><code>validate_boolean</code></a>, <a href="/docs/groundhog/api/general/validation/#validate_string"><code>validate_string</code></a>, <a href="/docs/groundhog/api/general/validation/#validate_list"><code>validate_list</code></a>, <a href="/docs/groundhog/api/general/validation/#map_args"><code>map_args</code></a>, <a href="/docs/groundhog/api/general/validation/#validator"><code>Validator</code></a>, <a href="/docs/groundhog/api/general/validation/#check_layer_overlap"><code>check_layer_overlap</code></a></li>
-</ul>
+<p>Module <a href="/docs/groundhog/api/general/validation/"><code>groundhog.general.validation</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="validate_float">validate_float</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#validate_float"><code>validate_float</code></a>.</p>
+<p>Validates whether a variable can be used as a floating point number and whether it is within specified bounds If a value equals one of the bounds, the validation passes</p>
+<h3 id="validate_integer">validate_integer</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#validate_integer"><code>validate_integer</code></a>.</p>
+<p>Validates whether a variable can be used as an integer and whether it is within specified bounds If a value equals one of the bounds, the validation passes</p>
+<h3 id="validate_boolean">validate_boolean</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#validate_boolean"><code>validate_boolean</code></a>.</p>
+<p>Validates whether a variable can be used as a boolean</p>
+<h3 id="validate_string">validate_string</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#validate_string"><code>validate_string</code></a>.</p>
+<p>Validates whether a variable can be used as a string.</p>
+<h3 id="validate_list">validate_list</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#validate_list"><code>validate_list</code></a>.</p>
+<p>Validates whether a list contains numbers.</p>
+<h3 id="map_args">map_args</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#map_args"><code>map_args</code></a>.</p>
+<p>Constructs a data structure with all parameters, their values and the validation parameters which need to be used during validation.</p>
+<h3 id="validator">Validator</h3>
+<p>Class <a href="/docs/groundhog/api/general/validation/#validator"><code>Validator</code></a>.</p>
+<p>The Validator has the following features</p>
+<h3 id="check_layer_overlap">check_layer_overlap</h3>
+<p>Function <a href="/docs/groundhog/api/general/validation/#check_layer_overlap"><code>check_layer_overlap</code></a>.</p>
+<p>Checks possible overlap on a dataframe</p>
 <h2 id="ags-to-pandas-converter-reference">AGS to Pandas converter reference</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/general/agsconversion.html">AGS to Pandas converter reference</a></p>
-<ul>
-<li>Class <a href="/docs/groundhog/api/general/agsconversion/#agsconverter"><code>AGSConverter</code></a> (<code>groundhog.general.agsconversion</code>)</li>
-</ul>
+<h3 id="agsconverter">AGSConverter</h3>
+<p>Class <a href="/docs/groundhog/api/general/agsconversion/#agsconverter"><code>AGSConverter</code></a>.</p>
 <h2 id="parameter-mapping">Parameter mapping</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/general/parameter_mapping.html">Parameter mapping</a></p>
-<ul>
-<li>Module <a href="/docs/groundhog/api/general/parameter_mapping/"><code>groundhog.general.parameter_mapping</code></a>: <a href="/docs/groundhog/api/general/parameter_mapping/#map_depth_properties"><code>map_depth_properties</code></a>, <a href="/docs/groundhog/api/general/parameter_mapping/#merge_two_dicts"><code>merge_two_dicts</code></a>, <a href="/docs/groundhog/api/general/parameter_mapping/#reverse_dict"><code>reverse_dict</code></a>, <a href="/docs/groundhog/api/general/parameter_mapping/#latlon_distance"><code>latlon_distance</code></a>, <a href="/docs/groundhog/api/general/parameter_mapping/#get_projected_point"><code>get_projected_point</code></a>, <a href="/docs/groundhog/api/general/parameter_mapping/#offsets"><code>offsets</code></a></li>
-</ul></div>
+<p>Module <a href="/docs/groundhog/api/general/parameter_mapping/"><code>groundhog.general.parameter_mapping</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="map_depth_properties">map_depth_properties</h3>
+<p>Function <a href="/docs/groundhog/api/general/parameter_mapping/#map_depth_properties"><code>map_depth_properties</code></a>.</p>
+<p>Maps properties defined in a dataframe with layers to a dataframe with nodal depth positions.</p>
+<h3 id="merge_two_dicts">merge_two_dicts</h3>
+<p>Function <a href="/docs/groundhog/api/general/parameter_mapping/#merge_two_dicts"><code>merge_two_dicts</code></a>.</p>
+<p>Merges two dictionaries</p>
+<h3 id="reverse_dict">reverse_dict</h3>
+<p>Function <a href="/docs/groundhog/api/general/parameter_mapping/#reverse_dict"><code>reverse_dict</code></a>.</p>
+<p>Turn dictionary keys into values and values into keys</p>
+<h3 id="latlon_distance">latlon_distance</h3>
+<p>Function <a href="/docs/groundhog/api/general/parameter_mapping/#latlon_distance"><code>latlon_distance</code></a>.</p>
+<p>Calculates the offset in meters from two pairs of coordinates specified in longitude and latitude (WGS84)</p>
+<h3 id="get_projected_point">get_projected_point</h3>
+<p>Function <a href="/docs/groundhog/api/general/parameter_mapping/#get_projected_point"><code>get_projected_point</code></a>.</p>
+<p>Finds the coordinates of a point projected onto a line</p>
+<h3 id="offsets">offsets</h3>
+<p>Function <a href="/docs/groundhog/api/general/parameter_mapping/#offsets"><code>offsets</code></a>.</p>
+<p>Calculates the offset between a point and a line joining a given start- and endpoint.</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=a8f4785ef1#i-scale"></use></svg>
@@ -858,10 +912,31 @@
     <h2 id="toc-title">On this page</h2>
     <ul data-toc>
       <li class="lvl-2"><a href="#soil-profiles-and-gridscd">Soil profiles and gridscd</a></li>
+      <li class="lvl-3"><a href="#soilprofile">SoilProfile</a></li>
+      <li class="lvl-3"><a href="#calculationgrid">CalculationGrid</a></li>
       <li class="lvl-2"><a href="#plotting">Plotting</a></li>
+      <li class="lvl-3"><a href="#plot_with_log">plot_with_log</a></li>
+      <li class="lvl-3"><a href="#logplot">LogPlot</a></li>
+      <li class="lvl-3"><a href="#logplotmatplotlib">LogPlotMatplotlib</a></li>
+      <li class="lvl-3"><a href="#peak_picker">peak_picker</a></li>
       <li class="lvl-2"><a href="#validation">Validation</a></li>
+      <li class="lvl-3"><a href="#validate_float">validate_float</a></li>
+      <li class="lvl-3"><a href="#validate_integer">validate_integer</a></li>
+      <li class="lvl-3"><a href="#validate_boolean">validate_boolean</a></li>
+      <li class="lvl-3"><a href="#validate_string">validate_string</a></li>
+      <li class="lvl-3"><a href="#validate_list">validate_list</a></li>
+      <li class="lvl-3"><a href="#map_args">map_args</a></li>
+      <li class="lvl-3"><a href="#validator">Validator</a></li>
+      <li class="lvl-3"><a href="#check_layer_overlap">check_layer_overlap</a></li>
       <li class="lvl-2"><a href="#ags-to-pandas-converter-reference">AGS to Pandas converter reference</a></li>
+      <li class="lvl-3"><a href="#agsconverter">AGSConverter</a></li>
       <li class="lvl-2"><a href="#parameter-mapping">Parameter mapping</a></li>
+      <li class="lvl-3"><a href="#map_depth_properties">map_depth_properties</a></li>
+      <li class="lvl-3"><a href="#merge_two_dicts">merge_two_dicts</a></li>
+      <li class="lvl-3"><a href="#reverse_dict">reverse_dict</a></li>
+      <li class="lvl-3"><a href="#latlon_distance">latlon_distance</a></li>
+      <li class="lvl-3"><a href="#get_projected_point">get_projected_point</a></li>
+      <li class="lvl-3"><a href="#offsets">offsets</a></li>
     </ul>
   </aside>
 </div>

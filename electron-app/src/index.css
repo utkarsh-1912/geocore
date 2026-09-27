@@ -3,6 +3,7 @@
 @theme {
     --color-primary: var(--color-primary);
     --color-primary-light: var(--color-primary-light);
+    --color-on-primary: var(--color-on-primary);
     --color-secondary: var(--color-secondary);
     --color-background: var(--color-background);
     --color-surface: var(--color-surface);
@@ -29,6 +30,8 @@
        Brand greens are kept for accents; structure (borders, surfaces, text)
        uses green-tinted neutrals so the accent colour stays meaningful. */
     --color-primary: #5f8445;
+    /* Text/icons drawn on a solid primary fill */
+    --color-on-primary: #ffffff;
     --color-primary-light: #b1d082;
     --color-secondary: #2d473e;
     --color-background: #f5f7f3;
@@ -50,6 +53,7 @@
 :root.dark {
     /* Forest theme - Dark Mode */
     --color-primary: #a9cb7a;
+    --color-on-primary: #0f1a12;
     --color-primary-light: #6a8e4e;
     --color-secondary: #2d473e;
     --color-background: #0e1311;

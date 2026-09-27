@@ -202,7 +202,7 @@ const ParameterChipsSelector = ({ name, value, availableColumns, onChange, requi
                             disabled={disabled}
                             className={`px-2.5 py-1 rounded text-xs font-medium transition-all flex items-center gap-1.5 ${
                                 isSelected
-                                    ? 'bg-primary text-white shadow-sm ring-1 ring-primary'
+                                    ? 'bg-primary text-on-primary shadow-sm ring-1 ring-primary'
                                     : 'bg-surface border border-border text-text-main hover:border-primary/50 hover:bg-primary/5'
                             }`}
                         >
@@ -659,7 +659,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             <button
                                 type="button"
                                 onClick={() => setIsEditMode(!isEditMode)}
-                                className={`flex items-center gap-1.5 text-xs font-medium transition-colors px-2.5 py-1.5 border border-border rounded ${isEditMode ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:bg-secondary/10'}`}
+                                className={`flex items-center gap-1.5 text-xs font-medium transition-colors px-2.5 py-1.5 border border-border rounded ${isEditMode ? 'bg-primary text-on-primary shadow-sm' : 'text-text-muted hover:bg-secondary/10'}`}
                                 title="Toggle Schema Customization Mode (Dev only)"
                             >
                                 {isEditMode ? <Check size={14} /> : <Edit2 size={14} />}
@@ -1030,7 +1030,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 onClick={() => setActiveDocTab('guide')}
                                                 className={`px-3 py-1 text-xs font-medium rounded transition-all ${
                                                     activeDocTab === 'guide'
-                                                        ? 'bg-primary text-white shadow-sm'
+                                                        ? 'bg-primary text-on-primary shadow-sm'
                                                         : 'text-text-muted hover:text-text-main'
                                                 }`}
                                             >
@@ -1041,7 +1041,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 onClick={() => setActiveDocTab('fields')}
                                                 className={`px-3 py-1 text-xs font-medium rounded transition-all ${
                                                     activeDocTab === 'fields'
-                                                        ? 'bg-primary text-white shadow-sm'
+                                                        ? 'bg-primary text-on-primary shadow-sm'
                                                         : 'text-text-muted hover:text-text-main'
                                                 }`}
                                             >
@@ -1064,7 +1064,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             }}
                                             className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded border transition-all ${
                                                 isEditingDocs
-                                                    ? 'bg-primary text-white border-primary shadow-sm'
+                                                    ? 'bg-primary text-on-primary border-primary shadow-sm'
                                                     : 'bg-surface border-border text-text-muted hover:text-text-main hover:border-primary/50'
                                             }`}
                                             title={isEditingDocs ? "Preview documentation" : "Edit documentation source"}

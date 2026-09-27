@@ -117,7 +117,7 @@
         <dd>Only when you choose to download a model in GeoAI. Nothing is downloaded automatically.</dd>
         <dt>Where</dt>
         <dd><code>huggingface.co</code> and its file-delivery CDN. The files come from these public repositories:
-<code>Qwen/Qwen2.5-1.5B-Instruct-GGUF</code>, <code>Qwen/Qwen2.5-3B-Instruct-GGUF</code>, <code>Qwen/Qwen2.5-7B-Instruct-GGUF</code>, <code>bartowski/gemma-2-2b-it-GGUF</code>, <code>bartowski/gemma-2-9b-it-GGUF</code>.</dd>
+<code>Qwen/Qwen2.5-1.5B-Instruct-GGUF</code>, <code>unsloth/Qwen3.5-2B-GGUF</code>, <code>unsloth/Qwen3-1.7B-GGUF</code>, <code>Qwen/Qwen2.5-3B-Instruct-GGUF</code>, <code>Qwen/Qwen2.5-7B-Instruct-GGUF</code>, <code>bartowski/gemma-2-2b-it-GGUF</code>, <code>bartowski/gemma-2-9b-it-GGUF</code>.</dd>
         <dt>What is sent</dt>
         <dd>A request for the chosen model file, made by the <code>huggingface_hub</code> library (which identifies itself and its version in the user-agent). No prompts, questions or project data are sent — GeoAI inference happens entirely on your computer.</dd>
         <dt>Source</dt>
@@ -170,7 +170,7 @@
           <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
           <tbody>
             <tr><td>GeoAI settings (<code>geoai_config.json</code>)</td><td>Windows: <code>%APPDATA%\GeoCore\</code><br>macOS: <code>~/.geocore/</code></td></tr>
-            <tr><td>Downloaded GeoAI models (<code>*.gguf</code>, 986 MB–5.3 GB each)</td><td>Windows: <code>%APPDATA%\GeoCore\models\</code><br>macOS: <code>~/.geocore/models/</code></td></tr>
+            <tr><td>Downloaded GeoAI models (<code>*.gguf</code>, 1.0 GB–5.3 GB each)</td><td>Windows: <code>%APPDATA%\GeoCore\models\</code><br>macOS: <code>~/.geocore/models/</code></td></tr>
             <tr><td>GeoAI local document index (<code>geoai_research.db</code>), if used</td><td>Same folder as GeoAI settings</td></tr>
             <tr><td>Calculation history, favourites, theme and GeoAI conversations (browser storage of the app window)</td><td>Windows: <code>%APPDATA%\GeoCore\</code><br>macOS: <code>~/Library/Application Support/GeoCore/</code></td></tr>
             <tr><td>Saved objects such as soil profiles (<code>saved_objects.json</code>) and field-label overrides (<code>schema_overrides.json</code>)</td><td>The engine’s working folder, inside the GeoCore installation directory</td></tr>

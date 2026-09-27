@@ -15,8 +15,9 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from .tool_metadata import get_tool_metadata
 
-# Sentence = text up to terminal punctuation followed by whitespace/end.
-_SENTENCE = re.compile(r"[^.!?\n]+(?:[.!?]+|$)|\n+")
+# Sentence boundary: terminal punctuation followed by spaces, or a line break. A decimal
+# point ("360.99") is never followed by whitespace, so numbers are not split.
+_SENTENCE_BREAK = re.compile(r"((?<=[.!?])[ \t]+|\n+)")
 
 # Units a model may (wrongly) attach to a numeric result. Longest alternatives first.
 _UNIT_TOKEN = (
@@ -43,25 +44,27 @@ def collapse_repetition(text: Optional[str]) -> str:
     """
     if not text:
         return text or ""
-    parts = _SENTENCE.findall(text)
+    pieces = _SENTENCE_BREAK.split(text)  # [sentence, separator, sentence, separator, ...]
     seen: List[str] = []
-    kept: List[str] = []
+    kept: List[List[str]] = []  # [sentence, separator]
     removed = False
-    for part in parts:
-        if part.startswith("\n"):
-            kept.append(part)
-            continue
-        key = _norm_sentence(part)
+    for i in range(0, len(pieces), 2):
+        sentence = pieces[i]
+        sep = pieces[i + 1] if i + 1 < len(pieces) else ""
+        key = _norm_sentence(sentence)
         if len(key) > 20 and key in seen:
             removed = True
+            if "\n" in sep and kept:  # keep paragraph structure of the surviving text
+                kept[-1][1] = sep
             continue
-        seen.append(key)
-        kept.append(part)
+        if key:
+            seen.append(key)
+        kept.append([sentence, sep])
     if removed and kept:
-        tail = _norm_sentence(kept[-1])
+        tail = _norm_sentence(kept[-1][0])
         if tail and not re.search(r"[.!?]$", tail) and any(s.startswith(tail) for s in seen[:-1]):
             kept.pop()
-    out = "".join(kept)
+    out = "".join(s + sep for s, sep in kept)
     out = re.sub(r"[ \t]+\n", "\n", out)
     return out.strip()
 
@@ -151,3 +154,110 @@ def strip_calculation_records(text: Optional[str]) -> str:
 def clean_answer(text: Optional[str], tools_used: Optional[Iterable[Dict[str, Any]]] = None) -> str:
     """Apply all guards to a final answer."""
     return fix_result_units(collapse_repetition(strip_calculation_records(text)), tools_used or [])
+
+
+_THINK_OPEN, _THINK_CLOSE = "<think>", "</think>"
+_THINK_ANY = re.compile(r"<think>.*?(?:</think>|$)", re.DOTALL)
+_RECORD_TAG = "[Calculation record]"
+_RECORD_LINE_DONE = re.compile(r"^[ \t]*\[Calculation record\][^\n]*\n", re.MULTILINE)
+_RECORD_LINE_START = re.compile(r"^[ \t]*\[Calculation record\]", re.MULTILINE)
+
+
+class AnswerStreamCleaner:
+    """
+    Incremental ``clean_answer`` for a streamed final answer: text is released one whole
+    sentence at a time, with the same guards applied per sentence (verbatim repeats dropped,
+    echoed [Calculation record] lines removed, result units corrected, <think> blocks
+    removed). ``feed`` returns the text that is safe to show now; ``flush`` returns the rest.
+    """
+
+    def __init__(self, tools_used: Optional[Iterable[Dict[str, Any]]] = None):
+        self._tools = list(tools_used or [])
+        self._buf = ""
+        self._seen: List[str] = []
+        self._removed = False
+        self._started = False
+        self._last_sep = ""
+        self._line_start = True  # the unconsumed buffer starts a new line
+        self._pending_ws = ""
+
+    def feed(self, delta: Optional[str]) -> str:
+        self._buf += delta or ""
+        return self._drain(final=False)
+
+    def flush(self) -> str:
+        return self._drain(final=True)
+
+    def _emit(self, sentence: str, sep: str) -> str:
+        # Trailing spaces are held back: clean_answer drops them before a line break and at the end.
+        out = self._emit_sentence(sentence, sep)
+        stripped = out.rstrip(" \t")
+        trailing = out[len(stripped):]
+        if not stripped:
+            self._pending_ws += trailing
+            return ""
+        body = stripped if stripped.startswith("\n") else self._pending_ws + stripped
+        self._pending_ws = trailing
+        return body
+
+    def _emit_sentence(self, sentence: str, sep: str) -> str:
+        self._line_start = "\n" in sep
+        key = _norm_sentence(sentence)
+        if len(key) > 20 and key in self._seen:
+            self._removed = True
+            # keep paragraph structure of the surviving text
+            return sep if ("\n" in sep and "\n" not in self._last_sep and self._started) else ""
+        if key:
+            self._seen.append(key)
+        if "\n" in sep:
+            sentence = sentence.rstrip(" \t")
+        text = fix_result_units(sentence, self._tools)
+        if not self._started:
+            text = text.lstrip()
+            if not text:
+                return ""
+            self._started = True
+        self._last_sep = sep
+        return text + sep
+
+    def _drain(self, final: bool) -> str:
+        buf = self._buf
+        if _THINK_OPEN in buf:
+            if _THINK_CLOSE not in buf.split(_THINK_OPEN, 1)[1] and not final:
+                return ""  # wait for the reasoning block to close
+            buf = _THINK_ANY.sub("", buf)
+        # Echoed calculation records are whole lines: drop complete ones, hold a partial one.
+        # (a sentinel keeps "^" from matching at the buffer start when that is mid-line)
+        lead = "" if self._line_start else "\x00"
+        buf = (_RECORD_LINE if final else _RECORD_LINE_DONE).sub("", lead + buf)[len(lead):]
+        hold_from = len(buf)
+        if not final:
+            line_start = buf.rfind("\n") + 1
+            line = buf[line_start:].lstrip()
+            record = _RECORD_LINE_START.search(lead + buf)
+            if record:
+                hold_from = record.start() - len(lead)
+            elif line and (line_start or self._line_start) and _RECORD_TAG.startswith(line[:len(_RECORD_TAG)]):
+                hold_from = line_start
+        work, held = buf[:hold_from], buf[hold_from:]
+        pieces = _SENTENCE_BREAK.split(work)  # [sentence, sep, sentence, sep, ..., rest]
+        rest = pieces.pop()
+        out: List[str] = []
+        if final:
+            for i in range(0, len(pieces), 2):
+                out.append(self._emit(pieces[i], pieces[i + 1]))
+            key = _norm_sentence(rest)
+            restarts_earlier = (self._removed and key and not re.search(r"[.!?]$", key)
+                                and any(s.startswith(key) for s in self._seen))
+            if key and not restarts_earlier:
+                out.append(self._emit(rest, ""))
+            self._buf = ""
+            return "".join(out).rstrip()
+        if not rest and len(pieces) >= 2:
+            # the buffer ends on a separator that may still grow ("\n" -> "\n\n"): hold that sentence
+            sep = pieces.pop()
+            rest = pieces.pop() + sep
+        for i in range(0, len(pieces), 2):
+            out.append(self._emit(pieces[i], pieces[i + 1]))
+        self._buf = rest + held
+        return "".join(out)

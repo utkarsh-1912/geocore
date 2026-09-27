@@ -57,6 +57,9 @@ CANDIDATES: Dict[str, Candidate] = {c.key: c for c in [
     Candidate("qwen3-1.7b", "Qwen3 1.7B", "1.7B", "unsloth/Qwen3-1.7B-GGUF",
               "Qwen3-1.7B-Q4_K_M.gguf", 1056, "Apache-2.0", "native <tool_call>",
               "Qwen/Qwen3-1.7B", "qwen3", "Hybrid thinking model; GeoAI sends /no_think."),
+    Candidate("qwen3.5-2b", "Qwen3.5 2B", "2B", "unsloth/Qwen3.5-2B-GGUF",
+              "Qwen3.5-2B-Q4_K_M.gguf", 1222, "Apache-2.0", "native <tool_call>",
+              "Qwen/Qwen3.5-2B", "qwen3.5", "Newest small Qwen; fine-tune preset uses 16-bit LoRA."),
     Candidate("qwen3-4b-2507", "Qwen3 4B Instruct 2507", "4B", "unsloth/Qwen3-4B-Instruct-2507-GGUF",
               "Qwen3-4B-Instruct-2507-Q4_K_M.gguf", 2382, "Apache-2.0", "native <tool_call>",
               "Qwen/Qwen3-4B-Instruct-2507", "qwen3", "Non-thinking instruct release."),
@@ -76,7 +79,7 @@ CANDIDATES: Dict[str, Candidate] = {c.key: c for c in [
               "granite-4.0-micro-Q4_K_M.gguf", 2002, "Apache-2.0", "native <tool_call>",
               None, None, "IBM enterprise model with function calling."),
     Candidate("llama-3.2-3b", "Llama 3.2 3B Instruct", "3B", "bartowski/Llama-3.2-3B-Instruct-GGUF",
-              "Llama-3.2-3B-Instruct-Q4_K_M.gguf", 1926, "Llama 3.2 Community", "JSON {name, parameters}",
+              "Llama-3.2-3B-Instruct-Q4_K_M.gguf", 1926, "Llama 3.2 Community", "bare JSON (name, parameters)",
               None, None, "Custom licence with use restrictions."),
 ]}
 
@@ -94,8 +97,7 @@ def local_path(c: Candidate) -> Optional[Path]:
 
 
 def download(keys: List[str]) -> None:
-    """Download candidate GGUFs into the GeoCore models folder (needs huggingface_hub + internet)."""
-    from huggingface_hub import hf_hub_download
+    """Download candidate GGUFs into the GeoCore models folder (huggingface_hub if installed, else plain HTTPS)."""
     from core.geoai.model_config import get_default_model_dir
     target = get_default_model_dir()
     for k in keys:
@@ -104,7 +106,33 @@ def download(keys: List[str]) -> None:
             print(f"{k}: already present at {local_path(c)}")
             continue
         print(f"{k}: downloading {c.repo_id}/{c.filename} (~{c.size_mb} MB) -> {target}", flush=True)
-        hf_hub_download(repo_id=c.repo_id, filename=c.filename, local_dir=str(target))
+        try:
+            from huggingface_hub import hf_hub_download
+        except ImportError:
+            _https_download(f"https://huggingface.co/{c.repo_id}/resolve/main/{c.filename}", target / c.filename)
+        else:
+            hf_hub_download(repo_id=c.repo_id, filename=c.filename, local_dir=str(target))
+
+
+def _https_download(url: str, dest: Path, chunk: int = 1 << 20) -> None:
+    """Stream to ``dest.part`` and rename when complete, so an interrupted download is never picked up as a model."""
+    import urllib.request
+    part = dest.with_name(dest.name + ".part")
+    with urllib.request.urlopen(url) as resp, open(part, "wb") as f:
+        total = int(resp.headers.get("Content-Length") or 0)
+        done = 0
+        while True:
+            buf = resp.read(chunk)
+            if not buf:
+                break
+            f.write(buf)
+            done += len(buf)
+            if total and done % (256 * chunk) < chunk:
+                print(f"  {done / total:5.1%} of {total / 2 ** 20:.0f} MB", flush=True)
+    if total and done != total:
+        part.unlink(missing_ok=True)
+        raise IOError(f"incomplete download of {url}: {done} of {total} bytes")
+    part.replace(dest)
 
 
 def _resolve_models(spec: str) -> List[str]:

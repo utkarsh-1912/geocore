@@ -7,25 +7,12 @@ import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import {
-    ArrowRight, Folder, FileText, Clock, Star, Book, Command, Trash2,
-    Database, Box, Shovel, Activity, Droplets, Ruler, Layers, Anchor
+    ArrowRight, Folder, FileText, Clock, Star, Book, Command, Trash2
 } from 'lucide-react';
+import { getCategoryIcon } from '@/config/categoryIcons';
 import { GeoAILogo } from '@/components/common/GeoAILogo';
 import { ConfirmationModal } from '@/components/common/ConfirmationModal';
 
-// Category icon map (matches Sidebar.jsx)
-const CATEGORY_ICONS = {
-    general: Database,
-    site_investigation: Ruler,
-    piles: Box,
-    shallow: Layers,
-    consolidation: Droplets,
-    excavations: Shovel,
-    dynamics: Activity,
-    standards: Ruler,
-    constitutive: Layers,
-    pipelines: Anchor,
-};
 
 /**
  * Count total functions recursively in a module category
@@ -211,7 +198,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {modules.map((category, index) => {
-                        const Icon = CATEGORY_ICONS[category.id] || FileText;
+                        const Icon = getCategoryIcon(category.id);
                         const toolCount = countTools(category);
 
                         return (

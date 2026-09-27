@@ -139,6 +139,11 @@
 
   </li>
   <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
         <a href="/docs/geoai/tools/">
     <span>GeoAI tools</span>  </a>
 
@@ -813,9 +818,27 @@
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
     <div class="prose docs-body"><p>Package <code>groundhog.siteinvestigation.correlations</code> in groundhog 0.15.0.</p>
 <ul>
-<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">Cohesionless soils</a> — API reference for groundhog.siteinvestigation.correlations.cohesionless: 4 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">Cohesive soils</a> — API reference for groundhog.siteinvestigation.correlations.cohesive: 5 functions, 0 classes.</li>
-<li><a href="/docs/groundhog/api/siteinvestigation/correlations/general/">All soil types</a> — API reference for groundhog.siteinvestigation.correlations.general: 3 functions, 0 classes.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">Cohesionless soils</a> — API reference for groundhog.siteinvestigation.correlations.cohesionless: 4 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#gmax_sand_hardinblack"><code>gmax_sand_hardinblack</code></a>: Calculates the small-strain shear modulus of sand based on the correlation proposed with initial void ratio and stress level suggested by Hardin and Black (1968).</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#permeability_d10_hazen"><code>permeability_d10_hazen</code></a>: Calculates the permeability of a granular soil based on its grain size.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#hssmall_parameters_sand"><code>hssmall_parameters_sand</code></a>: Calculates the constitutive parameters for the HS Small model in PLAXIS as a function of relative density.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/#stress_dilatancy_bolton"><code>stress_dilatancy_bolton</code></a>: Cohesionless soils with sufficiently high relative density will tend to dilate but dilation can be suppressed by the stress on the sample.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">Cohesive soils</a> — API reference for groundhog.siteinvestigation.correlations.cohesive: 5 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></a>: Based on an evaluation of the compression index of clays and eight other soil mechanics parameters, Koppula (1981) concluded that the best fit was obtain using a direct relation with natural water content.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></a>: Based on a dataset of soft to stiff clays, a correlation between plasticity index and drained friction angle of clay is proposed.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></a>: Calculates an estimate of the coefficient of consolidation based on the liquid limit of a clay.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></a>: Calculates the small-strain shear modulus for cohesive soils based on plasticity index, effective overburden pressure and OCR.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/#k0_plasticity_kenney"><code>k0_plasticity_kenney</code></a>: Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated clay.</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/general/">All soil types</a> — API reference for groundhog.siteinvestigation.correlations.general: 3 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/general/#acousticimpedance_bulkunitweight_chen"><code>acousticimpedance_bulkunitweight_chen</code></a>: Several authors have researched the correlation between porosity and acoustic impedance.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/general/#shearwavevelocity_compressionindex_cha"><code>shearwavevelocity_compressionindex_cha</code></a>: Shear wave velocity is dependent on the stiffness of the soil skeleton which is in turn affected by the compression index C_c.</li>
+<li><a href="/docs/groundhog/api/siteinvestigation/correlations/general/#k0_frictionangle_mesri"><code>k0_frictionangle_mesri</code></a>: Calculates the coefficient of lateral earthpressure at rest for normally and overconsolidated sand and clay.</li>
+</ul>
+</li>
 </ul></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">

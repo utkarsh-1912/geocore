@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from core.geoai.tool_registry import tool_registry
 from core.geoai.slm_schema_generator import _clean_json_schema, generate_openai_tool_definitions
-from core.geoai import tool_retrieval as _retrieval
+import core.geoai.tool_retrieval as _retrieval
 
 
 #: Engineering domains inferred from the request.  Keywords are matched as

@@ -139,6 +139,11 @@
 
   </li>
   <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
         <a href="/docs/geoai/tools/">
     <span>GeoAI tools</span>  </a>
 
@@ -812,9 +817,41 @@
 <span class="badge badge--accent">groundhog 0.15.0</span>    </p>
     <div class="prose docs-body"><p>Package <code>groundhog.shallowfoundations</code> in groundhog 0.15.0.</p>
 <ul>
-<li><a href="/docs/groundhog/api/shallowfoundations/capacity/">Shallow foundation capacity</a> — API reference for groundhog.shallowfoundations.capacity: 13 functions, 3 classes.</li>
-<li><a href="/docs/groundhog/api/shallowfoundations/settlement/">Settlement</a> — API reference for groundhog.shallowfoundations.settlement: 3 functions, 1 classes.</li>
-<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">Stress distributions</a> — API reference for groundhog.shallowfoundations.stressdistribution: 6 functions, 0 classes.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/">Shallow foundation capacity</a> — API reference for groundhog.shallowfoundations.capacity: 13 functions, 3 classes.<ul>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#verticalcapacity_undrained_api"><code>verticalcapacity_undrained_api</code></a>: Calculates the vertical capacity for a shallow foundation in clay with constant or linearly increasing undrained shear strength according to API RP 2GEO.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#verticalcapacity_drained_api"><code>verticalcapacity_drained_api</code></a>: Calculates the vertical capacity for a shallow foundation in sand with effective friction angle characterized from drained triaxial tests.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#slidingcapacity_undrained_api"><code>slidingcapacity_undrained_api</code></a>: Calculates the undrained sliding capacity for a shallow foundation on clay, the contribution of skirt resistance is taken into account.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#slidingcapacity_drained_api"><code>slidingcapacity_drained_api</code></a>: Calculates the drained sliding capacity for a shallow foundation.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#effectivearea_rectangle_api"><code>effectivearea_rectangle_api</code></a>: Calculates the reduced area of a rectangular footing to account for eccentricty of the load.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#effectivearea_circle_api"><code>effectivearea_circle_api</code></a>: Calculates the reduced area for a circular foundation to account for load eccentricity.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#envelope_drained_api"><code>envelope_drained_api</code></a>: Calculates a drained failure envelope for shallow foundations according to API RP 2GEO.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#envelope_undrained_api"><code>envelope_undrained_api</code></a>: Calculates the undrained failure envelope according to API RP 2GEO.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#nq_frictionangle_sand"><code>nq_frictionangle_sand</code></a>: Calculate the bearing capacity factor Nq from the friction angle</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#ngamma_frictionangle_vesic"><code>ngamma_frictionangle_vesic</code></a>: Calculates the bearing capacity factor Ngamma according to the equation proposed by Vesic (1973).</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#ngamma_frictionangle_meyerhof"><code>ngamma_frictionangle_meyerhof</code></a>: Calculates the bearing capacity factor Ngamma according to the equation proposed by Meyerhof (1976).</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#ngamma_frictionangle_davisbooker"><code>ngamma_frictionangle_davisbooker</code></a>: Calculates the bearing capacity factor Ngamma according to the equation proposed by Davis and Booker (1971).</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#failuremechanism_prandtl"><code>failuremechanism_prandtl</code></a>: Calculates the shape of the Prandtl failure mechanism for a given friction angle.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#shallowfoundationcapacity"><code>ShallowFoundationCapacity</code></a></li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#shallowfoundationcapacityundrained"><code>ShallowFoundationCapacityUndrained</code></a></li>
+<li><a href="/docs/groundhog/api/shallowfoundations/capacity/#shallowfoundationcapacitydrained"><code>ShallowFoundationCapacityDrained</code></a></li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/settlement/">Settlement</a> — API reference for groundhog.shallowfoundations.settlement: 3 functions, 1 classes.<ul>
+<li><a href="/docs/groundhog/api/shallowfoundations/settlement/#primaryconsolidationsettlement_nc"><code>primaryconsolidationsettlement_nc</code></a>: Calculates the primary consolidation settlement for normally consolidated fine grained soil.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/settlement/#primaryconsolidationsettlement_oc"><code>primaryconsolidationsettlement_oc</code></a>: Calculates the primary consolidation settlement for an overconsolidated clay.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/settlement/#consolidationsettlement_mv"><code>consolidationsettlement_mv</code></a>: Calculates the consolidation settlement using the compressibility m_v (inverse of constrained modulus M).</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/settlement/#settlementcalculation"><code>SettlementCalculation</code></a>: Calculates shallow foundation settlement under a certain distributed load</li>
+</ul>
+</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">Stress distributions</a> — API reference for groundhog.shallowfoundations.stressdistribution: 6 functions, 0 classes.<ul>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/#stresses_pointload"><code>stresses_pointload</code></a>: Calculates the stresses at a point below a line load according the solution proposed by Boussinesq (1885).</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/#stresses_stripload"><code>stresses_stripload</code></a>: Calculates the stress redistribution at a point in the subsoil due to a strip load with a given width, applied at the surface.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/#stresses_circle"><code>stresses_circle</code></a>: Calculates the stress distribution below a uniformly loaded circular foundation.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/#stresses_rectangle"><code>stresses_rectangle</code></a>: Calculates the stresses under the corner of a uniformly loaded rectangular area.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/#stresses_lineload_retainingwall"><code>stresses_lineload_retainingwall</code></a>: Calculates the elastic stress increase due to a line load (infinitely long out of plane) next to a buried earth-retaining structure.</li>
+<li><a href="/docs/groundhog/api/shallowfoundations/stressdistribution/#stresses_stripload_retainingwall"><code>stresses_stripload_retainingwall</code></a>: Calculates the elastic stress increase due to a strip load (infinitely long out of plane) at an offset from a buried earth-retaining structure.</li>
+</ul>
+</li>
 </ul></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">

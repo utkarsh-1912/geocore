@@ -207,12 +207,12 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                             className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                         >
                             <div
-                                className={`max-w-[90%] p-3 rounded shadow-sm ${
+                                className={`max-w-[90%] px-3 py-2.5 rounded-md ${
                                     msg.sender === 'user'
-                                        ? 'bg-primary text-white'
+                                        ? 'bg-primary/10 border border-primary/20 text-text-main rounded-br-sm'
                                         : msg.isError
-                                        ? 'bg-red-500/10 border border-red-500/20 text-text-main'
-                                        : 'bg-background border border-border text-text-main'
+                                        ? 'bg-error/10 border border-error/20 text-text-main rounded-bl-sm'
+                                        : 'bg-background border border-border text-text-main rounded-bl-sm'
                                 }`}
                             >
                                 {msg.sender === 'ai' && !msg.text ? (
@@ -292,12 +292,12 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                             onKeyDown={handleKeyDown}
                             placeholder="Ask GeoAI to calculate or analyze..."
                             rows={1}
-                            className="flex-1 resize-none bg-surface border border-border rounded px-2.5 py-1.5 text-xs text-text-main focus:outline-none focus:border-primary max-h-20"
+                            className="flex-1 resize-none bg-surface border border-border rounded-md px-2.5 py-1.5 text-xs text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/15 transition-[border-color,box-shadow] duration-200 max-h-20"
                         />
                         <button
                             onClick={() => handleSendMessage()}
                             disabled={!inputValue.trim() || isLoading}
-                            className="p-2 bg-primary text-white rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
+                            className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
                         >
                             <Send size={13} />
                         </button>

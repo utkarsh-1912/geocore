@@ -29,7 +29,7 @@ import { GeoAICopilot } from './features/copilot/GeoAICopilot';
 import { GeoAIFullWindow } from './features/copilot/GeoAIFullWindow';
 import { CommandPalette } from './features/command/CommandPalette';
 
-const ICON_BUTTON = 'h-8 w-8 shrink-0 flex items-center justify-center rounded-lg text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors';
+const ICON_BUTTON = 'h-8 w-8 shrink-0 flex items-center justify-center rounded text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors';
 
 const MainLayout = () => {
   // Navigation State
@@ -566,10 +566,10 @@ const MainLayout = () => {
         offset={64}
         toastOptions={{
           classNames: {
-            toast: '!bg-surface !border !border-border !text-text-main !shadow-pop !rounded-xl',
+            toast: '!bg-surface !border !border-border !text-text-main !shadow-pop !rounded-md',
             title: '!font-semibold',
             description: '!text-text-muted',
-            actionButton: '!bg-primary !text-white',
+            actionButton: '!bg-primary !text-on-primary',
             cancelButton: '!bg-surface-muted !text-text-main',
           }
         }}
@@ -618,7 +618,7 @@ const MainLayout = () => {
 
               <button
                 onClick={goHome}
-                className={`flex items-center gap-2 px-2.5 h-8 rounded-lg text-sm font-medium transition-colors shrink-0 ${viewState === 'home' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-muted hover:text-text-main'}`}
+                className={`flex items-center gap-2 px-2.5 h-8 rounded text-sm font-medium transition-colors shrink-0 ${viewState === 'home' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-muted hover:text-text-main'}`}
               >
                 <Home size={16} />
                 <span className="hidden sm:inline">Home</span>
@@ -671,7 +671,7 @@ const MainLayout = () => {
             {/* Search / command palette trigger */}
             <button
               onClick={() => setCommandPaletteOpen(true)}
-              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-2.5 mr-1 rounded-lg border border-border bg-background text-text-subtle hover:text-text-muted hover:border-border-strong transition-colors text-sm"
+              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-2.5 mr-1 rounded border border-border bg-background text-text-subtle hover:text-text-muted hover:border-border-strong transition-colors text-sm"
               title="Search & Commands (Ctrl+K)"
             >
               <Search size={15} />
@@ -816,7 +816,7 @@ const MainLayout = () => {
                       <div ref={exportDropdownRef} className="relative">
                         <button
                           onClick={() => setShowExportMenu(!showExportMenu)}
-                          className="flex items-center gap-2 h-8 px-3 bg-primary text-white dark:text-background text-xs font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-card"
+                          className="flex items-center gap-2 h-8 px-3 bg-primary text-on-primary text-xs font-semibold rounded hover:bg-primary/90 transition-colors shadow-card"
                           aria-haspopup="menu"
                           aria-expanded={showExportMenu}
                         >
@@ -833,25 +833,25 @@ const MainLayout = () => {
                               exit={{ opacity: 0, y: -4 }}
                               transition={{ duration: 0.12 }}
                               role="menu"
-                              className="absolute right-0 mt-2 w-52 p-1 bg-surface border border-border rounded-xl shadow-pop z-50 overflow-hidden text-xs font-medium"
+                              className="absolute right-0 mt-2 w-52 p-1 bg-surface border border-border rounded-md shadow-pop z-50 overflow-hidden text-xs font-medium"
                             >
                               <button
                                 onClick={() => { handleExport('pdf'); setShowExportMenu(false); }}
-                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-lg text-left hover:bg-surface-muted transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded text-left hover:bg-surface-muted transition-colors"
                               >
                                 <FileText size={14} className="text-primary" />
                                 <span>Export PDF Report</span>
                               </button>
                               <button
                                 onClick={() => { handleExport('csv'); setShowExportMenu(false); }}
-                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-lg text-left hover:bg-surface-muted transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded text-left hover:bg-surface-muted transition-colors"
                               >
                                 <Sheet size={14} className="text-primary" />
                                 <span>Export CSV Data</span>
                               </button>
                               <button
                                 onClick={() => { handleExport('json'); setShowExportMenu(false); }}
-                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-lg text-left hover:bg-surface-muted transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded text-left hover:bg-surface-muted transition-colors"
                               >
                                 <FileJson size={14} className="text-primary" />
                                 <span>Export JSON Data</span>
