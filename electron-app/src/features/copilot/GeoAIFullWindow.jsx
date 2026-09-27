@@ -21,9 +21,59 @@ import {
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
+import { buildChatHistory } from './chatHistory';
 import { toast } from 'sonner';
 
-export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModules }) => {
+const formatBytes = (bytes) => {
+    if (bytes == null) return '—';
+    if (bytes >= 1024 ** 3) return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
+    return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+};
+
+const formatDuration = (seconds) => {
+    if (seconds == null || !isFinite(seconds)) return '—';
+    const s = Math.max(0, Math.round(seconds));
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    if (h > 0) return `${h}h ${m}m`;
+    if (m > 0) return `${m}m ${sec}s`;
+    return `${sec}s`;
+};
+
+/** Compact model download progress (sidebar footer): name, %, bar, bytes · speed · ETA. */
+const DownloadProgress = ({ status }) => {
+    const pct = status.percent;
+    const hasPct = pct != null;
+    const details = [
+        `${formatBytes(status.downloaded_bytes)} / ${formatBytes(status.total_bytes)}`,
+        status.speed_bps ? `${formatBytes(status.speed_bps)}/s` : null,
+        status.eta_seconds != null ? `${formatDuration(status.eta_seconds)} left` : null,
+    ].filter(Boolean).join(' · ');
+    return (
+        <div
+            className="px-3 py-2 space-y-1 text-[11px]"
+            title={`Elapsed ${formatDuration(status.elapsed_seconds)}`}
+        >
+            <div className="flex items-center justify-between gap-2 text-text-main font-semibold">
+                <span className="flex items-center gap-1.5 min-w-0">
+                    <Download size={11} className="text-primary shrink-0" />
+                    <span className="truncate">{status.display_name || status.model_id}</span>
+                </span>
+                <span className="font-mono text-primary shrink-0">{hasPct ? `${pct.toFixed(0)}%` : '...'}</span>
+            </div>
+            <div className="w-full bg-border/60 rounded-full h-1 overflow-hidden">
+                <div
+                    className={`bg-primary h-full rounded-full transition-[width] duration-500 ${hasPct ? '' : 'w-full animate-pulse'}`}
+                    style={hasPct ? { width: `${pct}%` } : undefined}
+                />
+            </div>
+            <div className="font-mono text-[10px] text-text-muted truncate">{details}</div>
+        </div>
+    );
+};
+
+export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext, onBackToModules }) => {
     // UI Layout State
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -140,7 +190,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                         toast.error(`Download failed: ${status.error || 'Please check internet connection'}`);
                     }
                 } catch (e) { }
-            }, 1500);
+            }, 1000);
         }
         return () => clearInterval(timer);
     }, [downloadStatus?.status]);
@@ -222,6 +272,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
 
         const targetId = currentConvId || activeConvId;
         const msgsToUse = baseMessages || messages;
+        const history = buildChatHistory(msgsToUse);
 
         const userMsg = {
             id: `user-${Date.now()}`,
@@ -237,7 +288,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
         setIsLoading(true);
 
         try {
-            const streamResponse = await api.geoaiChatStream(text, currentContext);
+            const streamResponse = await api.geoaiChatStream(text, currentContext, history);
             const reader = streamResponse.body.getReader();
             const decoder = new TextDecoder();
 
@@ -318,7 +369,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
             }
         } catch (err) {
             try {
-                const res = await api.geoaiChat(text, currentContext);
+                const res = await api.geoaiChat(text, currentContext, history);
                 const aiMsg = {
                     id: Date.now() + 1,
                     sender: 'ai',
@@ -524,6 +575,12 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                         ))}
                     </div>
 
+                    {downloadStatus?.status === 'downloading' && (
+                        <div className="border-t border-border bg-primary/5 shrink-0">
+                            <DownloadProgress status={downloadStatus} />
+                        </div>
+                    )}
+
                     {/* Clean Status Footer */}
                     <div className="border-t border-border bg-surface px-3 py-2 shrink-0 flex items-center justify-between text-[11px] text-text-muted">
                         <div className="flex items-center gap-1.5 truncate">
@@ -562,7 +619,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                         {downloadStatus?.status === 'downloading' && (
                             <span className="text-[11px] text-primary flex items-center gap-1.5 animate-pulse border border-primary/30 px-2 py-1 rounded bg-primary/5">
                                 <RefreshCw size={11} className="animate-spin" />
-                                <span>Downloading Model...</span>
+                                <span>
+                                    Downloading Model
+                                    {downloadStatus.percent != null ? ` · ${downloadStatus.percent.toFixed(0)}%` : '...'}
+                                    {downloadStatus.eta_seconds != null ? ` · ${formatDuration(downloadStatus.eta_seconds)} left` : ''}
+                                </span>
                             </span>
                         )}
 
@@ -614,22 +675,6 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                             Choose an offline model to enable local geotechnical reasoning wrapped with Groundhog's 213 calculation tools.
                                         </p>
                                     </div>
-
-                                    {/* Active Download Progress Bar */}
-                                    {downloadStatus?.status === 'downloading' && (
-                                        <div className="p-3.5 rounded border border-primary/40 bg-primary/5 space-y-2">
-                                            <div className="flex items-center justify-between text-xs font-semibold text-text-main">
-                                                <span className="flex items-center gap-2">
-                                                    <RefreshCw size={13} className="animate-spin text-primary" />
-                                                    <span>Downloading {downloadStatus.display_name || downloadStatus.model_id}...</span>
-                                                </span>
-                                                <span className="font-mono text-primary">{downloadStatus.size_mb ? `${downloadStatus.size_mb} MB` : 'Downloading'}</span>
-                                            </div>
-                                            <div className="w-full bg-border/60 rounded-full h-1.5 overflow-hidden">
-                                                <div className="bg-primary h-full rounded-full w-full animate-pulse" />
-                                            </div>
-                                        </div>
-                                    )}
 
                                     {/* Family Selector Tabs */}
                                     <div className="space-y-3">
@@ -820,9 +865,22 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                                             : 'bg-surface border border-border text-text-main shadow-xs'
                                                     }`}
                                                 >
-                                                    <div className="whitespace-pre-wrap">
-                                                        {msg.text}
-                                                    </div>
+                                                    {msg.sender === 'ai' && !msg.text ? (
+                                                        <div className="flex items-center gap-2 text-text-muted">
+                                                            {isLoading ? (
+                                                                <>
+                                                                    <RefreshCw size={12} className="animate-spin text-primary" />
+                                                                    <span>Reasoning and executing Groundhog calculation...</span>
+                                                                </>
+                                                            ) : (
+                                                                <span>No response received.</span>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="whitespace-pre-wrap">
+                                                            {msg.text}
+                                                        </div>
+                                                    )}
 
                                                     {/* Message Actions & Timestamp */}
                                                     <div className={`flex items-center justify-between pt-2 mt-2 border-t text-[10px] ${
@@ -866,7 +924,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                                             <Zap size={12} />
                                                             <span>Routine: <code>{msg.executedTool}</code></span>
                                                         </span>
-                                                        {onSelectFunction && (
+                                                        {onSelectFunction && canOpenForm?.(msg.executedTool) && (
                                                             <button
                                                                 onClick={() => onSelectFunction(msg.executedTool, msg.parameters)}
                                                                 className="flex items-center gap-1 text-[11px] text-primary hover:underline font-medium"
@@ -904,7 +962,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                 );
                             })}
 
-                            {isLoading && (
+                            {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
                                 <div className="flex items-center gap-2 text-xs text-text-muted pl-1">
                                     <RefreshCw size={12} className="animate-spin text-primary" />
                                     <span>Reasoning and executing Groundhog calculation...</span>
@@ -1031,7 +1089,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, currentContext, onBackToModu
                                             ) : downloadStatus?.status === 'downloading' && downloadStatus.model_id === model.id ? (
                                                 <>
                                                     <RefreshCw size={11} className="animate-spin" />
-                                                    <span>Downloading...</span>
+                                                    <span>
+                                                        {downloadStatus.percent != null
+                                                            ? `${downloadStatus.percent.toFixed(0)}%`
+                                                            : 'Downloading...'}
+                                                    </span>
                                                 </>
                                             ) : (
                                                 <>

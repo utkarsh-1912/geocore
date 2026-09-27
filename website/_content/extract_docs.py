@@ -1544,6 +1544,93 @@ def geoai_tools_markdown() -> str:
     return "\n".join(out)
 
 
+GEOAI_EVAL_DIR = REPO_ROOT / "python-backend" / "core" / "geoai" / "eval"
+_CANDIDATE_FIELDS = ("key", "display_name", "params", "repo_id", "filename", "size_mb", "license", "tool_format",
+                     "finetune_base", "finetune_family", "notes")
+
+
+def geoai_model_candidates() -> List[Dict[str, Any]]:
+    """Statically parse CANDIDATES in core/geoai/eval/benchmark.py (not imported: no app dependencies)."""
+    path = GEOAI_EVAL_DIR / "benchmark.py"
+    if not path.exists():
+        return []
+    out = []
+    for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+        if isinstance(node, ast.Call) and getattr(node.func, "id", None) == "Candidate":
+            vals = {f: (a.value if isinstance(a, ast.Constant) else None) for f, a in zip(_CANDIDATE_FIELDS, node.args)}
+            vals.update({k.arg: k.value.value for k in node.keywords if isinstance(k.value, ast.Constant)})
+            out.append(vals)
+    return out
+
+
+def geoai_model_candidates_markdown() -> str:
+    rows = geoai_model_candidates()
+    if not rows:
+        return "*Candidate list unavailable: benchmark.py not found.*"
+    out = ["| Model | Parameters | Download | Licence | Tool calls | Notes |", "|---|---|---|---|---|---|"]
+    for c in rows:
+        out.append(f"| [{md_cell(c['display_name'])}](https://huggingface.co/{c['repo_id']}) | {c['params']} | "
+                   f"~{c['size_mb'] / 1024:.1f} GB | {md_cell(c['license'])} | {md_cell(c['tool_format']).replace('<', '&lt;').replace('>', '&gt;')} | "
+                   f"{md_cell(c.get('notes') or '')} |")
+    return "\n".join(out)
+
+
+def _pct(v: Any) -> str:
+    return "–" if v is None else f"{100 * v:.0f}%"
+
+
+def _num(v: Any, fmt: str = "{:.2f}") -> str:
+    return "–" if v is None else fmt.format(v)
+
+
+def geoai_model_benchmarks_markdown() -> str:
+    """Render the most recent published benchmark leaderboard (run folders starting with '_' are private)."""
+    runs = [p for p in (GEOAI_EVAL_DIR / "results" / "benchmark").glob("*/leaderboard.json")
+            if not p.parent.name.startswith("_")]
+    if not runs:
+        return ("No benchmark run has been published yet. Results appear here once the candidate models have been "
+                "run through the GeoAI suite with the commands below.")
+    lb = json.loads(max(runs, key=lambda p: p.stat().st_mtime).read_text(encoding="utf-8"))
+    s = lb.get("settings") or {}
+    split = s.get("split") or "test"
+    n = max((r.get("n") or 0) for r in lb["rows"]) if lb["rows"] else 0
+    out = [
+        f"Run `{lb['run_id']}`: {n} examples from the `{split}` split"
+        + (f" (stratified subset of {s['limit']})" if s.get("limit") else "")
+        + f", {s.get('mode') or 'decision'} mode, `n_ctx` {s.get('n_ctx')}, {s.get('max_tools')} tools offered per "
+          f"request, " + ("CPU only" if not s.get("n_gpu_layers") else f"{s['n_gpu_layers']} GPU layers")
+        + f", dataset generator {s.get('dataset_generator_version')}. "
+        + ("All models answered the same examples." if lb.get("same_examples") else
+           "**Warning: the models did not all answer the same examples; rows are not directly comparable.**"),
+        "",
+        "| Model | Mean score | Strict pass | Tool choice | Arguments | Clarification | Invented inputs | p50 latency (s) | Peak RAM (MB) |",
+        "|---|---|---|---|---|---|---|---|---|",
+    ]
+    for r in lb["rows"]:
+        m = r["metrics"]
+        name = r.get("display_name") or r["label"]
+        if r["label"] == "heuristic":
+            name = "Keyword heuristic (no model)"
+        out.append(f"| {md_cell(name)} | {_num(m.get('mean_score'), '{:.3f}')} | {_pct(m.get('strict_pass_rate'))} | "
+                   f"{_pct(m.get('tool_selection_accuracy'))} | {_pct(m.get('argument_accuracy'))} | "
+                   f"{_pct(m.get('clarification_accuracy'))} | {_pct(m.get('hallucinated_parameter_rate'))} | "
+                   f"{_num(m.get('decision_latency_p50_s'), '{:.1f}')} | {_num(m.get('peak_memory_mb'), '{:.0f}')} |")
+    cats = sorted({k for r in lb["rows"] for k in (r.get("per_category") or {}) if not k.startswith("turn:")})
+    if cats:
+        out += ["", "Strict pass rate by category:", "",
+                "| Model | " + " | ".join(c.replace("_", " ") for c in cats) + " |",
+                "|---|" + "---|" * len(cats)]
+        for r in lb["rows"]:
+            name = "Keyword heuristic" if r["label"] == "heuristic" else (r.get("display_name") or r["label"])
+            out.append(f"| {md_cell(name)} | " + " | ".join(_pct((r.get("per_category") or {}).get(c)) for c in cats) + " |")
+    tuned = [r for r in lb["rows"] if r.get("fine_tuned")]
+    if not tuned:
+        out += ["", "No GeoAI fine-tuned adapter is included in this run yet; all rows are base models."]
+    out += ["", "Small subsets give noisy rates: with 40 examples one example is 2.5 percentage points. "
+                "Latency and memory depend on the machine the run used."]
+    return "\n".join(out)
+
+
 def modules_catalogue_markdown(ui: Dict[str, Any], api_index: Dict[Tuple[str, str], str]) -> Tuple[str, int, int]:
     out = []
     cat = sub = None
@@ -1891,6 +1978,8 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
     geocore_pages: List[Tuple[int, Page]] = []
     generated = {
         "geoai-tools": geoai_tools_markdown,
+        "geoai-model-candidates": geoai_model_candidates_markdown,
+        "geoai-model-benchmarks": geoai_model_benchmarks_markdown,
         "eurocode7-factors": eurocode7_markdown,
     }
     if GEOCORE_SRC_DIR.exists():

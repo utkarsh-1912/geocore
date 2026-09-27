@@ -8,13 +8,13 @@ to the local GeoCore models directory and configures GeoAI for local inference.
 
 import os
 import sys
+import time
 import logging
+import threading
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-try:
-    from huggingface_hub import hf_hub_download
-except ImportError:
-    hf_hub_download = None
+
+import requests
 
 from core.geoai.model_config import (
     get_default_model_dir,
@@ -23,19 +23,46 @@ from core.geoai.model_config import (
     find_gguf_models,
     GeoAIModelConfig
 )
+from core.geoai.gguf_meta import sha256_file
 
 logger = logging.getLogger(__name__)
 
-# Curated Candidate SLM Registry for Desktop Offline Geotechnical AI
+# Curated Candidate SLM Registry for Desktop Offline Geotechnical AI.
+# Optional per-entry keys: "size_bytes" and "sha256" (the Hub LFS oid) are
+# verified after download when present.
 RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     "qwen2.5-1.5b-instruct": {
         "family": "qwen",
         "display_name": "Qwen 2.5 (1.5B Instruct)",
         "repo_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
         "filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
-        "size_mb": 986,
+        "size_mb": 1066,
+        "size_bytes": 1117320736,
+        "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
         "description": "Ultra-lightweight (1.5B), rapid CPU inference, high-precision function calling",
         "recommended_for": "Laptops & standard workstations for high-speed Groundhog calculation execution"
+    },
+    "qwen3.5-2b": {
+        "family": "qwen",
+        "display_name": "Qwen 3.5 (2B)",
+        "repo_id": "unsloth/Qwen3.5-2B-GGUF",
+        "filename": "Qwen3.5-2B-Q4_K_M.gguf",
+        "size_mb": 1222,
+        "size_bytes": 1280835840,
+        "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+        "description": "Qwen 3.5 small (2B, 262k context) with native tool-calling chat template; benchmark candidate",
+        "recommended_for": "Laptops & workstations; candidate replacement for Qwen 2.5 1.5B"
+    },
+    "qwen3-1.7b": {
+        "family": "qwen",
+        "display_name": "Qwen 3 (1.7B)",
+        "repo_id": "unsloth/Qwen3-1.7B-GGUF",
+        "filename": "Qwen3-1.7B-Q4_K_M.gguf",
+        "size_mb": 1056,
+        "size_bytes": 1107409472,
+        "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897",
+        "description": "Qwen 3 (1.7B, 40k context) hybrid thinking model with native tool calling; benchmark candidate",
+        "recommended_for": "Laptops & standard workstations; candidate replacement for Qwen 2.5 1.5B"
     },
     "qwen2.5-3b-instruct": {
         "family": "qwen",
@@ -91,6 +118,7 @@ def list_available_models() -> List[Dict[str, Any]]:
             "repo_id": info["repo_id"],
             "filename": info["filename"],
             "size_mb": info["size_mb"],
+            "sha256": info.get("sha256"),
             "description": info["description"],
             "recommended_for": info["recommended_for"],
             "is_installed": is_installed,
@@ -104,13 +132,181 @@ _download_state: Dict[str, Any] = {
     "model_id": None,
     "display_name": None,
     "size_mb": None,
-    "error": None
+    "error": None,
+    # Live progress (bytes / seconds). None when unknown.
+    "downloaded_bytes": 0,
+    "total_bytes": None,
+    "percent": None,
+    "speed_bps": None,
+    "eta_seconds": None,
+    "elapsed_seconds": 0.0,
 }
+
+_PROGRESS_POLL_SECONDS = 0.5
+# Weight of the newest speed sample in the exponential moving average.
+_SPEED_SMOOTHING = 0.3
 
 
 def get_download_status() -> Dict[str, Any]:
     """Returns current active model download state."""
     return dict(_download_state)
+
+
+def _reset_progress(total_bytes: Optional[int]) -> None:
+    _download_state.update({
+        "downloaded_bytes": 0,
+        "total_bytes": total_bytes,
+        "percent": 0.0 if total_bytes else None,
+        "speed_bps": None,
+        "eta_seconds": None,
+        "elapsed_seconds": 0.0,
+    })
+
+
+def compute_progress(
+    downloaded_bytes: int,
+    total_bytes: Optional[int],
+    prev_bytes: int,
+    dt_seconds: float,
+    prev_speed_bps: Optional[float],
+) -> Dict[str, Optional[float]]:
+    """Derives percent, smoothed speed and ETA from two byte-count samples."""
+    speed = prev_speed_bps
+    if dt_seconds > 0:
+        instant = max(downloaded_bytes - prev_bytes, 0) / dt_seconds
+        speed = instant if prev_speed_bps is None else (
+            _SPEED_SMOOTHING * instant + (1 - _SPEED_SMOOTHING) * prev_speed_bps
+        )
+
+    percent = None
+    eta = None
+    if total_bytes:
+        percent = min(100.0, 100.0 * downloaded_bytes / total_bytes)
+        if speed and speed > 0:
+            eta = max(total_bytes - downloaded_bytes, 0) / speed
+    return {"percent": percent, "speed_bps": speed, "eta_seconds": eta}
+
+
+HF_BASE_URL = "https://huggingface.co"
+_HTTP_TIMEOUT = (15, 60)  # (connect, read) seconds
+_CHUNK_BYTES = 1024 * 1024
+_MAX_ATTEMPTS = 5
+_RETRY_BACKOFF_SECONDS = 2.0
+_PART_SUFFIX = ".part"
+
+
+def hf_resolve_url(repo_id: str, filename: str, revision: str = "main") -> str:
+    """Direct download URL of a file in a Hugging Face model repo."""
+    return f"{HF_BASE_URL}/{repo_id}/resolve/{revision}/{filename}"
+
+
+def _fetch_remote_size(repo_id: str, filename: str) -> Optional[int]:
+    """Exact file size from the Hub, or None if it cannot be determined."""
+    try:
+        r = requests.head(hf_resolve_url(repo_id, filename), allow_redirects=True, timeout=_HTTP_TIMEOUT)
+        r.raise_for_status()
+        size = r.headers.get("Content-Length")
+        return int(size) if size else None
+    except Exception as e:
+        logger.debug(f"Could not fetch remote size for {repo_id}/{filename}: {e}")
+        return None
+
+
+def _part_path(target_dir: Path, filename: str) -> Path:
+    return Path(target_dir) / (filename + _PART_SUFFIX)
+
+
+def _partial_download_size(target_dir: Path, filename: str) -> int:
+    """Bytes written so far to <target_dir>/<filename>.part (0 if absent)."""
+    try:
+        return _part_path(target_dir, filename).stat().st_size
+    except OSError:
+        return 0
+
+
+def _verify_file(path: Path, expected_size: Optional[int], expected_sha256: Optional[str]) -> None:
+    """Raises ValueError if the file does not match the expected size/sha256."""
+    actual_size = path.stat().st_size
+    if expected_size is not None and actual_size != expected_size:
+        raise ValueError(f"Size mismatch for {path.name}: expected {expected_size} bytes, got {actual_size}")
+    if expected_sha256:
+        actual = sha256_file(path)
+        if actual.lower() != expected_sha256.lower():
+            raise ValueError(f"SHA-256 mismatch for {path.name}: expected {expected_sha256}, got {actual}")
+
+
+def _download_once(url: str, part: Path, session: Any) -> None:
+    """One HTTP attempt, resuming <part> with a Range request when it already has bytes."""
+    offset = part.stat().st_size if part.exists() else 0
+    headers = {"Range": f"bytes={offset}-"} if offset else {}
+    with session.get(url, headers=headers, stream=True, allow_redirects=True, timeout=_HTTP_TIMEOUT) as r:
+        if r.status_code == 416:
+            return  # requested range starts at EOF: the .part file is already complete
+        r.raise_for_status()
+        mode = "ab" if (offset and r.status_code == 206) else "wb"  # 200 = server ignored Range: restart
+        with open(part, mode) as f:
+            for chunk in r.iter_content(chunk_size=_CHUNK_BYTES):
+                if chunk:
+                    f.write(chunk)
+
+
+def download_file(
+    url: str,
+    dest: Path,
+    expected_size: Optional[int] = None,
+    expected_sha256: Optional[str] = None,
+    session: Any = None,
+    max_attempts: int = _MAX_ATTEMPTS,
+) -> Path:
+    """
+    Resumable, verified download: streams into <dest>.part (resuming via HTTP Range
+    after interruptions, up to ``max_attempts``), verifies size/sha256, then renames
+    atomically to <dest>. A corrupt .part is deleted so the next attempt starts clean.
+    """
+    dest = Path(dest)
+    part = dest.with_name(dest.name + _PART_SUFFIX)
+    session = session or requests.Session()
+
+    last_error: Optional[Exception] = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            _download_once(url, part, session)
+            break
+        except requests.RequestException as e:
+            status = getattr(getattr(e, "response", None), "status_code", None)
+            if status is not None and 400 <= status < 500 and status != 429:
+                raise  # 401/404 etc. will not fix themselves
+            last_error = e
+            logger.warning(f"Download attempt {attempt}/{max_attempts} failed for {dest.name}: {e}")
+            if attempt < max_attempts:
+                time.sleep(_RETRY_BACKOFF_SECONDS * attempt)
+    else:
+        raise RuntimeError(f"Download of {dest.name} failed after {max_attempts} attempts: {last_error}")
+
+    try:
+        _verify_file(part, expected_size, expected_sha256)
+    except ValueError:
+        part.unlink(missing_ok=True)
+        raise
+    os.replace(part, dest)
+    return dest
+
+
+def _monitor_progress(target_dir: Path, filename: str, stop: threading.Event) -> None:
+    start = time.monotonic()
+    prev_t = start
+    prev_bytes = _partial_download_size(target_dir, filename)  # resumed bytes don't count toward speed
+    while not stop.wait(_PROGRESS_POLL_SECONDS):
+        now = time.monotonic()
+        downloaded = _partial_download_size(target_dir, filename)
+        stats = compute_progress(
+            downloaded, _download_state["total_bytes"],
+            prev_bytes, now - prev_t, _download_state["speed_bps"],
+        )
+        _download_state.update(stats)
+        _download_state["downloaded_bytes"] = downloaded
+        _download_state["elapsed_seconds"] = now - start
+        prev_t, prev_bytes = now, downloaded
 
 
 def download_model(
@@ -134,29 +330,51 @@ def download_model(
     model_info = RECOMMENDED_MODELS[model_id]
     target_dir = get_default_model_dir()
 
-    if hf_hub_download is None:
-        _download_state["status"] = "error"
-        _download_state["error"] = "huggingface_hub is not installed. Please install huggingface_hub to download models."
-        raise ImportError("huggingface_hub is required to download models from Hugging Face.")
-
     _download_state["status"] = "downloading"
     _download_state["model_id"] = model_id
     _download_state["display_name"] = model_info.get("display_name", model_id)
     _download_state["size_mb"] = model_info.get("size_mb", 0)
     _download_state["error"] = None
+    expected_size = model_info.get("size_bytes")
+    total_bytes = expected_size or _fetch_remote_size(model_info["repo_id"], model_info["filename"])
+    if total_bytes is None and model_info.get("size_mb"):
+        total_bytes = int(model_info["size_mb"] * 1024 * 1024)  # catalogue estimate
+    _reset_progress(total_bytes)
 
+    stop_monitor = threading.Event()
+    monitor = threading.Thread(
+        target=_monitor_progress,
+        args=(Path(target_dir), model_info["filename"], stop_monitor),
+        daemon=True,
+    )
     try:
         logger.info(f"Starting download of {model_id} ({model_info['size_mb']} MB) into {target_dir}...")
         print(f"Downloading {model_id} ({model_info['filename']}) from {model_info['repo_id']}...")
 
-        local_path = hf_hub_download(
-            repo_id=model_info["repo_id"],
-            filename=model_info["filename"],
-            local_dir=str(target_dir),
-            local_dir_use_symlinks=False
-        )
+        dest = Path(target_dir) / model_info["filename"]
+        monitor.start()
+        try:
+            if dest.exists() and expected_size and dest.stat().st_size == expected_size:
+                local_path = dest  # already installed; skip the network entirely
+            else:
+                local_path = download_file(
+                    hf_resolve_url(model_info["repo_id"], model_info["filename"]),
+                    dest,
+                    expected_size=expected_size,
+                    expected_sha256=model_info.get("sha256"),
+                )
+        finally:
+            stop_monitor.set()
+            monitor.join(timeout=2)
 
         path_obj = Path(local_path)
+        final_size = path_obj.stat().st_size
+        _download_state.update({
+            "downloaded_bytes": final_size,
+            "total_bytes": final_size,
+            "percent": 100.0,
+            "eta_seconds": 0.0,
+        })
         logger.info(f"Model successfully saved at: {path_obj}")
         print(f"Model downloaded successfully to: {path_obj}")
 

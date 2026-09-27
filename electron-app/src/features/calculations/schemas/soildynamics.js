@@ -10,7 +10,7 @@ export const soilDynamicsSchemas = {
             { name: "sigma_vo", type: "float", unit: "kPa", min: 0.0, description: "Total vertical stress at depth of interest", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, description: "Effective vertical stress at depth of interest", required: true },
             { name: "magnitude", type: "float", min: 5.5, max: 8.5, description: "Earthquake magnitude", required: true },
-            { name: "acceleration", type: "float", unit: "g", min: 0.0, description: "Maximum horizontal acceleration at surafce", required: true },
+            { name: "acceleration", type: "float", unit: "m/s2", min: 0.0, description: "Maximum horizontal acceleration at surface (m/s2, not g: groundhog divides by gravity)", required: true },
             { name: "depth", type: "float", unit: "m", min: 0.0, description: "Depth at which CSR is calculated", required: true },
             { name: "gravity", type: "float", unit: "m/s2", default: 9.81, min: 9.8, max: 10.0, description: "Acceleration due to gravity" },
             { name: "rd_override", type: "float", description: "Override for rd (optional)" },
@@ -19,7 +19,7 @@ export const soilDynamicsSchemas = {
     },
     cyclicstressratio_youd: {
         inputs: [
-            { name: "acceleration", type: "float", unit: "g", min: 0.0, description: "Maximum horizontal acceleration at surface", required: true },
+            { name: "acceleration", type: "float", unit: "m/s2", min: 0.0, description: "Maximum horizontal acceleration at surface (m/s2, not g: groundhog divides by gravity)", required: true },
             { name: "sigma_vo", type: "float", unit: "kPa", min: 0.0, max: 500.0, description: "Vertical total stress", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, max: 250.0, description: "Vertical effective stress", required: true },
             { name: "depth", type: "float", unit: "m", min: 0.0, max: 23.0, description: "Depth considered", required: true },
@@ -67,7 +67,7 @@ export const soilDynamicsSchemas = {
             { name: "qc", type: "float", unit: "MPa", min: 0.0, max: 100.0, description: "Cone tip resistance", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, max: 1000.0, description: "Vertical effective stress", required: true },
             { name: "CSR", type: "float", min: 0.0, max: 1.0, description: "Cyclic stress ratio (M=7.5)", required: true },
-            { name: "fs", type: "float", unit: "kPa", min: 0.0, max: 10.0, description: "Sleeve friction", required: true },
+            { name: "fs", type: "float", unit: "MPa", min: 0.0, max: 10.0, description: "Sleeve friction", required: true },
             { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" },
             { name: "deltaQ_nominator", type: "float", default: 10.0, description: "DeltaQ nominator term" },
             { name: "deltaQ_denominator", type: "float", default: 0.67, description: "DeltaQ denominator term" },

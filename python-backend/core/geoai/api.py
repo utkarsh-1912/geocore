@@ -94,11 +94,15 @@ def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False))
     Uses the configured ModelProvider (llama.cpp SLM or heuristic fallback)
     to reason over tools and generate grounded engineering responses.
 
-    Body format: {"prompt": str, "context": Optional[dict]}
+    Body format: {"prompt": str, "context": Optional[dict], "history": Optional[list]}
+    history items: {"role": "user"|"assistant", "content": str, "tool": {"name", "arguments", "result"}?}
     Query params: stream=true for SSE streaming
     """
     prompt = payload.get("prompt", "")
     context = payload.get("context")
+    history = payload.get("history")
+    if history is not None and not isinstance(history, list):
+        raise HTTPException(status_code=400, detail="Field 'history' must be a list.")
 
     if not prompt:
         raise HTTPException(status_code=400, detail="Field 'prompt' is required.")
@@ -109,7 +113,7 @@ def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False))
     if stream:
         def event_generator():
             try:
-                for event in agent.run_stream(user_message=prompt, context=context):
+                for event in agent.run_stream(user_message=prompt, context=context, history=history):
                     yield event.to_sse()
             except Exception as e:
                 logger.error(f"Streaming error in GeoAI chat: {e}")
@@ -127,7 +131,7 @@ def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False))
             }
         )
     else:
-        response = agent.run(user_message=prompt, context=context)
+        response = agent.run(user_message=prompt, context=context, history=history)
         return response.to_dict()
 
 

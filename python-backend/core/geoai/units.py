@@ -254,13 +254,43 @@ for dim, mapping in UNIT_TAXONOMY.items():
         _UNIT_LOOKUP[u_str] = (dim, factor)
 
 
+_SPHINX_MATH_RE = re.compile(r"^:math:`(.*)`$")
+_SUPERSCRIPTS = str.maketrans({"²": "2", "³": "3", "⁴": "4"})
+
+
+def clean_unit_label(raw_unit: Optional[str]) -> str:
+    """
+    Human-readable unit label (case preserved) from a schema/docstring unit.
+
+    Strips Sphinx ``:math:`kPa``` wrappers and surrounding brackets. Returns '-' for
+    missing units and for strings that are clearly not units (LaTeX fragments that
+    leaked out of a docstring formula).
+    """
+    if raw_unit is None:
+        return "-"
+    u = str(raw_unit).strip()
+    m = _SPHINX_MATH_RE.match(u)
+    if m:
+        u = m.group(1).strip()
+    u = re.sub(r'^[\[\(](.*)[\]\)]$', r'\1', u).strip()
+    if not u or "\\" in u or "{" in u or len(u) > 16 or " " in u.strip():
+        return "-"
+    return u
+
+
 def normalize_unit_str(raw_unit: Optional[str]) -> str:
-    """Normalize unit string representation (strip brackets, whitespace, lowercase)."""
+    """Normalize unit string representation (strip brackets, Sphinx markup, whitespace, lowercase)."""
     if not raw_unit:
         return "-"
-    u = str(raw_unit).strip().lower()
+    u = str(raw_unit).strip()
+    m = _SPHINX_MATH_RE.match(u)
+    if m:
+        u = m.group(1).strip()
+    u = u.lower().translate(_SUPERSCRIPTS)
     # Remove surrounding brackets e.g. '[kPa]' -> 'kpa'
     u = re.sub(r'^[\[\(\{\<](.*)[\]\)\}\>]$', r'\1', u).strip()
+    # 'kN / m3' -> 'kn/m3'
+    u = re.sub(r'\s*/\s*', '/', u)
     return u or "-"
 
 
@@ -345,17 +375,19 @@ def convert_unit(value: float, from_unit: str, to_unit: str, field_name: Optiona
     dim_from, factor_from = _UNIT_LOOKUP[u_from]
     dim_to, factor_to = _UNIT_LOOKUP[u_to]
 
-    # Special handling for percent vs ratio dimensionless conversion
+    # Special handling for percent vs ratio dimensionless conversion.
+    # PERCENT factors convert to percent (e.g. 'ratio' -> x100), so go via percent.
     if dim_from == UnitDimension.PERCENT and dim_to == UnitDimension.DIMENSIONLESS:
-        # e.g. 50% -> 0.5 ratio
-        return value / 100.0
+        # e.g. 50 % -> 0.5 ; 0.5 ratio -> 0.5
+        return value * factor_from / 100.0
     if dim_from == UnitDimension.DIMENSIONLESS and dim_to == UnitDimension.PERCENT:
-        # e.g. 0.5 ratio -> 50%
-        return value * 100.0
+        # e.g. 0.5 (-) -> 50 % ; 0.5 (-) -> 0.5 ratio
+        return value * 100.0 / factor_to
 
     if dim_from != dim_to:
         raise GeoAIUnitError(
-            message=f"Unit dimension mismatch: '{from_unit}' is a {dim_from.value} unit, but target '{to_unit}' requires {dim_to.value}.",
+            message=(f"Unit dimension mismatch{' for ' + repr(field_name) if field_name else ''}: "
+                     f"'{from_unit}' is a {dim_from.value} unit, but target '{to_unit}' requires {dim_to.value}."),
             field=field_name,
             provided_unit=from_unit,
             expected_unit=to_unit
@@ -375,30 +407,58 @@ def normalize_parameter_value(
 ) -> Any:
     """
     Normalizes a parameter input value against its expected unit.
-    - If value is a string with units (e.g. '1.5 MPa'), parses and converts to expected unit (e.g. 'kPa' -> 1500.0).
-    - If value is pure numeric and expected_unit is defined, verifies finite float and returns numeric value.
-    - If unit mismatch is detected (e.g. '25 kPa' for unit weight), raises GeoAIUnitError with clear diagnostics.
+
+    Rules (deterministic, never guessed):
+    - Numbers without a unit are assumed to already be in the expected unit.
+    - A string with a unit (e.g. '1.5 MPa') is parsed and converted to the expected unit
+      (e.g. 'kPa' -> 1500.0). A string without a unit ('12.5') is treated like a number.
+    - Dimension mismatch (e.g. '25 kPa' for a unit weight) raises GeoAIUnitError.
+    - Dimensionless expected unit ('-'): '25 %' -> 0.25 (percent to fraction),
+      '0.25 ratio' -> 0.25; any physical unit (kPa, m, ...) raises GeoAIUnitError.
+    - Percent expected unit ('%', 'pct'): '25 %' -> 25, '0.25 fraction' -> 25; a bare
+      number is taken as percent (0.25 means 0.25 %).
+    - Expected unit outside the taxonomy (e.g. 'kPa/m', 'm3/s'): only the identical
+      unit is accepted; anything else raises GeoAIUnitError (it cannot be verified).
     """
     if value is None:
         return None
 
-    if not expected_unit or normalize_unit_str(expected_unit) in {"-", "dimensionless", ""}:
-        # Pure numeric or string coercion without strict target dimension
-        if isinstance(value, str):
-            val, _ = parse_value_with_unit(value)
-            return val
+    expected_clean = normalize_unit_str(expected_unit)
+    if isinstance(value, str):
+        val, provided_unit = parse_value_with_unit(value)
+    elif isinstance(value, bool):
         return value
+    elif isinstance(value, (int, float)):
+        val, provided_unit = value, None
+    else:
+        return value
+
+    if not expected_unit or expected_clean in {"-", "dimensionless", ""}:
+        if not provided_unit:
+            return float(val) if isinstance(value, str) else value
+        prov_dim = get_unit_dimension(provided_unit)
+        if prov_dim in (UnitDimension.PERCENT, UnitDimension.DIMENSIONLESS):
+            return convert_unit(val, from_unit=provided_unit, to_unit="-", field_name=field_name)
+        if prov_dim is None:
+            raise GeoAIUnitError(
+                message=(f"Parameter '{field_name or 'value'}' is dimensionless [-]; unrecognized unit "
+                         f"'{provided_unit}' in '{value}'. Supply a plain number (a '%' value is converted to a fraction)."),
+                field=field_name, provided_unit=provided_unit, expected_unit="-")
+        raise GeoAIUnitError(
+            message=(f"Unit dimension mismatch: '{provided_unit}' is a {prov_dim.value} unit, but parameter "
+                     f"'{field_name or 'value'}' is dimensionless [-]."),
+            field=field_name, provided_unit=provided_unit, expected_unit="-")
 
     target_dim = get_unit_dimension(expected_unit)
     if not target_dim:
-        # Expected unit not in standard taxonomy (e.g. complex compound or custom string)
-        if isinstance(value, str):
-            try:
-                val, _ = parse_value_with_unit(value)
-                return val
-            except GeoAIUnitError:
-                return value
-        return value
+        # Expected unit not in the taxonomy (compound/custom unit): accept only the same unit.
+        if not provided_unit or normalize_unit_str(provided_unit) == expected_clean:
+            return float(val) if isinstance(value, str) else value
+        raise GeoAIUnitError(
+            message=(f"Parameter '{field_name or 'value'}' expects {clean_unit_label(expected_unit)}; "
+                     f"'{provided_unit}' cannot be converted automatically. Supply a plain number in "
+                     f"{clean_unit_label(expected_unit)}."),
+            field=field_name, provided_unit=provided_unit, expected_unit=expected_unit)
 
     if isinstance(value, (int, float)):
         # Pure numeric without explicit unit string; assumed to already be in target unit
@@ -406,11 +466,6 @@ def normalize_parameter_value(
             raise GeoAIUnitError(f"Parameter '{field_name or 'value'}' cannot be NaN or Infinite.")
         return float(value)
 
-    if isinstance(value, str):
-        val, provided_unit = parse_value_with_unit(value)
-        if provided_unit:
-            return convert_unit(val, from_unit=provided_unit, to_unit=expected_unit, field_name=field_name)
-        else:
-            return float(val)
-
-    return value
+    if provided_unit:
+        return convert_unit(val, from_unit=provided_unit, to_unit=expected_unit, field_name=field_name)
+    return float(val)

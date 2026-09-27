@@ -1,18 +1,27 @@
 # Author: Utkarsh Gupta
 # License: GPL v3
 """
-Intelligent tool subset selection for context-constrained SLMs.
-Provides dynamic filtering and ranking of the Geotechnical Tool Registry
-to fit within strict context limits of local models (e.g., Gemma).
+Tool subset selection for context-constrained local SLMs (AGENTS.md §7, §14).
+
+Only a handful of tool schemas fit in a small model's context window, so the
+tools offered for a request are *retrieved*: every registered tool is ranked
+with BM25 over a retrieval card built from existing registry / docstring /
+metadata text (see ``core.geoai.tool_retrieval``).  Domain inference and the
+active form (``context['activeFunction']``) are soft score boosts -- never hard
+filters -- and the active function is always offered.
 """
 
+import json
 import re
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from core.geoai.tool_registry import tool_registry
 from core.geoai.slm_schema_generator import _clean_json_schema, generate_openai_tool_definitions
+from core.geoai import tool_retrieval as _retrieval
 
 
+#: Engineering domains inferred from the request.  Keywords are matched as
+#: stemmed phrases ("skin_friction" == "skin friction(s)").
 CATEGORY_KEYWORDS = {
     "site_investigation": {"cpt", "spt", "pcpt", "cone", "borehole", "n60", "qc", "ic", "friction_ratio"},
     "shallow_foundations": {"bearing", "settlement", "footing", "shallow", "foundation", "boussinesq", "vesic", "schmertmann"},
@@ -25,37 +34,116 @@ CATEGORY_KEYWORDS = {
     "pipelines": {"pipeline", "subsea", "contact_width", "penetration", "embedment"},
     "groundwater": {"hydraulic", "conductivity", "permeability", "pumping", "aquifer", "dupuit"},
     "eurocode": {"eurocode", "ec7", "en1997", "partial_factor", "design_approach", "fractile"},
+    "research": {"literature", "references", "papers", "publications", "documents", "research",
+                 "compare", "comparison", "guidance", "sources", "citation", "library", "evidence"},
 }
 
-CATEGORY_SYNONYMS = {
-    "earth_pressure": {"excavations", "earth_pressure"},
-    "excavations": {"excavations", "earth_pressure"},
-    "classification": {"phase_relations", "classification"},
-    "phase_relations": {"phase_relations", "classification"},
+#: Domain -> markers found in the real registry categories / Groundhog module
+#: paths (``groundhog.shallowfoundations.capacity`` -> "shallowfoundations",
+#: "capacity").  A tool belongs to a domain if any marker matches.
+DOMAIN_MARKERS: Dict[str, Set[str]] = {
+    "site_investigation": {"siteinvestigation", "insitutests", "in_situ", "pcpt_correlations", "spt_correlations",
+                           "pcpt_processing", "spt_processing"},
+    "shallow_foundations": {"shallowfoundations", "shallow_foundations"},
+    "deep_foundations": {"deepfoundations", "axialcapacity"},
+    "earth_pressure": {"excavations"},
+    "excavations": {"excavations"},
+    "soil_dynamics": {"soildynamics", "soil_dynamics"},
+    "phase_relations": {"classification", "phaserelations"},
+    "consolidation": {"consolidation", "onedimensionalconsolidation", "settlement", "compressibility"},
+    "pipelines": {"pipelinescables", "pipelines"},
+    "groundwater": {"groundwaterflow", "pumpingtests"},
+    "eurocode": {"eurocode7"},
+    "research": {"research"},
 }
+
+#: Ranking constants (tuned on eval_val only; see core/geoai/eval/selector_recall.py).
+DOMAIN_BOOST = 0.05          # x best BM25 score, for lexically matching tools in an inferred domain
+RESEARCH_BOOST = 1.5         # x best BM25 score, research wording without numeric inputs
+CANONICAL_BONUS = 0.10       # relative bonus for curated GeoAI tools over auto-registered duplicates
+NAME_WEIGHT = 1.0            # x idf, per query term found in the tool name ("Poncelet", "Hazen")
+TARGET_WEIGHT = 1.0          # x idf, per requested-quantity term matching the tool's output (name target)
+
+#: A numeric *input* ("phi = 30", "depth of 10 m", "qc is 8 MPa", "12.5 kPa") -- as opposed to
+#: years or labels in research questions ("Robertson 1990", "Eurocode 7", "N60").
+_NUMERIC_INPUT = re.compile(
+    r"(?:[=:]|\b(?:of|is|was|be|at|to)\b)\s*-?\d|"
+    r"-?\d+(?:\.\d+)?\s*(?:%|°|kpa|mpa|kn|m\b|mm\b|cm\b|m/s|m2|m3|deg|kg|t/m|ft|psf|psi|blows)",
+    re.IGNORECASE)
+
+
+def _phrase(keyword: str) -> Tuple[str, ...]:
+    return tuple(_retrieval.stem(t) for t in _retrieval.raw_tokens(keyword.replace("_", " ")))
+
+
+_DOMAIN_PHRASES: Dict[str, List[Tuple[str, ...]]] = {
+    domain: sorted({_phrase(k) for k in kws}) for domain, kws in CATEGORY_KEYWORDS.items()
+}
+
+
+_MAX_PHRASE = max(len(p) for phrases in _DOMAIN_PHRASES.values() for p in phrases)
+
+
+def _ngrams(seq: Sequence[str], max_n: int) -> Set[Tuple[str, ...]]:
+    return {tuple(seq[i:i + n]) for n in range(1, max_n + 1) for i in range(len(seq) - n + 1)}
 
 
 def infer_categories(query: str) -> List[str]:
+    """Infer engineering domains from the request (stemmed keyword phrases).
+
+    Returns domain names sorted by number of matching keywords (ties keep the
+    ``CATEGORY_KEYWORDS`` order).
     """
-    Tokenizes query and matches against CATEGORY_KEYWORDS to infer domain categories.
-    Returns list of matching category names sorted by match score.
-    """
-    words = set(re.findall(r'[a-z0-9_]+', query.lower()))
+    grams = _ngrams([_retrieval.stem(t) for t in _retrieval.raw_tokens(query)], _MAX_PHRASE)
     scores = {}
-    
-    for category, keywords in CATEGORY_KEYWORDS.items():
-        overlap = len(words.intersection(keywords))
-        if overlap > 0:
-            scores[category] = overlap
-            
-    sorted_categories = sorted(scores.items(), key=lambda item: item[1], reverse=True)
-    return [category for category, score in sorted_categories]
+    for domain, phrases in _DOMAIN_PHRASES.items():
+        hits = sum(1 for p in phrases if p in grams)
+        if hits:
+            scores[domain] = hits
+    return [d for d, _ in sorted(scores.items(), key=lambda kv: -kv[1])]
+
+
+def _tool_markers(tool: Any) -> Set[str]:
+    module = getattr(getattr(tool, "func", None), "__module__", "") or ""
+    return {getattr(tool, "category", "") or ""} | set(module.split("."))
+
+
+_MATH_BLOCK = re.compile(r"\s*\.\. math::.*", re.S)
+_MATH_ROLE = re.compile(r":math:`([^`]*)`")
+_HTML_TAG = re.compile(r"<[^>]+>")
+
+
+def _compact_text(text: str) -> str:
+    """Drop Sphinx ``.. math::`` blocks and unwrap ``:math:`x``` / HTML from docstring-derived text."""
+    t = _MATH_BLOCK.sub("", text)
+    t = _MATH_ROLE.sub(lambda m: m.group(1), t)
+    t = _HTML_TAG.sub("", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def _compact_schema_descriptions(obj: Any, _in_properties: bool = False) -> Any:
+    """Recursively compact every ``description`` string of a JSON schema and drop the
+    auto-generated Pydantic ``title`` of each property (token budget, §23)."""
+    if isinstance(obj, dict):
+        out = {}
+        for k, v in obj.items():
+            if k == "title" and isinstance(v, str) and not _in_properties:
+                continue
+            if k == "description" and isinstance(v, str) and not _in_properties:
+                out[k] = _compact_text(v)
+            else:
+                out[k] = _compact_schema_descriptions(v, _in_properties=(k == "properties"))
+        return out
+    if isinstance(obj, list):
+        return [_compact_schema_descriptions(v) for v in obj]
+    return obj
 
 
 def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
     """
     Takes tool dicts from the registry and formats them into the OpenAI tool-calling spec.
-    Strips overly verbose descriptions to save tokens.
+    Strips overly verbose descriptions (first sentence of the tool description; no
+    LaTeX math blocks in parameter descriptions) to save tokens.
     Ensures all schemas are JSON-serializable (no NaN/Inf).
     """
     formatted = []
@@ -70,7 +158,7 @@ def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
             name = tool.get("name", "")
             desc = tool.get("description", "")
             params = tool.get("input_schema", {})
-            
+
         # Strip long descriptions (keep first sentence roughly)
         short_desc = desc
         if short_desc:
@@ -79,9 +167,9 @@ def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
                 short_desc = sentences[0]
                 if not short_desc.endswith("."):
                     short_desc += "."
-                
-        cleaned_params = _clean_json_schema(params)
-        
+
+        cleaned_params = _compact_schema_descriptions(_clean_json_schema(params))
+
         formatted.append({
             "type": "function",
             "function": {
@@ -90,103 +178,95 @@ def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
                 "parameters": cleaned_params
             }
         })
-        
+
     return formatted
 
 
-def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, max_tools: int = 20) -> List[dict]:
+def _index() -> "_retrieval.ToolRetrievalIndex":
+    # Module globals are looked up at call time so callers may substitute a registry view
+    # (see training.scaleup._cached_tool_definitions).
+    return _retrieval.get_index(tool_registry, generate_openai_tool_definitions, format_tools_for_prompt)
+
+
+def rank_tools(query: str, context: Optional[Dict[str, Any]] = None) -> List[Tuple[str, float]]:
+    """Rank registered tools for ``query``; returns ``(name, score)`` with score > 0, best first.
+
+    Deterministic: ties are broken by curated-before-auto-registered, then
+    registry order.
     """
-    Dynamically selects a relevant subset of tools based on query and context.
-    Uses slm_schema_generator for foundational schemas and formats them.
+    index = _index()
+    tools = tool_registry._tools
+    query = query or ""
+
+    scores = index.score(query, name_weight=NAME_WEIGHT, target_weight=TARGET_WEIGHT)
+    top = max(scores) if scores else 0.0
+
+    if top > 0:
+        # Soft boosts (never filters).  A literature/document question about a topic
+        # ("guidance on pile skin friction") favours research tools over the topic's
+        # calculators; otherwise inferred engineering domains are favoured.
+        research = "~research" in index.analyze_query(query) and not _NUMERIC_INPUT.search(query)
+        domains = [] if research else [d for d in infer_categories(query) if d != "research"]
+        markers: Set[str] = set().union(*(DOMAIN_MARKERS.get(d, set()) for d in domains)) if domains else set()
+        for i, name in enumerate(index.names):
+            if scores[i] <= 0:
+                continue
+            tool_markers = _tool_markers(tools[name]) if name in tools else set()
+            if markers and tool_markers & markers:
+                scores[i] += DOMAIN_BOOST * top
+            if research and "research" in tool_markers:
+                scores[i] += RESEARCH_BOOST * top
+            if index.cards[i].canonical:
+                scores[i] *= 1.0 + CANONICAL_BONUS
+
+    active = (context or {}).get("activeFunction")
+    ranked = [(name, scores[i]) for i, name in enumerate(index.names) if scores[i] > 0 and name != active]
+    if not ranked:
+        # Nothing matched lexically: offer curated tools first (registry order).
+        ranked = [(c.name, 0.0) for c in index.cards if c.canonical and c.name != active]
+    ranked.sort(key=lambda item: (-item[1], not index.cards[index.position[item[0]]].canonical,
+                                  index.position[item[0]]))
+    if active and active in index.position:
+        ranked.insert(0, (active, float("inf")))   # the open form always gets a slot
+    return ranked
+
+
+#: Rough characters-per-token ratio used for schema budgeting (same as the agent tests).
+CHARS_PER_TOKEN = 3.5
+
+
+def schema_tokens(tool: dict) -> float:
+    """Approximate prompt tokens of one formatted tool schema."""
+    return len(json.dumps(tool)) / CHARS_PER_TOKEN
+
+
+def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, max_tools: int = 20, *,
+                          max_schema_tokens: Optional[float] = None) -> List[dict]:
     """
-    query_lower = query.lower()
-    
-    # 1. STOPWORDS filtering mimicking gemma_engine
-    STOPWORDS = {
-        'calculate', 'find', 'compute', 'determine', 'get', 'run', 'what', 'is', 'for',
-        'with', 'and', 'the', 'a', 'an', 'in', 'at', 'to', 'of', 'from', 'by', 'm', 's',
-        'm3', 'kn', 'kpa', 'mpa', 'deg', 'degrees', 'please', 'using', 'below', 'above'
-    }
-    
-    all_words = set(re.findall(r'[a-z0-9_]+', query_lower))
-    query_words = {w for w in all_words if w not in STOPWORDS and len(w) > 1}
-    
-    # Generate all tool schemas via existing generator
-    all_tools_formatted = generate_openai_tool_definitions()
-    
-    # Get metadata for filtering
-    tools_info = tool_registry.list_tools()
-    tools_map = {t['name']: t for t in tools_info}
-    
-    active_function = context.get('activeFunction') if context else None
-    active_category = None
-    
-    # Step 1: Active function
-    if active_function and active_function in tools_map:
-        active_category = tools_map[active_function].get('category')
-        
-    # Step 2: Category inference
-    inferred_categories = infer_categories(query)
-    
-    candidates = []
-    
-    if active_category or inferred_categories:
-        allowed_categories = set(inferred_categories)
-        for cat in list(allowed_categories):
-            if cat in CATEGORY_SYNONYMS:
-                allowed_categories.update(CATEGORY_SYNONYMS[cat])
-        if active_category:
-            allowed_categories.add(active_category)
-            if active_category in CATEGORY_SYNONYMS:
-                allowed_categories.update(CATEGORY_SYNONYMS[active_category])
-            
-        for tool_info in tools_info:
-            if tool_info.get('category') in allowed_categories or tool_info['name'] == active_function:
-                candidates.append(tool_info)
-        if not candidates:
-            candidates = list(tools_info)
-    else:
-        # Fallback
-        candidates = list(tools_info)
-        
-    # Step 3: Score and rank (reusing simplified gemma_engine logic pattern)
-    scored_candidates = []
-    for tool_info in candidates:
-        name = tool_info['name'].lower()
-        desc = (tool_info.get('description') or '').lower()
-        tool_keywords = set(re.findall(r'[a-z0-9_]+', f"{name} {desc}"))
-        clean_keywords = {k for k in tool_keywords if k not in STOPWORDS and len(k) > 1}
-        
-        score = 0
-        overlap = len(query_words.intersection(clean_keywords))
-        score += overlap * 3
-        
-        for qw in query_words:
-            if qw in name:
-                score += 8
-                
-        if name.startswith('calculate_') and score > 0:
-            score += 10
-                
-        if name == active_function:
-            score += 100
-            
-        if score > 0 or name == active_function:
-            scored_candidates.append((score, tool_info))
-            
-    if not scored_candidates:
-        scored_candidates = [(0, t) for t in candidates]
-        
-    scored_candidates.sort(key=lambda x: x[0], reverse=True)
-    top_tools = [t[1] for t in scored_candidates[:max_tools]]
-    
-    # Map back to schemas
-    formatted_map = {t['function']['name']: t for t in all_tools_formatted}
-    
-    selected_formatted = []
-    for t in top_tools:
-        if t['name'] in formatted_map:
-            selected_formatted.append(formatted_map[t['name']])
-            
-    # Step 4: Return formatted tools
-    return format_tools_for_prompt(selected_formatted)
+    Select the ``max_tools`` most relevant registered tools for ``query`` and
+    return them in OpenAI tool-calling format (see ``format_tools_for_prompt``).
+
+    ``max_schema_tokens`` optionally caps the approximate prompt size of the
+    returned schemas: lower-ranked tools that would exceed it are skipped (the
+    best-ranked tool, e.g. the active form, is always kept).
+    """
+    index = _index()
+    limit = max(0, int(max_tools))
+    ranked = rank_tools(query, context)
+    if max_schema_tokens is None:
+        return [index.prompt_tool(n) for n, _ in ranked[:limit] if n in index.definitions]
+
+    selected: List[dict] = []
+    used = 0.0
+    for name, _ in ranked[: 4 * limit]:          # don't dig deep into irrelevant tools for small ones
+        if len(selected) >= limit:
+            break
+        if name not in index.definitions:
+            continue
+        tool = index.prompt_tool(name)
+        cost = schema_tokens(tool)
+        if selected and used + cost > max_schema_tokens:
+            continue
+        used += cost
+        selected.append(tool)
+    return selected

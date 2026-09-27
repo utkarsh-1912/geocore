@@ -1,0 +1,217 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "run_id": "_smoke",
+  "split": "test",
+  "limit": 3,
+  "turn_type": null,
+  "mode": "decision",
+  "n_ctx": 4096,
+  "max_tools": 5,
+  "n_gpu_layers": 0,
+  "dataset_generator_version": "1.0.0",
+  "dataset_seed": 20260926,
+  "python": "3.13.1",
+  "platform": "win32",
+  "label": "heuristic",
+  "model_key": null,
+  "provider": "heuristic",
+  "lora_path": null,
+  "model_info": {
+   "provider": "heuristic",
+   "name": "GeoAI Heuristic Engine",
+   "description": "Rule-based keyword matching and regex parameter extraction"
+  },
+  "timestamp_utc": "2026-09-27T09:05:05+00:00"
+ },
+ "metrics": {
+  "n": 3,
+  "mean_score": 0.2571,
+  "strict_pass_rate": 0.0,
+  "action_accuracy": 0.3333,
+  "tool_selection_accuracy": 0.0,
+  "tool_selection_accuracy_incl_equivalent": 0.0,
+  "argument_accuracy": 0.0,
+  "schema_valid_rate": 0.0,
+  "clarification_accuracy": 0.0,
+  "clarification_keyword_score": 0.0,
+  "hallucinated_parameter_rate": 0.0,
+  "hallucinated_tool_rate": 0.0,
+  "unit_trap_accuracy": null,
+  "execution_match_rate": null,
+  "final_answer_grounding": null,
+  "caution_violation_rate": null,
+  "selector_recall": 1.0,
+  "error_rate": 0.0,
+  "latency_p50_s": 0.0498,
+  "latency_p95_s": 2.5117,
+  "decision_latency_p50_s": 0.039,
+  "decision_latency_p95_s": 0.0682,
+  "per_category": {
+   "ambiguous_request": {
+    "n": 1,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "conflicting_data": {
+    "n": 1,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "correct_request": {
+    "n": 1,
+    "pass_rate": 0.0,
+    "mean_score": 0.2,
+    "action_accuracy": 1.0
+   },
+   "turn:decision": {
+    "n": 3,
+    "pass_rate": 0.0,
+    "mean_score": 0.2571,
+    "action_accuracy": 0.3333
+   }
+  },
+  "model_load_s": null,
+  "peak_memory_mb": 106.6,
+  "memory_at_start_mb": 101.5,
+  "wall_time_s": 3.01
+ },
+ "per_example": {
+  "ambiguous_request-19ab81c70e": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-007b84a6ba": [
+   0.285714,
+   false
+  ],
+  "correct_request-0067b3fd9b": [
+   0.2,
+   false
+  ]
+ },
+ "records": [
+  {
+   "id": "ambiguous_request-19ab81c70e",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 2.7852,
+   "decision_latency_s": 0.0715,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-007b84a6ba",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'unitweight_watercontent_saturated' but expected clarify",
+     "arguments fail schema validation: 1 validation error for UnitweightWatercontentSaturatedInput"
+    ]
+   },
+   "latency_s": 0.0498,
+   "decision_latency_s": 0.039,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-0067b3fd9b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "porosity_voidratio",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_void_ratio_from_porosity' (expected 'porosity_voidratio')",
+     "arguments fail schema validation: 1 validation error for VoidRatioPorosityInput"
+    ]
+   },
+   "latency_s": 0.0223,
+   "decision_latency_s": 0.0142,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  }
+ ]
+}

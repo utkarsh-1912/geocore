@@ -15,8 +15,9 @@ import {
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { Button } from '../../components/ui/Button';
 import { api } from '../../api/client';
+import { buildChatHistory } from './chatHistory';
 
-export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext }) => {
+export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, currentContext }) => {
     const [messages, setMessages] = useState([
         {
             id: 'init-1',
@@ -55,16 +56,18 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
 
+        const history = buildChatHistory(messages);
         setMessages(prev => [...prev, userMsg]);
         if (!textToSend) setInputValue('');
         setIsLoading(true);
 
+        let aiMessageId = null;
         try {
-            const streamResponse = await api.geoaiChatStream(text, currentContext);
+            const streamResponse = await api.geoaiChatStream(text, currentContext, history);
             const reader = streamResponse.body.getReader();
             const decoder = new TextDecoder();
             
-            let aiMessageId = Date.now() + 1;
+            aiMessageId = Date.now() + 1;
             let accumulatedText = '';
             let executedTool = null;
             let toolParameters = null;
@@ -122,8 +125,12 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                 }
             }
         } catch (streamErr) {
+            // Drop the empty streaming placeholder so the fallback reply doesn't sit beside it.
+            if (aiMessageId !== null) {
+                setMessages(prev => prev.filter(msg => msg.id !== aiMessageId));
+            }
             try {
-                const res = await api.geoaiChat(text, currentContext);
+                const res = await api.geoaiChat(text, currentContext, history);
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     sender: 'ai',
@@ -208,9 +215,22 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                                         : 'bg-background border border-border text-text-main'
                                 }`}
                             >
-                                <div className="text-xs whitespace-pre-wrap leading-relaxed">
-                                    {msg.text}
-                                </div>
+                                {msg.sender === 'ai' && !msg.text ? (
+                                    <div className="flex items-center gap-2 text-[11px] text-text-muted">
+                                        {isLoading ? (
+                                            <>
+                                                <RefreshCw size={12} className="animate-spin text-primary" />
+                                                <span>Calculating...</span>
+                                            </>
+                                        ) : (
+                                            <span>No response received.</span>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="text-xs whitespace-pre-wrap leading-relaxed">
+                                        {msg.text}
+                                    </div>
+                                )}
 
                                 {/* Tool Result Card */}
                                 {msg.executedTool && msg.results && (
@@ -219,7 +239,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                                             Routine: `{msg.executedTool}`
                                         </div>
 
-                                        {onSelectFunction && (
+                                        {onSelectFunction && canOpenForm?.(msg.executedTool) && (
                                             <button
                                                 onClick={() => {
                                                     onSelectFunction(msg.executedTool, msg.parameters);
@@ -254,7 +274,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, currentContext
                         </div>
                     ))}
 
-                    {isLoading && (
+                    {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
                         <div className="flex items-center gap-2 p-2 rounded bg-background border border-border w-fit text-[11px] text-text-muted">
                             <RefreshCw size={12} className="animate-spin text-primary" />
                             <span>Calculating...</span>

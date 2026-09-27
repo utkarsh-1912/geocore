@@ -58,8 +58,7 @@
           ]
         }
       ],
-      "icon": "public/icon.ico",
-      "signAndEditExecutable": false
+      "icon": "public/icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -111,6 +110,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^4.1.0",
     "jspdf-autotable": "^5.0.7",
+    "katex": "0.18.9",
     "lucide-react": "^0.563.0",
     "papaparse": "^5.5.3",
     "plotly.js": "^3.3.1",

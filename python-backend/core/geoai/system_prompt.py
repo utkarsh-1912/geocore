@@ -16,7 +16,11 @@ TOOL_CALLING_INSTRUCTIONS = """When the user asks for a calculation, select the 
 Extract parameter values from the user's message including units.
 If required parameters are missing, ask the user for them. Do NOT invent values.
 After receiving tool results, explain them in engineering context.
-Always report units with numerical results."""
+Report each result with the unit the tool gives in output_units; "-" means dimensionless, so give no unit.
+Earlier assistant turns may end with a [Calculation record]. For follow-up questions about that result
+(e.g. "explain the calculation"), explain it from the record: method, inputs, outputs and what they mean.
+Do not call the tool again unless the user gives new inputs.
+Keep answers concise and do not repeat sentences."""
 
 ENGINEERING_CAUTION_RULES = """Never say "this design is safe" — report calculated values with their basis.
 Prefer "the calculated value is X based on Y method" over definitive safety claims.

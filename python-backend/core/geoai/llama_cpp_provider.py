@@ -24,19 +24,34 @@ from .lora_adapter import AdapterCheck, check_adapter_compatibility
 logger = logging.getLogger(__name__)
 
 LEGACY_CHAT_FORMAT = "chatml-function-calling"
+# Formats rendered with the GGUF's own chat template (llama-cpp-python chat_format=None).
+_TEMPLATE_FORMATS = ("native", "prompted")
 
 
-def _template_supports_tools(model_path: Optional[str]) -> bool:
+def _read_chat_template(model_path: Optional[str]) -> Optional[str]:
     if not model_path:
-        return False
+        return None
     try:
         from .gguf_meta import read_gguf_metadata
         template = read_gguf_metadata(model_path, keys=["tokenizer.chat_template"]).get("tokenizer.chat_template")
     except Exception as e:
         logger.warning(f"Could not read chat template from {model_path}: {e}")
-        return False
-    return isinstance(template, str) and "tools" in template
+        return None
+    return template if isinstance(template, str) else None
+
+
+# Tool-call markup emitted by the model families GeoAI benchmarks (see eval/benchmark.py):
+#   Hermes / Qwen2.5 / Qwen3 / SmolLM3 / Granite 4 / GeoAI fine-tunes: <tool_call>{...}</tool_call>
+#   Granite 3.x / Phi-4-mini:  <|tool_call|>[{...}] (the marker may be stripped by detokenisation)
+#   Phi-4-mini (vLLM parser):  functools[{...}]
+#   Mistral:                   [TOOL_CALLS][{...}]
+#   Llama 3.x:                 <|python_tag|>{"name": ..., "parameters": {...}} or a bare JSON object
+# Every format decodes to {"name": str, "arguments"|"parameters": dict}; the agent and the tool
+# registry still validate the name and arguments before anything is executed.
 _TOOL_CALL_BLOCK = re.compile(r"<tool_call>\s*(.*?)\s*(?:</tool_call>|$)", re.DOTALL)
+_PREFIXED_CALLS = re.compile(r"(?:<\|tool_call\|>|\[TOOL_CALLS\]|functools(?=\s*\[)|<\|python_tag\|>)\s*(.*?)\s*"
+                             r"(?:<\|/tool_call\|>|<\|eom_id\|>|<\|eot_id\|>|$)", re.DOTALL)
+_JSON_FENCE = re.compile(r"^```(?:json|tool_code|tool_call)?\s*(.*?)\s*```$", re.DOTALL)
 
 
 def _decode_tool_json(blob: str) -> Optional[Any]:
@@ -58,32 +73,138 @@ def _decode_tool_json(blob: str) -> Optional[Any]:
         return None
 
 
-def parse_native_tool_calls(text: Optional[str]) -> Tuple[str, List[ToolCall]]:
-    """
-    Split a native-template completion into (content, tool_calls).
-
-    Handles the Hermes-style ``<tool_call>{"name": ..., "arguments": {...}}</tool_call>``
-    blocks emitted by Qwen2.5/Qwen3 chat templates (and by GeoAI fine-tunes).
-    Malformed blocks are dropped with a warning, never executed.
-    """
-    text = text or ""
-    calls: List[ToolCall] = []
-    for i, blob in enumerate(_TOOL_CALL_BLOCK.findall(text)):
-        obj = _decode_tool_json(blob)
-        if obj is None:
-            logger.warning(f"Ignoring malformed <tool_call> block: {blob[:200]!r}")
+def _as_call_objects(obj: Any) -> List[Dict[str, Any]]:
+    """Normalise a decoded payload (object or list of objects) to [{"name", "arguments"}]."""
+    items = obj if isinstance(obj, list) else [obj]
+    out = []
+    for it in items:
+        if isinstance(it, dict) and isinstance(it.get("function"), dict):  # OpenAI-style nesting
+            it = it["function"]
+        if not isinstance(it, dict) or not isinstance(it.get("name"), str):
             continue
-        if not isinstance(obj, dict) or not isinstance(obj.get("name"), str):
-            continue
-        args = obj.get("arguments", {})
+        args = it.get("arguments", it.get("parameters", {}))
         if isinstance(args, str):
             try:
                 args = json.loads(args) if args.strip() else {}
             except json.JSONDecodeError:
                 args = {}
-        calls.append(ToolCall(id=f"call_{i}", function_name=obj["name"], arguments=args if isinstance(args, dict) else {}))
-    content = _TOOL_CALL_BLOCK.sub("", text).strip() if calls else text
-    return content, calls
+        out.append({"name": it["name"], "arguments": args if isinstance(args, dict) else {}})
+    return out
+
+
+def _is_bare_call_payload(obj: Any) -> bool:
+    """A whole completion that is only a call object/list (Llama 3.x, stripped Phi/Granite markers)."""
+    items = obj if isinstance(obj, list) else [obj]
+    return bool(items) and all(isinstance(it, dict) and isinstance(it.get("name"), str)
+                               and ("arguments" in it or "parameters" in it) for it in items)
+
+
+def parse_tool_calls(text: Optional[str]) -> Tuple[str, List[ToolCall]]:
+    """
+    Split a completion into (content, tool_calls), whatever the model family's tool-call markup
+    (see the format list above). Malformed payloads are dropped with a warning, never executed.
+    Text that merely mentions JSON is left alone: a bare JSON payload is only treated as a call
+    when it is the entire completion and every item has a name plus arguments/parameters.
+    """
+    text = text or ""
+    objs: List[Dict[str, Any]] = []
+    content = text
+
+    blocks = _TOOL_CALL_BLOCK.findall(text)
+    if blocks:
+        for blob in blocks:
+            obj = _decode_tool_json(blob)
+            if obj is None:
+                logger.warning(f"Ignoring malformed <tool_call> block: {blob[:200]!r}")
+                continue
+            objs.extend(_as_call_objects(obj))
+        if objs:
+            content = _TOOL_CALL_BLOCK.sub("", text).strip()
+    else:
+        m = _PREFIXED_CALLS.search(text)
+        if m:
+            obj = _decode_tool_json(m.group(1))
+            if obj is None:
+                logger.warning(f"Ignoring malformed tool-call payload: {m.group(1)[:200]!r}")
+            else:
+                objs = _as_call_objects(obj)
+                if objs:
+                    content = (text[:m.start()] + text[m.end():]).strip()
+        else:
+            stripped = text.strip()
+            fence = _JSON_FENCE.match(stripped)
+            candidate = fence.group(1) if fence else stripped
+            if candidate[:1] in "{[":
+                try:
+                    obj = json.loads(candidate)
+                except json.JSONDecodeError:
+                    obj = None
+                if obj is not None and _is_bare_call_payload(obj):
+                    objs = _as_call_objects(obj)
+                    content = ""
+
+    calls = [ToolCall(id=f"call_{i}", function_name=o["name"], arguments=o["arguments"]) for i, o in enumerate(objs)]
+    return (content if calls else text), calls
+
+
+_THINK_BLOCK = re.compile(r"<think>.*?(?:</think>|$)\s*", re.DOTALL)
+
+
+def strip_thinking(text: str) -> str:
+    """Drop <think>...</think> reasoning blocks (Qwen3/SmolLM3) from a completion."""
+    return _THINK_BLOCK.sub("", text).strip() if "<think>" in text else text
+
+
+# Backwards-compatible name (tests, fine-tune tooling).
+parse_native_tool_calls = parse_tool_calls
+
+
+PROMPTED_TOOL_INSTRUCTIONS = (
+    "# Tools\n\n"
+    "You may call one or more of the functions below. Their JSON schemas are listed inside <tools></tools>.\n"
+    "<tools>\n{tools}\n</tools>\n\n"
+    "To call a function, reply with one JSON object per call inside <tool_call></tool_call> tags, "
+    "and nothing after the last tag:\n"
+    '<tool_call>\n{{"name": "<function-name>", "arguments": {{<argument-name>: <value>}}}}\n</tool_call>\n'
+    "Function results are returned to you inside <tool_response></tool_response> tags."
+)
+
+
+def build_prompted_messages(msg_dicts: List[Dict[str, Any]], tools: Optional[List[dict]]) -> List[Dict[str, Any]]:
+    """
+    Rewrite an OpenAI-style message list for a chat template without a tool section (Gemma 3):
+    tool schemas go into the system text, earlier tool calls become ``<tool_call>`` text and
+    tool results become user turns wrapped in ``<tool_response>``. Consecutive same-role turns
+    are merged because such templates require strictly alternating user/assistant roles.
+    """
+    out: List[Dict[str, Any]] = []
+    for d in msg_dicts:
+        role, content = d.get("role"), d.get("content") or ""
+        if role == "assistant" and d.get("tool_calls"):
+            parts = [content] if content else []
+            for tc in d["tool_calls"]:
+                fn = tc.get("function", tc)
+                args = fn.get("arguments", {})
+                if isinstance(args, str):
+                    try:
+                        args = json.loads(args)
+                    except json.JSONDecodeError:
+                        pass
+                parts.append("<tool_call>\n" + json.dumps({"name": fn.get("name"), "arguments": args}) + "\n</tool_call>")
+            content = "\n".join(parts)
+        elif role == "tool":
+            role, content = "user", f"<tool_response>\n{content}\n</tool_response>"
+        if out and out[-1]["role"] == role and role != "system":
+            out[-1]["content"] += "\n\n" + content
+        else:
+            out.append({"role": role, "content": content})
+    if tools:
+        block = PROMPTED_TOOL_INSTRUCTIONS.format(tools="\n".join(json.dumps(t) for t in tools))
+        if out and out[0]["role"] == "system":
+            out[0]["content"] = (out[0]["content"] + "\n\n" + block).strip()
+        else:
+            out.insert(0, {"role": "system", "content": block})
+    return out
 
 
 class LlamaCppProvider(ModelProvider):
@@ -95,6 +216,7 @@ class LlamaCppProvider(ModelProvider):
         self._adapter_check: Optional[AdapterCheck] = None
         self._adapter_active = False
         self._chat_format: Optional[str] = None  # resolved at load time
+        self._thinking_switch = False  # GGUF template has an enable_thinking switch (resolved at load time)
 
     # ------------------------------------------------------------------
     # LoRA adapter / chat-format resolution
@@ -125,9 +247,11 @@ class LlamaCppProvider(ModelProvider):
         if sc.get("chat_template") == "native":
             return "native"
         # The legacy handler drops `tools` unless tool_choice is forced, so the model can never
-        # call a tool; prefer the GGUF's own template whenever it renders tools.
-        if _template_supports_tools(self._model_path):
-            return "native"
+        # call a tool; prefer the GGUF's own template whenever it renders tools, and describe the
+        # tools in the prompt when the template has no tool section (Gemma 3).
+        template = _read_chat_template(self._model_path)
+        if template is not None:
+            return "native" if "tools" in template else "prompted"
         return LEGACY_CHAT_FORMAT
 
     def _ensure_loaded(self) -> None:
@@ -151,6 +275,7 @@ class LlamaCppProvider(ModelProvider):
             ) from e
 
         lora = self._resolve_adapter(model_path)
+        self._thinking_switch = "enable_thinking" in (_read_chat_template(self._model_path) or "")
 
         def _build(lora_path: Optional[str]):
             chat_format = self._resolve_chat_format(adapter_used=lora_path is not None)
@@ -159,8 +284,9 @@ class LlamaCppProvider(ModelProvider):
                 n_ctx=self.config.n_ctx,
                 n_gpu_layers=self.config.n_gpu_layers,
                 verbose=self.config.verbose,
-                # None -> llama-cpp-python uses the GGUF's own chat template (tools are passed to it).
-                chat_format=None if chat_format == "native" else chat_format,
+                # None -> llama-cpp-python uses the GGUF's own chat template (native: tools are passed
+                # to it; prompted: tools are described in the system text, see build_prompted_messages).
+                chat_format=None if chat_format in _TEMPLATE_FORMATS else chat_format,
             )
             if lora_path:
                 # llama-cpp-python 0.3.x: Llama(lora_path=..., lora_scale=...); note it disables mmap.
@@ -225,8 +351,17 @@ class LlamaCppProvider(ModelProvider):
             "lora_adapter": adapter,
         }
 
-    def _message_dicts(self, messages: List[ChatMessage]) -> List[Dict[str, Any]]:
+    def _message_dicts(self, messages: List[ChatMessage], tools: Optional[List[dict]] = None) -> List[Dict[str, Any]]:
         msg_dicts = [msg.to_dict() for msg in messages]
+        if self._thinking_switch and getattr(self.config, "disable_thinking", True):
+            # Hybrid thinking templates (Qwen3, SmolLM3) honour a "/no_think" soft switch in the
+            # system prompt; long reasoning traces cost minutes per turn on a CPU.
+            if msg_dicts and msg_dicts[0].get("role") == "system":
+                msg_dicts[0]["content"] = (msg_dicts[0].get("content") or "") + "\n/no_think"
+            else:
+                msg_dicts.insert(0, {"role": "system", "content": "/no_think"})
+        if self._chat_format == "prompted":
+            return build_prompted_messages(msg_dicts, tools)
         if self._chat_format == "native":
             # Native HF templates (Qwen2.5: `arguments | tojson`) expect argument objects, not JSON strings.
             for d in msg_dicts:
@@ -249,13 +384,14 @@ class LlamaCppProvider(ModelProvider):
         """Generate a response from the model."""
         self._ensure_loaded()
 
-        msg_dicts = self._message_dicts(messages)
+        msg_dicts = self._message_dicts(messages, tools)
         kwargs = {
             "messages": msg_dicts,
             "temperature": temperature,
-            "max_tokens": max_tokens
+            "max_tokens": max_tokens,
+            "repeat_penalty": float(getattr(self.config, "repeat_penalty", 1.15)),
         }
-        if tools:
+        if tools and self._chat_format != "prompted":
             kwargs["tools"] = tools
 
         try:
@@ -264,8 +400,10 @@ class LlamaCppProvider(ModelProvider):
             message = choice.get("message", {})
             finish_reason = choice.get("finish_reason")
 
-            if self._chat_format == "native" and not message.get("tool_calls"):
-                content, native_calls = parse_native_tool_calls(message.get("content"))
+            if message.get("content"):
+                message["content"] = strip_thinking(message["content"])
+            if (self._chat_format == "native" or (self._chat_format == "prompted" and tools))                     and not message.get("tool_calls"):
+                content, native_calls = parse_tool_calls(message.get("content"))
                 if native_calls:
                     return ModelResponse(content=content or None, tool_calls=native_calls,
                                          finish_reason="tool_calls", usage=response.get("usage"))
@@ -311,7 +449,7 @@ class LlamaCppProvider(ModelProvider):
         """Generate a streaming response from the model."""
         self._ensure_loaded()
 
-        if self._chat_format == "native" and tools:
+        if self._chat_format in _TEMPLATE_FORMATS and tools:
             # Native tool calls arrive as <tool_call> text that is only parseable once complete;
             # emit the finished turn as one chunk rather than streaming raw markup to the UI.
             resp = self.generate(messages, tools=tools, temperature=temperature, max_tokens=max_tokens)
@@ -319,11 +457,12 @@ class LlamaCppProvider(ModelProvider):
                               finish_reason=resp.finish_reason)
             return
 
-        msg_dicts = self._message_dicts(messages)
+        msg_dicts = self._message_dicts(messages, tools)
         kwargs = {
             "messages": msg_dicts,
             "temperature": temperature,
             "max_tokens": max_tokens,
+            "repeat_penalty": float(getattr(self.config, "repeat_penalty", 1.15)),
             "stream": True
         }
         if tools:

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_CONFIG_FILENAME = "geoai_config.json"
 
 # Chat formats understood by LlamaCppProvider (None = auto, see GeoAIModelConfig.chat_format).
-CHAT_FORMATS = ("chatml-function-calling", "native")
+CHAT_FORMATS = ("chatml-function-calling", "native", "prompted")
 
 
 def _env_lora_path() -> Optional[str]:
@@ -45,6 +45,9 @@ class GeoAIModelConfig:
     n_gpu_layers: int = 0  # 0 = CPU only, -1 = all layers on GPU
     temperature: float = 0.1  # Low temperature for deterministic tool calling
     max_tokens: int = 1024  # Max generation length
+    # llama.cpp repetition penalty. Small models otherwise loop on the post-tool explanation
+    # ("The soil behavior type index (Ic) is ... " repeated until max_tokens).
+    repeat_penalty: float = 1.15
     provider: str = "auto"  # "llama_cpp", "heuristic", or "auto"
     verbose: bool = False  # llama.cpp verbose logging
     # Optional GGUF LoRA adapter applied on top of model_path (see core/geoai/lora_adapter.py).
@@ -54,12 +57,18 @@ class GeoAIModelConfig:
     lora_scale: float = field(default_factory=_env_lora_scale)
     # Prompt format: "chatml-function-calling" (llama-cpp-python handler, legacy default),
     # "native" (the GGUF's own chat template; tool calls parsed from <tool_call> blocks),
+    # "prompted" (the GGUF's own template, tool schemas described in the system text; for
+    # templates without a tool section such as Gemma 3),
     # or None = auto: "native" when an active adapter's sidecar says it was trained with
-    # the native template, otherwise "chatml-function-calling". Env: GEOAI_CHAT_FORMAT.
+    # the native template, else "native"/"prompted" depending on whether the GGUF's template
+    # renders tools, else "chatml-function-calling". Env: GEOAI_CHAT_FORMAT.
     chat_format: Optional[str] = field(default_factory=_env_chat_format)
     # Tools offered per request. Each schema is ~390 tokens, so 20 tools overflow n_ctx=4096;
     # on eval_test recall@5 is 0.569 vs 0.590 at 20. Must match finetune.config.max_tools.
     max_tools: int = 5
+    # Append the "/no_think" soft switch for GGUFs whose chat template has an enable_thinking
+    # switch (Qwen3, SmolLM3); reasoning traces are slow on CPU and GeoAI plans in one line.
+    disable_thinking: bool = True
 
 def get_config_dir() -> Path:
     """Returns the config directory path and creates it if it doesn't exist."""

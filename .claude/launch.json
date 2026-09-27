@@ -4,8 +4,27 @@
     {
       "name": "website",
       "runtimeExecutable": "python-backend/venv/Scripts/python.exe",
-      "runtimeArgs": ["-m", "http.server", "8765", "--bind", "127.0.0.1", "--directory", "website"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8765",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "website"
+      ],
       "port": 8765
+    },
+    {
+      "name": "app-renderer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "electron-app",
+        "run",
+        "dev"
+      ],
+      "port": 5173
     }
   ]
 }

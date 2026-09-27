@@ -50,12 +50,17 @@ jobs:
         shell: bash
         run: |
           python -m pip install --upgrade pip
+          WHEEL_INDEX=https://abetlen.github.io/llama-cpp-python/whl/cpu
           if [ "${{ matrix.platform }}" = "win" ]; then
             pip install llama-cpp-python --only-binary=llama-cpp-python --prefer-binary \
-              --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+              --no-cache-dir --extra-index-url "$WHEEL_INDEX"
           else
-            pip install llama-cpp-python --prefer-binary \
-              --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+            # The prebuilt macOS wheel has shipped corrupt (BadZipFile: Bad CRC-32
+            # in libggml-base.dylib). Try it uncached; otherwise build from the
+            # PyPI sdist (slower, but reliable on macOS runners).
+            pip install llama-cpp-python --only-binary=llama-cpp-python --prefer-binary \
+              --no-cache-dir --extra-index-url "$WHEEL_INDEX" \
+            || pip install llama-cpp-python --no-binary=llama-cpp-python --no-cache-dir
           fi
 
       - name: Install Python Dependencies & PyInstaller

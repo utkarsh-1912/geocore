@@ -127,7 +127,7 @@ def test_numeric_grounding_fallback_without_provided_params():
 
 
 def test_unknown_parameter_on_permissive_auto_schema():
-    # Auto-registered Groundhog schemas use extra='allow'; the scorer still flags unknown keys.
+    # Auto-registered Groundhog schemas reject unknown keys; the scorer flags them too.
     ex = EvalExample(id="t-nq", category="correct_request", expected_action="tool_call",
                      messages=[{"role": "user", "content": "Nq for friction angle 32 deg"}],
                      expected_tool="nq_frictionangle_sand", expected_arguments={"friction_angle": 32.0},

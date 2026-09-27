@@ -13,7 +13,7 @@ import { HomeView } from './features/dashboard/HomeView';
 import { HistoryProvider, useHistory } from './context/HistoryContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
-import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, Sparkles, Command } from 'lucide-react';
+import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, ChevronRight, ChevronDown, Sheet } from 'lucide-react';
 import { GeoAILogo } from './components/common/GeoAILogo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GEOTECHNICAL_MODULES } from './config/geotechnicalModules';
@@ -28,6 +28,8 @@ import { Preloader } from './components/Preloader';
 import { GeoAICopilot } from './features/copilot/GeoAICopilot';
 import { GeoAIFullWindow } from './features/copilot/GeoAIFullWindow';
 import { CommandPalette } from './features/command/CommandPalette';
+
+const ICON_BUTTON = 'h-8 w-8 shrink-0 flex items-center justify-center rounded-lg text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors';
 
 const MainLayout = () => {
   // Navigation State
@@ -86,28 +88,64 @@ const MainLayout = () => {
   }, [showExportMenu]);
 
   // Navigation from AI Assistant
-  const handleSelectFromAI = (funcId, params) => {
-    let matchedFunc = null;
-    let matchedCategory = null;
-    let matchedSubModule = null;
-
+  const findModuleFunction = (funcId) => {
     for (const cat of GEOTECHNICAL_MODULES) {
       for (const sub of cat.subModules || []) {
         for (const fn of sub.functions || []) {
           if (fn.id === funcId || fn.name === funcId) {
-            matchedFunc = fn;
-            matchedCategory = cat;
-            matchedSubModule = sub;
-            break;
+            return { fn, cat, sub };
           }
         }
       }
     }
+    return null;
+  };
 
-    const funcObj = matchedFunc || { id: funcId, name: funcId, title: funcId };
-    if (matchedCategory) setActiveCategory(matchedCategory);
-    if (matchedSubModule) setActiveSubModule(matchedSubModule);
-    selectFunction(funcObj);
+  // GeoAI tool names (e.g. calculate_gmax_from_shear_wave_velocity) differ from
+  // the calculation form ids; the tool registry records which form each tool uses.
+  // Tools without a form (e.g. classify_cpt_soil_behavior) map to null.
+  const [geoaiToolForms, setGeoaiToolForms] = useState({});
+
+  useEffect(() => {
+    if (backendStatus !== 'online') return;
+    api.geoaiListTools()
+      .then(({ tools = [] }) => {
+        const forms = {};
+        tools.forEach(t => { forms[t.name] = t.form_function || null; });
+        setGeoaiToolForms(forms);
+      })
+      .catch(err => console.error('Failed to load GeoAI tool forms:', err));
+  }, [backendStatus]);
+
+  const resolveFormForTool = (toolName) => {
+    const direct = findModuleFunction(toolName);
+    if (direct) return direct;
+    const formId = geoaiToolForms[toolName];
+    return formId ? findModuleFunction(formId) : null;
+  };
+
+  const handleSelectFromAI = (funcId, params) => {
+    const match = resolveFormForTool(funcId);
+
+    if (!match) {
+      toast.error(`No calculation form is available for '${funcId}'.`);
+      return;
+    }
+
+    setActiveCategory(match.cat);
+    setActiveSubModule(match.sub);
+    selectFunction(match.fn);
+
+    // Prefill the form with the arguments GeoAI used, keeping only fields the form knows.
+    if (params && typeof params === 'object') {
+      const inputs = getSchema(match.fn.id)?.inputs || [];
+      const values = {};
+      inputs.forEach(input => {
+        if (params[input.name] !== undefined) values[input.name] = params[input.name];
+        else if (input.default !== undefined) values[input.name] = input.default;
+      });
+      if (Object.keys(values).length > 0) setCalculationInputs(values);
+    }
   };
 
   // App Ready State (Preloader)
@@ -525,20 +563,14 @@ const MainLayout = () => {
       <Toaster
         position="top-right"
         theme={isDarkMode ? 'dark' : 'light'}
-        style={{ marginTop: '50px' }}
+        offset={64}
         toastOptions={{
-          className: 'bg-white border border-primary text-primary',
-          style: {
-            color: 'rgb(var(--color-primary))',
-            borderColor: 'rgb(var(--color-primary))',
-          },
           classNames: {
-            toast: 'bg-white border-primary text-primary',
-            title: 'text-primary',
-            description: 'text-text-muted',
-            actionButton: 'bg-primary text-white',
-            cancelButton: 'bg-white text-primary border-primary',
-            icon: 'text-primary'
+            toast: '!bg-surface !border !border-border !text-text-main !shadow-pop !rounded-xl',
+            title: '!font-semibold',
+            description: '!text-text-muted',
+            actionButton: '!bg-primary !text-white',
+            cancelButton: '!bg-surface-muted !text-text-main',
           }
         }}
       />
@@ -559,32 +591,34 @@ const MainLayout = () => {
       />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-13 border-b border-border flex items-center justify-between px-4 drag-region bg-surface transition-colors duration-300 relative"
+        <header className="h-13 shrink-0 border-b border-border flex items-center justify-between gap-3 px-3 drag-region bg-surface transition-colors duration-300 relative z-20"
           style={{ paddingRight: '140px', WebkitAppRegion: 'drag' }}>
 
-          <div className="flex items-center gap-4 no-drag min-w-0 flex-1" style={{ WebkitAppRegion: 'no-drag' }}>
+          <div className="flex items-center gap-2 no-drag min-w-0 flex-1" style={{ WebkitAppRegion: 'no-drag' }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded hover:bg-background text-text-muted transition-colors shrink-0"
+              className={ICON_BUTTON}
+              title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+              aria-label="Toggle sidebar"
             >
-              <Menu size={20} />
+              <Menu size={18} />
             </button>
 
             {/* Breadcrumbs */}
-            <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap mask-linear-fade">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1 overflow-hidden whitespace-nowrap min-w-0">
               {viewState !== 'home' && (
                 <button onClick={() => {
                   if (viewState === 'function') selectSubModule(activeSubModule);
                   else if (viewState === 'sub-module') selectCategory(activeCategory);
                   else goHome();
-                }} className="p-2 rounded hover:bg-background text-text-muted transition-colors shrink-0">
+                }} className={ICON_BUTTON} title="Back" aria-label="Back">
                   <ArrowLeft size={18} />
                 </button>
               )}
 
               <button
                 onClick={goHome}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium transition-colors shrink-0 ${viewState === 'home' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-background'}`}
+                className={`flex items-center gap-2 px-2.5 h-8 rounded-lg text-sm font-medium transition-colors shrink-0 ${viewState === 'home' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-muted hover:text-text-main'}`}
               >
                 <Home size={16} />
                 <span className="hidden sm:inline">Home</span>
@@ -592,8 +626,8 @@ const MainLayout = () => {
 
               {viewState === 'geoai' && (
                 <>
-                  <span className="text-text-muted shrink-0">/</span>
-                  <span className="text-sm font-semibold text-primary truncate flex items-center gap-1.5">
+                  <ChevronRight size={14} className="text-text-subtle shrink-0" />
+                  <span className="text-sm font-semibold text-text-main truncate flex items-center gap-1.5 px-1.5">
                     <GeoAILogo size={16} className="text-primary" />
                     <span>GeoAI</span>
                   </span>
@@ -602,8 +636,8 @@ const MainLayout = () => {
 
               {activeCategory && (
                 <>
-                  <span className="text-text-muted shrink-0">/</span>
-                  <span className={`text-sm font-medium truncate max-w-[150px] sm:max-w-[250px] ${viewState === 'category' ? 'text-primary' : 'text-text-muted cursor-pointer hover:text-text-main'}`}
+                  <ChevronRight size={14} className="text-text-subtle shrink-0" />
+                  <span className={`text-sm font-medium truncate max-w-[150px] sm:max-w-[250px] ${viewState === 'category' ? 'text-text-main font-semibold' : 'text-text-muted cursor-pointer hover:text-text-main'} px-1.5`}
                     onClick={() => selectCategory(activeCategory)}
                     title={activeCategory.title}>
                     {activeCategory.title}
@@ -613,8 +647,8 @@ const MainLayout = () => {
 
               {activeSubModule && (
                 <>
-                  <span className="text-text-muted shrink-0">/</span>
-                  <span className={`text-sm font-medium truncate max-w-[150px] sm:max-w-[250px] ${viewState === 'sub-module' ? 'text-primary' : 'text-text-muted cursor-pointer hover:text-text-main'}`}
+                  <ChevronRight size={14} className="text-text-subtle shrink-0" />
+                  <span className={`text-sm font-medium truncate max-w-[150px] sm:max-w-[250px] ${viewState === 'sub-module' ? 'text-text-main font-semibold' : 'text-text-muted cursor-pointer hover:text-text-main'} px-1.5`}
                     onClick={() => selectSubModule(activeSubModule)}
                     title={activeSubModule.title}>
                     {activeSubModule.title}
@@ -624,36 +658,37 @@ const MainLayout = () => {
 
               {activeFunction && (
                 <>
-                  <span className="text-text-muted shrink-0">/</span>
-                  <span className="text-sm font-medium text-primary truncate max-w-[150px] sm:max-w-[250px]" title={activeFunction.title}>
+                  <ChevronRight size={14} className="text-text-subtle shrink-0" />
+                  <span className="text-sm font-semibold text-text-main truncate max-w-[180px] sm:max-w-[320px] px-1.5" title={activeFunction.title}>
                     {activeFunction.title}
                   </span>
                 </>
               )}
-            </div>
+            </nav>
           </div>
 
-          <div className="flex items-center gap-1.5 no-drag h-full shrink-0" style={{ WebkitAppRegion: 'no-drag' }}>
-            {/* Search Icon Button */}
+          <div className="flex items-center gap-1 no-drag h-full shrink-0" style={{ WebkitAppRegion: 'no-drag' }}>
+            {/* Search / command palette trigger */}
             <button
               onClick={() => setCommandPaletteOpen(true)}
-              className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-2.5 mr-1 rounded-lg border border-border bg-background text-text-subtle hover:text-text-muted hover:border-border-strong transition-colors text-sm"
               title="Search & Commands (Ctrl+K)"
             >
+              <Search size={15} />
+              <span className="flex-1 text-left truncate">Search calculations…</span>
+              <kbd className="font-sans text-[10px] font-semibold px-1.5 py-0.5 rounded border border-border bg-surface text-text-muted">Ctrl K</kbd>
+            </button>
+            <button onClick={() => setCommandPaletteOpen(true)} className={`${ICON_BUTTON} md:hidden`} title="Search & Commands (Ctrl+K)" aria-label="Search">
               <Search size={18} />
             </button>
 
-            <button onClick={toggleTheme} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors" title={isDarkMode ? "Light Mode" : "Dark Mode"}>
+            <button onClick={toggleTheme} className={ICON_BUTTON} title={isDarkMode ? "Light Mode" : "Dark Mode"} aria-label="Toggle theme">
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <button
-              onClick={() => setHelpOpen(true)}
-              className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
-              title="Help & Shortcuts"
-            >
+            <button onClick={() => setHelpOpen(true)} className={ICON_BUTTON} title="Help & Shortcuts" aria-label="Help">
               <HelpCircle size={18} />
             </button>
-            <button onClick={() => setHistoryOpen(true)} className="p-2 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors" title="Calculation History">
+            <button onClick={() => setHistoryOpen(true)} className={ICON_BUTTON} title="Calculation History (Ctrl+H)" aria-label="History">
               <HistoryIcon size={18} />
             </button>
 
@@ -675,6 +710,7 @@ const MainLayout = () => {
               >
                 <GeoAIFullWindow
                   onSelectFunction={handleSelectFromAI}
+                  canOpenForm={(toolName) => !!resolveFormForTool(toolName)}
                   currentContext={{
                     activeFunction: activeFunction?.id || activeFunction?.name,
                     activeCategory: activeCategory?.id,
@@ -760,6 +796,7 @@ const MainLayout = () => {
                 className="max-w-6xl mx-auto w-full space-y-6"
               >
                 <SchemaForm
+                  functionId={activeFunction.id}
                   functionName={activeFunction.title}
                   schema={currentSchema}
                   onCalculate={handleCalculate}
@@ -771,6 +808,7 @@ const MainLayout = () => {
                   <div className="w-full space-y-4 pt-2">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
+                        <span className="w-1 h-5 rounded-full bg-primary" />
                         <span>Analysis Results</span>
                       </h3>
 
@@ -778,37 +816,42 @@ const MainLayout = () => {
                       <div ref={exportDropdownRef} className="relative">
                         <button
                           onClick={() => setShowExportMenu(!showExportMenu)}
-                          className="flex items-center gap-2 px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary/90 transition-colors shadow-sm"
+                          className="flex items-center gap-2 h-8 px-3 bg-primary text-white dark:text-background text-xs font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-card"
+                          aria-haspopup="menu"
+                          aria-expanded={showExportMenu}
                         >
                           <Download size={14} />
-                          <span>Export Results</span>
+                          <span>Export</span>
+                          <ChevronDown size={14} className={`transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
                         </button>
 
                         <AnimatePresence>
                           {showExportMenu && (
                             <motion.div
-                              initial={{ opacity: 0, y: 10 }}
+                              initial={{ opacity: 0, y: -4 }}
                               animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 10 }}
-                              className="absolute right-0 mt-2 w-48 bg-background border border-border rounded shadow-lg z-50 overflow-hidden text-xs font-medium"
+                              exit={{ opacity: 0, y: -4 }}
+                              transition={{ duration: 0.12 }}
+                              role="menu"
+                              className="absolute right-0 mt-2 w-52 p-1 bg-surface border border-border rounded-xl shadow-pop z-50 overflow-hidden text-xs font-medium"
                             >
                               <button
                                 onClick={() => { handleExport('pdf'); setShowExportMenu(false); }}
-                                className="flex items-center gap-2.5 text-text-main hover:text-white w-full px-4 py-2.5 text-left hover:bg-primary transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-lg text-left hover:bg-surface-muted transition-colors"
                               >
                                 <FileText size={14} className="text-primary" />
                                 <span>Export PDF Report</span>
                               </button>
                               <button
                                 onClick={() => { handleExport('csv'); setShowExportMenu(false); }}
-                                className="flex items-center gap-2.5 text-text-main hover:text-white w-full px-4 py-2.5 text-left hover:bg-primary transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-lg text-left hover:bg-surface-muted transition-colors"
                               >
-                                <FileText size={14} className="text-primary" />
+                                <Sheet size={14} className="text-primary" />
                                 <span>Export CSV Data</span>
                               </button>
                               <button
                                 onClick={() => { handleExport('json'); setShowExportMenu(false); }}
-                                className="flex items-center gap-2.5 text-text-main hover:text-white w-full px-4 py-2.5 text-left hover:bg-primary transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-lg text-left hover:bg-surface-muted transition-colors"
                               >
                                 <FileJson size={14} className="text-primary" />
                                 <span>Export JSON Data</span>
@@ -873,6 +916,7 @@ const MainLayout = () => {
         isOpen={copilotOpen}
         onClose={() => setCopilotOpen(false)}
         onSelectFunction={handleSelectFromAI}
+        canOpenForm={(toolName) => !!resolveFormForTool(toolName)}
         currentContext={{
           activeFunction: activeFunction?.id,
           activeCategory: activeCategory?.id

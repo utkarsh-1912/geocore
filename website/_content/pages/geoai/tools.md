@@ -32,7 +32,7 @@ These tools have hand-written schemas with units, bounds and accepted aliases fo
 | `calculate_relative_density` | classification | Calculates soil relative density (Dr) from current void ratio (e), minimum void ratio (e_min), and maximum void ratio (e_max). |
 | `calculate_stresses_circular_footing` | shallow_foundations | Calculates vertical and horizontal elastic stress increments in a soil half-space under the center of a circular loaded area. |
 | `calculate_stresses_point_load` | shallow_foundations | Calculates 3D elastic stress distribution (sigma_z, sigma_r, sigma_theta, tau_rz) from a concentrated surface point load using Boussinesq theory. |
-| `calculate_gmax_from_shear_wave_velocity` | soil_dynamics | Calculates small-strain shear modulus Gmax [MPa] from shear wave velocity Vs [m/s] and unit weight gamma [kN/m3]. |
+| `calculate_gmax_from_shear_wave_velocity` | soil_dynamics | Calculates small-strain shear modulus Gmax [kPa] from shear wave velocity Vs [m/s] and unit weight gamma [kN/m3]. |
 | `calculate_earth_pressure_rankine` | excavations | Calculates active (Ka) and passive (Kp) lateral earth pressure coefficients for inclined or vertical walls using Rankine theory. |
 | `calculate_pipeline_contact_width` | pipelines | Calculates contact width between a subsea pipeline and seabed from outer diameter and embedment depth. |
 | `calculate_hydraulic_conductivity_unconfined` | consolidation | Calculates aquifer hydraulic conductivity k [m/s] from unconfined steady-state pumping test data using the Dupuit-Thiem solution. |

@@ -4,7 +4,7 @@ Binds Groundhog functions to the Tool Registry with canonical schemas.
 """
 from typing import Optional, Dict, Any, List
 
-from core.geoai.tool_registry import tool_registry, geoai_tool
+from core.geoai.tool_registry import tool_registry, geoai_tool, groundhog_forwarder
 from core.geoai.schemas.classification import (
     BulkUnitWeightInput, BulkUnitWeightOutput,
     VoidRatioPorosityInput, VoidRatioPorosityOutput,
@@ -22,120 +22,107 @@ from core.geoai.schemas.expanded import (
 )
 
 # 1. Bulk Unit Weight
-@geoai_tool(
+calculate_bulk_unit_weight = geoai_tool(
     name="calculate_bulk_unit_weight",
     description="Calculates bulk unit weight (gamma) and effective unit weight from specific gravity (Gs), void ratio (e), and degree of saturation (Sr).",
     category="classification",
     input_model=BulkUnitWeightInput,
-    output_model=BulkUnitWeightOutput
-)
-def calculate_bulk_unit_weight(**kwargs):
-    import groundhog.siteinvestigation.classification.phaserelations as pr
-    return pr.bulkunitweight(**kwargs)
+    output_model=BulkUnitWeightOutput,
+    form_function="bulkunitweight"
+)(groundhog_forwarder("calculate_bulk_unit_weight", "groundhog.siteinvestigation.classification.phaserelations", "bulkunitweight"))
 
 
 # 2. Void Ratio from Porosity
-@geoai_tool(
+calculate_void_ratio_from_porosity = geoai_tool(
     name="calculate_void_ratio_from_porosity",
     description="Calculates void ratio (e) from porosity (n) using phase relations: e = n / (1 - n).",
     category="classification",
     input_model=VoidRatioPorosityInput,
-    output_model=VoidRatioPorosityOutput
-)
-def calculate_void_ratio_from_porosity(**kwargs):
-    import groundhog.siteinvestigation.classification.phaserelations as pr
-    return pr.voidratio_porosity(**kwargs)
+    output_model=VoidRatioPorosityOutput,
+    form_function="voidratio_porosity"
+)(groundhog_forwarder("calculate_void_ratio_from_porosity", "groundhog.siteinvestigation.classification.phaserelations", "voidratio_porosity"))
 
 
 # 3. Relative Density
-@geoai_tool(
+calculate_relative_density = geoai_tool(
     name="calculate_relative_density",
     description="Calculates soil relative density (Dr) from current void ratio (e), minimum void ratio (e_min), and maximum void ratio (e_max).",
     category="classification",
     input_model=RelativeDensityInput,
-    output_model=RelativeDensityOutput
-)
-def calculate_relative_density(**kwargs):
-    import groundhog.siteinvestigation.classification.phaserelations as pr
-    return pr.relative_density(**kwargs)
+    output_model=RelativeDensityOutput,
+    form_function="relative_density"
+)(groundhog_forwarder(
+    "calculate_relative_density", "groundhog.siteinvestigation.classification.phaserelations", "relative_density",
+    # Groundhog names void ratios by density: its e_min is the void ratio at MINIMUM density
+    # (loosest, conventionally e_max) and vice versa. The tool uses the conventional meaning.
+    arg_map={"e_min": "e_max", "e_max": "e_min"},
+))
 
 
 # 4. Vertical Stresses below Circular Footing
-@geoai_tool(
+calculate_stresses_circular_footing = geoai_tool(
     name="calculate_stresses_circular_footing",
     description="Calculates vertical and horizontal elastic stress increments in a soil half-space under the center of a circular loaded area.",
     category="shallow_foundations",
     input_model=StressesCircleInput,
-    output_model=StressesCircleOutput
-)
-def calculate_stresses_circular_footing(**kwargs):
-    import groundhog.shallowfoundations.stressdistribution as sd
-    return sd.stresses_circle(**kwargs)
+    output_model=StressesCircleOutput,
+    form_function="stresses_circle"
+)(groundhog_forwarder("calculate_stresses_circular_footing", "groundhog.shallowfoundations.stressdistribution", "stresses_circle"))
 
 
 # 5. Point Load Stresses (Boussinesq)
-@geoai_tool(
+calculate_stresses_point_load = geoai_tool(
     name="calculate_stresses_point_load",
     description="Calculates 3D elastic stress distribution (sigma_z, sigma_r, sigma_theta, tau_rz) from a concentrated surface point load using Boussinesq theory.",
     category="shallow_foundations",
     input_model=StressesPointloadInput,
-    output_model=StressesPointloadOutput
-)
-def calculate_stresses_point_load(**kwargs):
-    import groundhog.shallowfoundations.stressdistribution as sd
-    return sd.stresses_pointload(**kwargs)
+    output_model=StressesPointloadOutput,
+    form_function="stresses_pointload"
+)(groundhog_forwarder("calculate_stresses_point_load", "groundhog.shallowfoundations.stressdistribution", "stresses_pointload"))
 
 
 # 6. Gmax from Shear Wave Velocity
-@geoai_tool(
+calculate_gmax_from_shear_wave_velocity = geoai_tool(
     name="calculate_gmax_from_shear_wave_velocity",
-    description="Calculates small-strain shear modulus Gmax [MPa] from shear wave velocity Vs [m/s] and unit weight gamma [kN/m3].",
+    description="Calculates small-strain shear modulus Gmax [kPa] from shear wave velocity Vs [m/s] and unit weight gamma [kN/m3].",
     category="soil_dynamics",
     input_model=GmaxShearWaveVelocityInput,
-    output_model=GmaxShearWaveVelocityOutput
-)
-def calculate_gmax_from_shear_wave_velocity(**kwargs):
-    import groundhog.soildynamics.soilproperties as dp
-    return dp.gmax_shearwavevelocity(**kwargs)
+    output_model=GmaxShearWaveVelocityOutput,
+    form_function="gmax_shearwavevelocity"
+)(groundhog_forwarder("calculate_gmax_from_shear_wave_velocity", "groundhog.soildynamics.soilproperties", "gmax_shearwavevelocity"))
 
 
 # 7. Earth Pressure Coefficients (Rankine)
-@geoai_tool(
+calculate_earth_pressure_rankine = geoai_tool(
     name="calculate_earth_pressure_rankine",
     description="Calculates active (Ka) and passive (Kp) lateral earth pressure coefficients for inclined or vertical walls using Rankine theory.",
     category="excavations",
     input_model=EarthPressureRankineInput,
-    output_model=EarthPressureRankineOutput
-)
-def calculate_earth_pressure_rankine(**kwargs):
-    import groundhog.excavations.basic as ep
-    return ep.earthpressurecoefficients_rankine(**kwargs)
+    output_model=EarthPressureRankineOutput,
+    form_function="earthpressurecoefficients_rankine"
+)(groundhog_forwarder("calculate_earth_pressure_rankine", "groundhog.excavations.basic", "earthpressurecoefficients_rankine"))
 
 
 # 8. Pipeline Contact Width
-@geoai_tool(
+calculate_pipeline_contact_width = geoai_tool(
     name="calculate_pipeline_contact_width",
     description="Calculates contact width between a subsea pipeline and seabed from outer diameter and embedment depth.",
     category="pipelines",
     input_model=ContactWidthInput,
-    output_model=ContactWidthOutput
-)
-def calculate_pipeline_contact_width(**kwargs):
-    import groundhog.pipelinescables.stability.penetration as pipe
-    return pipe.contactwidth(**kwargs)
+    output_model=ContactWidthOutput,
+    form_function="contactwidth"
+)(groundhog_forwarder("calculate_pipeline_contact_width", "groundhog.pipelinescables.stability.penetration", "contactwidth"))
 
 
 # 9. Hydraulic Conductivity (Pumping Test)
-@geoai_tool(
+calculate_hydraulic_conductivity_unconfined = geoai_tool(
     name="calculate_hydraulic_conductivity_unconfined",
     description="Calculates aquifer hydraulic conductivity k [m/s] from unconfined steady-state pumping test data using the Dupuit-Thiem solution.",
     category="consolidation",
     input_model=HydraulicConductivityUnconfinedInput,
-    output_model=HydraulicConductivityUnconfinedOutput
-)
-def calculate_hydraulic_conductivity_unconfined(**kwargs):
-    import groundhog.consolidation.groundwaterflow.pumpingtests as gw
-    return gw.hydraulicconductivity_unconfinedaquifer(**kwargs)
+    output_model=HydraulicConductivityUnconfinedOutput,
+    form_function="hydraulicconductivity_unconfinedaquifer"
+)(groundhog_forwarder("calculate_hydraulic_conductivity_unconfined", "groundhog.consolidation.groundwaterflow.pumpingtests", "hydraulicconductivity_unconfinedaquifer"))
 
 
 # 10. SPT Normalization & Empirical Correlation

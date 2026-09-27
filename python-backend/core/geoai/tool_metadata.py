@@ -191,10 +191,10 @@ TOOL_METADATA: Dict[str, Dict[str, Any]] = {
 
     # 5. Dynamics & In-Situ Correlations
     "calculate_gmax_from_shear_wave_velocity": {
-        "method": "Elastic Wave Propagation Theory (Gmax = rho * Vs^2)",
-        "standard": "ASTM D4015 / ISO 17892-9",
+        "method": "Small-strain shear modulus from Elastic Wave theory (Gmax = rho * Vs^2, rho = gamma / g)",
+        "standard": "Robertson & Cabal (2015), Guide to Cone Penetration Testing, 6th ed. (Groundhog reference)",
         "assumptions": [
-            "Homogeneous isotropic continuum under small strains (gamma < 1e-5)",
+            "Homogeneous isotropic elastic continuum at small shear strain (< 1e-4 %)",
             "Shear wave propagation through solid soil matrix"
         ],
         "output_units": {

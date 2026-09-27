@@ -32,6 +32,11 @@ def wait_for_warmup() -> None:
     _done.wait()
 
 
+def is_warm() -> bool:
+    """True once no warm-up is in progress (heavy modules are importable without waiting)."""
+    return _done.is_set()
+
+
 async def wait_for_warmup_async() -> None:
     """Async variant for event-loop handlers: waits without blocking the loop,
     so /health keeps answering while the warm-up finishes."""

@@ -43,6 +43,7 @@ except ImportError:  # pragma: no cover - guidance for first-time users
 WEBSITE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import docs_content  # noqa: E402
+import app_docs  # noqa: E402
 REPO = WEBSITE.parent
 TEMPLATES = WEBSITE / "_templates"
 DATA = WEBSITE / "_data"
@@ -468,6 +469,12 @@ def build() -> None:
     for page in docs_pages:
         render_docs_page(env, page, docs_nav, docs_ctx, ordered=ordered)
     print(f"  wrote website/docs: {len(docs_pages) + 1} pages")
+
+    if app_docs.API_JSON.exists():
+        target = app_docs.build_app_docs()
+        print(f"  wrote {target.relative_to(REPO)} (desktop app Guide & Theory, {target.stat().st_size / 1024:.0f} KB)")
+    else:
+        _warn(f"{app_docs.API_JSON} missing; desktop app Guide & Theory content not regenerated")
 
     entries = seed_search_entries(domains) + docs_content.search_entries(docs_pages)
     target = write_search_index(entries)

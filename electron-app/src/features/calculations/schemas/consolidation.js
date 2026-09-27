@@ -18,7 +18,7 @@ export const consolidationSchemas = {
     consolidation_degree: {
         inputs: [
             { name: "time", type: "float", unit: "s", min: 0.0, description: "Time at which excess pore pressures are computed", required: true },
-            { name: "cv", type: "float", unit: "m2/s", min: 0.0, description: "Coefficient of consolidation", required: true },
+            { name: "cv", type: "float", unit: "m2/yr", min: 0.0, description: "Coefficient of consolidation (groundhog converts m2/yr to m2/s internally)", required: true },
             { name: "drainage_length", type: "float", unit: "m", min: 0.0, description: "Drainage length", required: true },
             { name: "distribution", type: "select", options: ["uniform", "triangular"], default: "uniform", description: "Shape of initial excess pore pressure distribution" }
         ]
@@ -28,7 +28,7 @@ export const consolidationSchemas = {
             { name: "delta_u_0", type: "float", unit: "kPa", description: "Initial excess pore pressure", required: true },
             { name: "depths", type: "float", is_array: true, unit: "m", description: "Depths for excess pore pressures (comma separated)", required: true },
             { name: "time", type: "float", unit: "s", min: 0.0, description: "Time at which excess pore pressures are computed", required: true },
-            { name: "cv", type: "float", unit: "m2/s", min: 0.0, description: "Coefficient of consolidation", required: true },
+            { name: "cv", type: "float", unit: "m2/yr", min: 0.0, description: "Coefficient of consolidation (groundhog converts m2/yr to m2/s internally)", required: true },
             { name: "layer_thickness", type: "float", unit: "m", min: 0.0, description: "Thickness of the layer", required: true },
             { name: "no_terms", type: "int", default: 1000, min: 1, description: "Number of terms for Fourier series" }
         ]

@@ -141,7 +141,11 @@ def test_lazy_class_constructs_real_class(eager_map, lazy_map):
         "piezometric_height_2": 20.0, "flowrate": 0.05}),
     ("voidratio_bulkunitweight", {"bulkunitweight": 18.0, "saturation": 1.0}),
 ])
-def test_registry_execute_lazy_matches_eager(eager_map, function_id, args):
+def test_registry_execute_lazy_matches_eager(eager_map, lazy_map, monkeypatch, function_id, args):
+    # Seed the process-wide cache with the manifest-built map: whether an earlier
+    # Registry() in this process got lazy objects depends on the committed
+    # manifest's fingerprint matching the running Python (it may have scanned).
+    monkeypatch.setattr(fm, "_cached_map", dict(lazy_map))
     lazy_registry = Registry()
     assert isinstance(lazy_registry.function_map[function_id], fm.LazyGroundhogCallable)
 

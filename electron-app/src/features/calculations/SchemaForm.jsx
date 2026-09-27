@@ -268,7 +268,7 @@ const ColumnSelectDropdown = ({ name, value, availableColumns, onChange, require
     );
 };
 
-export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initialValues }) => {
+export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLoading, initialValues }) => {
     const [formData, setFormData] = useState({});
     const [showDocs, setShowDocs] = useState(false);
     const [fileColumns, setFileColumns] = useState([]);
@@ -385,7 +385,9 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
 
     // Fetch Overrides and Page Docs on Mount/Update
     useEffect(() => {
-        const defaultDocs = schema?.documentation || generateDefaultDocumentation(functionName, schema, normalizedInputs);
+        // GeoCore usage notes: a saved override, else the schema's hand-written docs. Theory comes from
+        // the groundhog docstrings in UserGuideTemplate, so there is no generic fallback text here.
+        const defaultDocs = schema?.documentation || '';
 
         fetch('http://localhost:8000/api/schema/overrides')
             .then(res => res.json())
@@ -1120,6 +1122,7 @@ export const SchemaForm = ({ functionName, schema, onCalculate, isLoading, initi
                                             </div>
                                         ) : (
                                             <UserGuideTemplate
+                                                functionId={functionId}
                                                 functionName={functionName}
                                                 pageDocs={pageDocs}
                                                 schema={schema}

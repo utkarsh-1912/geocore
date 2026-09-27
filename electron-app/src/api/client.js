@@ -59,6 +59,14 @@ export const api = {
         return true;
     },
 
+    // Diagnostics for the System Health panel; latencyMs is the round trip seen by the app.
+    healthDetails: async () => {
+        const started = performance.now();
+        const response = await fetchWithTimeout('/health/details', { timeout: 5000 });
+        const data = await handleResponse(response);
+        return { ...data, latencyMs: Math.round(performance.now() - started) };
+    },
+
     // Execution
     execute: async (moduleId, functionId, args) => {
         const response = await fetchWithTimeout('/api/execute', {
@@ -77,11 +85,11 @@ export const api = {
     },
 
     // GeoAI
-    geoaiChat: async (prompt, context) => {
+    geoaiChat: async (prompt, context, history = []) => {
         const response = await fetchWithTimeout('/api/geoai/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt, context }),
+            body: JSON.stringify({ prompt, context, history }),
             timeout: 60000 // Slightly longer for AI
         });
         return handleResponse(response);
@@ -96,16 +104,21 @@ export const api = {
         return handleResponse(response);
     },
 
-    geoaiChatStream: async (prompt, context = {}) => {
+    geoaiChatStream: async (prompt, context = {}, history = []) => {
         const response = await fetch(`${API_BASE}/api/geoai/chat?stream=true`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt, context }),
+            body: JSON.stringify({ prompt, context, history }),
         });
         if (!response.ok) {
             throw new Error(`GeoAI stream request failed: ${response.status}`);
         }
         return response;
+    },
+
+    geoaiListTools: async () => {
+        const response = await fetchWithTimeout('/api/geoai/tools', { timeout: 5000 });
+        return handleResponse(response);
     },
 
     geoaiStatus: async () => {

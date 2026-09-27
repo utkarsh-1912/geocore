@@ -58,3 +58,12 @@ class TestExpandedCalculations:
         assert "calculate_earth_pressure_rankine" in tool_names
         assert "calculate_pipeline_contact_width" in tool_names
         assert "calculate_hydraulic_conductivity_unconfined" in tool_names
+
+    # 6. Each calculation tool links to an existing GeoCore calculation form,
+    # so "Load in Form" opens the right fields instead of a placeholder form.
+    def test_calculation_tools_link_to_calculation_forms(self):
+        tools = {t["name"]: t for t in tool_registry.list_tools()}
+        assert tools["calculate_gmax_from_shear_wave_velocity"]["form_function"] == "gmax_shearwavevelocity"
+        for tool in tools.values():
+            if tool["form_function"]:
+                assert registry.find_function(tool["form_function"]) is not None, tool["name"]

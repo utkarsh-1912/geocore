@@ -65,6 +65,12 @@ def root():
 def health_check():
     return {"status": "ok", "version": "1.0.0"}
 
+@app.get("/health/details")
+def health_details():
+    """Diagnostics for the System Health panel (cheap; never loads the GeoAI model)."""
+    from core.diagnostics import collect_diagnostics
+    return collect_diagnostics(functions_registered=len(registry.function_map))
+
 @app.get("/modules")
 def list_modules():
     return {k: v.__name__ if hasattr(v, '__name__') else str(v) for k, v in registry.function_map.items()}
