@@ -2,6 +2,7 @@
 Standard Tool Definitions for GeoAI
 Binds Groundhog functions to the Tool Registry with canonical schemas.
 """
+import math
 from typing import Optional, Dict, Any, List
 
 from core.geoai.tool_registry import tool_registry, geoai_tool, groundhog_forwarder
@@ -60,6 +61,27 @@ calculate_relative_density = geoai_tool(
 
 
 # 4. Vertical Stresses below Circular Footing
+_stresses_circle_forward = groundhog_forwarder(
+    "calculate_stresses_circular_footing", "groundhog.shallowfoundations.stressdistribution", "stresses_circle")
+
+
+def _stresses_circle_corrected(**kwargs):
+    result = _stresses_circle_forward(**kwargs)
+    # Groundhog's 'delta sigma r [kPa]' uses 4(1 + nu) where Poulos & Davis (1974) /
+    # Budhu (2011) have 2(1 + nu), so it tends to -q(1 + nu) instead of 0 at depth.
+    # Recompute it here until fixed upstream; sigma_z from Groundhog is correct.
+    # Left as NaN when Groundhog rejected the inputs.
+    if not math.isnan(result['delta sigma r [kPa]']):
+        q, nu = kwargs['imposedstress'], kwargs['poissonsratio']
+        a = kwargs['z'] / math.hypot(kwargs['footing_radius'], kwargs['z'])
+        result['delta sigma r [kPa]'] = 0.5 * q * ((1 + 2 * nu) - 2 * (1 + nu) * a + a ** 3)
+    return result
+
+
+_stresses_circle_corrected.__name__ = _stresses_circle_corrected.__qualname__ = "calculate_stresses_circular_footing"
+_stresses_circle_corrected.__geoai_target__ = _stresses_circle_forward.__geoai_target__
+_stresses_circle_corrected.__geoai_arg_map__ = _stresses_circle_forward.__geoai_arg_map__
+
 calculate_stresses_circular_footing = geoai_tool(
     name="calculate_stresses_circular_footing",
     description="Calculates vertical and horizontal elastic stress increments in a soil half-space under the center of a circular loaded area.",
@@ -67,10 +89,33 @@ calculate_stresses_circular_footing = geoai_tool(
     input_model=StressesCircleInput,
     output_model=StressesCircleOutput,
     form_function="stresses_circle"
-)(groundhog_forwarder("calculate_stresses_circular_footing", "groundhog.shallowfoundations.stressdistribution", "stresses_circle"))
+)(_stresses_circle_corrected)
 
 
 # 5. Point Load Stresses (Boussinesq)
+_stresses_pointload_forward = groundhog_forwarder(
+    "calculate_stresses_point_load", "groundhog.shallowfoundations.stressdistribution", "stresses_pointload")
+
+
+def _stresses_pointload_corrected(**kwargs):
+    result = _stresses_pointload_forward(**kwargs)
+    # Groundhog's 'delta sigma theta [kPa]' has the bracket reversed (sign flipped), so
+    # on the load axis it does not equal sigma_r as axisymmetry requires. Recompute the
+    # Boussinesq expression (compression positive) until fixed upstream; the other
+    # components from Groundhog are correct. Left as NaN when Groundhog rejected the inputs.
+    if not math.isnan(result['delta sigma theta [kPa]']):
+        Q, z, nu = kwargs['pointload'], kwargs['z'], kwargs['poissonsratio']
+        R = math.hypot(kwargs['r'], z)
+        result['delta sigma theta [kPa]'] = (
+            Q / (2 * math.pi) * (1 - 2 * nu) * (1 / (R * (R + z)) - z / R ** 3)
+        )
+    return result
+
+
+_stresses_pointload_corrected.__name__ = _stresses_pointload_corrected.__qualname__ = "calculate_stresses_point_load"
+_stresses_pointload_corrected.__geoai_target__ = _stresses_pointload_forward.__geoai_target__
+_stresses_pointload_corrected.__geoai_arg_map__ = _stresses_pointload_forward.__geoai_arg_map__
+
 calculate_stresses_point_load = geoai_tool(
     name="calculate_stresses_point_load",
     description="Calculates 3D elastic stress distribution (sigma_z, sigma_r, sigma_theta, tau_rz) from a concentrated surface point load using Boussinesq theory.",
@@ -78,7 +123,7 @@ calculate_stresses_point_load = geoai_tool(
     input_model=StressesPointloadInput,
     output_model=StressesPointloadOutput,
     form_function="stresses_pointload"
-)(groundhog_forwarder("calculate_stresses_point_load", "groundhog.shallowfoundations.stressdistribution", "stresses_pointload"))
+)(_stresses_pointload_corrected)
 
 
 # 6. Gmax from Shear Wave Velocity
