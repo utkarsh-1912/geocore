@@ -80,9 +80,9 @@
   --sp-section: clamp(3.5rem, 2.5rem + 4vw, 6rem);
 
   /* Radius */
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 16px;
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 10px;
   --r-pill: 999px;
 
   /* Layout */
@@ -1193,6 +1193,24 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
 }
 .docs-body table.data thead th:first-child { background: var(--c-surface-2); }
 .docs-body table.data tbody tr:nth-child(even) td:first-child { background: color-mix(in srgb, var(--c-surface-2) 55%, var(--c-surface)); }
+
+/* Bar chart — dependency-free, used in docs and marketing pages. Decorative: pair it with an
+   accessible data table or list carrying the same numbers, and mark the chart aria-hidden. */
+.bar-chart { margin: var(--sp-5) 0; padding: var(--sp-4) var(--sp-5); border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface); }
+.bar-chart__title { margin: 0 0 var(--sp-4); font-size: var(--fs-xs); font-weight: var(--fw-semibold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--c-text-subtle); }
+.bar-chart__row { display: grid; grid-template-columns: minmax(7rem, 12rem) 1fr 3.25rem; align-items: center; column-gap: var(--sp-3); }
+.bar-chart__row + .bar-chart__row { margin-top: var(--sp-3); }
+.bar-chart__label { font-size: var(--fs-sm); color: var(--c-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-chart__track { height: 0.55rem; border-radius: var(--r-sm); background: var(--c-surface-2); overflow: hidden; }
+.bar-chart__fill { display: block; height: 100%; border-radius: var(--r-sm); background: var(--c-primary); }
+.bar-chart__value { font-size: var(--fs-xs); font-variant-numeric: tabular-nums; color: var(--c-text); text-align: right; }
+@media (max-width: 26rem) {
+  .bar-chart__row { grid-template-columns: 1fr 3.25rem; row-gap: 0.3rem; }
+  .bar-chart__label { grid-column: 1 / -1; white-space: normal; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bar-chart__fill { transition: width 500ms var(--ease); }
+}
 
 /* Math */
 .math-display { margin: var(--sp-4) 0; overflow-x: auto; overflow-y: hidden; padding: var(--sp-1) 0; }

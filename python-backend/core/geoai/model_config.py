@@ -105,20 +105,12 @@ def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
     """
     (n_threads, n_threads_batch) for llama.cpp on this machine.
 
-    Explicit config values win. Auto: generation is memory-bandwidth bound and stalls on the
-    slowest thread, so it uses the physical core count (hyper-threads add contention);
-    prompt processing is compute bound and uses every logical CPU. Both leave nothing to
-    the rest of the desktop only while a request is running.
+    Explicit config values win. Auto = llama-cpp-python's own defaults (half the logical CPUs
+    for generation, all of them for prompt processing): on an i5-1235U with Qwen3-1.7B, physical
+    cores (10x12) and other splits measured no faster than 6x12 (2026-09-29, 2 reps, throttling noise).
     """
     logical = os.cpu_count() or 4
-    physical = None
-    try:
-        import psutil  # optional dependency (already used by lifecycle/diagnostics)
-        physical = psutil.cpu_count(logical=False)
-    except Exception:
-        pass
-    physical = physical or max(1, logical // 2)
-    n = config.n_threads if config.n_threads and config.n_threads > 0 else physical
+    n = config.n_threads if config.n_threads and config.n_threads > 0 else max(1, logical // 2)
     nb = config.n_threads_batch if config.n_threads_batch and config.n_threads_batch > 0 else logical
     return n, nb
 

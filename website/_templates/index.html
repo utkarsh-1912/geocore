@@ -119,6 +119,17 @@
       <h2 id="features-title">The Groundhog library, organised for daily work</h2>
       <p>GeoCore exposes {{ fn_total }} Groundhog {{ groundhog_version }} functions and classes, grouped the way Groundhog groups them. Each one gets a form with units and validation, results you can plot, and an export.</p>
     </div>
+    {% set max_count = (domains|max(attribute='count')).count %}
+    <div class="bar-chart" aria-hidden="true">
+      <p class="bar-chart__title">Functions by area</p>
+      {% for d in domains|sort(attribute='count', reverse=True) %}
+      <div class="bar-chart__row">
+        <span class="bar-chart__label">{{ d.title }}</span>
+        <span class="bar-chart__track"><span class="bar-chart__fill" style="width:{{ '%.1f'|format(100 * d.count / max_count) }}%"></span></span>
+        <span class="bar-chart__value">{{ d.count }}</span>
+      </div>
+      {% endfor %}
+    </div>
     <div class="grid grid--3">
       {% for d in domains %}
       <article class="card domain-card" id="domain-{{ d.key }}">

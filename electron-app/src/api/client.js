@@ -273,11 +273,16 @@ export const api = {
         const response = await fetchWithTimeout(`/api/objects/${objectType}/${id}`);
         return handleResponse(response);
     },
+    // Object creation/upload runs the same Groundhog registry path (and warm-up wait) as
+    // /api/execute, so it gets the same generous timeout instead of the 30s default - a raw
+    // fetch with no timeout used to hang on "Uploading..." until the OS killed the idle
+    // connection (~5 min) before surfacing any error.
     createObject: async (objectType, data) => {
         const response = await fetchWithTimeout(`/api/objects/create?type_name=${objectType}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            timeout: EXECUTE_TIMEOUT
         });
         return handleResponse(response);
     },
@@ -286,7 +291,8 @@ export const api = {
         formData.append('file', file);
         const response = await fetchWithTimeout(`/api/objects/upload?type_name=${objectType}`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            timeout: EXECUTE_TIMEOUT
         });
         return handleResponse(response);
     },

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap } from 'lucide-react';
+import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
@@ -16,12 +16,14 @@ import { SavedProfilesList } from './SavedProfilesList';
 import { ProfileViewModal } from './ProfileViewModal';
 import SchemaEditor from './SchemaEditor';
 import { UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
+import { api } from '../../api/client';
 
 
 // Object Selector Component
 const ObjectSelector = ({ objectType, value, onChange, required, refreshTrigger }) => {
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [fetchError, setFetchError] = useState(null);
 
     useEffect(() => {
         if (!objectType) return;
@@ -30,38 +32,51 @@ const ObjectSelector = ({ objectType, value, onChange, required, refreshTrigger 
 
     const fetchObjects = () => {
         setLoading(true);
+        setFetchError(null);
         // Fetch available objects of this type from backend
-        fetch(`http://127.0.0.1:8000/api/objects/${objectType}`)
-            .then(res => res.json())
+        api.listObjects(objectType)
             .then(data => {
                 setOptions(data.objects || []);
                 setLoading(false);
             })
             .catch(err => {
                 console.error("Failed to load objects", err);
+                setFetchError(err.message || "Failed to load objects.");
                 setLoading(false);
             });
     };
 
     return (
-        <select
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
-            required={required}
-        >
-            <option value="">Select {objectType}...</option>
-            {/* If value exists but isn't in options (common after refresh/reload), show it */}
-            {value && !options.find(o => o.id === value) && (
-                <option value={value}>Profile {value.substring(0, 8)}</option>
-            )}
-            {options.map(opt => (
-                <option key={opt.id} value={opt.id}>
-                    {opt.name || `${objectType} (${opt.id.substring(0, 6)}...)`}
-                </option>
-            ))}
-            {options.length === 0 && !loading && <option disabled>No {objectType}s created yet</option>}
-        </select>
+        <div className="flex items-center gap-2">
+            <select
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+                required={required}
+            >
+                <option value="">Select {objectType}...</option>
+                {/* If value exists but isn't in options (common after refresh/reload), show it */}
+                {value && !options.find(o => o.id === value) && (
+                    <option value={value}>Profile {value.substring(0, 8)}</option>
+                )}
+                {options.map(opt => (
+                    <option key={opt.id} value={opt.id}>
+                        {opt.name || `${objectType} (${opt.id.substring(0, 6)}...)`}
+                    </option>
+                ))}
+                {options.length === 0 && !loading && !fetchError && <option disabled>No {objectType}s created yet</option>}
+                {fetchError && <option disabled>Failed to load {objectType}s - click refresh</option>}
+            </select>
+            <button
+                type="button"
+                onClick={fetchObjects}
+                disabled={loading}
+                title={fetchError || "Refresh list"}
+                className={`p-2 rounded border transition-colors disabled:opacity-50 ${fetchError ? 'border-red-500/40 text-red-500 hover:bg-red-500/10' : 'border-border text-text-muted hover:text-primary hover:border-primary/50'}`}
+            >
+                <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+            </button>
+        </div>
     );
 };
 

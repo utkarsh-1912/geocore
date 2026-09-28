@@ -7,15 +7,17 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
-import { X, Upload, Plus, Trash2, Check, FileText, Loader, Eye, ArrowRight } from 'lucide-react';
+import { X, Upload, Plus, Trash2, Check, FileText, Loader, Eye, ArrowRight, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { ProfileViewModal } from './ProfileViewModal';
+import { api } from '../../api/client';
 
 export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "SoilProfile" }) => {
     const [activeTab, setActiveTab] = useState('select'); // select, create, upload
     const [profiles, setProfiles] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [fetchError, setFetchError] = useState(null);
     const [viewProfile, setViewProfile] = useState(null); // Profile to view details
 
     // Select State
@@ -40,12 +42,13 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
 
     const fetchProfiles = async () => {
         setLoading(true);
+        setFetchError(null);
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/objects/${objectType}`);
-            const data = await res.json();
+            const data = await api.listObjects(objectType);
             setProfiles(data.objects || []);
         } catch (err) {
             console.error("Failed to fetch profiles", err);
+            setFetchError(err.message || "Failed to load profiles.");
         } finally {
             setLoading(false);
         }
@@ -96,15 +99,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
 
         try {
             setLoading(true);
-            const res = await fetch(`http://127.0.0.1:8000/api/objects/create?type_name=${objectType}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!res.ok) throw new Error("Failed to create profile");
-
-            const data = await res.json();
+            const data = await api.createObject(objectType, payload);
             onSelect(data.id);
             onClose();
         } catch (err) {
@@ -118,20 +113,9 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
     const handleUpload = async () => {
         if (!uploadFile) return;
 
-        const formData = new FormData();
-        formData.append('file', uploadFile);
-        // We can pass name if supported, else registry uses filename
-
         try {
             setLoading(true);
-            const res = await fetch(`http://127.0.0.1:8000/api/objects/upload?type_name=${objectType}`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!res.ok) throw new Error("Failed to upload profile");
-
-            const data = await res.json();
+            const data = await api.uploadObjectFile(objectType, uploadFile);
             onSelect(data.id);
             onClose();
         } catch (err) {
@@ -218,9 +202,23 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                 <div className="p-6 overflow-y-auto flex-1">
                     {activeTab === 'select' && (
                         <div className="space-y-4">
-                            {profiles.length === 0 ? (
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={fetchProfiles}
+                                    disabled={loading}
+                                    className="text-xs text-primary hover:underline flex items-center gap-1 disabled:opacity-50"
+                                >
+                                    <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Refresh
+                                </button>
+                            </div>
+                            {fetchError ? (
+                                <div className="p-3 border border-red-500/20 bg-red-500/10 rounded text-red-500 text-sm flex items-center justify-between">
+                                    <span>{fetchError}</span>
+                                    <button onClick={fetchProfiles} className="p-1 hover:bg-red-500/20 rounded"><RefreshCw size={14} /></button>
+                                </div>
+                            ) : profiles.length === 0 ? (
                                 <div className="text-center py-8 text-text-muted">
-                                    No profiles found. Create one or upload a file.
+                                    {loading ? "Loading profiles..." : "No profiles found. Create one or upload a file."}
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 gap-2">

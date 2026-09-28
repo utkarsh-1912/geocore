@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import ast
 import base64
+import html
 import importlib
 import inspect
 import json
@@ -1642,6 +1643,26 @@ def _num(v: Any, fmt: str = "{:.2f}") -> str:
     return "–" if v is None else fmt.format(v)
 
 
+def _bar_chart_html(title: str, rows: List[Tuple[str, float]], max_value: float = 1.0,
+                     value_fmt: str = "{:.3f}") -> str:
+    """Dependency-free horizontal bar chart (see assets/css/site.css .bar-chart). Decorative: the exact
+    values are already in the adjacent data table, so the chart itself is marked aria-hidden."""
+    if not rows:
+        return ""
+    lines = ['<div class="bar-chart" aria-hidden="true">', f'  <p class="bar-chart__title">{html.escape(title)}</p>']
+    for label, value in rows:
+        pct = max(0.0, min(100.0, (value / max_value) * 100)) if max_value else 0.0
+        lines += [
+            '  <div class="bar-chart__row">',
+            f'    <span class="bar-chart__label">{html.escape(label)}</span>',
+            f'    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:{pct:.1f}%"></span></span>',
+            f'    <span class="bar-chart__value">{html.escape(value_fmt.format(value))}</span>',
+            '  </div>',
+        ]
+    lines.append('</div>')
+    return "\n".join(lines)
+
+
 def geoai_model_benchmarks_markdown() -> str:
     """Render the most recent published benchmark leaderboard (run folders starting with '_' are private)."""
     runs = [p for p in (GEOAI_EVAL_DIR / "results" / "benchmark").glob("*/leaderboard.json")
@@ -1665,6 +1686,7 @@ def geoai_model_benchmarks_markdown() -> str:
         "| Model | Mean score | Strict pass | Tool choice | Arguments | Clarification | Invented inputs | p50 latency (s) | Peak RAM (MB) |",
         "|---|---|---|---|---|---|---|---|---|",
     ]
+    chart_rows: List[Tuple[str, float]] = []
     for r in lb["rows"]:
         m = r["metrics"]
         name = r.get("display_name") or r["label"]
@@ -1674,6 +1696,10 @@ def geoai_model_benchmarks_markdown() -> str:
                    f"{_pct(m.get('tool_selection_accuracy'))} | {_pct(m.get('argument_accuracy'))} | "
                    f"{_pct(m.get('clarification_accuracy'))} | {_pct(m.get('hallucinated_parameter_rate'))} | "
                    f"{_num(m.get('decision_latency_p50_s'), '{:.1f}')} | {_num(m.get('peak_memory_mb'), '{:.0f}')} |")
+        if m.get("mean_score") is not None:
+            chart_rows.append((name, m["mean_score"]))
+    chart_rows.sort(key=lambda row: row[1], reverse=True)
+    out += ["", _bar_chart_html("Mean score by model", chart_rows)]
     cats = sorted({k for r in lb["rows"] for k in (r.get("per_category") or {}) if not k.startswith("turn:")})
     if cats:
         out += ["", "Strict pass rate by category:", "",

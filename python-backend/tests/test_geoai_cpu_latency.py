@@ -66,13 +66,9 @@ def test_perf_config_invalid_env_keeps_default(clean_env):
 
 def test_resolve_thread_counts_auto_and_explicit(monkeypatch):
     monkeypatch.setattr(os, "cpu_count", lambda: 12)
-    fake_psutil = types.SimpleNamespace(cpu_count=lambda logical=True: 12 if logical else 10)
-    with patch.dict(sys.modules, {"psutil": fake_psutil}):
-        assert resolve_thread_counts(GeoAIModelConfig()) == (10, 12)  # physical cores / all logical
-        assert resolve_thread_counts(GeoAIModelConfig(n_threads=4, n_threads_batch=6)) == (4, 6)
-        assert resolve_thread_counts(GeoAIModelConfig(n_threads=0)) == (10, 12)  # 0 = auto
-    with patch.dict(sys.modules, {"psutil": None}):  # psutil missing: half the logical CPUs
-        assert resolve_thread_counts(GeoAIModelConfig()) == (6, 12)
+    assert resolve_thread_counts(GeoAIModelConfig()) == (6, 12)  # llama-cpp-python defaults
+    assert resolve_thread_counts(GeoAIModelConfig(n_threads=4, n_threads_batch=6)) == (4, 6)
+    assert resolve_thread_counts(GeoAIModelConfig(n_threads=0)) == (6, 12)  # 0 = auto
 
 
 # ---------------- provider (mocked llama_cpp) ----------------
