@@ -14220,5 +14220,18 @@
     "is_nullable": false,
     "default_value": "",
     "physical_meaning": "Depth for the stress calculation (z) [m] - Suggested range: depth >= 0.0"
+  },
+  {
+    "module_id": "groundhog.cohesive.correlations.compression",
+    "function_id": "icl_scl_burland",
+    "parameter_name": "eL",
+    "python_type": "float",
+    "canonical_unit": "-",
+    "display_unit": "-",
+    "min_value": 0.6,
+    "max_value": 4.5,
+    "is_nullable": false,
+    "default_value": "",
+    "physical_meaning": "Void ratio at the liquid limit eL [-] (Burland 1990 ICL/SCL framework) - Suggested range: 0.6 <= eL <= 4.5"
   }
 ]

@@ -28,7 +28,7 @@ HELPERS = [
 KEPT = ["constant_value", "linear_trend", "logtimemethod", "mohrcoulomb_triaxial_compression",
         "pilegroupeffect_reesevanimpe", "cycliccontours_dssclay_andersen", "nq_frictionangle_sand"]
 
-UI_FUNCTION_COUNT = 221  # core.registry.Registry.function_map (desktop calculation forms)
+UI_FUNCTION_COUNT = 222  # core.registry.Registry.function_map (desktop calculation forms)
 
 
 def _model_facing_names():
