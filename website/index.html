@@ -328,9 +328,10 @@
       <h2 id="geoai-title">An assistant that calls the calculation — it doesn’t guess it</h2>
       <p class="lede">GeoAI is a local assistant built into GeoCore. A small language model reads your question and chooses a tool; Groundhog does the engineering arithmetic. If an input is missing, GeoAI should ask rather than invent it.</p>
       <ul class="checklist">
-        <li>Runs on your CPU through <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>, using open GGUF models (Qwen and Gemma families).</li>
+        <li>Runs on your CPU through <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>, using open GGUF models from several families (Qwen, Gemma, Phi, Llama, Granite, SmolLM) — swap models freely, GeoAI is not tied to one.</li>
         <li>Models are downloaded only when you choose one (1.0 GB to 5.3 GB) and stored on your computer.</li>
         <li>The model can only call whitelisted, schema-validated tools — never arbitrary code, shell or files.</li>
+        <li>A local full-text index lets GeoAI cite your own project notes, reports and standards instead of relying on the model's memory.</li>
         <li>With no model installed, GeoAI falls back to simpler rule-based tool selection.</li>
       </ul>
       <div class="callout callout--info">
@@ -389,7 +390,7 @@
       <article class="card integration">
         <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2752420ded#i-cpu"></use></svg></span>
         <h3>Local GGUF models</h3>
-        <p>Qwen 2.5 and Gemma 2 models via llama.cpp, downloaded from Hugging Face on request — or point GeoAI at any .gguf file you already have.</p>
+        <p>14 curated models across the Qwen, Gemma, Phi, Llama, Granite and SmolLM families via llama.cpp, downloaded from Hugging Face on request — or point GeoAI at any .gguf file you already have. Candidates are <a href="docs/geoai/model-benchmarks">benchmarked</a>, not chosen by reputation.</p>
         <div class="where"><span class="badge badge--primary">Runs on device</span><span class="badge badge--info">Download uses network</span></div>
       </article>
       <article class="card integration">

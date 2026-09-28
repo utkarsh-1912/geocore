@@ -12,6 +12,8 @@ groundhog_version: 0.15.0
 edited_by_geocore: false
 sources:
 - python-backend/core/geoai/tool_definitions.py
+- python-backend/core/geoai/tools_cpt_piles.py
+- python-backend/core/geoai/tools_shallow.py
 - python-backend/core/geoai/tool_registry.py
 - python-backend/core/geoai/schema_factory.py
 - python-backend/core/geoai/validator.py
@@ -23,7 +25,7 @@ GeoAI can only act through **tools** in GeoCore's tool registry. Each tool has a
 
 ## Curated tools
 
-These tools have hand-written schemas with units, bounds and accepted aliases for each input. The table is generated from `tool_definitions.py`.
+These tools have hand-written schemas with units, bounds and accepted aliases for each input. The table is generated from `tool_definitions.py`, `tools_cpt_piles.py` and `tools_shallow.py`.
 
 | Tool | Category | What it does |
 |---|---|---|
@@ -41,6 +43,11 @@ These tools have hand-written schemas with units, bounds and accepted aliases fo
 | `derive_cpt_parameters` | in_situ | Derives geotechnical design parameters (undrained shear strength su, friction angle phi', relative density Dr, small-strain shear modulus Gmax) from CPT measurements. |
 | `search_local_documents` | research | Searches local project documents, technical notes, papers, and standards using BM25 full-text retrieval. |
 | `index_document_text` | research | Indexes raw text or markdown technical content into the local SQLite full-text search index. |
+| `list_project_cpts` | in_situ | Lists the CPTs available in the current project: CPT id, depth range, channels, location. |
+| `get_cpt_summary` | in_situ | Summarises one project CPT: depth range, soil layering from Robertson SBT/Ic intervals with qc [MPa], fs and u2 [kPa] ranges per layer, data-quality flags and provenance. |
+| `calculate_pile_capacity_from_cpt` | deep_foundations | Calculates the ultimate axial pile capacity (shaft, base and total resistance in kN) of a single pile from a project CPT using Groundhog's LCPC, Koppejan or De Beer method. |
+| `calculate_shallow_foundation_capacity` | shallow_foundations | Calculates the ultimate bearing capacity of a shallow foundation (footing, pad, strip or raft): q_ult [kPa] and Q_ult [kN] for drained sand/gravel (phi') or undrained clay (su), with embedment depth, groundwater, eccentric or inclined load (effective area). Missing soil parameters are taken from the current project soil profile with their source. |
+| `calculate_foundation_settlement` | shallow_foundations | Calculates how much a footing / shallow foundation will settle on clay: primary consolidation settlement [mm] from Cc, Cr, e0 and OCR or preconsolidation pressure (or mv), with the Boussinesq stress increase below the footing centre and a per-depth breakdown. Missing soil parameters are taken from the current project soil profile with their source. |
 
 The CPT and SPT tools use GeoCore's own deterministic routines:
 

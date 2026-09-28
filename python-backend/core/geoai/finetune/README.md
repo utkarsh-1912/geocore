@@ -16,52 +16,79 @@ desktop: GEOAI_LORA_PATH / lora_path ──► LlamaCppProvider (checks sidecar,
 
 | file | purpose |
 |---|---|
-| `config.py` | `FinetuneConfig` (base model, family preset, LoRA r/alpha/dropout/targets, 4-bit vs 16-bit, lengths, LR/epochs/batch, GRPO settings, thinking toggle, plan style) |
-| `formatting.py` | SFT row preparation (plan line, tool cap), validation, tokenizer-free reference template, GRPO prompts, gold/bad completions |
+| `config.py` | `FinetuneConfig` + named run `PROFILES` (base model, family preset, target GGUF, LoRA r/alpha/dropout/targets, 4-bit vs 16-bit, lengths, LR/epochs/batch, GRPO settings, thinking toggle, plan style, category weights) |
+| `formatting.py` | SFT row preparation (plan line, tool cap), validation, tokenizer-free reference template, GRPO prompts (multi-step prefixes), gold/bad completions, seeded oversampling |
 | `rewards.py` | TRL reward functions: the existing deterministic scorer (`core.geoai.eval.scoring.reward`, not copied) + a small format reward |
 | `sft.py` / `grpo.py` | Unsloth + TRL training; `--dry-run` runs on CPU without torch |
 | `evaluate.py` | quick GPU sanity eval on `eval_val` during training |
 | `export.py` | GGUF LoRA conversion, merged q4_k_m export, sidecar, eval annotation + go/no-go |
 | `colab/GeoAI_finetune.ipynb` | end-to-end notebook for a free T4 |
 
-## Commands
+## Run profiles
 
-Local / CI (CPU, no GPU stack; ~1 min each, mostly registry import):
+A profile is the model identity of one run: what Unsloth loads, the HF reference id, the family preset,
+the thinking switch and the exact base GGUF the desktop runs (repo, file, sha256, header fingerprint),
+which `export.py` writes into the adapter sidecar. Default: **`qwen3-1.7b`** (best interim CPU benchmark).
+
+| profile | Unsloth loads | HF id | target GGUF |
+|---|---|---|---|
+| `qwen3-1.7b` (default) | `unsloth/Qwen3-1.7B` (QLoRA -> `unsloth/Qwen3-1.7B-unsloth-bnb-4bit`) | `Qwen/Qwen3-1.7B` | `unsloth/Qwen3-1.7B-GGUF` / `Qwen3-1.7B-Q4_K_M.gguf` (sha256 `b139949c...1897`) |
+| `qwen2.5-1.5b` | `unsloth/Qwen2.5-1.5B-Instruct` | `Qwen/Qwen2.5-1.5B-Instruct` | `Qwen/Qwen2.5-1.5B-Instruct-GGUF` / `qwen2.5-1.5b-instruct-q4_k_m.gguf` |
+
+Select with `--profile NAME`; add a new candidate by adding an entry to `PROFILES` in `config.py` (no model
+names anywhere else). Passing `--base-model/--base-model-id/--family` that differ from the profile drops its
+target GGUF, so a sidecar never claims the wrong base.
+
+## Order of work
 
 ```
 cd python-backend
-python -m core.geoai.training.scaleup --out core/geoai/training/data   # data is git-ignored
+# 1. regenerate the data (git-ignored; deterministic)
+python -m core.geoai.training.scaleup --out core/geoai/training/data
+# 2. CPU checks (no GPU stack; ~1 min each, mostly registry import)
 python -m core.geoai.finetune.sft  --dry-run
 python -m core.geoai.finetune.grpo --dry-run
-```
-
-GPU (Colab: open `colab/GeoAI_finetune.ipynb`, or run the same commands):
-
-```
-COMMON="--base-model unsloth/Qwen2.5-1.5B-Instruct --base-model-id Qwen/Qwen2.5-1.5B-Instruct --family qwen2.5 --output-dir /content/geoai-ft"
-python -m core.geoai.finetune.sft  $COMMON
-python -m core.geoai.finetune.evaluate --adapter-dir /content/geoai-ft/sft_adapter $COMMON --n 40
-python -m core.geoai.finetune.grpo $COMMON --set grpo_max_steps=300
+# 3-6. on the GPU (Colab: colab/GeoAI_finetune.ipynb runs exactly these)
+COMMON="--profile qwen3-1.7b --output-dir /content/geoai-ft"
+python -m core.geoai.finetune.sft  $COMMON                                                          # 3. SFT
+python -m core.geoai.finetune.evaluate --adapter-dir /content/geoai-ft/sft_adapter $COMMON --n 40   # 4. quick eval (eval_val)
+python -m core.geoai.finetune.grpo $COMMON --set grpo_max_steps=300                                 # 5. GRPO
 python -m core.geoai.finetune.export gguf-lora --adapter-dir /content/geoai-ft/grpo_adapter \
-    --llama-cpp /content/llama.cpp --outfile /content/geoai-ft/export/geoai-lora.gguf
+    --llama-cpp /content/llama.cpp --outfile /content/geoai-ft/export/geoai-lora.gguf                # 6. export
+# 7. on the desktop: base vs adapter with GEOAI_CHAT_FORMAT=native and thinking off (see below)
 ```
 
 Any config field can be overridden with `--set key=value` (e.g. `--set lora_r=32 --set load_in_4bit=false`)
-or loaded from JSON with `--config`.
+or loaded from JSON with `--config` (a config saved before profiles existed gets no target GGUF).
+
+## Clarification emphasis (oversampling)
+
+Asking for missing / ambiguous / conflicting inputs instead of calling a tool is the weakest behaviour of
+every benchmarked base model, so SFT repeats those rows of the **train split only** and GRPO repeats those
+prompts (`sft_category_weights`, `grpo_category_weights`; defaults `missing_data` 2.0, `ambiguous_request` 2.0,
+`conflicting_data` 1.5, `tool_failure` 1.5, `wrong_units:text` 1.5 - keys are `<category>` or
+`<category>:tool_call|text`). A weight w gives floor(w) copies plus one more for a seeded-hash-chosen
+fraction of rows, then a seeded shuffle, so the mix is identical on every run; weights < 1 downsample.
+Train and val must share no id (checked); val and `eval_test` are never touched. The before/after mix is
+printed by the dry-runs and training and stored in `geoai_run.json`. Disable with
+`--set sft_category_weights={} --set grpo_category_weights={}`.
 
 ## Design choices
 
-* **Base model is configurable** (`base_model`, `base_model_id`, `family`). Presets: `qwen2.5` (current
-  baseline, QLoRA), `qwen3` (QLoRA, `enable_thinking=False`), `qwen3.5` (16-bit LoRA as Unsloth recommends),
+* **Base model is configurable** (profiles, or `base_model`, `base_model_id`, `family`). Family presets:
+  `qwen2.5` (QLoRA), `qwen3` (QLoRA, `enable_thinking=False`), `qwen3.5` (16-bit LoRA as Unsloth recommends),
   `gemma3` (Gemma 3's template has no tool section: `sft.py` refuses it until a tool format is added).
   The adapter must be trained on the same model as the desktop base GGUF.
 * **Chat format**: rows are rendered with the model's own template including `tools`
   (`tokenizer.apply_chat_template(messages, tools=...)`); Qwen emits `<tool_call>{json}</tool_call>`.
+  Multi-step project trajectories (user -> call -> result -> call -> result -> answer) keep every tool they
+  call offered; project context stays in the system prompt (`### CURRENT CONTEXT`).
   The desktop provider must therefore use the GGUF's own template: `chat_format="native"`
   (auto-selected when the adapter sidecar says `"chat_template": "native"`, or `GEOAI_CHAT_FORMAT=native`).
   The legacy `chatml-function-calling` handler uses a different prompt format and does not render tool results.
-* **Short plan, no long thinking**: each decision turn starts with one `Plan: ...` line (no numbers, <= 25 words)
-  then the tool call or clarification. Thinking is off (`enable_thinking=False`) for CPU latency.
+* **Short plan, no long thinking**: the first decision after a user message starts with one `Plan: ...` line
+  (no numbers, <= 25 words) then the tool call or clarification; later steps after a tool result have no plan
+  (the GRPO format reward follows the same rule). Thinking is off (`enable_thinking=False`) for CPU latency.
 * **Loss on assistant turns only** (Unsloth `train_on_responses_only`); tool results are user-side
   `<tool_response>` turns and are masked. Over-long rows are dropped, never truncated.
 * **Tool cap**: `max_tools=5` (called tool always kept). With all generated tools ~47% of SFT rows exceed
@@ -77,20 +104,24 @@ or loaded from JSON with `--config`.
 
 ## Expectations (estimates, not measurements)
 
-| stage | Qwen2.5-1.5B on a T4 | notes |
+| stage | ~1.7B model on a T4 | notes |
 |---|---|---|
-| SFT, 2 epochs, ~1.6k rows | 30-60 min, ~6-9 GB VRAM (QLoRA) | 16-bit LoRA on 3-4B models may not fit 16 GB |
+| SFT, 2 epochs, ~2.2k rows after oversampling | 45-90 min, ~7-10 GB VRAM (QLoRA) | 16-bit LoRA on 3-4B models may not fit 16 GB |
 | GRPO, 300 steps, 4 generations | 1-3 h without vLLM | reduce steps or completions for a quick run |
 | export GGUF LoRA | a few min | adapter ~20-40 MB at r=16, f16 |
 
 ## Evaluate base vs adapter (desktop, CPU) and the go/no-go rule
 
+Keep adapters out of the models folder itself (e.g. `models/adapters/`). Thinking is off by default at
+runtime - leave `GEOAI_THINKING` unset.
+
 ```
-python -m core.geoai.finetune.export sidecar --lora geoai-lora.gguf --base-gguf %APPDATA%/GeoCore/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+set BASE=%APPDATA%/GeoCore/models/Qwen3-1.7B-Q4_K_M.gguf
+python -m core.geoai.finetune.export sidecar --lora geoai-lora.gguf --base-gguf %BASE%
 set GEOAI_CHAT_FORMAT=native
-python -m core.geoai.eval.runner --provider llama_cpp --split test --label base --out base.json
+python -m core.geoai.eval.runner --provider llama_cpp --model %BASE% --split test --label base --out base.json
 set GEOAI_LORA_PATH=C:/path/to/geoai-lora.gguf
-python -m core.geoai.eval.runner --provider llama_cpp --split test --label lora --out lora.json
+python -m core.geoai.eval.runner --provider llama_cpp --model %BASE% --split test --label lora --out lora.json
 python -m core.geoai.eval.runner --compare base.json lora.json
 python -m core.geoai.finetune.export annotate --lora geoai-lora.gguf --base-results base.json --candidate-results lora.json
 ```

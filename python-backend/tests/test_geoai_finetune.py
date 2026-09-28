@@ -40,9 +40,12 @@ def _tool_row():
 
 # ---------------- config ----------------
 
-def test_config_defaults_target_t4_and_current_baseline():
+def test_config_defaults_target_t4_and_default_profile():
+    from core.geoai.finetune.config import DEFAULT_PROFILE, PROFILES
+
     cfg = FinetuneConfig()
-    assert cfg.family == "qwen2.5" and "Qwen2.5-1.5B-Instruct" in cfg.base_model_id
+    assert cfg.profile == DEFAULT_PROFILE
+    assert cfg.base_model == PROFILES[DEFAULT_PROFILE]["base_model"] and cfg.family == PROFILES[DEFAULT_PROFILE]["family"]
     assert cfg.resolved_load_in_4bit is True and cfg.max_seq_length == 4096
     assert cfg.lora_r == 16 and cfg.lora_alpha == 32 and "down_proj" in cfg.target_modules
     assert cfg.enable_thinking is False and cfg.plan_style == "brief" and cfg.max_tools == 5
@@ -55,7 +58,7 @@ def test_family_presets_quantisation_and_thinking():
     assert FinetuneConfig(family="qwen3.5").resolved_load_in_4bit is False  # 16-bit LoRA for Qwen3.5
     assert FinetuneConfig(family="qwen3").chat_template_kwargs() == {"enable_thinking": False}
     assert FinetuneConfig(family="qwen3", enable_thinking=True).chat_template_kwargs() == {"enable_thinking": True}
-    assert FinetuneConfig().chat_template_kwargs() == {}
+    assert FinetuneConfig(family="qwen2.5").chat_template_kwargs() == {}
     assert FinetuneConfig(family="qwen2.5", load_in_4bit=False).resolved_load_in_4bit is False
     assert {"qwen2.5", "qwen3", "qwen3.5", "gemma3"} <= set(FAMILY_PRESETS)
 

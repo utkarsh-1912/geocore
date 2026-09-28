@@ -60,6 +60,7 @@ All candidates are 4-bit `Q4_K_M` GGUF files downloaded from Hugging Face. GeoAI
 |---|---|---|---|---|---|
 | [Qwen2.5 1.5B Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF) | 1.5B | ~1.0 GB | Apache-2.0 | native &lt;tool_call&gt; | Current GeoAI default and fine-tuning baseline. |
 | [Qwen3 1.7B](https://huggingface.co/unsloth/Qwen3-1.7B-GGUF) | 1.7B | ~1.0 GB | Apache-2.0 | native &lt;tool_call&gt; | Hybrid thinking model; GeoAI sends /no_think. |
+| [Qwen3.5 2B](https://huggingface.co/unsloth/Qwen3.5-2B-GGUF) | 2B | ~1.2 GB | Apache-2.0 | native &lt;tool_call&gt; | Newest small Qwen; fine-tune preset uses 16-bit LoRA. |
 | [Qwen3 4B Instruct 2507](https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF) | 4B | ~2.3 GB | Apache-2.0 | native &lt;tool_call&gt; | Non-thinking instruct release. |
 | [Qwen3 8B](https://huggingface.co/Qwen/Qwen3-8B-GGUF) | 8B | ~4.7 GB | Apache-2.0 | native &lt;tool_call&gt; | Quality ceiling reference; too heavy to be the default. |
 | [Phi-4-mini Instruct](https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF) | 3.8B | ~2.3 GB | MIT | &lt;\|tool_call\|&gt; JSON list | Trained for function calling; no fine-tuning preset yet. |

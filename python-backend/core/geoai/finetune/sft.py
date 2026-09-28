@@ -30,11 +30,14 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from core.geoai.finetune.config import FinetuneConfig, add_config_args, config_from_args
 from core.geoai.finetune.formatting import (
+    assert_disjoint,
     estimate_tokens,
     iter_jsonl,
     load_training_jsonl,
+    oversample,
     prepare_sft_example,
     render_reference_chatml,
+    sft_decision_kind,
     trainable_spans,
     validate_sft_example,
 )
@@ -55,6 +58,24 @@ def prepare_split(cfg: FinetuneConfig, filename: str, limit: Optional[int] = Non
             continue
         out.append(ex)
     return out, drops
+
+
+def sft_training_mix(cfg: FinetuneConfig) -> Dict[str, Any]:
+    """
+    Category mix of the full sft_train file before/after ``sft_category_weights`` oversampling,
+    after checking that train and val share no example. Only the train split is ever repeated.
+    """
+    train = [{"id": r.get("id"), "category": r.get("category"), "messages": r.get("messages")}
+             for r in load_training_jsonl(Path(cfg.data_dir) / "sft_train.jsonl")]
+    val_ids = [r.get("id") for r in load_training_jsonl(Path(cfg.data_dir) / "sft_val.jsonl")]
+    assert_disjoint([r["id"] for r in train], val_ids)
+    _, report = oversample(train, cfg.sft_category_weights, seed=cfg.seed, kind_fn=sft_decision_kind)
+    return report
+
+
+def format_mix(report: Dict[str, Any]) -> str:
+    cats = ", ".join(f"{c} {v['before']}->{v['after']}" for c, v in report["by_category"].items())
+    return f"{report['n_before']}->{report['n_after']} rows ({cats}); weights={report['weights']}"
 
 
 def leakage_check(cfg: FinetuneConfig, train_ids: List[str]) -> List[str]:
@@ -116,6 +137,11 @@ def dry_run(cfg: FinetuneConfig, n: int = 64, reward_examples: int = 40) -> Dict
     leaks = leakage_check(cfg, all_ids)
     report["held_out_leakage"] = leaks
     ok = ok and not leaks
+    try:
+        report["train_mix"] = sft_training_mix(cfg)
+    except ValueError as e:  # train/val overlap
+        report["train_mix"] = {"error": str(e)}
+        ok = False
 
     examples = load_grpo_examples(cfg, limit=reward_examples)
     sep = reward_sanity_check(examples, plan_style=cfg.plan_style, format_weight=cfg.grpo_format_reward_weight,
@@ -146,6 +172,7 @@ def train(cfg: FinetuneConfig) -> Path:
 
     train_ex, train_drops = prepare_split(cfg, "sft_train.jsonl", cfg.max_train_examples)
     val_ex, val_drops = prepare_split(cfg, "sft_val.jsonl")
+    assert_disjoint([e["id"] for e in train_ex], [e["id"] for e in val_ex])
     check_template(tokenizer, cfg, next(e for e in train_ex if any(m.get("tool_calls") for m in e["messages"])))
 
     def render(exs: List[Dict[str, Any]]) -> Tuple[List[Dict[str, str]], int]:
@@ -158,11 +185,17 @@ def train(cfg: FinetuneConfig) -> Path:
                 overlong += 1
                 if cfg.drop_overlong:
                     continue
-            rows.append({"text": text})
+            rows.append({"id": e["id"], "category": e["category"], "kind": sft_decision_kind(e), "text": text})
         return rows, overlong
 
-    train_rows, train_over = render(train_ex)
-    val_rows, val_over = render(val_ex)
+    train_rendered, train_over = render(train_ex)
+    val_rendered, val_over = render(val_ex)
+    # Clarification-heavy categories are repeated in TRAIN only (seeded, deterministic); val is untouched.
+    train_rendered, mix = oversample(train_rendered, cfg.sft_category_weights, seed=cfg.seed,
+                                     kind_fn=lambda r: r["kind"])
+    train_rows = [{"text": r["text"]} for r in train_rendered]
+    val_rows = [{"text": r["text"]} for r in val_rendered]
+    print(f"SFT oversampling: {format_mix(mix)}", flush=True)
     print(f"SFT rows: train={len(train_rows)} (overlong {train_over}) val={len(val_rows)} (overlong {val_over})", flush=True)
 
     model = FastLanguageModel.get_peft_model(
@@ -193,7 +226,8 @@ def train(cfg: FinetuneConfig) -> Path:
     model.save_pretrained(str(out))
     tokenizer.save_pretrained(str(out))
     write_run_info(out, cfg, {
-        "stage": "sft", "base_model": cfg.base_model, "base_model_id": cfg.base_model_id, "family": cfg.family,
+        "stage": "sft", "profile": cfg.profile, "base_model": cfg.base_model, "base_model_id": cfg.base_model_id,
+        "family": cfg.family, "train_mix": mix,
         "base_fingerprint_from_hf_config": base_dims_from_hf_config(model, cfg),
         "data": data_fingerprint(Path(cfg.data_dir), list(SFT_FILES)),
         "rows": {"train": len(train_rows), "val": len(val_rows), "train_overlong": train_over, "val_overlong": val_over,
@@ -230,6 +264,10 @@ def summarise_dry_run(rep: Dict[str, Any]) -> str:
     for k in ("prompts", "held_out_leakage"):
         if k in rep:
             lines.append(f"  {k}: {rep[k]}")
+    for k in ("train_mix", "prompt_mix"):
+        mix = rep.get(k)
+        if mix:
+            lines.append(f"  {k}: " + (mix["error"] if "error" in mix else format_mix(mix)))
     s = rep.get("reward_check", {})
     if s:
         lines.append(f"  reward: n={s['n_examples']} mean_good={s['mean_good']} mean_bad={s['mean_bad']} "

@@ -27,7 +27,10 @@ def test_cache_reuses_identical_inputs_and_never_serves_stale(monkeypatch):
 
     engine.calculate_cached(_cpt(qc_scale=2.0), *args)            # different CPT data
     engine.calculate_cached(_cpt(), *args[:2], 0.8, *args[3:])    # different diameter
-    assert len(calls) == 3
+    renamed = _cpt()
+    renamed.source = {"object_id": "y", "file": "other.xlsx"}      # same data, different provenance
+    engine.calculate_cached(renamed, *args)
+    assert len(calls) == 4
 
 
 def test_errors_are_not_cached(monkeypatch):

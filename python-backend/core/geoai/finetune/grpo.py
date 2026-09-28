@@ -30,7 +30,9 @@ from core.geoai.finetune.config import HELD_OUT_SPLITS, FinetuneConfig, add_conf
 from core.geoai.finetune.formatting import (
     build_grpo_record,
     estimate_tokens,
+    eval_decision_kind,
     iter_jsonl,
+    oversample,
     registry_tools_for,
     render_reference_chatml,
 )
@@ -51,6 +53,13 @@ def load_grpo_examples(cfg: FinetuneConfig, limit: Optional[int] = None) -> List
         step = len(out) / float(limit)
         out = [out[int(i * step)] for i in range(limit)]
     return out
+
+
+def grpo_prompt_mix(cfg: FinetuneConfig) -> Dict[str, Any]:
+    """Category mix of all GRPO prompts before/after ``grpo_category_weights`` (no tool schemas built)."""
+    _, report = oversample(load_grpo_examples(cfg), cfg.grpo_category_weights, seed=cfg.seed,
+                           kind_fn=eval_decision_kind)
+    return report
 
 
 def build_grpo_records(cfg: FinetuneConfig, limit: Optional[int] = None) -> Dict[str, Any]:
@@ -85,6 +94,9 @@ def dry_run(cfg: FinetuneConfig, n: int = 64) -> Dict[str, Any]:
             names = [t["function"]["name"] for t in r["tools"] or []]
             if ex.get("expected_tool") and ex["expected_tool"] not in names:
                 problems.append(f"{r['id']}: expected tool not offered")
+            prefix = [tc.get("function", tc).get("name") for m in ex.get("messages") or [] for tc in (m.get("tool_calls") or [])]
+            if any(p not in names for p in prefix):
+                problems.append(f"{r['id']}: a tool called earlier in the prefix is not offered")
         if r["prompt"][0]["role"] != "system" or r["prompt"][-1]["role"] not in ("user", "tool"):
             problems.append(f"{r['id']}: prompt does not end with a user/tool turn")
     lens = sorted(r["est_prompt_tokens"] for r in recs)
@@ -97,9 +109,11 @@ def dry_run(cfg: FinetuneConfig, n: int = 64) -> Dict[str, Any]:
         "stage": "grpo", "ok": ok, "config": cfg.to_dict(),
         "prompts": {"built": len(recs), "dropped": built["dropped"], "problems": problems[:10],
                     "turn_types": dict(Counter(r["turn_type"] for r in recs)),
+                    "format_turns": dict(Counter(r["format_turn"] for r in recs)),
                     "est_prompt_tokens_median": lens[len(lens) // 2] if lens else None,
                     "est_prompt_tokens_max": lens[-1] if lens else None},
         "reward_check": sep,
+        "prompt_mix": grpo_prompt_mix(cfg),
     }
 
 
@@ -126,11 +140,21 @@ def train(cfg: FinetuneConfig, sft_adapter: Optional[Path] = None) -> Path:
         raise RuntimeError("Loaded SFT adapter has no trainable parameters; cannot continue with GRPO.")
 
     built = build_grpo_records(cfg)
+    # Same clarification emphasis as SFT: repeat weighted prompts (seeded, deterministic).
+    records, mix = oversample(built["records"], cfg.grpo_category_weights, seed=cfg.seed,
+                              kind_fn=lambda r: r["decision_kind"])
+    from core.geoai.finetune.sft import format_mix
+    print(f"GRPO prompt oversampling: {format_mix(mix)}", flush=True)
+    rendered: Dict[str, str] = {}
     rows = []
-    for r in built["records"]:
-        prompt = tokenizer.apply_chat_template(r["prompt"], tools=r["tools"] or None, tokenize=False,
-                                               add_generation_prompt=True, **cfg.chat_template_kwargs())
-        rows.append({"prompt": prompt, "example": r["example"], "turn_type": r["turn_type"]})
+    for r in records:
+        if r["id"] not in rendered:
+            rendered[r["id"]] = tokenizer.apply_chat_template(
+                r["prompt"], tools=r["tools"] or None, tokenize=False, add_generation_prompt=True,
+                **cfg.chat_template_kwargs())
+        prompt = rendered[r["id"]]
+        rows.append({"prompt": prompt, "example": r["example"], "turn_type": r["turn_type"],
+                     "format_turn": r["format_turn"]})
     print(f"GRPO prompts: {len(rows)} (dropped {built['dropped']}) trainable params={trainable:,}", flush=True)
 
     args = GRPOConfig(**filter_kwargs(GRPOConfig, dict(
@@ -159,7 +183,7 @@ def train(cfg: FinetuneConfig, sft_adapter: Optional[Path] = None) -> Path:
         **{k: v for k, v in sft_info.items() if k not in ("stage", "train_metrics", "eval_metrics")},
         "stage": "grpo", "sft_adapter": str(adapter), "sft_run": sft_info,
         "grpo_data": data_fingerprint(Path(cfg.data_dir), [f"eval_{s}.jsonl" for s in cfg.grpo_splits]),
-        "grpo_prompts": len(rows), "train_metrics": getattr(result, "metrics", {}),
+        "grpo_prompts": len(rows), "prompt_mix": mix, "train_metrics": getattr(result, "metrics", {}),
     })
     print(f"Saved GRPO adapter to {out}", flush=True)
     return out

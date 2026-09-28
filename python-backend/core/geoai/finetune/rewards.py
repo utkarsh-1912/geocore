@@ -15,15 +15,16 @@ GRPO reward functions (TRL ``reward_funcs`` signature), pure Python.
                       schema=0 - but still gives partial action credit.)
 
 TRL passes dataset columns as keyword lists; the GRPO dataset stores each
-eval example as a JSON string in the ``example`` column and the turn type in
-``turn_type``.
+eval example as a JSON string in the ``example`` column and the format turn in
+``format_turn`` ('decision' = first decision, which carries the plan line; 'step' = a
+later decision after a tool result; 'final_answer').
 """
 
 import json
 import re
 from typing import Any, Dict, List, Optional
 
-from core.geoai.finetune.formatting import PLAN_MAX_WORDS, PLAN_PREFIX
+from core.geoai.finetune.formatting import PLAN_MAX_WORDS, PLAN_PREFIX, format_turn_of
 
 _TOOL_BLOCK = re.compile(r"<tool_call>\s*(.*?)\s*</tool_call>", re.DOTALL)
 _THINK = re.compile(r"<think>(.*?)</think>", re.DOTALL)
@@ -100,7 +101,7 @@ def geoai_reward(prompts: List[Any], completions: List[Any], **kwargs) -> List[f
 
 def make_format_reward(plan_style: str = "brief", thinking: bool = False):
     def format_reward(prompts: List[Any], completions: List[Any], **kwargs) -> List[float]:
-        return [format_score(completion_text(c), _col(kwargs, "turn_type", i, "decision") or "decision",
+        return [format_score(completion_text(c), _col(kwargs, "format_turn", i, None) or _col(kwargs, "turn_type", i, "decision") or "decision",
                              plan_style, thinking) for i, c in enumerate(completions)]
     format_reward.__name__ = "format_reward"
     return format_reward
@@ -113,7 +114,7 @@ def combined_reward(example: Dict[str, Any], completion: Any, *, format_weight: 
 
     text = completion_text(completion)
     return float(reward(example, text)) + format_weight * format_score(
-        text, example.get("turn_type", "decision"), plan_style, thinking)
+        text, format_turn_of(example), plan_style, thinking)
 
 
 def reward_sanity_check(examples: List[Dict[str, Any]], *, plan_style: str = "brief", format_weight: float = 0.1,

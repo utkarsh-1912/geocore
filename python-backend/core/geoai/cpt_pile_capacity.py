@@ -517,7 +517,9 @@ def _cache_key(cpt: ProjectCPT, args: Tuple[Any, ...]) -> str:
     h.update(cpt.cpt_id.encode())
     h.update(json.dumps(list(map(str, cpt.data.columns))).encode())
     h.update(np.ascontiguousarray(cpt.data.to_numpy(dtype=float, na_value=np.nan)).tobytes())
-    h.update(json.dumps([cpt.groundwater_depth_m, cpt.groundwater_source, list(args)], default=str).encode())
+    # Source and location are echoed in the result's provenance, so they are part of the key.
+    h.update(json.dumps([cpt.source, cpt.location, cpt.groundwater_depth_m, cpt.groundwater_source, list(args)],
+                        sort_keys=True, default=str).encode())
     return h.hexdigest()
 
 

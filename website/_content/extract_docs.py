@@ -1546,12 +1546,13 @@ def render_api_module(mod: Dict[str, Any], ui: Dict[str, Any], assets: AssetStor
 # GeoCore generated content
 # ---------------------------------------------------------------------------
 
+GEOAI_TOOL_FILES = ("tool_definitions.py", "tools_cpt_piles.py", "tools_shallow.py")
+
+
 def geoai_tools_markdown() -> str:
-    """List the curated GeoAI tools by statically parsing python-backend/core/geoai/tool_definitions.py."""
-    path = REPO_ROOT / "python-backend" / "core" / "geoai" / "tool_definitions.py"
-    if not path.exists():
-        return "*Tool list unavailable: tool_definitions.py not found.*"
-    tree = ast.parse(path.read_text(encoding="utf-8"))
+    """List the curated GeoAI tools by statically parsing every @geoai_tool-decorated function
+    in python-backend/core/geoai/{tool_definitions,tools_cpt_piles,tools_shallow}.py."""
+    geoai_dir = REPO_ROOT / "python-backend" / "core" / "geoai"
     rows = []
 
     def add_row(call: ast.Call) -> None:
@@ -1560,13 +1561,22 @@ def geoai_tools_markdown() -> str:
         rows.append((get("name"), get("category"), get("description")))
 
     is_tool_call = lambda c: isinstance(c, ast.Call) and getattr(c.func, "id", None) == "geoai_tool"
-    for node in tree.body:
-        if isinstance(node, ast.FunctionDef):  # @geoai_tool(...) def f(...)
-            for dec in node.decorator_list:
-                if is_tool_call(dec):
-                    add_row(dec)
-        elif isinstance(node, ast.Assign) and isinstance(node.value, ast.Call) and is_tool_call(node.value.func):
-            add_row(node.value.func)  # f = geoai_tool(...)(forwarder)
+    found_any = False
+    for filename in GEOAI_TOOL_FILES:
+        path = geoai_dir / filename
+        if not path.exists():
+            continue
+        found_any = True
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef):  # @geoai_tool(...) def f(...)
+                for dec in node.decorator_list:
+                    if is_tool_call(dec):
+                        add_row(dec)
+            elif isinstance(node, ast.Assign) and isinstance(node.value, ast.Call) and is_tool_call(node.value.func):
+                add_row(node.value.func)  # f = geoai_tool(...)(forwarder)
+    if not found_any:
+        return f"*Tool list unavailable: none of {', '.join(GEOAI_TOOL_FILES)} found.*"
     out = ["| Tool | Category | What it does |", "|---|---|---|"]
     for name, cat, desc in rows:
         out.append(f"| `{name}` | {md_cell(cat)} | {md_cell(desc)} |")

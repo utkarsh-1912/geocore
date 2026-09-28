@@ -9,6 +9,18 @@ import { Search, Folder, FileText, Settings, Moon, Sun, History, HelpCircle, Com
 import { GeoAILogo } from '@/components/common/GeoAILogo';
 import { GEOTECHNICAL_MODULES } from '@/config/geotechnicalModules';
 
+// Bolds the parts of `text` that match one of the (already lower-cased) query tokens.
+const HighlightMatch = ({ text, tokens }) => {
+    if (!tokens || tokens.length === 0) return text;
+    const pattern = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const parts = text.split(new RegExp(`(${pattern})`, 'gi'));
+    return parts.map((part, i) =>
+        tokens.includes(part.toLowerCase())
+            ? <b key={i} className="text-primary font-semibold">{part}</b>
+            : part
+    );
+};
+
 /**
  * CommandPalette — VS-Code-style Ctrl+K command palette overlay
  * Fuzzy-searches all 213+ tools, categories, modules, and app actions.
@@ -19,26 +31,40 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
     const inputRef = useRef(null);
     const listRef = useRef(null);
 
-    // Build flat search index once
+    // Build flat search index once. Each item carries its own text plus its
+    // ancestry's (category/module) title+description, so a query like "pile
+    // capacity" or "bearing capacity" can match even when no single title
+    // contains both words verbatim (e.g. "Vertical Capacity" under the "Pile
+    // calculations" category, or "Unit end bearing" under a category
+    // described as "Axial capacity, settlements, …").
     const searchIndex = useMemo(() => {
         const items = [];
+        const idWords = (id) => (id || '').replace(/[_-]+/g, ' ');
+
+        const makeItem = (base) => {
+            const ancestry = [base.category?.title, base.category?.description, base.subModule?.title, base.subModule?.description]
+                .filter(Boolean).join(' ');
+            const haystack = [base.title, base.description, idWords(base.id), ancestry]
+                .filter(Boolean).join(' ').toLowerCase();
+            return { ...base, haystack };
+        };
 
         // Actions
-        items.push({ type: 'Action', id: 'toggle_theme', title: 'Toggle Dark / Light Mode', icon: Moon, shortcut: '', action: 'toggleTheme' });
-        items.push({ type: 'Action', id: 'open_history', title: 'Open Calculation History', icon: History, shortcut: 'Ctrl+H', action: 'openHistory' });
-        items.push({ type: 'Action', id: 'open_help', title: 'Help & Keyboard Shortcuts', icon: HelpCircle, shortcut: '', action: 'openHelp' });
+        items.push(makeItem({ type: 'Action', id: 'toggle_theme', title: 'Toggle Dark / Light Mode', icon: Moon, shortcut: '', action: 'toggleTheme' }));
+        items.push(makeItem({ type: 'Action', id: 'open_history', title: 'Open Calculation History', icon: History, shortcut: 'Ctrl+H', action: 'openHistory' }));
+        items.push(makeItem({ type: 'Action', id: 'open_help', title: 'Help & Keyboard Shortcuts', icon: HelpCircle, shortcut: '', action: 'openHelp' }));
 
         // Categories, Sub-modules, Functions
         GEOTECHNICAL_MODULES.forEach(category => {
-            items.push({ type: 'Category', id: category.id, title: category.title, description: category.description, category, icon: Folder });
+            items.push(makeItem({ type: 'Category', id: category.id, title: category.title, description: category.description, category, icon: Folder }));
 
             if (category.items) {
                 category.items.forEach(subModule => {
-                    items.push({ type: 'Module', id: subModule.id || subModule.title, title: subModule.title, description: subModule.description, category, subModule, icon: Folder });
+                    items.push(makeItem({ type: 'Module', id: subModule.id || subModule.title, title: subModule.title, description: subModule.description, category, subModule, icon: Folder }));
 
                     if (subModule.functions) {
                         subModule.functions.forEach(func => {
-                            items.push({ type: 'Function', id: func.id, title: func.title, description: func.description, category, subModule, func, icon: FileText });
+                            items.push(makeItem({ type: 'Function', id: func.id, title: func.title, description: func.description, category, subModule, func, icon: FileText }));
                         });
                     }
                 });
@@ -48,6 +74,20 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
         return items;
     }, []);
 
+    // Score a single query token against a piece of text: exact/prefix/substring
+    // beat a fuzzy in-order-subsequence match, which is kept only as a last resort.
+    const scoreToken = (token, text) => {
+        if (!text) return 0;
+        if (text === token) return 40;
+        if (text.startsWith(token)) return 30;
+        if (text.includes(token)) return 18;
+        let qi = 0;
+        for (let i = 0; i < text.length && qi < token.length; i++) {
+            if (text[i] === token[qi]) qi++;
+        }
+        return qi === token.length ? 4 : 0;
+    };
+
     // Filtered results
     const results = useMemo(() => {
         if (!query.trim()) {
@@ -55,33 +95,38 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
             return searchIndex.filter(i => i.type === 'Action' || i.type === 'Category').slice(0, 15);
         }
 
-        const q = query.toLowerCase();
+        const q = query.toLowerCase().trim();
+        const tokens = q.split(/\s+/).filter(Boolean);
+
         const scored = searchIndex
             .map(item => {
                 const title = item.title.toLowerCase();
-                const desc = (item.description || '').toLowerCase();
-                let score = 0;
 
-                if (title === q) score = 100;
-                else if (title.startsWith(q)) score = 80;
-                else if (title.includes(q)) score = 60;
-                else if (desc.includes(q)) score = 30;
-                // Fuzzy: check if all query chars appear in order
-                else {
-                    let qi = 0;
-                    for (let i = 0; i < title.length && qi < q.length; i++) {
-                        if (title[i] === q[qi]) qi++;
-                    }
-                    if (qi === q.length) score = 20;
+                // Every token must match somewhere in the item's own text or its
+                // category/module ancestry — this is what lets multi-word terms
+                // like "bearing capacity" find results even split across levels.
+                let total = 0;
+                for (const token of tokens) {
+                    const best = Math.max(scoreToken(token, title) * 2, scoreToken(token, item.haystack));
+                    if (best === 0) { total = 0; break; }
+                    total += best;
                 }
+                if (total === 0) return { ...item, score: 0 };
 
-                return { ...item, score };
+                if (title === q) total += 100;
+                else if (title.startsWith(q)) total += 40;
+                else if (title.includes(q)) total += 20;
+
+                return { ...item, score: total };
             })
             .filter(item => item.score > 0)
             .sort((a, b) => b.score - a.score);
 
         return scored.slice(0, 15);
     }, [query, searchIndex]);
+
+    // Tokens used to highlight matches in the results list.
+    const queryTokens = useMemo(() => query.toLowerCase().trim().split(/\s+/).filter(Boolean), [query]);
 
     // Reset on open
     useEffect(() => {
@@ -189,7 +234,9 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
                                                         <Icon size={14} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="text-sm font-medium text-text-main truncate">{item.title}</div>
+                                                        <div className="text-sm font-medium text-text-main truncate">
+                                                            <HighlightMatch text={item.title} tokens={queryTokens} />
+                                                        </div>
                                                         <div className="text-xs text-text-muted truncate">
                                                             {item.type}
                                                             {item.category && item.type !== 'Category' && ` • ${item.category.title}`}
@@ -207,7 +254,8 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
                                 </ul>
                             ) : (
                                 <div className="py-8 text-center text-sm text-text-muted">
-                                    No results found for "{query}"
+                                    <p>No results found for "{query}"</p>
+                                    <p className="text-xs mt-1 text-text-subtle">Try a different word, e.g. a method name or module.</p>
                                 </div>
                             )}
                         </div>

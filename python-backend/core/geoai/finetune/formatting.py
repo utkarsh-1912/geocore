@@ -21,12 +21,15 @@ Data formats are defined by ``core.geoai.training.scaleup`` and
 """
 
 import copy
+import hashlib
 import json
 import math
+import random
+from collections import Counter
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterator, List, Optional, Sequence, Tuple
 
-from core.geoai.finetune.config import HELD_OUT_SPLITS, FinetuneConfig
+from core.geoai.finetune.config import HELD_OUT_SPLITS, FinetuneConfig, weight_for
 
 PLAN_PREFIX = "Plan:"
 PLAN_MAX_WORDS = 25
@@ -262,7 +265,9 @@ def estimate_tokens(text: str) -> int:
 # GRPO prompts (eval examples)
 # =====================================================================
 
-ToolsFor = Callable[[str, Optional[Dict[str, Any]], Optional[str]], List[Dict[str, Any]]]
+# tools_for(prompt, context, expected_tool, also=()) -> OpenAI tool schemas; `also` = tools already
+# called earlier in a multi-step prefix, which must stay offered.
+ToolsFor = Callable[..., List[Dict[str, Any]]]
 
 
 def registry_tools_for() -> Tuple[ToolsFor, Any]:
@@ -279,10 +284,18 @@ def registry_tools_for() -> Tuple[ToolsFor, Any]:
     ctx = _cached_tool_definitions()
     state: Dict[str, Any] = {}
 
-    def tools_for(prompt: str, context: Optional[Dict[str, Any]], expected_tool: Optional[str]) -> List[Dict[str, Any]]:
+    def tools_for(prompt: str, context: Optional[Dict[str, Any]], expected_tool: Optional[str],
+                  also: Sequence[str] = ()) -> List[Dict[str, Any]]:
+        from core.geoai.tool_selector import format_tools_for_prompt
+
         if "all_defs" not in state:
             state["all_defs"] = {t["function"]["name"]: t for t in generate_openai_tool_definitions()}
         tools, _miss = _tools_for(prompt, context, expected_tool, state["all_defs"])
+        offered = {t["function"]["name"] for t in tools}
+        for name in also:  # same rule as scaleup.sft_record: every tool the trajectory calls is offered
+            if name and name not in offered and name in state["all_defs"]:
+                tools = format_tools_for_prompt([state["all_defs"][name]]) + tools
+                offered.add(name)
         return tools
 
     return tools_for, ctx
@@ -311,12 +324,19 @@ def build_grpo_record(example: Dict[str, Any], tools_for: Optional[ToolsFor],
     tools = None
     if example.get("turn_type", "decision") == "decision" and tools_for is not None:
         user = next((m.get("content") or "" for m in reversed(example.get("messages") or []) if m.get("role") == "user"), "")
-        tools = tools_for(user, example.get("context"), example.get("expected_tool"))
-        tools = _trim_tools(tools, [example.get("expected_tool") or ""], max_tools)
+        prefix_calls = [tc.get("function", tc).get("name", "") for m in example.get("messages") or []
+                        for tc in (m.get("tool_calls") or [])]
+        if prefix_calls:
+            tools = tools_for(user, example.get("context"), example.get("expected_tool"), also=prefix_calls)
+        else:
+            tools = tools_for(user, example.get("context"), example.get("expected_tool"))
+        tools = _trim_tools(tools, [example.get("expected_tool") or ""] + prefix_calls, max_tools)
     return {
         "id": example.get("id"),
         "category": example.get("category"),
         "turn_type": example.get("turn_type", "decision"),
+        "format_turn": format_turn_of(example),
+        "decision_kind": eval_decision_kind(example),
         "prompt": msgs,
         "tools": tools,
         "example": json.dumps(example, ensure_ascii=False),
@@ -331,23 +351,38 @@ def format_tool_call(name: str, arguments: Dict[str, Any]) -> str:
     return "<tool_call>\n" + json.dumps({"name": name, "arguments": arguments}, ensure_ascii=False) + "\n</tool_call>"
 
 
+def format_turn_of(example: Dict[str, Any]) -> str:
+    """
+    'decision' for the first decision after a user message (the only turn that carries a plan
+    line in SFT), 'step' for a later decision in a multi-step prefix (after a tool result),
+    'final_answer' for synthesis turns.
+    """
+    if example.get("turn_type", "decision") == "final_answer":
+        return "final_answer"
+    msgs = example.get("messages") or []
+    return "decision" if (not msgs or msgs[-1].get("role") == "user") else "step"
+
+
 def gold_completion(example: Dict[str, Any], plan_style: str = "brief") -> Optional[str]:
     """Best-case completion built from the example's own expectations (None if not derivable)."""
     turn = example.get("turn_type", "decision")
     if turn == "final_answer":
         return example.get("reference_response")
+    planned = plan_style == "brief" and format_turn_of(example) == "decision"
     if example.get("expected_action") == "tool_call" and example.get("expected_tool"):
         args = dict(example.get("expected_arguments") or {})
         call = format_tool_call(example["expected_tool"], args)
-        if plan_style == "brief":
-            msgs = [{"role": "user", "content": ""},
+        if planned:
+            has_ctx = bool((example.get("context") or {}).get("project_context"))
+            msgs = [{"role": "system", "content": "### CURRENT CONTEXT" if has_ctx else ""},
+                    {"role": "user", "content": ""},
                     {"role": "assistant", "content": "", "tool_calls": [{"function": {"name": example["expected_tool"], "arguments": args}}]}]
             return make_plan(msgs, example.get("category")) + "\n" + call
         return call
     ref = example.get("reference_response")
     if not ref:
         return None
-    if plan_style == "brief":
+    if planned:
         plan = f"{PLAN_PREFIX} {_CATEGORY_PLANS.get(example.get('category') or '', 'answer directly from the given information.')}"
         return f"{plan}\n{ref}"
     return ref
@@ -383,3 +418,58 @@ def bad_completions(example: Dict[str, Any], other_tool: str = "calculate_earth_
         invented.update({k: v for k, v in exp_args.items()})
         out["tool_instead_of_clarify"] = format_tool_call(tool, invented)
     return out
+
+
+# =====================================================================
+# Deterministic per-category oversampling (SFT train split / GRPO prompts)
+# =====================================================================
+
+def sft_decision_kind(row: Dict[str, Any]) -> Optional[str]:
+    """'tool_call' if the first decision turn calls a tool, 'text' if it asks/rejects/answers."""
+    msgs = row.get("messages") or []
+    i = _decision_index(msgs)
+    if i is None:
+        return None
+    return "tool_call" if msgs[i].get("tool_calls") else "text"
+
+
+def eval_decision_kind(example: Dict[str, Any]) -> str:
+    return "tool_call" if example.get("expected_action") == "tool_call" else "text"
+
+
+def _unit_hash(key: str) -> float:
+    return int(hashlib.sha256(key.encode("utf-8")).hexdigest()[:12], 16) / float(16 ** 12)
+
+
+def oversample(items: List[Dict[str, Any]], weights: Dict[str, float], *, seed: int,
+               kind_fn: Callable[[Dict[str, Any]], Optional[str]]) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Repeat each item floor(w) times plus once more with probability frac(w), where w is the
+    most specific weight for its category / decision kind (``config.weight_for``). The extra
+    copy is decided by a seeded hash of the item id (not by position) and the result is
+    shuffled with ``seed``, so the output is identical across runs and machines.
+    Returns (items, report).
+    """
+    out: List[Dict[str, Any]] = []
+    before: Counter = Counter()
+    after: Counter = Counter()
+    for it in items:
+        cat = it.get("category") or "?"
+        w = weight_for(weights or {}, cat, kind_fn(it))
+        n = int(math.floor(w))
+        if w - n > 0 and _unit_hash(f"{seed}|{it.get('id')}") < (w - n):
+            n += 1
+        before[cat] += 1
+        after[cat] += n
+        out.extend([it] * n)
+    random.Random(seed).shuffle(out)
+    report = {"weights": dict(weights or {}), "seed": seed, "n_before": len(items), "n_after": len(out),
+              "by_category": {c: {"before": before[c], "after": after[c]} for c in sorted(before)}}
+    return out, report
+
+
+def assert_disjoint(train_ids: Sequence[Any], val_ids: Sequence[Any]) -> None:
+    """Train and val must never share an example (oversampling only repeats train rows)."""
+    both = sorted(set(train_ids) & set(val_ids), key=str)
+    if both:
+        raise ValueError(f"{len(both)} examples appear in both train and val, e.g. {both[:3]}")

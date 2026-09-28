@@ -6,6 +6,8 @@ nav_order: 30
 description: The validated calculation and research tools GeoAI can call, and the GeoAI API endpoints.
 sources:
 - python-backend/core/geoai/tool_definitions.py
+- python-backend/core/geoai/tools_cpt_piles.py
+- python-backend/core/geoai/tools_shallow.py
 - python-backend/core/geoai/tool_registry.py
 - python-backend/core/geoai/schema_factory.py
 - python-backend/core/geoai/validator.py
@@ -17,7 +19,7 @@ GeoAI can only act through **tools** in GeoCore's tool registry. Each tool has a
 
 ## Curated tools
 
-These tools have hand-written schemas with units, bounds and accepted aliases for each input. The table is generated from `tool_definitions.py`.
+These tools have hand-written schemas with units, bounds and accepted aliases for each input. The table is generated from `tool_definitions.py`, `tools_cpt_piles.py` and `tools_shallow.py`.
 
 <!-- geocore:generated geoai-tools -->
 

@@ -820,44 +820,104 @@
 <li>Pick a model and click <strong>Download</strong>. The download runs in the background and needs an internet connection. Models are downloaded from Hugging Face.</li>
 <li>When the download completes the model becomes the active model. It is loaded the first time you send a message.</li>
 </ol>
-<p>The model manager offers these curated models (4-bit <code>Q4_K_M</code> quantisations):</p>
+<p>The model manager offers these curated models (4-bit <code>Q4_K_M</code> quantisations), grouped by model family. The list is generated from the application's model registry:</p>
 <div class="table-wrap"><table class="data">
 <thead>
 <tr>
 <th>Model</th>
 <th>Download size</th>
+<th>Licence</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Qwen 2.5 1.5B Instruct</td>
+<td><a href="https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF">Qwen 2.5 (1.5B Instruct)</a></td>
 <td>~1.0 GB</td>
-<td>Smallest and fastest; suited to laptops. Default choice.</td>
+<td>Apache-2.0</td>
+<td>Ultra-lightweight (1.5B), rapid CPU inference, high-precision function calling</td>
 </tr>
 <tr>
-<td>Qwen 2.5 3B Instruct</td>
+<td><a href="https://huggingface.co/unsloth/Qwen3.5-2B-GGUF">Qwen 3.5 (2B)</a></td>
+<td>~1.2 GB</td>
+<td>Apache-2.0</td>
+<td>Qwen 3.5 small (2B, 262k context) with native tool-calling chat template; benchmark candidate</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/unsloth/Qwen3-1.7B-GGUF">Qwen 3 (1.7B)</a></td>
+<td>~1.0 GB</td>
+<td>Apache-2.0</td>
+<td>Qwen 3 (1.7B, 40k context) hybrid thinking model with native tool calling; benchmark candidate</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF">Qwen 2.5 (3B Instruct)</a></td>
 <td>~2.0 GB</td>
-<td>Balance of speed and quality.</td>
+<td>Qwen Research (non-commercial)</td>
+<td>Balanced (3B) with superior multi-turn geotechnical reasoning and complex parameter extraction</td>
 </tr>
 <tr>
-<td>Qwen 2.5 7B Instruct</td>
+<td><a href="https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF">Qwen 2.5 (7B Instruct)</a></td>
 <td>~4.4 GB</td>
-<td>Best quality of the Qwen options; needs a powerful machine.</td>
+<td>Apache-2.0</td>
+<td>Maximum capability (7B) for complex geotechnical synthesis, CPT profiling &amp; tool orchestration</td>
 </tr>
 <tr>
-<td>Gemma 2 2B IT</td>
+<td><a href="https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF">Qwen 3 (4B Instruct 2507)</a></td>
+<td>~2.3 GB</td>
+<td>Apache-2.0</td>
+<td>Qwen 3 (4B) non-thinking instruct release with native tool calling; benchmark candidate</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/Qwen/Qwen3-8B-GGUF">Qwen 3 (8B)</a></td>
+<td>~4.7 GB</td>
+<td>Apache-2.0</td>
+<td>Qwen 3 (8B) hybrid thinking model with native tool calling; quality reference, slow on CPU</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF">Phi-4-mini (3.8B Instruct)</a></td>
+<td>~2.3 GB</td>
+<td>MIT</td>
+<td>Microsoft Phi-4-mini (3.8B), trained for function calling; MIT licence; benchmark candidate</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/ibm-granite/granite-4.0-micro-GGUF">Granite 4.0 Micro (3B)</a></td>
+<td>~2.0 GB</td>
+<td>Apache-2.0</td>
+<td>IBM Granite 4.0 Micro (3B) with native tool calling; benchmark candidate</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/ggml-org/SmolLM3-3B-GGUF">SmolLM3 (3B)</a></td>
+<td>~1.8 GB</td>
+<td>Apache-2.0</td>
+<td>Hugging Face SmolLM3 (3B) hybrid thinking model with tool calling; fully open training data</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF">Llama 3.2 (3B Instruct)</a></td>
+<td>~1.9 GB</td>
+<td>Llama 3.2 Community</td>
+<td>Meta Llama 3.2 (3B) with JSON tool calls; custom licence with use restrictions</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/bartowski/gemma-2-2b-it-GGUF">Gemma 2 (2.6B IT)</a></td>
 <td>~1.6 GB</td>
-<td>Alternative small model.</td>
+<td>Gemma Terms of Use</td>
+<td>Google DeepMind Gemma 2 architecture optimized for high factual grounding &amp; research synthesis</td>
 </tr>
 <tr>
-<td>Gemma 2 9B IT</td>
-<td>~5.4 GB</td>
-<td>Large model; 16 GB RAM or more recommended.</td>
+<td><a href="https://huggingface.co/unsloth/gemma-3-4b-it-GGUF">Gemma 3 (4B IT)</a></td>
+<td>~2.3 GB</td>
+<td>Gemma Terms of Use</td>
+<td>Google Gemma 3 (4B); its template has no tool section, so GeoAI describes tools in the prompt</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/bartowski/gemma-2-9b-it-GGUF">Gemma 2 (9B IT)</a></td>
+<td>~5.3 GB</td>
+<td>Gemma Terms of Use</td>
+<td>Advanced Google Gemma 2 (9B) for deep geotechnical research, site investigation analysis &amp; RAG</td>
 </tr>
 </tbody>
 </table></div>
-<p>Which model works best for GeoAI's tool calling is still being evaluated. Larger models need more memory and respond more slowly on a CPU.</p>
+<p>Larger models need more memory and respond more slowly on a CPU. Licences differ between families: check a model's licence before using it commercially. How the candidates compare on GeoAI's own test suite is published on the <a href="/docs/geoai/model-benchmarks/">Model benchmarks</a> page.</p>
 <h2 id="using-a-model-you-already-have">Using a model you already have</h2>
 <ul>
 <li><strong>Auto-link</strong> scans the known model folders (see below) for <code>.gguf</code> files and activates the first one found if no valid model is configured.</li>

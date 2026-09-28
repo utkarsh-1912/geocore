@@ -815,7 +815,7 @@
     <h1>GeoAI tools</h1>
     <div class="prose docs-body"><p>GeoAI can only act through <strong>tools</strong> in GeoCore's tool registry. Each tool has an explicit input schema; inputs are validated before the tool runs, and results are returned as structured data with a provenance record.</p>
 <h2 id="curated-tools">Curated tools</h2>
-<p>These tools have hand-written schemas with units, bounds and accepted aliases for each input. The table is generated from <code>tool_definitions.py</code>.</p>
+<p>These tools have hand-written schemas with units, bounds and accepted aliases for each input. The table is generated from <code>tool_definitions.py</code>, <code>tools_cpt_piles.py</code> and <code>tools_shallow.py</code>.</p>
 <div class="table-wrap"><table class="data">
 <thead>
 <tr>
@@ -894,6 +894,31 @@
 <td><code>index_document_text</code></td>
 <td>research</td>
 <td>Indexes raw text or markdown technical content into the local SQLite full-text search index.</td>
+</tr>
+<tr>
+<td><code>list_project_cpts</code></td>
+<td>in_situ</td>
+<td>Lists the CPTs available in the current project: CPT id, depth range, channels, location.</td>
+</tr>
+<tr>
+<td><code>get_cpt_summary</code></td>
+<td>in_situ</td>
+<td>Summarises one project CPT: depth range, soil layering from Robertson SBT/Ic intervals with qc [MPa], fs and u2 [kPa] ranges per layer, data-quality flags and provenance.</td>
+</tr>
+<tr>
+<td><code>calculate_pile_capacity_from_cpt</code></td>
+<td>deep_foundations</td>
+<td>Calculates the ultimate axial pile capacity (shaft, base and total resistance in kN) of a single pile from a project CPT using Groundhog's LCPC, Koppejan or De Beer method.</td>
+</tr>
+<tr>
+<td><code>calculate_shallow_foundation_capacity</code></td>
+<td>shallow_foundations</td>
+<td>Calculates the ultimate bearing capacity of a shallow foundation (footing, pad, strip or raft): q_ult [kPa] and Q_ult [kN] for drained sand/gravel (phi') or undrained clay (su), with embedment depth, groundwater, eccentric or inclined load (effective area). Missing soil parameters are taken from the current project soil profile with their source.</td>
+</tr>
+<tr>
+<td><code>calculate_foundation_settlement</code></td>
+<td>shallow_foundations</td>
+<td>Calculates how much a footing / shallow foundation will settle on clay: primary consolidation settlement [mm] from Cc, Cr, e0 and OCR or preconsolidation pressure (or mv), with the Boussinesq stress increase below the footing centre and a per-depth breakdown. Missing soil parameters are taken from the current project soil profile with their source.</td>
 </tr>
 </tbody>
 </table></div>
@@ -977,7 +1002,7 @@
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/geoai-tools.md">Source</a></p>
-<p class="attribution__note">Written from: <code>python-backend/core/geoai/tool_definitions.py</code>, <code>python-backend/core/geoai/tool_registry.py</code>, <code>python-backend/core/geoai/schema_factory.py</code>, <code>python-backend/core/geoai/validator.py</code>, <code>python-backend/core/geoai/units.py</code>, <code>python-backend/core/geoai/api.py</code></p>      </div>
+<p class="attribution__note">Written from: <code>python-backend/core/geoai/tool_definitions.py</code>, <code>python-backend/core/geoai/tools_cpt_piles.py</code>, <code>python-backend/core/geoai/tools_shallow.py</code>, <code>python-backend/core/geoai/tool_registry.py</code>, <code>python-backend/core/geoai/schema_factory.py</code>, <code>python-backend/core/geoai/validator.py</code>, <code>python-backend/core/geoai/units.py</code>, <code>python-backend/core/geoai/api.py</code></p>      </div>
     </aside>
 
 

@@ -13,7 +13,7 @@ Sub-commands::
     python -m core.geoai.finetune.export merged --adapter-dir outputs/geoai-ft/grpo_adapter --out-dir outputs/geoai-ft/export/merged
 
     # on the desktop: pin the adapter to the exact base GGUF (fingerprint + sha256)
-    python -m core.geoai.finetune.export sidecar --lora geoai-lora.gguf --base-gguf %APPDATA%/GeoCore/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+    python -m core.geoai.finetune.export sidecar --lora geoai-lora.gguf --base-gguf %APPDATA%/GeoCore/models/<base>.gguf
 
     # on the desktop: record eval results and the go/no-go decision (AGENTS.md §32)
     python -m core.geoai.finetune.export annotate --lora geoai-lora.gguf --base-results base.json --candidate-results lora.json
@@ -114,9 +114,19 @@ def build_sidecar(lora_gguf: Path, adapter_dir: Optional[Path] = None, base_gguf
                           "config": cfg_dict or None}
     sc.setdefault("chat_template", "native")
     base = dict(sc.get("base_gguf") or {})
+    if cfg_dict.get("profile"):
+        sc["profile"] = cfg_dict["profile"]
+    target = {"repo": cfg_dict.get("target_gguf_repo"), "filename": cfg_dict.get("target_gguf_filename"),
+              "sha256": cfg_dict.get("target_gguf_sha256"), "fingerprint": cfg_dict.get("target_gguf_fingerprint")}
     if base_gguf is not None:
         base.update({"filename": Path(base_gguf).name, "sha256": sha256_of(base_gguf),
                      "fingerprint": base_model_fingerprint(base_gguf), "fingerprint_source": "base_gguf"})
+        if target["sha256"] and base["sha256"] != target["sha256"]:
+            sc.setdefault("warnings", []).append(
+                f"base GGUF {base['filename']} is not the profile's target {target['filename']} (sha256 differs)")
+    elif target["fingerprint"] and base.get("fingerprint_source") != "base_gguf":
+        # the run profile names the exact GGUF the desktop runs (repo/file/sha256 verified when the profile was added)
+        base.update({k: v for k, v in target.items() if v}, fingerprint_source="profile")
     elif run.get("base_fingerprint_from_hf_config") and "fingerprint" not in base:
         base.update({"fingerprint": run["base_fingerprint_from_hf_config"], "fingerprint_source": "hf_config"})
     sc["base_gguf"] = base
