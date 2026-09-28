@@ -14,6 +14,9 @@ from pathlib import Path
 from dataclasses import dataclass, asdict, field
 from typing import Optional, List
 
+# Re-exported: callers and tests reference core.geoai.model_config.get_config_dir.
+from core.paths import get_config_dir
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_CONFIG_FILENAME = "geoai_config.json"
@@ -116,20 +119,6 @@ def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
     nb = config.n_threads_batch if config.n_threads_batch and config.n_threads_batch > 0 else logical
     return n, nb
 
-
-def get_config_dir() -> Path:
-    """Returns the config directory path and creates it if it doesn't exist."""
-    if os.name == 'nt':
-        appdata = os.environ.get('APPDATA')
-        if appdata:
-            path = Path(appdata) / "GeoCore"
-        else:
-            path = Path.home() / ".geocore"
-    else:
-        path = Path.home() / ".geocore"
-        
-    path.mkdir(parents=True, exist_ok=True)
-    return path
 
 def get_default_model_dir() -> Path:
     """Returns the default models directory path and creates it if it doesn't exist."""

@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
-from core.geoai.model_config import get_config_dir
+from core.paths import get_config_dir
 
 
 @dataclass
