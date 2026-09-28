@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About — GeoCore</title>
-  <meta name="description" content="Why GeoCore exists, how it is built, its GPLv3 licence, and credits — including the Groundhog library by Bruno Stuyts that performs every calculation.">
+  <meta name="description" content="Why GeoCore exists, how it is built, its GPLv3 licence, and open-source credits.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoCore">
   <meta property="og:title" content="About — GeoCore">
-  <meta property="og:description" content="Why GeoCore exists, how it is built, its GPLv3 licence, and credits — including the Groundhog library by Bruno Stuyts that performs every calculation.">
+  <meta property="og:description" content="Why GeoCore exists, how it is built, its GPLv3 licence, and open-source credits.">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <script src="assets/js/theme-init.js?v=4dd37c5fb3"></script>
@@ -64,7 +64,7 @@
   <div class="container">
     <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=a8f4785ef1#i-info"></use></svg>About</p>
     <h1>Engineering software that shows its working</h1>
-    <p class="lede">GeoCore is an open-source desktop application for geotechnical engineers. It is written and maintained by Utkarsh Gupta, and it stands on Groundhog — the open-source geotechnical library by Bruno Stuyts.</p>
+    <p class="lede">GeoCore is an open-source desktop application for geotechnical engineers. It is written and maintained by Utkarsh Gupta, and it stands on an open-source geotechnical calculation library, credited in full below.</p>
   </div>
 </header>
 
@@ -77,7 +77,7 @@
         <dt>Offline</dt>
         <dd>Your project data stays on your computer. The application works without an internet connection; the few optional network features are listed on the <a href="privacy.html">privacy page</a>.</dd>
         <dt>Deterministic</dt>
-        <dd>Numbers come from Groundhog functions with explicit inputs and units. The AI assistant does not do engineering arithmetic itself.</dd>
+        <dd>Numbers come from named calculation functions with explicit inputs and units. The AI assistant does not do engineering arithmetic itself.</dd>
         <dt>Grounded</dt>
         <dd>A result should be traceable to a method, its inputs and, where possible, a published reference. When information is missing, the right answer is to ask, not to assume.</dd>
       </dl>
@@ -87,13 +87,13 @@
       <p>GeoCore is two programs packaged as one desktop app:</p>
       <ul>
         <li><strong>The interface</strong> — an <a href="https://www.electronjs.org/">Electron</a> shell running a <a href="https://react.dev/">React</a> application built with <a href="https://vite.dev/">Vite</a>. Charts use <a href="https://plotly.com/javascript/">Plotly.js</a>; reports use <a href="https://github.com/parallax/jsPDF">jsPDF</a>; spreadsheets are read with <a href="https://www.papaparse.com/">Papa Parse</a> and <a href="https://sheetjs.com/">SheetJS</a>.</li>
-        <li><strong>The engine</strong> — a Python service built with <a href="https://fastapi.tiangolo.com/">FastAPI</a> and bundled with PyInstaller. It listens only on your own machine (<code>127.0.0.1:8000</code>), discovers Groundhog’s functions and builds validated input forms for them. NumPy, SciPy and pandas do the numerical work underneath.</li>
-        <li><strong>GeoAI</strong> — an optional assistant inside the engine. A small language model runs locally through <a href="https://github.com/abetlen/llama-cpp-python">llama-cpp-python</a> (<a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>), selects a tool from a whitelisted, schema-validated registry, and passes the call to Groundhog. The model is swappable behind a provider interface rather than tied to one vendor.</li>
+        <li><strong>The engine</strong> — a Python service built with <a href="https://fastapi.tiangolo.com/">FastAPI</a> and bundled with PyInstaller. It listens only on your own machine (<code>127.0.0.1:8000</code>), discovers the calculation library's functions and builds validated input forms for them. NumPy, SciPy and pandas do the numerical work underneath.</li>
+        <li><strong>GeoAI</strong> — an optional assistant inside the engine. A small language model runs locally through <a href="https://github.com/abetlen/llama-cpp-python">llama-cpp-python</a> (<a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>), selects a tool from a whitelisted, schema-validated registry, and passes the call to that engine. The model is swappable behind a provider interface rather than tied to one vendor.</li>
       </ul>
       <p>Releases are built by GitHub Actions for Windows and macOS and published on <a href="https://github.com/utkarsh-1912/geocore/releases">GitHub Releases</a>.</p>
 
       <h2 id="open-source">Open source</h2>
-      <p>GeoCore is free software, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU General Public License v3.0</a> — the same licence as Groundhog. You may use, study, share and modify it under the terms of that licence. It is provided without any warranty.</p>
+      <p>GeoCore is free software, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU General Public License v3.0</a> — the same licence as the calculation library it bundles. You may use, study, share and modify it under the terms of that licence. It is provided without any warranty.</p>
       <p>The source code, issue tracker and release history are on GitHub at <a href="https://github.com/utkarsh-1912/geocore">utkarsh-1912/geocore</a>. Bug reports and suggestions are welcome as <a href="https://github.com/utkarsh-1912/geocore/issues">issues</a>.</p>
 
       <h2 id="credits">Credits</h2>
@@ -104,7 +104,7 @@
           <p><a href="https://github.com/snakesonabrain/groundhog">Source on GitHub</a> · <a href="https://groundhog.readthedocs.io/">Documentation</a> · <a href="https://pypi.org/project/groundhog/">PyPI</a></p>
         </div>
       </div>
-      <p>The methods implemented in Groundhog are the work of the researchers credited in its documentation and function docstrings. When you rely on a result, cite the original method as well as the software.</p>
+      <p>The underlying methods are the work of the researchers credited in that library’s documentation and function docstrings. When you rely on a result, cite the original method as well as the software.</p>
       <p>GeoCore also builds on these open-source projects, each under its own licence:</p>
       <ul>
         <li>Electron, React, Vite, Tailwind CSS, Plotly.js, jsPDF, Papa Parse, SheetJS, Lucide icons, electron-updater</li>
@@ -141,7 +141,7 @@
             <img src="assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
             <span>GeoCore</span>
           </a>
-          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+          <p>Offline geotechnical engineering on your desktop — free and open source, calculation by calculation.</p>
         </div>
         <nav aria-label="Product">
           <h2>Product</h2>

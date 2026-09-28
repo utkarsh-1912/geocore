@@ -37,6 +37,10 @@
   --c-strata-2: #bfae86;
   --c-strata-3: #9fb58f;
   --c-strata-4: #8c9a8a;
+  --scrollbar-w: 0.7rem;
+  --scrollbar-track: var(--c-surface-2);
+  --scrollbar-thumb: var(--c-border-strong);
+  --scrollbar-thumb-hover: var(--c-primary);
   --shadow-sm: 0 1px 2px rgba(21, 32, 25, 0.06);
   --shadow-md: 0 1px 2px rgba(21, 32, 25, 0.05), 0 8px 24px -8px rgba(21, 32, 25, 0.14);
   --shadow-lg: 0 2px 4px rgba(21, 32, 25, 0.05), 0 24px 48px -16px rgba(21, 32, 25, 0.22);
@@ -173,10 +177,27 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 1rem);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 @media (prefers-reduced-motion: no-preference) {
   html:focus-within { scroll-behavior: smooth; }
 }
+
+/* Custom scrollbar — themed to the current palette, same on every scrollable element. */
+::-webkit-scrollbar {
+  width: var(--scrollbar-w);
+  height: var(--scrollbar-w);
+}
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: var(--r-pill);
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
+::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
 
 body {
   margin: 0;
@@ -1328,6 +1349,64 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
 /* Animated counters (domain function counts, the 220 total) — JS swaps the digits in;
    this just keeps the layout stable and the numerals tabular while it does. */
 [data-count] { font-variant-numeric: tabular-nums; }
+
+/* GeoAI emblem: the app's actual mark (isometric strata + neural core), built in
+   layers as it scrolls into view, echoing the five steps in the flow beside it. */
+.geoai-emblem {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  color: var(--c-primary);
+}
+.geoai-emblem__svg { width: 6rem; height: 6rem; overflow: visible; }
+.geoai-emblem__top, .geoai-emblem__left, .geoai-emblem__right, .geoai-emblem__band, .geoai-emblem__core {
+  opacity: 0;
+}
+.geoai-emblem__band { stroke-dasharray: 40; stroke-dashoffset: 40; }
+.geoai-emblem__core { transform-origin: 16px 10.7px; transform: scale(0.3); }
+.geoai-emblem__steps { display: flex; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
+.geoai-emblem__steps li {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--c-border-strong);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .geoai-emblem.is-in .geoai-emblem__top { animation: geoai-drop 560ms var(--ease) 0ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__left { animation: geoai-slide-left 560ms var(--ease) 320ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__right { animation: geoai-slide-right 560ms var(--ease) 640ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__band--1 { animation: geoai-draw 420ms var(--ease) 980ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__band--2 { animation: geoai-draw 420ms var(--ease) 1120ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__core {
+    animation: geoai-spark 480ms var(--ease) 1400ms forwards, geoai-pulse 2.4s ease-in-out 1900ms infinite;
+  }
+  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(1) { animation: geoai-step-lit 180ms ease 0ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(2) { animation: geoai-step-lit 180ms ease 320ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(3) { animation: geoai-step-lit 180ms ease 640ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(4) { animation: geoai-step-lit 180ms ease 1040ms forwards; }
+  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(5) { animation: geoai-step-lit 180ms ease 1400ms forwards; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .geoai-emblem__top, .geoai-emblem__left, .geoai-emblem__right, .geoai-emblem__band, .geoai-emblem__core {
+    opacity: 1; transform: none; stroke-dashoffset: 0;
+  }
+  .geoai-emblem__steps li { background: var(--c-primary); }
+}
+
+@keyframes geoai-drop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes geoai-slide-left { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes geoai-slide-right { from { opacity: 0; transform: translateX(6px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes geoai-draw { from { opacity: 0; stroke-dashoffset: 40; } to { opacity: 1; stroke-dashoffset: 0; } }
+@keyframes geoai-spark { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
+@keyframes geoai-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 transparent); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 5px currentColor); transform: scale(1.1); }
+}
+@keyframes geoai-step-lit { to { background: var(--c-primary); } }
 
 /* "On this page" rails: a marker slides to the section being read (site.js). */
 .has-marker { position: relative; }
