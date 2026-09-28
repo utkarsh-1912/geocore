@@ -187,3 +187,55 @@ def test_download_model_skips_already_installed(tmp_path, monkeypatch):
     monkeypatch.setattr(md, "get_default_model_dir", lambda: tmp_path)
     monkeypatch.setattr(md, "download_file", lambda *a, **k: pytest.fail("network used"))
     assert md.download_model("qwen3-1.7b", set_as_active=False) == tmp_path / info["filename"]
+
+
+# ---------------- curated registry (model selection modal) ----------------
+
+def test_registry_entries_carry_licence_and_family():
+    for key, info in md.RECOMMENDED_MODELS.items():
+        assert info.get("license"), f"{key} has no licence shown in the model modal"
+        assert info.get("family"), key
+        assert info["filename"].lower().endswith(".gguf"), key
+
+
+def test_benchmark_candidates_in_modal_are_download_verified():
+    from core.geoai.eval.benchmark import CANDIDATES
+    by_file = {v["filename"].lower(): v for v in md.RECOMMENDED_MODELS.values()}
+    for c in CANDIDATES.values():
+        info = by_file.get(c.filename.lower())
+        assert info is not None, f"benchmark candidate {c.key} is not selectable in the model modal"
+        assert info["repo_id"] == c.repo_id, c.key
+        assert info.get("size_bytes") and re.fullmatch(r"[0-9a-f]{64}", info.get("sha256") or ""), c.key
+
+
+def test_list_available_models_exposes_licence():
+    assert all("license" in m for m in md.list_available_models())
+
+
+def _config_with(monkeypatch, model_path, provider="llama_cpp"):
+    from core.geoai.model_config import GeoAIModelConfig
+    monkeypatch.setattr(md, "load_config", lambda: GeoAIModelConfig(model_path=model_path, provider=provider))
+
+
+def test_active_model_is_the_configured_one_not_the_first_installed(tmp_path, monkeypatch):
+    first, chosen = (tmp_path / md.RECOMMENDED_MODELS[k]["filename"] for k in ("qwen2.5-1.5b-instruct", "qwen3-1.7b"))
+    first.write_bytes(b"x")
+    chosen.write_bytes(b"x")
+    monkeypatch.setattr(md, "find_gguf_models", lambda: [first, chosen])
+    _config_with(monkeypatch, str(chosen))
+    active = [m["id"] for m in md.list_available_models() if m["is_active"]]
+    assert active == ["qwen3-1.7b"]
+    assert md.get_active_model_path() == str(chosen)
+
+
+def test_custom_or_missing_model_marks_no_registry_entry(tmp_path, monkeypatch):
+    custom = tmp_path / "my-own-model.gguf"
+    custom.write_bytes(b"x")
+    monkeypatch.setattr(md, "find_gguf_models", lambda: [])
+    _config_with(monkeypatch, str(custom))
+    assert not any(m["is_active"] for m in md.list_available_models())
+    assert md.get_active_model_path() == str(custom)
+    _config_with(monkeypatch, str(tmp_path / "deleted.gguf"))
+    assert md.get_active_model_path() is None
+    _config_with(monkeypatch, str(custom), provider="heuristic")
+    assert md.get_active_model_path() is None

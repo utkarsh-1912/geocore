@@ -26,6 +26,65 @@ import { MarkdownText } from './MarkdownText';
 import { finalTurnText, stopGeoAIChat, streamGeoAIChat, thinkingLabel, useElapsedSeconds } from './geoaiStream';
 import { toast } from 'sonner';
 
+// Display names for the model families in the curated registry (core/geoai/model_downloader.py).
+const MODEL_FAMILY_LABELS = {
+    qwen: 'Qwen', phi: 'Phi', granite: 'Granite', smollm: 'SmolLM', llama: 'Llama', gemma: 'Gemma',
+};
+const familyLabel = (family) => MODEL_FAMILY_LABELS[family] || family;
+
+const LicenseBadge = ({ license }) => license ? (
+    <span className="inline-block text-[10px] text-text-muted px-1.5 py-0.5 rounded border border-border" title="Model licence">
+        {license}
+    </span>
+) : null;
+
+// Single-row tab strip that scrolls horizontally: hidden scrollbar, edge fades when more tabs are
+// off-screen, vertical mouse wheel scrolls sideways, and the active tab is kept in view.
+const ScrollableTabs = ({ activeKey, className = '', children }) => {
+    const ref = useRef(null);
+    const [edges, setEdges] = useState({ left: false, right: false });
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const update = () => setEdges({
+            left: el.scrollLeft > 1,
+            right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
+        });
+        const onWheel = (e) => {
+            if (el.scrollWidth <= el.clientWidth || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+            e.preventDefault();  // needs a non-passive listener, hence not React's onWheel
+            el.scrollLeft += e.deltaY;
+        };
+        update();
+        el.addEventListener('scroll', update, { passive: true });
+        el.addEventListener('wheel', onWheel, { passive: false });
+        const ro = new ResizeObserver(update);
+        ro.observe(el);
+        return () => {
+            el.removeEventListener('scroll', update);
+            el.removeEventListener('wheel', onWheel);
+            ro.disconnect();
+        };
+    }, [children]);
+
+    useEffect(() => {
+        ref.current?.querySelector('[data-active="true"]')
+            ?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    }, [activeKey]);
+
+    return (
+        <div className={`relative ${className}`}>
+            {/* scroll-px-8: scrollIntoView keeps the active tab clear of the edge fades */}
+            <div ref={ref} className="flex overflow-x-auto no-scrollbar px-4 scroll-px-8">
+                {children}
+            </div>
+            {edges.left && <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-surface to-transparent" />}
+            {edges.right && <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-surface to-transparent" />}
+        </div>
+    );
+};
+
 const formatBytes = (bytes) => {
     if (bytes == null) return '—';
     if (bytes >= 1024 ** 3) return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
@@ -125,6 +184,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     // Model & Download State
     const [modelInfo, setModelInfo] = useState(null);
+    const [activeModelPath, setActiveModelPath] = useState(null); // config.model_path, from /models
     const [availableModels, setAvailableModels] = useState([]);
     const [downloadStatus, setDownloadStatus] = useState({ status: 'idle' });
     const [memoryInfo, setMemoryInfo] = useState(null);
@@ -132,8 +192,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     const [convToDelete, setConvToDelete] = useState(null);
 
     // Gateway / Modal Filter State
-    const [gatewayTab, setGatewayTab] = useState('qwen'); // 'qwen' | 'gemma'
-    const [modalTab, setModalTab] = useState('all'); // 'all' | 'qwen' | 'gemma'
+    const [gatewayTab, setGatewayTab] = useState('qwen'); // 'qwen' | 'other'
+    const [modalTab, setModalTab] = useState('all'); // 'all' | a model family key
     const [customGgufPath, setCustomGgufPath] = useState('');
     const [isLinkingCustom, setIsLinkingCustom] = useState(false);
 
@@ -209,6 +269,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
             const modelsRes = await api.geoaiListModels();
             setAvailableModels(modelsRes?.models || []);
+            setActiveModelPath(modelsRes?.active_model_path || null);
 
             const dlRes = await api.geoaiGetDownloadStatus();
             setDownloadStatus(dlRes);
@@ -482,16 +543,18 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     ];
 
     const hasAnyModelInstalled = availableModels.some(m => m.is_installed) || (modelInfo && modelInfo.loaded && modelInfo.provider === 'llama_cpp');
-    const activeModelName = modelInfo?.name || availableModels.find(m => m.is_installed)?.display_name || (hasAnyModelInstalled ? "Qwen 2.5 (1.5B)" : null);
+    // The configured model: a registry entry when it matches, otherwise the linked custom GGUF's file name.
+    const activeModel = availableModels.find(m => m.is_active) || null;
+    const activeFileName = (activeModelPath || '').split(/[\\/]/).pop() || null;
+    const activeModelName = activeModel?.display_name || activeFileName;
 
     const qwenModels = availableModels.filter(m => m.family === 'qwen');
-    const gemmaModels = availableModels.filter(m => m.family === 'gemma');
+    const otherModels = availableModels.filter(m => m.family !== 'qwen');
+    const gatewayModels = gatewayTab === 'qwen' ? qwenModels : otherModels;
 
-    const modalFilteredModels = availableModels.filter(m => {
-        if (modalTab === 'qwen') return m.family === 'qwen';
-        if (modalTab === 'gemma') return m.family === 'gemma';
-        return true;
-    });
+    // Tabs follow the families actually present in the registry, in registry order.
+    const modelFamilies = [...new Set(availableModels.map(m => m.family))];
+    const modalFilteredModels = availableModels.filter(m => modalTab === 'all' || m.family === modalTab);
 
     return (
         <div className="flex h-full w-full bg-background text-text-main overflow-hidden font-sans">
@@ -615,9 +678,9 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         >
                             {hasAnyModelInstalled ? (
                                 <>
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                                    <span className="font-semibold text-[11px] truncate max-w-[160px]">
-                                        {activeModelName}
+                                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${activeModelName ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                                    <span className="font-semibold text-[11px] truncate max-w-[160px]" title={activeModelPath || undefined}>
+                                        {activeModelName || 'Select Model'}
                                     </span>
                                     <ChevronDown size={12} className="text-text-muted" />
                                 </>
@@ -665,76 +728,48 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                 }`}
                                             >
                                                 <Zap size={13} />
-                                                <span>Qwen 2.5 (Fast Tool Calling)</span>
+                                                <span>Qwen (Fast Tool Calling)</span>
                                             </button>
                                             <button
-                                                onClick={() => setGatewayTab('gemma')}
+                                                onClick={() => setGatewayTab('other')}
                                                 className={`flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 border-b-2 ${
-                                                    gatewayTab === 'gemma'
+                                                    gatewayTab === 'other'
                                                         ? 'border-primary text-primary bg-primary/5'
                                                         : 'border-transparent text-text-muted hover:text-text-main'
                                                 }`}
                                             >
                                                 <Sparkles size={13} />
-                                                <span>Gemma 2 (Research & Synthesis)</span>
+                                                <span>Other Model Families</span>
                                             </button>
                                         </div>
 
-                                        {gatewayTab === 'qwen' ? (
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                                {qwenModels.map((model) => (
-                                                    <div
-                                                        key={model.id}
-                                                        className="p-3.5 rounded border border-border bg-background flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
-                                                    >
-                                                        <div className="space-y-1">
-                                                            <div className="flex items-center justify-between">
-                                                                <span className="text-xs font-bold text-text-main">{model.display_name}</span>
-                                                                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-text-muted">
-                                                                    {model.size_mb} MB
-                                                                </span>
-                                                            </div>
-                                                            <p className="text-[11px] text-text-muted">{model.description}</p>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                            {gatewayModels.map((model) => (
+                                                <div
+                                                    key={model.id}
+                                                    className="p-3.5 rounded border border-border bg-background flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
+                                                >
+                                                    <div className="space-y-1">
+                                                        <div className="flex items-center justify-between gap-2">
+                                                            <span className="text-xs font-bold text-text-main">{model.display_name}</span>
+                                                            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-text-muted shrink-0">
+                                                                {model.size_mb} MB
+                                                            </span>
                                                         </div>
-                                                        <button
-                                                            onClick={() => handleSelectModel(model)}
-                                                            disabled={downloadStatus?.status === 'downloading'}
-                                                            className="w-full py-1.5 px-3 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
-                                                        >
-                                                            <Download size={12} />
-                                                            <span>Install ({model.size_mb} MB)</span>
-                                                        </button>
+                                                        <p className="text-[11px] text-text-muted">{model.description}</p>
+                                                        <LicenseBadge license={model.license} />
                                                     </div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                                {gemmaModels.map((model) => (
-                                                    <div
-                                                        key={model.id}
-                                                        className="p-3.5 rounded border border-border bg-background flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
+                                                    <button
+                                                        onClick={() => handleSelectModel(model)}
+                                                        disabled={downloadStatus?.status === 'downloading'}
+                                                        className="w-full py-1.5 px-3 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
                                                     >
-                                                        <div className="space-y-1">
-                                                            <div className="flex items-center justify-between">
-                                                                <span className="text-xs font-bold text-text-main">{model.display_name}</span>
-                                                                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-text-muted">
-                                                                    {model.size_mb} MB
-                                                                </span>
-                                                            </div>
-                                                            <p className="text-[11px] text-text-muted">{model.description}</p>
-                                                        </div>
-                                                        <button
-                                                            onClick={() => handleSelectModel(model)}
-                                                            disabled={downloadStatus?.status === 'downloading'}
-                                                            className="w-full py-1.5 px-3 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
-                                                        >
-                                                            <Download size={12} />
-                                                            <span>Install ({model.size_mb} MB)</span>
-                                                        </button>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
+                                                        <Download size={12} />
+                                                        <span>Install ({model.size_mb} MB)</span>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
 
                                         {/* Auto-detect and custom GGUF */}
                                         <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px]">
@@ -1038,10 +1073,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             </div>
 
                             {/* Filter Tabs */}
-                            <div className="flex border-b border-border px-4 bg-background/50 shrink-0">
+                            <ScrollableTabs activeKey={modalTab} className="border-b border-border bg-background/50 shrink-0">
                                 <button
+                                    data-active={modalTab === 'all'}
                                     onClick={() => setModalTab('all')}
-                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors ${
+                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap shrink-0 ${
                                         modalTab === 'all'
                                             ? 'border-primary text-primary'
                                             : 'border-transparent text-text-muted hover:text-text-main'
@@ -1049,34 +1085,30 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 >
                                     All Models ({availableModels.length})
                                 </button>
-                                <button
-                                    onClick={() => setModalTab('qwen')}
-                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors ${
-                                        modalTab === 'qwen'
-                                            ? 'border-primary text-primary'
-                                            : 'border-transparent text-text-muted hover:text-text-main'
-                                    }`}
-                                >
-                                    Qwen Series
-                                </button>
-                                <button
-                                    onClick={() => setModalTab('gemma')}
-                                    className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors ${
-                                        modalTab === 'gemma'
-                                            ? 'border-primary text-primary'
-                                            : 'border-transparent text-text-muted hover:text-text-main'
-                                    }`}
-                                >
-                                    Gemma Series
-                                </button>
-                            </div>
+                                {modelFamilies.map((family) => (
+                                    <button
+                                        key={family}
+                                        data-active={modalTab === family}
+                                        onClick={() => setModalTab(family)}
+                                        className={`py-2 px-3 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap shrink-0 ${
+                                            modalTab === family
+                                                ? 'border-primary text-primary'
+                                                : 'border-transparent text-text-muted hover:text-text-main'
+                                        }`}
+                                    >
+                                        {familyLabel(family)} ({availableModels.filter(m => m.family === family).length})
+                                    </button>
+                                ))}
+                            </ScrollableTabs>
 
                             {/* Model List */}
                             <div className="p-4 space-y-3 overflow-y-auto flex-1">
                                 {modalFilteredModels.map((model) => (
                                     <div
                                         key={model.id}
-                                        className="p-3.5 rounded border border-border bg-background flex items-center justify-between gap-3"
+                                        className={`p-3.5 rounded border bg-background flex items-center justify-between gap-3 ${
+                                            model.is_active ? 'border-primary' : 'border-border'
+                                        }`}
                                     >
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-2">
@@ -1084,25 +1116,37 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                 <span className="text-[10px] text-text-muted font-mono bg-surface px-1.5 py-0.5 rounded border border-border">
                                                     {model.size_mb} MB
                                                 </span>
-                                                {model.is_installed && (
+                                                {model.is_active ? (
+                                                    <span className="text-[9px] font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded">
+                                                        Active
+                                                    </span>
+                                                ) : model.is_installed && (
                                                     <span className="text-[9px] font-semibold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.2 rounded">
                                                         Installed
                                                     </span>
                                                 )}
                                             </div>
                                             <p className="text-[11px] text-text-muted">{model.description}</p>
+                                            <LicenseBadge license={model.license} />
                                         </div>
 
                                         <button
                                             onClick={() => handleSelectModel(model)}
-                                            disabled={downloadStatus?.status === 'downloading'}
+                                            disabled={model.is_active || downloadStatus?.status === 'downloading'}
                                             className={`px-3 py-1.5 rounded text-xs font-semibold shrink-0 transition-colors flex items-center gap-1 ${
-                                                model.is_installed
+                                                model.is_active
+                                                    ? 'border border-border text-text-muted cursor-default'
+                                                    : model.is_installed
                                                     ? 'bg-primary text-on-primary hover:bg-primary/90'
                                                     : 'border border-primary text-primary hover:bg-primary/10'
                                             }`}
                                         >
-                                            {model.is_installed ? (
+                                            {model.is_active ? (
+                                                <>
+                                                    <Check size={11} />
+                                                    <span>Active</span>
+                                                </>
+                                            ) : model.is_installed ? (
                                                 'Select'
                                             ) : downloadStatus?.status === 'downloading' && downloadStatus.model_id === model.id ? (
                                                 <>

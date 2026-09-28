@@ -174,6 +174,13 @@ _RECORD_LINE_DONE = re.compile(r"^[ \t]*\[Calculation record\][^\n]*\n", re.MULT
 _RECORD_LINE_START = re.compile(r"^[ \t]*\[Calculation record\]", re.MULTILINE)
 
 
+# Verbatim repeated sentences after which a streamed answer is treated as a loop and generation
+# is stopped: nothing after the loop starts would be shown anyway (repeats are dropped).
+LOOP_STOP_REPEATS = 3
+
+TRUNCATION_NOTE = "\n\n*(Answer cut off at the output length limit. Ask GeoAI to continue.)*"
+
+
 class AnswerStreamCleaner:
     """
     Incremental ``clean_answer`` for a streamed final answer: text is released one whole
@@ -192,6 +199,12 @@ class AnswerStreamCleaner:
         self._last_sep = ""
         self._line_start = True  # the unconsumed buffer starts a new line
         self._pending_ws = ""
+        self._repeats = 0
+
+    @property
+    def looping(self) -> bool:
+        """True once the model has repeated LOOP_STOP_REPEATS sentences verbatim: stop generating."""
+        return self._repeats >= LOOP_STOP_REPEATS
 
     def feed(self, delta: Optional[str]) -> str:
         self._buf += delta or ""
@@ -217,6 +230,7 @@ class AnswerStreamCleaner:
         key = _norm_sentence(sentence)
         if len(key) > 20 and key in self._seen:
             self._removed = True
+            self._repeats += 1
             # keep paragraph structure of the surviving text
             return sep if ("\n" in sep and "\n" not in self._last_sep and self._started) else ""
         if key:

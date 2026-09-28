@@ -58,12 +58,16 @@ _TOOL_CALL_BLOCK = re.compile(r"<tool_call>\s*(.*?)\s*(?:</tool_call>|$)", re.DO
 _PREFIXED_CALLS = re.compile(r"(?:<\|tool_call\|>|\[TOOL_CALLS\]|functools(?=\s*\[)|<\|python_tag\|>)\s*(.*?)\s*"
                              r"(?:<\|/tool_call\|>|<\|eom_id\|>|<\|eot_id\|>|$)", re.DOTALL)
 _JSON_FENCE = re.compile(r"^```(?:json|tool_code|tool_call)?\s*(.*?)\s*```$", re.DOTALL)
+_TRAILING_COMMA = re.compile(r",(\s*[}\]])")
 
 
 def _decode_tool_json(blob: str) -> Optional[Any]:
     """
-    json.loads, tolerating the doubled braces Qwen2.5's own chat template shows in
-    its tool instructions (the base model often copies ``{{"name": ...}}}}``).
+    json.loads, tolerating quirks small local models emit: the doubled braces Qwen2.5's own
+    chat template shows in its tool instructions (the base model often copies
+    ``{{"name": ...}}}}``), and trailing commas before a closing brace/bracket
+    (e.g. ``{"relative_density": 0.95,}``), which quantized models produce often enough
+    that treating them as unparseable would leak raw tool-call markup to the user.
     """
     try:
         return json.loads(blob)
@@ -72,11 +76,35 @@ def _decode_tool_json(blob: str) -> Optional[Any]:
     s = blob.strip()
     while s.startswith("{{"):
         s = s[1:]
+    s = _TRAILING_COMMA.sub(r"\1", s)
     try:
         obj, _end = json.JSONDecoder().raw_decode(s)
         return obj
     except json.JSONDecodeError:
         return None
+
+
+_XML_FUNCTION = re.compile(r"<function=([\w.\-]+)>(.*?)(?:</function>|$)", re.DOTALL)
+_XML_PARAMETER = re.compile(r"<parameter=([\w.\-]+)>\s*(.*?)\s*(?:</parameter>|(?=<parameter=)|$)", re.DOTALL)
+
+
+def _decode_xml_call(blob: str) -> Optional[Dict[str, Any]]:
+    """
+    Qwen3.5 / Qwen3-Coder templates ask for XML-style calls inside <tool_call>:
+    ``<function=NAME><parameter=KEY>VALUE</parameter>...</function>``. Values that parse as JSON
+    (numbers, booleans, objects) are decoded, anything else is kept as a string; the tool registry
+    validates and converts them like any other arguments.
+    """
+    m = _XML_FUNCTION.search(blob)
+    if not m:
+        return None
+    args: Dict[str, Any] = {}
+    for key, raw in _XML_PARAMETER.findall(m.group(2)):
+        try:
+            args[key] = json.loads(raw)
+        except json.JSONDecodeError:
+            args[key] = raw
+    return {"name": m.group(1), "arguments": args}
 
 
 def _as_call_objects(obj: Any) -> List[Dict[str, Any]]:
@@ -120,6 +148,8 @@ def parse_tool_calls(text: Optional[str]) -> Tuple[str, List[ToolCall]]:
     if blocks:
         for blob in blocks:
             obj = _decode_tool_json(blob)
+            if obj is None:
+                obj = _decode_xml_call(blob)
             if obj is None:
                 logger.warning(f"Ignoring malformed <tool_call> block: {blob[:200]!r}")
                 continue

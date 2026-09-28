@@ -110,7 +110,29 @@ def test_project_context_creation():
     ctx = ProjectContext(project_id="test_proj", name="Test Project")
     assert ctx.project_id == "test_proj"
     assert ctx.name == "Test Project"
-    assert ctx.water_table_depth == 0.0
+    assert ctx.water_table_depth is None
+
+
+def test_unknown_groundwater_is_not_reported_as_ground_surface():
+    ctx = ProjectContext(project_id="p")
+    text = ctx.get_compact_context_string()
+    assert "not recorded" in text and "0.0 m below" not in text
+    ctx.water_table_depth = 2.5
+    assert "2.5 m below ground surface" in ctx.get_compact_context_string()
+
+
+def test_project_soil_uses_recorded_groundwater_level(sample_profile_df):
+    from core.geoai.project_soil import ProjectSoil
+    ctx = ProjectContext(project_id="p")
+    ctx.add_profile("BH-01", sample_profile_df)
+    soil = ProjectSoil(context_loader=lambda: ctx)
+    value, reason = soil.groundwater_depth()
+    if value is None:  # profile fixture has no water-table column -> unknown until recorded
+        assert "groundwater" in reason
+    ctx.water_table_depth = 3.0
+    soil = ProjectSoil(context_loader=lambda: ctx)
+    value, _ = soil.groundwater_depth()
+    assert value is not None and value.value == 3.0
 
 def test_project_context_profiles(sample_profile_df):
     ctx = ProjectContext(project_id="test_proj")

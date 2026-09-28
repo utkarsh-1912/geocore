@@ -42,6 +42,34 @@ def test_parse_tool_calls_formats(family, text):
     assert calls[0].function_name == CALL["name"] and calls[0].arguments == ARGS
 
 
+@pytest.mark.parametrize("text", [
+    '<tool_call>\n{\n"name": "relativedensity",\n"arguments": {\n"relative_density": 0.95,\n}\n}\n</tool_call>',
+    '<tool_call>\n{\n"name": "earthpressurecoefficients_rankine",\n"arguments": {\n"phi_eff": 34.0,\n}\n}',
+])
+def test_parse_tool_calls_tolerates_trailing_comma(text):
+    content, calls = parse_tool_calls(text)
+    assert len(calls) == 1
+    assert content == ""
+
+
+def test_parse_qwen35_xml_tool_calls():
+    # Verbatim shape of Qwen3.5-2B output seen in the benchmark log.
+    text = ("<tool_call>\n<function=derive_cpt_parameters>\n<parameter=qc_mpa>\n10.1\n</parameter>\n"
+            "<parameter=fs_kpa>\n44\n</parameter>\n<parameter=soil_type>\nclay\n</parameter>\n"
+            "<parameter=drained>\nfalse\n</parameter>\n</function>\n</tool_call>")
+    content, calls = parse_tool_calls(text)
+    assert len(calls) == 1 and calls[0].function_name == "derive_cpt_parameters"
+    assert calls[0].arguments == {"qc_mpa": 10.1, "fs_kpa": 44, "soil_type": "clay", "drained": False}
+    assert content == ""
+
+
+def test_parse_qwen35_xml_unterminated_and_multiple():
+    text = ("<tool_call><function=a><parameter=x>1</parameter></function></tool_call>\n"
+            "<tool_call><function=b><parameter=y>two")  # cut off at max_tokens
+    _, calls = parse_tool_calls(text)
+    assert [(c.function_name, c.arguments) for c in calls] == [("a", {"x": 1}), ("b", {"y": "two"})]
+
+
 def test_parse_multiple_calls_and_keeps_preamble():
     two = [CALL, {"name": "get_cpt_sounding", "arguments": {"cpt_id": "CPT-03"}}]
     content, calls = parse_tool_calls("I will run both.\n<|tool_call|>" + json.dumps(two) + "<|/tool_call|>")

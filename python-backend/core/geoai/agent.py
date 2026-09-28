@@ -21,7 +21,7 @@ from .model_provider import (
     make_user_message,
     make_system_message
 )
-from .response_guard import AnswerStreamCleaner, clean_answer, collapse_repetition
+from .response_guard import TRUNCATION_NOTE, AnswerStreamCleaner, clean_answer, collapse_repetition
 from .tool_registry import GeoAIToolRegistry
 from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
@@ -31,8 +31,6 @@ from .argument_grounding import missing_inputs_message, ungrounded_arguments
 logger = logging.getLogger(__name__)
 
 MAX_TOOL_ROUNDS = 3
-# The post-tool explanation only needs a few paragraphs; a tight cap bounds degenerate loops.
-EXPLANATION_MAX_TOKENS = 512
 # Prior conversation turns replayed to the model (small models need a short context).
 MAX_HISTORY_TURNS = 6
 MAX_HISTORY_CHARS = 600
@@ -189,6 +187,26 @@ class AgentStreamEvent:
         }
         return f"data: {json.dumps(data)}\n\n"
 
+def _close_stream(stream: Any) -> None:
+    """Close a generator stream early (stops llama.cpp generation); plain iterators are left alone."""
+    close = getattr(stream, "close", None)
+    if close:
+        close()
+
+
+def _with_truncation_note(text: str, finish_reason: Optional[str], raw: Optional[str] = None) -> str:
+    """
+    Say so when an answer stopped at the generation cap instead of ending mid-sentence silently.
+    A completion that hit the cap because it was looping is not unfinished, so it gets no note.
+    """
+    if not text or finish_reason != "length":
+        return text
+    probe = AnswerStreamCleaner()
+    probe.feed(raw or "")
+    probe.flush()
+    return text if probe.looping else text + TRUNCATION_NOTE
+
+
 class GeoAIAgent:
     def __init__(self, provider: ModelProvider, registry: GeoAIToolRegistry, max_tools: Optional[int] = None,
                  tool_schema_token_budget: Optional[float] = None):
@@ -281,7 +299,8 @@ class GeoAIAgent:
             
             if response.finish_reason != 'tool_calls' or not response.tool_calls:
                 return AgentResponse(
-                    response_text=clean_answer(response.content, tools_used),
+                    response_text=_with_truncation_note(clean_answer(response.content, tools_used),
+                                                        response.finish_reason, response.content),
                     tools_used=tools_used,
                     finish_reason='complete',
                     usage=response.usage
@@ -308,7 +327,9 @@ class GeoAIAgent:
         messages.append(make_user_message("Please summarize the results from the tools used."))
         final = self._provider.generate(messages=messages, tools=None, max_tokens=self._answer_max_tokens)
         return AgentResponse(
-            response_text=clean_answer(final.content, tools_used) or "Maximum tool rounds reached.",
+            response_text=_with_truncation_note(clean_answer(final.content, tools_used), final.finish_reason,
+                                                final.content)
+            or "Maximum tool rounds reached.",
             tools_used=tools_used,
             finish_reason='max_rounds',
             usage=final.usage
@@ -330,6 +351,7 @@ class GeoAIAgent:
             
             full_content = ""
             tool_calls = []
+            finish_reason = None
             # A direct answer (no tool call) gets the same guards as the explanation round.
             cleaner = AnswerStreamCleaner(tools_used)
 
@@ -341,9 +363,15 @@ class GeoAIAgent:
                         yield AgentStreamEvent(type='token', content=text)
                 if chunk.delta_tool_calls:
                     tool_calls.extend(chunk.delta_tool_calls)
+                finish_reason = chunk.finish_reason or finish_reason
+                if cleaner.looping and not tool_calls:
+                    _close_stream(stream)  # stop generating: the rest of a loop would be dropped anyway
+                    break
 
             if not tool_calls:
                 text = cleaner.flush()
+                if finish_reason == "length" and not cleaner.looping:
+                    text += TRUNCATION_NOTE
                 if text:
                     yield AgentStreamEvent(type='token', content=text)
                 yield AgentStreamEvent(type='done')
@@ -376,19 +404,29 @@ class GeoAIAgent:
 
         messages.append(make_user_message("Please summarize the results from the tools used."))
         final = self._provider.generate(messages=messages, tools=None, max_tokens=self._answer_max_tokens)
-        yield AgentStreamEvent(type='token', content=clean_answer(final.content, tools_used) or "Maximum tool rounds reached.")
+        yield AgentStreamEvent(type='token', content=_with_truncation_note(clean_answer(final.content, tools_used),
+                                                                           final.finish_reason, final.content)
+                               or "Maximum tool rounds reached.")
         yield AgentStreamEvent(type='done')
 
     def _stream_answer(self, messages: List[ChatMessage], tools_used: List[Dict[str, Any]],
                        tools_for_model: Optional[List[dict]] = None) -> Iterator[AgentStreamEvent]:
         cleaner = AnswerStreamCleaner(tools_used)
         wrote = False
-        for chunk in self._provider.generate_answer_stream(messages=messages, tools=tools_for_model,
-                                                           temperature=0.1, max_tokens=self._answer_max_tokens):
+        finish_reason = None
+        stream = self._provider.generate_answer_stream(messages=messages, tools=tools_for_model,
+                                                       temperature=0.1, max_tokens=self._answer_max_tokens)
+        for chunk in stream:
             text = cleaner.feed(chunk.delta_content)
             if text:
                 wrote = True
                 yield AgentStreamEvent(type='token', content=text)
+            finish_reason = chunk.finish_reason or finish_reason
+            if cleaner.looping:
+                _close_stream(stream)  # stop generating: the rest of a loop would be dropped anyway
+                break
         text = cleaner.flush() or ("" if wrote else _result_summary(tools_used))
+        if text and finish_reason == "length" and not cleaner.looping:
+            text += TRUNCATION_NOTE
         if text:
             yield AgentStreamEvent(type='token', content=text)

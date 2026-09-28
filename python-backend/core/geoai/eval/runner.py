@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Sequence
 
 from core.geoai.eval.example import EvalExample
-from core.geoai.eval.scoring import SIDE_EFFECT_TOOLS, ParsedResponse, default_registry, score_turn
+from core.geoai.eval.scoring import SIDE_EFFECT_TOOLS, ParsedResponse, default_registry, project_fixture, score_turn
 from core.geoai.exceptions import GeoAIValidationError
 from core.geoai.model_provider import (
     ChatMessage,
@@ -220,16 +220,25 @@ def run_example(ex: EvalExample, rec: RecordingProvider, registry: GeoAIToolRegi
     final_text = None
     t0 = time.perf_counter()
     try:
-        if ex.turn_type == "final_answer":
-            messages = [make_system_message(build_system_prompt(ex.context))] + _to_chat_messages(ex.messages)
-            rec.generate(messages, tools=None, temperature=0.1, max_tokens=512)
-        else:
-            agent = GeoAIAgent(rec, registry)
-            if mode == "agent":
-                final_text = agent.run(ex.user_prompt, ex.context).response_text
-            else:
+        with project_fixture(ex):  # project-data examples run against their synthetic project
+            if ex.turn_type == "final_answer":
+                messages = [make_system_message(build_system_prompt(ex.context))] + _to_chat_messages(ex.messages)
+                rec.generate(messages, tools=None, temperature=0.1, max_tokens=512)
+            elif len(ex.messages) > 1:
+                # Later step of a multi-step trajectory: the prefix holds earlier tool calls and their
+                # real results, which GeoAIAgent.run cannot take, so judge the next decision directly
+                # with the agent's own system prompt and tool selection.
+                agent = GeoAIAgent(rec, registry)
                 messages, tools = agent._build_messages(ex.user_prompt, ex.context)
+                messages = messages[:1] + _to_chat_messages(ex.messages)
                 rec.generate(messages, tools=tools, temperature=0.1, max_tokens=1024)
+            else:
+                agent = GeoAIAgent(rec, registry)
+                if mode == "agent":
+                    final_text = agent.run(ex.user_prompt, ex.context).response_text
+                else:
+                    messages, tools = agent._build_messages(ex.user_prompt, ex.context)
+                    rec.generate(messages, tools=tools, temperature=0.1, max_tokens=1024)
     except Exception as e:  # generation failure is a scored failure, not a crash
         error = f"{type(e).__name__}: {str(e)[:300]}"
     latency = time.perf_counter() - t0

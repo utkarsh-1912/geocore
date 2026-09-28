@@ -160,6 +160,10 @@ class _Draft:
     tool_message: Optional[Dict[str, Any]] = None       # exact agent-style tool result wrapper
     final_answer: Optional[str] = None
     final_eval: bool = False                            # also emit a final-answer eval turn
+    # Multi-step drafts (project_examples.py): every message after the user turn (tool calls with
+    # their real results and the final answer), and the extra eval turns derived from them.
+    trajectory: Optional[List[Dict[str, Any]]] = None
+    followups: List[EvalExample] = field(default_factory=list)
 
 
 @dataclass
@@ -778,6 +782,17 @@ def _final_turn(d: _Draft) -> EvalExample:
     )
 
 
+def _followup_turn(d: _Draft, f: EvalExample) -> EvalExample:
+    """A later turn of a multi-step draft (``f.id`` holds its suffix, e.g. 'step2' / 'final')."""
+    ex = d.example
+    out = copy.deepcopy(f)
+    out.id = f"{ex.id}__{f.id}"
+    out.split, out.source, out.group = ex.split, ex.source, ex.group
+    out.context = ex.context
+    out.metadata = dict(out.metadata or {}, parent_id=ex.id)
+    return out
+
+
 def _dedupe_key(ex: EvalExample) -> str:
     ctx = json.dumps(ex.context, sort_keys=True) if ex.context else ""
     return ex.turn_type + "|" + re.sub(r"\s+", " ", ex.user_prompt.strip().lower()) + "|" + ctx
@@ -814,22 +829,32 @@ def assign_splits(examples: List[EvalExample], seed: int, test_frac: float = 0.1
         ex.split = split
 
 
-def build_dataset(seed: int = DEFAULT_SEED, registry=None, per_tool: int = 30) -> Tuple[List[EvalExample], List[_Draft], GenerationReport]:
+def build_dataset(seed: int = DEFAULT_SEED, registry=None, per_tool: int = 30, *,
+                  include_base: bool = True, include_project_tools: bool = True
+                  ) -> Tuple[List[EvalExample], List[_Draft], GenerationReport]:
     """
     Build the full generated dataset (decision + final-answer turns) with splits assigned.
 
     Returns (examples, drafts, report). ``drafts`` carry the SFT trajectories for
     decision turns (tool call, real tool result, final answer).
+
+    ``include_project_tools`` adds the project-data tool examples (project_examples.py), which
+    use their own RNG stream and strata and are appended last, so the base examples are the
+    same with or without them; ``include_base=False`` generates only those.
     """
     reg = registry if registry is not None else default_registry()
     g = _Generator(seed, reg)
-    g.build_correct(per_tool)
-    g.build_missing(max(6, per_tool // 3))
-    g.build_units(max(6, per_tool // 3))
-    g.build_conflicting(max(4, per_tool // 6))
-    g.build_ambiguous()
-    g.build_research()
-    g.build_tool_failure()
+    if include_base:
+        g.build_correct(per_tool)
+        g.build_missing(max(6, per_tool // 3))
+        g.build_units(max(6, per_tool // 3))
+        g.build_conflicting(max(4, per_tool // 6))
+        g.build_ambiguous()
+        g.build_research()
+        g.build_tool_failure()
+    if include_project_tools:
+        from core.geoai.training.project_examples import build_project_tool_examples
+        build_project_tool_examples(g, seed, per_tool)
 
     # dedupe decision turns (first occurrence wins; generation order is deterministic)
     seen = set()
@@ -852,8 +877,9 @@ def build_dataset(seed: int = DEFAULT_SEED, registry=None, per_tool: int = 30) -
             examples.append(d.example)
         if d.final_eval and d.target_call and d.tool_message and d.final_answer:
             examples.append(_final_turn(d))
+        examples.extend(_followup_turn(d, f) for f in d.followups)
 
-    report = GenerationReport(dropped=dict(g.dropped), skipped_tools=dict(g.skipped), total=len(examples))
+    report =GenerationReport(dropped=dict(g.dropped), skipped_tools=dict(g.skipped), total=len(examples))
     counts: Dict[str, Dict[str, int]] = defaultdict(lambda: defaultdict(int))
     for ex in examples:
         counts[ex.category][ex.split] += 1
@@ -944,6 +970,19 @@ def sft_record(d: _Draft, all_defs: Dict[str, Any]) -> Dict[str, Any]:
     ex = d.example
     msgs: List[Dict[str, Any]] = [{"role": "system", "content": build_system_prompt(ex.context)}]
     msgs += [dict(m) for m in ex.messages]
+    if d.trajectory is not None:
+        msgs += copy.deepcopy(d.trajectory)
+        tools, miss = _tools_for(ex.user_prompt, ex.context, ex.expected_tool, all_defs)
+        offered = {t["function"]["name"] for t in tools}
+        for m in d.trajectory:  # every tool the trajectory calls must be offered
+            for tc in m.get("tool_calls") or []:
+                name = tc["function"]["name"]
+                if name not in offered and name in all_defs:
+                    from core.geoai.tool_selector import format_tools_for_prompt
+                    tools = format_tools_for_prompt([all_defs[name]]) + tools
+                    offered.add(name)
+        return {"id": ex.id, "category": ex.category, "split": ex.split, "messages": msgs, "tools": tools,
+                "selector_missed_expected_tool": miss}
     if d.target_call is not None:
         call_id = f"call_{ex.id}"
         msgs.append(_assistant_tool_call_msg(d.target_call, call_id))

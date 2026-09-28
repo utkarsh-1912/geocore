@@ -124,7 +124,7 @@ def calculate_pile_capacity_from_cpt(cpt_id: str, method: str, pile_type: str, p
     if soil_layers:
         layers = [l.model_dump() if hasattr(l, "model_dump") else dict(l) for l in soil_layers]
     try:
-        return engine.calculate(cpt, method, pile_type, float(pile_diameter_m), float(pile_tip_depth_m),
+        return engine.calculate_cached(cpt, method, pile_type, float(pile_diameter_m), float(pile_tip_depth_m),
                                 wall_thickness_mm, open_end_condition, shaft_start_depth_m, groundwater_depth_m,
                                 debeer_alpha_s, debeer_alpha_b, layers)
     except (ValueError, KeyError, IndexError) as e:

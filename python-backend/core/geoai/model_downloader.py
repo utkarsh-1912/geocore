@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     "qwen2.5-1.5b-instruct": {
         "family": "qwen",
+        "license": "Apache-2.0",
         "display_name": "Qwen 2.5 (1.5B Instruct)",
         "repo_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
         "filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
@@ -44,6 +45,7 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     },
     "qwen3.5-2b": {
         "family": "qwen",
+        "license": "Apache-2.0",
         "display_name": "Qwen 3.5 (2B)",
         "repo_id": "unsloth/Qwen3.5-2B-GGUF",
         "filename": "Qwen3.5-2B-Q4_K_M.gguf",
@@ -55,6 +57,7 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     },
     "qwen3-1.7b": {
         "family": "qwen",
+        "license": "Apache-2.0",
         "display_name": "Qwen 3 (1.7B)",
         "repo_id": "unsloth/Qwen3-1.7B-GGUF",
         "filename": "Qwen3-1.7B-Q4_K_M.gguf",
@@ -66,6 +69,7 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     },
     "qwen2.5-3b-instruct": {
         "family": "qwen",
+        "license": "Qwen Research (non-commercial)",
         "display_name": "Qwen 2.5 (3B Instruct)",
         "repo_id": "Qwen/Qwen2.5-3B-Instruct-GGUF",
         "filename": "qwen2.5-3b-instruct-q4_k_m.gguf",
@@ -75,6 +79,7 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     },
     "qwen2.5-7b-instruct": {
         "family": "qwen",
+        "license": "Apache-2.0",
         "display_name": "Qwen 2.5 (7B Instruct)",
         # The official Qwen repo splits Q4_K_M into 2 shards; this is a verified single file.
         "repo_id": "bartowski/Qwen2.5-7B-Instruct-GGUF",
@@ -85,8 +90,81 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "description": "Maximum capability (7B) for complex geotechnical synthesis, CPT profiling & tool orchestration",
         "recommended_for": "High-end workstations with dedicated GPU/VRAM acceleration"
     },
+    "qwen3-4b-instruct-2507": {
+        "family": "qwen",
+        "license": "Apache-2.0",
+        "display_name": "Qwen 3 (4B Instruct 2507)",
+        "repo_id": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+        "filename": "Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+        "size_mb": 2382,
+        "size_bytes": 2497281120,
+        "sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+        "description": "Qwen 3 (4B) non-thinking instruct release with native tool calling; benchmark candidate",
+        "recommended_for": "Workstations with 8 GB+ RAM wanting stronger argument extraction than the 1.5-2B models"
+    },
+    "qwen3-8b": {
+        "family": "qwen",
+        "license": "Apache-2.0",
+        "display_name": "Qwen 3 (8B)",
+        "repo_id": "Qwen/Qwen3-8B-GGUF",
+        "filename": "Qwen3-8B-Q4_K_M.gguf",
+        "size_mb": 4795,
+        "size_bytes": 5027783488,
+        "sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+        "description": "Qwen 3 (8B) hybrid thinking model with native tool calling; quality reference, slow on CPU",
+        "recommended_for": "High-end workstations with 16 GB+ RAM or a GPU"
+    },
+    "phi-4-mini-instruct": {
+        "family": "phi",
+        "license": "MIT",
+        "display_name": "Phi-4-mini (3.8B Instruct)",
+        "repo_id": "unsloth/Phi-4-mini-instruct-GGUF",
+        "filename": "Phi-4-mini-instruct-Q4_K_M.gguf",
+        "size_mb": 2376,
+        "size_bytes": 2491874272,
+        "sha256": "88c00229914083cd112853aab84ed51b87bdf6b9ce42f532d8c85c7c63b1730a",
+        "description": "Microsoft Phi-4-mini (3.8B), trained for function calling; MIT licence; benchmark candidate",
+        "recommended_for": "Workstations with 8 GB+ RAM; permissive licence for redistribution"
+    },
+    "granite-4.0-micro": {
+        "family": "granite",
+        "license": "Apache-2.0",
+        "display_name": "Granite 4.0 Micro (3B)",
+        "repo_id": "ibm-granite/granite-4.0-micro-GGUF",
+        "filename": "granite-4.0-micro-Q4_K_M.gguf",
+        "size_mb": 2002,
+        "size_bytes": 2099502528,
+        "sha256": "97c417dcc0534b0737c74016fb2af083cb17c3b51eaac621192d23961b7024eb",
+        "description": "IBM Granite 4.0 Micro (3B) with native tool calling; benchmark candidate",
+        "recommended_for": "Laptops & workstations with 8 GB RAM"
+    },
+    "smollm3-3b": {
+        "family": "smollm",
+        "license": "Apache-2.0",
+        "display_name": "SmolLM3 (3B)",
+        "repo_id": "ggml-org/SmolLM3-3B-GGUF",
+        "filename": "SmolLM3-Q4_K_M.gguf",
+        "size_mb": 1827,
+        "size_bytes": 1915305312,
+        "sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e",
+        "description": "Hugging Face SmolLM3 (3B) hybrid thinking model with tool calling; fully open training data",
+        "recommended_for": "Laptops & workstations with 8 GB RAM"
+    },
+    "llama-3.2-3b-instruct": {
+        "family": "llama",
+        "license": "Llama 3.2 Community",
+        "display_name": "Llama 3.2 (3B Instruct)",
+        "repo_id": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+        "filename": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+        "size_mb": 1926,
+        "size_bytes": 2019377696,
+        "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff",
+        "description": "Meta Llama 3.2 (3B) with JSON tool calls; custom licence with use restrictions",
+        "recommended_for": "Laptops & workstations with 8 GB RAM"
+    },
     "gemma-2-2b-it": {
         "family": "gemma",
+        "license": "Gemma Terms of Use",
         "display_name": "Gemma 2 (2.6B IT)",
         "repo_id": "bartowski/gemma-2-2b-it-GGUF",
         "filename": "gemma-2-2b-it-Q4_K_M.gguf",
@@ -94,8 +172,21 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "description": "Google DeepMind Gemma 2 architecture optimized for high factual grounding & research synthesis",
         "recommended_for": "Literature review, standards interpretation (Eurocode 7, ASTM), and technical reports"
     },
+    "gemma-3-4b-it": {
+        "family": "gemma",
+        "license": "Gemma Terms of Use",
+        "display_name": "Gemma 3 (4B IT)",
+        "repo_id": "unsloth/gemma-3-4b-it-GGUF",
+        "filename": "gemma-3-4b-it-Q4_K_M.gguf",
+        "size_mb": 2375,
+        "size_bytes": 2489894016,
+        "sha256": "04a43a22e8d2003deda5acc262f68ec1005fa76c735a9962a8c77042a74a7d19",
+        "description": "Google Gemma 3 (4B); its template has no tool section, so GeoAI describes tools in the prompt",
+        "recommended_for": "Workstations with 8 GB+ RAM; research synthesis"
+    },
     "gemma-2-9b-it": {
         "family": "gemma",
+        "license": "Gemma Terms of Use",
         "display_name": "Gemma 2 (9B IT)",
         "repo_id": "bartowski/gemma-2-9b-it-GGUF",
         "filename": "gemma-2-9b-it-Q4_K_M.gguf",
@@ -106,17 +197,32 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
 }
 
 
+def get_active_model_path() -> Optional[str]:
+    """The GGUF GeoAI will load (config.model_path), or None when no model is configured or it is missing."""
+    config = load_config()
+    if config.provider == "heuristic" or not config.model_path:
+        return None
+    return config.model_path if Path(config.model_path).is_file() else None
+
+
 def list_available_models() -> List[Dict[str, Any]]:
-    """Returns list of curated candidate models and their local download status."""
+    """Returns list of curated candidate models, their local download status and which one is active."""
     installed = {p.name.lower(): p for p in find_gguf_models()}
+    active_path = get_active_model_path()
+    # Matched by file name so a registry model linked from another folder is still recognised.
+    active_name = Path(active_path).name.lower() if active_path else None
     results = []
 
     for key, info in RECOMMENDED_MODELS.items():
         is_installed = info["filename"].lower() in installed
         local_path = str(installed[info["filename"].lower()]) if is_installed else None
+        is_active = active_name == info["filename"].lower()
+        if is_active:
+            is_installed, local_path = True, active_path
         results.append({
             "id": key,
             "family": info.get("family", "qwen"),
+            "license": info.get("license"),
             "display_name": info.get("display_name", key),
             "repo_id": info["repo_id"],
             "filename": info["filename"],
@@ -125,6 +231,7 @@ def list_available_models() -> List[Dict[str, Any]]:
             "description": info["description"],
             "recommended_for": info["recommended_for"],
             "is_installed": is_installed,
+            "is_active": is_active,
             "local_path": local_path
         })
     return results

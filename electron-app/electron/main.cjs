@@ -34,7 +34,7 @@ function titleBarOverlayFor(isDark) {
 // Keep the native window-controls overlay in sync with the app theme.
 // Registered once so re-creating the window (macOS `activate`) does not stack listeners.
 ipcMain.on('set-title-bar-overlay', (event, { isDark } = {}) => {
-  if (process.platform === 'darwin' || !mainWindow || mainWindow.isDestroyed()) return;
+  if (process.platform !== 'win32' || !mainWindow || mainWindow.isDestroyed()) return;
   try {
     mainWindow.setTitleBarOverlay(titleBarOverlayFor(Boolean(isDark)));
   } catch (e) {
@@ -74,11 +74,14 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    titleBarStyle: 'hidden', // Custom title bar
-    // macOS draws traffic lights on the left; Windows/Linux draw an overlay on the right.
+    // Custom title bar: macOS draws traffic lights on the left, Windows overlays native
+    // controls on the right. titleBarOverlay has no Linux support and there is no custom
+    // control UI in the renderer to fall back on, so Linux keeps the native frame instead.
     ...(isMac
-      ? { trafficLightPosition: MAC_TRAFFIC_LIGHT_POSITION }
-      : { titleBarOverlay: titleBarOverlayFor(true) }),
+      ? { titleBarStyle: 'hidden', trafficLightPosition: MAC_TRAFFIC_LIGHT_POSITION }
+      : isWin
+      ? { titleBarStyle: 'hidden', titleBarOverlay: titleBarOverlayFor(true) }
+      : {}),
   });
 
   // BrowserWindow#setIcon exists only on Windows/Linux; macOS uses the bundle icon.

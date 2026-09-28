@@ -17,6 +17,7 @@
     "dist": "vite build && electron-builder --publish never",
     "dist:win": "vite build && electron-builder --win --publish never",
     "dist:mac": "vite build && electron-builder --mac --publish never",
+    "dist:linux": "vite build && electron-builder --linux --publish never",
     "pack": "vite build && electron-builder --dir",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -106,6 +107,26 @@
           "path": "/Applications"
         }
       ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/logoIcon.png",
+      "category": "Science",
+      "synopsis": "Geotechnical desktop app powered by GeoCore",
+      "maintainer": "Utkarsh Gupta"
     }
   },
   "dependencies": {

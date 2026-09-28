@@ -87,11 +87,14 @@ class GeoAIModelConfig:
     n_threads_batch: Optional[int] = None
     # Prompt-processing batch size (tokens per llama_decode call). Env: GEOAI_N_BATCH.
     n_batch: int = 512
-    # Generation caps per agent phase. A tool-call turn is ~40-120 tokens and a clarification
-    # question is similar; the post-tool answer is a few short paragraphs. Env:
-    # GEOAI_DECISION_MAX_TOKENS / GEOAI_ANSWER_MAX_TOKENS.
+    # Generation caps per agent phase. The first turn is usually a tool call (~40-120 tokens;
+    # XML-style calls such as Qwen3.5's are ~2x) but it is also where a direct answer without a
+    # tool is written (concept explanations, research), so it cannot be tiny. The post-tool answer
+    # may cover several results, assumptions and sources. Looping completions do not run to these
+    # caps: the agent stops generation once the answer starts repeating itself (response_guard).
+    # Env: GEOAI_DECISION_MAX_TOKENS / GEOAI_ANSWER_MAX_TOKENS.
     decision_max_tokens: int = 512
-    answer_max_tokens: int = 512
+    answer_max_tokens: int = 1024
     # Wall-clock limit for one model call (prompt processing + generation), in seconds. A call
     # past it is aborted so a stuck request can never hold the model forever. Env:
     # GEOAI_GENERATION_TIMEOUT_S. 0 = no limit.
@@ -126,6 +129,24 @@ def get_default_model_dir() -> Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
 
+# save_config writes every field, so a saved file pins the defaults of the version that wrote it.
+# Values equal to a superseded default are treated as "never chosen" and move to the current
+# default; any other saved value (a deliberate choice) and env overrides are kept.
+_LEGACY_DEFAULTS = {
+    "decision_max_tokens": (200,),
+    "answer_max_tokens": (320, 512),
+}
+
+
+def _upgrade_legacy_defaults(config: GeoAIModelConfig) -> None:
+    defaults = GeoAIModelConfig()
+    for attr, old in _LEGACY_DEFAULTS.items():
+        value, new = getattr(config, attr), getattr(defaults, attr)
+        if value in old and value != new:
+            logger.info(f"GeoAI config: {attr}={value} was an old default; using {new}.")
+            setattr(config, attr, new)
+
+
 def load_config() -> GeoAIModelConfig:
     """Loads configuration from JSON file and applies environment variable overrides."""
     config = GeoAIModelConfig()
@@ -139,6 +160,7 @@ def load_config() -> GeoAIModelConfig:
                 for k, v in data.items():
                     if hasattr(config, k):
                         setattr(config, k, v)
+                _upgrade_legacy_defaults(config)
         except json.JSONDecodeError:
             logger.warning(f"Invalid JSON in {config_file}. Using default configuration.")
         except Exception as e:

@@ -68,6 +68,8 @@
       return { platform: 'mac', kind: 'zip', arch: z, label: 'macOS app archive (.zip) — ' + archLabel('mac', z) };
     }
     if (/\.zip$/i.test(n) && /win/i.test(n)) return { platform: 'windows', kind: 'zip', arch: 'x64', label: 'Windows archive (.zip)' };
+    if (/\.appimage$/i.test(n)) return { platform: 'linux', kind: 'appimage', arch: archOf(n), label: 'Linux AppImage (portable, self-updating)' };
+    if (/\.deb$/i.test(n)) return { platform: 'linux', kind: 'deb', arch: archOf(n), label: 'Linux .deb package (Debian/Ubuntu)' };
     return { platform: 'other', kind: 'other', label: 'Other file' };
   }
 
@@ -247,6 +249,8 @@
     var win = pick(assets, 'windows', 'installer');
     var macArm = pick(assets, 'mac', 'dmg', 'arm64');
     var macIntel = pick(assets, 'mac', 'dmg', 'x64');
+    var linuxAppImage = pick(assets, 'linux', 'appimage');
+    var linuxDeb = pick(assets, 'linux', 'deb');
 
     if (env.os === 'windows') {
       osLabel = 'Windows 10 / 11 (64-bit)';
@@ -262,14 +266,21 @@
         if (env.arch === 'unknown') note = 'Your browser does not report the processor type. This is the Apple silicon (M-series) build; on an Intel Mac use the Intel build below.';
       }
       alternatives.push(win);
+    } else if (env.os === 'linux') {
+      osLabel = 'Linux (x64)';
+      primary = linuxAppImage || linuxDeb;
+      note = linuxAppImage
+        ? 'AppImage: make it executable (chmod +x) and run it directly — no installation needed, and it auto-updates in place. Prefer a system package instead? Use the .deb download below (no auto-update).'
+        : linuxDeb
+          ? 'The .deb package (Debian/Ubuntu) does not auto-update; reinstall it for each new release.'
+          : '';
+      alternatives = [primary === linuxAppImage ? linuxDeb : linuxAppImage, win, macArm, macIntel];
     } else {
-      osLabel = env.os === 'linux' ? 'Linux' : env.os === 'ios' || env.os === 'android' ? 'Mobile device' : 'Your system';
-      note = env.os === 'linux'
-        ? 'There is no Linux build yet. You can run GeoCore from source (see the README on GitHub), or pick a Windows or macOS installer below.'
-        : env.os === 'ios' || env.os === 'android'
-          ? 'GeoCore is a desktop application for Windows and macOS. Pick an installer below to download it on your computer.'
-          : 'We could not detect your operating system. Pick an installer below.';
-      alternatives = [win, macArm, macIntel];
+      osLabel = env.os === 'ios' || env.os === 'android' ? 'Mobile device' : 'Your system';
+      note = env.os === 'ios' || env.os === 'android'
+        ? 'GeoCore is a desktop application for Windows, macOS and Linux. Pick an installer below to download it on your computer.'
+        : 'We could not detect your operating system. Pick an installer below.';
+      alternatives = [win, macArm, macIntel, linuxAppImage, linuxDeb];
     }
 
     // Primary card
@@ -279,9 +290,10 @@
     $('[data-dl-date]').textContent = formatDate(release.published_at);
     var btn = $('[data-dl-button]');
     var fileEl = $('[data-dl-file]');
+    var KIND_LABEL = { installer: 'installer', dmg: 'disk image', appimage: 'AppImage', deb: '.deb package' };
     if (primary) {
       btn.setAttribute('href', primary.browser_download_url);
-      btn.querySelector('[data-dl-button-label]').textContent = 'Download ' + (primary.info.kind === 'installer' ? 'installer' : primary.info.kind === 'dmg' ? 'disk image' : 'file');
+      btn.querySelector('[data-dl-button-label]').textContent = 'Download ' + (KIND_LABEL[primary.info.kind] || 'file');
       $('[data-dl-size]').textContent = formatSize(primary.size);
       $('[data-dl-arch]').textContent = archLabel(primary.info.platform, primary.info.arch);
       fileEl.textContent = primary.name;
@@ -290,7 +302,7 @@
       btn.querySelector('[data-dl-button-label]').textContent = 'Choose a file on GitHub';
       $('[data-dl-size]').textContent = '—';
       $('[data-dl-arch]').textContent = '—';
-      fileEl.textContent = env.os === 'windows' || env.os === 'mac'
+      fileEl.textContent = env.os === 'windows' || env.os === 'mac' || env.os === 'linux'
         ? 'No matching installer was found in the latest release.'
         : '';
     }
@@ -303,9 +315,12 @@
     var alt = $('[data-dl-alternatives]');
     alt.textContent = '';
     alternatives.filter(function (a, i, arr) { return a && a !== primary && arr.indexOf(a) === i; }).forEach(function (a) {
-      var label = a.info.platform === 'windows' ? 'Windows (x64)' : 'macOS — ' + archLabel('mac', a.info.arch);
+      var label = a.info.platform === 'windows' ? 'Windows (x64)'
+        : a.info.platform === 'mac' ? 'macOS — ' + archLabel('mac', a.info.arch)
+        : 'Linux — ' + (a.info.kind === 'appimage' ? 'AppImage' : '.deb package');
+      var iconName = a.info.platform === 'windows' ? 'monitor' : a.info.platform === 'mac' ? 'laptop' : 'package';
       alt.appendChild(el('a', { class: 'dl-other', href: a.browser_download_url }, [
-        icon(a.info.platform === 'windows' ? 'monitor' : 'laptop'),
+        icon(iconName),
         el('span', { class: 'grow' }, [label, el('small', { text: a.name + ' · ' + formatSize(a.size) })]),
         icon('download')
       ]));
@@ -315,7 +330,7 @@
     // All assets table
     var tbody = $('[data-dl-assets]');
     tbody.textContent = '';
-    var order = { windows: 0, mac: 1, other: 2, meta: 3 };
+    var order = { windows: 0, mac: 1, linux: 2, other: 3, meta: 4 };
     assets.slice().sort(function (a, b) {
       return (order[a.info.platform] - order[b.info.platform]) || a.name.localeCompare(b.name);
     }).forEach(function (a) {

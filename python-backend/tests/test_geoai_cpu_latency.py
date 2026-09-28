@@ -14,7 +14,7 @@ import pytest
 sys.path.insert(0, os.path.dirname(__file__))
 from gguf_fixtures import write_fake_base  # noqa: E402
 
-from core.geoai.agent import EXPLANATION_MAX_TOKENS, GeoAIAgent  # noqa: E402
+from core.geoai.agent import GeoAIAgent  # noqa: E402
 from core.geoai.lifecycle import ModelLifecycleManager  # noqa: E402
 from core.geoai.llama_cpp_provider import LlamaCppProvider, ThinkStreamFilter  # noqa: E402
 from core.geoai.model_config import GeoAIModelConfig, load_config, resolve_thread_counts  # noqa: E402
@@ -41,8 +41,8 @@ def test_perf_config_defaults(clean_env):
     cfg = GeoAIModelConfig()
     assert cfg.n_threads is None and cfg.n_threads_batch is None  # auto
     assert cfg.n_batch == 512
-    assert cfg.decision_max_tokens == 512
-    assert cfg.answer_max_tokens == EXPLANATION_MAX_TOKENS
+    assert cfg.decision_max_tokens == 512  # also holds direct answers written without a tool
+    assert cfg.answer_max_tokens == 1024
     assert cfg.disable_thinking is True
 
 
@@ -380,3 +380,17 @@ def test_static_system_prompt_is_the_prefix_of_every_request_prompt():
     ctx = {"activeFunction": "classify_cpt_soil_behavior", "activeCategory": "CPT",
            "project_context": "### ACTIVE PROJECT CONTEXT\n- Project: X"}
     assert build_system_prompt(ctx).startswith(static)
+
+
+def test_saved_old_default_caps_are_upgraded_but_custom_values_kept(clean_env, tmp_path, monkeypatch):
+    import json
+    import core.geoai.model_config as mc
+    monkeypatch.setattr(mc, "get_config_dir", lambda: tmp_path)
+    (tmp_path / mc.DEFAULT_CONFIG_FILENAME).write_text(
+        json.dumps({"decision_max_tokens": 200, "answer_max_tokens": 320}), encoding="utf-8")
+    cfg = load_config()
+    assert (cfg.decision_max_tokens, cfg.answer_max_tokens) == (512, 1024)  # old defaults, never chosen
+    (tmp_path / mc.DEFAULT_CONFIG_FILENAME).write_text(
+        json.dumps({"decision_max_tokens": 300, "answer_max_tokens": 2048}), encoding="utf-8")
+    cfg = load_config()
+    assert (cfg.decision_max_tokens, cfg.answer_max_tokens) == (300, 2048)  # deliberate values kept

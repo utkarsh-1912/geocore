@@ -356,9 +356,9 @@ def seed_search_entries(domains: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Search entries for the marketing pages and calculation domains."""
     entries = [
         {"id": "download", "title": "Download GeoCore", "url": "download.html", "section": "Site",
-         "summary": "Installers for Windows and macOS, system requirements, installation and GeoAI models.",
-         "headings": ["System requirements", "Install on Windows", "Install on macOS", "GeoAI models"],
-         "body": "SmartScreen Gatekeeper installer dmg exe arm64 x64 RAM GGUF Hugging Face auto-update"},
+         "summary": "Installers for Windows, macOS and Linux, system requirements, installation and GeoAI models.",
+         "headings": ["System requirements", "Install on Windows", "Install on macOS", "Install on Linux", "GeoAI models"],
+         "body": "SmartScreen Gatekeeper installer dmg exe AppImage deb arm64 x64 RAM GGUF Hugging Face auto-update"},
         {"id": "privacy", "title": "Privacy", "url": "privacy.html", "section": "Site",
          "summary": "Every network request GeoCore makes, and what is stored on your computer.",
          "headings": ["Network activity", "Data stored on your computer", "This website"],

@@ -32,7 +32,7 @@
         <li><strong>The engine</strong> — a Python service built with <a href="https://fastapi.tiangolo.com/">FastAPI</a> and bundled with PyInstaller. It listens only on your own machine (<code>127.0.0.1:8000</code>), discovers Groundhog’s functions and builds validated input forms for them. NumPy, SciPy and pandas do the numerical work underneath.</li>
         <li><strong>GeoAI</strong> — an optional assistant inside the engine. A small language model runs locally through <a href="https://github.com/abetlen/llama-cpp-python">llama-cpp-python</a> (<a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>), selects a tool from a whitelisted, schema-validated registry, and passes the call to Groundhog. The model is swappable behind a provider interface rather than tied to one vendor.</li>
       </ul>
-      <p>Releases are built by GitHub Actions for Windows and macOS and published on <a href="{{ releases_url }}">GitHub Releases</a>.</p>
+      <p>Releases are built by GitHub Actions for Windows, macOS and Linux and published on <a href="{{ releases_url }}">GitHub Releases</a>.</p>
 
       <h2 id="open-source">Open source</h2>
       <p>GeoCore is free software, licensed under the <a href="{{ repo_url }}/blob/main/LICENSE">GNU General Public License v3.0</a> — the same licence as Groundhog. You may use, study, share and modify it under the terms of that licence. It is provided without any warranty.</p>

@@ -1,6 +1,6 @@
 # 📦 GeoCore Release, Listing, & Packaging Guide
 
-This guide provides step-by-step instructions for listing, building, and releasing GeoCore binaries for **Windows (.exe)** and **macOS (.dmg / .app)**, as well as managing the documentation and product showcase website.
+This guide provides step-by-step instructions for listing, building, and releasing GeoCore binaries for **Windows (.exe)**, **macOS (.dmg / .app)**, and **Linux (.AppImage / .deb)**, as well as managing the documentation and product showcase website.
 
 ---
 
@@ -14,7 +14,8 @@ GeoCore utilizes an automated multi-platform release strategy powered by **GitHu
                ▼
       GitHub Actions Workflow
       ├── Windows Runner: Builds `main.exe` + `GeoCore-Setup.exe`
-      └── macOS Runner: Builds `main` + `GeoCore.dmg`
+      ├── macOS Runner:   Builds `main` + `GeoCore.dmg`
+      └── Linux Runner:   Builds `main` + `GeoCore.AppImage` + `geocore.deb`
                │
                ▼
      GitHub Release Artifacts
@@ -48,7 +49,10 @@ git push origin main --tags
    - `GeoCore-Setup-1.0.0.exe` (Windows Installer, per-user, no admin required)
    - `GeoCore-1.0.0-<arch>.dmg` (macOS Installer)
    - `GeoCore-1.0.0-<arch>-mac.zip` (macOS Compressed Application)
-   - `latest.yml`, `latest-mac.yml`, `*.blockmap` (auto-update metadata — must stay attached to the release)
+   - `GeoCore-1.0.0.AppImage` (Linux, portable — auto-updates like Windows/macOS)
+   - `geocore_1.0.0_amd64.deb` (Linux, Debian/Ubuntu package — **no auto-update**; reinstall the
+     new `.deb` for each release, or use the AppImage instead if you want in-app updates)
+   - `latest.yml`, `latest-mac.yml`, `latest-linux.yml`, `*.blockmap` (auto-update metadata — must stay attached to the release)
 
 > **No portable build.** The Windows portable target was removed: it self-extracted the whole app
 > (including the ~0.5 GB Python engine) to `%TEMP%` on every launch, which made startup very slow.
@@ -60,6 +64,8 @@ download a newer version in the background and install it when the app quits. Th
 development, and any failure (offline machine, no release) is ignored — GeoCore keeps working offline.
 Local builds never publish (`--publish never`); only the CI workflow uploads release assets.
 Note: macOS auto-update requires a properly code-signed app; ad-hoc signed builds will not self-update.
+Note: on Linux, only the AppImage self-updates through `electron-updater`; the `.deb` package has no
+auto-update mechanism (this is a Linux/electron-updater limitation, not something GeoCore controls).
 
 ### Local LLM runtime (GeoAI)
 The release workflow installs the prebuilt CPU wheel of `llama-cpp-python` before `requirements.txt`
@@ -102,6 +108,24 @@ npm run build
 npm run dist:mac
 ```
 *Output location*: `electron-app/release/GeoCore-1.0.0-<arch>.dmg`
+
+### Linux Executable Build
+Run on a Linux machine (AppImage/deb cannot be cross-built from Windows or macOS):
+```bash
+# 1. Build Python Executable
+cd python-backend
+pyinstaller --clean main.spec
+
+# 2. Build Electron App
+cd ../electron-app
+npm run build
+npm run dist:linux
+```
+*Output location*: `electron-app/release/GeoCore-1.0.0.AppImage` and `geocore_1.0.0_amd64.deb`
+
+> AppImage packaging needs no extra system packages on a typical desktop distro. The `.deb`
+> target needs `fakeroot` and `dpkg` (present by default on Debian/Ubuntu; the CI workflow
+> installs them explicitly on the `ubuntu-latest` runner via `apt-get`).
 
 ---
 

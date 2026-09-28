@@ -190,8 +190,9 @@ def get_geoai_status():
 
 @router.get("/models")
 def get_available_models():
-    """List all curated and installed local GGUF models."""
-    return {"models": list_available_models()}
+    """List all curated and installed local GGUF models, and the path of the active one (may be a custom GGUF)."""
+    from core.geoai.model_downloader import get_active_model_path
+    return {"models": list_available_models(), "active_model_path": get_active_model_path()}
 
 
 @router.post("/models/download")

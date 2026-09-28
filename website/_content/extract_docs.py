@@ -1604,6 +1604,26 @@ def geoai_model_candidates_markdown() -> str:
     return "\n".join(out)
 
 
+def geoai_model_catalogue_markdown() -> str:
+    """Models offered in the GeoAI model manager, from RECOMMENDED_MODELS in model_downloader.py (parsed, not imported)."""
+    path = REPO_ROOT / "python-backend" / "core" / "geoai" / "model_downloader.py"
+    if not path.exists():
+        return "*Model list unavailable: model_downloader.py not found.*"
+    models: Dict[str, Any] = {}
+    for node in ast.parse(path.read_text(encoding="utf-8")).body:
+        target = node.target if isinstance(node, ast.AnnAssign) else (node.targets[0] if isinstance(node, ast.Assign) else None)
+        if getattr(target, "id", None) == "RECOMMENDED_MODELS" and node.value is not None:
+            models = ast.literal_eval(node.value)
+    if not models:
+        return "*Model list unavailable: RECOMMENDED_MODELS not found.*"
+    out = ["| Model | Download size | Licence | Notes |", "|---|---|---|---|"]
+    for info in models.values():
+        out.append(f"| [{md_cell(info['display_name'])}](https://huggingface.co/{info['repo_id']}) | "
+                   f"~{info['size_mb'] / 1024:.1f} GB | {md_cell(info.get('license') or '–')} | "
+                   f"{md_cell(info.get('description') or '')} |")
+    return "\n".join(out)
+
+
 def _pct(v: Any) -> str:
     return "–" if v is None else f"{100 * v:.0f}%"
 
@@ -2027,6 +2047,7 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
     generated = {
         "geoai-tools": geoai_tools_markdown,
         "geoai-model-candidates": geoai_model_candidates_markdown,
+        "geoai-model-catalogue": geoai_model_catalogue_markdown,
         "geoai-model-benchmarks": geoai_model_benchmarks_markdown,
         "eurocode7-factors": eurocode7_markdown,
     }

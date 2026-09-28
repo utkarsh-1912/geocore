@@ -20,17 +20,11 @@ GeoAI runs language models in the GGUF format through [llama.cpp](https://github
 2. Pick a model and click **Download**. The download runs in the background and needs an internet connection. Models are downloaded from Hugging Face.
 3. When the download completes the model becomes the active model. It is loaded the first time you send a message.
 
-The model manager offers these curated models (4-bit `Q4_K_M` quantisations):
+The model manager offers these curated models (4-bit `Q4_K_M` quantisations), grouped by model family. The list is generated from the application's model registry:
 
-| Model | Download size | Notes |
-|---|---|---|
-| Qwen 2.5 1.5B Instruct | ~1.0 GB | Smallest and fastest; suited to laptops. Default choice. |
-| Qwen 2.5 3B Instruct | ~2.0 GB | Balance of speed and quality. |
-| Qwen 2.5 7B Instruct | ~4.4 GB | Best quality of the Qwen options; needs a powerful machine. |
-| Gemma 2 2B IT | ~1.6 GB | Alternative small model. |
-| Gemma 2 9B IT | ~5.4 GB | Large model; 16 GB RAM or more recommended. |
+<!-- geocore:generated geoai-model-catalogue -->
 
-Which model works best for GeoAI's tool calling is still being evaluated. Larger models need more memory and respond more slowly on a CPU.
+Larger models need more memory and respond more slowly on a CPU. Licences differ between families: check a model's licence before using it commercially. How the candidates compare on GeoAI's own test suite is published on the [Model benchmarks](/docs/geoai/model-benchmarks) page.
 
 ## Using a model you already have
 

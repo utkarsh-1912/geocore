@@ -12,7 +12,7 @@ import pytest
 
 from core.geoai.eval import score_turn
 from core.geoai.eval.example import CATEGORIES, load_examples_jsonl
-from core.geoai.eval.scoring import default_registry, effective_arguments, values_match
+from core.geoai.eval.scoring import default_registry, effective_arguments, project_fixture, values_match
 from core.geoai.training.scaleup import build_dataset, export_dataset, gold_examples
 
 PER_TOOL = 8  # small but covers every builder
@@ -49,7 +49,9 @@ def test_all_categories_present_in_every_split(dataset):
 def test_ids_unique_and_no_duplicate_prompts(dataset):
     examples, _, _ = dataset
     assert len({e.id for e in examples}) == len(examples)
-    keys = [(e.turn_type, _norm(e.user_prompt), json.dumps(e.context, sort_keys=True)) for e in examples]
+    # len(messages): later steps of a multi-step trajectory share the user prompt but not the prefix
+    keys = [(e.turn_type, _norm(e.user_prompt), json.dumps(e.context, sort_keys=True), len(e.messages))
+            for e in examples]
     assert len(set(keys)) == len(keys)
 
 
@@ -77,7 +79,8 @@ def test_every_expected_tool_call_executes_through_registry(dataset):
             assert values_match(v, eff[p], rel_tol=1e-6), (ex.id, p, v, eff[p])
         if ex.expected_tool == "search_local_documents":
             continue  # reads the user's local index; validity of the call is what matters
-        res = reg.invoke_tool(ex.expected_tool, dict(d.target_call["arguments"]))
+        with project_fixture(ex):  # project-data tools run against the synthetic project
+            res = reg.invoke_tool(ex.expected_tool, dict(d.target_call["arguments"]))
         for k, v in ex.expected_result.items():
             assert math.isfinite(v) and values_match(v, res[k], rel_tol=1e-9), (ex.id, k)
         checked += 1
@@ -92,7 +95,9 @@ def test_clarify_examples_are_refused_by_registry(dataset):
     for e in missing:
         assert e.expected_action == "clarify" and e.missing_params
         assert e.missing_params[0] not in e.provided_params
-        assert reg.get_tool(e.expected_tool).input_model.model_fields[e.missing_params[0]].is_required()
+        # required by the JSON schema, or by the tool itself (checked by registry refusal at generation)
+        assert (reg.get_tool(e.expected_tool).input_model.model_fields[e.missing_params[0]].is_required()
+                or e.metadata.get("required_by") == "tool"), e.id
 
 
 def test_reference_behaviour_passes_scorer(dataset):
@@ -101,8 +106,9 @@ def test_reference_behaviour_passes_scorer(dataset):
     by_id = {d.example.id: d for d in drafts}
     failures = []
     for e in examples:
-        if e.turn_type == "decision" and by_id[e.id].target_call:
-            resp = {"content": "", "tool_calls": [{"function": by_id[e.id].target_call}]}
+        d = by_id.get(e.id)  # later trajectory steps are not drafts; their reference is a <tool_call>
+        if e.turn_type == "decision" and d is not None and d.target_call:
+            resp = {"content": "", "tool_calls": [{"function": d.target_call}]}
         else:
             resp = {"content": e.reference_response}
         sb = score_turn(e, resp)

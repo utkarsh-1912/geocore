@@ -27,6 +27,8 @@ jobs:
             platform: win
           - os: macos-latest
             platform: mac
+          - os: ubuntu-latest
+            platform: linux
 
     steps:
       - name: Checkout Code
@@ -44,6 +46,13 @@ jobs:
           cache: 'npm'
           cache-dependency-path: electron-app/package-lock.json
 
+      # Linux-only: build-essential/cmake for the llama-cpp-python sdist fallback below,
+      # plus fakeroot/dpkg for electron-builder's .deb target (usually preinstalled, but
+      # pinned explicitly so the job does not depend on ubuntu-latest's current image).
+      - name: Install Linux Build Tools
+        if: matrix.platform == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake fakeroot dpkg
+
       # Install the local LLM runtime first from the prebuilt CPU wheel index so
       # requirements.txt does not trigger a slow/fragile source build of llama.cpp.
       - name: Install Local LLM Runtime (llama-cpp-python, CPU wheel)
@@ -55,9 +64,9 @@ jobs:
             pip install llama-cpp-python --only-binary=llama-cpp-python --prefer-binary \
               --no-cache-dir --extra-index-url "$WHEEL_INDEX"
           else
-            # The prebuilt macOS wheel has shipped corrupt (BadZipFile: Bad CRC-32
-            # in libggml-base.dylib). Try it uncached; otherwise build from the
-            # PyPI sdist (slower, but reliable on macOS runners).
+            # The prebuilt macOS/Linux wheels have shipped corrupt before (BadZipFile:
+            # Bad CRC-32 in libggml-base.dylib/.so). Try it uncached; otherwise build from
+            # the PyPI sdist (slower, but reliable).
             pip install llama-cpp-python --only-binary=llama-cpp-python --prefer-binary \
               --no-cache-dir --extra-index-url "$WHEEL_INDEX" \
             || pip install llama-cpp-python --no-binary=llama-cpp-python --no-cache-dir
@@ -102,12 +111,15 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
-          # NSIS installer only (no portable build). latest*.yml + *.blockmap
-          # are required by electron-updater for in-app auto-updates.
+          # NSIS installer, macOS dmg/zip, Linux AppImage + deb. latest*.yml + *.blockmap
+          # are required by electron-updater for in-app auto-updates (deb has no
+          # auto-update support in electron-updater; AppImage does).
           files: |
             electron-app/release/*.exe
             electron-app/release/*.dmg
             electron-app/release/*.zip
+            electron-app/release/*.AppImage
+            electron-app/release/*.deb
             electron-app/release/*.blockmap
             electron-app/release/latest*.yml
         env:

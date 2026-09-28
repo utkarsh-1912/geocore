@@ -19,7 +19,11 @@ between the shaft start depth and the tip is read from Groundhog's cumulative sh
 resistance (LCPC ``Qs [kN]``, Koppejan ``Frs [kN]``); for De Beer, Groundhog's per-layer
 formula is evaluated with the layer thickness clipped at the tip (see run_debeer: pandas 3 regression).
 """
+import copy
+import hashlib
+import json
 import math
+from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
@@ -501,3 +505,30 @@ def calculate(cpt: ProjectCPT, method: str, pile_type: str, diameter: float, tip
                        "cpt_data_required_to_m": round(need_to, 2)},
         "scope_note": SCOPE_NOTE,
     }
+
+
+# Groundhog's LCPC loops row by row (10-25 s on a finely spaced CPT); repeat questions reuse the result.
+_RESULT_CACHE: "OrderedDict[str, Dict[str, Any]]" = OrderedDict()
+_RESULT_CACHE_SIZE = 32
+
+
+def _cache_key(cpt: ProjectCPT, args: Tuple[Any, ...]) -> str:
+    h = hashlib.sha256()
+    h.update(cpt.cpt_id.encode())
+    h.update(json.dumps(list(map(str, cpt.data.columns))).encode())
+    h.update(np.ascontiguousarray(cpt.data.to_numpy(dtype=float, na_value=np.nan)).tobytes())
+    h.update(json.dumps([cpt.groundwater_depth_m, cpt.groundwater_source, list(args)], default=str).encode())
+    return h.hexdigest()
+
+
+def calculate_cached(cpt: ProjectCPT, *args: Any) -> Dict[str, Any]:
+    """``calculate`` with an LRU cache keyed on the CPT data and every input. Errors are not cached."""
+    key = _cache_key(cpt, args)
+    if key in _RESULT_CACHE:
+        _RESULT_CACHE.move_to_end(key)
+        return copy.deepcopy(_RESULT_CACHE[key])
+    result = calculate(cpt, *args)
+    _RESULT_CACHE[key] = copy.deepcopy(result)
+    if len(_RESULT_CACHE) > _RESULT_CACHE_SIZE:
+        _RESULT_CACHE.popitem(last=False)
+    return result

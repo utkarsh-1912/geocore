@@ -162,7 +162,8 @@ class ProjectContext:
     def __init__(self, project_id: str, name: str = "Default Project"):
         self.project_id = project_id
         self.name = name
-        self.water_table_depth: float = 0.0
+        # None = not recorded. Never default to 0.0: that reads as "water at ground surface".
+        self.water_table_depth: Optional[float] = None
         self._profiles: Dict[str, SoilProfileAccessor] = {}
         self._calculation_history: List[CalculationProvenance] = []
         self._custom_data: Dict[str, Any] = {}
@@ -203,7 +204,10 @@ class ProjectContext:
         Fits within strict SLM context budgets (typically ~150-300 tokens).
         """
         lines = [f"### PROJECT STRATIGRAPHY: {self.name}"]
-        lines.append(f"- Groundwater Level (GWT): {self.water_table_depth} m below ground surface")
+        if self.water_table_depth is None:
+            lines.append("- Groundwater Level (GWT): not recorded (ask the user if a calculation needs it)")
+        else:
+            lines.append(f"- Groundwater Level (GWT): {self.water_table_depth} m below ground surface")
 
         profile = self.get_profile()
         if profile and profile.layer_count > 0:

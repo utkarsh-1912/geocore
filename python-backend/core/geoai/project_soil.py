@@ -141,6 +141,7 @@ class ProjectSoil:
         self.name: Optional[str] = None
         self.unavailable_reason: Optional[str] = None
         self.other_profiles: List[str] = []
+        self.project_water_table: Optional[float] = None
 
     # ------------------------------------------------------------------ loading
     def _load(self) -> None:
@@ -162,6 +163,7 @@ class ProjectSoil:
             return
         self.name = self._profile_name or names[0]
         self.other_profiles = [n for n in names if n != self.name]
+        self.project_water_table = getattr(ctx, "water_table_depth", None)
         try:
             accessor = ctx.get_profile(self.name)
             self.layers = accessor.get_stratigraphy_summary()
@@ -280,6 +282,8 @@ class ProjectSoil:
                 values.add(round(value, 6))
                 column = col
         if not values:
+            if self.project_water_table is not None:
+                return ResolvedValue(float(self.project_water_table), "m", "project groundwater level (recorded)"), ""
             return None, f"profile '{self.name}' has no groundwater (water table) column"
         if len(values) > 1:
             return None, f"profile '{self.name}' column '{column}' holds different water-table values {sorted(values)}"

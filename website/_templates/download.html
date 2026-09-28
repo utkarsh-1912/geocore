@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Download GeoCore for Windows and macOS{% endblock %}
-{% block description %}Download the latest GeoCore installer for Windows 10/11 or macOS. System requirements, installation steps, first-run notes and GeoAI model downloads.{% endblock %}
+{% block title %}Download GeoCore for Windows, macOS and Linux{% endblock %}
+{% block description %}Download the latest GeoCore installer for Windows 10/11, macOS or Linux. System requirements, installation steps, first-run notes and GeoAI model downloads.{% endblock %}
 {% block content %}
 <header class="page-header">
   <div class="container">
@@ -17,9 +17,9 @@
          aria-labelledby="dl-title">
   <div class="container dl-hero">
     <div class="card dl-primary">
-      <p class="dl-os">{{ icon('monitor') }}<span data-dl-os>Windows &amp; macOS</span></p>
+      <p class="dl-os">{{ icon('monitor') }}<span data-dl-os>Windows, macOS &amp; Linux</span></p>
       <h2 id="dl-title">GeoCore <span data-dl-version class="skeleton">latest</span></h2>
-      <p class="dl-file" data-dl-file>Installers for Windows (.exe) and macOS (.dmg) are on the GitHub releases page.</p>
+      <p class="dl-file" data-dl-file>Installers for Windows (.exe), macOS (.dmg) and Linux (.AppImage / .deb) are on the GitHub releases page.</p>
       <p class="callout callout--info" data-dl-note hidden></p>
       <div class="dl-actions">
         <a class="btn btn--primary btn--lg" data-dl-button href="{{ releases_url }}/latest">{{ icon('download') }}<span data-dl-button-label>Download from GitHub</span></a>
@@ -39,8 +39,9 @@
       <div class="dl-others" data-dl-alternatives>
         <a class="dl-other" href="{{ releases_url }}/latest">{{ icon('monitor') }}<span class="grow">Windows 10 / 11 (x64)<small>GeoCore-Setup-&lt;version&gt;.exe</small></span>{{ icon('external') }}</a>
         <a class="dl-other" href="{{ releases_url }}/latest">{{ icon('laptop') }}<span class="grow">macOS — Apple silicon and Intel<small>GeoCore-&lt;version&gt;[-arm64].dmg</small></span>{{ icon('external') }}</a>
+        <a class="dl-other" href="{{ releases_url }}/latest">{{ icon('package') }}<span class="grow">Linux — AppImage (portable, auto-updates)<small>GeoCore-&lt;version&gt;.AppImage</small></span>{{ icon('external') }}</a>
+        <a class="dl-other" href="{{ releases_url }}/latest">{{ icon('package') }}<span class="grow">Linux — .deb package (Debian/Ubuntu)<small>geocore_&lt;version&gt;_amd64.deb</small></span>{{ icon('external') }}</a>
       </div>
-      <p class="small muted dl-linux">No Linux build yet — see <a href="#source">running from source</a>.</p>
     </div>
   </div>
 </section>
@@ -77,8 +78,8 @@
       <div class="table-wrap">
         <table class="data">
           <tbody>
-            <tr><th scope="row">Operating system</th><td>Windows 10 or 11, 64-bit (x64)<br>macOS 12 Monterey or later</td></tr>
-            <tr><th scope="row">Processor</th><td>x64 on Windows; Apple silicon (arm64) or Intel (x64) on macOS. GeoAI runs on the CPU — no GPU is needed.</td></tr>
+            <tr><th scope="row">Operating system</th><td>Windows 10 or 11, 64-bit (x64)<br>macOS 12 Monterey or later<br>Linux, x64 (Ubuntu 20.04+ / equivalent glibc)</td></tr>
+            <tr><th scope="row">Processor</th><td>x64 on Windows and Linux; Apple silicon (arm64) or Intel (x64) on macOS. GeoAI runs on the CPU — no GPU is needed.</td></tr>
             <tr><th scope="row">Memory</th><td>8 GB RAM recommended. With GeoAI, plan for the model’s size plus about 1–2 GB: 8 GB suits the {{ models|selectattr('size_mb', 'lt', 2500)|map(attribute='display_name')|join(', ') }} models; 16 GB is advisable for the larger ones.</td></tr>
             <tr><th scope="row">Disk space</th><td>At least 1 GB free for the app, plus {{ model_min_mb|mb }}–{{ model_max_mb|mb }} for each GeoAI model you download.</td></tr>
             <tr><th scope="row">Internet</th><td>Not required to run. Used only for update checks and optional model downloads — see <a href="{{ url('privacy.html') }}">Privacy</a>.</td></tr>
@@ -107,10 +108,23 @@
         </li>
       </ol>
 
+      <h2 id="install-linux">Install on Linux</h2>
+      <ol class="steps">
+        <li><strong>AppImage (recommended):</strong> download <code>GeoCore-&lt;version&gt;.AppImage</code>, make it executable, and run it:
+          <pre><code>chmod +x GeoCore-*.AppImage
+./GeoCore-*.AppImage</code></pre>
+          No installation step, and it updates itself in place like the Windows/macOS builds.
+        </li>
+        <li><strong>.deb package:</strong> on Debian/Ubuntu, install it with <code>apt</code> so dependencies resolve correctly, then launch <strong>GeoCore</strong> from your application menu:
+          <pre><code>sudo apt install ./geocore_&lt;version&gt;_amd64.deb</code></pre>
+          The <code>.deb</code> package does not auto-update; install the newer <code>.deb</code> for each release, or switch to the AppImage if you want in-app updates.
+        </li>
+      </ol>
+
       <h2 id="first-run">First run</h2>
       <ul>
         <li>GeoCore starts its calculation engine in the background when it opens; the first launch can take a little longer than later ones.</li>
-        <li><strong>Updates:</strong> installed builds check GitHub for a new version about 15 seconds after launch. On Windows, updates download in the background and install when you quit. On macOS, automatic updates need a signed build, so install new versions from this page.</li>
+        <li><strong>Updates:</strong> installed builds check GitHub for a new version about 15 seconds after launch. On Windows and the Linux AppImage, updates download in the background and install when you quit. On macOS and the Linux <code>.deb</code>, automatic updates aren't available, so install new versions from this page.</li>
         <li>Nothing else needs to be online. Without a network connection the update check simply fails and GeoCore works as normal.</li>
       </ul>
 
@@ -119,7 +133,7 @@
       <ol class="steps">
         <li>Open <strong>GeoAI</strong> in GeoCore and open its model list.</li>
         <li>Pick a model. GeoCore downloads it from Hugging Face into your models folder and makes it the active model.</li>
-        <li>Already have a <code>.gguf</code> file? Select it by path instead, or copy it into the models folder: <code>%APPDATA%\GeoCore\models</code> on Windows, <code>~/.geocore/models</code> on macOS.</li>
+        <li>Already have a <code>.gguf</code> file? Select it by path instead, or copy it into the models folder: <code>%APPDATA%\GeoCore\models</code> on Windows, <code>~/.geocore/models</code> on macOS/Linux.</li>
       </ol>
       <div class="table-wrap">
         <table class="data">
@@ -138,7 +152,7 @@
       <p class="small muted">All models are 4-bit (Q4_K_M) quantisations. Each model is published under its creator’s licence. Model choice for GeoAI is still being benchmarked; the smallest model is the quickest place to start.</p>
 
       <h2 id="source">Run from source</h2>
-      <p>On Linux, or to develop GeoCore, run it from source with Node.js 18+ and Python 3.10+. The <a href="{{ repo_url }}#-developer-quick-start">README</a> has step-by-step instructions.</p>
+      <p>To develop GeoCore, or to run it on a platform without a published installer, build it from source with Node.js 18+ and Python 3.10+. The <a href="{{ repo_url }}#-developer-quick-start">README</a> has step-by-step instructions.</p>
     </article>
     <aside class="two-col__aside">
       <nav class="aside-nav" aria-label="On this page">
@@ -147,6 +161,7 @@
           <li><a href="#requirements">System requirements</a></li>
           <li><a href="#install">Install on Windows</a></li>
           <li><a href="#install-mac">Install on macOS</a></li>
+          <li><a href="#install-linux">Install on Linux</a></li>
           <li><a href="#first-run">First run</a></li>
           <li><a href="#geoai-models">GeoAI models</a></li>
           <li><a href="#source">Run from source</a></li>

@@ -3,9 +3,9 @@ Tests for deterministic answer guards (core/geoai/response_guard.py) and the
 conversation-history support in GeoAIAgent. Regression case: the CPT SBT answer
 that looped on one sentence and reported dimensionless Qt / Bq in kPa.
 """
-from core.geoai.agent import GeoAIAgent, history_to_messages, MAX_HISTORY_TURNS, EXPLANATION_MAX_TOKENS
+from core.geoai.agent import GeoAIAgent, history_to_messages, MAX_HISTORY_TURNS
 from core.geoai.model_provider import MessageRole, ModelProvider, ModelResponse, StreamChunk, ToolCall
-from core.geoai.response_guard import clean_answer, collapse_repetition, fix_result_units
+from core.geoai.response_guard import AnswerStreamCleaner, clean_answer, collapse_repetition, fix_result_units
 from core.geoai.tool_registry import GeoAIToolRegistry
 
 CPT_RESULT = {
@@ -184,7 +184,7 @@ def test_agent_stream_streams_cleaned_explanation_and_caps_tokens():
     assert len(tokens) >= 3  # released sentence by sentence, not as one block
     assert "".join(tokens).rstrip() == clean_answer(answer, CPT_TOOLS_USED)
     assert "".join(tokens).rstrip() == "Bq is -0.0031. Zone 7 is dense sand.\n" + LOOP.strip()
-    assert stream_calls[-1] == {"tools": None, "max_tokens": EXPLANATION_MAX_TOKENS}
+    assert stream_calls[-1] == {"tools": None, "max_tokens": agent._answer_max_tokens}
     assert events[-1].type == "done" and not provider.calls  # explanation no longer non-streaming
 
 
@@ -236,3 +236,51 @@ def test_agent_stream_cleans_direct_answer_without_tool_call():
     events = list(agent.run_stream("Calculate Ka for phi = 34 deg"))
     assert "".join(e.content for e in events if e.type == "token") == "Ka = 0.2827 per Eurocode 7 \u00a79.5."
     assert events[-1].type == "done"
+
+
+# ---------------- output caps: loop stop and truncation note ----------------
+
+def test_stream_cleaner_flags_loop_after_repeats():
+    from core.geoai.response_guard import LOOP_STOP_REPEATS
+    cleaner = AnswerStreamCleaner([])
+    cleaner.feed("Zone 7 is dense sand to gravelly sand. ")
+    assert not cleaner.looping
+    for _ in range(LOOP_STOP_REPEATS):
+        cleaner.feed("Zone 7 is dense sand to gravelly sand. ")
+    cleaner.flush()  # the last sentence is held back until its end is certain
+    assert cleaner.looping
+
+
+def test_stream_answer_stops_generating_once_looping():
+    tc = ToolCall(id="c1", function_name="classify_cpt_soil_behavior", arguments={"qc_mpa": 14.2, "fs_kpa": 65, "depth": 4.5})
+    produced = []
+
+    def endless_loop():
+        yield StreamChunk(delta_content="Bq is -0.0031. ")
+        while True:
+            produced.append(1)
+            if len(produced) > 500:
+                raise AssertionError("generation was not stopped")
+            yield StreamChunk(delta_content=LOOP)
+
+    turns = [iter([StreamChunk(delta_tool_calls=[tc], finish_reason="tool_calls")]), endless_loop()]
+
+    class StreamingProvider(RecordingProvider):
+        def generate_stream(self, messages, tools=None, temperature=0.1, max_tokens=1024):
+            return turns.pop(0)
+
+    agent = GeoAIAgent(StreamingProvider([]), MockRegistry(results={"classify_cpt_soil_behavior": CPT_RESULT}), max_tools=5)
+    text = "".join(e.content for e in agent.run_stream("Classify CPT") if e.type == "token")
+    assert len(produced) < 20  # stopped a few repeats in, not at the token cap
+    assert "cut off" not in text  # a loop is not an unfinished answer
+
+
+def test_answer_cut_at_cap_gets_truncation_note():
+    from core.geoai.response_guard import TRUNCATION_NOTE
+    provider = RecordingProvider([ModelResponse(content="CPT methods differ in how they treat the cone factor and",
+                                                tool_calls=None, finish_reason="length")])
+    resp = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5).run("Compare CPT methods")
+    assert resp.response_text.endswith(TRUNCATION_NOTE)
+    provider = RecordingProvider([ModelResponse(content="Short complete answer.", tool_calls=None, finish_reason="stop")])
+    resp = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5).run("Compare CPT methods")
+    assert resp.response_text == "Short complete answer."

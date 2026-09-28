@@ -717,7 +717,8 @@ def score_turn(
     # ---------------- end-to-end execution ----------------
     if execute and ex.expected_result and tool_ok and tc.name not in SIDE_EFFECT_TOOLS:
         try:
-            got = reg.invoke_tool(tc.name, dict(tc.arguments))
+            with project_fixture(ex):
+                got = reg.invoke_tool(tc.name, dict(tc.arguments))
             keys = [k for k, v in ex.expected_result.items() if _is_number(v) and k in got]
             if not keys:
                 # equivalent tool with differently named outputs: compare the value sets instead
@@ -772,6 +773,20 @@ def score_turn(
             sb.reasons.append(f"engineering-caution violation ({hit})")
 
     return _finalise(sb, w)
+
+
+def project_fixture(ex: EvalExample):
+    """
+    Context manager loading the synthetic project an example was generated against
+    (``metadata['project_fixture']``, see ``core.geoai.eval.synthetic_project``) so project
+    tools (CPTs, soil profile) execute deterministically; a no-op for other examples.
+    """
+    import contextlib
+    name = (ex.metadata or {}).get("project_fixture")
+    if not name:
+        return contextlib.nullcontext()
+    from core.geoai.eval.synthetic_project import loaded
+    return loaded(name)
 
 
 def _grounding_text(ex: EvalExample) -> str:
