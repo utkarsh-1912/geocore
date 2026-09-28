@@ -782,7 +782,7 @@ class ToolRetrievalIndex:
                  formatter: Optional[Callable[[List[dict]], List[dict]]] = None):
         self.definitions = {d["function"]["name"]: d for d in definitions}
         self._formatter = formatter
-        self._prompt_json: Dict[str, str] = {}
+        self._prompt_json: Dict[Tuple[str, Any], str] = {}
         self._query_cache: Dict[str, List[str]] = {}
         params = {name: d["function"].get("parameters") or {} for name, d in self.definitions.items()}
         self.cards, self.vocab = build_cards(tools, params)
@@ -808,12 +808,18 @@ class ToolRetrievalIndex:
             cached = self._query_cache[query] = analyze(query, self.vocab)
         return list(cached)
 
-    def prompt_tool(self, name: str) -> Dict[str, Any]:
-        """Fresh copy of the prompt-formatted schema of ``name`` (formatted once, cached as JSON)."""
-        cached = self._prompt_json.get(name)
+    def prompt_tool(self, name: str, formatter: Optional[Callable[[List[dict]], List[dict]]] = None) -> Dict[str, Any]:
+        """Fresh copy of the prompt-formatted schema of ``name`` (formatted once, cached as JSON).
+
+        ``formatter`` overrides the index's formatter (e.g. the compact schema renderer); the
+        retrieval cards are always built from the full definitions, whichever form is offered.
+        """
+        fmt = formatter or self._formatter
+        key = (name, fmt)
+        cached = self._prompt_json.get(key)
         if cached is None:
             d = self.definitions[name]
-            cached = self._prompt_json[name] = json.dumps(self._formatter([d])[0] if self._formatter else d)
+            cached = self._prompt_json[key] = json.dumps(fmt([d])[0] if fmt else d)
         return json.loads(cached)
 
     def _match(self, terms: Iterable[str], postings: Dict[str, List[int]], out: List[float], weight: float) -> None:

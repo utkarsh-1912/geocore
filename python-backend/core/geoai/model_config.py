@@ -46,6 +46,20 @@ def _env_disable_thinking() -> bool:
     return os.environ.get("GEOAI_THINKING", "").strip().lower() not in ("1", "true", "yes", "on")
 
 
+#: Default of GeoAIModelConfig.compact_tool_schemas (see there).
+COMPACT_TOOL_SCHEMAS_DEFAULT = False
+
+
+def _env_compact_schemas() -> bool:
+    """GEOAI_COMPACT_SCHEMAS=1/true/yes/on or 0/false/no/off; unset (or other) = the default."""
+    value = os.environ.get("GEOAI_COMPACT_SCHEMAS", "").strip().lower()
+    if value in ("1", "true", "yes", "on"):
+        return True
+    if value in ("0", "false", "no", "off"):
+        return False
+    return COMPACT_TOOL_SCHEMAS_DEFAULT
+
+
 @dataclass
 class GeoAIModelConfig:
     model_path: Optional[str] = None  # Absolute path to GGUF file
@@ -99,6 +113,12 @@ class GeoAIModelConfig:
     # past it is aborted so a stuck request can never hold the model forever. Env:
     # GEOAI_GENERATION_TIMEOUT_S. 0 = no limit.
     generation_timeout_s: int = 600
+    # Offer the model compact tool schemas (tool_selector.format_tools_compact): parameter
+    # names, types, enums, required, short descriptions with units; no bounds, titles or
+    # docstring text. The registry still validates every call against the full schema.
+    # Schemas are most of the prompt, and prompt processing dominates CPU latency.
+    # Env: GEOAI_COMPACT_SCHEMAS=1/0.
+    compact_tool_schemas: bool = field(default_factory=_env_compact_schemas)
 
 
 def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
@@ -186,6 +206,8 @@ def load_config() -> GeoAIModelConfig:
             logger.warning("Invalid value for GEOAI_MAX_TOOLS, keeping default.")
     if "GEOAI_THINKING" in os.environ:
         config.disable_thinking = _env_disable_thinking()
+    if "GEOAI_COMPACT_SCHEMAS" in os.environ:
+        config.compact_tool_schemas = _env_compact_schemas()
     for env, attr in (("GEOAI_N_THREADS", "n_threads"), ("GEOAI_N_THREADS_BATCH", "n_threads_batch"),
                       ("GEOAI_N_BATCH", "n_batch"), ("GEOAI_DECISION_MAX_TOKENS", "decision_max_tokens"),
                       ("GEOAI_ANSWER_MAX_TOKENS", "answer_max_tokens"),

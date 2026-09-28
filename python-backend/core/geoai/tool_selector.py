@@ -139,6 +139,26 @@ def _compact_schema_descriptions(obj: Any, _in_properties: bool = False) -> Any:
     return obj
 
 
+def _tool_parts(tool: dict) -> Tuple[str, str, dict]:
+    """``(name, first-sentence description, parameter schema)`` of an OpenAI-format tool
+    definition or a registry-style ``{"name", "description", "input_schema"}`` dict."""
+    if "type" in tool and "function" in tool:
+        func = tool["function"]
+        name, desc, params = func.get("name", ""), func.get("description", ""), func.get("parameters", {})
+    else:
+        name, desc, params = tool.get("name", ""), tool.get("description", ""), tool.get("input_schema", {})
+
+    # Strip long descriptions (keep first sentence roughly)
+    short_desc = desc
+    if short_desc:
+        sentences = [s.strip() for s in short_desc.split(". ") if s.strip()]
+        if sentences:
+            short_desc = sentences[0]
+            if not short_desc.endswith("."):
+                short_desc += "."
+    return name, short_desc, params or {}
+
+
 def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
     """
     Takes tool dicts from the registry and formats them into the OpenAI tool-calling spec.
@@ -148,26 +168,7 @@ def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
     """
     formatted = []
     for tool in tools:
-        # Normalize input whether it came from generate_openai_tool_definitions or tool_registry
-        if "type" in tool and "function" in tool:
-            func = tool["function"]
-            name = func.get("name", "")
-            desc = func.get("description", "")
-            params = func.get("parameters", {})
-        else:
-            name = tool.get("name", "")
-            desc = tool.get("description", "")
-            params = tool.get("input_schema", {})
-
-        # Strip long descriptions (keep first sentence roughly)
-        short_desc = desc
-        if short_desc:
-            sentences = [s.strip() for s in short_desc.split(". ") if s.strip()]
-            if sentences:
-                short_desc = sentences[0]
-                if not short_desc.endswith("."):
-                    short_desc += "."
-
+        name, short_desc, params = _tool_parts(tool)
         cleaned_params = _compact_schema_descriptions(_clean_json_schema(params))
 
         formatted.append({
@@ -179,6 +180,148 @@ def format_tools_for_prompt(tools: List[dict]) -> List[dict]:
             }
         })
 
+    return formatted
+
+
+# ---------------------------------------------------------------------------
+# Compact model-facing schemas (GeoAIModelConfig.compact_tool_schemas)
+# ---------------------------------------------------------------------------
+# Prompt processing dominates CPU latency and the offered schemas are most of the prompt.
+# The compact form keeps what the model needs to choose a tool and fill its arguments
+# (name, first-sentence description, parameter names, types, enums, short defaults,
+# ``required`` and a short description ending in the unit) and drops what only the
+# registry needs: bounds, titles, "Suggested range" text, LaTeX symbols and
+# ``anyOf [..., null]`` wrappers. Validation always uses the full Pydantic model, so
+# bounds, aliases, unit conversion and unknown-key rejection are unchanged (§7, §16).
+
+#: Max words of a compact parameter description (before the " [unit]" suffix): required
+#: inputs, and optional inputs (which the model sets far less often).
+COMPACT_REQUIRED_WORDS = 12
+COMPACT_OPTIONAL_WORDS = 8
+#: Defaults longer than this (as JSON) are left out of the compact schema.
+COMPACT_DEFAULT_CHARS = 12
+#: Optional inputs that have a default are rendered in full up to this many per tool (schema
+#: order); the rest (mostly Groundhog method coefficients such as ``holocene_qt_exponent``)
+#: are only named, with their defaults, in the tool description. The model can still pass them.
+COMPACT_MAX_DEFAULTED_OPTIONALS = 4
+
+_SUGGESTED_RANGE = re.compile(r"\s*-?\s*Suggested range:.*$", re.I | re.S)
+_OPTIONAL_DEFAULT = re.compile(r"\(\s*optional[^)]*\)", re.I)
+_SYMBOL_PARENS = re.compile(r"\((?:[^()]*[\\{}^][^()]*)?\)")   # "(\sigma_{vo})", "(z_{tip})", "()"
+_BRACKETS = re.compile(r"\[[^\]]*\]")                           # "[kPa]", "[-]"
+_SENTENCE_END = re.compile(r"(?<=[a-z0-9)\]'])\.\s+(?=[A-Z(])")
+_CLAUSE_END = re.compile(r"[;,:]\s|\s\(")
+
+
+def _unit_text(unit: Any) -> str:
+    u = _compact_text(str(unit or "")).strip()
+    return "" if u in ("", "-", "None") else u
+
+
+def _short_description(text: str, unit: str, max_words: int = COMPACT_REQUIRED_WORDS) -> str:
+    """First sentence of ``text`` cut to at most ``max_words`` words (at a clause boundary when
+    there is one past half of the text), no symbols / ranges / bracketed units, then `` [unit]``."""
+    t = _compact_text(text or "")
+    t = _SUGGESTED_RANGE.sub("", t)
+    t = _OPTIONAL_DEFAULT.sub("", t)
+    t = _SYMBOL_PARENS.sub("", t)
+    t = _BRACKETS.sub("", t)
+    t = re.sub(r"\s+", " ", _SENTENCE_END.split(t, maxsplit=1)[0]).strip()
+    words = t.split(" ")
+    if len(words) > max_words:
+        kept = " ".join(words[:max_words])
+        cuts = [m.start() for m in _CLAUSE_END.finditer(kept + " ") if m.start() > len(kept) // 2]
+        t = kept[:cuts[-1]] if cuts else kept
+    if t.count("(") > t.count(")"):                      # a cut inside "(...)": drop the aside
+        t = t[:t.rfind("(")]
+    t = re.sub(r"\s+([,;:)])", r"\1", t).strip(" ,;:-.")
+    return f"{t} [{unit}]" if t and unit else (t or (f"[{unit}]" if unit else ""))
+
+
+def _resolve_ref(schema: Any, defs: Dict[str, Any]) -> Any:
+    if isinstance(schema, dict) and isinstance(schema.get("$ref"), str):
+        return defs.get(schema["$ref"].rsplit("/", 1)[-1], {})
+    return schema
+
+
+def _compact_property(prop: Any, defs: Dict[str, Any], with_description: bool = True,
+                      max_words: int = COMPACT_REQUIRED_WORDS) -> Dict[str, Any]:
+    """Compact one property schema: type / enum / items / nested properties, short description
+    with the unit, short default. Bounds, titles and ``anyOf`` null branches are dropped."""
+    prop = _resolve_ref(prop, defs) if isinstance(prop, dict) else {}
+    variants = [_resolve_ref(v, defs) for v in prop.get("anyOf") or prop.get("oneOf") or []]
+    variants = [v for v in variants if isinstance(v, dict) and v.get("type") != "null"]
+    base = variants[0] if len(variants) == 1 else prop
+
+    out: Dict[str, Any] = {}
+    types = [v.get("type") for v in variants if v.get("type")] if len(variants) > 1 else []
+    typ = (types if len(set(types)) > 1 else types[0]) if types else base.get("type")
+    if typ:
+        out["type"] = typ
+    enum = base.get("enum") or prop.get("enum")
+    if enum:
+        out["enum"] = list(enum)
+    if typ == "array" and isinstance(base.get("items"), dict):
+        out["items"] = _compact_property(base["items"], defs, with_description=False)
+    if typ == "object" and isinstance(base.get("properties"), dict):
+        out.update(_compact_object(base, defs))
+    if with_description:
+        desc = _short_description(prop.get("description") or base.get("description") or "",
+                                  _unit_text(prop.get("unit") or base.get("unit")), max_words)
+        if desc:
+            out["description"] = desc
+    default = prop.get("default")
+    if default is not None and not isinstance(default, (dict, list)) \
+            and len(json.dumps(default)) <= COMPACT_DEFAULT_CHARS:
+        out["default"] = default
+    return out
+
+
+def _compact_object(schema: Dict[str, Any], defs: Dict[str, Any], omit: Sequence[str] = ()) -> Dict[str, Any]:
+    required = list(schema.get("required") or [])
+    out: Dict[str, Any] = {"properties": {
+        k: _compact_property(v, defs, max_words=COMPACT_REQUIRED_WORDS if k in required else COMPACT_OPTIONAL_WORDS)
+        for k, v in (schema.get("properties") or {}).items() if k not in omit}}
+    if required:
+        out["required"] = required
+    return out
+
+
+def overflow_optionals(params: Dict[str, Any]) -> List[str]:
+    """Optional inputs with a default beyond the first ``COMPACT_MAX_DEFAULTED_OPTIONALS``
+    (schema order): named in the compact tool description instead of given a full property."""
+    required = set(params.get("required") or [])
+    defaulted = [k for k, v in (params.get("properties") or {}).items()
+                 if k not in required and isinstance(v, dict) and v.get("default") is not None]
+    return defaulted[COMPACT_MAX_DEFAULTED_OPTIONALS:]
+
+
+def compact_parameters(params: Dict[str, Any], omit: Sequence[str] = ()) -> Dict[str, Any]:
+    """Compact model-facing form of a tool's full JSON parameter schema (deterministic);
+    top-level properties in ``omit`` are left out."""
+    params = _clean_json_schema(params or {})
+    defs = params.get("$defs") or params.get("definitions") or {}
+    return {"type": "object", **_compact_object(params, defs, omit)}
+
+
+def _named_default(name: str, prop: Dict[str, Any]) -> str:
+    default = json.dumps(prop.get("default"))
+    return f"{name}={default}" if len(default) <= COMPACT_DEFAULT_CHARS else name
+
+
+def format_tools_compact(tools: List[dict]) -> List[dict]:
+    """Like ``format_tools_for_prompt`` but with compact parameter schemas (see above)."""
+    formatted = []
+    for name, short_desc, params in map(_tool_parts, tools):
+        params = _clean_json_schema(params or {})
+        extra = overflow_optionals(params)
+        desc = _compact_text(short_desc)
+        if extra:
+            props = params.get("properties") or {}
+            desc += " Other optional inputs (defaults): " + ", ".join(_named_default(k, props[k]) for k in extra) + "."
+        formatted.append({"type": "function",
+                          "function": {"name": name, "description": desc,
+                                       "parameters": compact_parameters(params, omit=extra)}})
     return formatted
 
 
@@ -245,20 +388,22 @@ def schema_tokens(tool: dict) -> float:
 
 
 def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, max_tools: int = 20, *,
-                          max_schema_tokens: Optional[float] = None) -> List[dict]:
+                          max_schema_tokens: Optional[float] = None, compact: bool = False) -> List[dict]:
     """
     Select the ``max_tools`` most relevant registered tools for ``query`` and
-    return them in OpenAI tool-calling format (see ``format_tools_for_prompt``).
+    return them in OpenAI tool-calling format (see ``format_tools_for_prompt``, or
+    ``format_tools_compact`` when ``compact``). Ranking is identical either way.
 
     ``max_schema_tokens`` optionally caps the approximate prompt size of the
     returned schemas: lower-ranked tools that would exceed it are skipped (the
     best-ranked tool, e.g. the active form, is always kept).
     """
     index = _index()
+    fmt = format_tools_compact if compact else None
     limit = max(0, int(max_tools))
     ranked = rank_tools(query, context)
     if max_schema_tokens is None:
-        return [index.prompt_tool(n) for n, _ in ranked[:limit] if n in index.definitions]
+        return [index.prompt_tool(n, fmt) for n, _ in ranked[:limit] if n in index.definitions]
 
     selected: List[dict] = []
     used = 0.0
@@ -267,7 +412,7 @@ def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, 
             break
         if name not in index.definitions:
             continue
-        tool = index.prompt_tool(name)
+        tool = index.prompt_tool(name, fmt)
         cost = schema_tokens(tool)
         if selected and used + cost > max_schema_tokens:
             continue

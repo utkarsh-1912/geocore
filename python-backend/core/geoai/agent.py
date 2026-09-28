@@ -223,6 +223,8 @@ class GeoAIAgent:
         self._decision_max_tokens = config.decision_max_tokens
         self._answer_max_tokens = config.answer_max_tokens
         self._max_tools = max_tools
+        # Compact model-facing schemas (validation still uses the full schema, see tool_selector).
+        self._compact_tool_schemas = bool(getattr(config, "compact_tool_schemas", False))
         # A few Groundhog schemas are ~1k tokens; cap their total so the prompt fits n_ctx.
         self._tool_schema_token_budget = tool_schema_token_budget
 
@@ -235,7 +237,8 @@ class GeoAIAgent:
         messages.append(make_user_message(user_message))
         tools_for_model = select_relevant_tools(_tool_selection_query(user_message, history), context,
                                                 max_tools=self._max_tools,
-                                                max_schema_tokens=self._tool_schema_token_budget)
+                                                max_schema_tokens=self._tool_schema_token_budget,
+                                                compact=self._compact_tool_schemas)
         return messages, tools_for_model
 
     def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
