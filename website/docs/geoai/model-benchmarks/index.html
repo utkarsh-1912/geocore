@@ -1007,7 +1007,179 @@
 </ol>
 <p>The adapter is kept only if it beats the base model: a mean score at least 0.02 higher, no worse strict pass rate, invented-input rate, caution violations or error rate, no category dropping by more than 5 percentage points, and median latency no more than 1.3 times the base. Otherwise GeoAI keeps the base model.</p>
 <h2 id="results">Results</h2>
-<p>No benchmark run has been published yet. Results appear here once the candidate models have been run through the GeoAI suite with the commands below.</p>
+<p>Run <code>cpu-test40</code>: 40 examples from the <code>test</code> split (stratified subset of 40), decision mode, <code>n_ctx</code> 4096, 5 tools offered per request, CPU only, dataset generator 1.0.0. All models answered the same examples.</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Model</th>
+<th>Mean score</th>
+<th>Strict pass</th>
+<th>Tool choice</th>
+<th>Arguments</th>
+<th>Clarification</th>
+<th>Invented inputs</th>
+<th>p50 latency (s)</th>
+<th>Peak RAM (MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3 4B Instruct 2507</td>
+<td>0.755</td>
+<td>60%</td>
+<td>55%</td>
+<td>55%</td>
+<td>57%</td>
+<td>31%</td>
+<td>126.8</td>
+<td>4792</td>
+</tr>
+<tr>
+<td>Qwen3 1.7B</td>
+<td>0.720</td>
+<td>52%</td>
+<td>73%</td>
+<td>70%</td>
+<td>29%</td>
+<td>26%</td>
+<td>61.3</td>
+<td>2399</td>
+</tr>
+<tr>
+<td>Qwen3.5 2B</td>
+<td>0.695</td>
+<td>48%</td>
+<td>64%</td>
+<td>52%</td>
+<td>36%</td>
+<td>29%</td>
+<td>82.6</td>
+<td>2092</td>
+</tr>
+<tr>
+<td>Phi-4-mini Instruct</td>
+<td>0.681</td>
+<td>32%</td>
+<td>0%</td>
+<td>0%</td>
+<td>86%</td>
+<td>–</td>
+<td>46.4</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Qwen2.5 1.5B Instruct</td>
+<td>0.650</td>
+<td>45%</td>
+<td>55%</td>
+<td>42%</td>
+<td>29%</td>
+<td>42%</td>
+<td>68.8</td>
+<td>1810</td>
+</tr>
+<tr>
+<td>Keyword heuristic (no model)</td>
+<td>0.316</td>
+<td>5%</td>
+<td>45%</td>
+<td>26%</td>
+<td>0%</td>
+<td>0%</td>
+<td>0.0</td>
+<td>136</td>
+</tr>
+</tbody>
+</table></div>
+<p>Strict pass rate by category:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Model</th>
+<th>ambiguous request</th>
+<th>conflicting data</th>
+<th>correct request</th>
+<th>missing data</th>
+<th>research</th>
+<th>tool failure</th>
+<th>wrong units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3 4B Instruct 2507</td>
+<td>100%</td>
+<td>25%</td>
+<td>75%</td>
+<td>50%</td>
+<td>62%</td>
+<td>67%</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>Qwen3 1.7B</td>
+<td>100%</td>
+<td>0%</td>
+<td>75%</td>
+<td>0%</td>
+<td>88%</td>
+<td>33%</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>Qwen3.5 2B</td>
+<td>100%</td>
+<td>0%</td>
+<td>62%</td>
+<td>0%</td>
+<td>62%</td>
+<td>67%</td>
+<td>17%</td>
+</tr>
+<tr>
+<td>Phi-4-mini Instruct</td>
+<td>0%</td>
+<td>75%</td>
+<td>25%</td>
+<td>25%</td>
+<td>25%</td>
+<td>67%</td>
+<td>17%</td>
+</tr>
+<tr>
+<td>Qwen2.5 1.5B Instruct</td>
+<td>75%</td>
+<td>25%</td>
+<td>75%</td>
+<td>0%</td>
+<td>62%</td>
+<td>17%</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>Keyword heuristic</td>
+<td>0%</td>
+<td>0%</td>
+<td>25%</td>
+<td>0%</td>
+<td>0%</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table></div>
+<p>No GeoAI fine-tuned adapter is included in this run yet; all rows are base models.</p>
+<p><strong>Recommended base model from this run:</strong> Qwen3 1.7B (<a href="https://huggingface.co/unsloth/Qwen3-1.7B-GGUF"><code>Qwen3-1.7B-Q4_K_M.gguf</code></a>). It is the model fine-tuning starts from; a fine-tuned adapter replaces it only if it passes the rule above.</p>
+<p>Notes on this run:</p>
+<ul>
+<li>Code: frozen snapshot of python-backend (hash 5e7d53fd02852fbe, 2026-09-27) plus one patch: Qwen3.5 XML-style tool calls (&lt;function=...&gt;&lt;parameter=...&gt;) are parsed. Before this patch Qwen3.5-2B's calls were dropped; its result here is the re-run with the patch.</li>
+<li>Hardware: Intel Core i5-1235U laptop, 16 GB RAM, CPU only, llama-cpp-python 0.3.35, Q4_K_M weights.</li>
+<li>Phi-4-mini never emitted a tool call: it answered and calculated in prose (for example porosity from void ratio), which GeoAI does not allow. Its high clarification rate follows from never calling tools, not from good judgement.</li>
+<li>Peak RAM is the peak of the benchmark process. Phi-4-mini ran after Qwen3-4B in the same process, so its peak RAM could not be measured.</li>
+<li>Qwen3-4B-2507: the machine slept during part of its run; wall time is inflated but the median decision latency is not materially affected.</li>
+<li>Tool selection (BM25 retrieval) offered the expected tool in every case (selector recall 1.00) with this snapshot's selector; later selector changes may shift this.</li>
+</ul>
+<p>Small subsets give noisy rates: with 40 examples one example is 2.5 percentage points. Latency and memory depend on the machine the run used.</p>
 <h2 id="about-public-benchmarks">About public benchmarks</h2>
 <p>Model publishers report scores on public benchmarks such as MMLU (general knowledge), GSM8K (arithmetic) and BFCL (function calling). These are useful background, but they are measured with different prompts, tools, hardware and often unquantised weights. They say little about GeoAI's work, where arithmetic is done by groundhog and the tools are GeoCore's own. For that reason, only results from the GeoAI suite above are used to choose GeoAI's model, and this page does not repeat publishers' scores.</p>
 <h2 id="reproducing-the-benchmark">Reproducing the benchmark</h2>

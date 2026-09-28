@@ -1685,6 +1685,16 @@ def geoai_model_benchmarks_markdown() -> str:
     tuned = [r for r in lb["rows"] if r.get("fine_tuned")]
     if not tuned:
         out += ["", "No GeoAI fine-tuned adapter is included in this run yet; all rows are base models."]
+    rec = lb.get("recommendation")
+    if rec:
+        name = next((r.get("display_name") for r in lb["rows"] if r.get("model_key") == rec.get("model_key")),
+                    rec.get("model_key"))
+        out += ["", f"**Recommended base model from this run:** {md_cell(name)} "
+                    f"([`{rec['gguf_file']}`](https://huggingface.co/{rec['gguf_repo']})). "
+                    "It is the model fine-tuning starts from; a fine-tuned adapter replaces it only if it passes "
+                    "the rule above."]
+    if lb.get("notes"):
+        out += ["", "Notes on this run:", ""] + [f"- {md_cell(n).replace('<', '&lt;').replace('>', '&gt;')}" for n in lb["notes"]]
     out += ["", "Small subsets give noisy rates: with 40 examples one example is 2.5 percentage points. "
                 "Latency and memory depend on the machine the run used."]
     return "\n".join(out)

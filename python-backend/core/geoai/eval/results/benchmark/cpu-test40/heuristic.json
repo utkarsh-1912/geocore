@@ -1,0 +1,1834 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "run_id": "cpu-test40",
+  "split": "test",
+  "limit": 40,
+  "turn_type": null,
+  "mode": "decision",
+  "n_ctx": 4096,
+  "max_tools": 5,
+  "n_gpu_layers": 0,
+  "dataset_generator_version": "1.0.0",
+  "dataset_seed": 20260926,
+  "python": "3.13.1",
+  "platform": "win32",
+  "label": "heuristic",
+  "model_key": null,
+  "provider": "heuristic",
+  "lora_path": null,
+  "model_info": {
+   "provider": "heuristic",
+   "name": "GeoAI Heuristic Engine",
+   "description": "Rule-based keyword matching and regex parameter extraction"
+  },
+  "timestamp_utc": "2026-09-27T18:43:25+00:00"
+ },
+ "metrics": {
+  "n": 40,
+  "mean_score": 0.3159,
+  "strict_pass_rate": 0.05,
+  "action_accuracy": 0.275,
+  "tool_selection_accuracy": 0.4545,
+  "tool_selection_accuracy_incl_equivalent": 0.4545,
+  "argument_accuracy": 0.2576,
+  "schema_valid_rate": 0.175,
+  "clarification_accuracy": 0.0,
+  "clarification_keyword_score": 0.0,
+  "hallucinated_parameter_rate": 0.0,
+  "hallucinated_tool_rate": 0.0,
+  "unit_trap_accuracy": 0.0,
+  "execution_match_rate": 0.4,
+  "final_answer_grounding": 0.0,
+  "caution_violation_rate": null,
+  "selector_recall": 1.0,
+  "error_rate": 0.0,
+  "latency_p50_s": 0.0435,
+  "latency_p95_s": 0.4442,
+  "decision_latency_p50_s": 0.0254,
+  "decision_latency_p95_s": 0.2628,
+  "per_category": {
+   "ambiguous_request": {
+    "n": 4,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "conflicting_data": {
+    "n": 4,
+    "pass_rate": 0.0,
+    "mean_score": 0.3125,
+    "action_accuracy": 0.0
+   },
+   "correct_request": {
+    "n": 8,
+    "pass_rate": 0.25,
+    "mean_score": 0.4844,
+    "action_accuracy": 0.5
+   },
+   "missing_data": {
+    "n": 4,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "research": {
+    "n": 8,
+    "pass_rate": 0.0,
+    "mean_score": 0.225,
+    "action_accuracy": 0.5
+   },
+   "tool_failure": {
+    "n": 6,
+    "pass_rate": 0.0,
+    "mean_score": 0.3095,
+    "action_accuracy": 0.0
+   },
+   "turn:decision": {
+    "n": 26,
+    "pass_rate": 0.0769,
+    "mean_score": 0.3321,
+    "action_accuracy": 0.4231
+   },
+   "turn:final_answer": {
+    "n": 14,
+    "pass_rate": 0.0,
+    "mean_score": 0.2857,
+    "action_accuracy": 0.0
+   },
+   "wrong_units": {
+    "n": 6,
+    "pass_rate": 0.0,
+    "mean_score": 0.2611,
+    "action_accuracy": 0.5
+   }
+  },
+  "model_load_s": null,
+  "peak_memory_mb": 136.2,
+  "memory_at_start_mb": 102.1,
+  "wall_time_s": 21.14
+ },
+ "per_example": {
+  "ambiguous_request-19ab81c70e": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-007b84a6ba": [
+   0.285714,
+   false
+  ],
+  "correct_request-0067b3fd9b": [
+   0.2,
+   false
+  ],
+  "correct_request-01b2c5a31b__final": [
+   0.25,
+   false
+  ],
+  "missing_data-09cbd1905d": [
+   0.285714,
+   false
+  ],
+  "research-03755441fc": [
+   0.2,
+   false
+  ],
+  "research-03755441fc__final": [
+   0.25,
+   false
+  ],
+  "tool_failure-0adfd8ed45": [
+   0.285714,
+   false
+  ],
+  "tool_failure-0ead07cd18__final": [
+   0.375,
+   false
+  ],
+  "wrong_units-05d5ac07df": [
+   0.2,
+   false
+  ],
+  "wrong_units-05d5ac07df__final": [
+   0.25,
+   false
+  ],
+  "ambiguous_request-1b39895d2a": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-03393d6d35": [
+   0.25,
+   false
+  ],
+  "correct_request-01b2c5a31b": [
+   0.425,
+   false
+  ],
+  "correct_request-0bc39e8f92__final": [
+   0.375,
+   false
+  ],
+  "missing_data-16e7dc96ac": [
+   0.285714,
+   false
+  ],
+  "research-0f5a2d607f": [
+   0.2,
+   false
+  ],
+  "research-0f5a2d607f__final": [
+   0.25,
+   false
+  ],
+  "tool_failure-41496a2584": [
+   0.285714,
+   false
+  ],
+  "tool_failure-1758dc15e3__final": [
+   0.25,
+   false
+  ],
+  "wrong_units-08f137a3eb": [
+   0.25,
+   false
+  ],
+  "wrong_units-1008f17d19__final": [
+   0.25,
+   false
+  ],
+  "ambiguous_request-47213338ec": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-0bd2629a83": [
+   0.285714,
+   false
+  ],
+  "correct_request-024d7a9a74": [
+   1.0,
+   true
+  ],
+  "correct_request-19022a09b6__final": [
+   0.375,
+   false
+  ],
+  "missing_data-1e05318583": [
+   0.285714,
+   false
+  ],
+  "research-4a0fcf1b26": [
+   0.2,
+   false
+  ],
+  "research-4a0fcf1b26__final": [
+   0.25,
+   false
+  ],
+  "tool_failure-5dfab5a73b": [
+   0.285714,
+   false
+  ],
+  "tool_failure-50862ae415__final": [
+   0.375,
+   false
+  ],
+  "wrong_units-1008f17d19": [
+   0.366667,
+   false
+  ],
+  "wrong_units-11a942238d__final": [
+   0.25,
+   false
+  ],
+  "ambiguous_request-500603577c": [
+   0.285714,
+   false
+  ],
+  "conflicting_data-0e11849583": [
+   0.428571,
+   false
+  ],
+  "correct_request-09eb6d67a3": [
+   1.0,
+   true
+  ],
+  "correct_request-1f47d174b6__final": [
+   0.25,
+   false
+  ],
+  "missing_data-2e38c1c300": [
+   0.285714,
+   false
+  ],
+  "research-5d814b0586": [
+   0.2,
+   false
+  ],
+  "research-5eb087f418__final": [
+   0.25,
+   false
+  ]
+ },
+ "records": [
+  {
+   "id": "ambiguous_request-19ab81c70e",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 3.7598,
+   "decision_latency_s": 0.2567,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-007b84a6ba",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'unitweight_watercontent_saturated' but expected clarify",
+     "arguments fail schema validation: 1 validation error for UnitweightWatercontentSaturatedInput"
+    ]
+   },
+   "latency_s": 0.429,
+   "decision_latency_s": 0.3797,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-0067b3fd9b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "porosity_voidratio",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_void_ratio_from_porosity' (expected 'porosity_voidratio')",
+     "arguments fail schema validation: 1 validation error for VoidRatioPorosityInput"
+    ]
+   },
+   "latency_s": 0.1298,
+   "decision_latency_s": 0.0848,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "overburdencorrection_spt_liaowhitman",
+    "predicted_arguments": {
+     "N": 26
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'overburdencorrection_spt_liaowhitman' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for OverburdencorrectionSptLiaowhitmanInput"
+    ]
+   },
+   "latency_s": 0.1551,
+   "decision_latency_s": 0.155,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-09cbd1905d",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "stresses_stripload",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "stresses_stripload",
+    "predicted_arguments": {
+     "x": 1.2,
+     "width": 1.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'stresses_stripload' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for StressesStriploadInput"
+    ]
+   },
+   "latency_s": 0.1032,
+   "decision_latency_s": 0.0697,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-03755441fc",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "k0_frictionangle_mesri",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'k0_frictionangle_mesri' (expected 'search_local_documents')",
+     "arguments fail schema validation: 1 validation error for K0FrictionangleMesriInput"
+    ]
+   },
+   "latency_s": 0.0742,
+   "decision_latency_s": 0.0502,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-03755441fc__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "k0_frictionangle_mesri",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'k0_frictionangle_mesri' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for K0FrictionangleMesriInput"
+    ]
+   },
+   "latency_s": 0.0093,
+   "decision_latency_s": 0.0092,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-0adfd8ed45",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "undrainedshearstrength_clay_radlunne",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'undrainedshearstrength_clay_radlunne' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for UndrainedshearstrengthClayRadlunneInput"
+    ]
+   },
+   "latency_s": 0.0796,
+   "decision_latency_s": 0.0423,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-0ead07cd18__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_earth_pressure_rankine",
+    "predicted_arguments": {
+     "phi_eff": 32
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_earth_pressure_rankine' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.2051,
+   "decision_latency_s": 0.205,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-05d5ac07df",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "compressionindex_watercontent_koppula",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "dryunitweight_watercontent",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'dryunitweight_watercontent' (expected 'compressionindex_watercontent_koppula')",
+     "arguments fail schema validation: 2 validation errors for DryunitweightWatercontentInput"
+    ]
+   },
+   "latency_s": 0.072,
+   "decision_latency_s": 0.0459,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-05d5ac07df__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "dryunitweight_watercontent",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'dryunitweight_watercontent' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for DryunitweightWatercontentInput"
+    ]
+   },
+   "latency_s": 0.0094,
+   "decision_latency_s": 0.0094,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-1b39895d2a",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.0459,
+   "decision_latency_s": 0.017,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-03393d6d35",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "cyclicstrength_dsssand_relativedensity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'cyclicstrength_dsssand_relativedensity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for CyclicstrengthDsssandRelativedensityInput"
+    ]
+   },
+   "latency_s": 0.2257,
+   "decision_latency_s": 0.1833,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "overburdencorrection_spt_liaowhitman",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.5,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.425,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "overburdencorrection_spt_liaowhitman",
+    "predicted_arguments": {
+     "N": 26
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for OverburdencorrectionSptLiaowhitmanInput",
+     "argument mismatch: sigma_vo_eff: expected 102.0, got None",
+     "tool execution failed: Tool 'overburdencorrection_spt_liaowhitman' input validation failed: sigma_vo_eff: Field required"
+    ]
+   },
+   "latency_s": 0.0491,
+   "decision_latency_s": 0.0169,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-0bc39e8f92__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_frictionangle",
+    "predicted_arguments": {
+     "phi_eff": 23
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'earthpressurecoefficients_frictionangle' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.0501,
+   "decision_latency_s": 0.05,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-16e7dc96ac",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "earthpressurecoefficients_poncelet",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_poncelet",
+    "predicted_arguments": {
+     "phi_eff": 30,
+     "interface_friction_angle": 20,
+     "wall_angle": 4
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'earthpressurecoefficients_poncelet' but expected clarify",
+     "arguments fail schema validation: 1 validation error for EarthpressurecoefficientsPonceletInput"
+    ]
+   },
+   "latency_s": 0.0651,
+   "decision_latency_s": 0.0438,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_gmax_from_shear_wave_velocity' (expected 'search_local_documents')",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.7323,
+   "decision_latency_s": 0.6942,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0226,
+   "decision_latency_s": 0.0225,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-41496a2584",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "calculate_stresses_circular_footing",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected reject",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.041,
+   "decision_latency_s": 0.0218,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-1758dc15e3__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0124,
+   "decision_latency_s": 0.0123,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-08f137a3eb",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {
+     "water_content": 33
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for UnitweightWatercontentSaturatedInput",
+     "argument mismatch: water_content: expected 0.33, got 33",
+     "unit conversion trap failed for 'water_content' (given 33%; expected 0.33, got 33)",
+     "tool execution failed: Tool 'unitweight_watercontent_saturated' input validation failed: water_content: Input should be less than or equal to 2"
+    ]
+   },
+   "latency_s": 0.0523,
+   "decision_latency_s": 0.026,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "z": 13.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.0651,
+   "decision_latency_s": 0.065,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-47213338ec",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.0298,
+   "decision_latency_s": 0.0121,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-0bd2629a83",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "stresses_stripload",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.0401,
+   "decision_latency_s": 0.0211,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-19022a09b6__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_pipeline_contact_width",
+    "predicted_arguments": {
+     "diameter": 0.62,
+     "penetration": 0.266
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_pipeline_contact_width' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.031,
+   "decision_latency_s": 0.0309,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-1e05318583",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected clarify",
+     "arguments fail schema validation: 2 validation errors for StressesPointloadInput"
+    ]
+   },
+   "latency_s": 0.0166,
+   "decision_latency_s": 0.0052,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-4a0fcf1b26",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'calculate_gmax_from_shear_wave_velocity' (expected 'search_local_documents')",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0142,
+   "decision_latency_s": 0.0062,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-4a0fcf1b26__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0062,
+   "decision_latency_s": 0.0061,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-5dfab5a73b",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "calculate_gmax_from_shear_wave_velocity",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {
+     "Vs": -194.1,
+     "gamma": 19.5
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected reject",
+     "arguments fail schema validation: 1 validation error for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0184,
+   "decision_latency_s": 0.0067,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "tool_failure-50862ae415__final",
+   "category": "tool_failure",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_earth_pressure_rankine",
+    "predicted_arguments": {
+     "phi_eff": 22
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_earth_pressure_rankine' but expected synthesize"
+    ]
+   },
+   "latency_s": 0.0249,
+   "decision_latency_s": 0.0248,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.3333333333333333,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.366667,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "z": 13.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for StressesPointloadInput",
+     "argument mismatch: pointload: expected 1521.0, got None; poissonsratio: expected 0.32, got 0.3",
+     "unit conversion trap failed for 'pointload' (given 1.521 MN; expected 1521.0, got None)",
+     "tool execution failed: Tool 'calculate_stresses_point_load' input validation failed: pointload: Field required"
+    ]
+   },
+   "latency_s": 0.0158,
+   "decision_latency_s": 0.0048,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "wrong_units-11a942238d__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_void_ratio_from_porosity",
+    "predicted_arguments": {
+     "porosity": 28
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_void_ratio_from_porosity' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for VoidRatioPorosityInput"
+    ]
+   },
+   "latency_s": 0.0049,
+   "decision_latency_s": 0.0048,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "ambiguous_request-500603577c",
+   "category": "ambiguous_request",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_circular_footing",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_circular_footing' but expected clarify",
+     "arguments fail schema validation: 3 validation errors for StressesCircleInput"
+    ]
+   },
+   "latency_s": 0.011,
+   "decision_latency_s": 0.004,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "conflicting_data-0e11849583",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "qc_mpa": 10.1,
+     "fs_kpa": 44,
+     "depth": 9.8,
+     "Nkt": 16.0
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify"
+    ]
+   },
+   "latency_s": 0.0534,
+   "decision_latency_s": 0.0377,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "correct_request-1f47d174b6__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "compressionindex_watercontent_koppula",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'compressionindex_watercontent_koppula' but expected synthesize",
+     "arguments fail schema validation: 1 validation error for CompressionindexWatercontentKoppulaInput"
+    ]
+   },
+   "latency_s": 0.034,
+   "decision_latency_s": 0.034,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "missing_data-2e38c1c300",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.285714,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "fs_kpa": 96,
+     "depth": 24.2
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify",
+     "arguments fail schema validation: 1 validation error for DeriveCPTParametersInput"
+    ]
+   },
+   "latency_s": 0.0483,
+   "decision_latency_s": 0.0314,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-5d814b0586",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "k0_frictionangle_mesri",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'k0_frictionangle_mesri' (expected 'search_local_documents')",
+     "arguments fail schema validation: 1 validation error for K0FrictionangleMesriInput"
+    ]
+   },
+   "latency_s": 0.0517,
+   "decision_latency_s": 0.0292,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  },
+  {
+   "id": "research-5eb087f418__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.0,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {},
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected synthesize",
+     "arguments fail schema validation: 2 validation errors for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 0.0072,
+   "decision_latency_s": 0.0072,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": null,
+   "error": null
+  }
+ ]
+}

@@ -650,7 +650,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         )}
                         <div className="flex items-center gap-2 text-xs font-semibold text-text-main">
                             <GeoAILogo size={18} className="text-primary" />
-                            <span>GeoAI</span>
+                            <span className="truncate max-w-[240px]">{activeConversation?.title || 'GeoAI'}</span>
                         </div>
                     </div>
 

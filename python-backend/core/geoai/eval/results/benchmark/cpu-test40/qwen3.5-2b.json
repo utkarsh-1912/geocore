@@ -1,0 +1,1258 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "run_id": "cpu-test40",
+  "split": "test",
+  "limit": 40,
+  "turn_type": null,
+  "mode": "decision",
+  "n_ctx": 4096,
+  "max_tools": 5,
+  "n_gpu_layers": 0,
+  "dataset_generator_version": "1.0.0",
+  "dataset_seed": 20260926,
+  "python": "3.13.1",
+  "platform": "win32",
+  "label": "qwen3.5-2b",
+  "model_key": "qwen3.5-2b",
+  "provider": "llama_cpp",
+  "lora_path": null,
+  "model_info": {
+   "provider": "llama_cpp",
+   "model_path": "C:\\Users\\utkar\\AppData\\Roaming\\GeoCore\\models\\Qwen3.5-2B-Q4_K_M.gguf",
+   "loaded": true,
+   "n_ctx": 4096,
+   "n_gpu_layers": 0,
+   "n_threads": 6,
+   "n_threads_batch": 12,
+   "chat_format": "native",
+   "lora_adapter": null
+  },
+  "timestamp_utc": "2026-09-28T09:25:41+00:00"
+ },
+ "metrics": {
+  "n": 40,
+  "mean_score": 0.6948,
+  "strict_pass_rate": 0.475,
+  "action_accuracy": 0.7,
+  "tool_selection_accuracy": 0.6364,
+  "tool_selection_accuracy_incl_equivalent": 0.6364,
+  "argument_accuracy": 0.5152,
+  "schema_valid_rate": 0.8824,
+  "clarification_accuracy": 0.3571,
+  "clarification_keyword_score": 0.3571,
+  "hallucinated_parameter_rate": 0.2941,
+  "hallucinated_tool_rate": 0.0,
+  "unit_trap_accuracy": 0.0,
+  "execution_match_rate": 0.6,
+  "final_answer_grounding": 0.8214,
+  "caution_violation_rate": 0.0,
+  "selector_recall": 1.0,
+  "error_rate": 0.0,
+  "latency_p50_s": 82.6516,
+  "latency_p95_s": 129.7862,
+  "decision_latency_p50_s": 82.6319,
+  "decision_latency_p95_s": 129.7658,
+  "per_category": {
+   "ambiguous_request": {
+    "n": 4,
+    "pass_rate": 1.0,
+    "mean_score": 1.0,
+    "action_accuracy": 1.0
+   },
+   "conflicting_data": {
+    "n": 4,
+    "pass_rate": 0.0,
+    "mean_score": 0.5615,
+    "action_accuracy": 0.25
+   },
+   "correct_request": {
+    "n": 8,
+    "pass_rate": 0.625,
+    "mean_score": 0.8583,
+    "action_accuracy": 1.0
+   },
+   "missing_data": {
+    "n": 4,
+    "pass_rate": 0.0,
+    "mean_score": 0.1429,
+    "action_accuracy": 0.0
+   },
+   "research": {
+    "n": 8,
+    "pass_rate": 0.625,
+    "mean_score": 0.7604,
+    "action_accuracy": 0.75
+   },
+   "tool_failure": {
+    "n": 6,
+    "pass_rate": 0.6667,
+    "mean_score": 0.753,
+    "action_accuracy": 0.6667
+   },
+   "turn:decision": {
+    "n": 26,
+    "pass_rate": 0.3846,
+    "mean_score": 0.5625,
+    "action_accuracy": 0.5385
+   },
+   "turn:final_answer": {
+    "n": 14,
+    "pass_rate": 0.6429,
+    "mean_score": 0.9405,
+    "action_accuracy": 1.0
+   },
+   "wrong_units": {
+    "n": 6,
+    "pass_rate": 0.1667,
+    "mean_score": 0.5842,
+    "action_accuracy": 0.8333
+   }
+  },
+  "model_load_s": 4.59,
+  "peak_memory_mb": 2092.2,
+  "memory_at_start_mb": 98.2,
+  "wall_time_s": 3442.41
+ },
+ "per_example": {
+  "ambiguous_request-19ab81c70e": [
+   1.0,
+   true
+  ],
+  "conflicting_data-007b84a6ba": [
+   0.428571,
+   false
+  ],
+  "correct_request-0067b3fd9b": [
+   0.2,
+   false
+  ],
+  "correct_request-01b2c5a31b__final": [
+   0.833333,
+   false
+  ],
+  "missing_data-09cbd1905d": [
+   0.142857,
+   false
+  ],
+  "research-03755441fc": [
+   1.0,
+   true
+  ],
+  "research-03755441fc__final": [
+   1.0,
+   true
+  ],
+  "tool_failure-0adfd8ed45": [
+   0.142857,
+   false
+  ],
+  "tool_failure-0ead07cd18__final": [
+   1.0,
+   true
+  ],
+  "wrong_units-05d5ac07df": [
+   0.25,
+   false
+  ],
+  "wrong_units-05d5ac07df__final": [
+   0.833333,
+   false
+  ],
+  "ambiguous_request-1b39895d2a": [
+   1.0,
+   true
+  ],
+  "conflicting_data-03393d6d35": [
+   0.888889,
+   false
+  ],
+  "correct_request-01b2c5a31b": [
+   1.0,
+   true
+  ],
+  "correct_request-0bc39e8f92__final": [
+   1.0,
+   true
+  ],
+  "missing_data-16e7dc96ac": [
+   0.142857,
+   false
+  ],
+  "research-0f5a2d607f": [
+   1.0,
+   true
+  ],
+  "research-0f5a2d607f__final": [
+   0.833333,
+   false
+  ],
+  "tool_failure-41496a2584": [
+   1.0,
+   true
+  ],
+  "tool_failure-1758dc15e3__final": [
+   1.0,
+   true
+  ],
+  "wrong_units-08f137a3eb": [
+   0.105263,
+   false
+  ],
+  "wrong_units-1008f17d19__final": [
+   0.833333,
+   false
+  ],
+  "ambiguous_request-47213338ec": [
+   1.0,
+   true
+  ],
+  "conflicting_data-0bd2629a83": [
+   0.5,
+   false
+  ],
+  "correct_request-024d7a9a74": [
+   1.0,
+   true
+  ],
+  "correct_request-19022a09b6__final": [
+   1.0,
+   true
+  ],
+  "missing_data-1e05318583": [
+   0.142857,
+   false
+  ],
+  "research-4a0fcf1b26": [
+   0.125,
+   false
+  ],
+  "research-4a0fcf1b26__final": [
+   1.0,
+   true
+  ],
+  "tool_failure-5dfab5a73b": [
+   0.375,
+   false
+  ],
+  "tool_failure-50862ae415__final": [
+   1.0,
+   true
+  ],
+  "wrong_units-1008f17d19": [
+   0.483333,
+   false
+  ],
+  "wrong_units-11a942238d__final": [
+   1.0,
+   true
+  ],
+  "ambiguous_request-500603577c": [
+   1.0,
+   true
+  ],
+  "conflicting_data-0e11849583": [
+   0.428571,
+   false
+  ],
+  "correct_request-09eb6d67a3": [
+   1.0,
+   true
+  ],
+  "correct_request-1f47d174b6__final": [
+   0.833333,
+   false
+  ],
+  "missing_data-2e38c1c300": [
+   0.142857,
+   false
+  ],
+  "research-5d814b0586": [
+   0.125,
+   false
+  ],
+  "research-5eb087f418__final": [
+   1.0,
+   true
+  ]
+ },
+ "records": [
+  {
+   "id": "conflicting_data-007b84a6ba",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "unitweight_watercontent_saturated",
+    "predicted_arguments": {
+     "water_content": 0.29,
+     "specific_gravity": 2.65,
+     "gamma_w": 10
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'unitweight_watercontent_saturated' but expected clarify"
+    ]
+   },
+   "latency_s": 103.8796,
+   "decision_latency_s": 103.8678,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2087,
+    "completion_tokens": 65,
+    "total_tokens": 2152
+   },
+   "error": null
+  },
+  {
+   "id": "correct_request-0067b3fd9b",
+   "category": "correct_request",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "porosity_voidratio",
+   "score": {
+    "action": 1.0,
+    "tool": 0.0,
+    "schema": 1.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.2,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "voidratio_porosity",
+    "predicted_arguments": {
+     "porosity": 0.62
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "wrong tool 'voidratio_porosity' (expected 'porosity_voidratio')"
+    ]
+   },
+   "latency_s": 70.4909,
+   "decision_latency_s": 70.4844,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1967,
+    "completion_tokens": 32,
+    "total_tokens": 1999
+   },
+   "error": null
+  },
+  {
+   "id": "correct_request-01b2c5a31b__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['CN [-]']"
+    ]
+   },
+   "latency_s": 38.5388,
+   "decision_latency_s": 38.5387,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The Liao-Whitman correction yields a corrected N1 value of **25.74** (dimensionless).\n\nThis represents the estimated in-situ SPT blow count required to achieve an effective overburden stress equal to 102 kPa, accounting for the reduction due to soil density and depth effects inherent in the Liao-Whitman model. The calculation assumes a granular medium with atmospheric pressure conditions as specif",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 692,
+    "completion_tokens": 98,
+    "total_tokens": 790
+   },
+   "error": null
+  },
+  {
+   "id": "missing_data-09cbd1905d",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "stresses_stripload",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 0.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.142857,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "stresses_stripload",
+    "predicted_arguments": {
+     "z": 1.2,
+     "x": 1.2,
+     "width": 1.2,
+     "imposedstress": 190
+    },
+    "invented_params": [
+     "z"
+    ],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'stresses_stripload' but expected clarify",
+     "invented values for parameters not given in prompt/context: ['z']"
+    ]
+   },
+   "latency_s": 94.4945,
+   "decision_latency_s": 94.4853,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2073,
+    "completion_tokens": 72,
+    "total_tokens": 2145
+   },
+   "error": null
+  },
+  {
+   "id": "tool_failure-0adfd8ed45",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": null,
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 0.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.142857,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "qc_mpa": 120.5,
+     "fs_kpa": 48.3,
+     "depth": 18.5,
+     "Nkt": 16
+    },
+    "invented_params": [
+     "Nkt",
+     "fs_kpa",
+     "qc_mpa"
+    ],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify",
+     "invented values for parameters not given in prompt/context: ['Nkt', 'fs_kpa', 'qc_mpa']"
+    ]
+   },
+   "latency_s": 92.529,
+   "decision_latency_s": 92.5213,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2093,
+    "completion_tokens": 79,
+    "total_tokens": 2172
+   },
+   "error": null
+  },
+  {
+   "id": "wrong_units-05d5ac07df",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "compressionindex_watercontent_koppula",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 0.0,
+    "arguments": 0.0,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": null,
+    "total": 0.25,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "compressionindex_watercontent_koppula",
+    "predicted_arguments": {
+     "water_content": 51
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "arguments fail schema validation: 1 validation error for CompressionindexWatercontentKoppulaInput",
+     "argument mismatch: water_content: expected 0.51, got 51",
+     "unit conversion trap failed for 'water_content' (given 51%; expected 0.51, got 51)",
+     "tool execution failed: Tool 'compressionindex_watercontent_koppula' input validation failed: water_content: Input should be less than or equal to 4"
+    ]
+   },
+   "latency_s": 79.5627,
+   "decision_latency_s": 79.5563,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1970,
+    "completion_tokens": 33,
+    "total_tokens": 2003
+   },
+   "error": null
+  },
+  {
+   "id": "wrong_units-05d5ac07df__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['Cr [-]']"
+    ]
+   },
+   "latency_s": 57.6971,
+   "decision_latency_s": 57.697,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The calculated value of $C_c$ is **0.51** (dimensionless).\n\nThis result was derived using the Groundhog Deterministic Geotechnical Routine, which applies a standard relationship between the coefficient of consolidation ($C_v$) and the compression index ($C_c$) based on the provided water content. The calculation assumes a typical $C_c/C_r$ ratio of 7.5 unless specified otherwise by your project da",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 587,
+    "completion_tokens": 210,
+    "total_tokens": 797
+   },
+   "error": null
+  },
+  {
+   "id": "conflicting_data-03393d6d35",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.6666666666666666,
+    "caution": 1.0,
+    "total": 0.888889,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "clarify",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['verify']"
+    ]
+   },
+   "latency_s": 182.6938,
+   "decision_latency_s": 182.6804,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "I cannot directly compare the results of BH-01 and CPT-04 without their specific data. To explain this discrepancy, I need to know:\n\n1. **BH-01 Data**: Cone tip resistance (qc), sleeve friction (fs), depth\n2. **CPT-04 Data**: Cone tip resistance (qc), sleeve friction (fs), depth\n\nPlease provide these values so I can calculate the soil behavior type index (Ic) for BH-01 and compare it with CPT-04's",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2460,
+    "completion_tokens": 123,
+    "total_tokens": 2583
+   },
+   "error": null
+  },
+  {
+   "id": "missing_data-16e7dc96ac",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "earthpressurecoefficients_poncelet",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 0.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.142857,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "earthpressurecoefficients_poncelet",
+    "predicted_arguments": {
+     "phi_eff": 30.0,
+     "interface_friction_angle": 20.0,
+     "wall_angle": 4.0,
+     "top_angle": 0.0
+    },
+    "invented_params": [
+     "top_angle"
+    ],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'earthpressurecoefficients_poncelet' but expected clarify",
+     "invented values for parameters not given in prompt/context: ['top_angle']"
+    ]
+   },
+   "latency_s": 81.9031,
+   "decision_latency_s": 81.8935,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1856,
+    "completion_tokens": 82,
+    "total_tokens": 1938
+   },
+   "error": null
+  },
+  {
+   "id": "research-0f5a2d607f__final",
+   "category": "research",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['local']"
+    ]
+   },
+   "latency_s": 69.9035,
+   "decision_latency_s": 69.9034,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "Literature indicates that small-strain stiffness ($G_{max}$) is not directly correlated with CPT (Cone Penetration Test) data.\n\n**Key Findings:**\n*   **No Direct Correlation:** Standard CPT parameters (e.g., $N$-value, tip resistance $q_c$, skin friction $f_s$) are primarily used to estimate *in-situ shear strength* ($\\tau_{max}$), not stiffness.\n*   **Indirect Estimation:** While some studies att",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 514,
+    "completion_tokens": 301,
+    "total_tokens": 815
+   },
+   "error": null
+  },
+  {
+   "id": "wrong_units-08f137a3eb",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "unitweight_watercontent_saturated",
+   "score": {
+    "action": 0.0,
+    "tool": 0.0,
+    "schema": null,
+    "arguments": 0.0,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.105263,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "clarify",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "expected a tool call to 'unitweight_watercontent_saturated', got a text clarify"
+    ]
+   },
+   "latency_s": 109.4014,
+   "decision_latency_s": 109.3912,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "I need to calculate the unit weight of saturated soil, but I'm missing some required parameters. To use the `unitweight_watercontent_saturated` function, I also need:\n- Specific gravity (G_s) - typically 2.65 for most soils unless specified otherwise\n- Unit weight of water ($\\gamma_w$) - typically 10.0 kN/m\u00b3\n\nCould you please provide these values?",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2241,
+    "completion_tokens": 88,
+    "total_tokens": 2329
+   },
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19__final",
+   "category": "wrong_units",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['delta sigma r [kPa]', 'delta sigma theta [kPa]']"
+    ]
+   },
+   "latency_s": 73.1894,
+   "decision_latency_s": 73.1887,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The vertical stress increase ($\\Delta \\sigma_z$) at the point of application is **4.168 kPa**.\n\nThis result was calculated using Boussinesq's closed-form solution for a 3D concentrated normal load on an elastic, semi-infinite medium (Poulos & Davis, 1974). The calculation assumes linear elasticity and isotropic behavior with Poisson's ratio $\\nu = 0.32$.\n\n**Engineering Context:**\n*   **Magnitude**",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 784,
+    "completion_tokens": 206,
+    "total_tokens": 990
+   },
+   "error": null
+  },
+  {
+   "id": "conflicting_data-0bd2629a83",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "stresses_stripload",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.5,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "stresses_stripload",
+    "predicted_arguments": {
+     "z": 13.3,
+     "x": 0.4,
+     "width": 4.4,
+     "imposedstress": 108
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'stresses_stripload' but expected clarify"
+    ]
+   },
+   "latency_s": 110.6353,
+   "decision_latency_s": 110.6212,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "I'll calculate the vertical stress increase under a strip footing using both borehole measurements.",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2166,
+    "completion_tokens": 91,
+    "total_tokens": 2257
+   },
+   "error": null
+  },
+  {
+   "id": "missing_data-1e05318583",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 0.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.142857,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "pointload": 100,
+     "z": 3.2,
+     "r": 0,
+     "poissonsratio": 0.29
+    },
+    "invented_params": [
+     "pointload"
+    ],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_stresses_point_load' but expected clarify",
+     "invented values for parameters not given in prompt/context: ['pointload']"
+    ]
+   },
+   "latency_s": 101.5887,
+   "decision_latency_s": 101.5783,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1975,
+    "completion_tokens": 74,
+    "total_tokens": 2049
+   },
+   "error": null
+  },
+  {
+   "id": "research-4a0fcf1b26",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 0.0,
+    "tool": 0.0,
+    "schema": null,
+    "arguments": 0.0,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.125,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "clarify",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "expected a tool call to 'search_local_documents', got a text clarify"
+    ]
+   },
+   "latency_s": 122.0764,
+   "decision_latency_s": 122.0581,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "I can help you compare small-strain stiffness correlations for CPT data. However, to provide meaningful comparisons between different methods (e.g., Gmax from shear wave velocity vs. Gmax from cone penetration test), I need specific site parameters such as:\n\n1. **Cone tip resistance ($q_c$)** - typically in MPa\n2. **Vertical effective stress ($\\sigma_{vo}^{\\prime}$)** - typically in kPa  \n3. **She",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2210,
+    "completion_tokens": 145,
+    "total_tokens": 2355
+   },
+   "error": null
+  },
+  {
+   "id": "tool_failure-5dfab5a73b",
+   "category": "tool_failure",
+   "turn_type": "decision",
+   "expected_action": "reject",
+   "expected_tool": "calculate_gmax_from_shear_wave_velocity",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 0.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.375,
+    "passed": false,
+    "expected_action": "reject",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_gmax_from_shear_wave_velocity",
+    "predicted_arguments": {
+     "Vs": -194.1,
+     "gamma": 19.5,
+     "g": 9.81
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'calculate_gmax_from_shear_wave_velocity' but expected reject",
+     "arguments fail schema validation: 1 validation error for GmaxShearWaveVelocityInput"
+    ]
+   },
+   "latency_s": 127.9481,
+   "decision_latency_s": 127.9287,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "The shear wave velocity of -194.1 m/s is physically impossible, as velocities cannot be negative and the maximum value for Vs in this tool range is 3000 m/s. This indicates a likely data entry error or misinterpretation (e.g., possibly meant to be 194.1 m/s).\n\nI will calculate using |Vs| = 194.1 m/s as if the sign was an artifact, and note that this is not physically valid for shear wave velocity.",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2575,
+    "completion_tokens": 174,
+    "total_tokens": 2749
+   },
+   "error": null
+  },
+  {
+   "id": "wrong_units-1008f17d19",
+   "category": "wrong_units",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "calculate_stresses_point_load",
+   "score": {
+    "action": 1.0,
+    "tool": 1.0,
+    "schema": 1.0,
+    "arguments": 0.6666666666666666,
+    "no_invented": 1.0,
+    "clarification": null,
+    "unit_trap": 0.0,
+    "execution": 0.0,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.483333,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "tool_call",
+    "predicted_tool": "calculate_stresses_point_load",
+    "predicted_arguments": {
+     "pointload": 1521000,
+     "z": 13.2,
+     "r": 0,
+     "poissonsratio": 0.32
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "argument mismatch: pointload: expected 1521.0, got 1521000.0",
+     "unit conversion trap failed for 'pointload' (given 1.521 MN; expected 1521.0, got 1521000.0)",
+     "Groundhog result differs from expected for ['delta sigma r [kPa]', 'delta sigma theta [kPa]', 'delta sigma z [kPa]']"
+    ]
+   },
+   "latency_s": 88.7436,
+   "decision_latency_s": 88.7344,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "I will calculate the vertical stress increase using Boussinesq theory for a concentrated point load.",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 1943,
+    "completion_tokens": 99,
+    "total_tokens": 2042
+   },
+   "error": null
+  },
+  {
+   "id": "conflicting_data-0e11849583",
+   "category": "conflicting_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 1.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.428571,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "qc_mpa": 10.1,
+     "fs_kpa": 44,
+     "depth": 9.8,
+     "Nkt": 16
+    },
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify"
+    ]
+   },
+   "latency_s": 111.0332,
+   "decision_latency_s": 111.0166,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2580,
+    "completion_tokens": 75,
+    "total_tokens": 2655
+   },
+   "error": null
+  },
+  {
+   "id": "correct_request-1f47d174b6__final",
+   "category": "correct_request",
+   "turn_type": "final_answer",
+   "expected_action": "synthesize",
+   "expected_tool": null,
+   "score": {
+    "action": 1.0,
+    "tool": null,
+    "schema": null,
+    "arguments": null,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": 0.5,
+    "caution": 1.0,
+    "total": 0.833333,
+    "passed": false,
+    "expected_action": "synthesize",
+    "predicted_action": "synthesize",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "final answer does not report: ['Cr [-]']"
+    ]
+   },
+   "latency_s": 29.1188,
+   "decision_latency_s": 29.118,
+   "n_model_calls": 1,
+   "expected_tool_offered": null,
+   "response_text": "The calculated value is **Cc = 0.38** (dimensionless).\n\nThis result indicates a very low compression index, suggesting the soil has minimal compressibility under small changes in effective stress. This typically implies a high stiffness and potentially brittle behavior for this specific sample at the given moisture content of w=0.38.",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 605,
+    "completion_tokens": 68,
+    "total_tokens": 673
+   },
+   "error": null
+  },
+  {
+   "id": "missing_data-2e38c1c300",
+   "category": "missing_data",
+   "turn_type": "decision",
+   "expected_action": "clarify",
+   "expected_tool": "derive_cpt_parameters",
+   "score": {
+    "action": 0.0,
+    "tool": null,
+    "schema": 1.0,
+    "arguments": null,
+    "no_invented": 0.0,
+    "clarification": 0.0,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": null,
+    "total": 0.142857,
+    "passed": false,
+    "expected_action": "clarify",
+    "predicted_action": "tool_call",
+    "predicted_tool": "derive_cpt_parameters",
+    "predicted_arguments": {
+     "qc_mpa": 120.5,
+     "fs_kpa": 96,
+     "depth": 24.2
+    },
+    "invented_params": [
+     "qc_mpa"
+    ],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "called tool 'derive_cpt_parameters' but expected clarify",
+     "invented values for parameters not given in prompt/context: ['qc_mpa']"
+    ]
+   },
+   "latency_s": 97.382,
+   "decision_latency_s": 97.3665,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2587,
+    "completion_tokens": 64,
+    "total_tokens": 2651
+   },
+   "error": null
+  },
+  {
+   "id": "research-5d814b0586",
+   "category": "research",
+   "turn_type": "decision",
+   "expected_action": "tool_call",
+   "expected_tool": "search_local_documents",
+   "score": {
+    "action": 0.0,
+    "tool": 0.0,
+    "schema": null,
+    "arguments": 0.0,
+    "no_invented": null,
+    "clarification": null,
+    "unit_trap": null,
+    "execution": null,
+    "grounding": null,
+    "caution": 1.0,
+    "total": 0.125,
+    "passed": false,
+    "expected_action": "tool_call",
+    "predicted_action": "clarify",
+    "predicted_tool": null,
+    "predicted_arguments": null,
+    "invented_params": [],
+    "unknown_params": [],
+    "hallucinated_tool": false,
+    "reasons": [
+     "expected a tool call to 'search_local_documents', got a text clarify"
+    ]
+   },
+   "latency_s": 114.5184,
+   "decision_latency_s": 114.5115,
+   "n_model_calls": 1,
+   "expected_tool_offered": true,
+   "response_text": "I cannot directly summarize available evidence on K\u2080 in overconsolidated clays as I don't have access to a database of published literature or engineering standards. However, I can provide information based on the tools and parameters available for calculating K\u2080 values:\n\n**Available Calculation Methods:**\n1. **Maine Method (for sands)** - Uses cone penetration tests with specific friction angles\n",
+   "final_text": null,
+   "usage": {
+    "prompt_tokens": 2189,
+    "completion_tokens": 200,
+    "total_tokens": 2389
+   },
+   "error": null
+  }
+ ]
+}

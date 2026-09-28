@@ -132,7 +132,7 @@ export const api = {
         return handleResponse(response);
     },
 
-    geoaiDownloadModel: async (modelId = 'qwen2.5-1.5b-instruct', setActive = true) => {
+    geoaiDownloadModel: async (modelId = 'qwen3-1.7b', setActive = true) => {
         const response = await fetchWithTimeout('/api/geoai/models/download', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -16,7 +16,7 @@ from core.geoai.tool_registry import tool_registry
 from core.geoai.slm_schema_generator import generate_openai_tool_definitions, generate_gemini_tool_definitions
 from core.geoai.exceptions import GeoAIValidationError
 from core.geoai.lifecycle import lifecycle_manager
-from core.geoai.model_downloader import list_available_models, download_model
+from core.geoai.model_downloader import list_available_models, download_model, DEFAULT_MODEL_ID
 from core.geoai.model_config import load_config, save_config
 from core.geoai.agent import GeoAIAgent
 from core.geoai.model_provider import GenerationCancelled
@@ -201,7 +201,7 @@ def trigger_model_download(
     payload: Dict[str, Any] = Body(...)
 ):
     """Triggers download of a curated model in the background."""
-    model_id = payload.get("model_id", "qwen2.5-1.5b-instruct")
+    model_id = payload.get("model_id", DEFAULT_MODEL_ID)
     set_active = payload.get("set_active", True)
 
     def _do_download():

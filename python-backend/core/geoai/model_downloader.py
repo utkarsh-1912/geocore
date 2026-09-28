@@ -30,6 +30,9 @@ logger = logging.getLogger(__name__)
 # Curated Candidate SLM Registry for Desktop Offline Geotechnical AI.
 # Optional per-entry keys: "size_bytes" and "sha256" (the Hub LFS oid) are
 # verified after download when present.
+# Benchmark winner (cpu-test40, 2026-09-28): best tool choice / argument accuracy at ~2.4 GB RAM.
+DEFAULT_MODEL_ID = "qwen3-1.7b"
+
 RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
     "qwen2.5-1.5b-instruct": {
         "family": "qwen",
@@ -420,7 +423,7 @@ def _monitor_progress(target_dir: Path, filename: str, stop: threading.Event) ->
 
 
 def download_model(
-    model_id: str = "qwen2.5-1.5b-instruct",
+    model_id: str = DEFAULT_MODEL_ID,
     set_as_active: bool = True
 ) -> Path:
     """
