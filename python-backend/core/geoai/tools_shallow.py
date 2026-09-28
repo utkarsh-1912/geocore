@@ -214,7 +214,7 @@ def _uniform_segments(gamma: float, z_bottom: float) -> List[Tuple[float, float,
 def _eccentricities(ft: _Footing, V: Optional[float], H: float, Mb: float, Ml: float,
                     eB: float, eL: float, inputs: _Inputs, notes: List[str]) -> Tuple[float, float]:
     """(e_B, e_L) in metres from moments (e = M / V) or direct eccentricities."""
-    if (Mb > 0 and eB > 0) or (Ml > 0 and el_positive(eL) and Ml > 0):
+    if (Mb > 0 and eB > 0) or (Ml > 0 and eL > 0):
         raise GeoAIValidationError("Give either a moment or an eccentricity in each direction, not both.")
     if (Mb > 0 or Ml > 0 or H > 0) and V is None:
         inputs.add_missing("vertical_load_kn", "kN/m" if ft.per_metre else "kN",
@@ -238,10 +238,6 @@ def _eccentricities(ft: _Footing, V: Optional[float], H: float, Mb: float, Ml: f
         raise GeoAIValidationError(f"Eccentricity (e_B = {e_b:.3g} m, e_L = {e_l:.3g} m) reaches the footing edge "
                                    f"(B/2 = {0.5 * ft.width:g} m); the load resultant must lie within the base.")
     return e_b, e_l
-
-
-def el_positive(e: float) -> bool:
-    return e > 0
 
 
 def _choose_analysis(analysis: Optional[str], phi: Optional[float], su: Optional[float], inputs: _Inputs) -> str:
@@ -453,6 +449,9 @@ def _capacity_undrained(ft: _Footing, depth: float, skirted: bool, e_b: float, e
     })
     if depth > 0:
         notes.append("Average su above the base taken equal to su at the base (Groundhog default).")
+    if not v["undrained_shear_strength_kpa"].source.startswith("user"):
+        notes.append("su from the project profile is the thickness-weighted mean over the influence zone "
+                     f"{z_top:g}-{z_bot:g} m, used as su at base level (su_increase_kpa_per_m = 0 unless given).")
     return out
 
 
@@ -655,7 +654,10 @@ def _compressible_layers(depth: float, top: Optional[float], bottom: Optional[fl
         inputs.add_missing("clay_top_depth_m", "m", "top of the compressible clay layer below ground surface", reason)
         inputs.add_missing("clay_bottom_depth_m", "m", "bottom of the compressible clay layer", reason)
         layer = _ClayLayer("clay layer", depth, depth + 1.0, {})
+        n_before = len(inputs.missing)
         _layer_parameters(layer, user, ProjectSoil(context_loader=lambda: None), None, inputs)
+        for m in inputs.missing[n_before:]:
+            m["project_lookup"] = reason
         inputs.raise_if_missing()
     layers = []
     for pl in found:

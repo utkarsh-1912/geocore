@@ -8,13 +8,16 @@ License: GPL v3
 import functools
 import json
 import logging
+import ctypes
 import re
 import threading
+import time
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
 from .model_provider import (
     ChatMessage,
+    GenerationCancelled,
     MessageRole,
     ModelProvider,
     ModelResponse,
@@ -224,6 +227,9 @@ class ThinkStreamFilter:
 # Stop strings for a turn that offers tools (native/prompted formats): the model must never
 # write the tool response itself. The EOS/<|im_end|> stop comes from the chat template.
 TOOL_TURN_STOP = ("<tool_response>",)
+# Stop strings for the answer written after tool results: the tools stay in the prompt (prompt
+# cache reuse) but the turn must be prose, so a new tool call ends it.
+ANSWER_TURN_STOP = ("<tool_call>", "<tool_response>")
 
 
 # Backwards-compatible name (tests, fine-tune tooling).
@@ -294,6 +300,11 @@ class LlamaCppProvider(ModelProvider):
         # unloading are serialised. A plain Lock (not RLock) because a streaming generator may be
         # resumed and closed on different server threads.
         self._lock = threading.Lock()
+        # cancel() and the per-call time limit are checked by llama.cpp's abort callback, which
+        # interrupts llama_decode (also during long prompt processing on a slow CPU).
+        self._cancel = threading.Event()
+        self._deadline: Optional[float] = None
+        self._abort_cb = None  # ctypes callback; kept referenced while the context lives
 
     # ------------------------------------------------------------------
     # LoRA adapter / chat-format resolution
@@ -391,6 +402,7 @@ class LlamaCppProvider(ModelProvider):
                 self._adapter_active = False
             except Exception as e2:
                 raise RuntimeError(f"Failed to load model from {self._model_path}: {e2}") from e2
+        self._install_abort_callback()
         self._thinking_kwarg = False
         if self._thinking_switch and self._chat_format in _TEMPLATE_FORMATS:
             self._thinking_kwarg = self._set_template_kwargs(
@@ -398,6 +410,48 @@ class LlamaCppProvider(ModelProvider):
         logger.info(f"Model successfully loaded from {self._model_path}"
                     + (f" with LoRA adapter {lora} (scale {self.config.lora_scale})" if self._adapter_active else "")
                     + f" [chat_format={self._chat_format}]")
+
+    def _install_abort_callback(self) -> None:
+        """Let cancel() and the time limit abort llama_decode between graph nodes."""
+        try:
+            import llama_cpp.llama_cpp as llama_lib
+            fn = llama_lib._lib.llama_set_abort_callback
+            fn.argtypes = [llama_lib.llama_context_p_ctypes, llama_lib.ggml_abort_callback, ctypes.c_void_p]
+            fn.restype = None
+            self._abort_cb = llama_lib.ggml_abort_callback(lambda _data: self._should_abort())
+            fn(self._model.ctx, self._abort_cb, None)
+        except Exception as e:  # older/other builds: generation still works, only without abort
+            self._abort_cb = None
+            logger.warning(f"llama.cpp abort callback unavailable ({e}); GeoAI requests cannot be cancelled.")
+
+    def _should_abort(self) -> bool:
+        return self._cancel.is_set() or (self._deadline is not None and time.monotonic() > self._deadline)
+
+    def cancel(self) -> None:
+        """Abort the running generation; later calls fail fast until clear_cancel()."""
+        self._cancel.set()
+
+    def clear_cancel(self) -> None:
+        # Wait for the stopped call to release the model first: clearing the flag while it is
+        # still running (e.g. Stop, then an immediate new question) would un-cancel it, and the
+        # new request would then queue behind a generation nobody is waiting for.
+        with self._lock:
+            self._cancel.clear()
+
+    def _start_call(self) -> None:
+        if self._cancel.is_set():
+            raise GenerationCancelled("GeoAI request stopped.")
+        limit = float(getattr(self.config, "generation_timeout_s", 0) or 0)
+        self._deadline = time.monotonic() + limit if limit > 0 else None
+
+    def _aborted_error(self) -> Optional[GenerationCancelled]:
+        """The error for a llama_decode aborted by cancel()/the time limit, else None."""
+        if self._cancel.is_set():
+            return GenerationCancelled("GeoAI request stopped.")
+        if self._deadline is not None and time.monotonic() > self._deadline:
+            return GenerationCancelled(
+                f"GeoAI request exceeded the {int(self.config.generation_timeout_s)} s time limit.")
+        return None
 
     def _set_template_kwargs(self, **template_kwargs: Any) -> bool:
         """
@@ -503,7 +557,11 @@ class LlamaCppProvider(ModelProvider):
     ) -> ModelResponse:
         """Generate a response from the model."""
         with self._lock:
-            return self._generate(messages, tools, temperature, max_tokens)
+            self._start_call()
+            try:
+                return self._generate(messages, tools, temperature, max_tokens)
+            finally:
+                self._deadline = None
 
     def _generate(self, messages: List[ChatMessage], tools: Optional[List[dict]],
                   temperature: float, max_tokens: int) -> ModelResponse:
@@ -565,6 +623,9 @@ class LlamaCppProvider(ModelProvider):
                 usage=response.get("usage")
             )
         except Exception as e:
+            aborted = self._aborted_error()
+            if aborted is not None:
+                raise aborted from e
             logger.error(f"Error during generation: {e}")
             raise RuntimeError(f"Generation failed: {e}") from e
 
@@ -577,13 +638,42 @@ class LlamaCppProvider(ModelProvider):
     ) -> Iterator[StreamChunk]:
         """Generate a streaming response from the model."""
         with self._lock:
-            yield from self._generate_stream(messages, tools, temperature, max_tokens)
+            self._start_call()
+            try:
+                yield from self._generate_stream(messages, tools, temperature, max_tokens)
+            finally:
+                self._deadline = None
+
+    def generate_answer_stream(
+        self,
+        messages: List[ChatMessage],
+        tools: Optional[List[dict]] = None,
+        temperature: float = 0.1,
+        max_tokens: int = 1024
+    ) -> Iterator[StreamChunk]:
+        """
+        Stream the answer after tool results with the SAME tool block in the prompt as the
+        tool-selection turn. The template renders tools before the conversation, so dropping
+        them re-evaluates the whole prompt (minutes on a laptop CPU); keeping them reuses the
+        evaluated prefix, and only the tool call and result are new. ANSWER_TURN_STOP ends the
+        turn if the model starts another tool call.
+        """
+        if self._chat_format not in _TEMPLATE_FORMATS:
+            yield from self.generate_stream(messages, tools=None, temperature=temperature, max_tokens=max_tokens)
+            return
+        with self._lock:
+            self._start_call()
+            try:
+                yield from self._generate_stream(messages, tools, temperature, max_tokens, answer_only=True)
+            finally:
+                self._deadline = None
 
     def _generate_stream(self, messages: List[ChatMessage], tools: Optional[List[dict]],
-                         temperature: float, max_tokens: int) -> Iterator[StreamChunk]:
+                         temperature: float, max_tokens: int,
+                         answer_only: bool = False) -> Iterator[StreamChunk]:
         self._ensure_loaded()
 
-        if self._chat_format in _TEMPLATE_FORMATS and tools:
+        if self._chat_format in _TEMPLATE_FORMATS and tools and not answer_only:
             # Native tool calls arrive as <tool_call> text that is only parseable once complete;
             # emit the finished turn as one chunk rather than streaming raw markup to the UI.
             resp = self._generate(messages, tools, temperature, max_tokens)
@@ -599,8 +689,10 @@ class LlamaCppProvider(ModelProvider):
             "repeat_penalty": float(getattr(self.config, "repeat_penalty", 1.15)),
             "stream": True
         }
-        if tools:
+        if tools and self._chat_format != "prompted":  # prompted: tools are in the system text
             kwargs["tools"] = tools
+        if answer_only:
+            kwargs["stop"] = list(ANSWER_TURN_STOP)
 
         try:
             response_stream = self._model.create_chat_completion(**kwargs)
@@ -656,5 +748,8 @@ class LlamaCppProvider(ModelProvider):
                     finish_reason=finish_reason
                 )
         except Exception as e:
+            aborted = self._aborted_error()
+            if aborted is not None:
+                raise aborted from e
             logger.error(f"Error during streaming generation: {e}")
             raise RuntimeError(f"Streaming generation failed: {e}") from e

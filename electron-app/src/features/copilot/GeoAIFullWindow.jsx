@@ -16,13 +16,14 @@ import {
     PanelLeftClose, Download, Pencil, RotateCcw,
     Shield, CheckCircle2, ChevronDown, AlertTriangle,
     HardDrive, Zap, BookOpen, Compass, Layers, User,
-    FileCode, ExternalLink, Sparkles
+    FileCode, ExternalLink, Sparkles, Square
 } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
 import { buildChatHistory } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
+import { finalTurnText, stopGeoAIChat, streamGeoAIChat, thinkingLabel, useElapsedSeconds } from './geoaiStream';
 import { toast } from 'sonner';
 
 const formatBytes = (bytes) => {
@@ -115,6 +116,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const abortRef = useRef(null);
+    const elapsedSeconds = useElapsedSeconds(isLoading);
 
     // Inline Message Edit State
     const [editingMsgId, setEditingMsgId] = useState(null);
@@ -288,89 +291,45 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         setEditingMsgId(null);
         setIsLoading(true);
 
+        const aiMessageId = Date.now() + 1;
+        const setAiMessage = (fields) => setConversations(prev => prev.map(c => (
+            c.id === targetId
+                ? { ...c, messages: c.messages.map(m => m.id === aiMessageId ? { ...m, ...fields } : m) }
+                : c
+        )));
+        const controller = new AbortController();
+        abortRef.current = controller;
+
         try {
-            const streamResponse = await api.geoaiChatStream(text, currentContext, history);
-            const reader = streamResponse.body.getReader();
-            const decoder = new TextDecoder();
-            let sseBuffer = '';
-
-            const aiMessageId = Date.now() + 1;
-            let accumulatedText = '';
-            let executedTool = null;
-            let toolParameters = null;
-            let toolResults = null;
-
-            const initialAiMsg = {
+            let shownText = '';
+            const turnPromise = streamGeoAIChat({
+                text,
+                context: currentContext,
+                history,
+                signal: controller.signal,
+                onText: (t) => {
+                    shownText = t;
+                    setAiMessage({ text: t });
+                },
+            });
+            updateCurrentMessages([...updated, {
                 id: aiMessageId,
                 sender: 'ai',
                 text: '',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-            updateCurrentMessages([...updated, initialAiMsg]);
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-
-                sseBuffer += decoder.decode(value, { stream: true });
-                const lines = sseBuffer.split('\n');
-                sseBuffer = lines.pop(); // an event split across chunks completes on the next read
-
-                for (const line of lines) {
-                    if (!line.startsWith('data: ')) continue;
-                    try {
-                        const eventData = JSON.parse(line.slice(6));
-
-                        if (eventData.type === 'token' && eventData.content) {
-                            accumulatedText += eventData.content;
-                            setConversations(prev => prev.map(c => {
-                                if (c.id === targetId) {
-                                    return {
-                                        ...c,
-                                        messages: c.messages.map(m => m.id === aiMessageId ? { ...m, text: accumulatedText } : m)
-                                    };
-                                }
-                                return c;
-                            }));
-                        } else if (eventData.type === 'tool_start') {
-                            executedTool = eventData.tool_name;
-                            toolParameters = eventData.tool_args;
-                            setConversations(prev => prev.map(c => {
-                                if (c.id === targetId) {
-                                    return {
-                                        ...c,
-                                        messages: c.messages.map(m => m.id === aiMessageId ? {
-                                            ...m,
-                                            text: `Calculating with **${eventData.tool_name}**...`
-                                        } : m)
-                                    };
-                                }
-                                return c;
-                            }));
-                        } else if (eventData.type === 'tool_result') {
-                            toolResults = eventData.tool_result;
-                            accumulatedText = '';
-                        } else if (eventData.type === 'done') {
-                            setConversations(prev => prev.map(c => {
-                                if (c.id === targetId) {
-                                    return {
-                                        ...c,
-                                        messages: c.messages.map(m => m.id === aiMessageId ? {
-                                            ...m,
-                                            text: accumulatedText || m.text,
-                                            executedTool,
-                                            parameters: toolParameters,
-                                            results: toolResults
-                                        } : m)
-                                    };
-                                }
-                                return c;
-                            }));
-                        }
-                    } catch (err) { }
-                }
+            }]);
+            const turn = await turnPromise;
+            setAiMessage({
+                text: finalTurnText(turn, shownText),
+                executedTool: turn.executedTool,
+                parameters: turn.parameters,
+                results: turn.results
+            });
+        } catch {
+            if (controller.signal.aborted) {
+                setAiMessage({ text: '_Stopped._' });
+                return;
             }
-        } catch (err) {
             try {
                 const res = await api.geoaiChat(text, currentContext, history);
                 const aiMsg = {
@@ -394,9 +353,15 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 updateCurrentMessages([...updated, errorMsg]);
             }
         } finally {
+            abortRef.current = null;
             setIsLoading(false);
         }
     };
+
+    const handleStop = () => stopGeoAIChat(abortRef.current);
+
+    // Stop a running answer when the window closes, so the model is not left computing.
+    useEffect(() => () => abortRef.current?.abort(), []);
 
     // Grow a textarea with its content (capped by its CSS max-height).
     const autoGrow = (el) => {
@@ -906,7 +871,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                                 {isLoading ? (
                                                                     <>
                                                                         <RefreshCw size={12} className="animate-spin text-primary" />
-                                                                        <span>Reasoning and executing Groundhog calculation...</span>
+                                                                        <span>{thinkingLabel(elapsedSeconds)}</span>
                                                                     </>
                                                                 ) : (
                                                                     <span>No response received.</span>
@@ -1002,7 +967,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
                                 <div className="flex items-center gap-2 text-xs text-text-muted pl-1">
                                     <RefreshCw size={12} className="animate-spin text-primary" />
-                                    <span>Reasoning and executing Groundhog calculation...</span>
+                                    <span>{thinkingLabel(elapsedSeconds)}</span>
                                 </div>
                             )}
 
@@ -1027,13 +992,26 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             className="flex-1 resize-none bg-transparent px-2 py-1 text-xs text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none max-h-40 leading-relaxed"
                         />
 
-                        <button
-                            onClick={() => handleSendMessage()}
-                            disabled={!inputValue.trim() || isLoading}
-                            className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0 flex items-center justify-center h-8 w-8"
-                        >
-                            <Send size={14} />
-                        </button>
+                        {isLoading ? (
+                            <button
+                                onClick={handleStop}
+                                title="Stop generating"
+                                aria-label="Stop generating"
+                                className="p-2 bg-surface border border-border text-text-main rounded hover:bg-background transition-colors shrink-0 flex items-center justify-center h-8 w-8"
+                            >
+                                <Square size={12} className="fill-current" />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => handleSendMessage()}
+                                disabled={!inputValue.trim()}
+                                title="Send"
+                                aria-label="Send"
+                                className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0 flex items-center justify-center h-8 w-8"
+                            >
+                                <Send size={14} />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -1041,7 +1019,10 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             {/* --- Unified Model Selector Modal --- */}
             <AnimatePresence>
                 {showModelModal && (
-                    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                    <div
+                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
+                        onMouseDown={(e) => { if (e.target === e.currentTarget) setShowModelModal(false); }}
+                    >
                         <div className="w-full max-w-lg bg-surface border border-border rounded shadow-xl overflow-hidden flex flex-col max-h-[85vh]">
                             <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
                                 <div className="flex items-center gap-2">

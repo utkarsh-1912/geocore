@@ -220,11 +220,14 @@ def test_selection_latency_after_warm_up():
 # ---------------------------------------------------------------- recall regression (eval_val only)
 
 def test_selector_recall_on_eval_val_regression():
-    from core.geoai.eval.selector_recall import load_split, selector_recall
+    from core.geoai.eval.selector_recall import DATA_DIR, load_split, selector_recall
 
+    # Generated datasets are gitignored (python -m core.geoai.training.scaleup), so CI has none.
+    if not (DATA_DIR / "eval_val.jsonl").exists():
+        pytest.skip("eval_val.jsonl not generated")
     examples = load_split("val")
     if not examples:
-        pytest.skip("eval_val.jsonl not generated")
+        pytest.skip("eval_val.jsonl has no tool examples")
     res = selector_recall(examples, (1, 3, 5))
     # Achieved 0.963 / 1.000 / 1.000 when tuned; thresholds leave a little headroom.
     assert res["recall"][5] >= 0.97

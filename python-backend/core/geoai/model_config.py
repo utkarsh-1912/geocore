@@ -89,6 +89,10 @@ class GeoAIModelConfig:
     # GEOAI_DECISION_MAX_TOKENS / GEOAI_ANSWER_MAX_TOKENS.
     decision_max_tokens: int = 512
     answer_max_tokens: int = 512
+    # Wall-clock limit for one model call (prompt processing + generation), in seconds. A call
+    # past it is aborted so a stuck request can never hold the model forever. Env:
+    # GEOAI_GENERATION_TIMEOUT_S. 0 = no limit.
+    generation_timeout_s: int = 600
 
 
 def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
@@ -181,7 +185,8 @@ def load_config() -> GeoAIModelConfig:
         config.disable_thinking = _env_disable_thinking()
     for env, attr in (("GEOAI_N_THREADS", "n_threads"), ("GEOAI_N_THREADS_BATCH", "n_threads_batch"),
                       ("GEOAI_N_BATCH", "n_batch"), ("GEOAI_DECISION_MAX_TOKENS", "decision_max_tokens"),
-                      ("GEOAI_ANSWER_MAX_TOKENS", "answer_max_tokens")):
+                      ("GEOAI_ANSWER_MAX_TOKENS", "answer_max_tokens"),
+                      ("GEOAI_GENERATION_TIMEOUT_S", "generation_timeout_s")):
         if env in os.environ:
             try:
                 setattr(config, attr, int(os.environ[env]))

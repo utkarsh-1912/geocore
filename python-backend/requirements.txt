@@ -16,7 +16,9 @@ certifi
 charset-normalizer
 idna
 pyyaml
-groundhog
+# groundhog master: the PyPI 0.15.0 release lacks modules GeoCore uses
+# (axialcapacity.lcpc/piletesting, lateralresponse.lateral, excavations.soilmix).
+groundhog @ git+https://github.com/snakesonabrain/groundhog@dc7d554c6b8986bae30f518304546a911b1ca5ab
 python-multipart
 xlrd
 openpyxl

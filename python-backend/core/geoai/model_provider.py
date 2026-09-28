@@ -78,6 +78,10 @@ class StreamChunk:
     finish_reason: Optional[str] = None
 
 
+class GenerationCancelled(RuntimeError):
+    """A generation was stopped by ``ModelProvider.cancel()`` or exceeded its time limit."""
+
+
 class ModelProvider(ABC):
     @abstractmethod
     def generate(
@@ -100,7 +104,27 @@ class ModelProvider(ABC):
     ) -> Iterator[StreamChunk]:
         """Generate a streaming response from the model."""
         pass
-    
+
+    def generate_answer_stream(
+        self,
+        messages: List[ChatMessage],
+        tools: Optional[List[dict]] = None,
+        temperature: float = 0.1,
+        max_tokens: int = 1024
+    ) -> Iterator[StreamChunk]:
+        """
+        Stream the prose answer written after tool results; never a tool call. ``tools`` are the
+        schemas offered earlier in the turn: a provider with a prompt cache may keep them in the
+        prompt so the already evaluated prefix is reused. Default: stream without tools.
+        """
+        return self.generate_stream(messages, tools=None, temperature=temperature, max_tokens=max_tokens)
+
+    def cancel(self) -> None:
+        """Stop the generation in progress (and any started before ``clear_cancel``), if supported."""
+
+    def clear_cancel(self) -> None:
+        """Re-arm the provider for a new request after ``cancel``."""
+
     @abstractmethod
     def is_loaded(self) -> bool:
         """Whether the model is currently loaded in memory."""

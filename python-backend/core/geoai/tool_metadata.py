@@ -284,6 +284,82 @@ TOOL_METADATA: Dict[str, Dict[str, Any]] = {
         "standard": "Local Desktop Offline RAG Engine",
         "assumptions": ["Splits content into coherent paragraphs and section headings"],
         "output_units": {"indexed_chunks": "-"}
+    },
+
+    # 6. Shallow foundation design workflows (core.geoai.tools_shallow)
+    "calculate_shallow_foundation_capacity": {
+        "method": "API RP 2GEO (2011) shallow foundation bearing capacity (Groundhog ShallowFoundationCapacityDrained / Undrained)",
+        "standard": "API RP 2GEO (2011) Geotechnical and Foundation Design Considerations; Groundhog (Stuyts) implementation",
+        "assumptions": [
+            "Ultimate bearing pressure and vertical capacity of a footing or pad; no factor of safety applied",
+            "Drained: cohesionless soil (no c' term), Nq = exp(pi tan phi') tan^2(45 + phi'/2), Ngamma = 1.5 (Nq - 1) tan phi'",
+            "Undrained: Nc = 5.14 with shape, depth and load inclination factors; constant or linearly increasing su",
+            "Eccentric load handled with the effective area A' = B' x L'",
+            "Groundwater lowers the effective stress at base level and the unit weight below the base"
+        ],
+        "output_units": {
+            "q_ult_kpa": "kPa",
+            "Q_ult_kn": "kN",
+            "Q_ult_kn_per_m": "kN/m",
+            "effective_area_m2": "m2"
+        }
+    },
+    "calculate_foundation_settlement": {
+        "method": "One-dimensional primary consolidation settlement (Cc/Cr/e0 or mv) with Boussinesq stress increase below the footing centre (Groundhog functions)",
+        "standard": "Budhu (2011) Soil Mechanics and Foundations; Groundhog SettlementCalculation procedure",
+        "assumptions": [
+            "Clay compresses one-dimensionally; consolidation settlement of soft or stiff clay below the footing",
+            "Stress increase from elastic half-space solutions below the centre of a flexible footing",
+            "Net pressure (q minus overburden at base level) by default",
+            "Immediate (elastic) and secondary compression settlement not included"
+        ],
+        "output_units": {
+            "settlement_mm": "mm",
+            "applied_pressure_kpa": "kPa",
+            "net_pressure_kpa": "kPa"
+        }
+    },
+
+    # 7. Project CPT retrieval and CPT-based pile capacity (core.geoai.tools_cpt_piles)
+    "list_project_cpts": {
+        "method": "Deterministic read of CPT soundings from the GeoCore workspace (SoilProfile CPT tables, PCPTProcessing, AGS SCPT)",
+        "standard": "GeoCore project data; units taken from column headers only",
+        "assumptions": [
+            "CPT channels normalised to depth [m], qc [MPa], fs [kPa], u2 [kPa] by deterministic unit conversion",
+            "Columns without a recognised unit are not used and are reported"
+        ],
+        "output_units": {"count": "-", "depth_range_m": "m", "groundwater_depth_m": "m"}
+    },
+    "get_cpt_summary": {
+        "method": "Robertson (2009) Ic / soil behaviour type intervals (core.geoai.cpt.CPTSounding) with deterministic merging of thin intervals",
+        "standard": "Robertson (1990, 2009) CPT soil behaviour type; ISO 22476-1 CPT channels",
+        "assumptions": [
+            "Stress normalisation with unit weight 18.5 kN/m3; groundwater from the CPT source, else at ground level",
+            "Intervals thinner than min_layer_thickness_m are merged into the thicker neighbour",
+            "SBT layering is an interpretation of the CPT, not a borehole log"
+        ],
+        "output_units": {"depth_range_m": "m", "median_spacing_m": "m", "groundwater_depth_m": "m",
+                         "qc_mpa": "MPa", "fs_kpa": "kPa", "u2_kpa": "kPa", "ic_mean": "-"}
+    },
+    "calculate_pile_capacity_from_cpt": {
+        "method": "CPT-based axial pile capacity: LCPC (Bustamante & Gianeselli 1982), Koppejan, or De Beer (Belgian practice) via Groundhog LCPCAxcapCalculation / KoppejanCalculation / DeBeerCalculation",
+        "standard": "Bustamante & Gianeselli (1982) ESOPT-II; Koppejan pile-type factors (Groundhog documentation); De Beer / Huybrechts et al. (2016) Belgian practice",
+        "assumptions": [
+            "Single circular pile in axial compression; ultimate (unfactored) shaft, base and total resistance",
+            "Pile-type factors: LCPC categories I/II and IA/IIA/IIB; Koppejan alpha_p/alpha_s table; De Beer alpha_s/alpha_b user-specified",
+            "Soil layering from explicit soil_layers or from CPT Robertson SBT intervals",
+            "Resistance/partial factors, group effects, negative skin friction and settlement are not included"
+        ],
+        "output_units": {
+            "ultimate_shaft_resistance_kn": "kN",
+            "ultimate_base_resistance_kn": "kN",
+            "ultimate_total_resistance_kn": "kN",
+            "diameter_m": "m",
+            "tip_depth_m": "m",
+            "base_area_m2": "m2",
+            "qb_at_tip_mpa": "MPa",
+            "shaft_resistance_kn": "kN"
+        }
     }
 }
 

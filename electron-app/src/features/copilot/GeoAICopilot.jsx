@@ -10,13 +10,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Bot, Send, X, Terminal, ArrowRight, CheckCircle, 
-    RefreshCw, Zap
+    RefreshCw, Zap, Square
 } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { Button } from '../../components/ui/Button';
 import { api } from '../../api/client';
 import { buildChatHistory } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
+import { finalTurnText, stopGeoAIChat, streamGeoAIChat, thinkingLabel, useElapsedSeconds } from './geoaiStream';
 
 export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, currentContext }) => {
     const [messages, setMessages] = useState([
@@ -35,6 +36,8 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
+    const abortRef = useRef(null);
+    const elapsedSeconds = useElapsedSeconds(isLoading);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -69,76 +72,45 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
         if (!textToSend) setInputValue('');
         setIsLoading(true);
 
-        let aiMessageId = null;
+        const aiMessageId = Date.now() + 1;
+        const setAiMessage = (fields) => setMessages(prev => prev.map(msg =>
+            msg.id === aiMessageId ? { ...msg, ...fields } : msg
+        ));
+        const controller = new AbortController();
+        abortRef.current = controller;
+
         try {
-            const streamResponse = await api.geoaiChatStream(text, currentContext, history);
-            const reader = streamResponse.body.getReader();
-            const decoder = new TextDecoder();
-            let sseBuffer = '';
-            
-            aiMessageId = Date.now() + 1;
-            let accumulatedText = '';
-            let executedTool = null;
-            let toolParameters = null;
-            let toolResults = null;
-            
+            let shownText = '';
+            const turnPromise = streamGeoAIChat({
+                text,
+                context: currentContext,
+                history,
+                signal: controller.signal,
+                onText: (t) => {
+                    shownText = t;
+                    setAiMessage({ text: t });
+                },
+            });
             setMessages(prev => [...prev, {
                 id: aiMessageId,
                 sender: 'ai',
                 text: '',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }]);
-            
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                
-                sseBuffer += decoder.decode(value, { stream: true });
-                const lines = sseBuffer.split('\n');
-                sseBuffer = lines.pop(); // an event split across chunks completes on the next read
-                
-                for (const line of lines) {
-                    if (!line.startsWith('data: ')) continue;
-                    try {
-                        const eventData = JSON.parse(line.slice(6));
-                        
-                        if (eventData.type === 'token' && eventData.content) {
-                            accumulatedText += eventData.content;
-                            setMessages(prev => prev.map(msg =>
-                                msg.id === aiMessageId ? { ...msg, text: accumulatedText } : msg
-                            ));
-                        } else if (eventData.type === 'tool_start') {
-                            executedTool = eventData.tool_name;
-                            toolParameters = eventData.tool_args;
-                            setMessages(prev => prev.map(msg =>
-                                msg.id === aiMessageId 
-                                    ? { ...msg, text: `Calculating with **${eventData.tool_name}**...` }
-                                    : msg
-                            ));
-                        } else if (eventData.type === 'tool_result') {
-                            toolResults = eventData.tool_result;
-                            accumulatedText = '';
-                        } else if (eventData.type === 'done') {
-                            setMessages(prev => prev.map(msg =>
-                                msg.id === aiMessageId 
-                                    ? { 
-                                        ...msg, 
-                                        text: accumulatedText || msg.text,
-                                        executedTool,
-                                        parameters: toolParameters,
-                                        results: toolResults
-                                    } 
-                                    : msg
-                            ));
-                        }
-                    } catch (parseErr) { }
-                }
+            const turn = await turnPromise;
+            setAiMessage({
+                text: finalTurnText(turn, shownText),
+                executedTool: turn.executedTool,
+                parameters: turn.parameters,
+                results: turn.results
+            });
+        } catch {
+            if (controller.signal.aborted) {
+                setAiMessage({ text: '_Stopped._' });
+                return;
             }
-        } catch (streamErr) {
             // Drop the empty streaming placeholder so the fallback reply doesn't sit beside it.
-            if (aiMessageId !== null) {
-                setMessages(prev => prev.filter(msg => msg.id !== aiMessageId));
-            }
+            setMessages(prev => prev.filter(msg => msg.id !== aiMessageId));
             try {
                 const res = await api.geoaiChat(text, currentContext, history);
                 setMessages(prev => [...prev, {
@@ -160,9 +132,15 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                 }]);
             }
         } finally {
+            abortRef.current = null;
             setIsLoading(false);
         }
     };
+
+    const handleStop = () => stopGeoAIChat(abortRef.current);
+
+    // Stop a running answer when the drawer unmounts, so the model is not left computing.
+    useEffect(() => () => abortRef.current?.abort(), []);
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -230,7 +208,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                                         {isLoading ? (
                                             <>
                                                 <RefreshCw size={12} className="animate-spin text-primary" />
-                                                <span>Calculating...</span>
+                                                <span>{thinkingLabel(elapsedSeconds)}</span>
                                             </>
                                         ) : (
                                             <span>No response received.</span>
@@ -291,7 +269,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                     {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
                         <div className="flex items-center gap-2 p-2 rounded bg-background border border-border w-fit text-[11px] text-text-muted">
                             <RefreshCw size={12} className="animate-spin text-primary" />
-                            <span>Calculating...</span>
+                            <span>{thinkingLabel(elapsedSeconds)}</span>
                         </div>
                     )}
                     <div ref={messagesEndRef} />
@@ -308,13 +286,26 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                             rows={1}
                             className="flex-1 resize-none bg-surface border border-border rounded-md px-2.5 py-1.5 text-xs text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/15 transition-[border-color,box-shadow] duration-200 max-h-20"
                         />
-                        <button
-                            onClick={() => handleSendMessage()}
-                            disabled={!inputValue.trim() || isLoading}
-                            className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
-                        >
-                            <Send size={13} />
-                        </button>
+                        {isLoading ? (
+                            <button
+                                onClick={handleStop}
+                                title="Stop generating"
+                                aria-label="Stop generating"
+                                className="p-2 bg-surface border border-border text-text-main rounded hover:bg-background transition-colors shrink-0"
+                            >
+                                <Square size={11} className="fill-current" />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => handleSendMessage()}
+                                disabled={!inputValue.trim()}
+                                title="Send"
+                                aria-label="Send"
+                                className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
+                            >
+                                <Send size={13} />
+                            </button>
+                        )}
                     </div>
                 </div>
             </motion.div>

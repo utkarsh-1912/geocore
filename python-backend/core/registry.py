@@ -268,8 +268,9 @@ class Registry:
                 df[numeric_df.columns] = numeric_df.fillna(0)
                 
             profile = SoilProfile(df)
-            obj_id = state_manager.store(profile, "SoilProfile")
-            
+            # Keep the user-facing name (e.g. the uploaded file name 'CPT-03.xlsx') so GeoAI can find it by id.
+            obj_id = state_manager.store(profile, "SoilProfile", name=args.get('name'))
+
             return {
                 "type": "SoilProfile",
                 "id": obj_id,

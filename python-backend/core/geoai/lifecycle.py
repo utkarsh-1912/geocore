@@ -127,19 +127,31 @@ class ModelLifecycleManager:
                 return False
 
             elapsed = time.time() - self._last_access_time
-            if elapsed >= self.idle_timeout_seconds:
-                logger.info(f"GeoAI: Model idle for {elapsed:.1f}s. Auto-unloading to free desktop memory.")
-                self.unload()
-                return True
-        return False
+            if elapsed < self.idle_timeout_seconds:
+                return False
+            logger.info(f"GeoAI: Model idle for {elapsed:.1f}s. Auto-unloading to free desktop memory.")
+        self.unload()
+        return True
+
+    def cancel(self) -> Dict[str, Any]:
+        """Aborts the GeoAI request in progress, if any (the model stays loaded)."""
+        with self._lock:
+            provider = self._provider
+        if provider is not None:
+            provider.cancel()
+        return {"status": "cancelled" if provider is not None else "idle"}
 
     def unload(self) -> Dict[str, Any]:
         """Explicitly unloads the model from RAM / VRAM."""
         with self._lock:
-            if self._provider is not None:
-                if hasattr(self._provider, "unload"):
-                    self._provider.unload()
-                self._provider = None
+            provider, self._provider = self._provider, None
+        # Outside the manager lock: provider.unload() waits for a running generation, and
+        # status/memory requests must not queue behind it (each holds a server thread).
+        if provider is not None and hasattr(provider, "unload"):
+            # Stop that generation first: otherwise a model switch waits minutes for it, while
+            # the next request already loads the new model next to the old one in RAM.
+            provider.cancel()
+            provider.unload()
 
         return {
             "status": "unloaded",

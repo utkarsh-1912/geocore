@@ -104,11 +104,12 @@ export const api = {
         return handleResponse(response);
     },
 
-    geoaiChatStream: async (prompt, context = {}, history = []) => {
+    geoaiChatStream: async (prompt, context = {}, history = [], signal = undefined) => {
         const response = await fetch(`${API_BASE}/api/geoai/chat?stream=true`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt, context, history }),
+            signal,
         });
         if (!response.ok) {
             throw new Error(`GeoAI stream request failed: ${response.status}`);
@@ -169,6 +170,14 @@ export const api = {
     geoaiUnloadModel: async () => {
         const response = await fetchWithTimeout('/api/geoai/unload', {
             method: 'POST'
+        });
+        return handleResponse(response);
+    },
+
+    geoaiCancel: async () => {
+        const response = await fetchWithTimeout('/api/geoai/cancel', {
+            method: 'POST',
+            timeout: 5000
         });
         return handleResponse(response);
     },

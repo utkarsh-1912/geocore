@@ -194,12 +194,12 @@ def _table_to_cpts(df: pd.DataFrame, source: Dict[str, Any], default_id: str,
         except GeoAIValidationError as e:
             channels[f"{key}_kpa"] = np.full(len(df), np.nan)
             notes.append(f"{key} channel not used: {e.message}.")
-    table = pd.DataFrame(channels)
+    table = pd.DataFrame(channels, index=df.index)
 
     gw_col = next((c for c in cols if "water" in split_header(c)[0] and any(
         w in split_header(c)[0] for w in ("level", "table", "depth"))), None) or _find(cols, {"gwt", "groundwater"})
     east_col, north_col, gl_col = _find(cols, _EAST_BASES), _find(cols, _NORTH_BASES), _find(cols, _GL_BASES)
-    id_col = _find([c for c in cols if df[c].dtype == object], _ID_BASES)
+    id_col = _find([c for c in cols if not pd.api.types.is_numeric_dtype(df[c])], _ID_BASES)
 
     groups = [(default_id, df.index)]
     if id_col is not None:
@@ -241,7 +241,8 @@ def _finalise(cpt_id, table, source, location, gw, gw_src, notes) -> Optional[Pr
     if dup:
         notes.append(f"{dup} duplicate depth rows removed (first kept).")
         table = table.drop_duplicates("depth_m", keep="first")
-    return ProjectCPT(cpt_id=str(cpt_id), data=table.reset_index(drop=True), source=source,
+    cpt_id = re.sub(r"\.(xlsx?|csv|ags|gef|txt)$", "", str(cpt_id).strip(), flags=re.I)
+    return ProjectCPT(cpt_id=cpt_id, data=table.reset_index(drop=True), source=source,
                       location=location, groundwater_depth_m=gw, groundwater_source=gw_src, notes=notes)
 
 

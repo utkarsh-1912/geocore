@@ -3,17 +3,24 @@
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Body
 from .registry import registry
-from .warmup import wait_for_warmup_async
 import shutil
 import os
 import tempfile
 import json
+import threading
+
+# The endpoints below are plain `def` so FastAPI runs them on its thread pool: a Groundhog
+# calculation, plot or file parse must never run on the event loop, where it stalls every
+# other request (health checks, GeoAI streaming) and the app appears frozen. Calculations
+# stay one at a time, as they were while they ran on the event loop, because matplotlib's
+# pyplot and the saved-object store are not thread-safe.
+_execute_lock = threading.Lock()
 
 def create_dynamic_router():
     router = APIRouter()
 
     @router.post("/execute")
-    async def execute_module_function(request: dict):
+    def execute_module_function(request: dict):
         module_id = request.get("moduleId")
         function_id = request.get("functionId")
         args = request.get("args", {})
@@ -21,9 +28,9 @@ def create_dynamic_router():
         if not function_id:
              raise HTTPException(status_code=400, detail="Function ID is required")
              
-        # Execute via registry
-        await wait_for_warmup_async()
-        result = registry.execute_function(module_id, function_id, args)
+        # Execute via registry (it waits for the start-up warm-up itself)
+        with _execute_lock:
+            result = registry.execute_function(module_id, function_id, args)
         
         if "error" in result:
              if result.get("status") == "ValidationError":
@@ -58,7 +65,7 @@ def create_dynamic_router():
         return details
 
     @router.post("/objects/upload")
-    async def upload_object(type_name: str, file: UploadFile = File(...)):
+    def upload_object(type_name: str, file: UploadFile = File(...)):
         if type_name not in ["SoilProfile", "AGSConverter"]:
             raise HTTPException(status_code=400, detail="Only SoilProfile and AGSConverter upload is currently supported")
         
@@ -71,8 +78,8 @@ def create_dynamic_router():
             
             # Execute SoilProfile creation through registry
             # We treat it as a function execution
-            await wait_for_warmup_async()
-            result = registry.execute_function("general", "SoilProfile", {"data": tmp_path, "name": file.filename})
+            with _execute_lock:
+                result = registry.execute_function("general", "SoilProfile", {"data": tmp_path, "name": file.filename})
             
             # Clean up temp file (registry loads it into memory/df)
             os.unlink(tmp_path)
@@ -82,7 +89,7 @@ def create_dynamic_router():
             raise HTTPException(status_code=500, detail=str(e))
 
     @router.post("/objects/create")
-    async def create_object(type_name: str, data: dict = Body(...)):
+    def create_object(type_name: str, data: dict = Body(...)):
         if type_name != "SoilProfile":
              raise HTTPException(status_code=400, detail="Only SoilProfile creation is currently supported")
         
@@ -90,8 +97,8 @@ def create_dynamic_router():
             # Execute SoilProfile creation through registry
             # data should contain 'raw_data' (list of dicts) or conform to what registry expects
             # For consistency, we expect the frontend to send { "raw_data": [...] } or similar args
-            await wait_for_warmup_async()
-            result = registry.execute_function("general", "SoilProfile", data)
+            with _execute_lock:
+                result = registry.execute_function("general", "SoilProfile", data)
             return result
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
@@ -102,7 +109,7 @@ def create_dynamic_router():
         return schema_manager.get_overrides()
 
     @router.post("/schema/override")
-    async def save_override(data: dict = Body(...)):
+    def save_override(data: dict = Body(...)):
         from .schema_manager import schema_manager
         # data: { functionId, fieldName, metadata }
         func_id = data.get("functionId")
@@ -115,7 +122,7 @@ def create_dynamic_router():
         return schema_manager.save_override(func_id, field_name, metadata)
 
     @router.post("/assets/upload")
-    async def upload_asset_file(file: UploadFile = File(...)):
+    def upload_asset_file(file: UploadFile = File(...)):
         from .schema_manager import schema_manager
         try:
             # Save file

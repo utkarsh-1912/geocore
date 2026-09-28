@@ -184,7 +184,9 @@ def test_agent_multi_tool_chaining_and_provenance():
     mock_provider = ChainedMockProvider()
     agent = GeoAIAgent(provider=mock_provider, registry=tool_registry)
 
-    response = agent.run("Evaluate soil dynamic modulus and surface point load stress distribution.")
+    # The inputs are stated: the agent refuses tool calls carrying values the user never gave.
+    response = agent.run("Evaluate soil dynamic modulus for Vs = 250 m/s and gamma = 18 kN/m3, and the "
+                         "stress distribution under a 500 kN point load at z = 4 m, r = 2 m.")
     
     assert response.finish_reason == "complete"
     assert "Gmax" in response.response_text

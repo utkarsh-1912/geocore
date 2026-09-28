@@ -208,13 +208,13 @@ def test_run_stream_direct_answer():
     agent = GeoAIAgent(provider, registry)
 
     events = list(agent.run_stream("Hi"))
-    
-    assert len(events) == 3
+
+    # A direct answer goes through AnswerStreamCleaner, which releases whole sentences, so the
+    # two deltas of one unterminated sentence arrive as a single token on flush.
+    assert len(events) == 2
     assert events[0].type == "token"
-    assert events[0].content == "Hello "
-    assert events[1].type == "token"
-    assert events[1].content == "World"
-    assert events[2].type == "done"
+    assert events[0].content == "Hello World"
+    assert events[1].type == "done"
 
 def test_run_stream_tool_call_flow():
     tool_call = ToolCall(id="stream_t1", function_name="calc_tool", arguments={"v": 1})

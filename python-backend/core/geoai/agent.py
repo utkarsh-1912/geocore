@@ -26,6 +26,7 @@ from .tool_registry import GeoAIToolRegistry
 from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
 from .exceptions import GeoAIValidationError
+from .argument_grounding import missing_inputs_message, ungrounded_arguments
 
 logger = logging.getLogger(__name__)
 
@@ -92,6 +93,44 @@ def history_to_messages(history: Optional[List[Dict[str, Any]]]) -> List[ChatMes
             if content:
                 messages.append(ChatMessage(role=MessageRole.ASSISTANT, content=content))
     return messages
+
+
+def _grounding_text(messages: List[ChatMessage]) -> str:
+    """
+    Text a tool argument may legitimately come from: the system prompt (project context), the
+    user's turns, tool results and earlier [Calculation record]s. Assistant prose is excluded, so
+    a number the model itself wrote (e.g. a typical range) cannot ground its own tool call.
+    """
+    parts = []
+    for m in messages:
+        text = m.content or ""
+        if m.role == MessageRole.ASSISTANT:
+            text = "\n".join(line for line in text.splitlines() if line.startswith("[Calculation record]"))
+        parts.append(text)
+    return "\n".join(parts)
+
+
+def _result_summary(tools_used: List[Dict[str, Any]]) -> str:
+    """Deterministic answer from tool results, used when the model writes no explanation."""
+    lines = []
+    for t in tools_used:
+        wrapper = t.get("result") if isinstance(t.get("result"), dict) else {}
+        if wrapper.get("status") == "error":
+            lines.append(f"**{t.get('name')}** failed: {wrapper.get('error')}")
+            continue
+        res = wrapper.get("result", wrapper)
+        if not isinstance(res, dict):
+            continue
+        prov = res.get("_provenance") if isinstance(res.get("_provenance"), dict) else {}
+        units = prov.get("output_units") if isinstance(prov.get("output_units"), dict) else {}
+        values = []
+        for k, v in res.items():
+            if k.startswith("_"):
+                continue
+            unit = units.get(k)
+            values.append(f"{k} = {_compact_value(v)}" + (f" {unit}" if unit and unit != "-" else ""))
+        lines.append(f"**{t.get('name')}** result: " + ", ".join(values))
+    return "\n".join(lines)
 
 
 def _tool_selection_query(user_message: str, history: Optional[List[Dict[str, Any]]]) -> str:
@@ -209,8 +248,26 @@ class GeoAIAgent:
         except Exception as e:
             return {"status": "error", "tool_name": tool_call.function_name, "error": f"Execution failed: {str(e)}"}
 
+    def _clarify_invented_arguments(self, tool_calls: List[ToolCall], messages: List[ChatMessage]) -> Optional[str]:
+        """
+        A clarification when a call carries numeric inputs the user never gave (AGENTS.md §5,
+        §17); such a call is not executed. None when every call is grounded.
+        """
+        grounding = _grounding_text(messages)
+        for tc in tool_calls:
+            tool = self._registry.get_tool(tc.function_name)
+            if tool is None:
+                continue  # unknown tools fail in the registry with their own error
+            args = {k: v for k, v in (tc.arguments or {}).items() if v is not None}
+            invented = ungrounded_arguments(tool.input_model, args, grounding)
+            if invented:
+                logger.info(f"GeoAI: not running {tc.function_name}; ungrounded inputs {invented}")
+                return missing_inputs_message(tc.function_name, tool.input_model, invented)
+        return None
+
     def run(self, user_message: str, context: Optional[Dict[str, Any]] = None,
             history: Optional[List[Dict[str, Any]]] = None) -> AgentResponse:
+        self._provider.clear_cancel()
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
         
@@ -230,6 +287,11 @@ class GeoAIAgent:
                     usage=response.usage
                 )
             
+            clarification = self._clarify_invented_arguments(response.tool_calls, messages)
+            if clarification:
+                return AgentResponse(response_text=clarification, tools_used=tools_used,
+                                     finish_reason='clarification', usage=response.usage)
+
             assistant_msg = ChatMessage(role=MessageRole.ASSISTANT, content=response.content, tool_calls=response.tool_calls)
             messages.append(assistant_msg)
             
@@ -254,6 +316,7 @@ class GeoAIAgent:
 
     def run_stream(self, user_message: str, context: Optional[Dict[str, Any]] = None,
                    history: Optional[List[Dict[str, Any]]] = None) -> Iterator[AgentStreamEvent]:
+        self._provider.clear_cancel()
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
         
@@ -286,6 +349,12 @@ class GeoAIAgent:
                 yield AgentStreamEvent(type='done')
                 return
                 
+            clarification = self._clarify_invented_arguments(tool_calls, messages)
+            if clarification:
+                yield AgentStreamEvent(type='token', content=clarification)
+                yield AgentStreamEvent(type='done')
+                return
+
             assistant_msg = ChatMessage(role=MessageRole.ASSISTANT, content=full_content, tool_calls=tool_calls)
             messages.append(assistant_msg)
             
@@ -299,8 +368,9 @@ class GeoAIAgent:
                 messages.append(tool_result_msg)
                 
             # Explanation round: stream the prose, released sentence by sentence through the
-            # same guards clean_answer applies (repeats, echoed records, result units).
-            yield from self._stream_answer(messages, tools_used)
+            # same guards clean_answer applies (repeats, echoed records, result units). The
+            # offered tools stay in the prompt so the provider can reuse its prompt cache.
+            yield from self._stream_answer(messages, tools_used, tools_for_model)
             yield AgentStreamEvent(type='done')
             return
 
@@ -309,13 +379,16 @@ class GeoAIAgent:
         yield AgentStreamEvent(type='token', content=clean_answer(final.content, tools_used) or "Maximum tool rounds reached.")
         yield AgentStreamEvent(type='done')
 
-    def _stream_answer(self, messages: List[ChatMessage], tools_used: List[Dict[str, Any]]) -> Iterator[AgentStreamEvent]:
+    def _stream_answer(self, messages: List[ChatMessage], tools_used: List[Dict[str, Any]],
+                       tools_for_model: Optional[List[dict]] = None) -> Iterator[AgentStreamEvent]:
         cleaner = AnswerStreamCleaner(tools_used)
-        for chunk in self._provider.generate_stream(messages=messages, tools=None, temperature=0.1,
-                                                    max_tokens=self._answer_max_tokens):
+        wrote = False
+        for chunk in self._provider.generate_answer_stream(messages=messages, tools=tools_for_model,
+                                                           temperature=0.1, max_tokens=self._answer_max_tokens):
             text = cleaner.feed(chunk.delta_content)
             if text:
+                wrote = True
                 yield AgentStreamEvent(type='token', content=text)
-        text = cleaner.flush()
+        text = cleaner.flush() or ("" if wrote else _result_summary(tools_used))
         if text:
             yield AgentStreamEvent(type='token', content=text)

@@ -264,3 +264,11 @@ def index_document_text(doc_id: str, title: str, content: str):
         "indexed_chunks": chunks,
         "status": "indexed"
     }
+
+
+# 15-16. Shallow foundation bearing capacity and settlement (Groundhog stateful workflows as one-shot tools)
+import core.geoai.tools_shallow  # noqa: E402,F401  (registers calculate_shallow_foundation_capacity / _settlement)
+
+
+# 17-19. Project CPT retrieval and CPT-based axial pile capacity (Groundhog LCPC / Koppejan / De Beer)
+import core.geoai.tools_cpt_piles  # noqa: E402,F401  (registers list_project_cpts, get_cpt_summary, calculate_pile_capacity_from_cpt)

@@ -4,10 +4,13 @@
 FastAPI Endpoints for GeoAI Tool Discovery, Schema Export, Tool Invocation,
 Agent Chat (with SSE streaming), Model Registry Management, and Memory Lifecycle.
 """
+import asyncio
+import json
 import logging
 from typing import Dict, Any, Optional
-from fastapi import APIRouter, HTTPException, Query, Body, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Query, Body, BackgroundTasks, Request
 from fastapi.responses import StreamingResponse
+from starlette.concurrency import run_in_threadpool
 
 from core.geoai.tool_registry import tool_registry
 from core.geoai.slm_schema_generator import generate_openai_tool_definitions, generate_gemini_tool_definitions
@@ -16,6 +19,7 @@ from core.geoai.lifecycle import lifecycle_manager
 from core.geoai.model_downloader import list_available_models, download_model
 from core.geoai.model_config import load_config, save_config
 from core.geoai.agent import GeoAIAgent
+from core.geoai.model_provider import GenerationCancelled
 
 # Ensure standard tool definitions are registered
 import core.geoai.tool_definitions
@@ -23,6 +27,9 @@ import core.geoai.tool_definitions
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/geoai", tags=["GeoAI"])
+
+# How often a streaming chat checks whether its client is still connected (seconds).
+DISCONNECT_POLL_S = 0.5
 
 
 def _get_agent() -> GeoAIAgent:
@@ -88,7 +95,7 @@ def invoke_geoai_tool(payload: Dict[str, Any] = Body(...)):
 # --- Agent Chat Endpoint (with optional SSE streaming) ---
 
 @router.post("/chat")
-def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False)):
+def geoai_chat(request: Request, payload: Dict[str, Any] = Body(...), stream: bool = Query(False)):
     """
     GeoAI Agent chat endpoint.
     Uses the configured ModelProvider (llama.cpp SLM or heuristic fallback)
@@ -115,14 +122,37 @@ def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False))
             try:
                 for event in agent.run_stream(user_message=prompt, context=context, history=history):
                     yield event.to_sse()
+            except GenerationCancelled as e:
+                yield f"data: {json.dumps({'type': 'cancelled', 'content': str(e)})}\n\n"
             except Exception as e:
                 logger.error(f"Streaming error in GeoAI chat: {e}")
-                import json
-                err_data = json.dumps({"type": "error", "content": str(e)})
-                yield f"data: {err_data}\n\n"
+                yield f"data: {json.dumps({'type': 'error', 'content': str(e)})}\n\n"
+
+        async def disconnect_aware_stream():
+            # The server only notices a closed connection when it next sends a chunk, and the
+            # model may compute for minutes before the first one (prompt processing on a laptop
+            # CPU). Poll for the disconnect meanwhile and abort the model call, so a closed
+            # window or Stop does not leave the CPU busy and the model locked for no one.
+            events = event_generator()
+            finished = False
+            try:
+                while True:
+                    pending = asyncio.ensure_future(run_in_threadpool(next, events, None))
+                    while not pending.done():
+                        await asyncio.wait({pending}, timeout=DISCONNECT_POLL_S)
+                        if not pending.done() and await request.is_disconnected():
+                            return
+                    chunk = pending.result()
+                    if chunk is None:
+                        finished = True
+                        return
+                    yield chunk
+            finally:
+                if not finished:
+                    lifecycle_manager.cancel()
 
         return StreamingResponse(
-            event_generator(),
+            disconnect_aware_stream(),
             media_type="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",
@@ -131,8 +161,17 @@ def geoai_chat(payload: Dict[str, Any] = Body(...), stream: bool = Query(False))
             }
         )
     else:
-        response = agent.run(user_message=prompt, context=context, history=history)
+        try:
+            response = agent.run(user_message=prompt, context=context, history=history)
+        except GenerationCancelled as e:
+            raise HTTPException(status_code=409, detail=str(e))
         return response.to_dict()
+
+
+@router.post("/cancel")
+def cancel_geoai_chat():
+    """Stops the GeoAI request in progress (Stop button); the model stays loaded."""
+    return lifecycle_manager.cancel()
 
 
 # --- Model Management & Memory Lifecycle Endpoints ---

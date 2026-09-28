@@ -403,7 +403,7 @@ def _number_in_text(value: float, numbers: List[Tuple[float, Optional[str]]], un
     return False
 
 
-def _value_grounded(value: Any, numbers: List[Tuple[float, Optional[str]]], unit: str) -> bool:
+def value_grounded(value: Any, numbers: List[Tuple[float, Optional[str]]], unit: str) -> bool:
     """Is a numeric argument value traceable to a number stated in the prompt/context?"""
     if not _is_number(value):
         return isinstance(value, (str, bool))  # textual/boolean flags are not numeric inventions
@@ -661,10 +661,10 @@ def score_turn(
             if ex.provided_params is not None:
                 if name in ex.provided_params:
                     continue
-                if name in ex.missing_params or not _value_grounded(norm, numbers, field_unit(fi) if fi else "-"):
+                if name in ex.missing_params or not value_grounded(norm, numbers, field_unit(fi) if fi else "-"):
                     invented.append(name)
             else:
-                if not _value_grounded(norm, numbers, field_unit(fi) if fi else "-") and not _value_grounded(raw, numbers, "-"):
+                if not value_grounded(norm, numbers, field_unit(fi) if fi else "-") and not value_grounded(raw, numbers, "-"):
                     invented.append(name)
         sb.invented_params = sorted(invented)
         if invented or sb.unknown_params:
