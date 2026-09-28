@@ -272,6 +272,7 @@ def test_warmup_gate_blocks_until_task_done(monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_state_manager_restores_saved_objects_on_first_access(tmp_path, monkeypatch):
+    from core.paths import CONFIG_DIR_ENV_VAR
     from core.state import StateManager
 
     saved = [{
@@ -279,7 +280,7 @@ def test_state_manager_restores_saved_objects_on_first_access(tmp_path, monkeypa
         "data": [{"Depth from [m]": 0.0, "Depth to [m]": 2.0, "Soil type": "SAND"}],
     }]
     (tmp_path / "saved_objects.json").write_text(json.dumps(saved), encoding="utf-8")
-    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv(CONFIG_DIR_ENV_VAR, str(tmp_path))
 
     manager = StateManager()
     assert manager._loaded is False and manager._objects_store == {}
