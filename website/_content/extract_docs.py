@@ -1699,7 +1699,8 @@ def geoai_model_benchmarks_markdown() -> str:
         if m.get("mean_score") is not None:
             chart_rows.append((name, m["mean_score"]))
     chart_rows.sort(key=lambda row: row[1], reverse=True)
-    out += ["", _bar_chart_html("Mean score by model", chart_rows)]
+    max_score = chart_rows[0][1] if chart_rows else 1.0
+    out += ["", _bar_chart_html("Mean score by model", chart_rows, max_value=max_score)]
     cats = sorted({k for r in lb["rows"] for k in (r.get("per_category") or {}) if not k.startswith("turn:")})
     if cats:
         out += ["", "Strict pass rate by category:", "",

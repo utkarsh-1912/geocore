@@ -97,32 +97,32 @@ Run `cpu-test40`: 40 examples from the `test` split (stratified subset of 40), d
   <p class="bar-chart__title">Mean score by model</p>
   <div class="bar-chart__row">
     <span class="bar-chart__label">Qwen3 4B Instruct 2507</span>
-    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:75.5%"></span></span>
+    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:100.0%"></span></span>
     <span class="bar-chart__value">0.755</span>
   </div>
   <div class="bar-chart__row">
     <span class="bar-chart__label">Qwen3 1.7B</span>
-    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:72.0%"></span></span>
+    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:95.4%"></span></span>
     <span class="bar-chart__value">0.720</span>
   </div>
   <div class="bar-chart__row">
     <span class="bar-chart__label">Qwen3.5 2B</span>
-    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:69.5%"></span></span>
+    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:92.1%"></span></span>
     <span class="bar-chart__value">0.695</span>
   </div>
   <div class="bar-chart__row">
     <span class="bar-chart__label">Phi-4-mini Instruct</span>
-    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:68.1%"></span></span>
+    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:90.2%"></span></span>
     <span class="bar-chart__value">0.681</span>
   </div>
   <div class="bar-chart__row">
     <span class="bar-chart__label">Qwen2.5 1.5B Instruct</span>
-    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:65.0%"></span></span>
+    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:86.1%"></span></span>
     <span class="bar-chart__value">0.650</span>
   </div>
   <div class="bar-chart__row">
     <span class="bar-chart__label">Keyword heuristic (no model)</span>
-    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:31.6%"></span></span>
+    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:41.9%"></span></span>
     <span class="bar-chart__value">0.316</span>
   </div>
 </div>
