@@ -1655,7 +1655,7 @@ def _bar_chart_html(title: str, rows: List[Tuple[str, float]], max_value: float 
         lines += [
             '  <div class="bar-chart__row">',
             f'    <span class="bar-chart__label">{html.escape(label)}</span>',
-            f'    <span class="bar-chart__track"><span class="bar-chart__fill" style="width:{pct:.1f}%"></span></span>',
+            f'    <span class="bar-chart__track" style="--w:{pct:.1f}%"></span>',
             f'    <span class="bar-chart__value">{html.escape(value_fmt.format(value))}</span>',
             '  </div>',
         ]
