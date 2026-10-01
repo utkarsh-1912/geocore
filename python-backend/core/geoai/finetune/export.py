@@ -167,29 +167,6 @@ def annotate(lora_gguf: Path, base_results: Path, candidate_results: Path) -> Di
 # Conversions (GPU box / llama.cpp checkout)
 # =====================================================================
 
-def _ensure_adapter_bin(adapter_dir: Path) -> None:
-    """Convert ``adapter_model.safetensors`` to ``adapter_model.bin`` if needed.
-
-    Many versions of llama.cpp's ``convert_lora_to_gguf.py`` only load
-    ``adapter_model.bin`` (``torch.load``).  Modern PEFT / Unsloth always saves
-    ``adapter_model.safetensors``.  We convert on the fly so the export step
-    works with any llama.cpp checkout.
-    """
-    safetensors_path = Path(adapter_dir) / "adapter_model.safetensors"
-    bin_path = Path(adapter_dir) / "adapter_model.bin"
-    if bin_path.is_file() or not safetensors_path.is_file():
-        return  # nothing to do
-    try:
-        from safetensors.torch import load_file
-        import torch
-    except ImportError:
-        print("safetensors or torch not installed; cannot convert adapter_model.safetensors -> .bin", flush=True)
-        return
-    print(f"Converting {safetensors_path.name} -> {bin_path.name} for llama.cpp", flush=True)
-    state_dict = load_file(str(safetensors_path))
-    torch.save(state_dict, str(bin_path))
-
-
 def convert_lora_to_gguf(adapter_dir: Path, llama_cpp_dir: Path, outfile: Path, outtype: str = "f16",
                          base_dir: Optional[Path] = None, base_model_id: Optional[str] = None) -> Path:
     """
@@ -200,7 +177,6 @@ def convert_lora_to_gguf(adapter_dir: Path, llama_cpp_dir: Path, outfile: Path, 
     if not script.is_file():
         raise FileNotFoundError(f"{script} not found (clone https://github.com/ggml-org/llama.cpp and "
                                 f"pip install -r requirements/requirements-convert_lora_to_gguf.txt)")
-    _ensure_adapter_bin(adapter_dir)
     outfile = Path(outfile)
     outfile.parent.mkdir(parents=True, exist_ok=True)
     cmd = [sys.executable, str(script), str(adapter_dir), "--outfile", str(outfile), "--outtype", outtype]
