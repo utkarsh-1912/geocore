@@ -103,6 +103,16 @@ def soil_profile_table() -> pd.DataFrame:
 
 
 def _soil_profile(df: pd.DataFrame):
+    """Wrap in Groundhog ``SoilProfile`` if the table has the required depth columns.
+
+    CPT sounding tables (``cpt_tables()``) have ``'z [m]'`` or ``'Depth [m]'``
+    instead of ``'Depth from [m]'`` / ``'Depth to [m]'``, so they are NOT soil
+    profiles and must be stored as plain DataFrames.  Only the layered borehole
+    table from ``soil_profile_table()`` carries the right columns.
+    """
+    required = "Depth from [m]"
+    if required not in df.columns:
+        return df
     try:
         from groundhog.general.soilprofile import SoilProfile
         return SoilProfile(df)
