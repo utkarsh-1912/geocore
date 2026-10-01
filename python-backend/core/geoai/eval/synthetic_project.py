@@ -103,10 +103,18 @@ def soil_profile_table() -> pd.DataFrame:
 
 
 def _soil_profile(df: pd.DataFrame):
+    """Wrap in Groundhog ``SoilProfile`` only if the table has the required columns.
+
+    CPT sounding tables use ``'z [m]'`` or ``'Depth [m]'`` — not the
+    ``'Depth from [m]'`` that ``SoilProfile`` requires — so they stay as plain
+    DataFrames.
+    """
+    if "Depth from [m]" not in df.columns:
+        return df
     try:
         from groundhog.general.soilprofile import SoilProfile
         return SoilProfile(df)
-    except ImportError:  # pragma: no cover - Groundhog is a hard dependency of GeoCore
+    except ImportError:  # pragma: no cover
         return df
 
 
