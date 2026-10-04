@@ -62,7 +62,7 @@ Upstream documentation: [PCPT functions](https://groundhog.readthedocs.io/en/mai
 
 ## `pcpt_normalisations`
 
-<span class="gc-badge gc-available" data-geocore-function="pcpt_normalisations">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › pcpt_normalisations()](/docs/geocore/using/modules#pcpt_normalisations)
+<span class="gc-badge gc-available" data-geocore-function="pcpt_normalisations">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › PCPT Normalisation & Correction](/docs/geocore/using/modules#pcpt_normalisations)
 
 ```python
 pcpt_normalisations(
@@ -205,7 +205,7 @@ Dictionary with the following keys:
 
 ## `soilclass_robertson`
 
-<span class="gc-badge gc-available" data-geocore-function="soilclass_robertson">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › soilclass_robertson()](/docs/geocore/using/modules#soilclass_robertson)
+<span class="gc-badge gc-available" data-geocore-function="soilclass_robertson">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Robertson & Wride Soil Classification](/docs/geocore/using/modules#soilclass_robertson)
 
 ```python
 soilclass_robertson(ic_class_number, **kwargs)
@@ -237,7 +237,7 @@ Dictionary with the following keys:
 
 ## `ic_soilclass_robertson`
 
-<span class="gc-badge gc-available" data-geocore-function="ic_soilclass_robertson">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › ic_soilclass_robertson()](/docs/geocore/using/modules#ic_soilclass_robertson)
+<span class="gc-badge gc-available" data-geocore-function="ic_soilclass_robertson">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Robertson & Wride Soil Classification (Ic)](/docs/geocore/using/modules#ic_soilclass_robertson)
 
 ```python
 ic_soilclass_robertson(ic, **kwargs)
@@ -270,7 +270,7 @@ Dictionary with the following keys:
 
 ## `behaviourindex_pcpt_robertsonwride`
 
-<span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_robertsonwride">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › behaviourindex_pcpt_robertsonwride()](/docs/geocore/using/modules#behaviourindex_pcpt_robertsonwride)
+<span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_robertsonwride">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Robertson & Wride (1998) Soil Behaviour Index](/docs/geocore/using/modules#behaviourindex_pcpt_robertsonwride)
 
 ```python
 behaviourindex_pcpt_robertsonwride(
@@ -349,7 +349,7 @@ Dictionary with the following keys:
 
 ## `gmax_sand_rixstokoe`
 
-<span class="gc-badge gc-available" data-geocore-function="gmax_sand_rixstokoe">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › gmax_sand_rixstokoe()](/docs/geocore/using/modules#gmax_sand_rixstokoe)
+<span class="gc-badge gc-available" data-geocore-function="gmax_sand_rixstokoe">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Rix & Stokoe Gmax (Sand, CPT)](/docs/geocore/using/modules#gmax_sand_rixstokoe)
 
 ```python
 gmax_sand_rixstokoe(
@@ -398,7 +398,7 @@ Dictionary with the following keys:
 
 ## `gmax_clay_maynerix`
 
-<span class="gc-badge gc-available" data-geocore-function="gmax_clay_maynerix">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › gmax_clay_maynerix()](/docs/geocore/using/modules#gmax_clay_maynerix)
+<span class="gc-badge gc-available" data-geocore-function="gmax_clay_maynerix">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Mayne & Rix (1993) Gmax for Clay](/docs/geocore/using/modules#gmax_clay_maynerix)
 
 ```python
 gmax_clay_maynerix(qc, multiplier=2.78, exponent=1.335, **kwargs)
@@ -438,7 +438,7 @@ Dictionary with the following keys:
 
 ## `relativedensity_ncsand_baldi`
 
-<span class="gc-badge gc-available" data-geocore-function="relativedensity_ncsand_baldi">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › relativedensity_ncsand_baldi()](/docs/geocore/using/modules#relativedensity_ncsand_baldi)
+<span class="gc-badge gc-available" data-geocore-function="relativedensity_ncsand_baldi">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Baldi Relative Density (NC Sand)](/docs/geocore/using/modules#relativedensity_ncsand_baldi)
 
 ```python
 relativedensity_ncsand_baldi(
@@ -491,7 +491,7 @@ Dictionary with the following keys:
 
 ## `relativedensity_ocsand_baldi`
 
-<span class="gc-badge gc-available" data-geocore-function="relativedensity_ocsand_baldi">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › relativedensity_ocsand_baldi()](/docs/geocore/using/modules#relativedensity_ocsand_baldi)
+<span class="gc-badge gc-available" data-geocore-function="relativedensity_ocsand_baldi">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Baldi Relative Density (OC Sand)](/docs/geocore/using/modules#relativedensity_ocsand_baldi)
 
 ```python
 relativedensity_ocsand_baldi(
@@ -550,7 +550,7 @@ Dictionary with the following keys:
 
 ## `coneresistance_ocsand_baldi`
 
-<span class="gc-badge gc-available" data-geocore-function="coneresistance_ocsand_baldi">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › coneresistance_ocsand_baldi()](/docs/geocore/using/modules#coneresistance_ocsand_baldi)
+<span class="gc-badge gc-available" data-geocore-function="coneresistance_ocsand_baldi">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Baldi Cone Resistance (Overconsolidated Sand)](/docs/geocore/using/modules#coneresistance_ocsand_baldi)
 
 ```python
 coneresistance_ocsand_baldi(
@@ -603,7 +603,7 @@ Dictionary with the following keys:
 
 ## `relativedensity_sand_jamiolkowski`
 
-<span class="gc-badge gc-available" data-geocore-function="relativedensity_sand_jamiolkowski">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › relativedensity_sand_jamiolkowski()](/docs/geocore/using/modules#relativedensity_sand_jamiolkowski)
+<span class="gc-badge gc-available" data-geocore-function="relativedensity_sand_jamiolkowski">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Jamiolkowski Relative Density (Sand, CPT)](/docs/geocore/using/modules#relativedensity_sand_jamiolkowski)
 
 ```python
 relativedensity_sand_jamiolkowski(
@@ -665,7 +665,7 @@ Dictionary with the following keys:
 
 ## `frictionangle_sand_kulhawymayne`
 
-<span class="gc-badge gc-available" data-geocore-function="frictionangle_sand_kulhawymayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › frictionangle_sand_kulhawymayne()](/docs/geocore/using/modules#frictionangle_sand_kulhawymayne)
+<span class="gc-badge gc-available" data-geocore-function="frictionangle_sand_kulhawymayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Kulhawy & Mayne Friction Angle (Sand, CPT)](/docs/geocore/using/modules#frictionangle_sand_kulhawymayne)
 
 ```python
 frictionangle_sand_kulhawymayne(
@@ -718,7 +718,7 @@ Dictionary with the following keys:
 
 ## `undrainedshearstrength_clay_radlunne`
 
-<span class="gc-badge gc-available" data-geocore-function="undrainedshearstrength_clay_radlunne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › undrainedshearstrength_clay_radlunne()](/docs/geocore/using/modules#undrainedshearstrength_clay_radlunne)
+<span class="gc-badge gc-available" data-geocore-function="undrainedshearstrength_clay_radlunne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Rad & Lunne Undrained Shear Strength (Net qt)](/docs/geocore/using/modules#undrainedshearstrength_clay_radlunne)
 
 ```python
 undrainedshearstrength_clay_radlunne(qnet, Nk, **kwargs)
@@ -757,7 +757,7 @@ Dictionary with the following keys:
 
 ## `frictionangle_overburden_kleven`
 
-<span class="gc-badge gc-available" data-geocore-function="frictionangle_overburden_kleven">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › frictionangle_overburden_kleven()](/docs/geocore/using/modules#frictionangle_overburden_kleven)
+<span class="gc-badge gc-available" data-geocore-function="frictionangle_overburden_kleven">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Kleven (1986) Friction Angle Chart](/docs/geocore/using/modules#frictionangle_overburden_kleven)
 
 ```python
 frictionangle_overburden_kleven(
@@ -809,7 +809,7 @@ Return type: `Python dictionary with keys ['phi [deg]','sigma_m [kPa]']`
 
 ## `ocr_cpt_lunne`
 
-<span class="gc-badge gc-available" data-geocore-function="ocr_cpt_lunne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › ocr_cpt_lunne()](/docs/geocore/using/modules#ocr_cpt_lunne)
+<span class="gc-badge gc-available" data-geocore-function="ocr_cpt_lunne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Lunne OCR (CPT, Clay)](/docs/geocore/using/modules#ocr_cpt_lunne)
 
 ```python
 ocr_cpt_lunne(Qt, Bq=nan, **kwargs)
@@ -857,7 +857,7 @@ Dictionary with the following keys:
 
 ## `sensitivity_frictionratio_lunne`
 
-<span class="gc-badge gc-available" data-geocore-function="sensitivity_frictionratio_lunne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › sensitivity_frictionratio_lunne()](/docs/geocore/using/modules#sensitivity_frictionratio_lunne)
+<span class="gc-badge gc-available" data-geocore-function="sensitivity_frictionratio_lunne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Rad & Lunne (1986) Sensitivity (Friction Ratio)](/docs/geocore/using/modules#sensitivity_frictionratio_lunne)
 
 ```python
 sensitivity_frictionratio_lunne(Rf, **kwargs)
@@ -901,7 +901,7 @@ Dictionary with the following keys:
 
 ## `unitweight_mayne`
 
-<span class="gc-badge gc-available" data-geocore-function="unitweight_mayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › unitweight_mayne()](/docs/geocore/using/modules#unitweight_mayne)
+<span class="gc-badge gc-available" data-geocore-function="unitweight_mayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Mayne Total Unit Weight (CPT)](/docs/geocore/using/modules#unitweight_mayne)
 
 ```python
 unitweight_mayne(
@@ -960,7 +960,7 @@ Dictionary with the following keys:
 
 ## `vs_ic_robertsoncabal`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_ic_robertsoncabal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_ic_robertsoncabal()](/docs/geocore/using/modules#vs_ic_robertsoncabal)
+<span class="gc-badge gc-available" data-geocore-function="vs_ic_robertsoncabal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Robertson & Cabal Shear Wave Velocity (Ic)](/docs/geocore/using/modules#vs_ic_robertsoncabal)
 
 ```python
 vs_ic_robertsoncabal(
@@ -1033,7 +1033,7 @@ Dictionary with the following keys:
 
 ## `k0_sand_mayne`
 
-<span class="gc-badge gc-available" data-geocore-function="k0_sand_mayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › k0_sand_mayne()](/docs/geocore/using/modules#k0_sand_mayne)
+<span class="gc-badge gc-available" data-geocore-function="k0_sand_mayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Mayne K0 (Clean Sand, CPT)](/docs/geocore/using/modules#k0_sand_mayne)
 
 ```python
 k0_sand_mayne(
@@ -1112,7 +1112,7 @@ Dictionary with the following keys:
 
 ## `gmax_cpt_puechen`
 
-<span class="gc-badge gc-available" data-geocore-function="gmax_cpt_puechen">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › gmax_cpt_puechen()](/docs/geocore/using/modules#gmax_cpt_puechen)
+<span class="gc-badge gc-available" data-geocore-function="gmax_cpt_puechen">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Puechen Gmax (CPT)](/docs/geocore/using/modules#gmax_cpt_puechen)
 
 ```python
 gmax_cpt_puechen(
@@ -1173,7 +1173,7 @@ Dictionary with the following keys:
 
 ## `behaviourindex_pcpt_nonnormalised`
 
-<span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_nonnormalised">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › behaviourindex_pcpt_nonnormalised()](/docs/geocore/using/modules#behaviourindex_pcpt_nonnormalised)
+<span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_nonnormalised">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Non-Normalised Soil Behaviour Index](/docs/geocore/using/modules#behaviourindex_pcpt_nonnormalised)
 
 ```python
 behaviourindex_pcpt_nonnormalised(qc, Rf, atmospheric_pressure=100.0, **kwargs)
@@ -1217,7 +1217,7 @@ Dictionary with the following keys:
 
 ## `drainedsecantmodulus_sand_bellotti`
 
-<span class="gc-badge gc-available" data-geocore-function="drainedsecantmodulus_sand_bellotti">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › drainedsecantmodulus_sand_bellotti()](/docs/geocore/using/modules#drainedsecantmodulus_sand_bellotti)
+<span class="gc-badge gc-available" data-geocore-function="drainedsecantmodulus_sand_bellotti">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Bellotti Drained Secant Modulus (Sand)](/docs/geocore/using/modules#drainedsecantmodulus_sand_bellotti)
 
 ```python
 drainedsecantmodulus_sand_bellotti(
@@ -1280,7 +1280,7 @@ Dictionary with the following keys:
 
 ## `gmax_voidratio_maynerix`
 
-<span class="gc-badge gc-available" data-geocore-function="gmax_voidratio_maynerix">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › gmax_voidratio_maynerix()](/docs/geocore/using/modules#gmax_voidratio_maynerix)
+<span class="gc-badge gc-available" data-geocore-function="gmax_voidratio_maynerix">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Mayne & Rix Gmax (from Void Ratio)](/docs/geocore/using/modules#gmax_voidratio_maynerix)
 
 ```python
 gmax_voidratio_maynerix(
@@ -1339,7 +1339,7 @@ Dictionary with the following keys:
 
 ## `vs_cpt_andrus`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cpt_andrus">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cpt_andrus()](/docs/geocore/using/modules#vs_cpt_andrus)
+<span class="gc-badge gc-available" data-geocore-function="vs_cpt_andrus">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Andrus Shear Wave Velocity (CPT)](/docs/geocore/using/modules#vs_cpt_andrus)
 
 ```python
 vs_cpt_andrus(
@@ -1432,7 +1432,7 @@ Dictionary with the following keys:
 
 ## `vs_cpt_hegazymayne`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cpt_hegazymayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cpt_hegazymayne()](/docs/geocore/using/modules#vs_cpt_hegazymayne)
+<span class="gc-badge gc-available" data-geocore-function="vs_cpt_hegazymayne">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Hegazy & Mayne Shear Wave Velocity (CPT)](/docs/geocore/using/modules#vs_cpt_hegazymayne)
 
 ```python
 vs_cpt_hegazymayne(
@@ -1526,7 +1526,7 @@ Dictionary with the following keys:
 
 ## `vs_cpt_longdonohue`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cpt_longdonohue">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cpt_longdonohue()](/docs/geocore/using/modules#vs_cpt_longdonohue)
+<span class="gc-badge gc-available" data-geocore-function="vs_cpt_longdonohue">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Long & Donohue Shear Wave Velocity (CPT)](/docs/geocore/using/modules#vs_cpt_longdonohue)
 
 ```python
 vs_cpt_longdonohue(
@@ -1593,7 +1593,7 @@ Dictionary with the following keys:
 
 ## `soiltype_vs_longodonohue`
 
-<span class="gc-badge gc-available" data-geocore-function="soiltype_vs_longodonohue">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › soiltype_vs_longodonohue()](/docs/geocore/using/modules#soiltype_vs_longodonohue)
+<span class="gc-badge gc-available" data-geocore-function="soiltype_vs_longodonohue">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Long & Donohue Soil Type (Vs, CPT)](/docs/geocore/using/modules#soiltype_vs_longodonohue)
 
 ```python
 soiltype_vs_longodonohue(Vs, Qt, sigma_vo_eff, atmospheric_pressure=100.0, **kwargs)
@@ -1641,7 +1641,7 @@ Dictionary with the following keys:
 
 ## `vs_cptd50_karrayetal`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cptd50_karrayetal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cptd50_karrayetal()](/docs/geocore/using/modules#vs_cptd50_karrayetal)
+<span class="gc-badge gc-available" data-geocore-function="vs_cptd50_karrayetal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Karray et al. Shear Wave Velocity (CPT, D50)](/docs/geocore/using/modules#vs_cptd50_karrayetal)
 
 ```python
 vs_cptd50_karrayetal(
@@ -1712,7 +1712,7 @@ Dictionary with the following keys:
 
 ## `vs_cpt_wrideetal`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cpt_wrideetal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cpt_wrideetal()](/docs/geocore/using/modules#vs_cpt_wrideetal)
+<span class="gc-badge gc-available" data-geocore-function="vs_cpt_wrideetal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Wride et al. Shear Wave Velocity (CPT)](/docs/geocore/using/modules#vs_cpt_wrideetal)
 
 ```python
 vs_cpt_wrideetal(
@@ -1777,7 +1777,7 @@ Dictionary with the following keys:
 
 ## `vs_cpt_tonniandsimonini`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cpt_tonniandsimonini">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cpt_tonniandsimonini()](/docs/geocore/using/modules#vs_cpt_tonniandsimonini)
+<span class="gc-badge gc-available" data-geocore-function="vs_cpt_tonniandsimonini">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Tonni & Simonini Shear Wave Velocity (CPT)](/docs/geocore/using/modules#vs_cpt_tonniandsimonini)
 
 ```python
 vs_cpt_tonniandsimonini(
@@ -1850,7 +1850,7 @@ Dictionary with the following keys:
 
 ## `vs_cpt_mcgannetal`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_cpt_mcgannetal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_cpt_mcgannetal()](/docs/geocore/using/modules#vs_cpt_mcgannetal)
+<span class="gc-badge gc-available" data-geocore-function="vs_cpt_mcgannetal">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › McGann et al. Shear Wave Velocity (CPT)](/docs/geocore/using/modules#vs_cpt_mcgannetal)
 
 ```python
 vs_cpt_mcgannetal(
@@ -1956,7 +1956,7 @@ Dictionary with the following keys:
 
 ## `constrainedmodulus_pcpt_robertson`
 
-<span class="gc-badge gc-available" data-geocore-function="constrainedmodulus_pcpt_robertson">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › constrainedmodulus_pcpt_robertson()](/docs/geocore/using/modules#constrainedmodulus_pcpt_robertson)
+<span class="gc-badge gc-available" data-geocore-function="constrainedmodulus_pcpt_robertson">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Robertson Constrained Modulus (CPT)](/docs/geocore/using/modules#constrainedmodulus_pcpt_robertson)
 
 ```python
 constrainedmodulus_pcpt_robertson(
@@ -2041,7 +2041,7 @@ Dictionary with the following keys:
 
 ## `vs_stressdependent_stuyts`
 
-<span class="gc-badge gc-available" data-geocore-function="vs_stressdependent_stuyts">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › vs_stressdependent_stuyts()](/docs/geocore/using/modules#vs_stressdependent_stuyts)
+<span class="gc-badge gc-available" data-geocore-function="vs_stressdependent_stuyts">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Stuyts (2024) Stress-Dependent Shear Wave Velocity](/docs/geocore/using/modules#vs_stressdependent_stuyts)
 
 ```python
 vs_stressdependent_stuyts(
@@ -2094,7 +2094,7 @@ Dictionary with the following keys:
 
 ## `dissipation_test_teh`
 
-<span class="gc-badge gc-available" data-geocore-function="dissipation_test_teh">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › dissipation_test_teh()](/docs/geocore/using/modules#dissipation_test_teh)
+<span class="gc-badge gc-available" data-geocore-function="dissipation_test_teh">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Teh & Houlsby (1991) Dissipation Curve](/docs/geocore/using/modules#dissipation_test_teh)
 
 ```python
 dissipation_test_teh(
@@ -2148,7 +2148,7 @@ Dictionary with the following keys:
 
 ## `clippingdepths_qc1N_tianlehane`
 
-<span class="gc-badge gc-available" data-geocore-function="clippingdepths_qc1N_tianlehane">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › clippingdepths_qc1N_tianlehane()](/docs/geocore/using/modules#clippingdepths_qc1n_tianlehane)
+<span class="gc-badge gc-available" data-geocore-function="clippingdepths_qc1N_tianlehane">Available in GeoCore</span> [Site investigation › In-situ: PCPT functions › Tian & Lehane (2025) Layer Clipping Depths](/docs/geocore/using/modules#clippingdepths_qc1n_tianlehane)
 
 ```python
 clippingdepths_qc1N_tianlehane(qc1NW, qc1NS, cone_diameter=0.03568, tolerance=0.05)

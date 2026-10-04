@@ -8,7 +8,8 @@ from fastapi.testclient import TestClient
 from main import app
 
 from core.geoai import api
-from core.geoai.calculation_explainer import explain_calculation, extract_formula, build_narration_prompt
+from core.geoai.calculation_explainer import (explain_calculation, extract_formula, extract_param_labels,
+                                               build_narration_prompt)
 from core.geoai.heuristic_provider import HeuristicProvider
 from core.geoai.model_provider import ModelResponse
 
@@ -35,15 +36,30 @@ def test_explain_calculation_known_tool_uses_tool_metadata():
     assert exp["method"] == "Rankine (1857) Lateral Earth Pressure Theory"
     assert "Eurocode 7" in exp["standard"]
     assert exp["formula"]  # taken from the docstring, not fabricated
-    assert exp["inputs"] == {"phi": 32}
-    assert {"key": "Ka", "value": 0.307, "unit": "-"} in exp["outputs"]
+    assert exp["inputs"] == [{"key": "phi", "label": None, "value": 32}]
+    assert {"key": "Ka", "label": None, "value": 0.307, "unit": "-"} in exp["outputs"]
 
 
 def test_explain_calculation_unknown_tool_falls_back_without_crashing():
     exp = explain_calculation("totally_unknown_function_xyz", {"a": 1}, {"b": 2.0})
     assert exp["formula"] is None
     assert "totally_unknown_function_xyz" in exp["method"]
-    assert exp["outputs"] == [{"key": "b", "value": 2.0, "unit": None}]
+    assert exp["outputs"] == [{"key": "b", "label": None, "value": 2.0, "unit": None}]
+
+
+def test_extract_param_labels_from_real_docstring():
+    from core.registry import registry
+    import inspect
+    func = registry.find_function("dryunitweight_watercontent")
+    labels = extract_param_labels(inspect.getdoc(func))
+    assert labels["bulkunitweight"] == "Bulk unit weight of the sample"
+    assert labels["watercontent"].startswith("Water content of the sample")
+
+
+def test_explain_calculation_attaches_real_param_labels():
+    exp = explain_calculation("dryunitweight_watercontent", {"bulkunitweight": 18, "watercontent": 0.2}, {})
+    labels = {i["key"]: i["label"] for i in exp["inputs"]}
+    assert labels["bulkunitweight"] == "Bulk unit weight of the sample"
 
 
 def test_explain_calculation_drops_internal_and_status_keys():

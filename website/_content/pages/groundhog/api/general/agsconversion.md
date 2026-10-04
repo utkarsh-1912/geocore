@@ -147,7 +147,7 @@ Dataframe with updated headers
 
 ### `AGSConverter.convert_ags_group`
 
-<span class="gc-badge gc-available" data-geocore-function="AGSConverter_convert_ags_group">Available in GeoCore</span> [General and utility functions › AGS Conversion › convert_ags_group()](/docs/geocore/using/modules#agsconverter_convert_ags_group)
+<span class="gc-badge gc-available" data-geocore-function="AGSConverter_convert_ags_group">Available in GeoCore</span> [General and utility functions › AGS Conversion › Convert AGS Group to Table](/docs/geocore/using/modules#agsconverter_convert_ags_group)
 
 ```python
 convert_ags_group(

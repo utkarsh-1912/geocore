@@ -815,7 +815,7 @@
 <p><strong>Functions:</strong> <a href="#pcpt_normalisations"><code>pcpt_normalisations</code></a>, <a href="#soilclass_robertson"><code>soilclass_robertson</code></a>, <a href="#ic_soilclass_robertson"><code>ic_soilclass_robertson</code></a>, <a href="#behaviourindex_pcpt_robertsonwride"><code>behaviourindex_pcpt_robertsonwride</code></a>, <a href="#gmax_sand_rixstokoe"><code>gmax_sand_rixstokoe</code></a>, <a href="#gmax_clay_maynerix"><code>gmax_clay_maynerix</code></a>, <a href="#relativedensity_ncsand_baldi"><code>relativedensity_ncsand_baldi</code></a>, <a href="#relativedensity_ocsand_baldi"><code>relativedensity_ocsand_baldi</code></a>, <a href="#coneresistance_ocsand_baldi"><code>coneresistance_ocsand_baldi</code></a>, <a href="#relativedensity_sand_jamiolkowski"><code>relativedensity_sand_jamiolkowski</code></a>, <a href="#frictionangle_sand_kulhawymayne"><code>frictionangle_sand_kulhawymayne</code></a>, <a href="#undrainedshearstrength_clay_radlunne"><code>undrainedshearstrength_clay_radlunne</code></a>, <a href="#frictionangle_overburden_kleven"><code>frictionangle_overburden_kleven</code></a>, <a href="#ocr_cpt_lunne"><code>ocr_cpt_lunne</code></a>, <a href="#sensitivity_frictionratio_lunne"><code>sensitivity_frictionratio_lunne</code></a>, <a href="#unitweight_mayne"><code>unitweight_mayne</code></a>, <a href="#vs_ic_robertsoncabal"><code>vs_ic_robertsoncabal</code></a>, <a href="#k0_sand_mayne"><code>k0_sand_mayne</code></a>, <a href="#gmax_cpt_puechen"><code>gmax_cpt_puechen</code></a>, <a href="#behaviourindex_pcpt_nonnormalised"><code>behaviourindex_pcpt_nonnormalised</code></a>, <a href="#drainedsecantmodulus_sand_bellotti"><code>drainedsecantmodulus_sand_bellotti</code></a>, <a href="#gmax_voidratio_maynerix"><code>gmax_voidratio_maynerix</code></a>, <a href="#vs_cpt_andrus"><code>vs_cpt_andrus</code></a>, <a href="#vs_cpt_hegazymayne"><code>vs_cpt_hegazymayne</code></a>, <a href="#vs_cpt_longdonohue"><code>vs_cpt_longdonohue</code></a>, <a href="#soiltype_vs_longodonohue"><code>soiltype_vs_longodonohue</code></a>, <a href="#vs_cptd50_karrayetal"><code>vs_cptd50_karrayetal</code></a>, <a href="#vs_cpt_wrideetal"><code>vs_cpt_wrideetal</code></a>, <a href="#vs_cpt_tonniandsimonini"><code>vs_cpt_tonniandsimonini</code></a>, <a href="#vs_cpt_mcgannetal"><code>vs_cpt_mcgannetal</code></a>, <a href="#constrainedmodulus_pcpt_robertson"><code>constrainedmodulus_pcpt_robertson</code></a>, <a href="#vs_stressdependent_stuyts"><code>vs_stressdependent_stuyts</code></a>, <a href="#dissipation_test_teh"><code>dissipation_test_teh</code></a>, <a href="#clippingdepths_qc1n_tianlehane"><code>clippingdepths_qc1N_tianlehane</code></a></p>
 <p><a id="pcpt_normalisations"></a></p>
 <h2 id="pcpt_normalisations"><code>pcpt_normalisations</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="pcpt_normalisations">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#pcpt_normalisations">Site investigation › In-situ: PCPT functions › pcpt_normalisations()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="pcpt_normalisations">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#pcpt_normalisations">Site investigation › In-situ: PCPT functions › PCPT Normalisation &amp; Correction</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">pcpt_normalisations</span><span class="p">(</span>
     <span class="n">measured_qc</span><span class="p">,</span>
     <span class="n">measured_fs</span><span class="p">,</span>
@@ -1093,7 +1093,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="soilclass_robertson"></a></p>
 <h2 id="soilclass_robertson"><code>soilclass_robertson</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="soilclass_robertson">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#soilclass_robertson">Site investigation › In-situ: PCPT functions › soilclass_robertson()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="soilclass_robertson">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#soilclass_robertson">Site investigation › In-situ: PCPT functions › Robertson &amp; Wride Soil Classification</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">soilclass_robertson</span><span class="p">(</span><span class="n">ic_class_number</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1144,7 +1144,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="ic_soilclass_robertson"></a></p>
 <h2 id="ic_soilclass_robertson"><code>ic_soilclass_robertson</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="ic_soilclass_robertson">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ic_soilclass_robertson">Site investigation › In-situ: PCPT functions › ic_soilclass_robertson()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="ic_soilclass_robertson">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ic_soilclass_robertson">Site investigation › In-situ: PCPT functions › Robertson &amp; Wride Soil Classification (Ic)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">ic_soilclass_robertson</span><span class="p">(</span><span class="n">ic</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1200,7 +1200,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="behaviourindex_pcpt_robertsonwride"></a></p>
 <h2 id="behaviourindex_pcpt_robertsonwride"><code>behaviourindex_pcpt_robertsonwride</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_robertsonwride">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#behaviourindex_pcpt_robertsonwride">Site investigation › In-situ: PCPT functions › behaviourindex_pcpt_robertsonwride()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_robertsonwride">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#behaviourindex_pcpt_robertsonwride">Site investigation › In-situ: PCPT functions › Robertson &amp; Wride (1998) Soil Behaviour Index</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">behaviourindex_pcpt_robertsonwride</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">fs</span><span class="p">,</span>
@@ -1384,7 +1384,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="gmax_sand_rixstokoe"></a></p>
 <h2 id="gmax_sand_rixstokoe"><code>gmax_sand_rixstokoe</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="gmax_sand_rixstokoe">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_sand_rixstokoe">Site investigation › In-situ: PCPT functions › gmax_sand_rixstokoe()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="gmax_sand_rixstokoe">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_sand_rixstokoe">Site investigation › In-situ: PCPT functions › Rix &amp; Stokoe Gmax (Sand, CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">gmax_sand_rixstokoe</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -1472,7 +1472,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="gmax_clay_maynerix"></a></p>
 <h2 id="gmax_clay_maynerix"><code>gmax_clay_maynerix</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="gmax_clay_maynerix">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_clay_maynerix">Site investigation › In-situ: PCPT functions › gmax_clay_maynerix()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="gmax_clay_maynerix">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_clay_maynerix">Site investigation › In-situ: PCPT functions › Mayne &amp; Rix (1993) Gmax for Clay</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">gmax_clay_maynerix</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mf">2.78</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mf">1.335</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1539,7 +1539,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="relativedensity_ncsand_baldi"></a></p>
 <h2 id="relativedensity_ncsand_baldi"><code>relativedensity_ncsand_baldi</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="relativedensity_ncsand_baldi">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relativedensity_ncsand_baldi">Site investigation › In-situ: PCPT functions › relativedensity_ncsand_baldi()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="relativedensity_ncsand_baldi">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relativedensity_ncsand_baldi">Site investigation › In-situ: PCPT functions › Baldi Relative Density (NC Sand)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">relativedensity_ncsand_baldi</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -1629,7 +1629,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="relativedensity_ocsand_baldi"></a></p>
 <h2 id="relativedensity_ocsand_baldi"><code>relativedensity_ocsand_baldi</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="relativedensity_ocsand_baldi">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relativedensity_ocsand_baldi">Site investigation › In-situ: PCPT functions › relativedensity_ocsand_baldi()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="relativedensity_ocsand_baldi">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relativedensity_ocsand_baldi">Site investigation › In-situ: PCPT functions › Baldi Relative Density (OC Sand)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">relativedensity_ocsand_baldi</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -1728,7 +1728,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="coneresistance_ocsand_baldi"></a></p>
 <h2 id="coneresistance_ocsand_baldi"><code>coneresistance_ocsand_baldi</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="coneresistance_ocsand_baldi">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#coneresistance_ocsand_baldi">Site investigation › In-situ: PCPT functions › coneresistance_ocsand_baldi()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="coneresistance_ocsand_baldi">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#coneresistance_ocsand_baldi">Site investigation › In-situ: PCPT functions › Baldi Cone Resistance (Overconsolidated Sand)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">coneresistance_ocsand_baldi</span><span class="p">(</span>
     <span class="n">dr</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -1824,7 +1824,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="relativedensity_sand_jamiolkowski"></a></p>
 <h2 id="relativedensity_sand_jamiolkowski"><code>relativedensity_sand_jamiolkowski</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="relativedensity_sand_jamiolkowski">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relativedensity_sand_jamiolkowski">Site investigation › In-situ: PCPT functions › relativedensity_sand_jamiolkowski()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="relativedensity_sand_jamiolkowski">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relativedensity_sand_jamiolkowski">Site investigation › In-situ: PCPT functions › Jamiolkowski Relative Density (Sand, CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">relativedensity_sand_jamiolkowski</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -1950,7 +1950,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="frictionangle_sand_kulhawymayne"></a></p>
 <h2 id="frictionangle_sand_kulhawymayne"><code>frictionangle_sand_kulhawymayne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="frictionangle_sand_kulhawymayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#frictionangle_sand_kulhawymayne">Site investigation › In-situ: PCPT functions › frictionangle_sand_kulhawymayne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="frictionangle_sand_kulhawymayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#frictionangle_sand_kulhawymayne">Site investigation › In-situ: PCPT functions › Kulhawy &amp; Mayne Friction Angle (Sand, CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">frictionangle_sand_kulhawymayne</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -2040,7 +2040,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="undrainedshearstrength_clay_radlunne"></a></p>
 <h2 id="undrainedshearstrength_clay_radlunne"><code>undrainedshearstrength_clay_radlunne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="undrainedshearstrength_clay_radlunne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#undrainedshearstrength_clay_radlunne">Site investigation › In-situ: PCPT functions › undrainedshearstrength_clay_radlunne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="undrainedshearstrength_clay_radlunne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#undrainedshearstrength_clay_radlunne">Site investigation › In-situ: PCPT functions › Rad &amp; Lunne Undrained Shear Strength (Net qt)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">undrainedshearstrength_clay_radlunne</span><span class="p">(</span><span class="n">qnet</span><span class="p">,</span> <span class="n">Nk</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -2100,7 +2100,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="frictionangle_overburden_kleven"></a></p>
 <h2 id="frictionangle_overburden_kleven"><code>frictionangle_overburden_kleven</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="frictionangle_overburden_kleven">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#frictionangle_overburden_kleven">Site investigation › In-situ: PCPT functions › frictionangle_overburden_kleven()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="frictionangle_overburden_kleven">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#frictionangle_overburden_kleven">Site investigation › In-situ: PCPT functions › Kleven (1986) Friction Angle Chart</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">frictionangle_overburden_kleven</span><span class="p">(</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
     <span class="n">relative_density</span><span class="p">,</span>
@@ -2171,7 +2171,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="ocr_cpt_lunne"></a></p>
 <h2 id="ocr_cpt_lunne"><code>ocr_cpt_lunne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="ocr_cpt_lunne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ocr_cpt_lunne">Site investigation › In-situ: PCPT functions › ocr_cpt_lunne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="ocr_cpt_lunne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#ocr_cpt_lunne">Site investigation › In-situ: PCPT functions › Lunne OCR (CPT, Clay)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">ocr_cpt_lunne</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="n">Bq</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -2259,7 +2259,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="sensitivity_frictionratio_lunne"></a></p>
 <h2 id="sensitivity_frictionratio_lunne"><code>sensitivity_frictionratio_lunne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="sensitivity_frictionratio_lunne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#sensitivity_frictionratio_lunne">Site investigation › In-situ: PCPT functions › sensitivity_frictionratio_lunne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="sensitivity_frictionratio_lunne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#sensitivity_frictionratio_lunne">Site investigation › In-situ: PCPT functions › Rad &amp; Lunne (1986) Sensitivity (Friction Ratio)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">sensitivity_frictionratio_lunne</span><span class="p">(</span><span class="n">Rf</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -2325,7 +2325,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="unitweight_mayne"></a></p>
 <h2 id="unitweight_mayne"><code>unitweight_mayne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="unitweight_mayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#unitweight_mayne">Site investigation › In-situ: PCPT functions › unitweight_mayne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="unitweight_mayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#unitweight_mayne">Site investigation › In-situ: PCPT functions › Mayne Total Unit Weight (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">unitweight_mayne</span><span class="p">(</span>
     <span class="n">ft</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -2432,7 +2432,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_ic_robertsoncabal"></a></p>
 <h2 id="vs_ic_robertsoncabal"><code>vs_ic_robertsoncabal</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_ic_robertsoncabal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_ic_robertsoncabal">Site investigation › In-situ: PCPT functions › vs_ic_robertsoncabal()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_ic_robertsoncabal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_ic_robertsoncabal">Site investigation › In-situ: PCPT functions › Robertson &amp; Cabal Shear Wave Velocity (Ic)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_ic_robertsoncabal</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">ic</span><span class="p">,</span>
@@ -2566,7 +2566,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="k0_sand_mayne"></a></p>
 <h2 id="k0_sand_mayne"><code>k0_sand_mayne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="k0_sand_mayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#k0_sand_mayne">Site investigation › In-situ: PCPT functions › k0_sand_mayne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="k0_sand_mayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#k0_sand_mayne">Site investigation › In-situ: PCPT functions › Mayne K0 (Clean Sand, CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">k0_sand_mayne</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -2702,7 +2702,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="gmax_cpt_puechen"></a></p>
 <h2 id="gmax_cpt_puechen"><code>gmax_cpt_puechen</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="gmax_cpt_puechen">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_cpt_puechen">Site investigation › In-situ: PCPT functions › gmax_cpt_puechen()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="gmax_cpt_puechen">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_cpt_puechen">Site investigation › In-situ: PCPT functions › Puechen Gmax (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">gmax_cpt_puechen</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -2831,7 +2831,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="behaviourindex_pcpt_nonnormalised"></a></p>
 <h2 id="behaviourindex_pcpt_nonnormalised"><code>behaviourindex_pcpt_nonnormalised</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_nonnormalised">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#behaviourindex_pcpt_nonnormalised">Site investigation › In-situ: PCPT functions › behaviourindex_pcpt_nonnormalised()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="behaviourindex_pcpt_nonnormalised">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#behaviourindex_pcpt_nonnormalised">Site investigation › In-situ: PCPT functions › Non-Normalised Soil Behaviour Index</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">behaviourindex_pcpt_nonnormalised</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">Rf</span><span class="p">,</span> <span class="n">atmospheric_pressure</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -2900,7 +2900,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="drainedsecantmodulus_sand_bellotti"></a></p>
 <h2 id="drainedsecantmodulus_sand_bellotti"><code>drainedsecantmodulus_sand_bellotti</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="drainedsecantmodulus_sand_bellotti">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#drainedsecantmodulus_sand_bellotti">Site investigation › In-situ: PCPT functions › drainedsecantmodulus_sand_bellotti()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="drainedsecantmodulus_sand_bellotti">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#drainedsecantmodulus_sand_bellotti">Site investigation › In-situ: PCPT functions › Bellotti Drained Secant Modulus (Sand)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">drainedsecantmodulus_sand_bellotti</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -3003,7 +3003,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="gmax_voidratio_maynerix"></a></p>
 <h2 id="gmax_voidratio_maynerix"><code>gmax_voidratio_maynerix</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="gmax_voidratio_maynerix">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_voidratio_maynerix">Site investigation › In-situ: PCPT functions › gmax_voidratio_maynerix()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="gmax_voidratio_maynerix">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_voidratio_maynerix">Site investigation › In-situ: PCPT functions › Mayne &amp; Rix Gmax (from Void Ratio)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">gmax_voidratio_maynerix</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">void_ratio</span><span class="p">,</span>
@@ -3110,7 +3110,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cpt_andrus"></a></p>
 <h2 id="vs_cpt_andrus"><code>vs_cpt_andrus</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_andrus">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_andrus">Site investigation › In-situ: PCPT functions › vs_cpt_andrus()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_andrus">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_andrus">Site investigation › In-situ: PCPT functions › Andrus Shear Wave Velocity (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cpt_andrus</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">depth</span><span class="p">,</span>
@@ -3292,7 +3292,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cpt_hegazymayne"></a></p>
 <h2 id="vs_cpt_hegazymayne"><code>vs_cpt_hegazymayne</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_hegazymayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_hegazymayne">Site investigation › In-situ: PCPT functions › vs_cpt_hegazymayne()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_hegazymayne">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_hegazymayne">Site investigation › In-situ: PCPT functions › Hegazy &amp; Mayne Shear Wave Velocity (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cpt_hegazymayne</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">fs</span><span class="p">,</span>
@@ -3438,7 +3438,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cpt_longdonohue"></a></p>
 <h2 id="vs_cpt_longdonohue"><code>vs_cpt_longdonohue</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_longdonohue">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_longdonohue">Site investigation › In-situ: PCPT functions › vs_cpt_longdonohue()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_longdonohue">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_longdonohue">Site investigation › In-situ: PCPT functions › Long &amp; Donohue Shear Wave Velocity (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cpt_longdonohue</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">u2</span><span class="p">,</span>
@@ -3572,7 +3572,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="soiltype_vs_longodonohue"></a></p>
 <h2 id="soiltype_vs_longodonohue"><code>soiltype_vs_longodonohue</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="soiltype_vs_longodonohue">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#soiltype_vs_longodonohue">Site investigation › In-situ: PCPT functions › soiltype_vs_longodonohue()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="soiltype_vs_longodonohue">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#soiltype_vs_longodonohue">Site investigation › In-situ: PCPT functions › Long &amp; Donohue Soil Type (Vs, CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">soiltype_vs_longodonohue</span><span class="p">(</span><span class="n">Vs</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">sigma_vo_eff</span><span class="p">,</span> <span class="n">atmospheric_pressure</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -3654,7 +3654,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cptd50_karrayetal"></a></p>
 <h2 id="vs_cptd50_karrayetal"><code>vs_cptd50_karrayetal</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cptd50_karrayetal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cptd50_karrayetal">Site investigation › In-situ: PCPT functions › vs_cptd50_karrayetal()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cptd50_karrayetal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cptd50_karrayetal">Site investigation › In-situ: PCPT functions › Karray et al. Shear Wave Velocity (CPT, D50)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cptd50_karrayetal</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -3781,7 +3781,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cpt_wrideetal"></a></p>
 <h2 id="vs_cpt_wrideetal"><code>vs_cpt_wrideetal</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_wrideetal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_wrideetal">Site investigation › In-situ: PCPT functions › vs_cpt_wrideetal()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_wrideetal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_wrideetal">Site investigation › In-situ: PCPT functions › Wride et al. Shear Wave Velocity (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cpt_wrideetal</span><span class="p">(</span>
     <span class="n">qc</span><span class="p">,</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
@@ -3884,7 +3884,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cpt_tonniandsimonini"></a></p>
 <h2 id="vs_cpt_tonniandsimonini"><code>vs_cpt_tonniandsimonini</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_tonniandsimonini">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_tonniandsimonini">Site investigation › In-situ: PCPT functions › vs_cpt_tonniandsimonini()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_tonniandsimonini">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_tonniandsimonini">Site investigation › In-situ: PCPT functions › Tonni &amp; Simonini Shear Wave Velocity (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cpt_tonniandsimonini</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">ic</span><span class="p">,</span>
@@ -4005,7 +4005,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_cpt_mcgannetal"></a></p>
 <h2 id="vs_cpt_mcgannetal"><code>vs_cpt_mcgannetal</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_mcgannetal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_mcgannetal">Site investigation › In-situ: PCPT functions › vs_cpt_mcgannetal()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_cpt_mcgannetal">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_cpt_mcgannetal">Site investigation › In-situ: PCPT functions › McGann et al. Shear Wave Velocity (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_cpt_mcgannetal</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">fs</span><span class="p">,</span>
@@ -4171,7 +4171,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="constrainedmodulus_pcpt_robertson"></a></p>
 <h2 id="constrainedmodulus_pcpt_robertson"><code>constrainedmodulus_pcpt_robertson</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="constrainedmodulus_pcpt_robertson">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#constrainedmodulus_pcpt_robertson">Site investigation › In-situ: PCPT functions › constrainedmodulus_pcpt_robertson()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="constrainedmodulus_pcpt_robertson">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#constrainedmodulus_pcpt_robertson">Site investigation › In-situ: PCPT functions › Robertson Constrained Modulus (CPT)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">constrainedmodulus_pcpt_robertson</span><span class="p">(</span>
     <span class="n">qt</span><span class="p">,</span>
     <span class="n">ic</span><span class="p">,</span>
@@ -4301,7 +4301,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="vs_stressdependent_stuyts"></a></p>
 <h2 id="vs_stressdependent_stuyts"><code>vs_stressdependent_stuyts</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="vs_stressdependent_stuyts">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_stressdependent_stuyts">Site investigation › In-situ: PCPT functions › vs_stressdependent_stuyts()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="vs_stressdependent_stuyts">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#vs_stressdependent_stuyts">Site investigation › In-situ: PCPT functions › Stuyts (2024) Stress-Dependent Shear Wave Velocity</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">vs_stressdependent_stuyts</span><span class="p">(</span>
     <span class="n">sigma_vo_eff</span><span class="p">,</span>
     <span class="n">ic</span><span class="p">,</span>
@@ -4397,7 +4397,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="dissipation_test_teh"></a></p>
 <h2 id="dissipation_test_teh"><code>dissipation_test_teh</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="dissipation_test_teh">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#dissipation_test_teh">Site investigation › In-situ: PCPT functions › dissipation_test_teh()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="dissipation_test_teh">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#dissipation_test_teh">Site investigation › In-situ: PCPT functions › Teh &amp; Houlsby (1991) Dissipation Curve</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">dissipation_test_teh</span><span class="p">(</span>
     <span class="n">ch</span><span class="p">,</span>
     <span class="n">shearmodulus</span><span class="p">,</span>
@@ -4517,7 +4517,7 @@ I_c = \sqrt{ \left( 3.47 - \log_{10} Q_{tn} \right)^2 + \left( \log_{10} F_r + 1
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="clippingdepths_qc1n_tianlehane"></a></p>
 <h2 id="clippingdepths_qc1n_tianlehane"><code>clippingdepths_qc1N_tianlehane</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="clippingdepths_qc1N_tianlehane">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#clippingdepths_qc1n_tianlehane">Site investigation › In-situ: PCPT functions › clippingdepths_qc1N_tianlehane()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="clippingdepths_qc1N_tianlehane">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#clippingdepths_qc1n_tianlehane">Site investigation › In-situ: PCPT functions › Tian &amp; Lehane (2025) Layer Clipping Depths</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">clippingdepths_qc1N_tianlehane</span><span class="p">(</span><span class="n">qc1NW</span><span class="p">,</span> <span class="n">qc1NS</span><span class="p">,</span> <span class="n">cone_diameter</span><span class="o">=</span><span class="mf">0.03568</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
 </code></pre></div>
 

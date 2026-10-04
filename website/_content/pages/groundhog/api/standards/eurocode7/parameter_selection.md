@@ -30,7 +30,7 @@ Upstream documentation: [Parameter selection](https://groundhog.readthedocs.io/e
 
 ## `constant_value`
 
-<span class="gc-badge gc-available" data-geocore-function="parameter_selection_constant_value">Available in GeoCore</span> [EuroCode7 › Parameter selection › constant_value()](/docs/geocore/using/modules#parameter_selection_constant_value)
+<span class="gc-badge gc-available" data-geocore-function="parameter_selection_constant_value">Available in GeoCore</span> [EuroCode7 › Parameter selection › Characteristic Value (Constant)](/docs/geocore/using/modules#parameter_selection_constant_value)
 
 ```python
 constant_value(data, mode='Low', cov=nan, confidence=0.95, **kwargs)
@@ -76,7 +76,7 @@ Dictionary with the following keys:
 
 ## `linear_trend`
 
-<span class="gc-badge gc-available" data-geocore-function="parameter_selection_linear_trend">Available in GeoCore</span> [EuroCode7 › Parameter selection › linear_trend()](/docs/geocore/using/modules#parameter_selection_linear_trend)
+<span class="gc-badge gc-available" data-geocore-function="parameter_selection_linear_trend">Available in GeoCore</span> [EuroCode7 › Parameter selection › Characteristic Value (Linear Trend)](/docs/geocore/using/modules#parameter_selection_linear_trend)
 
 ```python
 linear_trend(data, depths, requested_depths, mode='Low', confidence=0.95, **kwargs)

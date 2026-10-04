@@ -25,7 +25,6 @@ geocore_functions:
 - spt_N60_correction
 - undrainedshearstrength_spt_salgado
 - undrainedshearstrengthclass_spt_terzaghipeck
-- youngsmodulus_spt_AASHTO
 ---
 
 Module `groundhog.siteinvestigation.insitutests.spt_correlations` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/spt_correlations.py).
@@ -38,7 +37,7 @@ Upstream documentation: [SPT corrections and correlations](https://groundhog.rea
 
 ## `overburdencorrection_spt_liaowhitman`
 
-<span class="gc-badge gc-available" data-geocore-function="overburdencorrection_spt_liaowhitman">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › overburdencorrection_spt_liaowhitman()](/docs/geocore/using/modules#overburdencorrection_spt_liaowhitman)
+<span class="gc-badge gc-available" data-geocore-function="overburdencorrection_spt_liaowhitman">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Liao & Whitman Overburden Correction (SPT N)](/docs/geocore/using/modules#overburdencorrection_spt_liaowhitman)
 
 ```python
 overburdencorrection_spt_liaowhitman(
@@ -90,7 +89,7 @@ Dictionary with the following keys:
 
 ## `spt_N60_correction`
 
-<span class="gc-badge gc-available" data-geocore-function="spt_N60_correction">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › spt_N60_correction()](/docs/geocore/using/modules#spt_n60_correction)
+<span class="gc-badge gc-available" data-geocore-function="spt_N60_correction">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › SPT N60 Energy Correction](/docs/geocore/using/modules#spt_n60_correction)
 
 ```python
 spt_N60_correction(
@@ -214,7 +213,7 @@ Dictionary with the following keys:
 
 ## `relativedensity_spt_kulhawymayne`
 
-<span class="gc-badge gc-available" data-geocore-function="relativedensity_spt_kulhawymayne">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › relativedensity_spt_kulhawymayne()](/docs/geocore/using/modules#relativedensity_spt_kulhawymayne)
+<span class="gc-badge gc-available" data-geocore-function="relativedensity_spt_kulhawymayne">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Kulhawy & Mayne Relative Density (SPT)](/docs/geocore/using/modules#relativedensity_spt_kulhawymayne)
 
 ```python
 relativedensity_spt_kulhawymayne(
@@ -292,7 +291,7 @@ Dictionary with the following keys:
 
 ## `undrainedshearstrength_spt_salgado`
 
-<span class="gc-badge gc-available" data-geocore-function="undrainedshearstrength_spt_salgado">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › undrainedshearstrength_spt_salgado()](/docs/geocore/using/modules#undrainedshearstrength_spt_salgado)
+<span class="gc-badge gc-available" data-geocore-function="undrainedshearstrength_spt_salgado">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Salgado Undrained Shear Strength (SPT)](/docs/geocore/using/modules#undrainedshearstrength_spt_salgado)
 
 ```python
 undrainedshearstrength_spt_salgado(
@@ -356,7 +355,7 @@ Dictionary with the following keys:
 
 ## `frictionangle_spt_kulhawymayne`
 
-<span class="gc-badge gc-available" data-geocore-function="frictionangle_spt_kulhawymayne">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › frictionangle_spt_kulhawymayne()](/docs/geocore/using/modules#frictionangle_spt_kulhawymayne)
+<span class="gc-badge gc-available" data-geocore-function="frictionangle_spt_kulhawymayne">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Kulhawy & Mayne Friction Angle (SPT)](/docs/geocore/using/modules#frictionangle_spt_kulhawymayne)
 
 ```python
 frictionangle_spt_kulhawymayne(
@@ -405,7 +404,7 @@ Dictionary with the following keys:
 
 ## `relativedensityclass_spt_terzaghipeck`
 
-<span class="gc-badge gc-available" data-geocore-function="relativedensityclass_spt_terzaghipeck">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › relativedensityclass_spt_terzaghipeck()](/docs/geocore/using/modules#relativedensityclass_spt_terzaghipeck)
+<span class="gc-badge gc-available" data-geocore-function="relativedensityclass_spt_terzaghipeck">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Terzaghi & Peck Relative Density Class (SPT)](/docs/geocore/using/modules#relativedensityclass_spt_terzaghipeck)
 
 ```python
 relativedensityclass_spt_terzaghipeck(N, **kwargs)
@@ -453,7 +452,7 @@ Dictionary with the following keys:
 
 ## `overburdencorrection_spt_ISO`
 
-<span class="gc-badge gc-available" data-geocore-function="overburdencorrection_spt_ISO">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › overburdencorrection_spt_ISO()](/docs/geocore/using/modules#overburdencorrection_spt_iso)
+<span class="gc-badge gc-available" data-geocore-function="overburdencorrection_spt_ISO">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › ISO Overburden Correction (SPT N)](/docs/geocore/using/modules#overburdencorrection_spt_iso)
 
 ```python
 overburdencorrection_spt_ISO(N, sigma_vo_eff, granular=True, **kwargs)
@@ -492,7 +491,7 @@ Dictionary with the following keys:
 
 ## `frictionangle_spt_PHT`
 
-<span class="gc-badge gc-available" data-geocore-function="frictionangle_spt_PHT">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › frictionangle_spt_PHT()](/docs/geocore/using/modules#frictionangle_spt_pht)
+<span class="gc-badge gc-available" data-geocore-function="frictionangle_spt_PHT">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Peck, Hanson & Thornburn (1974) Friction Angle](/docs/geocore/using/modules#frictionangle_spt_pht)
 
 ```python
 frictionangle_spt_PHT(
@@ -536,8 +535,6 @@ Dictionary with the following keys:
 <a id="youngsmodulus_spt_aashto"></a>
 
 ## `youngsmodulus_spt_AASHTO`
-
-<span class="gc-badge gc-available" data-geocore-function="youngsmodulus_spt_AASHTO">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › youngsmodulus_spt_AASHTO()](/docs/geocore/using/modules#youngsmodulus_spt_aashto)
 
 ```python
 youngsmodulus_spt_AASHTO(
@@ -596,7 +593,7 @@ Dictionary with the following keys:
 
 ## `undrainedshearstrengthclass_spt_terzaghipeck`
 
-<span class="gc-badge gc-available" data-geocore-function="undrainedshearstrengthclass_spt_terzaghipeck">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › undrainedshearstrengthclass_spt_terzaghipeck()](/docs/geocore/using/modules#undrainedshearstrengthclass_spt_terzaghipeck)
+<span class="gc-badge gc-available" data-geocore-function="undrainedshearstrengthclass_spt_terzaghipeck">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › Terzaghi & Peck Strength Class (SPT)](/docs/geocore/using/modules#undrainedshearstrengthclass_spt_terzaghipeck)
 
 ```python
 undrainedshearstrengthclass_spt_terzaghipeck(N, **kwargs)

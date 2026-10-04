@@ -42,7 +42,7 @@ Upstream documentation: [Phase relations](https://groundhog.readthedocs.io/en/ma
 
 ## `voidratio_porosity`
 
-<span class="gc-badge gc-available" data-geocore-function="voidratio_porosity">Available in GeoCore</span> [Site investigation › Classification: Phase relations › voidratio_porosity()](/docs/geocore/using/modules#voidratio_porosity)
+<span class="gc-badge gc-available" data-geocore-function="voidratio_porosity">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Void Ratio (from Porosity)](/docs/geocore/using/modules#voidratio_porosity)
 
 ```python
 voidratio_porosity(porosity, **kwargs)
@@ -86,7 +86,7 @@ Dictionary with the following keys:
 
 ## `porosity_voidratio`
 
-<span class="gc-badge gc-available" data-geocore-function="porosity_voidratio">Available in GeoCore</span> [Site investigation › Classification: Phase relations › porosity_voidratio()](/docs/geocore/using/modules#porosity_voidratio)
+<span class="gc-badge gc-available" data-geocore-function="porosity_voidratio">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Porosity (from Void Ratio)](/docs/geocore/using/modules#porosity_voidratio)
 
 ```python
 porosity_voidratio(voidratio, **kwargs)
@@ -122,7 +122,7 @@ Dictionary with the following keys:
 
 ## `saturation_watercontent`
 
-<span class="gc-badge gc-available" data-geocore-function="saturation_watercontent">Available in GeoCore</span> [Site investigation › Classification: Phase relations › saturation_watercontent()](/docs/geocore/using/modules#saturation_watercontent)
+<span class="gc-badge gc-available" data-geocore-function="saturation_watercontent">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Degree of Saturation (from Water Content)](/docs/geocore/using/modules#saturation_watercontent)
 
 ```python
 saturation_watercontent(water_content, voidratio, specific_gravity=2.65, **kwargs)
@@ -160,7 +160,7 @@ Dictionary with the following keys:
 
 ## `bulkunitweight`
 
-<span class="gc-badge gc-available" data-geocore-function="bulkunitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › bulkunitweight()](/docs/geocore/using/modules#bulkunitweight)
+<span class="gc-badge gc-available" data-geocore-function="bulkunitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Bulk Unit Weight (from Gs, e, Sr)](/docs/geocore/using/modules#bulkunitweight)
 
 ```python
 bulkunitweight(
@@ -206,7 +206,7 @@ Dictionary with the following keys:
 
 ## `dryunitweight_watercontent`
 
-<span class="gc-badge gc-available" data-geocore-function="dryunitweight_watercontent">Available in GeoCore</span> [Site investigation › Classification: Phase relations › dryunitweight_watercontent()](/docs/geocore/using/modules#dryunitweight_watercontent)
+<span class="gc-badge gc-available" data-geocore-function="dryunitweight_watercontent">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Dry Unit Weight (from Water Content)](/docs/geocore/using/modules#dryunitweight_watercontent)
 
 ```python
 dryunitweight_watercontent(watercontent, bulkunitweight, **kwargs)
@@ -243,7 +243,7 @@ Dictionary with the following keys:
 
 ## `voidratio_drydensity`
 
-<span class="gc-badge gc-available" data-geocore-function="voidratio_drydensity">Available in GeoCore</span> [Site investigation › Classification: Phase relations › voidratio_drydensity()](/docs/geocore/using/modules#voidratio_drydensity)
+<span class="gc-badge gc-available" data-geocore-function="voidratio_drydensity">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Void Ratio (from Dry Density)](/docs/geocore/using/modules#voidratio_drydensity)
 
 ```python
 voidratio_drydensity(dry_density, specific_gravity=2.65, water_density=1000.0, **kwargs)
@@ -281,7 +281,7 @@ Dictionary with the following keys:
 
 ## `bulkunitweight_dryunitweight`
 
-<span class="gc-badge gc-available" data-geocore-function="bulkunitweight_dryunitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › bulkunitweight_dryunitweight()](/docs/geocore/using/modules#bulkunitweight_dryunitweight)
+<span class="gc-badge gc-available" data-geocore-function="bulkunitweight_dryunitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Bulk Unit Weight (from Dry Unit Weight)](/docs/geocore/using/modules#bulkunitweight_dryunitweight)
 
 ```python
 bulkunitweight_dryunitweight(
@@ -325,7 +325,7 @@ Dictionary with the following keys:
 
 ## `relative_density`
 
-<span class="gc-badge gc-available" data-geocore-function="relative_density">Available in GeoCore</span> [Site investigation › Classification: Phase relations › relative_density()](/docs/geocore/using/modules#relative_density)
+<span class="gc-badge gc-available" data-geocore-function="relative_density">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Relative Density (from Void Ratio)](/docs/geocore/using/modules#relative_density)
 
 ```python
 relative_density(void_ratio, e_min, e_max, **kwargs)
@@ -363,7 +363,7 @@ Dictionary with the following keys:
 
 ## `voidratio_bulkunitweight`
 
-<span class="gc-badge gc-available" data-geocore-function="voidratio_bulkunitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › voidratio_bulkunitweight()](/docs/geocore/using/modules#voidratio_bulkunitweight)
+<span class="gc-badge gc-available" data-geocore-function="voidratio_bulkunitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Void Ratio (from Bulk Unit Weight)](/docs/geocore/using/modules#voidratio_bulkunitweight)
 
 ```python
 voidratio_bulkunitweight(
@@ -423,7 +423,7 @@ Dictionary with the following keys:
 
 ## `unitweight_watercontent_saturated`
 
-<span class="gc-badge gc-available" data-geocore-function="unitweight_watercontent_saturated">Available in GeoCore</span> [Site investigation › Classification: Phase relations › unitweight_watercontent_saturated()](/docs/geocore/using/modules#unitweight_watercontent_saturated)
+<span class="gc-badge gc-available" data-geocore-function="unitweight_watercontent_saturated">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Saturated Unit Weight (from Water Content)](/docs/geocore/using/modules#unitweight_watercontent_saturated)
 
 ```python
 unitweight_watercontent_saturated(
@@ -474,7 +474,7 @@ Dictionary with the following keys:
 
 ## `density_unitweight`
 
-<span class="gc-badge gc-available" data-geocore-function="density_unitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › density_unitweight()](/docs/geocore/using/modules#density_unitweight)
+<span class="gc-badge gc-available" data-geocore-function="density_unitweight">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Unit Weight to Density](/docs/geocore/using/modules#density_unitweight)
 
 ```python
 density_unitweight(gamma, g=9.81, **kwargs)
@@ -511,7 +511,7 @@ Dictionary with the following keys:
 
 ## `unitweight_density`
 
-<span class="gc-badge gc-available" data-geocore-function="unitweight_density">Available in GeoCore</span> [Site investigation › Classification: Phase relations › unitweight_density()](/docs/geocore/using/modules#unitweight_density)
+<span class="gc-badge gc-available" data-geocore-function="unitweight_density">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Density to Unit Weight](/docs/geocore/using/modules#unitweight_density)
 
 ```python
 unitweight_density(density, g=9.81, **kwargs)
@@ -548,7 +548,7 @@ Dictionary with the following keys:
 
 ## `watercontent_voidratio`
 
-<span class="gc-badge gc-available" data-geocore-function="watercontent_voidratio">Available in GeoCore</span> [Site investigation › Classification: Phase relations › watercontent_voidratio()](/docs/geocore/using/modules#watercontent_voidratio)
+<span class="gc-badge gc-available" data-geocore-function="watercontent_voidratio">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Water Content (from Void Ratio)](/docs/geocore/using/modules#watercontent_voidratio)
 
 ```python
 watercontent_voidratio(voidratio, saturation=1.0, specific_gravity=2.65, **kwargs)
@@ -587,7 +587,7 @@ Dictionary with the following keys:
 
 ## `voidratio_watercontent`
 
-<span class="gc-badge gc-available" data-geocore-function="voidratio_watercontent">Available in GeoCore</span> [Site investigation › Classification: Phase relations › voidratio_watercontent()](/docs/geocore/using/modules#voidratio_watercontent)
+<span class="gc-badge gc-available" data-geocore-function="voidratio_watercontent">Available in GeoCore</span> [Site investigation › Classification: Phase relations › Void Ratio (from Water Content)](/docs/geocore/using/modules#voidratio_watercontent)
 
 ```python
 voidratio_watercontent(water_content, saturation=1.0, specific_gravity=2.65, **kwargs)

@@ -23,6 +23,11 @@ dist/
 python-backend/build/
 python-backend/dist/
 
+# Runtime user data (lives in the per-user config dir; stray copies appear when run from the repo)
+/saved_objects.json
+/python-backend/saved_objects.json
+geoai_turns.jsonl*
+
 # Testing & Cache
 .pytest_cache/
 .coverage

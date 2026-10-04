@@ -37,8 +37,22 @@ def create_dynamic_router():
              if result.get("status") == "ValidationError":
                  raise HTTPException(status_code=422, detail=result)
              raise HTTPException(status_code=500, detail=result["error"])
-        
+
+        from core.calculation_history import record_calculation
+        record_calculation(function_id, args, result)
+
         return result
+
+    @router.get("/calculation-history")
+    def get_calculation_history(limit: int = 50):
+        from core.calculation_history import list_calculation_history
+        return {"history": list_calculation_history(limit)}
+
+    @router.delete("/calculation-history")
+    def delete_calculation_history():
+        from core.calculation_history import clear_calculation_history
+        clear_calculation_history()
+        return {"status": "cleared"}
 
     @router.get("/objects/{type_name}")
     def list_objects(type_name: str):

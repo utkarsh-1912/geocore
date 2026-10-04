@@ -14,15 +14,11 @@
    "groundhog.deepfoundations.axialcapacity.debeer",
    "groundhog.deepfoundations.axialcapacity.endbearing",
    "groundhog.deepfoundations.axialcapacity.koppejan",
-   "groundhog.deepfoundations.axialcapacity.lcpc",
    "groundhog.deepfoundations.axialcapacity.negativeskinfriction",
-   "groundhog.deepfoundations.axialcapacity.piletesting",
    "groundhog.deepfoundations.axialcapacity.skinfriction",
    "groundhog.deepfoundations.axialresponse.settlement",
    "groundhog.deepfoundations.boreholestability.cavityexpansion",
-   "groundhog.deepfoundations.lateralresponse.lateral",
    "groundhog.excavations.basic",
-   "groundhog.excavations.soilmix",
    "groundhog.general.agsconversion",
    "groundhog.general.parameter_mapping",
    "groundhog.general.plotting",
@@ -54,7 +50,7 @@
    "groundhog.standards.eurocode7.parameter_selection"
   ],
   "groundhog_version": "0.15.0",
-  "groundhog_source_hash": "18054280ce332e5b9e2a31dc4cd24d744a9b23d095dfb970053d88c1da203e19"
+  "groundhog_source_hash": "5b74b34cc80fd660f012edcf63e013c9f48a8515f251d8180e59f9fbe00bb8b3"
  },
  "functions": [
   {
@@ -423,42 +419,6 @@
    ]
   },
   {
-   "attr": "LCPCAxcapCalculation",
-   "module": "groundhog.deepfoundations.axialcapacity.lcpc",
-   "name": "LCPCAxcapCalculation",
-   "qualname": "LCPCAxcapCalculation",
-   "doc": null,
-   "params": [
-    {
-     "name": "depth",
-     "kind": 1
-    },
-    {
-     "name": "qc",
-     "kind": 1
-    },
-    {
-     "name": "diameter_pile",
-     "kind": 1
-    },
-    {
-     "name": "group_base",
-     "kind": 1
-    },
-    {
-     "name": "group_shaft",
-     "kind": 1
-    },
-    {
-     "name": "diameter_shaft",
-     "kind": 1,
-     "default": {
-      "$float": "nan"
-     }
-    }
-   ]
-  },
-  {
    "attr": "negativeskinfriction_pilegroup_zeevaertdebeer",
    "module": "groundhog.deepfoundations.axialcapacity.negativeskinfriction",
    "name": "negativeskinfriction_pilegroup_zeevaertdebeer",
@@ -492,47 +452,6 @@
     {
      "name": "diameter_influence",
      "kind": 1
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
-   "attr": "piletest_chinkondler",
-   "module": "groundhog.deepfoundations.axialcapacity.piletesting",
-   "name": "piletest_chinkondler",
-   "qualname": "piletest_chinkondler",
-   "doc": "\nExtrapotates a pile head load-settlement curve based on the procedure by Chin-Kondler.\nThe settlements are divided by the corresponding loads. This yields a straight line in a graph of this fraction vs settlement.\nThe user selects how many points to discard and the fitting happens using ``np.polyfit``.\nAn extrapolated load-settlement curve is calculated and plotted for the user to check the results.\n\n:param loads: List of loads recorded during the load test. Note that unload-reload loops should be removed before running the algorithm (:math:`Q`) [kN]\n:param settlements: List of settlements recorded during the load test. Should be the same length as the list with loads (:math:`s`) [mm]\n:param no_discard_points: Number of points at the start of the curve to discard for the fitting of the straight line.\n:param max_settlement: Maximum settlement used for plotting the reconstructed pile head load-settlement curve (:math:`s_{max}`) [mm]. Optional, default=50mm.\n:param selected_settlement: Settlement as which pile capacity is calculated (e.g. 10% of OD) (:math:`Q_{s=s_{\\text{selected}}}`) [kN]. Optional, default=40mm.\n:param show_fig: Boolean determining whether the figures for the Chin-Kondler construction need to be plotted (default behaviour) or returned in the output dictionary.\n\n.. math::\n    \\frac{s}{Q} = a + b \\cdot s\n\n    Q_{\\text{ult}} = 1 / b\n\n:returns: Dictionary with the following keys:\n\n    - 'intercept [mm/kN]': Coefficient :math:`a` from the linear regression [mm/kN]\n    - 'slope [1/kN]': Slope :math:`b` for the linear regression [1/kN]\n    - 'Correleation coefficient [-]': Pearson correlation coefficient for the points used for the construction.\n    - 'Qmax [kN]': Ultimate pile resistance (fully mobilised shaft and base) (:math:`Q_{\\text{ult}}`) [kN]\n    - 'Qdisp [kN]': Pile resistance at the selected displacement level (e.g. 10% of OD) (:math:`Q_{s=s_\\text{selected}}`) [kN]\n    - 'Settlements [mm]': List with settlements for the load-displacement reconstruction [mm]\n    - 'Q [kN]': List with loads for the load-displacement reconstruction [kN]\n    - 'construction_fig': Figure with the linear regression construction (for inspection of the goodness-of-fit)\n",
-   "params": [
-    {
-     "name": "loads",
-     "kind": 1
-    },
-    {
-     "name": "settlements",
-     "kind": 1
-    },
-    {
-     "name": "no_discard_points",
-     "kind": 1,
-     "default": 1
-    },
-    {
-     "name": "max_settlement",
-     "kind": 1,
-     "default": 50
-    },
-    {
-     "name": "selected_settlement",
-     "kind": 1,
-     "default": 40
-    },
-    {
-     "name": "show_fig",
-     "kind": 1,
-     "default": true
     },
     {
      "name": "kwargs",
@@ -887,92 +806,6 @@
    ]
   },
   {
-   "attr": "pilegroupeffect_reesevanimpe",
-   "module": "groundhog.deepfoundations.lateralresponse.lateral",
-   "name": "pilegroupeffect_reesevanimpe",
-   "qualname": "pilegroupeffect_reesevanimpe",
-   "doc": "\nWhen piles are arranged in a group, they influence one another and the lateral reaction for a given displacement can be less than that for a single pile.\nReese and Van Impe suggest a method for calculating the efficiency of each pile. A distinction is made between in-line leading piles, in-line trailing piles and side-by-side piles.\nBased on the direction of loading and inter-pile distance, a reduction factor (p-multiplier) is calculated for each pile pair.\nThe efficiency factors for each pile pair are multiplied to provide the overall efficiency for the pile considered.\nIn this function, the centers of the piles are defined using their (X,Y) coordinates.\nThe direction of loading is defined using the X- and Y-component of the loading vector. Note that the magnitude of this loading vector (norm) does not play a role in the calculation.\nThe diameter of the pile is also required to determine the normalised pile spacing.\nFor piles which is neither perfectly inline or side-by-side, the inline and side-by-side efficiencies are combined using the angle to the loading direction.\n\n:param pile_x: List of X-coordinates of the pile centers (:math:`x`) [m]\n:param pile_y: List of Y-coordinates of the pile centers (:math:`y`) [m]\n:param pile_diameters: List of pile diameters (:math:`y`) [m]\n:param load_x: X-component of the load vector (:math:`x_{\\text{load}}`)\n:param load_y: Y-component of the load vector (:math:`x_{\\text{load}}`)\n:param show_fig: Boolean determining whether the figures for the Chin-Kondler construction need to be plotted (default behaviour) or returned in the output dictionary.\n\n.. math::\n    \\text{Side by side piles: } e = 0.64 \\left( \\frac{s}{D} \\right)^{0.34} \\text{ for } 1 \\leq \\frac{s}{D} \\leq 3.75, e=1 \\text{ for } \\frac{s}{D} > 3.75\n\n    \\text{In-line leading piles: } e = 0.70 \\left( \\frac{s}{D} \\right)^{0.26} \\text{ for } 1 \\leq \\frac{s}{D} \\leq 4 , e=1 \\text{ for } \\frac{s}{D} > 4\n\n    \\text{In-line trailing piles: } e = 0.48 \\left( \\frac{s}{D} \\right)^{0.38} \\text{ for } 1 \\leq \\frac{s}{D} \\leq 7 , e=1 \\text{ for } \\frac{s}{D} > 7\n\n    \\text{Oblique orientation: } e = \\sqrt{e_{\\text{inline}}^2 \\cos^2 \\varphi + e_{\\text{side-by-side}}^2 \\sin^2 \\varphi} \n\n    p_{\\text{group}} = p_{\\text{single}} e_{\\text{combined}} = p_{\\text{single}} \\Pi_j e_j\n\n:returns: Dictionary with the following keys:\n\n    - 'efficiency_matrix': Matrix with the efficiency of each pile vis-\u00e0-vis the others (row i, column j quantifies the influence of pile j on pile i)\n    - 'efficiencies': List with the combined efficiencies of each pile (list with an element for each pile)\n    - 'pile_fig': Figure with the dimensions of the piles.\n",
-   "params": [
-    {
-     "name": "pile_x",
-     "kind": 1
-    },
-    {
-     "name": "pile_y",
-     "kind": 1
-    },
-    {
-     "name": "pile_diameters",
-     "kind": 1
-    },
-    {
-     "name": "load_x",
-     "kind": 1
-    },
-    {
-     "name": "load_y",
-     "kind": 1
-    },
-    {
-     "name": "show_fig",
-     "kind": 1,
-     "default": true
-    },
-    {
-     "name": "plot_height",
-     "kind": 1,
-     "default": 600
-    },
-    {
-     "name": "plot_width",
-     "kind": 1,
-     "default": 400
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
-   "attr": "reinforced_circularsection_inertia",
-   "module": "groundhog.deepfoundations.lateralresponse.lateral",
-   "name": "reinforced_circularsection_inertia",
-   "qualname": "reinforced_circularsection_inertia",
-   "doc": "\nCalculates the combined inertia of a circular section, reinforced with rebar rods at equal center-to-center distance from the concrete section center.\nSteiner's theorem is applied using the center-to-center distance between the center of the concrete section and the center of the rebar rod.\nThe positioning of the rebar rods for maximum or minimum bending resistance can be taken.\nTheir offset from the bending axis can then be derived.\n\n:param diameter: Diameter of the concrete section (:math:`D`) [m] - Suggested range: diameter >= 0.0\n:param modulus_ratio: Ratio of Young's modulus of steel to Young's modulus of concrete (:math:`n`) [-] - Suggested range: modulus_ratio >= 0.0\n:param n_bars: Number of rebar rods (:math:`N`) [-] - Suggested range: n_bars >= 1.0\n:param offset: Center-to-center distance between rebar rods and concrete section center (:math:`r`) [m] - Suggested range: offset >= 0.0\n:param rebar_diameter: Diameter of the rebar rods (:math:`d`) [m] - Suggested range: rebar_diameter >= 0.0\n:param maximum_resistance: Determines whether the rebar rods should be positioned for maximum bending resistance (if true) (optional, default= True)\n\n.. math::\n    I_s = \\frac{\\pi d^4}{64}\n    \n    A_s = \\frac{\\pi d^2}{4}\n\n    A_{\\text{s,transformed}} = n \\cdot A_s\n\n    I_c = \\frac{\\pi D^4}{64}\n    \n    I_{\\text{combined}} = I_c + \\sum_{i=1}^N \\left( I_s + A_{\\text{s,transformed}} r^2 \\right)\n\n:returns: Dictionary with the following keys:\n    \n    - 'Start angle [deg]': Angle between the bending axis and the first rebar rod [deg]\n    - 'Rebar angles [deg]': Angles between rebar rods and the bending axis [deg]\n    - 'Offsets [m]': Offsets of the rebar rods to the bending axis [m]\n    - 'Rebar inertia [m4]': Total inertia of the rebar (:math:`\\sum_{i=1}^N \\left( I_s + A_s r^2 \\right)`) [m4]\n    - 'Ic [m4]': Concrete section inertia [m4]\n    - 'I combined [m4]': Combined inertia of the reinforced section [m4]\n\n",
-   "params": [
-    {
-     "name": "diameter",
-     "kind": 1
-    },
-    {
-     "name": "modulus_ratio",
-     "kind": 1
-    },
-    {
-     "name": "n_bars",
-     "kind": 1
-    },
-    {
-     "name": "offset",
-     "kind": 1
-    },
-    {
-     "name": "rebar_diameter",
-     "kind": 1
-    },
-    {
-     "name": "maximum_resistance",
-     "kind": 1,
-     "default": true
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
    "attr": "earthpressurecoefficients_frictionangle",
    "module": "groundhog.excavations.basic",
    "name": "earthpressurecoefficients_frictionangle",
@@ -1036,106 +869,6 @@
     {
      "name": "top_angle",
      "kind": 1
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
-   "attr": "bendingstiffness_soilmix_method1",
-   "module": "groundhog.excavations.soilmix",
-   "name": "bendingstiffness_soilmix_method1",
-   "qualname": "bendingstiffness_soilmix_method1",
-   "doc": "\nCalculates the bending stiffness of a soilmix wall (for use in geotechnical retaining wall calculations) using the combined stiffness of reinforcements and the soilmix material itself.\nThe stiffness is calculated as the average of the cracked and uncracked stiffness of the material according to \u00a75.4.2.3 if EN 1992-1-1. The formulae contain simplications that result in a small error of 1 to 3%.\nNote that all dimensions are in meters and units of force are in kN.\n\n:param moment_inertia_reinforcement: Moment of inertia of the reinforcement (:math:`I_a`) [m4] - Suggested range: moment_inertia_reinforcement >= 0.0\n:param modulus_soilmix: Youngs modulus of the soilmix (:math:`E_{sm}`) [kPa] - Suggested range: modulus_soilmix >= 0.0\n:param height_soilmix: Height of the soilmix material (:math:`h_{sm}`) [m] - Suggested range: height_soilmix >= 0.0\n:param reinforcement_offset: Offset of reinforcement elements (center to center) (:math:`a`) [m] - Suggested range: reinforcement_offset >= 0.0\n:param height_reinforcement: Longest dimension of the reinforcement (:math:`h_a`) [m] - Suggested range: height_reinforcement >= 0.0\n:param flange_thickness: Thickness of the flanges (:math:`t_f`) [m] - Suggested range: flange_thickness >= 0.0\n:param connection_thickness: Thickness of the connection between the flanges (:math:`t_w`) [m] - Suggested range: connection_thickness >= 0.0\n:param flange_width: Width of the flanges (:math:`b_f`) [m] - Suggested range: flange_width >= 0.0\n:param modulus_reinforcement: Youngs modulus of the reinforcement (steel by default) (:math:`E_a`) [kPa] - Suggested range: 0.0 <= modulus_reinforcement <= 300000000.0 (optional, default= 210000000.0)\n:param participating_width: Participating width for bending. For most cases, this is equal to the center-to-center distance of reinforcement (default when np.nan is used) (:math:`b_{c1}`) [m] - Suggested range: participating_width >= 0.0 (optional, default= np.nan)\n:param tensile_strength_soilmix: Tensile strength of soilmix to calculate cracking moment (:math:`f_{sm,t}`) [kPa] - Suggested range: tensile_strength_soilmix >= 0.0 (optional, default= np.nan)\n\n.. math::\n    EI\\text{-eff} = \\frac{EI\\text{-1} + EI\\text{-2}}{2}\n    \n    EI\\text{-1}=E_a I_a + E_{sm}(I_{sm} - I_a)=E_{sm} \\left[ (n-1) I_a + I_{sm}\\right] \\quad \\text{where } n=E_a/E_{sm}\n    \n    I_{sm} = \\frac{b_{cl} h_{sm}^3}{12}\n    \n    c_1=c_2=\\frac{h_{sm}-h_a}{2}\n    \n    d=h_{eq}-c_2-\\frac{t_f}{2} \\quad{where } h_{eq} \\text{ can be taken as } h_{sm}\n    \n    c_{1,b}=c_1+\\frac{t_f}{2}\n    \n    h_w=h_a-2 t_f\n    \n    \\xi_e=-(2n-1) \\rho + \\sqrt{(2n-1)^2 \\rho^2 + 2 \\left[ (n-1) \\frac{h_{sm}}{d} + 1 \\right] \\rho}\n    \n    \\xi_e=\\frac{x_e}{d}\n    \n    \\rho=\\frac{A_f}{d b_{cl}}\n    \n    A_f=t_f b_f\n    \n    I_2=\\frac{b_{cl} x_e^3}{3} + (n-1) A_f (x_e - c_{1,b})^2 + n A_f (d-x_e)^2 + n t_w \\left( \\frac{(x_e - c_1 - t_f)^3}{3} + \\frac{(h_w - x_e + c_1 + t_f)^3}{3} \\right)\n    \n    EI\\text{-2} = E_{sm} I_2\n\n    EI\\text{-eff/m} =  EI\\text{-eff} = \\frac{EI\\text{-1} + EI\\text{-2}}{2a}\n\n:returns: Dictionary with the following keys:\n    \n    - 'n [-]': Ratio of reinforcement and soilmix moduli (:math:`n`)  [-]\n    - 'Ism [m4]': Moment of inertia of soilmix (:math:`I_{sm}`)  [m4]\n    - 'EI-1 [kNm2]': Bending stiffness of the uncracked section (:math:`EI\\text{-1}`)  [kNm2]\n    - 'Mcr [kNm]': Cracking moment (if tensile strength is specified) (:math:`M_{cr}`)  [kNm]\n    - 'c1 [m]': Net cover above reinforcement (:math:`c_1`)  [m]\n    - 'c2 [m]': Net cover below reinforcement (:math:`c_2`)  [m]\n    - 'd [m]': Useful height of lower flange (:math:`d`)  [m]\n    - 'c1b [m]': Gross cover on upper flange (:math:`c_{1b}`)  [m]\n    - 'hw [m]': Height of the body of the reinforcement (:math:`h_w`)  [m]\n    - 'Af [m2]': Flange area (:math:`A_f`)  [m2]\n    - 'rho [-]': - (:math:`\\rho`)  [-]\n    - 'xi,e [-]': - (:math:`\\xi_e`)  [-]\n    - 'xe [m]': Effective height of the section (:math:`x_e`)  [m]\n    - 'I2 [m4]': Moment of inertia of the cracked section (:math:`I_2`)  [m4]\n    - 'EI-2 [kNm2]': Bending stiffness of the cracked section (:math:`EI\\text{-2}`)  [kNm2]\n    - 'EI [kNm2]': Bending stiffness of the combined section (:math:`EI`)  [kNm2]\n    - 'EI-eff/m [kNm2]': Bending stiffness of the combined section per unit length (:math:`EI\\text{-eff}`)  [kNm2]\n\n.. figure:: images/IPE_conventions.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Naming conventions for reinforcement geometry\n\nReference - Denies, N. and Huybrechts, N. (2016). Handboek soimix-wanden - Ontwerp en uitvoering, SBRCURnet\n\n",
-   "params": [
-    {
-     "name": "moment_inertia_reinforcement",
-     "kind": 1
-    },
-    {
-     "name": "modulus_soilmix",
-     "kind": 1
-    },
-    {
-     "name": "height_soilmix",
-     "kind": 1
-    },
-    {
-     "name": "reinforcement_offset",
-     "kind": 1
-    },
-    {
-     "name": "height_reinforcement",
-     "kind": 1
-    },
-    {
-     "name": "flange_thickness",
-     "kind": 1
-    },
-    {
-     "name": "connection_thickness",
-     "kind": 1
-    },
-    {
-     "name": "flange_width",
-     "kind": 1
-    },
-    {
-     "name": "modulus_reinforcement",
-     "kind": 1,
-     "default": 210000000.0
-    },
-    {
-     "name": "participating_width",
-     "kind": 1,
-     "default": {
-      "$float": "nan"
-     }
-    },
-    {
-     "name": "tensile_strength_soilmix",
-     "kind": 1,
-     "default": {
-      "$float": "nan"
-     }
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
-   "attr": "bendingstiffness_soilmix_method2",
-   "module": "groundhog.excavations.soilmix",
-   "name": "bendingstiffness_soilmix_method2",
-   "qualname": "bendingstiffness_soilmix_method2",
-   "doc": "\nCalculates the bending stiffness of a soilmix wall with internal reinforcements according to a simplified method. The effective bending stiffness is calculated as the sum of the stiffness of the reinforcement and the stiffness of the soilmix zone under compression.\nThis method is usually on the conservative side, with bending stiffnesses 10 to 20% lower than the ones calculated with the more accurate method 1.\n\n:param bendingstiffness_reinforcement: Bending stiffness of the reinforcement (:math:`E_a I_a`) [m4] - Suggested range: bendingstiffness_reinforcement >= 0.0\n:param modulus_soilmix: Youngs modulus of the soilmix material (:math:`E_{sm}`) [kPa] - Suggested range: modulus_soilmix >= 0.0\n:param height_soilmix: Height of the soilmix material (:math:`h_{sm}`) [m] - Suggested range: height_soilmix >= 0.0\n:param reinforcement_offset: Center-to-center offset of reinforcement elements (:math:`a`) [m] - Suggested range: reinforcement_offset >= 0.0\n:param participating_width: Participating width for bending. For most cases, this is equal to the center-to-center distance of reinforcement (default when np.nan is used) (:math:`b_{c1}`) [m] - Suggested range: participating_width >= 0.0 (optional, default= np.nan)\n\n.. math::\n    EI\\text{-eff} = E_a I_a + E_{sm} \\left[ \\frac{b_{c1} \\cdot \\left( \\frac{h_{sm}}{2} \\right)^3}{3} \\right]\n    \n    EI\\text{-eff} / m^{\\prime} = EI\\text{-eff} / a=\\frac{E_a I_a}{a} + E_{sm} \\left[ \\frac{\\left( \\frac{h_{sm}}{2} \\right)^3}{3} \\right]\n\n:returns: Dictionary with the following keys:\n    \n    - 'EaIa [kNm2]': Bending stiffness of the reinforcement (:math:`E_a I_a`)  [kNm2]\n    - 'EI_sm [kNm2]': Bending stiffness of the soilmix (:math:`EI_{sm}`)  [kNm2]\n    - 'EI-eff [kNm2]': Effective bending stiffness of the combined section (:math:`EI\\text{-eff}`)  [kNm2]\n    - 'EI-eff/m [kNm2/m]': Effective bending stiffness per unit wall length (:math:`EI\\text{-eff/m}`)  [kNm2/m]\n\nReference - Denies, N. and Huybrechts, N. (2016). Handboek soimix-wanden - Ontwerp en uitvoering, SBRCURnet\n\n",
-   "params": [
-    {
-     "name": "bendingstiffness_reinforcement",
-     "kind": 1
-    },
-    {
-     "name": "modulus_soilmix",
-     "kind": 1
-    },
-    {
-     "name": "height_soilmix",
-     "kind": 1
-    },
-    {
-     "name": "reinforcement_offset",
-     "kind": 1
-    },
-    {
-     "name": "participating_width",
-     "kind": 1,
-     "default": {
-      "$float": "nan"
-     }
     },
     {
      "name": "kwargs",
@@ -3106,35 +2839,6 @@
    ]
   },
   {
-   "attr": "stresses_lineload_retainingwall",
-   "module": "groundhog.shallowfoundations.stressdistribution",
-   "name": "stresses_lineload_retainingwall",
-   "qualname": "stresses_lineload_retainingwall",
-   "doc": "\nCalculates the elastic stress increase due to a line load (infinitely long out of plane) next to a buried earth-retaining structure.\n\n:param lineload: Magnitude of the applied line load (:math:`Q`) [kN/m] - Suggested range: lineload >= 0.0\n:param toe_depth: Depth of the toe of the retaining wall (:math:`H_0`) [m] - Suggested range: toe_depth >= 0.0\n:param horizontal_offset: Offset between the line load and the retaining structure (:math:`a H_0`) [m] - Suggested range: horizontal_offset >= 0.0\n:param depth: Depth considered for the calculation (cannot be deeper than the toe depth) (:math:`b H_0`) [m] - Suggested range: depth >= 0.0\n\n.. math::\n    \\Delta \\sigma_x = \\frac{4 Q a^2 b}{\\pi H_0 \\left( a^2 + b^2 \\right)^2}\n    \n    \\Delta P_x = \\frac{2 Q}{\\pi \\left( a^2 + 1 \\right)}\n\n:returns: Dictionary with the following keys:\n    \n    - 'delta sigma x [kPa]': Increase of horizontal stress (:math:`\\Delta \\sigma_x`)  [kPa]\n    - 'delta P x [kN/m]': Increase of horizontal force (:math:`\\Delta P_x`)  [kN/m]\n\nReference - Budhu (2011). Soil mechanics and foundation engineering\n\n",
-   "params": [
-    {
-     "name": "lineload",
-     "kind": 1
-    },
-    {
-     "name": "toe_depth",
-     "kind": 1
-    },
-    {
-     "name": "horizontal_offset",
-     "kind": 1
-    },
-    {
-     "name": "depth",
-     "kind": 1
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
    "attr": "stresses_pointload",
    "module": "groundhog.shallowfoundations.stressdistribution",
    "name": "stresses_pointload",
@@ -3168,7 +2872,7 @@
    "module": "groundhog.shallowfoundations.stressdistribution",
    "name": "stresses_rectangle",
    "qualname": "stresses_rectangle",
-   "doc": "\nCalculates the stresses under the corner of a uniformly loaded rectangular area. Stresses under other points can be calculated by subdividing the rectangular in smaller sub-rectangles and using superposition stresses (justified because the solution is elastic). E.g. the stresses under the center of a rectangle is calculated by subdividing the rectangle into four equal sub-areas and calculating the stress below the corner of each and summing them.\n\n:param imposedstress: Stress applied to the uniformly loaded area (:math:`q_s`) [:math:`kPa`]\n:param length: Dimension of the longest edge of the rectangle (:math:`L`) [:math:`m`] - Suggested range: length >= 0.0\n:param width: Dimension of the shortest edge of the rectangle (:math:`B`) [:math:`m`] - Suggested range: width >= 0.0\n:param z: Depth below the footing (:math:`z`) [:math:`m`] - Suggested range: z >= 0.0\n\n.. math::\n    \\Delta \\sigma_z = \\frac{q_s}{2 \\pi} \\left[ \\tan^{-1} \\frac{L B}{z R_3} + \\frac{L B z}{R_3} \\left( \\frac{1}{R_1^2} + \\frac{1}{R_2^2} \\right) \\right]\n\n    \\Delta \\sigma_x = \\frac{q_s}{2 \\pi} \\left[ \\tan^{-1} \\frac{L B}{z R_3} - \\frac{L B z}{R_1^2 R_3} \\right]\n\n    \\Delta \\sigma_y = \\frac{q_s}{2 \\pi} \\left[ \\tan^{-1} \\frac{L B}{z R_3} - \\frac{L B z}{R_2^2 R_3} \\right]\n\n    \\Delta \\tau_{zx} = \\frac{q_s}{2 \\pi} \\left[ \\frac{B}{R_2} - \\frac{z^2 B}{R_1^2 R_3} \\right]\n\n    \\text{where}\n\n    R_1 = \\sqrt{L^2 + z^2}\n    \n    R_2 = \\sqrt{B^2 + z^2}\n\n    R_3 = \\sqrt{L^2 + B^2 + z^2}\n\n:returns: Dictionary with the following keys:\n\n    - 'delta sigma z [kPa]': Increase in vertical stress below the corner of the footing (:math:`\\Delta \\sigma_z`)  [:math:`kPa`]\n    - 'delta sigma x [kPa]': Increase in horizontal stress in the width direction below the corner of the footing (:math:`\\Delta \\sigma_x`)  [:math:`kPa`]\n    - 'delta sigma y [kPa]': Increase in horizontal stress in the length direction below the corner of the footing (:math:`\\Delta \\sigma_y`)  [:math:`kPa`]\n    - 'delta tau zx [kPa]': Increase in shear stress in the zx plane below the corner of the footing (:math:`\\Delta \\tau_{zx}`)  [:math:`kPa`]\n\n.. figure:: images/stresses_rectangle_1.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Nomenclature used for calculation of stresses below the corner of a uniformly loaded rectangle\n\nReference - Budhu (2011). Soil mechanics and foundation engineering\n\n",
+   "doc": "\nCalculates the stresses under the corner of a uniformly loaded rectangular area. Stresses under other points can be calculated by subdividing the rectangular in smaller sub-rectangles and using superposition stresses (justified because the solution is elastic). E.g. the stresses under the center of a rectangle is calculated by subdividing the rectangle into four equal sub-areas and calculating the stress below the corner of each and summing them.\n\n:param imposedstress: Stress applied to the uniformly loaded area (:math:`q_s`) [:math:`kPa`]\n:param length: Dimension of the longest edge of the rectangle (:math:`L`) [:math:`m`] - Suggested range: length >= 0.0\n:param width: Dimension of the shortest edge of the rectangle (:math:`B`) [:math:`m`] - Suggested range: width >= 0.0\n:param z: Depth below the footing (:math:`z`) [:math:`m`] - Suggested range: z >= 0.0\n\n.. math::\n    \\Delta \\sigma_z = \\frac{q_s}{2 \\pi} \\left[ \\tan^{-1) \\frac{L B}{z R_3} + \\frac{L B z}{R_3} \\left( \\frac{1}{R_1^2} + \\frac{1}{R_2^2} \\right) \\right]\n\n    \\Delta \\sigma_x = \\frac{q_s}{2 \\pi} \\left[ \\tan^{-1) \\frac{L B}{z R_3} - \\frac{L B z}{R_1^2 R_3} \\right]\n\n    \\Delta \\sigma_y = \\frac{q_s}{2 \\pi} \\left[ \\tan^{-1) \\frac{L B}{z R_3} - \\frac{L B z}{R_2^2 R_3} \\right]\n\n    \\Delta \\tau_{zx} = \\frac{q_s}{2 \\pi} \\left[ \\frac{B}{R_2} - \\frac{z^2 B}{R_1^2 R_3} \\right]\n\n    \\text{where}\n\n    R_1 = \\sqrt{L^2 + z^2}\n\n    R_2 = \\sqrt{B^2 + z^2}\n\n    R_3 = \\sqrt{L^2 + B^2 + z^2}\n\n:returns: Dictionary with the following keys:\n\n    - 'delta sigma z [kPa]': Increase in vertical stress below the corner of the footing (:math:`\\Delta \\sigma_z`)  [:math:`kPa`]\n    - 'delta sigma x [kPa]': Increase in horizontal stress in the width direction below the corner of the footing (:math:`\\Delta \\sigma_x`)  [:math:`kPa`]\n    - 'delta sigma y [kPa]': Increase in horizontal stress in the length direction below the corner of the footing (:math:`\\Delta \\sigma_y`)  [:math:`kPa`]\n    - 'delta tau zx [kPa]': Increase in shear stress in the zx plane below the corner of the footing (:math:`\\Delta \\tau_{zx}`)  [:math:`kPa`]\n\n.. figure:: images/stresses_rectangle_1.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Nomenclature used for calculation of stresses below the corner of a uniformly loaded rectangle\n\nReference - Budhu (2011). Soil mechanics and foundation engineering\n\n",
    "params": [
     {
      "name": "imposedstress",
@@ -3219,39 +2923,6 @@
      "name": "triangular",
      "kind": 1,
      "default": false
-    },
-    {
-     "name": "kwargs",
-     "kind": 4
-    }
-   ]
-  },
-  {
-   "attr": "stresses_stripload_retainingwall",
-   "module": "groundhog.shallowfoundations.stressdistribution",
-   "name": "stresses_stripload_retainingwall",
-   "qualname": "stresses_stripload_retainingwall",
-   "doc": "\nCalculates the elastic stress increase due to a strip load (infinitely long out of plane) at an offset from a buried earth-retaining structure.\n\nNote that all angles in the formulae are given in degrees.\n\n:param imposedstress: Applied stress for the strip load (:math:`q_s`) [kPa] - Suggested range: imposedstress >= 0.0\n:param width: Width of the strip load (:math:`B`) [m] - Suggested range: width >= 0.0\n:param offset: Shortest horizontal offset between the strip load and the retaining wall (:math:`a`) [m] - Suggested range: offset >= 0.0\n:param toe_depth: Toe depth of the retaining structure (:math:`H_0`) [m] - Suggested range: toe_depth >= 0.0\n:param depth: Depth for the stress calculation (:math:`z`) [m] - Suggested range: depth >= 0.0\n\n.. math::\n    \\Delta \\sigma_x = \\frac{2 q_s}{\\pi} \\left( \\beta - \\sin \\beta \\cos 2 \\alpha \\right)\n    \n    \\Delta P_x = \\frac{q_s}{90} \\left[ H_0 \\left( \\theta_2 - \\theta_1 \\right) \\right]\n    \n    \\bar{z} = \\frac{H_0^2 \\left( \\theta_2 - \\theta_1 \\right) - \\left( R_1 - R_2 \\right) + 57.3 B H_0}{2 H_0 \\left( \\theta_2 - \\theta_1 \\right)}\n    \n    \\theta_1 = \\tan^{-1} \\left( \\frac{a}{H_0} \\right)\n    \n    \\theta_2 = \\tan^{-1} \\left( \\frac{a + B}{H_0} \\right)\n    \n    R_1 = \\left( a + B \\right)^2 \\left(90 -\\theta_2 \\right)\n    \n    R_2 = a^2 \\left( 90 - \\theta_1 \\right)\n\n:returns: Dictionary with the following keys:\n    \n    - 'delta sigma x [kPa]': Increase of the lateral stress (:math:`\\Delta \\sigma_x`)  [kPa]\n    - 'delta P x [kN/m]': Increase of lateral force (:math:`\\Delta P_x`)  [kN/m]\n    - 'z bar [m]': Application depth of the force (:math:`\\bar{z}`)  [m]\n    - 'theta 1 [deg]': Angle theta 1 (:math:`\\theta_1`)  [deg]\n    - 'theta 2 [deg]': Angle theta 2 (:math:`\\theta_2`)  [deg]\n    - 'R 1 [m]': First offset (:math:`R_1`)  [m]\n    - 'R 2 [m]': Second offset (:math:`R_2`)  [m]\n    - 'alpha [deg]': Angle alpha (:math:`\\alpha`)  [deg]\n    - 'beta [deg]': Angle beta (:math:`\\beta`)  [deg]\n\nReference - Budhu (2011). Soil mechanics and foundation engineering\n\n",
-   "params": [
-    {
-     "name": "imposedstress",
-     "kind": 1
-    },
-    {
-     "name": "width",
-     "kind": 1
-    },
-    {
-     "name": "offset",
-     "kind": 1
-    },
-    {
-     "name": "toe_depth",
-     "kind": 1
-    },
-    {
-     "name": "depth",
-     "kind": 1
     },
     {
      "name": "kwargs",

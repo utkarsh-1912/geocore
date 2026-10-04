@@ -19,6 +19,7 @@ Installers are published on the [Releases page](https://github.com/utkarsh-1912/
 | :--- | :--- | :--- |
 | Windows | Setup `.exe` and portable build | x64 |
 | macOS | `.dmg` | Apple Silicon (arm64) and Intel (x64) |
+| Linux | `.AppImage` (auto-updates) and `.deb` | x64 |
 
 ---
 
@@ -112,6 +113,10 @@ Useful environment variables for development:
 | `GEOAI_LORA_PATH`, `GEOAI_LORA_SCALE` | Optional LoRA adapter |
 | `GEOAI_THINKING` | Enable the model's thinking mode (off by default) |
 
+### Reliability
+
+The chat shows what it is doing (*Checking for tools*, *Interpreting input*, *Calling tool*, *Generating output*). A turn that produces no answer says so instead of staying blank, and the model is loaded in the background when the chat opens. Each turn's outcome is logged locally to `geoai_turns.jsonl` in the config directory (no prompt text) so failures can be counted by cause; see [the GeoAI README](python-backend/core/geoai/README.md#reliability-and-diagnostics).
+
 ### Evaluation
 
 GeoAI has an offline evaluation suite for tool selection, argument extraction, clarification and grounding:
@@ -140,12 +145,13 @@ Fine-tuning scripts (LoRA/QLoRA) live in [`python-backend/core/geoai/finetune`](
 
 | Path | Contents |
 | :--- | :--- |
-| `electron-app/` | Electron main process and React UI |
-| `python-backend/main.py` | FastAPI entry point |
-| `python-backend/core/` | Calculation registry, wrappers and dynamic API routes |
-| `python-backend/core/geoai/` | Agent, model providers, tool registry, CPT/SPT/AGS tools, research, evaluation |
+| [`electron-app/`](electron-app/README.md) | Electron main process and React UI |
+| [`python-backend/`](python-backend/README.md) | FastAPI entry point, calculation registry, wrappers and API routes |
+| [`python-backend/core/geoai/`](python-backend/core/geoai/README.md) | Agent, model providers, tool registry, CPT/SPT/AGS tools, research, evaluation |
 | `python-backend/tests/` | Backend test suite |
-| `website/` | Product website and documentation |
+| [`website/`](website/README.md) | Product website and user documentation |
+| [`AGENTS.md`](AGENTS.md) | GeoAI design rules and milestones |
+| [`RELEASE_GUIDE.md`](RELEASE_GUIDE.md) | Building and publishing releases |
 
 ---
 

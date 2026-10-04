@@ -23,7 +23,7 @@ export const GEOTECHNICAL_MODULES = [
                 functions: [
                     { id: 'LogPlot', title: 'LogPlot' },
                     { id: 'LogPlotMatplotlib', title: 'LogPlotMatplotlib' },
-                    { id: 'plot_with_log', title: 'plot_with_log()' }
+                    { id: 'plot_with_log', title: 'Multi-Trace Log Plot' }
                 ]
             },
             {
@@ -31,31 +31,31 @@ export const GEOTECHNICAL_MODULES = [
                 title: 'AGS Conversion',
                 functions: [
                     { id: 'AGSConverter', title: 'AGSConverter' },
-                    { id: 'AGSConverter_convert_ags_group', title: 'convert_ags_group()' }
+                    { id: 'AGSConverter_convert_ags_group', title: 'Convert AGS Group to Table' }
                 ]
             },
             {
                 id: 'parameter_mapping',
                 title: 'Parameter Mapping',
                 functions: [
-                    { id: 'get_projected_point', title: 'get_projected_point()' },
-                    { id: 'latlon_distance', title: 'latlon_distance()' },
-                    { id: 'map_depth_properties', title: 'map_depth_properties()' },
-                    { id: 'offsets_api', title: 'offsets()' },
-                    { id: 'merge_two_dicts', title: 'merge_two_dicts()' },
-                    { id: 'reverse_dict', title: 'reverse_dict()' }
+                    { id: 'get_projected_point', title: 'Project Point onto Line' },
+                    { id: 'latlon_distance', title: 'Distance from Lat/Lon Coordinates' },
+                    { id: 'map_depth_properties', title: 'Map Layer Properties to Depths' },
+                    { id: 'offsets_api', title: 'Offset from Point to Line' },
+                    { id: 'merge_two_dicts', title: 'Merge Two Dictionaries' },
+                    { id: 'reverse_dict', title: 'Reverse Dictionary Keys/Values' }
                 ]
             },
             {
                 id: 'validation',
                 title: 'Validation',
                 functions: [
-                    { id: 'check_layer_overlap', title: 'check_layer_overlap()' },
-                    { id: 'validate_boolean', title: 'validate_boolean()' },
-                    { id: 'validate_float', title: 'validate_float()' },
-                    { id: 'validate_integer', title: 'validate_integer()' },
-                    { id: 'validate_list', title: 'validate_list()' },
-                    { id: 'validate_string', title: 'validate_string()' }
+                    { id: 'check_layer_overlap', title: 'Check Layer Overlap' },
+                    { id: 'validate_boolean', title: 'Validate Boolean Input' },
+                    { id: 'validate_float', title: 'Validate Float Input' },
+                    { id: 'validate_integer', title: 'Validate Integer Input' },
+                    { id: 'validate_list', title: 'Validate Numeric List' },
+                    { id: 'validate_string', title: 'Validate String Input' }
                 ]
             }
         ]
@@ -69,60 +69,60 @@ export const GEOTECHNICAL_MODULES = [
                 id: 'classification_phase',
                 title: 'Classification: Phase relations',
                 functions: [
-                    { id: 'bulkunitweight', title: 'bulkunitweight()' },
-                    { id: 'bulkunitweight_dryunitweight', title: 'bulkunitweight_dryunitweight()' },
-                    { id: 'density_unitweight', title: 'density_unitweight()' },
-                    { id: 'dryunitweight_watercontent', title: 'dryunitweight_watercontent()' },
-                    { id: 'porosity_voidratio', title: 'porosity_voidratio()' },
-                    { id: 'relative_density', title: 'relative_density()' },
-                    { id: 'saturation_watercontent', title: 'saturation_watercontent()' },
-                    { id: 'unitweight_density', title: 'unitweight_density()' },
-                    { id: 'unitweight_watercontent_saturated', title: 'unitweight_watercontent_saturated()' },
-                    { id: 'voidratio_bulkunitweight', title: 'voidratio_bulkunitweight()' },
-                    { id: 'voidratio_drydensity', title: 'voidratio_drydensity()' },
-                    { id: 'voidratio_porosity', title: 'voidratio_porosity()' },
-                    { id: 'voidratio_watercontent', title: 'voidratio_watercontent()' },
-                    { id: 'watercontent_voidratio', title: 'watercontent_voidratio()' }
+                    { id: 'bulkunitweight', title: 'Bulk Unit Weight (from Gs, e, Sr)' },
+                    { id: 'bulkunitweight_dryunitweight', title: 'Bulk Unit Weight (from Dry Unit Weight)' },
+                    { id: 'density_unitweight', title: 'Unit Weight to Density' },
+                    { id: 'dryunitweight_watercontent', title: 'Dry Unit Weight (from Water Content)' },
+                    { id: 'porosity_voidratio', title: 'Porosity (from Void Ratio)' },
+                    { id: 'relative_density', title: 'Relative Density (from Void Ratio)' },
+                    { id: 'saturation_watercontent', title: 'Degree of Saturation (from Water Content)' },
+                    { id: 'unitweight_density', title: 'Density to Unit Weight' },
+                    { id: 'unitweight_watercontent_saturated', title: 'Saturated Unit Weight (from Water Content)' },
+                    { id: 'voidratio_bulkunitweight', title: 'Void Ratio (from Bulk Unit Weight)' },
+                    { id: 'voidratio_drydensity', title: 'Void Ratio (from Dry Density)' },
+                    { id: 'voidratio_porosity', title: 'Void Ratio (from Porosity)' },
+                    { id: 'voidratio_watercontent', title: 'Void Ratio (from Water Content)' },
+                    { id: 'watercontent_voidratio', title: 'Water Content (from Void Ratio)' }
                 ]
             },
             {
                 id: 'classification_categories',
                 title: 'Classification: Classes & categories',
                 functions: [
-                    { id: 'relativedensity_categories', title: 'relativedensity_categories()' },
-                    { id: 'samplequality_voidratio_lunne', title: 'samplequality_voidratio_lunne()' },
-                    { id: 'su_categories', title: 'su_categories()' },
-                    { id: 'uscs_categories', title: 'uscs_categories()' }
+                    { id: 'relativedensity_categories', title: 'Relative Density Classification' },
+                    { id: 'samplequality_voidratio_lunne', title: 'Lunne Sample Quality (Void Ratio Change)' },
+                    { id: 'su_categories', title: 'Undrained Shear Strength Classification' },
+                    { id: 'uscs_categories', title: 'USCS Soil Type Descriptions' }
                 ]
             },
             {
                 id: 'correlations_all',
                 title: 'Correlations: All soil types',
                 functions: [
-                    { id: 'acousticimpedance_bulkunitweight_chen', title: 'acousticimpedance_bulkunitweight_chen()' },
-                    { id: 'k0_frictionangle_mesri', title: 'k0_frictionangle_mesri()' },
-                    { id: 'shearwavevelocity_compressionindex_cha', title: 'shearwavevelocity_compressionindex_cha()' }
+                    { id: 'acousticimpedance_bulkunitweight_chen', title: 'Chen Acoustic Impedance–Porosity Correlation' },
+                    { id: 'k0_frictionangle_mesri', title: 'Mesri K0 (Normally/Overconsolidated Soils)' },
+                    { id: 'shearwavevelocity_compressionindex_cha', title: 'Cha Vs–Compression Index Correlation' }
                 ]
             },
             {
                 id: 'correlations_cohesive',
                 title: 'Correlations: Cohesive soils',
                 functions: [
-                    { id: 'compressionindex_watercontent_koppula', title: 'compressionindex_watercontent_koppula()' },
-                    { id: 'cv_liquidlimit_usnavy', title: 'cv_liquidlimit_usnavy()' },
-                    { id: 'frictionangle_plasticityindex', title: 'frictionangle_plasticityindex()' },
-                    { id: 'gmax_plasticityocr_andersen', title: 'gmax_plasticityocr_andersen()' },
-                    { id: 'k0_plasticity_kenney', title: 'k0_plasticity_kenney()' }
+                    { id: 'compressionindex_watercontent_koppula', title: 'Koppula (1981) Compression Index' },
+                    { id: 'cv_liquidlimit_usnavy', title: 'US Navy Cv from Liquid Limit' },
+                    { id: 'frictionangle_plasticityindex', title: 'Drained Friction Angle (from Plasticity Index)' },
+                    { id: 'gmax_plasticityocr_andersen', title: 'Andersen Gmax (Plasticity & OCR)' },
+                    { id: 'k0_plasticity_kenney', title: 'Kenney K0 (from Plasticity, Clay)' }
                 ]
             },
             {
                 id: 'correlations_cohesionless',
                 title: 'Correlations: Cohesionless soils',
                 functions: [
-                    { id: 'gmax_sand_hardinblack', title: 'gmax_sand_hardinblack()' },
-                    { id: 'hssmall_parameters_sand', title: 'hssmall_parameters_sand()' },
-                    { id: 'permeability_d10_hazen', title: 'permeability_d10_hazen()' },
-                    { id: 'stress_dilatancy_bolton', title: 'stress_dilatancy_bolton()' }
+                    { id: 'gmax_sand_hardinblack', title: 'Hardin & Black (1968) Gmax for Sand' },
+                    { id: 'hssmall_parameters_sand', title: 'HS Small Parameters (from Relative Density)' },
+                    { id: 'permeability_d10_hazen', title: 'Hazen Permeability (from D10)' },
+                    { id: 'stress_dilatancy_bolton', title: 'Bolton Stress–Dilatancy Relation' }
                 ]
             },
             {
@@ -136,40 +136,40 @@ export const GEOTECHNICAL_MODULES = [
                 id: 'insitu_pcpt_functions',
                 title: 'In-situ: PCPT functions',
                 functions: [
-                    { id: 'behaviourindex_pcpt_nonnormalised', title: 'behaviourindex_pcpt_nonnormalised()' },
-                    { id: 'behaviourindex_pcpt_robertsonwride', title: 'behaviourindex_pcpt_robertsonwride()' },
-                    { id: 'clippingdepths_qc1N_tianlehane', title: 'clippingdepths_qc1N_tianlehane()' },
-                    { id: 'coneresistance_ocsand_baldi', title: 'coneresistance_ocsand_baldi()' },
-                    { id: 'constrainedmodulus_pcpt_robertson', title: 'constrainedmodulus_pcpt_robertson()' },
-                    { id: 'dissipation_test_teh', title: 'dissipation_test_teh()' },
-                    { id: 'drainedsecantmodulus_sand_bellotti', title: 'drainedsecantmodulus_sand_bellotti()' },
-                    { id: 'frictionangle_overburden_kleven', title: 'frictionangle_overburden_kleven()' },
-                    { id: 'frictionangle_sand_kulhawymayne', title: 'frictionangle_sand_kulhawymayne()' },
-                    { id: 'gmax_clay_maynerix', title: 'gmax_clay_maynerix()' },
-                    { id: 'gmax_cpt_puechen', title: 'gmax_cpt_puechen()' },
-                    { id: 'gmax_sand_rixstokoe', title: 'gmax_sand_rixstokoe()' },
-                    { id: 'gmax_voidratio_maynerix', title: 'gmax_voidratio_maynerix()' },
-                    { id: 'ic_soilclass_robertson', title: 'ic_soilclass_robertson()' },
-                    { id: 'k0_sand_mayne', title: 'k0_sand_mayne()' },
-                    { id: 'ocr_cpt_lunne', title: 'ocr_cpt_lunne()' },
-                    { id: 'pcpt_normalisations', title: 'pcpt_normalisations()' },
-                    { id: 'relativedensity_ncsand_baldi', title: 'relativedensity_ncsand_baldi()' },
-                    { id: 'relativedensity_ocsand_baldi', title: 'relativedensity_ocsand_baldi()' },
-                    { id: 'relativedensity_sand_jamiolkowski', title: 'relativedensity_sand_jamiolkowski()' },
-                    { id: 'sensitivity_frictionratio_lunne', title: 'sensitivity_frictionratio_lunne()' },
-                    { id: 'soilclass_robertson', title: 'soilclass_robertson()' },
-                    { id: 'soiltype_vs_longodonohue', title: 'soiltype_vs_longodonohue()' },
-                    { id: 'undrainedshearstrength_clay_radlunne', title: 'undrainedshearstrength_clay_radlunne()' },
-                    { id: 'unitweight_mayne', title: 'unitweight_mayne()' },
-                    { id: 'vs_cpt_andrus', title: 'vs_cpt_andrus()' },
-                    { id: 'vs_cpt_hegazymayne', title: 'vs_cpt_hegazymayne()' },
-                    { id: 'vs_cpt_longdonohue', title: 'vs_cpt_longdonohue()' },
-                    { id: 'vs_cpt_mcgannetal', title: 'vs_cpt_mcgannetal()' },
-                    { id: 'vs_cpt_tonniandsimonini', title: 'vs_cpt_tonniandsimonini()' },
-                    { id: 'vs_cpt_wrideetal', title: 'vs_cpt_wrideetal()' },
-                    { id: 'vs_cptd50_karrayetal', title: 'vs_cptd50_karrayetal()' },
-                    { id: 'vs_ic_robertsoncabal', title: 'vs_ic_robertsoncabal()' },
-                    { id: 'vs_stressdependent_stuyts', title: 'vs_stressdependent_stuyts()' }
+                    { id: 'behaviourindex_pcpt_nonnormalised', title: 'Non-Normalised Soil Behaviour Index' },
+                    { id: 'behaviourindex_pcpt_robertsonwride', title: 'Robertson & Wride (1998) Soil Behaviour Index' },
+                    { id: 'clippingdepths_qc1N_tianlehane', title: 'Tian & Lehane (2025) Layer Clipping Depths' },
+                    { id: 'coneresistance_ocsand_baldi', title: 'Baldi Cone Resistance (Overconsolidated Sand)' },
+                    { id: 'constrainedmodulus_pcpt_robertson', title: 'Robertson Constrained Modulus (CPT)' },
+                    { id: 'dissipation_test_teh', title: 'Teh & Houlsby (1991) Dissipation Curve' },
+                    { id: 'drainedsecantmodulus_sand_bellotti', title: 'Bellotti Drained Secant Modulus (Sand)' },
+                    { id: 'frictionangle_overburden_kleven', title: 'Kleven (1986) Friction Angle Chart' },
+                    { id: 'frictionangle_sand_kulhawymayne', title: 'Kulhawy & Mayne Friction Angle (Sand, CPT)' },
+                    { id: 'gmax_clay_maynerix', title: 'Mayne & Rix (1993) Gmax for Clay' },
+                    { id: 'gmax_cpt_puechen', title: 'Puechen Gmax (CPT)' },
+                    { id: 'gmax_sand_rixstokoe', title: 'Rix & Stokoe Gmax (Sand, CPT)' },
+                    { id: 'gmax_voidratio_maynerix', title: 'Mayne & Rix Gmax (from Void Ratio)' },
+                    { id: 'ic_soilclass_robertson', title: 'Robertson & Wride Soil Classification (Ic)' },
+                    { id: 'k0_sand_mayne', title: 'Mayne K0 (Clean Sand, CPT)' },
+                    { id: 'ocr_cpt_lunne', title: 'Lunne OCR (CPT, Clay)' },
+                    { id: 'pcpt_normalisations', title: 'PCPT Normalisation & Correction' },
+                    { id: 'relativedensity_ncsand_baldi', title: 'Baldi Relative Density (NC Sand)' },
+                    { id: 'relativedensity_ocsand_baldi', title: 'Baldi Relative Density (OC Sand)' },
+                    { id: 'relativedensity_sand_jamiolkowski', title: 'Jamiolkowski Relative Density (Sand, CPT)' },
+                    { id: 'sensitivity_frictionratio_lunne', title: 'Rad & Lunne (1986) Sensitivity (Friction Ratio)' },
+                    { id: 'soilclass_robertson', title: 'Robertson & Wride Soil Classification' },
+                    { id: 'soiltype_vs_longodonohue', title: 'Long & Donohue Soil Type (Vs, CPT)' },
+                    { id: 'undrainedshearstrength_clay_radlunne', title: 'Rad & Lunne Undrained Shear Strength (Net qt)' },
+                    { id: 'unitweight_mayne', title: 'Mayne Total Unit Weight (CPT)' },
+                    { id: 'vs_cpt_andrus', title: 'Andrus Shear Wave Velocity (CPT)' },
+                    { id: 'vs_cpt_hegazymayne', title: 'Hegazy & Mayne Shear Wave Velocity (CPT)' },
+                    { id: 'vs_cpt_longdonohue', title: 'Long & Donohue Shear Wave Velocity (CPT)' },
+                    { id: 'vs_cpt_mcgannetal', title: 'McGann et al. Shear Wave Velocity (CPT)' },
+                    { id: 'vs_cpt_tonniandsimonini', title: 'Tonni & Simonini Shear Wave Velocity (CPT)' },
+                    { id: 'vs_cpt_wrideetal', title: 'Wride et al. Shear Wave Velocity (CPT)' },
+                    { id: 'vs_cptd50_karrayetal', title: 'Karray et al. Shear Wave Velocity (CPT, D50)' },
+                    { id: 'vs_ic_robertsoncabal', title: 'Robertson & Cabal Shear Wave Velocity (Ic)' },
+                    { id: 'vs_stressdependent_stuyts', title: 'Stuyts (2024) Stress-Dependent Shear Wave Velocity' }
                 ]
             },
             {
@@ -183,23 +183,23 @@ export const GEOTECHNICAL_MODULES = [
                 id: 'insitu_spt_functions',
                 title: 'In-situ: SPT corrections & correlations',
                 functions: [
-                    { id: 'frictionangle_spt_PHT', title: 'frictionangle_spt_PHT()' },
-                    { id: 'frictionangle_spt_kulhawymayne', title: 'frictionangle_spt_kulhawymayne()' },
-                    { id: 'overburdencorrection_spt_ISO', title: 'overburdencorrection_spt_ISO()' },
-                    { id: 'overburdencorrection_spt_liaowhitman', title: 'overburdencorrection_spt_liaowhitman()' },
-                    { id: 'relativedensity_spt_kulhawymayne', title: 'relativedensity_spt_kulhawymayne()' },
-                    { id: 'relativedensityclass_spt_terzaghipeck', title: 'relativedensityclass_spt_terzaghipeck()' },
-                    { id: 'spt_N60_correction', title: 'spt_N60_correction()' },
-                    { id: 'undrainedshearstrength_spt_salgado', title: 'undrainedshearstrength_spt_salgado()' },
-                    { id: 'undrainedshearstrengthclass_spt_terzaghipeck', title: 'undrainedshearstrengthclass_spt_terzaghipeck()' },
-                    { id: 'youngsmodulus_spt_AASHTO', title: 'youngsmodulus_spt_AASHTO()' }
+                    { id: 'frictionangle_spt_PHT', title: 'Peck, Hanson & Thornburn (1974) Friction Angle' },
+                    { id: 'frictionangle_spt_kulhawymayne', title: 'Kulhawy & Mayne Friction Angle (SPT)' },
+                    { id: 'overburdencorrection_spt_ISO', title: 'ISO Overburden Correction (SPT N)' },
+                    { id: 'overburdencorrection_spt_liaowhitman', title: 'Liao & Whitman Overburden Correction (SPT N)' },
+                    { id: 'relativedensity_spt_kulhawymayne', title: 'Kulhawy & Mayne Relative Density (SPT)' },
+                    { id: 'relativedensityclass_spt_terzaghipeck', title: 'Terzaghi & Peck Relative Density Class (SPT)' },
+                    { id: 'spt_N60_correction', title: 'SPT N60 Energy Correction' },
+                    { id: 'undrainedshearstrength_spt_salgado', title: 'Salgado Undrained Shear Strength (SPT)' },
+                    { id: 'undrainedshearstrengthclass_spt_terzaghipeck', title: 'Terzaghi & Peck Strength Class (SPT)' },
+                    { id: 'youngsmodulus_spt_AASHTO', title: 'AASHTO Young\'s Modulus (SPT)' }
                 ]
             },
             {
                 id: 'lab_sampleprep',
                 title: 'Laboratory: Sample preparation',
                 functions: [
-                    { id: 'undercompaction_cohesionless_ladd', title: 'undercompaction_cohesionless_ladd()' }
+                    { id: 'undercompaction_cohesionless_ladd', title: 'Ladd Undercompaction (Sample Preparation)' }
                 ]
             },
             {
@@ -214,8 +214,8 @@ export const GEOTECHNICAL_MODULES = [
                 id: 'lab_compressibility',
                 title: 'Laboratory: Compressibility',
                 functions: [
-                    { id: 'logtimemethod', title: 'logtimemethod()' },
-                    { id: 'roottimemethod', title: 'roottimemethod()' }
+                    { id: 'logtimemethod', title: 'Log-Time Method (Coefficient of Consolidation)' },
+                    { id: 'roottimemethod', title: 'Root-Time Method (Coefficient of Consolidation)' }
                 ]
             }
         ]
@@ -492,15 +492,15 @@ export const GEOTECHNICAL_MODULES = [
                 id: 'parameter_selection',
                 title: 'Parameter selection',
                 functions: [
-                    { id: 'parameter_selection_constant_value', title: 'constant_value()' },
-                    { id: 'parameter_selection_linear_trend', title: 'linear_trend()' }
+                    { id: 'parameter_selection_constant_value', title: 'Characteristic Value (Constant)' },
+                    { id: 'parameter_selection_linear_trend', title: 'Characteristic Value (Linear Trend)' }
                 ]
             },
             {
                 id: 'partial_factors',
                 title: 'Partial factor selection',
                 functions: [
-                    { id: 'eurocode7_factors', title: 'Eurocode7_factoring_STR_GEO' }
+                    { id: 'eurocode7_factors', title: 'Eurocode 7 STR/GEO Partial Factors' }
                 ]
             }
         ]

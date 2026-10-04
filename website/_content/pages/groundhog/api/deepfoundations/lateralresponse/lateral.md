@@ -12,7 +12,10 @@ groundhog_version: 0.15.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.deepfoundations.lateralresponse.lateral
-geocore_available: false
+geocore_available: true
+geocore_functions:
+- pilegroupeffect_reesevanimpe
+- reinforced_circularsection_inertia
 ---
 
 Module `groundhog.deepfoundations.lateralresponse.lateral` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/lateralresponse/lateral.py).
@@ -22,6 +25,8 @@ Module `groundhog.deepfoundations.lateralresponse.lateral` (groundhog 0.15.0). [
 <a id="reinforced_circularsection_inertia"></a>
 
 ## `reinforced_circularsection_inertia`
+
+<span class="gc-badge gc-available" data-geocore-function="reinforced_circularsection_inertia">Available in GeoCore</span> [Pile calculations › Pile lateral behaviour › Reinforced Circular Section Inertia](/docs/geocore/using/modules#reinforced_circularsection_inertia)
 
 ```python
 reinforced_circularsection_inertia(
@@ -86,6 +91,8 @@ Dictionary with the following keys:
 <a id="pilegroupeffect_reesevanimpe"></a>
 
 ## `pilegroupeffect_reesevanimpe`
+
+<span class="gc-badge gc-available" data-geocore-function="pilegroupeffect_reesevanimpe">Available in GeoCore</span> [Pile calculations › Pile lateral behaviour › Pile Group Effect (Reese & Van Impe)](/docs/geocore/using/modules#pilegroupeffect_reesevanimpe)
 
 ```python
 pilegroupeffect_reesevanimpe(

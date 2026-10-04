@@ -34,7 +34,7 @@ Upstream documentation: [Parameter mapping](https://groundhog.readthedocs.io/en/
 
 ## `map_depth_properties`
 
-<span class="gc-badge gc-available" data-geocore-function="map_depth_properties">Available in GeoCore</span> [General and utility functions › Parameter Mapping › map_depth_properties()](/docs/geocore/using/modules#map_depth_properties)
+<span class="gc-badge gc-available" data-geocore-function="map_depth_properties">Available in GeoCore</span> [General and utility functions › Parameter Mapping › Map Layer Properties to Depths](/docs/geocore/using/modules#map_depth_properties)
 
 ```python
 map_depth_properties(
@@ -68,7 +68,7 @@ Note that if a node of the target dataframe corresponds to a layer change, the p
 
 ## `merge_two_dicts`
 
-<span class="gc-badge gc-available" data-geocore-function="merge_two_dicts">Available in GeoCore</span> [General and utility functions › Parameter Mapping › merge_two_dicts()](/docs/geocore/using/modules#merge_two_dicts)
+<span class="gc-badge gc-available" data-geocore-function="merge_two_dicts">Available in GeoCore</span> [General and utility functions › Parameter Mapping › Merge Two Dictionaries](/docs/geocore/using/modules#merge_two_dicts)
 
 ```python
 merge_two_dicts(x, y)
@@ -91,7 +91,7 @@ Updated dictionary
 
 ## `reverse_dict`
 
-<span class="gc-badge gc-available" data-geocore-function="reverse_dict">Available in GeoCore</span> [General and utility functions › Parameter Mapping › reverse_dict()](/docs/geocore/using/modules#reverse_dict)
+<span class="gc-badge gc-available" data-geocore-function="reverse_dict">Available in GeoCore</span> [General and utility functions › Parameter Mapping › Reverse Dictionary Keys/Values](/docs/geocore/using/modules#reverse_dict)
 
 ```python
 reverse_dict(input_dict)
@@ -113,7 +113,7 @@ Dictionary with keys turned into values and vice-versa
 
 ## `latlon_distance`
 
-<span class="gc-badge gc-available" data-geocore-function="latlon_distance">Available in GeoCore</span> [General and utility functions › Parameter Mapping › latlon_distance()](/docs/geocore/using/modules#latlon_distance)
+<span class="gc-badge gc-available" data-geocore-function="latlon_distance">Available in GeoCore</span> [General and utility functions › Parameter Mapping › Distance from Lat/Lon Coordinates](/docs/geocore/using/modules#latlon_distance)
 
 ```python
 latlon_distance(lon1, lat1, lon2, lat2)
@@ -138,7 +138,7 @@ distance in meters
 
 ## `get_projected_point`
 
-<span class="gc-badge gc-available" data-geocore-function="get_projected_point">Available in GeoCore</span> [General and utility functions › Parameter Mapping › get_projected_point()](/docs/geocore/using/modules#get_projected_point)
+<span class="gc-badge gc-available" data-geocore-function="get_projected_point">Available in GeoCore</span> [General and utility functions › Parameter Mapping › Project Point onto Line](/docs/geocore/using/modules#get_projected_point)
 
 ```python
 get_projected_point(lon1, lat1, lon2, lat2, lon3, lat3)
@@ -163,7 +163,7 @@ Purpose - lon1,lat1,lon2,lat2 = Two points representing the ends of the line seg
 
 ## `offsets`
 
-<span class="gc-badge gc-available" data-geocore-function="offsets_api">Available in GeoCore</span> [General and utility functions › Parameter Mapping › offsets()](/docs/geocore/using/modules#offsets_api)
+<span class="gc-badge gc-available" data-geocore-function="offsets_api">Available in GeoCore</span> [General and utility functions › Parameter Mapping › Offset from Point to Line](/docs/geocore/using/modules#offsets_api)
 
 ```python
 offsets(startpoint, endpoint, point, latlon=False)

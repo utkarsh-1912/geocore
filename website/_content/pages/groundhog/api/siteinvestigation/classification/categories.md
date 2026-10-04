@@ -32,7 +32,7 @@ Upstream documentation: [Soil classes and categories](https://groundhog.readthed
 
 ## `relativedensity_categories`
 
-<span class="gc-badge gc-available" data-geocore-function="relativedensity_categories">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › relativedensity_categories()](/docs/geocore/using/modules#relativedensity_categories)
+<span class="gc-badge gc-available" data-geocore-function="relativedensity_categories">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › Relative Density Classification](/docs/geocore/using/modules#relativedensity_categories)
 
 ```python
 relativedensity_categories(relative_density, **kwargs)
@@ -74,7 +74,7 @@ Dictionary with the following keys:
 
 ## `su_categories`
 
-<span class="gc-badge gc-available" data-geocore-function="su_categories">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › su_categories()](/docs/geocore/using/modules#su_categories)
+<span class="gc-badge gc-available" data-geocore-function="su_categories">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › Undrained Shear Strength Classification](/docs/geocore/using/modules#su_categories)
 
 ```python
 su_categories(undrained_shear_strength, standard='BS 5930:2015', **kwargs)
@@ -127,7 +127,7 @@ Dictionary with the following keys:
 
 ## `uscs_categories`
 
-<span class="gc-badge gc-available" data-geocore-function="uscs_categories">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › uscs_categories()](/docs/geocore/using/modules#uscs_categories)
+<span class="gc-badge gc-available" data-geocore-function="uscs_categories">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › USCS Soil Type Descriptions](/docs/geocore/using/modules#uscs_categories)
 
 ```python
 uscs_categories(symbol, **kwargs)
@@ -159,7 +159,7 @@ Dictionary with the following keys:
 
 ## `samplequality_voidratio_lunne`
 
-<span class="gc-badge gc-available" data-geocore-function="samplequality_voidratio_lunne">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › samplequality_voidratio_lunne()](/docs/geocore/using/modules#samplequality_voidratio_lunne)
+<span class="gc-badge gc-available" data-geocore-function="samplequality_voidratio_lunne">Available in GeoCore</span> [Site investigation › Classification: Classes & categories › Lunne Sample Quality (Void Ratio Change)](/docs/geocore/using/modules#samplequality_voidratio_lunne)
 
 ```python
 samplequality_voidratio_lunne(voidratio, voidratio_change, ocr, **kwargs)

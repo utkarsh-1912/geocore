@@ -13,7 +13,7 @@ edited_by_geocore: false
 geocore_available: true
 ---
 
-GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 204 calculators, of which 197 link to the groundhog function or class they run.
+GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 203 calculators, of which 203 link to the groundhog function or class they run.
 
 ## General and utility functions
 
@@ -27,78 +27,78 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 - <a id="logplot"></a>**LogPlot** (`LogPlot`) — [groundhog `LogPlot`](/docs/groundhog/api/general/plotting#logplot)
 - <a id="logplotmatplotlib"></a>**LogPlotMatplotlib** (`LogPlotMatplotlib`) — [groundhog `LogPlotMatplotlib`](/docs/groundhog/api/general/plotting#logplotmatplotlib)
-- <a id="plot_with_log"></a>**plot_with_log()** (`plot_with_log`) — [groundhog `plot_with_log`](/docs/groundhog/api/general/plotting#plot_with_log)
+- <a id="plot_with_log"></a>**Multi-Trace Log Plot** (`plot_with_log`) — [groundhog `plot_with_log`](/docs/groundhog/api/general/plotting#plot_with_log)
 
 ### AGS Conversion
 
 - <a id="agsconverter"></a>**AGSConverter** (`AGSConverter`) — [groundhog `AGSConverter`](/docs/groundhog/api/general/agsconversion#agsconverter)
-- <a id="agsconverter_convert_ags_group"></a>**convert_ags_group()** (`AGSConverter_convert_ags_group`) — [groundhog `AGSConverter.convert_ags_group`](/docs/groundhog/api/general/agsconversion#agsconverter-convert_ags_group)
+- <a id="agsconverter_convert_ags_group"></a>**Convert AGS Group to Table** (`AGSConverter_convert_ags_group`) — [groundhog `AGSConverter.convert_ags_group`](/docs/groundhog/api/general/agsconversion#agsconverter-convert_ags_group)
 
 ### Parameter Mapping
 
-- <a id="get_projected_point"></a>**get_projected_point()** (`get_projected_point`) — [groundhog `get_projected_point`](/docs/groundhog/api/general/parameter_mapping#get_projected_point)
-- <a id="latlon_distance"></a>**latlon_distance()** (`latlon_distance`) — [groundhog `latlon_distance`](/docs/groundhog/api/general/parameter_mapping#latlon_distance)
-- <a id="map_depth_properties"></a>**map_depth_properties()** (`map_depth_properties`) — [groundhog `map_depth_properties`](/docs/groundhog/api/general/parameter_mapping#map_depth_properties)
-- <a id="offsets_api"></a>**offsets()** (`offsets_api`) — [groundhog `offsets`](/docs/groundhog/api/general/parameter_mapping#offsets)
-- <a id="merge_two_dicts"></a>**merge_two_dicts()** (`merge_two_dicts`) — [groundhog `merge_two_dicts`](/docs/groundhog/api/general/parameter_mapping#merge_two_dicts)
-- <a id="reverse_dict"></a>**reverse_dict()** (`reverse_dict`) — [groundhog `reverse_dict`](/docs/groundhog/api/general/parameter_mapping#reverse_dict)
+- <a id="get_projected_point"></a>**Project Point onto Line** (`get_projected_point`) — [groundhog `get_projected_point`](/docs/groundhog/api/general/parameter_mapping#get_projected_point)
+- <a id="latlon_distance"></a>**Distance from Lat/Lon Coordinates** (`latlon_distance`) — [groundhog `latlon_distance`](/docs/groundhog/api/general/parameter_mapping#latlon_distance)
+- <a id="map_depth_properties"></a>**Map Layer Properties to Depths** (`map_depth_properties`) — [groundhog `map_depth_properties`](/docs/groundhog/api/general/parameter_mapping#map_depth_properties)
+- <a id="offsets_api"></a>**Offset from Point to Line** (`offsets_api`) — [groundhog `offsets`](/docs/groundhog/api/general/parameter_mapping#offsets)
+- <a id="merge_two_dicts"></a>**Merge Two Dictionaries** (`merge_two_dicts`) — [groundhog `merge_two_dicts`](/docs/groundhog/api/general/parameter_mapping#merge_two_dicts)
+- <a id="reverse_dict"></a>**Reverse Dictionary Keys/Values** (`reverse_dict`) — [groundhog `reverse_dict`](/docs/groundhog/api/general/parameter_mapping#reverse_dict)
 
 ### Validation
 
-- <a id="check_layer_overlap"></a>**check_layer_overlap()** (`check_layer_overlap`) — [groundhog `check_layer_overlap`](/docs/groundhog/api/general/validation#check_layer_overlap)
-- <a id="validate_boolean"></a>**validate_boolean()** (`validate_boolean`) — [groundhog `validate_boolean`](/docs/groundhog/api/general/validation#validate_boolean)
-- <a id="validate_float"></a>**validate_float()** (`validate_float`) — [groundhog `validate_float`](/docs/groundhog/api/general/validation#validate_float)
-- <a id="validate_integer"></a>**validate_integer()** (`validate_integer`) — [groundhog `validate_integer`](/docs/groundhog/api/general/validation#validate_integer)
-- <a id="validate_list"></a>**validate_list()** (`validate_list`) — [groundhog `validate_list`](/docs/groundhog/api/general/validation#validate_list)
-- <a id="validate_string"></a>**validate_string()** (`validate_string`) — [groundhog `validate_string`](/docs/groundhog/api/general/validation#validate_string)
+- <a id="check_layer_overlap"></a>**Check Layer Overlap** (`check_layer_overlap`) — [groundhog `check_layer_overlap`](/docs/groundhog/api/general/validation#check_layer_overlap)
+- <a id="validate_boolean"></a>**Validate Boolean Input** (`validate_boolean`) — [groundhog `validate_boolean`](/docs/groundhog/api/general/validation#validate_boolean)
+- <a id="validate_float"></a>**Validate Float Input** (`validate_float`) — [groundhog `validate_float`](/docs/groundhog/api/general/validation#validate_float)
+- <a id="validate_integer"></a>**Validate Integer Input** (`validate_integer`) — [groundhog `validate_integer`](/docs/groundhog/api/general/validation#validate_integer)
+- <a id="validate_list"></a>**Validate Numeric List** (`validate_list`) — [groundhog `validate_list`](/docs/groundhog/api/general/validation#validate_list)
+- <a id="validate_string"></a>**Validate String Input** (`validate_string`) — [groundhog `validate_string`](/docs/groundhog/api/general/validation#validate_string)
 
 ## Site investigation
 
 
 ### Classification: Phase relations
 
-- <a id="bulkunitweight"></a>**bulkunitweight()** (`bulkunitweight`) — [groundhog `bulkunitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#bulkunitweight)
-- <a id="bulkunitweight_dryunitweight"></a>**bulkunitweight_dryunitweight()** (`bulkunitweight_dryunitweight`) — [groundhog `bulkunitweight_dryunitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#bulkunitweight_dryunitweight)
-- <a id="density_unitweight"></a>**density_unitweight()** (`density_unitweight`) — [groundhog `density_unitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#density_unitweight)
-- <a id="dryunitweight_watercontent"></a>**dryunitweight_watercontent()** (`dryunitweight_watercontent`) — [groundhog `dryunitweight_watercontent`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#dryunitweight_watercontent)
-- <a id="porosity_voidratio"></a>**porosity_voidratio()** (`porosity_voidratio`) — [groundhog `porosity_voidratio`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#porosity_voidratio)
-- <a id="relative_density"></a>**relative_density()** (`relative_density`) — [groundhog `relative_density`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#relative_density)
-- <a id="saturation_watercontent"></a>**saturation_watercontent()** (`saturation_watercontent`) — [groundhog `saturation_watercontent`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#saturation_watercontent)
-- <a id="unitweight_density"></a>**unitweight_density()** (`unitweight_density`) — [groundhog `unitweight_density`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#unitweight_density)
-- <a id="unitweight_watercontent_saturated"></a>**unitweight_watercontent_saturated()** (`unitweight_watercontent_saturated`) — [groundhog `unitweight_watercontent_saturated`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#unitweight_watercontent_saturated)
-- <a id="voidratio_bulkunitweight"></a>**voidratio_bulkunitweight()** (`voidratio_bulkunitweight`) — [groundhog `voidratio_bulkunitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_bulkunitweight)
-- <a id="voidratio_drydensity"></a>**voidratio_drydensity()** (`voidratio_drydensity`) — [groundhog `voidratio_drydensity`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_drydensity)
-- <a id="voidratio_porosity"></a>**voidratio_porosity()** (`voidratio_porosity`) — [groundhog `voidratio_porosity`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_porosity)
-- <a id="voidratio_watercontent"></a>**voidratio_watercontent()** (`voidratio_watercontent`) — [groundhog `voidratio_watercontent`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_watercontent)
-- <a id="watercontent_voidratio"></a>**watercontent_voidratio()** (`watercontent_voidratio`) — [groundhog `watercontent_voidratio`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#watercontent_voidratio)
+- <a id="bulkunitweight"></a>**Bulk Unit Weight (from Gs, e, Sr)** (`bulkunitweight`) — [groundhog `bulkunitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#bulkunitweight)
+- <a id="bulkunitweight_dryunitweight"></a>**Bulk Unit Weight (from Dry Unit Weight)** (`bulkunitweight_dryunitweight`) — [groundhog `bulkunitweight_dryunitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#bulkunitweight_dryunitweight)
+- <a id="density_unitweight"></a>**Unit Weight to Density** (`density_unitweight`) — [groundhog `density_unitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#density_unitweight)
+- <a id="dryunitweight_watercontent"></a>**Dry Unit Weight (from Water Content)** (`dryunitweight_watercontent`) — [groundhog `dryunitweight_watercontent`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#dryunitweight_watercontent)
+- <a id="porosity_voidratio"></a>**Porosity (from Void Ratio)** (`porosity_voidratio`) — [groundhog `porosity_voidratio`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#porosity_voidratio)
+- <a id="relative_density"></a>**Relative Density (from Void Ratio)** (`relative_density`) — [groundhog `relative_density`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#relative_density)
+- <a id="saturation_watercontent"></a>**Degree of Saturation (from Water Content)** (`saturation_watercontent`) — [groundhog `saturation_watercontent`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#saturation_watercontent)
+- <a id="unitweight_density"></a>**Density to Unit Weight** (`unitweight_density`) — [groundhog `unitweight_density`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#unitweight_density)
+- <a id="unitweight_watercontent_saturated"></a>**Saturated Unit Weight (from Water Content)** (`unitweight_watercontent_saturated`) — [groundhog `unitweight_watercontent_saturated`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#unitweight_watercontent_saturated)
+- <a id="voidratio_bulkunitweight"></a>**Void Ratio (from Bulk Unit Weight)** (`voidratio_bulkunitweight`) — [groundhog `voidratio_bulkunitweight`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_bulkunitweight)
+- <a id="voidratio_drydensity"></a>**Void Ratio (from Dry Density)** (`voidratio_drydensity`) — [groundhog `voidratio_drydensity`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_drydensity)
+- <a id="voidratio_porosity"></a>**Void Ratio (from Porosity)** (`voidratio_porosity`) — [groundhog `voidratio_porosity`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_porosity)
+- <a id="voidratio_watercontent"></a>**Void Ratio (from Water Content)** (`voidratio_watercontent`) — [groundhog `voidratio_watercontent`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#voidratio_watercontent)
+- <a id="watercontent_voidratio"></a>**Water Content (from Void Ratio)** (`watercontent_voidratio`) — [groundhog `watercontent_voidratio`](/docs/groundhog/api/siteinvestigation/classification/phaserelations#watercontent_voidratio)
 
 ### Classification: Classes & categories
 
-- <a id="relativedensity_categories"></a>**relativedensity_categories()** (`relativedensity_categories`) — [groundhog `relativedensity_categories`](/docs/groundhog/api/siteinvestigation/classification/categories#relativedensity_categories)
-- <a id="samplequality_voidratio_lunne"></a>**samplequality_voidratio_lunne()** (`samplequality_voidratio_lunne`) — [groundhog `samplequality_voidratio_lunne`](/docs/groundhog/api/siteinvestigation/classification/categories#samplequality_voidratio_lunne)
-- <a id="su_categories"></a>**su_categories()** (`su_categories`) — [groundhog `su_categories`](/docs/groundhog/api/siteinvestigation/classification/categories#su_categories)
-- <a id="uscs_categories"></a>**uscs_categories()** (`uscs_categories`) — [groundhog `uscs_categories`](/docs/groundhog/api/siteinvestigation/classification/categories#uscs_categories)
+- <a id="relativedensity_categories"></a>**Relative Density Classification** (`relativedensity_categories`) — [groundhog `relativedensity_categories`](/docs/groundhog/api/siteinvestigation/classification/categories#relativedensity_categories)
+- <a id="samplequality_voidratio_lunne"></a>**Lunne Sample Quality (Void Ratio Change)** (`samplequality_voidratio_lunne`) — [groundhog `samplequality_voidratio_lunne`](/docs/groundhog/api/siteinvestigation/classification/categories#samplequality_voidratio_lunne)
+- <a id="su_categories"></a>**Undrained Shear Strength Classification** (`su_categories`) — [groundhog `su_categories`](/docs/groundhog/api/siteinvestigation/classification/categories#su_categories)
+- <a id="uscs_categories"></a>**USCS Soil Type Descriptions** (`uscs_categories`) — [groundhog `uscs_categories`](/docs/groundhog/api/siteinvestigation/classification/categories#uscs_categories)
 
 ### Correlations: All soil types
 
-- <a id="acousticimpedance_bulkunitweight_chen"></a>**acousticimpedance_bulkunitweight_chen()** (`acousticimpedance_bulkunitweight_chen`) — [groundhog `acousticimpedance_bulkunitweight_chen`](/docs/groundhog/api/siteinvestigation/correlations/general#acousticimpedance_bulkunitweight_chen)
-- <a id="k0_frictionangle_mesri"></a>**k0_frictionangle_mesri()** (`k0_frictionangle_mesri`) — [groundhog `k0_frictionangle_mesri`](/docs/groundhog/api/siteinvestigation/correlations/general#k0_frictionangle_mesri)
-- <a id="shearwavevelocity_compressionindex_cha"></a>**shearwavevelocity_compressionindex_cha()** (`shearwavevelocity_compressionindex_cha`) — [groundhog `shearwavevelocity_compressionindex_cha`](/docs/groundhog/api/siteinvestigation/correlations/general#shearwavevelocity_compressionindex_cha)
+- <a id="acousticimpedance_bulkunitweight_chen"></a>**Chen Acoustic Impedance–Porosity Correlation** (`acousticimpedance_bulkunitweight_chen`) — [groundhog `acousticimpedance_bulkunitweight_chen`](/docs/groundhog/api/siteinvestigation/correlations/general#acousticimpedance_bulkunitweight_chen)
+- <a id="k0_frictionangle_mesri"></a>**Mesri K0 (Normally/Overconsolidated Soils)** (`k0_frictionangle_mesri`) — [groundhog `k0_frictionangle_mesri`](/docs/groundhog/api/siteinvestigation/correlations/general#k0_frictionangle_mesri)
+- <a id="shearwavevelocity_compressionindex_cha"></a>**Cha Vs–Compression Index Correlation** (`shearwavevelocity_compressionindex_cha`) — [groundhog `shearwavevelocity_compressionindex_cha`](/docs/groundhog/api/siteinvestigation/correlations/general#shearwavevelocity_compressionindex_cha)
 
 ### Correlations: Cohesive soils
 
-- <a id="compressionindex_watercontent_koppula"></a>**compressionindex_watercontent_koppula()** (`compressionindex_watercontent_koppula`) — [groundhog `compressionindex_watercontent_koppula`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#compressionindex_watercontent_koppula)
-- <a id="cv_liquidlimit_usnavy"></a>**cv_liquidlimit_usnavy()** (`cv_liquidlimit_usnavy`) — [groundhog `cv_liquidlimit_usnavy`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#cv_liquidlimit_usnavy)
-- <a id="frictionangle_plasticityindex"></a>**frictionangle_plasticityindex()** (`frictionangle_plasticityindex`) — [groundhog `frictionangle_plasticityindex`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#frictionangle_plasticityindex)
-- <a id="gmax_plasticityocr_andersen"></a>**gmax_plasticityocr_andersen()** (`gmax_plasticityocr_andersen`) — [groundhog `gmax_plasticityocr_andersen`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#gmax_plasticityocr_andersen)
-- <a id="k0_plasticity_kenney"></a>**k0_plasticity_kenney()** (`k0_plasticity_kenney`) — [groundhog `k0_plasticity_kenney`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#k0_plasticity_kenney)
+- <a id="compressionindex_watercontent_koppula"></a>**Koppula (1981) Compression Index** (`compressionindex_watercontent_koppula`) — [groundhog `compressionindex_watercontent_koppula`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#compressionindex_watercontent_koppula)
+- <a id="cv_liquidlimit_usnavy"></a>**US Navy Cv from Liquid Limit** (`cv_liquidlimit_usnavy`) — [groundhog `cv_liquidlimit_usnavy`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#cv_liquidlimit_usnavy)
+- <a id="frictionangle_plasticityindex"></a>**Drained Friction Angle (from Plasticity Index)** (`frictionangle_plasticityindex`) — [groundhog `frictionangle_plasticityindex`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#frictionangle_plasticityindex)
+- <a id="gmax_plasticityocr_andersen"></a>**Andersen Gmax (Plasticity & OCR)** (`gmax_plasticityocr_andersen`) — [groundhog `gmax_plasticityocr_andersen`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#gmax_plasticityocr_andersen)
+- <a id="k0_plasticity_kenney"></a>**Kenney K0 (from Plasticity, Clay)** (`k0_plasticity_kenney`) — [groundhog `k0_plasticity_kenney`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#k0_plasticity_kenney)
 
 ### Correlations: Cohesionless soils
 
-- <a id="gmax_sand_hardinblack"></a>**gmax_sand_hardinblack()** (`gmax_sand_hardinblack`) — [groundhog `gmax_sand_hardinblack`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#gmax_sand_hardinblack)
-- <a id="hssmall_parameters_sand"></a>**hssmall_parameters_sand()** (`hssmall_parameters_sand`) — [groundhog `hssmall_parameters_sand`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#hssmall_parameters_sand)
-- <a id="permeability_d10_hazen"></a>**permeability_d10_hazen()** (`permeability_d10_hazen`) — [groundhog `permeability_d10_hazen`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#permeability_d10_hazen)
-- <a id="stress_dilatancy_bolton"></a>**stress_dilatancy_bolton()** (`stress_dilatancy_bolton`) — [groundhog `stress_dilatancy_bolton`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#stress_dilatancy_bolton)
+- <a id="gmax_sand_hardinblack"></a>**Hardin & Black (1968) Gmax for Sand** (`gmax_sand_hardinblack`) — [groundhog `gmax_sand_hardinblack`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#gmax_sand_hardinblack)
+- <a id="hssmall_parameters_sand"></a>**HS Small Parameters (from Relative Density)** (`hssmall_parameters_sand`) — [groundhog `hssmall_parameters_sand`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#hssmall_parameters_sand)
+- <a id="permeability_d10_hazen"></a>**Hazen Permeability (from D10)** (`permeability_d10_hazen`) — [groundhog `permeability_d10_hazen`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#permeability_d10_hazen)
+- <a id="stress_dilatancy_bolton"></a>**Bolton Stress–Dilatancy Relation** (`stress_dilatancy_bolton`) — [groundhog `stress_dilatancy_bolton`](/docs/groundhog/api/siteinvestigation/correlations/cohesionless#stress_dilatancy_bolton)
 
 ### In-situ: PCPT processing class
 
@@ -106,40 +106,40 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### In-situ: PCPT functions
 
-- <a id="behaviourindex_pcpt_nonnormalised"></a>**behaviourindex_pcpt_nonnormalised()** (`behaviourindex_pcpt_nonnormalised`) — [groundhog `behaviourindex_pcpt_nonnormalised`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#behaviourindex_pcpt_nonnormalised)
-- <a id="behaviourindex_pcpt_robertsonwride"></a>**behaviourindex_pcpt_robertsonwride()** (`behaviourindex_pcpt_robertsonwride`) — [groundhog `behaviourindex_pcpt_robertsonwride`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#behaviourindex_pcpt_robertsonwride)
-- <a id="clippingdepths_qc1n_tianlehane"></a>**clippingdepths_qc1N_tianlehane()** (`clippingdepths_qc1N_tianlehane`) — [groundhog `clippingdepths_qc1N_tianlehane`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#clippingdepths_qc1n_tianlehane)
-- <a id="coneresistance_ocsand_baldi"></a>**coneresistance_ocsand_baldi()** (`coneresistance_ocsand_baldi`) — [groundhog `coneresistance_ocsand_baldi`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#coneresistance_ocsand_baldi)
-- <a id="constrainedmodulus_pcpt_robertson"></a>**constrainedmodulus_pcpt_robertson()** (`constrainedmodulus_pcpt_robertson`) — [groundhog `constrainedmodulus_pcpt_robertson`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#constrainedmodulus_pcpt_robertson)
-- <a id="dissipation_test_teh"></a>**dissipation_test_teh()** (`dissipation_test_teh`) — [groundhog `dissipation_test_teh`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#dissipation_test_teh)
-- <a id="drainedsecantmodulus_sand_bellotti"></a>**drainedsecantmodulus_sand_bellotti()** (`drainedsecantmodulus_sand_bellotti`) — [groundhog `drainedsecantmodulus_sand_bellotti`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#drainedsecantmodulus_sand_bellotti)
-- <a id="frictionangle_overburden_kleven"></a>**frictionangle_overburden_kleven()** (`frictionangle_overburden_kleven`) — [groundhog `frictionangle_overburden_kleven`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#frictionangle_overburden_kleven)
-- <a id="frictionangle_sand_kulhawymayne"></a>**frictionangle_sand_kulhawymayne()** (`frictionangle_sand_kulhawymayne`) — [groundhog `frictionangle_sand_kulhawymayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#frictionangle_sand_kulhawymayne)
-- <a id="gmax_clay_maynerix"></a>**gmax_clay_maynerix()** (`gmax_clay_maynerix`) — [groundhog `gmax_clay_maynerix`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_clay_maynerix)
-- <a id="gmax_cpt_puechen"></a>**gmax_cpt_puechen()** (`gmax_cpt_puechen`) — [groundhog `gmax_cpt_puechen`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_cpt_puechen)
-- <a id="gmax_sand_rixstokoe"></a>**gmax_sand_rixstokoe()** (`gmax_sand_rixstokoe`) — [groundhog `gmax_sand_rixstokoe`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_sand_rixstokoe)
-- <a id="gmax_voidratio_maynerix"></a>**gmax_voidratio_maynerix()** (`gmax_voidratio_maynerix`) — [groundhog `gmax_voidratio_maynerix`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_voidratio_maynerix)
-- <a id="ic_soilclass_robertson"></a>**ic_soilclass_robertson()** (`ic_soilclass_robertson`) — [groundhog `ic_soilclass_robertson`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#ic_soilclass_robertson)
-- <a id="k0_sand_mayne"></a>**k0_sand_mayne()** (`k0_sand_mayne`) — [groundhog `k0_sand_mayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#k0_sand_mayne)
-- <a id="ocr_cpt_lunne"></a>**ocr_cpt_lunne()** (`ocr_cpt_lunne`) — [groundhog `ocr_cpt_lunne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#ocr_cpt_lunne)
-- <a id="pcpt_normalisations"></a>**pcpt_normalisations()** (`pcpt_normalisations`) — [groundhog `pcpt_normalisations`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#pcpt_normalisations)
-- <a id="relativedensity_ncsand_baldi"></a>**relativedensity_ncsand_baldi()** (`relativedensity_ncsand_baldi`) — [groundhog `relativedensity_ncsand_baldi`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#relativedensity_ncsand_baldi)
-- <a id="relativedensity_ocsand_baldi"></a>**relativedensity_ocsand_baldi()** (`relativedensity_ocsand_baldi`) — [groundhog `relativedensity_ocsand_baldi`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#relativedensity_ocsand_baldi)
-- <a id="relativedensity_sand_jamiolkowski"></a>**relativedensity_sand_jamiolkowski()** (`relativedensity_sand_jamiolkowski`) — [groundhog `relativedensity_sand_jamiolkowski`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#relativedensity_sand_jamiolkowski)
-- <a id="sensitivity_frictionratio_lunne"></a>**sensitivity_frictionratio_lunne()** (`sensitivity_frictionratio_lunne`) — [groundhog `sensitivity_frictionratio_lunne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#sensitivity_frictionratio_lunne)
-- <a id="soilclass_robertson"></a>**soilclass_robertson()** (`soilclass_robertson`) — [groundhog `soilclass_robertson`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#soilclass_robertson)
-- <a id="soiltype_vs_longodonohue"></a>**soiltype_vs_longodonohue()** (`soiltype_vs_longodonohue`) — [groundhog `soiltype_vs_longodonohue`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#soiltype_vs_longodonohue)
-- <a id="undrainedshearstrength_clay_radlunne"></a>**undrainedshearstrength_clay_radlunne()** (`undrainedshearstrength_clay_radlunne`) — [groundhog `undrainedshearstrength_clay_radlunne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#undrainedshearstrength_clay_radlunne)
-- <a id="unitweight_mayne"></a>**unitweight_mayne()** (`unitweight_mayne`) — [groundhog `unitweight_mayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#unitweight_mayne)
-- <a id="vs_cpt_andrus"></a>**vs_cpt_andrus()** (`vs_cpt_andrus`) — [groundhog `vs_cpt_andrus`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_andrus)
-- <a id="vs_cpt_hegazymayne"></a>**vs_cpt_hegazymayne()** (`vs_cpt_hegazymayne`) — [groundhog `vs_cpt_hegazymayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_hegazymayne)
-- <a id="vs_cpt_longdonohue"></a>**vs_cpt_longdonohue()** (`vs_cpt_longdonohue`) — [groundhog `vs_cpt_longdonohue`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_longdonohue)
-- <a id="vs_cpt_mcgannetal"></a>**vs_cpt_mcgannetal()** (`vs_cpt_mcgannetal`) — [groundhog `vs_cpt_mcgannetal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_mcgannetal)
-- <a id="vs_cpt_tonniandsimonini"></a>**vs_cpt_tonniandsimonini()** (`vs_cpt_tonniandsimonini`) — [groundhog `vs_cpt_tonniandsimonini`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_tonniandsimonini)
-- <a id="vs_cpt_wrideetal"></a>**vs_cpt_wrideetal()** (`vs_cpt_wrideetal`) — [groundhog `vs_cpt_wrideetal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_wrideetal)
-- <a id="vs_cptd50_karrayetal"></a>**vs_cptd50_karrayetal()** (`vs_cptd50_karrayetal`) — [groundhog `vs_cptd50_karrayetal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cptd50_karrayetal)
-- <a id="vs_ic_robertsoncabal"></a>**vs_ic_robertsoncabal()** (`vs_ic_robertsoncabal`) — [groundhog `vs_ic_robertsoncabal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_ic_robertsoncabal)
-- <a id="vs_stressdependent_stuyts"></a>**vs_stressdependent_stuyts()** (`vs_stressdependent_stuyts`) — [groundhog `vs_stressdependent_stuyts`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_stressdependent_stuyts)
+- <a id="behaviourindex_pcpt_nonnormalised"></a>**Non-Normalised Soil Behaviour Index** (`behaviourindex_pcpt_nonnormalised`) — [groundhog `behaviourindex_pcpt_nonnormalised`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#behaviourindex_pcpt_nonnormalised)
+- <a id="behaviourindex_pcpt_robertsonwride"></a>**Robertson & Wride (1998) Soil Behaviour Index** (`behaviourindex_pcpt_robertsonwride`) — [groundhog `behaviourindex_pcpt_robertsonwride`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#behaviourindex_pcpt_robertsonwride)
+- <a id="clippingdepths_qc1n_tianlehane"></a>**Tian & Lehane (2025) Layer Clipping Depths** (`clippingdepths_qc1N_tianlehane`) — [groundhog `clippingdepths_qc1N_tianlehane`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#clippingdepths_qc1n_tianlehane)
+- <a id="coneresistance_ocsand_baldi"></a>**Baldi Cone Resistance (Overconsolidated Sand)** (`coneresistance_ocsand_baldi`) — [groundhog `coneresistance_ocsand_baldi`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#coneresistance_ocsand_baldi)
+- <a id="constrainedmodulus_pcpt_robertson"></a>**Robertson Constrained Modulus (CPT)** (`constrainedmodulus_pcpt_robertson`) — [groundhog `constrainedmodulus_pcpt_robertson`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#constrainedmodulus_pcpt_robertson)
+- <a id="dissipation_test_teh"></a>**Teh & Houlsby (1991) Dissipation Curve** (`dissipation_test_teh`) — [groundhog `dissipation_test_teh`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#dissipation_test_teh)
+- <a id="drainedsecantmodulus_sand_bellotti"></a>**Bellotti Drained Secant Modulus (Sand)** (`drainedsecantmodulus_sand_bellotti`) — [groundhog `drainedsecantmodulus_sand_bellotti`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#drainedsecantmodulus_sand_bellotti)
+- <a id="frictionangle_overburden_kleven"></a>**Kleven (1986) Friction Angle Chart** (`frictionangle_overburden_kleven`) — [groundhog `frictionangle_overburden_kleven`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#frictionangle_overburden_kleven)
+- <a id="frictionangle_sand_kulhawymayne"></a>**Kulhawy & Mayne Friction Angle (Sand, CPT)** (`frictionangle_sand_kulhawymayne`) — [groundhog `frictionangle_sand_kulhawymayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#frictionangle_sand_kulhawymayne)
+- <a id="gmax_clay_maynerix"></a>**Mayne & Rix (1993) Gmax for Clay** (`gmax_clay_maynerix`) — [groundhog `gmax_clay_maynerix`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_clay_maynerix)
+- <a id="gmax_cpt_puechen"></a>**Puechen Gmax (CPT)** (`gmax_cpt_puechen`) — [groundhog `gmax_cpt_puechen`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_cpt_puechen)
+- <a id="gmax_sand_rixstokoe"></a>**Rix & Stokoe Gmax (Sand, CPT)** (`gmax_sand_rixstokoe`) — [groundhog `gmax_sand_rixstokoe`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_sand_rixstokoe)
+- <a id="gmax_voidratio_maynerix"></a>**Mayne & Rix Gmax (from Void Ratio)** (`gmax_voidratio_maynerix`) — [groundhog `gmax_voidratio_maynerix`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#gmax_voidratio_maynerix)
+- <a id="ic_soilclass_robertson"></a>**Robertson & Wride Soil Classification (Ic)** (`ic_soilclass_robertson`) — [groundhog `ic_soilclass_robertson`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#ic_soilclass_robertson)
+- <a id="k0_sand_mayne"></a>**Mayne K0 (Clean Sand, CPT)** (`k0_sand_mayne`) — [groundhog `k0_sand_mayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#k0_sand_mayne)
+- <a id="ocr_cpt_lunne"></a>**Lunne OCR (CPT, Clay)** (`ocr_cpt_lunne`) — [groundhog `ocr_cpt_lunne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#ocr_cpt_lunne)
+- <a id="pcpt_normalisations"></a>**PCPT Normalisation & Correction** (`pcpt_normalisations`) — [groundhog `pcpt_normalisations`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#pcpt_normalisations)
+- <a id="relativedensity_ncsand_baldi"></a>**Baldi Relative Density (NC Sand)** (`relativedensity_ncsand_baldi`) — [groundhog `relativedensity_ncsand_baldi`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#relativedensity_ncsand_baldi)
+- <a id="relativedensity_ocsand_baldi"></a>**Baldi Relative Density (OC Sand)** (`relativedensity_ocsand_baldi`) — [groundhog `relativedensity_ocsand_baldi`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#relativedensity_ocsand_baldi)
+- <a id="relativedensity_sand_jamiolkowski"></a>**Jamiolkowski Relative Density (Sand, CPT)** (`relativedensity_sand_jamiolkowski`) — [groundhog `relativedensity_sand_jamiolkowski`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#relativedensity_sand_jamiolkowski)
+- <a id="sensitivity_frictionratio_lunne"></a>**Rad & Lunne (1986) Sensitivity (Friction Ratio)** (`sensitivity_frictionratio_lunne`) — [groundhog `sensitivity_frictionratio_lunne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#sensitivity_frictionratio_lunne)
+- <a id="soilclass_robertson"></a>**Robertson & Wride Soil Classification** (`soilclass_robertson`) — [groundhog `soilclass_robertson`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#soilclass_robertson)
+- <a id="soiltype_vs_longodonohue"></a>**Long & Donohue Soil Type (Vs, CPT)** (`soiltype_vs_longodonohue`) — [groundhog `soiltype_vs_longodonohue`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#soiltype_vs_longodonohue)
+- <a id="undrainedshearstrength_clay_radlunne"></a>**Rad & Lunne Undrained Shear Strength (Net qt)** (`undrainedshearstrength_clay_radlunne`) — [groundhog `undrainedshearstrength_clay_radlunne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#undrainedshearstrength_clay_radlunne)
+- <a id="unitweight_mayne"></a>**Mayne Total Unit Weight (CPT)** (`unitweight_mayne`) — [groundhog `unitweight_mayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#unitweight_mayne)
+- <a id="vs_cpt_andrus"></a>**Andrus Shear Wave Velocity (CPT)** (`vs_cpt_andrus`) — [groundhog `vs_cpt_andrus`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_andrus)
+- <a id="vs_cpt_hegazymayne"></a>**Hegazy & Mayne Shear Wave Velocity (CPT)** (`vs_cpt_hegazymayne`) — [groundhog `vs_cpt_hegazymayne`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_hegazymayne)
+- <a id="vs_cpt_longdonohue"></a>**Long & Donohue Shear Wave Velocity (CPT)** (`vs_cpt_longdonohue`) — [groundhog `vs_cpt_longdonohue`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_longdonohue)
+- <a id="vs_cpt_mcgannetal"></a>**McGann et al. Shear Wave Velocity (CPT)** (`vs_cpt_mcgannetal`) — [groundhog `vs_cpt_mcgannetal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_mcgannetal)
+- <a id="vs_cpt_tonniandsimonini"></a>**Tonni & Simonini Shear Wave Velocity (CPT)** (`vs_cpt_tonniandsimonini`) — [groundhog `vs_cpt_tonniandsimonini`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_tonniandsimonini)
+- <a id="vs_cpt_wrideetal"></a>**Wride et al. Shear Wave Velocity (CPT)** (`vs_cpt_wrideetal`) — [groundhog `vs_cpt_wrideetal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cpt_wrideetal)
+- <a id="vs_cptd50_karrayetal"></a>**Karray et al. Shear Wave Velocity (CPT, D50)** (`vs_cptd50_karrayetal`) — [groundhog `vs_cptd50_karrayetal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_cptd50_karrayetal)
+- <a id="vs_ic_robertsoncabal"></a>**Robertson & Cabal Shear Wave Velocity (Ic)** (`vs_ic_robertsoncabal`) — [groundhog `vs_ic_robertsoncabal`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_ic_robertsoncabal)
+- <a id="vs_stressdependent_stuyts"></a>**Stuyts (2024) Stress-Dependent Shear Wave Velocity** (`vs_stressdependent_stuyts`) — [groundhog `vs_stressdependent_stuyts`](/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations#vs_stressdependent_stuyts)
 
 ### In-situ: SPT processing class
 
@@ -147,20 +147,19 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### In-situ: SPT corrections & correlations
 
-- <a id="frictionangle_spt_pht"></a>**frictionangle_spt_PHT()** (`frictionangle_spt_PHT`) — [groundhog `frictionangle_spt_PHT`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#frictionangle_spt_pht)
-- <a id="frictionangle_spt_kulhawymayne"></a>**frictionangle_spt_kulhawymayne()** (`frictionangle_spt_kulhawymayne`) — [groundhog `frictionangle_spt_kulhawymayne`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#frictionangle_spt_kulhawymayne)
-- <a id="overburdencorrection_spt_iso"></a>**overburdencorrection_spt_ISO()** (`overburdencorrection_spt_ISO`) — [groundhog `overburdencorrection_spt_ISO`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#overburdencorrection_spt_iso)
-- <a id="overburdencorrection_spt_liaowhitman"></a>**overburdencorrection_spt_liaowhitman()** (`overburdencorrection_spt_liaowhitman`) — [groundhog `overburdencorrection_spt_liaowhitman`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#overburdencorrection_spt_liaowhitman)
-- <a id="relativedensity_spt_kulhawymayne"></a>**relativedensity_spt_kulhawymayne()** (`relativedensity_spt_kulhawymayne`) — [groundhog `relativedensity_spt_kulhawymayne`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#relativedensity_spt_kulhawymayne)
-- <a id="relativedensityclass_spt_terzaghipeck"></a>**relativedensityclass_spt_terzaghipeck()** (`relativedensityclass_spt_terzaghipeck`) — [groundhog `relativedensityclass_spt_terzaghipeck`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#relativedensityclass_spt_terzaghipeck)
-- <a id="spt_n60_correction"></a>**spt_N60_correction()** (`spt_N60_correction`) — [groundhog `spt_N60_correction`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#spt_n60_correction)
-- <a id="undrainedshearstrength_spt_salgado"></a>**undrainedshearstrength_spt_salgado()** (`undrainedshearstrength_spt_salgado`) — [groundhog `undrainedshearstrength_spt_salgado`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#undrainedshearstrength_spt_salgado)
-- <a id="undrainedshearstrengthclass_spt_terzaghipeck"></a>**undrainedshearstrengthclass_spt_terzaghipeck()** (`undrainedshearstrengthclass_spt_terzaghipeck`) — [groundhog `undrainedshearstrengthclass_spt_terzaghipeck`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#undrainedshearstrengthclass_spt_terzaghipeck)
-- <a id="youngsmodulus_spt_aashto"></a>**youngsmodulus_spt_AASHTO()** (`youngsmodulus_spt_AASHTO`) — [groundhog `youngsmodulus_spt_AASHTO`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#youngsmodulus_spt_aashto)
+- <a id="frictionangle_spt_pht"></a>**Peck, Hanson & Thornburn (1974) Friction Angle** (`frictionangle_spt_PHT`) — [groundhog `frictionangle_spt_PHT`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#frictionangle_spt_pht)
+- <a id="frictionangle_spt_kulhawymayne"></a>**Kulhawy & Mayne Friction Angle (SPT)** (`frictionangle_spt_kulhawymayne`) — [groundhog `frictionangle_spt_kulhawymayne`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#frictionangle_spt_kulhawymayne)
+- <a id="overburdencorrection_spt_iso"></a>**ISO Overburden Correction (SPT N)** (`overburdencorrection_spt_ISO`) — [groundhog `overburdencorrection_spt_ISO`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#overburdencorrection_spt_iso)
+- <a id="overburdencorrection_spt_liaowhitman"></a>**Liao & Whitman Overburden Correction (SPT N)** (`overburdencorrection_spt_liaowhitman`) — [groundhog `overburdencorrection_spt_liaowhitman`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#overburdencorrection_spt_liaowhitman)
+- <a id="relativedensity_spt_kulhawymayne"></a>**Kulhawy & Mayne Relative Density (SPT)** (`relativedensity_spt_kulhawymayne`) — [groundhog `relativedensity_spt_kulhawymayne`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#relativedensity_spt_kulhawymayne)
+- <a id="relativedensityclass_spt_terzaghipeck"></a>**Terzaghi & Peck Relative Density Class (SPT)** (`relativedensityclass_spt_terzaghipeck`) — [groundhog `relativedensityclass_spt_terzaghipeck`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#relativedensityclass_spt_terzaghipeck)
+- <a id="spt_n60_correction"></a>**SPT N60 Energy Correction** (`spt_N60_correction`) — [groundhog `spt_N60_correction`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#spt_n60_correction)
+- <a id="undrainedshearstrength_spt_salgado"></a>**Salgado Undrained Shear Strength (SPT)** (`undrainedshearstrength_spt_salgado`) — [groundhog `undrainedshearstrength_spt_salgado`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#undrainedshearstrength_spt_salgado)
+- <a id="undrainedshearstrengthclass_spt_terzaghipeck"></a>**Terzaghi & Peck Strength Class (SPT)** (`undrainedshearstrengthclass_spt_terzaghipeck`) — [groundhog `undrainedshearstrengthclass_spt_terzaghipeck`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#undrainedshearstrengthclass_spt_terzaghipeck)
 
 ### Laboratory: Sample preparation
 
-- <a id="undercompaction_cohesionless_ladd"></a>**undercompaction_cohesionless_ladd()** (`undercompaction_cohesionless_ladd`) — [groundhog `undercompaction_cohesionless_ladd`](/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation#undercompaction_cohesionless_ladd)
+- <a id="undercompaction_cohesionless_ladd"></a>**Ladd Undercompaction (Sample Preparation)** (`undercompaction_cohesionless_ladd`) — [groundhog `undercompaction_cohesionless_ladd`](/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation#undercompaction_cohesionless_ladd)
 
 ### Laboratory: Index tests
 
@@ -169,8 +168,8 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Laboratory: Compressibility
 
-- <a id="logtimemethod"></a>**logtimemethod()** (`logtimemethod`) — [groundhog `logtimemethod`](/docs/groundhog/api/siteinvestigation/labtesting/compressibility#logtimemethod)
-- <a id="roottimemethod"></a>**roottimemethod()** (`roottimemethod`) — [groundhog `roottimemethod`](/docs/groundhog/api/siteinvestigation/labtesting/compressibility#roottimemethod)
+- <a id="logtimemethod"></a>**Log-Time Method (Coefficient of Consolidation)** (`logtimemethod`) — [groundhog `logtimemethod`](/docs/groundhog/api/siteinvestigation/labtesting/compressibility#logtimemethod)
+- <a id="roottimemethod"></a>**Root-Time Method (Coefficient of Consolidation)** (`roottimemethod`) — [groundhog `roottimemethod`](/docs/groundhog/api/siteinvestigation/labtesting/compressibility#roottimemethod)
 
 ## Pile calculations
 
@@ -211,8 +210,8 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Pile lateral behaviour
 
-- <a id="pilegroupeffect_reesevanimpe"></a>**Pile Group Effect (Reese & Van Impe)** (`pilegroupeffect_reesevanimpe`) — No upstream documentation.
-- <a id="reinforced_circularsection_inertia"></a>**Reinforced Circular Section Inertia** (`reinforced_circularsection_inertia`) — No upstream documentation.
+- <a id="pilegroupeffect_reesevanimpe"></a>**Pile Group Effect (Reese & Van Impe)** (`pilegroupeffect_reesevanimpe`) — [groundhog `pilegroupeffect_reesevanimpe`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral#pilegroupeffect_reesevanimpe)
+- <a id="reinforced_circularsection_inertia"></a>**Reinforced Circular Section Inertia** (`reinforced_circularsection_inertia`) — [groundhog `reinforced_circularsection_inertia`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral#reinforced_circularsection_inertia)
 
 ### Cavity expansion methods
 
@@ -226,7 +225,7 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Pile testing functionality
 
-- <a id="piletest_chinkondler"></a>**Chin-Kondler Extrapolation** (`piletest_chinkondler`) — No upstream documentation.
+- <a id="piletest_chinkondler"></a>**Chin-Kondler Extrapolation** (`piletest_chinkondler`) — [groundhog `piletest_chinkondler`](/docs/groundhog/api/deepfoundations/axialcapacity/piletesting#piletest_chinkondler)
 
 ## Shallow foundations
 
@@ -234,11 +233,11 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 ### Stress distributions
 
 - <a id="stresses_circle"></a>**Circular Footing Stress** (`stresses_circle`) — [groundhog `stresses_circle`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_circle)
-- <a id="stresses_lineload_retainingwall"></a>**Line Load Stress (Retaining Wall)** (`stresses_lineload_retainingwall`) — No upstream documentation.
+- <a id="stresses_lineload_retainingwall"></a>**Line Load Stress (Retaining Wall)** (`stresses_lineload_retainingwall`) — [groundhog `stresses_lineload_retainingwall`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_lineload_retainingwall)
 - <a id="stresses_pointload"></a>**Point Load Stress** (`stresses_pointload`) — [groundhog `stresses_pointload`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_pointload)
 - <a id="stresses_rectangle"></a>**Rectangular Footing Stress** (`stresses_rectangle`) — [groundhog `stresses_rectangle`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_rectangle)
 - <a id="stresses_stripload"></a>**Strip Load Stress** (`stresses_stripload`) — [groundhog `stresses_stripload`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_stripload)
-- <a id="stresses_stripload_retainingwall"></a>**Strip Load Stress (Retaining Wall)** (`stresses_stripload_retainingwall`) — No upstream documentation.
+- <a id="stresses_stripload_retainingwall"></a>**Strip Load Stress (Retaining Wall)** (`stresses_stripload_retainingwall`) — [groundhog `stresses_stripload_retainingwall`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_stripload_retainingwall)
 
 ### Shallow foundation capacity
 
@@ -289,8 +288,8 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Soilmix
 
-- <a id="bendingstiffness_soilmix_method1"></a>**Bending Stiffness (Method 1)** (`bendingstiffness_soilmix_method1`) — No upstream documentation.
-- <a id="bendingstiffness_soilmix_method2"></a>**Bending Stiffness (Method 2)** (`bendingstiffness_soilmix_method2`) — No upstream documentation.
+- <a id="bendingstiffness_soilmix_method1"></a>**Bending Stiffness (Method 1)** (`bendingstiffness_soilmix_method1`) — [groundhog `bendingstiffness_soilmix_method1`](/docs/groundhog/api/excavations/soilmix#bendingstiffness_soilmix_method1)
+- <a id="bendingstiffness_soilmix_method2"></a>**Bending Stiffness (Method 2)** (`bendingstiffness_soilmix_method2`) — [groundhog `bendingstiffness_soilmix_method2`](/docs/groundhog/api/excavations/soilmix#bendingstiffness_soilmix_method2)
 
 ## Soil dynamics
 
@@ -352,12 +351,12 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Parameter selection
 
-- <a id="parameter_selection_constant_value"></a>**constant_value()** (`parameter_selection_constant_value`) — [groundhog `constant_value`](/docs/groundhog/api/standards/eurocode7/parameter_selection#constant_value)
-- <a id="parameter_selection_linear_trend"></a>**linear_trend()** (`parameter_selection_linear_trend`) — [groundhog `linear_trend`](/docs/groundhog/api/standards/eurocode7/parameter_selection#linear_trend)
+- <a id="parameter_selection_constant_value"></a>**Characteristic Value (Constant)** (`parameter_selection_constant_value`) — [groundhog `constant_value`](/docs/groundhog/api/standards/eurocode7/parameter_selection#constant_value)
+- <a id="parameter_selection_linear_trend"></a>**Characteristic Value (Linear Trend)** (`parameter_selection_linear_trend`) — [groundhog `linear_trend`](/docs/groundhog/api/standards/eurocode7/parameter_selection#linear_trend)
 
 ### Partial factor selection
 
-- <a id="eurocode7_factors"></a>**Eurocode7_factoring_STR_GEO** (`eurocode7_factors`) — [groundhog `Eurocode7_factoring_STR_GEO`](/docs/groundhog/api/standards/eurocode7/factors#eurocode7_factoring_str_geo)
+- <a id="eurocode7_factors"></a>**Eurocode 7 STR/GEO Partial Factors** (`eurocode7_factors`) — [groundhog `Eurocode7_factoring_STR_GEO`](/docs/groundhog/api/standards/eurocode7/factors#eurocode7_factoring_str_geo)
 
 ## Constitutive models
 

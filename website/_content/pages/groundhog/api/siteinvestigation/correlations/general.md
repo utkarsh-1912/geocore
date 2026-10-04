@@ -31,7 +31,7 @@ Upstream documentation: [All soil types](https://groundhog.readthedocs.io/en/mai
 
 ## `acousticimpedance_bulkunitweight_chen`
 
-<span class="gc-badge gc-available" data-geocore-function="acousticimpedance_bulkunitweight_chen">Available in GeoCore</span> [Site investigation › Correlations: All soil types › acousticimpedance_bulkunitweight_chen()](/docs/geocore/using/modules#acousticimpedance_bulkunitweight_chen)
+<span class="gc-badge gc-available" data-geocore-function="acousticimpedance_bulkunitweight_chen">Available in GeoCore</span> [Site investigation › Correlations: All soil types › Chen Acoustic Impedance–Porosity Correlation](/docs/geocore/using/modules#acousticimpedance_bulkunitweight_chen)
 
 ```python
 acousticimpedance_bulkunitweight_chen(
@@ -109,7 +109,7 @@ Dictionary with the following keys:
 
 ## `shearwavevelocity_compressionindex_cha`
 
-<span class="gc-badge gc-available" data-geocore-function="shearwavevelocity_compressionindex_cha">Available in GeoCore</span> [Site investigation › Correlations: All soil types › shearwavevelocity_compressionindex_cha()](/docs/geocore/using/modules#shearwavevelocity_compressionindex_cha)
+<span class="gc-badge gc-available" data-geocore-function="shearwavevelocity_compressionindex_cha">Available in GeoCore</span> [Site investigation › Correlations: All soil types › Cha Vs–Compression Index Correlation](/docs/geocore/using/modules#shearwavevelocity_compressionindex_cha)
 
 ```python
 shearwavevelocity_compressionindex_cha(
@@ -182,7 +182,7 @@ Dictionary with the following keys:
 
 ## `k0_frictionangle_mesri`
 
-<span class="gc-badge gc-available" data-geocore-function="k0_frictionangle_mesri">Available in GeoCore</span> [Site investigation › Correlations: All soil types › k0_frictionangle_mesri()](/docs/geocore/using/modules#k0_frictionangle_mesri)
+<span class="gc-badge gc-available" data-geocore-function="k0_frictionangle_mesri">Available in GeoCore</span> [Site investigation › Correlations: All soil types › Mesri K0 (Normally/Overconsolidated Soils)](/docs/geocore/using/modules#k0_frictionangle_mesri)
 
 ```python
 k0_frictionangle_mesri(phi_cs, ocr=1, **kwargs)

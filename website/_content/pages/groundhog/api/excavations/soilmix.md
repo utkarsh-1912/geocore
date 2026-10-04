@@ -12,7 +12,10 @@ groundhog_version: 0.15.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.excavations.soilmix
-geocore_available: false
+geocore_available: true
+geocore_functions:
+- bendingstiffness_soilmix_method1
+- bendingstiffness_soilmix_method2
 ---
 
 Module `groundhog.excavations.soilmix` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/excavations/soilmix.py).
@@ -22,6 +25,8 @@ Module `groundhog.excavations.soilmix` (groundhog 0.15.0). [View source](https:/
 <a id="bendingstiffness_soilmix_method1"></a>
 
 ## `bendingstiffness_soilmix_method1`
+
+<span class="gc-badge gc-available" data-geocore-function="bendingstiffness_soilmix_method1">Available in GeoCore</span> [Excavations › Soilmix › Bending Stiffness (Method 1)](/docs/geocore/using/modules#bendingstiffness_soilmix_method1)
 
 ```python
 bendingstiffness_soilmix_method1(
@@ -149,6 +154,8 @@ Dictionary with the following keys:
 <a id="bendingstiffness_soilmix_method2"></a>
 
 ## `bendingstiffness_soilmix_method2`
+
+<span class="gc-badge gc-available" data-geocore-function="bendingstiffness_soilmix_method2">Available in GeoCore</span> [Excavations › Soilmix › Bending Stiffness (Method 2)](/docs/geocore/using/modules#bendingstiffness_soilmix_method2)
 
 ```python
 bendingstiffness_soilmix_method2(

@@ -32,7 +32,7 @@ Upstream documentation: [Cohesionless soils](https://groundhog.readthedocs.io/en
 
 ## `gmax_sand_hardinblack`
 
-<span class="gc-badge gc-available" data-geocore-function="gmax_sand_hardinblack">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › gmax_sand_hardinblack()](/docs/geocore/using/modules#gmax_sand_hardinblack)
+<span class="gc-badge gc-available" data-geocore-function="gmax_sand_hardinblack">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › Hardin & Black (1968) Gmax for Sand](/docs/geocore/using/modules#gmax_sand_hardinblack)
 
 ```python
 gmax_sand_hardinblack(sigma_m0, void_ratio, coefficient_B=875.0, pref=100.0, **kwargs)
@@ -77,7 +77,7 @@ Dictionary with the following keys:
 
 ## `permeability_d10_hazen`
 
-<span class="gc-badge gc-available" data-geocore-function="permeability_d10_hazen">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › permeability_d10_hazen()](/docs/geocore/using/modules#permeability_d10_hazen)
+<span class="gc-badge gc-available" data-geocore-function="permeability_d10_hazen">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › Hazen Permeability (from D10)](/docs/geocore/using/modules#permeability_d10_hazen)
 
 ```python
 permeability_d10_hazen(grain_size, coefficient_C=0.01, **kwargs)
@@ -118,7 +118,7 @@ Dictionary with the following keys:
 
 ## `hssmall_parameters_sand`
 
-<span class="gc-badge gc-available" data-geocore-function="hssmall_parameters_sand">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › hssmall_parameters_sand()](/docs/geocore/using/modules#hssmall_parameters_sand)
+<span class="gc-badge gc-available" data-geocore-function="hssmall_parameters_sand">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › HS Small Parameters (from Relative Density)](/docs/geocore/using/modules#hssmall_parameters_sand)
 
 ```python
 hssmall_parameters_sand(relative_density, **kwargs)
@@ -210,7 +210,7 @@ Dictionary with the following keys:
 
 ## `stress_dilatancy_bolton`
 
-<span class="gc-badge gc-available" data-geocore-function="stress_dilatancy_bolton">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › stress_dilatancy_bolton()](/docs/geocore/using/modules#stress_dilatancy_bolton)
+<span class="gc-badge gc-available" data-geocore-function="stress_dilatancy_bolton">Available in GeoCore</span> [Site investigation › Correlations: Cohesionless soils › Bolton Stress–Dilatancy Relation](/docs/geocore/using/modules#stress_dilatancy_bolton)
 
 ```python
 stress_dilatancy_bolton(

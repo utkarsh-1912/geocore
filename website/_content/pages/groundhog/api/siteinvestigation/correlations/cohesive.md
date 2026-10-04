@@ -33,7 +33,7 @@ Upstream documentation: [Cohesive soils](https://groundhog.readthedocs.io/en/mai
 
 ## `compressionindex_watercontent_koppula`
 
-<span class="gc-badge gc-available" data-geocore-function="compressionindex_watercontent_koppula">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › compressionindex_watercontent_koppula()](/docs/geocore/using/modules#compressionindex_watercontent_koppula)
+<span class="gc-badge gc-available" data-geocore-function="compressionindex_watercontent_koppula">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › Koppula (1981) Compression Index](/docs/geocore/using/modules#compressionindex_watercontent_koppula)
 
 ```python
 compressionindex_watercontent_koppula(water_content, cc_cr_ratio=7.5, **kwargs)
@@ -77,7 +77,7 @@ Dictionary with the following keys:
 
 ## `frictionangle_plasticityindex`
 
-<span class="gc-badge gc-available" data-geocore-function="frictionangle_plasticityindex">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › frictionangle_plasticityindex()](/docs/geocore/using/modules#frictionangle_plasticityindex)
+<span class="gc-badge gc-available" data-geocore-function="frictionangle_plasticityindex">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › Drained Friction Angle (from Plasticity Index)](/docs/geocore/using/modules#frictionangle_plasticityindex)
 
 ```python
 frictionangle_plasticityindex(plasticity_index, **kwargs)
@@ -113,7 +113,7 @@ Dictionary with the following keys:
 
 ## `cv_liquidlimit_usnavy`
 
-<span class="gc-badge gc-available" data-geocore-function="cv_liquidlimit_usnavy">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › cv_liquidlimit_usnavy()](/docs/geocore/using/modules#cv_liquidlimit_usnavy)
+<span class="gc-badge gc-available" data-geocore-function="cv_liquidlimit_usnavy">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › US Navy Cv from Liquid Limit](/docs/geocore/using/modules#cv_liquidlimit_usnavy)
 
 ```python
 cv_liquidlimit_usnavy(liquid_limit, trend='NC', **kwargs)
@@ -150,7 +150,7 @@ Dictionary with the following keys:
 
 ## `gmax_plasticityocr_andersen`
 
-<span class="gc-badge gc-available" data-geocore-function="gmax_plasticityocr_andersen">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › gmax_plasticityocr_andersen()](/docs/geocore/using/modules#gmax_plasticityocr_andersen)
+<span class="gc-badge gc-available" data-geocore-function="gmax_plasticityocr_andersen">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › Andersen Gmax (Plasticity & OCR)](/docs/geocore/using/modules#gmax_plasticityocr_andersen)
 
 ```python
 gmax_plasticityocr_andersen(
@@ -212,7 +212,7 @@ Dictionary with the following keys:
 
 ## `k0_plasticity_kenney`
 
-<span class="gc-badge gc-available" data-geocore-function="k0_plasticity_kenney">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › k0_plasticity_kenney()](/docs/geocore/using/modules#k0_plasticity_kenney)
+<span class="gc-badge gc-available" data-geocore-function="k0_plasticity_kenney">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › Kenney K0 (from Plasticity, Clay)](/docs/geocore/using/modules#k0_plasticity_kenney)
 
 ```python
 k0_plasticity_kenney(

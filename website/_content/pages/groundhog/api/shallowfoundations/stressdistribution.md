@@ -17,9 +17,11 @@ upstream_docs_urls:
 geocore_available: true
 geocore_functions:
 - stresses_circle
+- stresses_lineload_retainingwall
 - stresses_pointload
 - stresses_rectangle
 - stresses_stripload
+- stresses_stripload_retainingwall
 ---
 
 Module `groundhog.shallowfoundations.stressdistribution` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/shallowfoundations/stressdistribution.py).
@@ -300,6 +302,8 @@ Dictionary with the following keys:
 
 ## `stresses_lineload_retainingwall`
 
+<span class="gc-badge gc-available" data-geocore-function="stresses_lineload_retainingwall">Available in GeoCore</span> [Shallow foundations › Stress distributions › Line Load Stress (Retaining Wall)](/docs/geocore/using/modules#stresses_lineload_retainingwall)
+
 ```python
 stresses_lineload_retainingwall(lineload, toe_depth, horizontal_offset, depth, **kwargs)
 ```
@@ -341,6 +345,8 @@ Dictionary with the following keys:
 <a id="stresses_stripload_retainingwall"></a>
 
 ## `stresses_stripload_retainingwall`
+
+<span class="gc-badge gc-available" data-geocore-function="stresses_stripload_retainingwall">Available in GeoCore</span> [Shallow foundations › Stress distributions › Strip Load Stress (Retaining Wall)](/docs/geocore/using/modules#stresses_stripload_retainingwall)
 
 ```python
 stresses_stripload_retainingwall(

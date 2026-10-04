@@ -18,6 +18,27 @@ from typing import Any, Dict, List, Optional
 from core.geoai.tool_metadata import get_tool_metadata
 
 _MATH_BLOCK_RE = re.compile(r"\.\. math::\n((?:[ \t]+\S.*\n?)+)")
+# ":param key: Human description (:math:`symbol`) [:math:`unit`] - Suggested range: ..." — keep only
+# the human description, same convention website/_content/extract_docs.py uses for the API reference.
+_PARAM_RE = re.compile(r"^:param\s+(\w+):\s*(.*)$", re.MULTILINE)
+_PARAM_TRAILER_RE = re.compile(r"\s*\(:math:|\s*\[:math:|\s*-\s*Suggested range:")
+
+
+def extract_param_labels(docstring: Optional[str]) -> Dict[str, str]:
+    """
+    ``{param_name: human description}`` straight from the groundhog docstring's own ``:param:``
+    lines (e.g. "bulkunitweight" -> "Bulk unit weight of the sample"), for showing a real label
+    next to a raw Python parameter name instead of the smashed-together identifier itself.
+    """
+    if not docstring:
+        return {}
+    labels = {}
+    for key, raw in _PARAM_RE.findall(docstring):
+        trailer = _PARAM_TRAILER_RE.search(raw)
+        text = (raw[:trailer.start()] if trailer else raw).strip().rstrip(".")
+        if text:
+            labels[key] = text
+    return labels
 
 
 def extract_formula(docstring: Optional[str]) -> Optional[str]:
@@ -47,12 +68,18 @@ def explain_calculation(function_id: str, inputs: Optional[Dict[str, Any]],
     adds no numbers or claims beyond what `TOOL_METADATA`, the docstring and `results` already say.
     """
     meta = get_tool_metadata(function_id)
-    formula = extract_formula(_docstring_for(function_id))
+    docstring = _docstring_for(function_id)
+    formula = extract_formula(docstring)
+    param_labels = extract_param_labels(docstring)
     output_units = meta.get("output_units") or {}
     outputs = [
-        {"key": k, "value": v, "unit": output_units.get(k)}
+        {"key": k, "label": param_labels.get(k), "value": v, "unit": output_units.get(k)}
         for k, v in (results or {}).items()
         if not k.startswith("_") and k not in ("warnings", "status") and v is not None
+    ]
+    inputs = [
+        {"key": k, "label": param_labels.get(k), "value": v}
+        for k, v in (inputs or {}).items()
     ]
     return {
         "tool_name": function_id,
@@ -60,7 +87,7 @@ def explain_calculation(function_id: str, inputs: Optional[Dict[str, Any]],
         "standard": meta.get("standard"),
         "assumptions": meta.get("assumptions", []),
         "formula": formula,
-        "inputs": inputs or {},
+        "inputs": inputs,
         "outputs": outputs,
     }
 
@@ -86,10 +113,12 @@ def build_narration_prompt(explanation: Dict[str, Any]) -> str:
     if explanation.get("formula"):
         lines.append(f"Formula: {explanation['formula']}")
     if explanation.get("inputs"):
-        lines.append("Inputs: " + ", ".join(f"{k}={_format_value(v)}" for k, v in explanation["inputs"].items()))
+        lines.append("Inputs: " + ", ".join(
+            f"{i.get('label') or i['key']}={_format_value(i['value'])}" for i in explanation["inputs"]
+        ))
     if explanation.get("outputs"):
         lines.append("Outputs: " + ", ".join(
-            f"{o['key']}={_format_value(o['value'], o.get('unit'))}" for o in explanation["outputs"]
+            f"{o.get('label') or o['key']}={_format_value(o['value'], o.get('unit'))}" for o in explanation["outputs"]
         ))
     return "\n".join(lines)
 

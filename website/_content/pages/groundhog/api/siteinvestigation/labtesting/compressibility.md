@@ -47,7 +47,7 @@ No upstream documentation.
 
 ## `roottimemethod`
 
-<span class="gc-badge gc-available" data-geocore-function="roottimemethod">Available in GeoCore</span> [Site investigation › Laboratory: Compressibility › roottimemethod()](/docs/geocore/using/modules#roottimemethod)
+<span class="gc-badge gc-available" data-geocore-function="roottimemethod">Available in GeoCore</span> [Site investigation › Laboratory: Compressibility › Root-Time Method (Coefficient of Consolidation)](/docs/geocore/using/modules#roottimemethod)
 
 ```python
 roottimemethod(
@@ -104,7 +104,7 @@ The following input parameters are expected:
 
 ## `logtimemethod`
 
-<span class="gc-badge gc-available" data-geocore-function="logtimemethod">Available in GeoCore</span> [Site investigation › Laboratory: Compressibility › logtimemethod()](/docs/geocore/using/modules#logtimemethod)
+<span class="gc-badge gc-available" data-geocore-function="logtimemethod">Available in GeoCore</span> [Site investigation › Laboratory: Compressibility › Log-Time Method (Coefficient of Consolidation)](/docs/geocore/using/modules#logtimemethod)
 
 ```python
 logtimemethod(

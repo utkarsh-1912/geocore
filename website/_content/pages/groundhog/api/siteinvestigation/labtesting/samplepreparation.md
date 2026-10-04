@@ -29,7 +29,7 @@ Upstream documentation: [Sample preparation](https://groundhog.readthedocs.io/en
 
 ## `undercompaction_cohesionless_ladd`
 
-<span class="gc-badge gc-available" data-geocore-function="undercompaction_cohesionless_ladd">Available in GeoCore</span> [Site investigation › Laboratory: Sample preparation › undercompaction_cohesionless_ladd()](/docs/geocore/using/modules#undercompaction_cohesionless_ladd)
+<span class="gc-badge gc-available" data-geocore-function="undercompaction_cohesionless_ladd">Available in GeoCore</span> [Site investigation › Laboratory: Sample preparation › Ladd Undercompaction (Sample Preparation)](/docs/geocore/using/modules#undercompaction_cohesionless_ladd)
 
 ```python
 undercompaction_cohesionless_ladd(

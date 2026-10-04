@@ -32,7 +32,9 @@ LAYERED = pd.DataFrame({"Depth from [m]": [0.0, 3.0], "Depth to [m]": [3.0, 10.0
 def cpt_table(n=40):
     """A CPT stored the way an upload must be (depth intervals, qc [MPa], fs [kPa])."""
     z = np.round(np.arange(0.0, n * 0.2, 0.2), 2)
-    return pd.DataFrame({"Depth from [m]": z, "Depth to [m]": z + 0.2,
+    # Rounded: groundhog requires each layer's "from" to equal the previous "to" exactly, and
+    # z + 0.2 alone yields values such as 0.6000000000000001 that break that.
+    return pd.DataFrame({"Depth from [m]": z, "Depth to [m]": np.round(z + 0.2, 2),
                          "qc [MPa]": np.where(z < 3, 6.0, 1.0), "fs [kPa]": np.where(z < 3, 40.0, 20.0)})
 
 

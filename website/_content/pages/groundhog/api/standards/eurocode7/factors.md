@@ -29,7 +29,7 @@ Upstream documentation: [Partial factor selection](https://groundhog.readthedocs
 
 ## class `Eurocode7_factoring_STR_GEO`
 
-<span class="gc-badge gc-available" data-geocore-function="eurocode7_factors">Available in GeoCore</span> [EuroCode7 › Partial factor selection › Eurocode7_factoring_STR_GEO](/docs/geocore/using/modules#eurocode7_factors)
+<span class="gc-badge gc-available" data-geocore-function="eurocode7_factors">Available in GeoCore</span> [EuroCode7 › Partial factor selection › Eurocode 7 STR/GEO Partial Factors](/docs/geocore/using/modules#eurocode7_factors)
 
 ```python
 Eurocode7_factoring_STR_GEO()

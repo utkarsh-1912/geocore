@@ -98,24 +98,26 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
                 </div>
               )}
 
-              {/* Substituted inputs and outputs, exactly as computed — nothing here is invented */}
+              {/* Substituted inputs and outputs, exactly as computed — nothing here is invented.
+                  Labels come from groundhog's own docstring (`:param:`) when it documents the
+                  field; otherwise we fall back to spacing out the raw parameter name. */}
               <div className="space-y-1.5 pt-1">
-                {explanation.inputs && Object.entries(explanation.inputs).length > 0 && (
+                {explanation.inputs && explanation.inputs.length > 0 && (
                   <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide">Inputs</div>
                 )}
-                {Object.entries(explanation.inputs || {}).map(([k, v]) => (
-                  <div key={`in-${k}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 font-mono text-[11px] gap-2">
-                    <span className="text-text-muted">{k.replace(/_/g, ' ')}:</span>
-                    <span className="font-bold text-text-main">{formatValue(v)}</span>
+                {(explanation.inputs || []).map((i) => (
+                  <div key={`in-${i.key}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 text-[11px] gap-2">
+                    <span className="text-text-muted">{i.label || i.key.replace(/_/g, ' ')}:</span>
+                    <span className="font-bold text-text-main font-mono">{formatValue(i.value)}</span>
                   </div>
                 ))}
                 {explanation.outputs && explanation.outputs.length > 0 && (
                   <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide pt-1">Outputs</div>
                 )}
                 {(explanation.outputs || []).map((o) => (
-                  <div key={`out-${o.key}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 font-mono text-[11px] gap-2">
-                    <span className="text-text-muted">{o.key.replace(/_/g, ' ')}:</span>
-                    <span className="font-bold text-text-main">{formatValue(o.value)}{o.unit ? ` ${o.unit}` : ''}</span>
+                  <div key={`out-${o.key}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 text-[11px] gap-2">
+                    <span className="text-text-muted">{o.label || o.key.replace(/_/g, ' ')}:</span>
+                    <span className="font-bold text-text-main font-mono">{formatValue(o.value)}{o.unit ? ` ${o.unit}` : ''}</span>
                   </div>
                 ))}
               </div>

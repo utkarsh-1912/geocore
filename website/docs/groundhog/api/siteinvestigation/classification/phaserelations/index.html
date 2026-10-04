@@ -815,7 +815,7 @@
 <p><strong>Functions:</strong> <a href="#voidratio_porosity"><code>voidratio_porosity</code></a>, <a href="#porosity_voidratio"><code>porosity_voidratio</code></a>, <a href="#saturation_watercontent"><code>saturation_watercontent</code></a>, <a href="#bulkunitweight"><code>bulkunitweight</code></a>, <a href="#dryunitweight_watercontent"><code>dryunitweight_watercontent</code></a>, <a href="#voidratio_drydensity"><code>voidratio_drydensity</code></a>, <a href="#bulkunitweight_dryunitweight"><code>bulkunitweight_dryunitweight</code></a>, <a href="#relative_density"><code>relative_density</code></a>, <a href="#voidratio_bulkunitweight"><code>voidratio_bulkunitweight</code></a>, <a href="#unitweight_watercontent_saturated"><code>unitweight_watercontent_saturated</code></a>, <a href="#density_unitweight"><code>density_unitweight</code></a>, <a href="#unitweight_density"><code>unitweight_density</code></a>, <a href="#watercontent_voidratio"><code>watercontent_voidratio</code></a>, <a href="#voidratio_watercontent"><code>voidratio_watercontent</code></a></p>
 <p><a id="voidratio_porosity"></a></p>
 <h2 id="voidratio_porosity"><code>voidratio_porosity</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="voidratio_porosity">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_porosity">Site investigation › Classification: Phase relations › voidratio_porosity()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="voidratio_porosity">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_porosity">Site investigation › Classification: Phase relations › Void Ratio (from Porosity)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">voidratio_porosity</span><span class="p">(</span><span class="n">porosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -869,7 +869,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="porosity_voidratio"></a></p>
 <h2 id="porosity_voidratio"><code>porosity_voidratio</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="porosity_voidratio">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#porosity_voidratio">Site investigation › Classification: Phase relations › porosity_voidratio()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="porosity_voidratio">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#porosity_voidratio">Site investigation › Classification: Phase relations › Porosity (from Void Ratio)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">porosity_voidratio</span><span class="p">(</span><span class="n">voidratio</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -921,7 +921,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="saturation_watercontent"></a></p>
 <h2 id="saturation_watercontent"><code>saturation_watercontent</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="saturation_watercontent">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#saturation_watercontent">Site investigation › Classification: Phase relations › saturation_watercontent()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="saturation_watercontent">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#saturation_watercontent">Site investigation › Classification: Phase relations › Degree of Saturation (from Water Content)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">saturation_watercontent</span><span class="p">(</span><span class="n">water_content</span><span class="p">,</span> <span class="n">voidratio</span><span class="p">,</span> <span class="n">specific_gravity</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -987,7 +987,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="bulkunitweight"></a></p>
 <h2 id="bulkunitweight"><code>bulkunitweight</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="bulkunitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#bulkunitweight">Site investigation › Classification: Phase relations › bulkunitweight()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="bulkunitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#bulkunitweight">Site investigation › Classification: Phase relations › Bulk Unit Weight (from Gs, e, Sr)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">bulkunitweight</span><span class="p">(</span>
     <span class="n">saturation</span><span class="p">,</span>
     <span class="n">voidratio</span><span class="p">,</span>
@@ -1071,7 +1071,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="dryunitweight_watercontent"></a></p>
 <h2 id="dryunitweight_watercontent"><code>dryunitweight_watercontent</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="dryunitweight_watercontent">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#dryunitweight_watercontent">Site investigation › Classification: Phase relations › dryunitweight_watercontent()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="dryunitweight_watercontent">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#dryunitweight_watercontent">Site investigation › Classification: Phase relations › Dry Unit Weight (from Water Content)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">dryunitweight_watercontent</span><span class="p">(</span><span class="n">watercontent</span><span class="p">,</span> <span class="n">bulkunitweight</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1130,7 +1130,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="voidratio_drydensity"></a></p>
 <h2 id="voidratio_drydensity"><code>voidratio_drydensity</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="voidratio_drydensity">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_drydensity">Site investigation › Classification: Phase relations › voidratio_drydensity()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="voidratio_drydensity">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_drydensity">Site investigation › Classification: Phase relations › Void Ratio (from Dry Density)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">voidratio_drydensity</span><span class="p">(</span><span class="n">dry_density</span><span class="p">,</span> <span class="n">specific_gravity</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span> <span class="n">water_density</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1196,7 +1196,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="bulkunitweight_dryunitweight"></a></p>
 <h2 id="bulkunitweight_dryunitweight"><code>bulkunitweight_dryunitweight</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="bulkunitweight_dryunitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#bulkunitweight_dryunitweight">Site investigation › Classification: Phase relations › bulkunitweight_dryunitweight()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="bulkunitweight_dryunitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#bulkunitweight_dryunitweight">Site investigation › Classification: Phase relations › Bulk Unit Weight (from Dry Unit Weight)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">bulkunitweight_dryunitweight</span><span class="p">(</span>
     <span class="n">dryunitweight</span><span class="p">,</span>
     <span class="n">watercontent</span><span class="p">,</span>
@@ -1272,7 +1272,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="relative_density"></a></p>
 <h2 id="relative_density"><code>relative_density</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="relative_density">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relative_density">Site investigation › Classification: Phase relations › relative_density()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="relative_density">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#relative_density">Site investigation › Classification: Phase relations › Relative Density (from Void Ratio)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">relative_density</span><span class="p">(</span><span class="n">void_ratio</span><span class="p">,</span> <span class="n">e_min</span><span class="p">,</span> <span class="n">e_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1338,7 +1338,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="voidratio_bulkunitweight"></a></p>
 <h2 id="voidratio_bulkunitweight"><code>voidratio_bulkunitweight</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="voidratio_bulkunitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_bulkunitweight">Site investigation › Classification: Phase relations › voidratio_bulkunitweight()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="voidratio_bulkunitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_bulkunitweight">Site investigation › Classification: Phase relations › Void Ratio (from Bulk Unit Weight)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">voidratio_bulkunitweight</span><span class="p">(</span>
     <span class="n">bulkunitweight</span><span class="p">,</span>
     <span class="n">saturation</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
@@ -1427,7 +1427,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="unitweight_watercontent_saturated"></a></p>
 <h2 id="unitweight_watercontent_saturated"><code>unitweight_watercontent_saturated</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="unitweight_watercontent_saturated">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#unitweight_watercontent_saturated">Site investigation › Classification: Phase relations › unitweight_watercontent_saturated()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="unitweight_watercontent_saturated">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#unitweight_watercontent_saturated">Site investigation › Classification: Phase relations › Saturated Unit Weight (from Water Content)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">unitweight_watercontent_saturated</span><span class="p">(</span>
     <span class="n">water_content</span><span class="p">,</span>
     <span class="n">specific_gravity</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span>
@@ -1500,7 +1500,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="density_unitweight"></a></p>
 <h2 id="density_unitweight"><code>density_unitweight</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="density_unitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#density_unitweight">Site investigation › Classification: Phase relations › density_unitweight()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="density_unitweight">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#density_unitweight">Site investigation › Classification: Phase relations › Unit Weight to Density</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">density_unitweight</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">9.81</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1559,7 +1559,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="unitweight_density"></a></p>
 <h2 id="unitweight_density"><code>unitweight_density</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="unitweight_density">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#unitweight_density">Site investigation › Classification: Phase relations › unitweight_density()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="unitweight_density">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#unitweight_density">Site investigation › Classification: Phase relations › Density to Unit Weight</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">unitweight_density</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">9.81</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1618,7 +1618,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="watercontent_voidratio"></a></p>
 <h2 id="watercontent_voidratio"><code>watercontent_voidratio</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="watercontent_voidratio">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#watercontent_voidratio">Site investigation › Classification: Phase relations › watercontent_voidratio()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="watercontent_voidratio">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#watercontent_voidratio">Site investigation › Classification: Phase relations › Water Content (from Void Ratio)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">watercontent_voidratio</span><span class="p">(</span><span class="n">voidratio</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">specific_gravity</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1689,7 +1689,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="voidratio_watercontent"></a></p>
 <h2 id="voidratio_watercontent"><code>voidratio_watercontent</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="voidratio_watercontent">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_watercontent">Site investigation › Classification: Phase relations › voidratio_watercontent()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="voidratio_watercontent">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#voidratio_watercontent">Site investigation › Classification: Phase relations › Void Ratio (from Water Content)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">voidratio_watercontent</span><span class="p">(</span><span class="n">water_content</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">specific_gravity</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 

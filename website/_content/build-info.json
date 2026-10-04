@@ -9,13 +9,13 @@
   "api_functions": 198,
   "api_classes": 22,
   "api_methods": 183,
-  "api_items_available_in_geocore": 197,
+  "api_items_available_in_geocore": 203,
   "narrative_pages": 32,
   "geocore_pages": 16,
   "total_pages": 124,
   "images": 93,
-  "ui_calculators": 204,
-  "ui_calculators_linked": 197,
+  "ui_calculators": 203,
+  "ui_calculators_linked": 203,
   "excluded_upstream": [
     "docs/Golden_rules.rst",
     "notebooks/Images/cgs.png"

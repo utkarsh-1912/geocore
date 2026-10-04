@@ -131,32 +131,20 @@ npm run dist:linux
 
 ## 🌐 4. Website & Listing Deployment
 
-The GeoCore product showcase website is located in `website/index.html`. It provides:
-- Live download buttons for Windows & Mac
-- Visual module browser & calculation showcases
-- Direct links to Open Source MkDocs documentation
+The product website and the user documentation live in `website/` and are published by **Netlify** (`netlify.toml` sets `publish = "website"`). There is no framework runtime: a Python generator renders Jinja2 templates and the Markdown in `website/_content/` into plain HTML, and the generated HTML is **committed**. Netlify only publishes it.
 
-### Deploying to GitHub Pages (Free Hosting)
-1. In your GitHub repository settings, navigate to **Pages**.
-2. Set Source to `Deploy from a branch`.
-3. Select branch `main` and folder `/website` (or `/docs`).
-4. Click **Save**. Your site will be published live at `https://utkarsh-1912.github.io/geocore`.
+After changing anything in `website/_templates/`, `website/_content/` or `website/assets/`, rebuild and commit the result:
+```bash
+python website/_build/build.py
+```
+Download buttons and the model list are filled from the code base at build time (app version from `electron-app/package.json`, function counts from `python-backend/core/function_manifest.json`). Rebuild the site as part of each release so these stay current. Details are in [website/README.md](website/README.md).
 
 ---
 
-## 📚 5. Open Source Documentation (MkDocs Material)
+## 📚 5. Where the documentation lives
 
-GeoCore documentation is structured using **MkDocs Material**, the standard open-source documentation manager for Python and engineering projects.
-
-### Local Documentation Server
-```bash
-pip install mkdocs-material
-mkdocs serve
-```
-Visit `http://127.0.0.1:8000` to preview docs.
-
-### Build Documentation for Web
-```bash
-mkdocs build
-```
-*Output location*: `site/` directory (can be deployed to GitHub Pages, Vercel, or Netlify).
+| Audience | Location |
+| :--- | :--- |
+| Users | `website/_content/` (published at the site's `/docs/`) |
+| Contributors | [README.md](README.md), [electron-app/README.md](electron-app/README.md), [python-backend/README.md](python-backend/README.md), [python-backend/core/geoai/README.md](python-backend/core/geoai/README.md) |
+| GeoAI design rules | [AGENTS.md](AGENTS.md) |

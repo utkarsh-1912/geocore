@@ -12,7 +12,9 @@ groundhog_version: 0.15.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.deepfoundations.axialcapacity.piletesting
-geocore_available: false
+geocore_available: true
+geocore_functions:
+- piletest_chinkondler
 ---
 
 Module `groundhog.deepfoundations.axialcapacity.piletesting` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/piletesting.py).
@@ -22,6 +24,8 @@ Module `groundhog.deepfoundations.axialcapacity.piletesting` (groundhog 0.15.0).
 <a id="piletest_chinkondler"></a>
 
 ## `piletest_chinkondler`
+
+<span class="gc-badge gc-available" data-geocore-function="piletest_chinkondler">Available in GeoCore</span> [Pile calculations › Pile testing functionality › Chin-Kondler Extrapolation](/docs/geocore/using/modules#piletest_chinkondler)
 
 ```python
 piletest_chinkondler(

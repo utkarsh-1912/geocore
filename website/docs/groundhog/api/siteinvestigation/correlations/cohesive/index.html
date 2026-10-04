@@ -815,7 +815,7 @@
 <p><strong>Functions:</strong> <a href="#compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></a>, <a href="#frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></a>, <a href="#cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></a>, <a href="#gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></a>, <a href="#k0_plasticity_kenney"><code>k0_plasticity_kenney</code></a></p>
 <p><a id="compressionindex_watercontent_koppula"></a></p>
 <h2 id="compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="compressionindex_watercontent_koppula">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#compressionindex_watercontent_koppula">Site investigation › Correlations: Cohesive soils › compressionindex_watercontent_koppula()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="compressionindex_watercontent_koppula">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#compressionindex_watercontent_koppula">Site investigation › Correlations: Cohesive soils › Koppula (1981) Compression Index</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">compressionindex_watercontent_koppula</span><span class="p">(</span><span class="n">water_content</span><span class="p">,</span> <span class="n">cc_cr_ratio</span><span class="o">=</span><span class="mf">7.5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -881,7 +881,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="frictionangle_plasticityindex"></a></p>
 <h2 id="frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="frictionangle_plasticityindex">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#frictionangle_plasticityindex">Site investigation › Correlations: Cohesive soils › frictionangle_plasticityindex()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="frictionangle_plasticityindex">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#frictionangle_plasticityindex">Site investigation › Correlations: Cohesive soils › Drained Friction Angle (from Plasticity Index)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">frictionangle_plasticityindex</span><span class="p">(</span><span class="n">plasticity_index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -934,7 +934,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="cv_liquidlimit_usnavy"></a></p>
 <h2 id="cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="cv_liquidlimit_usnavy">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#cv_liquidlimit_usnavy">Site investigation › Correlations: Cohesive soils › cv_liquidlimit_usnavy()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="cv_liquidlimit_usnavy">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#cv_liquidlimit_usnavy">Site investigation › Correlations: Cohesive soils › US Navy Cv from Liquid Limit</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">cv_liquidlimit_usnavy</span><span class="p">(</span><span class="n">liquid_limit</span><span class="p">,</span> <span class="n">trend</span><span class="o">=</span><span class="s1">&#39;NC&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
@@ -994,7 +994,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="gmax_plasticityocr_andersen"></a></p>
 <h2 id="gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="gmax_plasticityocr_andersen">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_plasticityocr_andersen">Site investigation › Correlations: Cohesive soils › gmax_plasticityocr_andersen()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="gmax_plasticityocr_andersen">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#gmax_plasticityocr_andersen">Site investigation › Correlations: Cohesive soils › Andersen Gmax (Plasticity &amp; OCR)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">gmax_plasticityocr_andersen</span><span class="p">(</span>
     <span class="n">pi</span><span class="p">,</span>
     <span class="n">ocr</span><span class="p">,</span>
@@ -1120,7 +1120,7 @@
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
 <p><a id="k0_plasticity_kenney"></a></p>
 <h2 id="k0_plasticity_kenney"><code>k0_plasticity_kenney</code></h2>
-<p><span class="gc-badge gc-available" data-geocore-function="k0_plasticity_kenney">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#k0_plasticity_kenney">Site investigation › Correlations: Cohesive soils › k0_plasticity_kenney()</a></p>
+<p><span class="gc-badge gc-available" data-geocore-function="k0_plasticity_kenney">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#k0_plasticity_kenney">Site investigation › Correlations: Cohesive soils › Kenney K0 (from Plasticity, Clay)</a></p>
 <div class="highlight"><pre><span></span><code><span class="n">k0_plasticity_kenney</span><span class="p">(</span>
     <span class="n">pi</span><span class="p">,</span>
     <span class="n">ocr</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>

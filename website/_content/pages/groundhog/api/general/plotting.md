@@ -622,7 +622,7 @@ Selects a linear variation in each layer. Click the desired value at each layer 
 
 ## `plot_with_log`
 
-<span class="gc-badge gc-available" data-geocore-function="plot_with_log">Available in GeoCore</span> [General and utility functions › Plotting › plot_with_log()](/docs/geocore/using/modules#plot_with_log)
+<span class="gc-badge gc-available" data-geocore-function="plot_with_log">Available in GeoCore</span> [General and utility functions › Plotting › Multi-Trace Log Plot](/docs/geocore/using/modules#plot_with_log)
 
 ```python
 plot_with_log(

@@ -233,7 +233,7 @@
       "Pipelines and cables",
       "Pipeline and cable stability"
     ],
-    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 204 calculators, of which 197 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
+    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 203 calculators, of which 203 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
   },
   {
     "slug": "geocore/using/parameter-overrides",
@@ -469,7 +469,7 @@
     "headings": [
       "piletest_chinkondler"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.piletesting (groundhog 0.15.0). View source. Functions: piletest_chinkondler piletest_chinkondler Extrapotates a pile head load-settlement curve based on the procedure by Chin-Kondler. The settlements are divided by the corresponding loads. This yields "
+    "text": "Module groundhog.deepfoundations.axialcapacity.piletesting (groundhog 0.15.0). View source. Functions: piletest_chinkondler piletest_chinkondler Available in GeoCore Pile calculations › Pile testing functionality › Chin-Kondler Extrapolation Extrapotates a pile head load-settlement curve based on th"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/skinfriction",
@@ -532,7 +532,7 @@
       "reinforced_circularsection_inertia",
       "pilegroupeffect_reesevanimpe"
     ],
-    "text": "Module groundhog.deepfoundations.lateralresponse.lateral (groundhog 0.15.0). View source. Functions: reinforced_circularsection_inertia, pilegroupeffect_reesevanimpe reinforced_circularsection_inertia Calculates the combined inertia of a circular section, reinforced with rebar rods at equal center-t"
+    "text": "Module groundhog.deepfoundations.lateralresponse.lateral (groundhog 0.15.0). View source. Functions: reinforced_circularsection_inertia, pilegroupeffect_reesevanimpe reinforced_circularsection_inertia Available in GeoCore Pile calculations › Pile lateral behaviour › Reinforced Circular Section Inert"
   },
   {
     "slug": "groundhog/api/excavations",
@@ -560,7 +560,7 @@
       "bendingstiffness_soilmix_method1",
       "bendingstiffness_soilmix_method2"
     ],
-    "text": "Module groundhog.excavations.soilmix (groundhog 0.15.0). View source. Functions: bendingstiffness_soilmix_method1, bendingstiffness_soilmix_method2 bendingstiffness_soilmix_method1 Calculates the bending stiffness of a soilmix wall (for use in geotechnical retaining wall calculations) using the comb"
+    "text": "Module groundhog.excavations.soilmix (groundhog 0.15.0). View source. Functions: bendingstiffness_soilmix_method1, bendingstiffness_soilmix_method2 bendingstiffness_soilmix_method1 Available in GeoCore Excavations › Soilmix › Bending Stiffness (Method 1) Calculates the bending stiffness of a soilmix"
   },
   {
     "slug": "groundhog/api/general",
@@ -1088,7 +1088,7 @@
     "headings": [
       "undercompaction_cohesionless_ladd"
     ],
-    "text": "Module groundhog.siteinvestigation.labtesting.samplepreparation (groundhog 0.15.0). View source. Upstream documentation: Sample preparation. Functions: undercompaction_cohesionless_ladd undercompaction_cohesionless_ladd Available in GeoCore Site investigation › Laboratory: Sample preparation › under"
+    "text": "Module groundhog.siteinvestigation.labtesting.samplepreparation (groundhog 0.15.0). View source. Upstream documentation: Sample preparation. Functions: undercompaction_cohesionless_ladd undercompaction_cohesionless_ladd Available in GeoCore Site investigation › Laboratory: Sample preparation › Ladd "
   },
   {
     "slug": "groundhog/api/soildynamics",
@@ -1196,7 +1196,7 @@
       "Eurocode7_factoring_STR_GEO.override_factors_resistance",
       "Eurocode7_factoring_STR_GEO.select_correlation_factors"
     ],
-    "text": "Module groundhog.standards.eurocode7.factors (groundhog 0.15.0). View source. Upstream documentation: Partial factor selection. Classes: Eurocode7_factoring_STR_GEO class Eurocode7_factoring_STR_GEO Available in GeoCore EuroCode7 › Partial factor selection › Eurocode7_factoring_STR_GEO Eurocode7_fac"
+    "text": "Module groundhog.standards.eurocode7.factors (groundhog 0.15.0). View source. Upstream documentation: Partial factor selection. Classes: Eurocode7_factoring_STR_GEO class Eurocode7_factoring_STR_GEO Available in GeoCore EuroCode7 › Partial factor selection › Eurocode 7 STR/GEO Partial Factors Euroco"
   },
   {
     "slug": "groundhog/api/standards/eurocode7/parameter_selection",
@@ -1206,7 +1206,7 @@
       "constant_value",
       "linear_trend"
     ],
-    "text": "Module groundhog.standards.eurocode7.parameter_selection (groundhog 0.15.0). View source. Upstream documentation: Parameter selection. Functions: constant_value, linear_trend constant_value Available in GeoCore EuroCode7 › Parameter selection › constant_value() Selects the characteristic value from "
+    "text": "Module groundhog.standards.eurocode7.parameter_selection (groundhog 0.15.0). View source. Upstream documentation: Parameter selection. Functions: constant_value, linear_trend constant_value Available in GeoCore EuroCode7 › Parameter selection › Characteristic Value (Constant) Selects the characteris"
   },
   {
     "slug": "groundhog/guides",

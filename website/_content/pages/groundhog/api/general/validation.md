@@ -67,7 +67,7 @@ No upstream documentation.
 
 ## `validate_float`
 
-<span class="gc-badge gc-available" data-geocore-function="validate_float">Available in GeoCore</span> [General and utility functions › Validation › validate_float()](/docs/geocore/using/modules#validate_float)
+<span class="gc-badge gc-available" data-geocore-function="validate_float">Available in GeoCore</span> [General and utility functions › Validation › Validate Float Input](/docs/geocore/using/modules#validate_float)
 
 ```python
 validate_float(var_name, value, min_value=None, max_value=None)
@@ -88,7 +88,7 @@ Validates whether a variable can be used as a floating point number and whether 
 
 ## `validate_integer`
 
-<span class="gc-badge gc-available" data-geocore-function="validate_integer">Available in GeoCore</span> [General and utility functions › Validation › validate_integer()](/docs/geocore/using/modules#validate_integer)
+<span class="gc-badge gc-available" data-geocore-function="validate_integer">Available in GeoCore</span> [General and utility functions › Validation › Validate Integer Input](/docs/geocore/using/modules#validate_integer)
 
 ```python
 validate_integer(var_name, value, min_value=None, max_value=None)
@@ -109,7 +109,7 @@ Validates whether a variable can be used as an integer and whether it is within 
 
 ## `validate_boolean`
 
-<span class="gc-badge gc-available" data-geocore-function="validate_boolean">Available in GeoCore</span> [General and utility functions › Validation › validate_boolean()](/docs/geocore/using/modules#validate_boolean)
+<span class="gc-badge gc-available" data-geocore-function="validate_boolean">Available in GeoCore</span> [General and utility functions › Validation › Validate Boolean Input](/docs/geocore/using/modules#validate_boolean)
 
 ```python
 validate_boolean(var_name, value)
@@ -128,7 +128,7 @@ Validates whether a variable can be used as a boolean
 
 ## `validate_string`
 
-<span class="gc-badge gc-available" data-geocore-function="validate_string">Available in GeoCore</span> [General and utility functions › Validation › validate_string()](/docs/geocore/using/modules#validate_string)
+<span class="gc-badge gc-available" data-geocore-function="validate_string">Available in GeoCore</span> [General and utility functions › Validation › Validate String Input](/docs/geocore/using/modules#validate_string)
 
 ```python
 validate_string(var_name, value, options=None, regex=None)
@@ -149,7 +149,7 @@ Validates whether a variable can be used as a string. The routine also allows ch
 
 ## `validate_list`
 
-<span class="gc-badge gc-available" data-geocore-function="validate_list">Available in GeoCore</span> [General and utility functions › Validation › validate_list()](/docs/geocore/using/modules#validate_list)
+<span class="gc-badge gc-available" data-geocore-function="validate_list">Available in GeoCore</span> [General and utility functions › Validation › Validate Numeric List](/docs/geocore/using/modules#validate_list)
 
 ```python
 validate_list(
@@ -200,7 +200,7 @@ Constructs a data structure with all parameters, their values and the validation
 
 ## `check_layer_overlap`
 
-<span class="gc-badge gc-available" data-geocore-function="check_layer_overlap">Available in GeoCore</span> [General and utility functions › Validation › check_layer_overlap()](/docs/geocore/using/modules#check_layer_overlap)
+<span class="gc-badge gc-available" data-geocore-function="check_layer_overlap">Available in GeoCore</span> [General and utility functions › Validation › Check Layer Overlap](/docs/geocore/using/modules#check_layer_overlap)
 
 ```python
 check_layer_overlap(df, raise_error=True, z_from_key=None, z_to_key=None)
