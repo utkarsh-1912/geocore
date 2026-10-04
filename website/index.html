@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <script src="assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="assets/css/site.css?v=418a1ebb82">
+  <link rel="stylesheet" href="assets/css/site.css?v=0016ce983a">
 </head>
 <body class="layout-default">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -461,20 +461,22 @@
         <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=6b6f069f14#i-info"></use></svg>
         <p>GeoAI is under active development. Treat its answers as a starting point for engineering judgement, not a substitute for it.</p>
       </div>
-      <div class="lp-chat" aria-label="Example GeoAI exchange">
-        <div class="lp-chat__bar"><i></i><i></i><i></i><span>GeoAI · local model</span></div>
-        <p class="lp-chat__msg lp-chat__msg--user">Calculate the bearing capacity for the current profile.</p>
-        <p class="lp-chat__tool"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=6b6f069f14#i-calculator"></use></svg><span>Groundhog · schema check</span><b>2 inputs missing</b></p>
-        <p class="lp-chat__msg">The profile provides soil parameters, but I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
-      </div>
     </div>
-    <ol class="flow" aria-label="How a GeoAI request is handled — select a step to inspect it">
-      <li tabindex="0" role="button" aria-label="Step 1 of 5: You ask a question"><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-      <li tabindex="0" role="button" aria-label="Step 2 of 5: Local model plans, on device"><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-      <li tabindex="0" role="button" aria-label="Step 3 of 5: Tool registry validates"><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-      <li class="is-det" tabindex="0" role="button" aria-label="Step 4 of 5: Groundhog calculates, deterministic"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-      <li tabindex="0" role="button" aria-label="Step 5 of 5: Grounded answer"><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
-    </ol>
+    <div class="geoai__side">
+      <ol class="flow" aria-label="How a GeoAI request is handled — select a step to inspect it">
+        <li tabindex="0" role="button" aria-label="Step 1 of 5: You ask a question"><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+        <li tabindex="0" role="button" aria-label="Step 2 of 5: Local model plans, on device"><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+        <li tabindex="0" role="button" aria-label="Step 3 of 5: Tool registry validates"><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+        <li class="is-det" tabindex="0" role="button" aria-label="Step 4 of 5: Groundhog calculates, deterministic"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+        <li tabindex="0" role="button" aria-label="Step 5 of 5: Grounded answer"><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
+      </ol>
+    <div class="lp-chat" aria-label="Example GeoAI exchange">
+      <div class="lp-chat__bar"><i></i><i></i><i></i><span>GeoAI · local model</span></div>
+      <p class="lp-chat__msg lp-chat__msg--user">Calculate the bearing capacity for the current profile.</p>
+      <p class="lp-chat__tool"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=6b6f069f14#i-calculator"></use></svg><span>Groundhog · schema check</span><b>2 inputs missing</b></p>
+      <p class="lp-chat__msg">The profile provides soil parameters, but I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
+    </div>
+    </div>
   </div>
 </section>
 

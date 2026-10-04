@@ -2011,3 +2011,62 @@ h1, h2, h3 { letter-spacing: -0.025em; }
   .hero { padding-block: var(--sp-10) var(--sp-12); }
   .principle { padding-right: 0; }
 }
+
+/* ------------------------------------------------------------------ */
+/* 17. Landing alignment pass: remove dead space, balance columns       */
+/* ------------------------------------------------------------------ */
+:root { --sp-section: clamp(2.75rem, 2rem + 2.5vw, 4rem); }
+
+/* Hero: two balanced columns again, left-aligned, panel fills its column */
+.hero { text-align: left; padding-block: var(--sp-12) calc(var(--sp-10) + 3rem); }
+.hero__grid { justify-items: stretch; gap: var(--sp-8); align-items: center; }
+@media (min-width: 60rem) {
+  .hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) !important; gap: var(--sp-12); }
+}
+.hero h1 { max-width: none; margin-inline: 0; font-size: clamp(2.3rem, 1.3rem + 3.4vw, 3.7rem); }
+.hero .lede { margin-inline: 0; max-width: 34rem; }
+.hero__cta, .hero__meta { justify-content: flex-start; }
+.hero .figure-panel { width: 100%; max-width: 34rem; justify-self: end; }
+.hero .figure-panel svg { max-height: 21rem; }
+.lp-tech { justify-content: flex-start; margin-top: var(--sp-8); }
+@media (max-width: 59.99rem) { .hero .figure-panel { justify-self: stretch; max-width: none; } }
+
+/* Capabilities: full-width compact chart, then an even three-column grid */
+.lp-split { grid-template-columns: minmax(0, 1fr) !important; gap: var(--sp-5); }
+.lp-split .bar-chart { position: static !important; margin: 0; }
+.bar-chart { display: grid; gap: var(--sp-2) var(--sp-8); }
+.bar-chart__title { grid-column: 1 / -1; margin-bottom: var(--sp-2); }
+@media (min-width: 48rem) { .bar-chart { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.bar-chart__row { margin: 0; }
+@media (min-width: 64rem) { .lp-domains { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
+.lp-domains .domain-card { height: 100%; }
+.lp-domains .bullets { margin-top: auto; padding-top: var(--sp-3); }
+.domain-total { margin-top: var(--sp-6); padding-top: var(--sp-5); }
+
+/* Principles / workflow: tighter vertical rhythm */
+.section--tight { padding-block: var(--sp-10); }
+.principle { padding-block: var(--sp-5); }
+.principle::before { top: var(--sp-5); }
+.lp-steps .feature { padding-block: var(--sp-5); }
+
+/* GeoAI: text left, flow + chat stacked right, so both columns carry weight */
+.geoai-emblem { margin-bottom: 0; }
+.geoai-emblem__svg { width: 4.5rem; height: 4.5rem; }
+@media (min-width: 60rem) {
+  .geoai { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; gap: var(--sp-8) var(--sp-12) !important; align-items: start; }
+  .geoai__side { position: sticky; top: calc(var(--header-h) + var(--sp-6)); }
+}
+.geoai__side { display: grid; gap: var(--sp-6); min-width: 0; }
+.geoai__side .lp-chat { margin-top: 0; }
+.flow li { padding-bottom: var(--sp-4); }
+.lp-dark .checklist li { margin-bottom: var(--sp-2); }
+
+/* Integrations & CTA */
+.integration { height: 100%; }
+.integration .where { padding-top: var(--sp-3); }
+.section-head { margin-bottom: var(--sp-6); }
+.section-head p:last-child { margin-bottom: 0; }
+.stats-wrap + .section { padding-top: var(--sp-10); }
+.site-footer { margin-top: var(--sp-8); }
+
+.bar-chart__track-bg, .bar-chart__fill { rx: 2px; ry: 2px; }
