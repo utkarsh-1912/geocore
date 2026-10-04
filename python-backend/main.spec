@@ -49,7 +49,13 @@ hiddenimports = [
 ]
 
 hiddenimports += collect_submodules('groundhog')
+# collect_submodules imports 'core' in a subprocess, which only finds it when this folder is on
+# sys.path. The `pyinstaller` entry point (used in CI) does not add it, so without this line
+# collect_submodules('core') silently returns nothing.
+sys.path.insert(0, os.path.abspath(SPECPATH))
 hiddenimports += collect_submodules('core')
+# Loaded by name via importlib (registry._load_wrapper_module), so PyInstaller cannot see them.
+hiddenimports += ['core.wrappers', 'core.plotting_wrappers', 'core.labtesting_wrappers']
 hiddenimports += collect_submodules('plotly')
 hiddenimports += collect_submodules('scipy')
 hiddenimports += collect_submodules('matplotlib')

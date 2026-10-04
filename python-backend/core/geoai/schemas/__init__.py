@@ -20,6 +20,7 @@ from core.geoai.schemas.expanded import (
     ContactWidthInput, ContactWidthOutput,
     HydraulicConductivityUnconfinedInput, HydraulicConductivityUnconfinedOutput
 )
+from core.geoai.schemas.bis import BIS_SCHEMAS
 
 SCHEMA_REGISTRY: Dict[str, Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseModel]]]] = {
     'bulkunitweight': (BulkUnitWeightInput, BulkUnitWeightOutput),
@@ -33,6 +34,8 @@ SCHEMA_REGISTRY: Dict[str, Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseMo
     'contactwidth': (ContactWidthInput, ContactWidthOutput),
     'hydraulicconductivity_unconfinedaquifer': (HydraulicConductivityUnconfinedInput, HydraulicConductivityUnconfinedOutput),
 }
+# Indian Standard (BIS) calculations (core.standards.bis)
+SCHEMA_REGISTRY.update({name: (model, None) for name, model in BIS_SCHEMAS.items()})
 
 def get_schema(function_id: str) -> Optional[Tuple[Type[GeoAIBaseModel], Optional[Type[GeoAIBaseModel]]]]:
     if function_id in SCHEMA_REGISTRY:

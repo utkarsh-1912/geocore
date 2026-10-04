@@ -51,6 +51,11 @@ class Registry:
         """
         self.function_map.update(get_function_map())
 
+        # Indian Standard (BIS) calculations implemented in GeoCore (core/standards/bis)
+        from .standards.bis import BIS_FUNCTIONS
+        for func_name, obj in BIS_FUNCTIONS.items():
+            self.function_map.setdefault(func_name, obj)
+
         # Scan manual_functions.py
         try:
             _safe_reload(manual_functions)

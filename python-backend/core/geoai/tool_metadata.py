@@ -360,6 +360,105 @@ TOOL_METADATA: Dict[str, Dict[str, Any]] = {
             "qb_at_tip_mpa": "MPa",
             "shaft_resistance_kn": "kN"
         }
+    },
+
+    # 8. Indian Standard (BIS) calculations implemented in GeoCore (core.standards.bis)
+    "bearing_capacity_is6403": {
+        "method": "IS 6403 net ultimate bearing capacity: qd = c Nc sc dc ic + q (Nq - 1) sq dq iq + 0.5 B gamma Ngamma sgamma dgamma igamma W'",
+        "standard": "IS 6403:1981 (Reaffirmed) cl. 5.1-5.3, Tables 1-3 (GeoCore implementation; Nq, Ngamma from Groundhog for phi 20-50 deg)",
+        "assumptions": [
+            "Shear criterion only; no factor of safety unless supplied, settlement not checked",
+            "Local shear with c' = 2c/3 and phi' = atan(0.67 tan phi); Table 3 interpolation on relative density when selected",
+            "Depth factors only when requested (properly compacted backfill)",
+            "W' interpolated between 0.5 (water table at base) and 1 (at Df + B); q from total/submerged unit weights"
+        ],
+        "output_units": {"Net ultimate bearing capacity qnu [kPa]": "kPa", "Net safe bearing capacity qns [kPa]": "kPa"}
+    },
+    "classify_soil_is1498": {
+        "method": "Indian Standard Soil Classification System, laboratory method (gradation, Atterberg limits, A-line Ip = 0.73 (wL - 20))",
+        "standard": "IS 1498:1970 (Reaffirmed) cl. 3.5, Table 3, Fig. 1 (GeoCore implementation)",
+        "assumptions": [
+            "Compressibility L / I / H at wL < 35, 35-50, > 50",
+            "Borderline-of-borderline cases favour the non-plastic symbol (cl. 3.5.2)",
+            "Organic fines identified only when the oven-dried liquid limit is given; Pt identified visually by the user"
+        ],
+        "output_units": {}
+    },
+    "spt_correction_is2131": {
+        "method": "IS 2131 overburden correction CN = 0.77 log10(20 / sigma'v [kgf/cm2]) <= 2 (Fig. 1) and dilatancy correction N'' = 15 + (N' - 15)/2",
+        "standard": "IS 2131:1981 (Reaffirmed) cl. 3.6 (GeoCore implementation); optional N60 = N ER/60 per ISO 22476-3",
+        "assumptions": [
+            "Cohesionless soil; Fig. 1 represented by the Peck, Hanson & Thornburn (1974) curve it plots",
+            "Energy normalisation only when the measured energy ratio is supplied (not part of IS 2131:1981)"
+        ],
+        "output_units": {"Corrected N [-]": "-"}
+    },
+    "investigation_depth_is1892": {
+        "method": "IS 1892 guideline depth of investigation by foundation type",
+        "standard": "IS 1892:2021 cl. 5.6.3 (GeoCore implementation)",
+        "assumptions": ["Guideline values ('may be followed'); the 10 % stress-increase criterion of cl. 5.6.3.1 also applies"],
+        "output_units": {"Minimum depth below reference level [m]": "m"}
+    },
+    "borehole_layout_is1892": {
+        "method": "IS 1892 disposition of boreholes / trial pits by structure type",
+        "standard": "IS 1892:2021 cl. 5.6.2, Table 2 (GeoCore implementation)",
+        "assumptions": ["Grid counts assume a rectangular built-up area at 50 m spacing"],
+        "output_units": {"Minimum number of boreholes [-]": "-"}
+    },
+    "permissible_settlement_is1904": {
+        "method": "IS 1904 permissible maximum settlement, differential settlement and angular distortion for shallow foundations",
+        "standard": "IS 1904:2021 cl. 16.3, Table 1 (GeoCore implementation)",
+        "assumptions": ["Table 1 values are a guide; the designer decides the permissible settlements",
+                        "Load bearing walls interpolated linearly between L/H = 2 and 7"],
+        "output_units": {"Permissible maximum settlement [mm]": "mm", "Permissible differential settlement [mm]": "mm"}
+    },
+    "stability_check_is1904": {
+        "method": "Factor of safety = resisting / disturbing action against sliding or overturning",
+        "standard": "IS 1904:2021 cl. 17.1 (GeoCore implementation)",
+        "assumptions": ["Resisting and disturbing actions supplied by the engineer for the governing load case"],
+        "output_units": {"Factor of safety [-]": "-"}
+    },
+    "raft_rigidity_is2950": {
+        "method": "IS 2950 relative stiffness factor K = E/(12 Es) (d/b)^3 and critical column spacing 1.75/lambda, lambda = (kB/4EcI)^(1/4)",
+        "standard": "IS 2950 (Part 1):1981 (Reaffirmed) cl. 5.1-5.2, Appendix C (GeoCore implementation)",
+        "assumptions": ["K > 0.5 rigid; I = B d^3/12 unless given", "20 % column load/spacing variation check left to the engineer"],
+        "output_units": {"Relative stiffness factor K [-]": "-", "Critical column spacing 1.75/lambda [m]": "m"}
+    },
+    "specific_gravity_is2720": {
+        "method": "Density bottle G = (m2 - m1)/((m4 - m1) - (m3 - m2)), corrected to 27 degC by the water density ratio",
+        "standard": "IS 2720 (Part 3/Sec 1):1980 cl. 5 (GeoCore implementation; water density after Tanaka et al. 2001)",
+        "assumptions": ["Water used as the air-free liquid"],
+        "output_units": {"Specific gravity at 27 degC [-]": "-"}
+    },
+    "flow_index_is2720": {
+        "method": "Flow index If = (w1 - w2) / log10(N2 / N1)",
+        "standard": "IS 2720 (Part 5):1985 cl. 3.5.2 (GeoCore implementation)",
+        "assumptions": ["Straight flow curve on semi-log axes"],
+        "output_units": {"Flow index If [%]": "%"}
+    },
+    "liquid_limit_one_point_is2720": {
+        "method": "One-point liquid limit: wN / (1.3215 - 0.23 log N) (Casagrande) or wN / (0.77 log D), wN / (0.65 + 0.0175 D) (cone)",
+        "standard": "IS 2720 (Part 5):1985 cl. 5.6, 6.5 (GeoCore implementation)",
+        "assumptions": ["Not for highly organic soils; regional constants"],
+        "output_units": {"Liquid limit wL [%]": "%"}
+    },
+    "consistency_indices_is2720": {
+        "method": "Ip = wL - wP, IL = (w - wP)/Ip, Ic = (wL - w)/Ip, It = Ip/If",
+        "standard": "IS 2720 (Part 5):1985 cl. 8-11 (GeoCore implementation)",
+        "assumptions": ["Ip = 0 when wP >= wL"],
+        "output_units": {"Plasticity index Ip [%]": "%"}
+    },
+    "permeability_constant_head_is2720": {
+        "method": "Constant head k = Q L / (A h t), referred to 27 degC by the viscosity ratio",
+        "standard": "IS 2720 (Part 17):1986 cl. 5.4 (GeoCore implementation; water viscosity by the Vogel equation)",
+        "assumptions": ["Laminar flow through a saturated specimen"],
+        "output_units": {"Permeability at 27 degC k27 [cm/s]": "cm/s"}
+    },
+    "permeability_falling_head_is2720": {
+        "method": "Falling head k = 2.303 a L / (A t) log10(h1 / h2), referred to 27 degC by the viscosity ratio",
+        "standard": "IS 2720 (Part 17):1986 cl. 6.3 (GeoCore implementation; water viscosity by the Vogel equation)",
+        "assumptions": ["Laminar flow through a saturated specimen"],
+        "output_units": {"Permeability at 27 degC k27 [cm/s]": "cm/s"}
     }
 }
 

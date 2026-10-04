@@ -30,6 +30,35 @@ def _get(path: str, timeout: float = 5.0):
         return json.loads(r.read().decode("utf-8"))
 
 
+def _post_text(path: str, payload: dict, timeout: float = 60.0) -> str:
+    """POST JSON and return the response body, also for error statuses."""
+    req = urllib.request.Request(BASE + path, data=json.dumps(payload).encode("utf-8"),
+                                 headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as e:
+        return e.read().decode("utf-8", "replace")
+
+
+# One calculation per wrapper module the registry imports by name (core.registry._load_wrapper_module).
+# PyInstaller cannot see those imports. Each probe must pass schema validation so the wrapper is
+# actually imported; plot_with_log then fails on the missing SoilProfile, which is fine.
+LAZY_WRAPPER_PROBES = {
+    "core.wrappers": ("effectivearea_circle_api", {"foundation_radius": 2, "eccentricity": 0.5}),
+    "core.plotting_wrappers": ("plot_with_log", {}),
+}
+
+
+def _lazy_wrapper_problems() -> list:
+    problems = []
+    for module, (function_id, args) in LAZY_WRAPPER_PROBES.items():
+        body = _post_text("/api/execute", {"moduleId": "", "functionId": function_id, "args": args})
+        if "No module named" in body:
+            problems.append(f"{module} missing from the frozen build ({function_id}: {body[:200]})")
+    return problems
+
+
 def _problems(details: dict) -> list:
     problems = []
     if details.get("status") != "ok":
@@ -70,7 +99,7 @@ def main() -> int:
                 details = _get("/health/details")
                 last = json.dumps(details)[:400]
                 if (details.get("engine") or {}).get("ready"):
-                    problems = _problems(details)
+                    problems = _problems(details) or _lazy_wrapper_problems()
                     if problems:
                         print("FAIL: " + "; ".join(problems) + f"\n{last}\n--- output ---\n{output()}")
                         return 1
