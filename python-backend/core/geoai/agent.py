@@ -30,6 +30,7 @@ from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
 from .exceptions import GeoAIValidationError
 from .argument_grounding import missing_inputs_message, ungrounded_arguments
+from .visuals import build_visuals
 from .turn_trace import CANCELLED, EMPTY_ANSWER, EMPTY_ANSWER_MESSAGE, FAILURES, classify_turn, record_turn
 
 logger = logging.getLogger(__name__)
@@ -203,7 +204,8 @@ class AgentResponse:
             "parameters_extracted": self.tools_used[0]["arguments"] if self.tools_used else None,
             "results": first_tool_result,
             "tools_used": self.tools_used,
-            "provenance": provenances
+            "provenance": provenances,
+            "visuals": [v for t in self.tools_used for v in t.get("visuals") or []],
         }
         return result
 
@@ -214,6 +216,8 @@ class AgentStreamEvent:
     tool_name: Optional[str] = None
     tool_args: Optional[Dict[str, Any]] = None
     tool_result: Optional[Dict[str, Any]] = None
+    # Display blocks for the UI only (core.geoai.visuals); never part of the model prompt.
+    visuals: Optional[List[Dict[str, Any]]] = None
 
     def to_sse(self) -> str:
         data = {
@@ -223,6 +227,8 @@ class AgentStreamEvent:
             "tool_args": self.tool_args,
             "tool_result": self.tool_result
         }
+        if self.visuals:
+            data["visuals"] = self.visuals
         return f"data: {json.dumps(data)}\n\n"
 
 def _close_stream(stream: Any) -> None:
@@ -359,7 +365,8 @@ class GeoAIAgent:
             
             for tc in response.tool_calls:
                 result = self._execute_tool_call(tc, context=context)
-                tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result})
+                tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result,
+                                   "visuals": build_visuals(tc.function_name, tc.arguments, result)})
                 
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
@@ -472,8 +479,11 @@ class GeoAIAgent:
             for tc in tool_calls:
                 yield AgentStreamEvent(type='tool_start', tool_name=tc.function_name, tool_args=tc.arguments)
                 result = self._execute_tool_call(tc, context=context)
-                tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result})
-                yield AgentStreamEvent(type='tool_result', tool_name=tc.function_name, tool_result=result)
+                visuals = build_visuals(tc.function_name, tc.arguments, result)
+                tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result,
+                                   "visuals": visuals})
+                yield AgentStreamEvent(type='tool_result', tool_name=tc.function_name, tool_result=result,
+                                       visuals=visuals)
                 
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
