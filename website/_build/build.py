@@ -198,10 +198,11 @@ _hash_cache: Dict[str, str] = {}
 
 
 def asset_version(rel_path: str) -> str:
-    """Short content hash for cache-busting (?v=...)."""
+    """Short content hash for cache-busting (?v=...). Line endings are normalised so a Windows
+    checkout (CRLF) and CI (LF) produce the same hash."""
     if rel_path not in _hash_cache:
         file = WEBSITE / rel_path
-        _hash_cache[rel_path] = hashlib.sha256(file.read_bytes()).hexdigest()[:10] if file.exists() else "0"
+        _hash_cache[rel_path] = hashlib.sha256(file.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:10] if file.exists() else "0"
     return _hash_cache[rel_path]
 
 
