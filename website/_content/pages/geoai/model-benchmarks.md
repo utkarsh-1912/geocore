@@ -59,14 +59,17 @@ All candidates are 4-bit `Q4_K_M` GGUF files downloaded from Hugging Face. GeoAI
 | Model | Parameters | Download | Licence | Tool calls | Notes |
 |---|---|---|---|---|---|
 | [Qwen2.5 1.5B Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF) | 1.5B | ~1.0 GB | Apache-2.0 | native &lt;tool_call&gt; | Current GeoAI default and fine-tuning baseline. |
+| [Qwen2.5 3B Instruct](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF) | 3B | ~2.0 GB | Qwen Research (non-commercial) | native &lt;tool_call&gt; | Balanced speed/precision; non-commercial licence. |
+| [Qwen2.5 7B Instruct](https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF) | 7B | ~4.4 GB | Apache-2.0 | native &lt;tool_call&gt; | Quality ceiling reference for the Qwen2.5 line. |
 | [Qwen3 1.7B](https://huggingface.co/unsloth/Qwen3-1.7B-GGUF) | 1.7B | ~1.0 GB | Apache-2.0 | native &lt;tool_call&gt; | Hybrid thinking model; GeoAI sends /no_think. |
 | [Qwen3.5 2B](https://huggingface.co/unsloth/Qwen3.5-2B-GGUF) | 2B | ~1.2 GB | Apache-2.0 | native &lt;tool_call&gt; | Newest small Qwen; fine-tune preset uses 16-bit LoRA. |
 | [Qwen3 4B Instruct 2507](https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF) | 4B | ~2.3 GB | Apache-2.0 | native &lt;tool_call&gt; | Non-thinking instruct release. |
 | [Qwen3 8B](https://huggingface.co/Qwen/Qwen3-8B-GGUF) | 8B | ~4.7 GB | Apache-2.0 | native &lt;tool_call&gt; | Quality ceiling reference; too heavy to be the default. |
-| [Phi-4-mini Instruct](https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF) | 3.8B | ~2.3 GB | MIT | &lt;\|tool_call\|&gt; JSON list | Trained for function calling; no fine-tuning preset yet. |
+| [Phi-4-mini Instruct](https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF) | 3.8B | ~2.3 GB | MIT | &lt;\|tool_call\|&gt; JSON list | Trained for function calling. |
 | [SmolLM3 3B](https://huggingface.co/ggml-org/SmolLM3-3B-GGUF) | 3B | ~1.8 GB | Apache-2.0 | native &lt;tool_call&gt; | Hybrid thinking model; GeoAI sends /no_think. |
 | [Granite 4.1 (3B)](https://huggingface.co/ibm-granite/granite-4.1-3b-GGUF) | 3B | ~2.0 GB | Apache-2.0 | native &lt;tool_call&gt; | IBM enterprise model; 4.1 post-training upgrade over 4.0 Micro with enhanced tool calling. |
 | [Llama 3.2 3B Instruct](https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF) | 3B | ~1.9 GB | Llama 3.2 Community | bare JSON (name, parameters) | Custom licence with use restrictions. |
+| [Mistral 7B Instruct v0.3](https://huggingface.co/bartowski/Mistral-7B-Instruct-v0.3-GGUF) | 7B | ~4.1 GB | Apache-2.0 | [TOOL_CALLS] JSON list | Strong literature/standards synthesis. |
 
 Model licences differ. Apache 2.0 and MIT models can be redistributed most freely. The Gemma and Llama licences add their own use terms. GeoCore does not bundle any model; you download the model you choose.
 

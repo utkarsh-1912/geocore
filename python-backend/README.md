@@ -49,4 +49,4 @@ The suite does not need a model or network access: GeoAI tests use scripted prov
 pyinstaller --clean main.spec
 ```
 
-Output goes to `dist/` (git-ignored). `llama_cpp` must be installed when freezing, or the packaged app falls back to the heuristic provider; see [../RELEASE_GUIDE.md](../RELEASE_GUIDE.md).
+Output goes to `dist/` (git-ignored). Check the result with `python smoke_test_frozen.py dist/main/main.exe` (the release workflow does this on every platform; it needs port 8000 free). `llama_cpp` must be installed when freezing, or the packaged app falls back to the heuristic provider; see [../RELEASE_GUIDE.md](../RELEASE_GUIDE.md).

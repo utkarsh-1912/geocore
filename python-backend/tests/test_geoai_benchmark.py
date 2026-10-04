@@ -22,6 +22,22 @@ def test_candidates_are_consistent():
         assert c.finetune_family is None or c.finetune_family in FAMILY_PRESETS
 
 
+def test_candidates_cover_every_installable_model():
+    # The benchmark's own candidate list drifted from model_downloader's at least once (missing
+    # 3 models that were only in the latter). Every file offered for download must be benchmarkable.
+    from core.geoai.model_downloader import RECOMMENDED_MODELS
+    benchmarkable_filenames = {c.filename.lower() for c in CANDIDATES.values()}
+    missing = [info["filename"] for info in RECOMMENDED_MODELS.values()
+               if info["filename"].lower() not in benchmarkable_filenames]
+    assert missing == [], f"downloadable but not in eval.benchmark.CANDIDATES: {missing}"
+
+
+def test_non_qwen_candidates_have_a_finetune_preset():
+    non_qwen_families = {"phi3", "granite", "smollm3", "llama3", "mistral"}
+    covered = {c.finetune_family for c in CANDIDATES.values() if c.finetune_family in non_qwen_families}
+    assert covered == non_qwen_families, f"missing fine-tune coverage for {non_qwen_families - covered}"
+
+
 def test_leaderboard_sorts_and_flags_fine_tunes(tmp_path):
     _report(tmp_path / "qwen3-1.7b.json", "qwen3-1.7b", "qwen3-1.7b", 0.6, ["a", "b"])
     _report(tmp_path / "qwen3-1.7b+geoai-lora.json", "qwen3-1.7b+geoai-lora", "qwen3-1.7b", 0.8, ["a", "b"],

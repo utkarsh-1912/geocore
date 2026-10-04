@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap, RefreshCw } from 'lucide-react';
+import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap, RefreshCw, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
@@ -18,10 +18,38 @@ import { ProfileViewModal } from './ProfileViewModal';
 import SchemaEditor from './SchemaEditor';
 import { UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
 import { api } from '../../api/client';
+import { validateForm, resolveLimits, describeRange, isNumericInput } from '../../utils/formValidation';
+
+// Groundhog's validated ranges never change while the app runs: fetch once, share across forms.
+let boundsPromise = null;
+const loadFieldBounds = () => {
+    if (!boundsPromise) {
+        boundsPromise = api.getFieldBounds().catch(err => {
+            boundsPromise = null; // allow a retry once the engine is up
+            console.warn('Field bounds unavailable; forms fall back to schema limits.', err);
+            return {};
+        });
+    }
+    return boundsPromise;
+};
+
+// Shared control styling: one look for inputs, selects and textareas, with an error state.
+const CONTROL_BASE = 'w-full bg-background border rounded-md px-3 py-2 text-sm text-text-main placeholder-text-muted/60 focus:outline-none focus:ring-2 transition-all disabled:opacity-60';
+const CONTROL_OK = 'border-border hover:border-primary/40 focus:border-primary focus:ring-primary/20';
+const CONTROL_BAD = 'border-error bg-error/5 focus:border-error focus:ring-error/20';
+
+const controlStyle = (invalid, extra = '') => `${CONTROL_BASE} ${invalid ? CONTROL_BAD : CONTROL_OK} ${extra}`;
+
+const FieldError = ({ id, message }) => message ? (
+    <p id={id} role="alert" className="flex items-center gap-1 text-xs text-error mt-1.5">
+        <AlertCircle size={12} className="shrink-0" />
+        <span>{message}</span>
+    </p>
+) : null;
 
 
 // Object Selector Component
-const ObjectSelector = ({ objectType, value, onChange, required, refreshTrigger }) => {
+const ObjectSelector = ({ id, objectType, value, onChange, required, refreshTrigger, invalid }) => {
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState(null);
@@ -50,10 +78,11 @@ const ObjectSelector = ({ objectType, value, onChange, required, refreshTrigger 
     return (
         <div className="flex items-center gap-2">
             <select
+                id={id}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
-                required={required}
+                aria-invalid={!!invalid}
+                className={controlStyle(invalid)}
             >
                 <option value="">Select {objectType}...</option>
                 {/* If value exists but isn't in options (common after refresh/reload), show it */}
@@ -233,7 +262,7 @@ const ParameterChipsSelector = ({ name, value, availableColumns, onChange, requi
 };
 
 // Smart Single Column Dropdown Selector
-const ColumnSelectDropdown = ({ name, value, availableColumns, onChange, required, disabled, placeholder }) => {
+const ColumnSelectDropdown = ({ id, value, availableColumns, onChange, disabled, invalid }) => {
     const [isCustom, setIsCustom] = useState(false);
 
     return (
@@ -241,6 +270,8 @@ const ColumnSelectDropdown = ({ name, value, availableColumns, onChange, require
             {!isCustom ? (
                 <div className="flex gap-2">
                     <select
+                        id={id}
+                        aria-invalid={!!invalid}
                         value={value || ''}
                         onChange={(e) => {
                             if (e.target.value === '__custom__') {
@@ -249,9 +280,8 @@ const ColumnSelectDropdown = ({ name, value, availableColumns, onChange, require
                                 onChange(e.target.value);
                             }
                         }}
-                        className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full text-sm"
+                        className={controlStyle(invalid)}
                         disabled={disabled}
-                        required={required}
                     >
                         <option value="">-- Select column --</option>
                         {availableColumns.map(col => (
@@ -290,7 +320,10 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
     const [fileColumns, setFileColumns] = useState([]);
 
     const [uploadError, setUploadError] = useState(null);
-    const [validationErrors, setValidationErrors] = useState({});
+    // Inline validation: a field shows its error once touched (or after a submit attempt), never before.
+    const [touched, setTouched] = useState({});
+    const [submitAttempted, setSubmitAttempted] = useState(false);
+    const [groundhogBounds, setGroundhogBounds] = useState({});
 
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [refreshProfiles, setRefreshProfiles] = useState(0);
@@ -399,6 +432,36 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
         return [];
     }, [schema]);
 
+    useEffect(() => {
+        let alive = true;
+        loadFieldBounds().then(all => { if (alive) setGroundhogBounds(all || {}); });
+        return () => { alive = false; };
+    }, []);
+
+    // A different calculation starts with a clean validation state.
+    useEffect(() => {
+        setTouched({});
+        setSubmitAttempted(false);
+    }, [functionName]);
+
+    const functionBounds = groundhogBounds[functionId] || groundhogBounds[functionName] || null;
+
+    // Inputs as rendered: schema merged with dev overrides, so validation sees the same limits as the UI.
+    const effectiveInputs = React.useMemo(
+        () => normalizedInputs.map(base => ({ ...base, ...(overrides[functionName]?.[base.name] || {}) })),
+        [normalizedInputs, overrides, functionName]
+    );
+
+    const fieldErrors = React.useMemo(
+        () => validateForm(effectiveInputs, formData, functionBounds),
+        [effectiveInputs, formData, functionBounds]
+    );
+
+    const errorFor = (name) => (touched[name] || submitAttempted) ? fieldErrors[name] || null : null;
+    const controlClass = (name, extra = '') => `${CONTROL_BASE} ${errorFor(name) ? CONTROL_BAD : CONTROL_OK} ${extra}`;
+    const markTouched = (name) => setTouched(prev => (prev[name] ? prev : { ...prev, [name]: true }));
+    const invalidCount = Object.keys(fieldErrors).length;
+
     // Fetch Overrides and Page Docs on Mount/Update
     useEffect(() => {
         // GeoCore usage notes: a saved override, else the schema's hand-written docs. Theory comes from
@@ -471,22 +534,6 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
         }
     }, [normalizedInputs, initialValues]);
 
-    const validateField = (name, value, regexPattern) => {
-        if (!regexPattern) return true;
-        try {
-            const regex = new RegExp(regexPattern);
-            const isValid = regex.test(String(value));
-            setValidationErrors(prev => ({
-                ...prev,
-                [name]: isValid ? null : 'Invalid format'
-            }));
-            return isValid;
-        } catch (e) {
-            console.error("Invalid regex:", regexPattern);
-            return true;
-        }
-    };
-
     const fetchObjectDetails = (type, id) => {
         if (!type || !id) return;
         console.log(`Fetching details for ${type} ID: ${id}`);
@@ -515,17 +562,11 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
         });
     }, [normalizedInputs, formData]); // Check dependencies carefully. formData triggers often.
 
-    const handleChange = (name, value, regexPattern = null) => {
-        console.log(`SchemaForm handleChange: ${name} =`, value);
-
-        if (regexPattern) {
-            validateField(name, value, regexPattern);
-        }
+    const handleChange = (name, value) => {
+        markTouched(name);
 
         setFormData(prev => {
-            const newState = { ...prev, [name]: value };
-            console.log("SchemaForm State Update (handleChange):", newState);
-            return newState;
+            return { ...prev, [name]: value };
         });
 
         // Check if this is an object selector
@@ -545,6 +586,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
 
     const handleFileUpload = async (name, file) => {
         setUploadError(null);
+        markTouched(name);
         if (!file) return;
 
         console.log(`SchemaForm handleFileUpload: ${name} =`, file.name);
@@ -631,32 +673,17 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setSubmitAttempted(true);
 
-        // Final Validation Check
-        const errors = {};
-        let hasErrors = false;
-
-        normalizedInputs.forEach(baseInput => {
-            const override = overrides[functionName]?.[baseInput.name] || {};
-            const input = { ...baseInput, ...override };
-
-            if (input.validationRegex && formData[input.name]) {
-                try {
-                    const regex = new RegExp(input.validationRegex);
-                    if (!regex.test(String(formData[input.name]))) {
-                        errors[input.name] = 'Invalid format';
-                        hasErrors = true;
-                    }
-                } catch (e) { }
-            }
-        });
-
-        if (hasErrors) {
-            setValidationErrors(errors);
+        const firstInvalid = effectiveInputs.find(i => fieldErrors[i.name]);
+        if (firstInvalid) {
+            // Bring the first problem into view and focus it, instead of failing after the run.
+            const el = document.getElementById(`field-${firstInvalid.name}`);
+            el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el?.focus?.({ preventScroll: true });
             return;
         }
 
-        console.log("SchemaForm handleSubmit - formData:", formData);
         onCalculate(formData);
     };
 
@@ -705,7 +732,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} noValidate className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {normalizedInputs.map((baseInput) => {
                             // Apply Overrides
@@ -726,22 +753,36 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                 />
                             ) : null;
 
-                            // Helper for Label with Actions
+                            // Label row: name, required mark, help, and the allowed range for numeric inputs.
+                            // Schema titles carry the unit as "Name [unit]": show it inside the input, not in the label.
+                            const titleMatch = /^(.*?)\s*\[([^\]]+)\]\s*$/.exec(input.label || '');
+                            const displayLabel = titleMatch ? titleMatch[1] : (input.label || input.name);
+                            const rawUnit = input.unit || (titleMatch ? titleMatch[2] : null);
+                            const displayUnit = rawUnit && rawUnit !== '-' ? rawUnit : null;
+                            const limits = resolveLimits(input, functionBounds);
+                            const rangeHint = isNumericInput(input) ? describeRange(limits) : null;
                             const renderLabel = () => (
-                                <div className="flex items-center gap-1.5 mb-1 group/label">
-                                    <label className="text-sm text-text-muted flex items-center gap-1 cursor-default">
-                                        {input.label || input.name}
-                                        {input.required && <span className="text-primary font-bold">*</span>}
-                                        {input.unit && <span className="text-text-muted text-xs font-normal">({input.unit})</span>}
-                                    </label>
+                                <div className="flex items-center justify-between gap-2 mb-1.5 group/label">
+                                    <div className="flex items-center gap-1.5 min-w-0">
+                                        <label htmlFor={`field-${input.name}`} className="text-sm font-medium text-text-main flex items-center gap-1 cursor-default truncate">
+                                            <span className="truncate">{displayLabel}</span>
+                                            {input.required && <span className="text-primary font-bold" title="Required">*</span>}
+                                        </label>
 
-                                    {input.description && (
-                                        <div className="relative group/tooltip">
-                                            <HelpCircle size={12} className="text-text-muted cursor-help" />
-                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
-                                                <div dangerouslySetInnerHTML={{ __html: input.description }} />
+                                        {input.description && (
+                                            <div className="relative group/tooltip shrink-0">
+                                                <HelpCircle size={12} className="text-text-muted cursor-help" />
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
+                                                    <div dangerouslySetInnerHTML={{ __html: input.description }} />
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+                                    </div>
+
+                                    {rangeHint && (
+                                        <span className="text-[10px] font-mono text-text-muted bg-surface-muted border border-border/60 rounded px-1.5 py-0.5 shrink-0" title="Allowed range">
+                                            {rangeHint}
+                                        </span>
                                     )}
                                 </div>
                             );
@@ -757,7 +798,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             <select
                                                 value={formData[input.name] || ''}
                                                 onChange={(e) => handleChange(input.name, e.target.value)}
-                                                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+                                                id={`field-${input.name}`} aria-invalid={!!errorFor(input.name)} className={controlClass(input.name)}
                                                 required={input.required}
                                                 disabled={isEditMode}
                                             >
@@ -779,19 +820,18 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             {renderLabel()}
                                             <div className="flex flex-col gap-2">
                                                 <input
+                                                    id={`field-${input.name}`}
                                                     type="file"
                                                     accept={input.accept || ".csv,.xlsx,.xls"}
                                                     onChange={(e) => handleFileUpload(input.name, e.target.files[0])}
-                                                    className="block w-full text-sm text-text-muted
-                                                    file:mr-4 file:py-2 file:px-4
-                                                    file:rounded file:border-0
-                                                    file:text-sm file:font-semibold
-                                                    file:bg-primary/10 file:text-primary
-                                                    hover:file:bg-primary/20
-                                                    cursor-pointer"
+                                                    aria-invalid={!!errorFor(input.name)}
+                                                    className={`block w-full text-sm text-text-muted cursor-pointer border border-dashed rounded-md p-2 transition-colors
+                                                    ${errorFor(input.name) ? 'border-error bg-error/5' : 'border-border hover:border-primary/50 bg-surface-muted/40'}
+                                                    file:mr-4 file:py-1.5 file:px-3 file:rounded file:border-0
+                                                    file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20`}
                                                     disabled={isEditMode}
                                                 />
-                                                {uploadError && <span className="text-xs text-red-500">{uploadError}</span>}
+                                                <FieldError id={`err-${input.name}`} message={errorFor(input.name) || uploadError} />
                                             </div>
                                         </div>
                                     </div>
@@ -811,9 +851,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 disabled={isEditMode}
                                                 placeholder={input.placeholder || input.description}
                                             />
-                                            {validationErrors[input.name] && (
-                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
-                                            )}
+                                            <FieldError id={`err-${input.name}`} message={errorFor(input.name)} />
                                         </div>
                                     </div>
                                 );
@@ -824,17 +862,14 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                         <div className="flex flex-col">
                                             {renderLabel()}
                                             <ColumnSelectDropdown
-                                                name={input.name}
+                                                id={`field-${input.name}`}
                                                 value={formData[input.name]}
                                                 availableColumns={fileColumns}
                                                 onChange={(val) => handleChange(input.name, val)}
-                                                required={input.required}
                                                 disabled={isEditMode}
-                                                placeholder={input.placeholder || input.description}
+                                                invalid={!!errorFor(input.name)}
                                             />
-                                            {validationErrors[input.name] && (
-                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
-                                            )}
+                                            <FieldError id={`err-${input.name}`} message={errorFor(input.name)} />
                                         </div>
                                     </div>
                                 );
@@ -850,7 +885,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             <select
                                                 value={formData[input.name] !== undefined ? String(formData[input.name]) : ''}
                                                 onChange={(e) => handleChange(input.name, e.target.value)}
-                                                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full text-sm"
+                                                id={`field-${input.name}`} aria-invalid={!!errorFor(input.name)} className={controlClass(input.name)}
                                                 required={input.required}
                                                 disabled={isEditMode}
                                             >
@@ -859,9 +894,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                     <option key={opt} value={opt}>{opt}</option>
                                                 ))}
                                             </select>
-                                            {validationErrors[input.name] && (
-                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
-                                            )}
+                                            <FieldError id={`err-${input.name}`} message={errorFor(input.name)} />
                                         </div>
                                     </div>
                                 );
@@ -874,7 +907,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             <select
                                                 value={formData[input.name] || ''}
                                                 onChange={(e) => handleChange(input.name, e.target.value)}
-                                                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                                id={`field-${input.name}`} aria-invalid={!!errorFor(input.name)} className={controlClass(input.name)}
                                                 disabled={fileColumns.length === 0 || isEditMode}
                                             >
                                                 <option value="">Select a column...</option>
@@ -933,13 +966,14 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 )}
                                             </div>
                                             <ObjectSelector
+                                                id={`field-${input.name}`}
                                                 objectType={input.objectType}
                                                 value={formData[input.name] || ''}
                                                 onChange={(val) => handleChange(input.name, val)}
-                                                required={input.required}
+                                                invalid={!!errorFor(input.name)}
                                                 refreshTrigger={refreshProfiles}
-                                                disabled={isEditMode}
                                             />
+                                            <FieldError id={`err-${input.name}`} message={errorFor(input.name)} />
                                         </div>
                                     </div>
                                 );
@@ -953,11 +987,13 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 value={formData[input.name] || ''}
                                                 onChange={(e) => handleChange(input.name, e.target.value)}
                                                 placeholder={input.description || 'Enter values separated by commas or new lines...'}
-                                                className="bg-background border border-border rounded px-3 py-2 text-text-main font-mono text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full min-h-[80px]"
+                                                id={`field-${input.name}`} aria-invalid={!!errorFor(input.name)} className={controlClass(input.name, "font-mono min-h-[80px]")}
                                                 required={input.required}
                                                 disabled={isEditMode}
                                             />
-                                            <span className="text-[10px] text-text-muted mt-1">Example: 10, 20, 30.5</span>
+                                            {errorFor(input.name)
+                                                ? <FieldError id={`err-${input.name}`} message={errorFor(input.name)} />
+                                                : <span className="text-[10px] text-text-muted mt-1">Example: 10, 20, 30.5</span>}
                                         </div>
                                     </div>
                                 );
@@ -970,7 +1006,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             <select
                                                 value={String(formData[input.name] ?? false)}
                                                 onChange={(e) => handleChange(input.name, e.target.value === 'true')}
-                                                className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+                                                id={`field-${input.name}`} aria-invalid={!!errorFor(input.name)} className={controlClass(input.name)}
                                                 required={input.required}
                                                 disabled={isEditMode}
                                             >
@@ -986,21 +1022,28 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                         {editOverlay}
                                         <div className="flex flex-col">
                                             {renderLabel()}
-                                            <Input
-                                                type={input.type === 'number' || input.type === 'float' ? 'number' : 'text'}
-                                                step="any"
-                                                min={input.min !== undefined ? input.min : (input.minimum !== undefined ? input.minimum : undefined)}
-                                                max={input.max !== undefined ? input.max : (input.maximum !== undefined ? input.maximum : undefined)}
-                                                value={formData[input.name] !== undefined ? formData[input.name] : ''}
-                                                onChange={(e) => handleChange(input.name, e.target.value, input.validationRegex)}
-                                                placeholder={input.placeholder || input.description || ''}
-                                                required={input.required}
-                                                disabled={isEditMode}
-                                                className={validationErrors[input.name] ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""}
-                                            />
-                                            {validationErrors[input.name] && (
-                                                <span className="text-xs text-red-500 mt-1">{validationErrors[input.name]}</span>
-                                            )}
+                                            <div className="relative">
+                                                <input
+                                                    id={`field-${input.name}`}
+                                                    type={isNumericInput(input) ? 'number' : 'text'}
+                                                    step={limits.integer ? 1 : 'any'}
+                                                    inputMode={isNumericInput(input) ? 'decimal' : undefined}
+                                                    value={formData[input.name] !== undefined ? formData[input.name] : ''}
+                                                    onChange={(e) => handleChange(input.name, e.target.value)}
+                                                    onBlur={() => markTouched(input.name)}
+                                                    placeholder={input.placeholder || (isNumericInput(input) ? 'Enter value' : '')}
+                                                    disabled={isEditMode}
+                                                    aria-invalid={!!errorFor(input.name)}
+                                                    aria-describedby={errorFor(input.name) ? `err-${input.name}` : undefined}
+                                                    className={`${controlClass(input.name)} ${displayUnit ? 'pr-16' : ''}`}
+                                                />
+                                                {displayUnit && (
+                                                    <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-xs font-mono text-text-muted">
+                                                        {displayUnit}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <FieldError id={`err-${input.name}`} message={errorFor(input.name)} />
                                         </div>
                                     </div>
                                 );
@@ -1008,7 +1051,17 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                         })}
                     </div>
 
-                    <div className="flex justify-end pt-4 border-t border-border mt-6">
+                    <div className="sticky bottom-0 -mx-4 -mb-4 px-4 py-3 mt-6 flex items-center justify-between gap-3 border-t border-border bg-surface/95 backdrop-blur rounded-b-md">
+                        <div className="text-xs min-w-0" aria-live="polite">
+                            {submitAttempted && invalidCount > 0 ? (
+                                <span className="flex items-center gap-1.5 text-error font-medium">
+                                    <AlertCircle size={14} className="shrink-0" />
+                                    {invalidCount} {invalidCount === 1 ? 'field needs' : 'fields need'} attention
+                                </span>
+                            ) : (
+                                <span className="text-text-muted"><span className="text-primary font-bold">*</span> Required</span>
+                            )}
+                        </div>
                         <Button type="submit" variant="primary" disabled={isLoading}>
                             {isLoading ? (
                                 <div className="flex items-center gap-2">

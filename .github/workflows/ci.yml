@@ -5,10 +5,17 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # The release workflow runs the same checks before it builds installers.
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   backend-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - uses: actions/checkout@v4
 
@@ -16,11 +23,21 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+        cache: pip
+        cache-dependency-path: python-backend/requirements.txt
+
+    # Install the local LLM runtime from the prebuilt CPU wheel first, as the release workflow
+    # does. Without this, requirements.txt compiles llama.cpp from source on every run.
+    - name: Install llama-cpp-python (prebuilt CPU wheel)
+      run: |
+        python -m pip install --upgrade pip
+        pip install llama-cpp-python --only-binary=llama-cpp-python --prefer-binary \
+          --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu \
+        || pip install llama-cpp-python --no-binary=llama-cpp-python
 
     - name: Install dependencies
       run: |
         cd python-backend
-        python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest httpx
 
@@ -33,6 +50,7 @@ jobs:
 
   frontend-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
     - uses: actions/checkout@v4
 
@@ -40,6 +58,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '22'
+        cache: npm
+        cache-dependency-path: electron-app/package-lock.json
 
     - name: Install dependencies
       run: |
@@ -50,3 +70,34 @@ jobs:
       run: |
         cd electron-app
         npm run build
+
+  website-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # The generator needs only these; it must not need the full backend install.
+    - name: Install site generator dependencies
+      run: pip install jinja2 markdown pyyaml
+
+    - name: Build site
+      run: python website/_build/build.py
+
+    # The generated HTML is committed and Netlify does not run the build, so a stale page is a
+    # stale site. Only the marketing pages are compared: they depend on function_manifest.json,
+    # the model list in model_downloader.py and electron-app/package.json. The docs pages also
+    # depend on the installed groundhog version and are not reproducible across environments.
+    # Lines that differ only by an ISO date (the "generated" stamp) are ignored.
+    - name: Marketing pages are up to date
+      run: |
+        if ! git diff --exit-code -I'[0-9]{4}-[0-9]{2}-[0-9]{2}' -- \
+            website/index.html website/about.html website/download.html website/privacy.html website/404.html; then
+          echo "::error::Generated site pages are stale. Run 'python website/_build/build.py' and commit the result."
+          exit 1
+        fi

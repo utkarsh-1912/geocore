@@ -54,6 +54,12 @@ CANDIDATES: Dict[str, Candidate] = {c.key: c for c in [
     Candidate("qwen2.5-1.5b", "Qwen2.5 1.5B Instruct", "1.5B", "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
               "qwen2.5-1.5b-instruct-q4_k_m.gguf", 986, "Apache-2.0", "native <tool_call>",
               "Qwen/Qwen2.5-1.5B-Instruct", "qwen2.5", "Current GeoAI default and fine-tuning baseline."),
+    Candidate("qwen2.5-3b", "Qwen2.5 3B Instruct", "3B", "Qwen/Qwen2.5-3B-Instruct-GGUF",
+              "qwen2.5-3b-instruct-q4_k_m.gguf", 2040, "Qwen Research (non-commercial)", "native <tool_call>",
+              "Qwen/Qwen2.5-3B-Instruct", "qwen2.5", "Balanced speed/precision; non-commercial licence."),
+    Candidate("qwen2.5-7b", "Qwen2.5 7B Instruct", "7B", "bartowski/Qwen2.5-7B-Instruct-GGUF",
+              "Qwen2.5-7B-Instruct-Q4_K_M.gguf", 4466, "Apache-2.0", "native <tool_call>",
+              "Qwen/Qwen2.5-7B-Instruct", "qwen2.5", "Quality ceiling reference for the Qwen2.5 line."),
     Candidate("qwen3-1.7b", "Qwen3 1.7B", "1.7B", "unsloth/Qwen3-1.7B-GGUF",
               "Qwen3-1.7B-Q4_K_M.gguf", 1056, "Apache-2.0", "native <tool_call>",
               "Qwen/Qwen3-1.7B", "qwen3", "Hybrid thinking model; GeoAI sends /no_think."),
@@ -65,19 +71,23 @@ CANDIDATES: Dict[str, Candidate] = {c.key: c for c in [
               "Qwen/Qwen3-4B-Instruct-2507", "qwen3", "Non-thinking instruct release."),
     Candidate("qwen3-8b", "Qwen3 8B", "8B", "Qwen/Qwen3-8B-GGUF",
               "Qwen3-8B-Q4_K_M.gguf", 4795, "Apache-2.0", "native <tool_call>",
-              None, None, "Quality ceiling reference; too heavy to be the default."),
+              "Qwen/Qwen3-8B", "qwen3", "Quality ceiling reference; too heavy to be the default."),
     Candidate("phi-4-mini", "Phi-4-mini Instruct", "3.8B", "unsloth/Phi-4-mini-instruct-GGUF",
               "Phi-4-mini-instruct-Q4_K_M.gguf", 2376, "MIT", "<|tool_call|> JSON list",
-              None, None, "Trained for function calling; no fine-tuning preset yet."),
+              "microsoft/Phi-4-mini-instruct", "phi3", "Trained for function calling."),
     Candidate("smollm3-3b", "SmolLM3 3B", "3B", "ggml-org/SmolLM3-3B-GGUF",
               "SmolLM3-Q4_K_M.gguf", 1827, "Apache-2.0", "native <tool_call>",
-              None, None, "Hybrid thinking model; GeoAI sends /no_think."),
+              "HuggingFaceTB/SmolLM3-3B", "smollm3", "Hybrid thinking model; GeoAI sends /no_think."),
     Candidate("granite-4.1-3b", "Granite 4.1 (3B)", "3B", "ibm-granite/granite-4.1-3b-GGUF",
               "granite-4.1-3b-Q4_K_M.gguf", 2002, "Apache-2.0", "native <tool_call>",
-              None, None, "IBM enterprise model; 4.1 post-training upgrade over 4.0 Micro with enhanced tool calling."),
+              "ibm-granite/granite-4.1-3b", "granite",
+              "IBM enterprise model; 4.1 post-training upgrade over 4.0 Micro with enhanced tool calling."),
     Candidate("llama-3.2-3b", "Llama 3.2 3B Instruct", "3B", "bartowski/Llama-3.2-3B-Instruct-GGUF",
               "Llama-3.2-3B-Instruct-Q4_K_M.gguf", 1926, "Llama 3.2 Community", "bare JSON (name, parameters)",
-              None, None, "Custom licence with use restrictions."),
+              "meta-llama/Llama-3.2-3B-Instruct", "llama3", "Custom licence with use restrictions."),
+    Candidate("mistral-7b-instruct-v0.3", "Mistral 7B Instruct v0.3", "7B", "bartowski/Mistral-7B-Instruct-v0.3-GGUF",
+              "Mistral-7B-Instruct-v0.3-Q4_K_M.gguf", 4170, "Apache-2.0", "[TOOL_CALLS] JSON list",
+              "mistralai/Mistral-7B-Instruct-v0.3", "mistral", "Strong literature/standards synthesis."),
 ]}
 
 
@@ -358,7 +368,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.cmd == "list":
         for k, c in CANDIDATES.items():
             p = local_path(c)
-            print(f"{k:<20}{c.params:>6}{c.size_mb:>7} MB  {c.license:<20}{'downloaded' if p else '-':<12}{c.tool_format}")
+            print(f"{k:<26}{c.params:>6}{c.size_mb:>7} MB  {c.license:<32}{'downloaded' if p else '-':<12}{c.tool_format}")
         return 0
     if args.cmd == "download":
         download(args.models)

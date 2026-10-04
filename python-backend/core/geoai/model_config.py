@@ -109,6 +109,12 @@ class GeoAIModelConfig:
     # Env: GEOAI_DECISION_MAX_TOKENS / GEOAI_ANSWER_MAX_TOKENS.
     decision_max_tokens: int = 512
     answer_max_tokens: int = 1024
+    # When the local model writes prose after a successful tool call: "on_request" (only when the
+    # user asks to explain/interpret/compare; a plain calculation request is answered at once with
+    # the deterministic tool-result summary), "always", or "never". The write-up is a second full
+    # model pass (tens of seconds on a CPU) and small models misquote the numbers in it.
+    # Env: GEOAI_EXPLANATIONS.
+    explanations: str = "on_request"
     # Wall-clock limit for one model call (prompt processing + generation), in seconds. A call
     # past it is aborted so a stuck request can never hold the model forever. Env:
     # GEOAI_GENERATION_TIMEOUT_S. 0 = no limit.
@@ -208,6 +214,8 @@ def load_config() -> GeoAIModelConfig:
         config.disable_thinking = _env_disable_thinking()
     if "GEOAI_COMPACT_SCHEMAS" in os.environ:
         config.compact_tool_schemas = _env_compact_schemas()
+    if os.environ.get("GEOAI_EXPLANATIONS", "").strip().lower() in ("always", "on_request", "never"):
+        config.explanations = os.environ["GEOAI_EXPLANATIONS"].strip().lower()
     for env, attr in (("GEOAI_N_THREADS", "n_threads"), ("GEOAI_N_THREADS_BATCH", "n_threads_batch"),
                       ("GEOAI_N_BATCH", "n_batch"), ("GEOAI_DECISION_MAX_TOKENS", "decision_max_tokens"),
                       ("GEOAI_ANSWER_MAX_TOKENS", "answer_max_tokens"),

@@ -61,7 +61,8 @@ its sha256, so you can check that it matches the desktop copy (`core/geoai/train
   in the EC2 console (search "Deep Learning Base OSS Nvidia Driver GPU AMI Ubuntu 24.04"), or from the
   public SSM parameter `/aws/service/deeplearning/ami/x86_64/base-oss-nvidia-driver-gpu-ubuntu-24.04/latest/ami-id`.
 * **Storage**: a 100 GB gp3 root volume. You need about 3.5 GB for the CUDA wheel and its install,
-  about 22 GB for all ten candidate GGUFs, about 3 GB for the venv, and room for the AMI itself.
+  about 29 GB for all twelve candidate GGUFs (`python -m core.geoai.eval.benchmark list`, or sum
+  `size_mb` in `CANDIDATES`), about 3 GB for the venv, and room for the AMI itself.
   `compact-ab`/`lora`/`full-test` alone fit easily, and so does `models`.
 * **Security group**: inbound **SSH (22) from My IP only**, with nothing else open. Use an EC2 key
   pair (`.pem`). No AWS credentials go on the box; the script never calls AWS. It only reads the
@@ -146,7 +147,7 @@ few thousand prompt tok/s and about 100 generated tok/s, which is about 1-5 s pe
 | `compact-ab` (2 x 40) | 5-10 min | ~$0.05-0.10 |
 | `full-test` (325 + heuristic) | 10-20 min | ~$0.10-0.20 |
 | `lora` (2 x 325) | 20-40 min | ~$0.20-0.35 |
-| `models` (10 models x 40, ~22 GB of downloads; 4B/8B models are slower) | 30-60 min | ~$0.25-0.55 |
+| `models` (12 models x 40, ~29 GB of downloads; 4B/7B/8B models are slower) | 30-70 min | ~$0.25-0.65 |
 | everything, including setup and idle time | ~2-3 h | ~$1-2 |
 
 The credit covers about 230 g4dn.xlarge hours, so the real risk is leaving the instance running: that

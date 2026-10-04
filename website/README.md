@@ -13,7 +13,7 @@ python-backend/venv/Scripts/python.exe website/_build/build.py    # Windows
 python-backend/venv/bin/python website/_build/build.py            # macOS/Linux
 ```
 
-Only Jinja2 is required (already in `python-backend/requirements.txt`). Re-run the build after editing
+Needs `jinja2`, `markdown` and `pyyaml` (CI installs just these; `markdown` is not in `python-backend/requirements.txt`, so `pip install markdown` if it is missing). CI rebuilds the site and fails if the marketing pages (`index`, `about`, `download`, `privacy`, `404`) differ from what is committed, so commit the regenerated HTML. Re-run the build after editing
 anything in `_templates/`, `_data/` or `assets/` (asset URLs carry a content hash, `?v=…`, for caching).
 
 Preview locally:

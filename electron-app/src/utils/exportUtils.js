@@ -147,7 +147,7 @@ export const downloadCSV = (data, filename) => {
 const PRIMARY_COLOR = [106, 142, 78]; // Brand Primary Blue
 const SECONDARY_COLOR = [44, 62, 80]; // Dark Navy for contrast
 
-export const generatePDF = async (results, inputs, functionName, filename, capturedImage = null, schema = null) => {
+export const generatePDF = async (results, inputs, functionName, filename, capturedImage = null, schema = null, explanation = null) => {
     console.log("generatePDF: Starting for", functionName);
     const { default: jsPDF } = await import('jspdf');
     const { default: autoTable } = await import('jspdf-autotable');
@@ -213,6 +213,43 @@ export const generatePDF = async (results, inputs, functionName, filename, captu
     doc.text(functionName, 14 + labelWidth, headerY + 10);
 
     let finalY = headerY + 22;
+
+    // 2b. Method & Standard (from groundhog's own TOOL_METADATA/docstring — see
+    // core/geoai/calculation_explainer.py; never fabricated, omitted entirely if unavailable)
+    if (explanation && (explanation.method || explanation.standard)) {
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor(...SECONDARY_COLOR);
+        if (explanation.method) {
+            doc.text("Method: ", 14, finalY);
+            const methodLabelWidth = doc.getTextWidth("Method: ");
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(0);
+            const methodLines = doc.splitTextToSize(explanation.method, pageWidth - 28 - methodLabelWidth);
+            doc.text(methodLines, 14 + methodLabelWidth, finalY);
+            finalY += methodLines.length * 4.5;
+        }
+        if (explanation.standard) {
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(...SECONDARY_COLOR);
+            doc.text("Standard: ", 14, finalY + 4);
+            const standardLabelWidth = doc.getTextWidth("Standard: ");
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(0);
+            doc.text(explanation.standard, 14 + standardLabelWidth, finalY + 4);
+            finalY += 4;
+        }
+        if (explanation.assumptions && explanation.assumptions.length > 0) {
+            doc.setFontSize(8);
+            doc.setTextColor(100);
+            const assumptionsText = "Assumptions: " + explanation.assumptions.join("; ");
+            const assumptionLines = doc.splitTextToSize(assumptionsText, pageWidth - 28);
+            doc.text(assumptionLines, 14, finalY + 8);
+            finalY += 8 + assumptionLines.length * 4;
+        }
+        doc.setTextColor(0);
+        finalY += 10;
+    }
 
     // 3. Inputs Section
     if (inputs && Object.keys(inputs).length > 0) {

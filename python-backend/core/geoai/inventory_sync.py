@@ -126,6 +126,34 @@ def sync_inventory(function_map: Dict[str, Any], inventory: List[Dict[str, Any]]
     return stats
 
 
+_FIELD_BOUNDS: Optional[Dict[str, Dict[str, Dict[str, Any]]]] = None
+
+
+def field_bounds() -> Dict[str, Dict[str, Dict[str, Any]]]:
+    """``{function_id: {parameter: {"min", "max", "unit"}}}`` for numeric parameters that have a
+    bound (None = open side), read from the inventory. Cached; the file is static at run time."""
+    global _FIELD_BOUNDS
+    if _FIELD_BOUNDS is None:
+        with open(INVENTORY_PATH, "r", encoding="utf-8") as f:
+            rows = json.load(f)
+        out: Dict[str, Dict[str, Dict[str, Any]]] = {}
+        for row in rows:
+            if row.get("python_type") not in ("int", "float"):
+                continue
+            lo, hi = row.get("min_value"), row.get("max_value")
+            if lo in ("", None) and hi in ("", None):
+                continue
+            unit = row.get("display_unit")
+            out.setdefault(row["function_id"], {})[row["parameter_name"]] = {
+                "min": None if lo in ("", None) else float(lo),
+                "max": None if hi in ("", None) else float(hi),
+                "unit": None if unit in ("", "-", None) else unit,
+                "integer": row["python_type"] == "int",
+            }
+        _FIELD_BOUNDS = out
+    return _FIELD_BOUNDS
+
+
 def main() -> int:
     from core.registry import registry
 

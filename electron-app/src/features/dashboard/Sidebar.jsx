@@ -7,7 +7,9 @@ import React, { useState } from 'react';
 import { Activity, ChevronRight } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { getCategoryIcon } from '../../config/categoryIcons';
-import logoFull from '../../assets/logo-2.png';
+import logoLight from '../../assets/logo-2.png';
+import logoDark from '../../assets/logo.png';
+import { useTheme } from '../../context/ThemeContext';
 import logoIcon from '../../assets/logoIcon.png';
 import { IS_MAC } from '../../utils/platform';
 
@@ -65,6 +67,8 @@ export const Sidebar = ({
     isGeoAIActive
 }) => {
     const [tip, setTip] = useState(null);
+    const { isDarkMode } = useTheme();
+    const logoFull = isDarkMode ? logoDark : logoLight;
 
     const statusStyle = backendStatus === 'online'
         ? { text: 'text-success', dot: 'bg-success', label: 'Engine ready' }

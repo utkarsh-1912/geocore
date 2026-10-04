@@ -110,7 +110,8 @@ def check_template(tokenizer: Any, cfg: FinetuneConfig, example: Dict[str, Any])
     if tool_names and not any(n in text.split(cfg.preset.response_part)[0] for n in tool_names):
         raise RuntimeError(
             f"The chat template of '{cfg.base_model}' did not render the `tools` list. Family '{cfg.family}' "
-            f"cannot be trained with chat_template='native'; pick a tool-capable base (Qwen2.5/Qwen3/Qwen3.5) "
+            f"cannot be trained with chat_template='native'; pick a tool-capable base (any FAMILY_PRESETS entry "
+            f"with template_supports_tools=True, e.g. Qwen2.5/Qwen3/Qwen3.5/Phi-3/Granite/SmolLM3/Llama3/Mistral) "
             f"or add an explicit tool format first.")
     for part in (cfg.preset.instruction_part, cfg.preset.response_part):
         if part not in text:

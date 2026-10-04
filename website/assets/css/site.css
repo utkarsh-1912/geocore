@@ -383,7 +383,15 @@ main { flex: 1 0 auto; }
   white-space: nowrap;
 }
 .brand:hover { color: var(--c-text); }
-.brand img { width: 30px; height: 30px; border-radius: 50%; }
+.brand img { width: auto; height: 30px; }
+.brand__logo--dark { display: none; }
+:root[data-theme="dark"] .brand__logo--light { display: none; }
+:root[data-theme="dark"] .brand__logo--dark { display: inline-block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand__logo--light { display: none; }
+  :root:not([data-theme="light"]) .brand__logo--dark { display: inline-block; }
+}
+.footer-grid .brand img { height: 26px; }
 
 .nav { display: none; }
 .nav ul { display: flex; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }

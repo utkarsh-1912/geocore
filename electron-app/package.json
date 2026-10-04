@@ -70,6 +70,7 @@
       "createStartMenuShortcut": true,
       "shortcutName": "GeoCore",
       "include": "installer/installer.nsh",
+      "license": "installer/license.txt",
       "installerSidebar": "installer/installerSidebar.bmp",
       "uninstallerSidebar": "installer/uninstallerSidebar.bmp",
       "installerHeader": "installer/installerHeader.bmp"

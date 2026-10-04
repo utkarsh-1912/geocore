@@ -52,3 +52,9 @@ def _allow_cpt_soilprofile():
     SoilProfile.check_profile = _lenient_check
     yield
     SoilProfile.check_profile = _original
+
+
+@pytest.fixture(autouse=True)
+def _geoai_model_explanations_always(monkeypatch):
+    """Existing agent tests cover the model's write-up round; the default skips it for plain calculations."""
+    monkeypatch.setenv("GEOAI_EXPLANATIONS", "always")

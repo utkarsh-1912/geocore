@@ -55,6 +55,26 @@ def test_other_profiles_still_work():
     assert PROFILES["qwen3-1.7b"]["target_gguf_fingerprint"]["block_count"] == 28
 
 
+def test_non_qwen_families_have_a_working_profile():
+    # The point of this test: fine-tuning is not Qwen-only. One profile per non-Qwen family
+    # already offered in model_downloader.RECOMMENDED_MODELS / eval.benchmark.CANDIDATES.
+    expected = {
+        "phi-4-mini-instruct": "phi3",
+        "granite-4.1-3b": "granite",
+        "smollm3-3b": "smollm3",
+        "llama-3.2-3b-instruct": "llama3",
+        "mistral-7b-instruct-v0.3": "mistral",
+    }
+    for profile_name, family in expected.items():
+        cfg = FinetuneConfig.from_profile(profile_name).validate()
+        assert cfg.family == family
+        assert cfg.preset.template_supports_tools is True
+        assert cfg.target_gguf_fingerprint["architecture"] == cfg.preset.llama_cpp_arch
+        # every profile's loss-masking markers must be non-empty and distinct
+        assert cfg.preset.instruction_part and cfg.preset.response_part
+        assert cfg.preset.instruction_part != cfg.preset.response_part
+
+
 def _args(*argv):
     ap = argparse.ArgumentParser()
     add_config_args(ap)

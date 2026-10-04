@@ -30,10 +30,23 @@ A profile is the model identity of one run: what Unsloth loads, the HF reference
 the thinking switch and the exact base GGUF the desktop runs (repo, file, sha256, header fingerprint),
 which `export.py` writes into the adapter sidecar. Default: **`qwen3-1.7b`** (best interim CPU benchmark).
 
+One profile per model in `model_downloader.RECOMMENDED_MODELS` / `eval.benchmark.CANDIDATES` — not just
+the Qwen family:
+
 | profile | Unsloth loads | HF id | target GGUF |
 |---|---|---|---|
 | `qwen3-1.7b` (default) | `unsloth/Qwen3-1.7B` (QLoRA -> `unsloth/Qwen3-1.7B-unsloth-bnb-4bit`) | `Qwen/Qwen3-1.7B` | `unsloth/Qwen3-1.7B-GGUF` / `Qwen3-1.7B-Q4_K_M.gguf` (sha256 `b139949c...1897`) |
 | `qwen2.5-1.5b` | `unsloth/Qwen2.5-1.5B-Instruct` | `Qwen/Qwen2.5-1.5B-Instruct` | `Qwen/Qwen2.5-1.5B-Instruct-GGUF` / `qwen2.5-1.5b-instruct-q4_k_m.gguf` |
+| `qwen2.5-3b-instruct` | `unsloth/Qwen2.5-3B-Instruct` | `Qwen/Qwen2.5-3B-Instruct` | `Qwen/Qwen2.5-3B-Instruct-GGUF` / `qwen2.5-3b-instruct-q4_k_m.gguf` |
+| `qwen2.5-7b-instruct` | `unsloth/Qwen2.5-7B-Instruct` | `Qwen/Qwen2.5-7B-Instruct` | `bartowski/Qwen2.5-7B-Instruct-GGUF` / `Qwen2.5-7B-Instruct-Q4_K_M.gguf` |
+| `qwen3.5-2b` | `unsloth/Qwen3.5-2B` (16-bit LoRA) | `Qwen/Qwen3.5-2B` | `unsloth/Qwen3.5-2B-GGUF` / `Qwen3.5-2B-Q4_K_M.gguf` |
+| `qwen3-4b-instruct-2507` | `unsloth/Qwen3-4B-Instruct-2507` | `Qwen/Qwen3-4B-Instruct-2507` | `unsloth/Qwen3-4B-Instruct-2507-GGUF` / `Qwen3-4B-Instruct-2507-Q4_K_M.gguf` |
+| `qwen3-8b` | `unsloth/Qwen3-8B` | `Qwen/Qwen3-8B` | `Qwen/Qwen3-8B-GGUF` / `Qwen3-8B-Q4_K_M.gguf` |
+| `phi-4-mini-instruct` | `unsloth/Phi-4-mini-instruct` | `microsoft/Phi-4-mini-instruct` | `unsloth/Phi-4-mini-instruct-GGUF` / `Phi-4-mini-instruct-Q4_K_M.gguf` |
+| `granite-4.1-3b` | `unsloth/granite-4.1-3b` | `ibm-granite/granite-4.1-3b` | `ibm-granite/granite-4.1-3b-GGUF` / `granite-4.1-3b-Q4_K_M.gguf` |
+| `smollm3-3b` | `unsloth/SmolLM3-3B` | `HuggingFaceTB/SmolLM3-3B` | `ggml-org/SmolLM3-3B-GGUF` / `SmolLM3-Q4_K_M.gguf` |
+| `llama-3.2-3b-instruct` | `unsloth/Llama-3.2-3B-Instruct` | `meta-llama/Llama-3.2-3B-Instruct` | `bartowski/Llama-3.2-3B-Instruct-GGUF` / `Llama-3.2-3B-Instruct-Q4_K_M.gguf` |
+| `mistral-7b-instruct-v0.3` | `unsloth/mistral-7b-instruct-v0.3` | `mistralai/Mistral-7B-Instruct-v0.3` | `bartowski/Mistral-7B-Instruct-v0.3-GGUF` / `Mistral-7B-Instruct-v0.3-Q4_K_M.gguf` |
 
 Select with `--profile NAME`; add a new candidate by adding an entry to `PROFILES` in `config.py` (no model
 names anywhere else). Passing `--base-model/--base-model-id/--family` that differ from the profile drops its
@@ -77,10 +90,13 @@ printed by the dry-runs and training and stored in `geoai_run.json`. Disable wit
 
 * **Base model is configurable** (profiles, or `base_model`, `base_model_id`, `family`). Family presets:
   `qwen2.5` (QLoRA), `qwen3` (QLoRA, `enable_thinking=False`), `qwen3.5` (16-bit LoRA as Unsloth recommends),
-  `gemma3` (Gemma 3's template has no tool section: `sft.py` refuses it until a tool format is added).
-  The adapter must be trained on the same model as the desktop base GGUF.
+  `phi3` (Phi-4-mini), `granite` (Granite 4.1), `smollm3` (ChatML, `enable_thinking=False`), `llama3`
+  (Llama 3.2), `mistral` (no per-turn role tag, just `[INST]`/`[/INST]`), `gemma3` (Gemma 3's template has
+  no tool section: `sft.py` refuses it until a tool format is added). The adapter must be trained on the
+  same model as the desktop base GGUF.
 * **Chat format**: rows are rendered with the model's own template including `tools`
-  (`tokenizer.apply_chat_template(messages, tools=...)`); Qwen emits `<tool_call>{json}</tool_call>`.
+  (`tokenizer.apply_chat_template(messages, tools=...)`); Qwen/SmolLM3/Granite emit
+  `<tool_call>{json}</tool_call>`, Mistral emits `[TOOL_CALLS][{json}]`, Llama 3.x a bare JSON object.
   Multi-step project trajectories (user -> call -> result -> call -> result -> answer) keep every tool they
   call offered; project context stays in the system prompt (`### CURRENT CONTEXT`).
   The desktop provider must therefore use the GGUF's own template: `chat_format="native"`

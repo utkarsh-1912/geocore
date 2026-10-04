@@ -7,6 +7,7 @@ This module provides the main orchestration loop that connects the SLM
 
 import json
 import logging
+import re
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
@@ -148,6 +149,26 @@ def _result_summary(tools_used: List[Dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+_EXPLAIN_REQUEST_RE = re.compile(
+    r"\b(explain|why|interpret\w*|what (?:does|do|is|are)|meaning|means?|mean|discuss|compare|comment|"
+    r"describe|recommend\w*|suggest\w*|summari[sz]e|implications?|reason|how (?:does|do|should|can))\b",
+    re.IGNORECASE)
+
+
+def _wants_model_explanation(mode: str, user_message: str, tools_used: List[Dict[str, Any]]) -> bool:
+    """
+    Whether the local model should write prose after the tool calls. A plain "calculate X"
+    request whose tools all succeeded is answered from the deterministic result summary;
+    failures always go to the model so it can explain them and ask for what is missing.
+    """
+    if mode == "always":
+        return True
+    failed = any((t.get("result") or {}).get("status") != "success" for t in tools_used)
+    if failed:
+        return mode != "never"
+    return mode != "never" and bool(_EXPLAIN_REQUEST_RE.search(user_message or ""))
+
+
 def _tool_selection_query(user_message: str, history: Optional[List[Dict[str, Any]]]) -> str:
     """Follow-ups ("explain the calculation") carry no keywords; borrow the last user turn's."""
     for item in reversed(history or []):
@@ -239,6 +260,7 @@ class GeoAIAgent:
         # written after tool results. They bound runaway generations (p95 latency).
         self._decision_max_tokens = config.decision_max_tokens
         self._answer_max_tokens = config.answer_max_tokens
+        self._explanations = getattr(config, "explanations", "on_request")
         self._max_tools = max_tools
         # Compact model-facing schemas (validation still uses the full schema, see tool_selector).
         self._compact_tool_schemas = bool(getattr(config, "compact_tool_schemas", False))
@@ -456,6 +478,11 @@ class GeoAIAgent:
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
                 
+            if not _wants_model_explanation(self._explanations, user_message, tools_used):
+                yield AgentStreamEvent(type='token', content=_result_summary(tools_used))
+                yield AgentStreamEvent(type='done')
+                return
+
             # Explanation round: stream the prose, released sentence by sentence through the
             # same guards clean_answer applies (repeats, echoed records, result units). The
             # offered tools stay in the prompt so the provider can reuse its prompt cache.

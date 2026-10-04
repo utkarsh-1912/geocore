@@ -523,8 +523,17 @@ const MainLayout = () => {
           }
         }
 
+        // Method/standard/assumptions for the report header — grounded in groundhog's own
+        // TOOL_METADATA and docstring, never fabricated. Never block the export if this fails.
+        let explanation = null;
+        try {
+          explanation = await api.geoaiExplain(activeFunction.id, calculationInputs, displayData);
+        } catch (explainErr) {
+          console.warn("PDF Export: could not fetch method/standard explanation", explainErr);
+        }
+
         console.log("PDF Export: Calling generatePDF...");
-        await generatePDF(calculationResults, calculationInputs, activeFunction.title, filename, capturedImage, currentSchema);
+        await generatePDF(calculationResults, calculationInputs, activeFunction.title, filename, capturedImage, currentSchema, explanation);
         console.log("PDF Export: generatePDF completed");
         toast.success('PDF Report generated successfully', { id: toastId });
       } else if (type === 'csv') {

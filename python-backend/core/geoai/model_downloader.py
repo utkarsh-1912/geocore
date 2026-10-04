@@ -76,7 +76,9 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "display_name": "Qwen 2.5 (3B Instruct)",
         "repo_id": "Qwen/Qwen2.5-3B-Instruct-GGUF",
         "filename": "qwen2.5-3b-instruct-q4_k_m.gguf",
-        "size_mb": 2040,
+        "size_mb": 2008,
+        "size_bytes": 2104932768,
+        "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d",
         "description": "Balanced (3B) with superior multi-turn geotechnical reasoning and complex parameter extraction",
         "recommended_for": "Engineering workstations requiring balanced speed and deep tool precision"
     },
@@ -174,6 +176,7 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "filename": "Mistral-7B-Instruct-v0.3-Q4_K_M.gguf",
         "size_mb": 4170,
         "size_bytes": 4372812000,
+        "sha256": "1270d22c0fbb3d092fb725d4d96c457b7b687a5f5a715abe1e818da303e562b6",
         "description": "Mistral 7B Instruct v0.3 with native [TOOL_CALLS] function calling; strong literature & standards synthesis",
         "recommended_for": "Research workstations with 8 GB+ RAM; tool-calling replacement for the old Gemma 2 research tier"
     }

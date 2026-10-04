@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="/assets/css/site.css?v=65cd5360db">
+  <link rel="stylesheet" href="/assets/css/site.css?v=c1b51071c3">
 </head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -23,8 +23,8 @@
   <header class="site-header">
     <div class="container site-header__inner">
       <a class="brand" href="/" aria-label="GeoCore home">
-        <img src="/assets/images/logo-icon-64.png" alt="" width="30" height="30">
-        <span>GeoCore</span>
+        <img class="brand__logo brand__logo--light" src="/assets/images/logo-2.png" alt="GeoCore" width="150" height="31">
+        <img class="brand__logo brand__logo--dark" src="/assets/images/logo.png" alt="" width="150" height="31">
       </a>
       <nav class="nav" aria-label="Main">
         <ul>
@@ -918,6 +918,22 @@
 <td>Current GeoAI default and fine-tuning baseline.</td>
 </tr>
 <tr>
+<td><a href="https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF">Qwen2.5 3B Instruct</a></td>
+<td>3B</td>
+<td>~2.0 GB</td>
+<td>Qwen Research (non-commercial)</td>
+<td>native &lt;tool_call&gt;</td>
+<td>Balanced speed/precision; non-commercial licence.</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF">Qwen2.5 7B Instruct</a></td>
+<td>7B</td>
+<td>~4.4 GB</td>
+<td>Apache-2.0</td>
+<td>native &lt;tool_call&gt;</td>
+<td>Quality ceiling reference for the Qwen2.5 line.</td>
+</tr>
+<tr>
 <td><a href="https://huggingface.co/unsloth/Qwen3-1.7B-GGUF">Qwen3 1.7B</a></td>
 <td>1.7B</td>
 <td>~1.0 GB</td>
@@ -955,7 +971,7 @@
 <td>~2.3 GB</td>
 <td>MIT</td>
 <td>&lt;|tool_call|&gt; JSON list</td>
-<td>Trained for function calling; no fine-tuning preset yet.</td>
+<td>Trained for function calling.</td>
 </tr>
 <tr>
 <td><a href="https://huggingface.co/ggml-org/SmolLM3-3B-GGUF">SmolLM3 3B</a></td>
@@ -980,6 +996,14 @@
 <td>Llama 3.2 Community</td>
 <td>bare JSON (name, parameters)</td>
 <td>Custom licence with use restrictions.</td>
+</tr>
+<tr>
+<td><a href="https://huggingface.co/bartowski/Mistral-7B-Instruct-v0.3-GGUF">Mistral 7B Instruct v0.3</a></td>
+<td>7B</td>
+<td>~4.1 GB</td>
+<td>Apache-2.0</td>
+<td>[TOOL_CALLS] JSON list</td>
+<td>Strong literature/standards synthesis.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1105,8 +1129,8 @@ python<span class="w"> </span>-m<span class="w"> </span>core.geoai.eval.benchmar
       <div class="footer-grid">
         <div class="footer-about">
           <a class="brand" href="/">
-            <img src="/assets/images/logo-icon-64.png" alt="" width="26" height="26" loading="lazy">
-            <span>GeoCore</span>
+            <img class="brand__logo brand__logo--light" src="/assets/images/logo-2.png" alt="GeoCore" width="150" height="31" loading="lazy">
+        <img class="brand__logo brand__logo--dark" src="/assets/images/logo.png" alt="" width="150" height="31" loading="lazy">
           </a>
           <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
         </div>

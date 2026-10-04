@@ -84,6 +84,34 @@ export const api = {
         return results;
     },
 
+    // Groundhog's validated min/max per {function: {parameter}}; static for the app's lifetime.
+    getFieldBounds: async () => {
+        const response = await fetchWithTimeout('/api/schema/bounds', { timeout: 10000 });
+        return handleResponse(response);
+    },
+
+    // Audit trail of every calculation run through /api/execute (any calculator, not just GeoAI chat).
+    getCalculationHistory: async (limit = 50) => {
+        const response = await fetchWithTimeout(`/api/calculation-history?limit=${limit}`, { timeout: 5000 });
+        return handleResponse(response);
+    },
+
+    clearCalculationHistory: async () => {
+        const response = await fetchWithTimeout('/api/calculation-history', { method: 'DELETE', timeout: 5000 });
+        return handleResponse(response);
+    },
+
+    // Mark (or unmark) one audit-trail entry as checked. note is optional.
+    reviewCalculationHistoryEntry: async (entryId, reviewed = true, note = undefined) => {
+        const response = await fetchWithTimeout(`/api/calculation-history/${entryId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reviewed, note }),
+            timeout: 5000
+        });
+        return handleResponse(response);
+    },
+
     // GeoAI
     geoaiChat: async (prompt, context, history = []) => {
         const response = await fetchWithTimeout('/api/geoai/chat', {

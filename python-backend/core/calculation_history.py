@@ -55,6 +55,12 @@ def record_calculation(function_id: str, args: Optional[Dict[str, Any]], result:
             "function_id": function_id,
             "inputs": _compact_result(args or {}),
             "outputs": _compact_result(result or {}),
+            # Sign-off: a calculation stays "unreviewed" until someone explicitly marks it
+            # checked (see mark_reviewed). Single-user app: this records that a check happened
+            # and when, not who — there's no second account to attribute it to.
+            "reviewed": False,
+            "reviewed_at": None,
+            "reviewed_note": None,
         }
         history = list(state_manager.get_project_setting(SETTING_KEY, []))
         history.append(entry)
@@ -77,3 +83,17 @@ def list_calculation_history(limit: Optional[int] = 50) -> List[Dict[str, Any]]:
 def clear_calculation_history() -> None:
     from core.state import state_manager
     state_manager.set_project_setting(SETTING_KEY, None)
+
+
+def mark_reviewed(entry_id: str, reviewed: bool = True, note: Optional[str] = None) -> bool:
+    """Marks (or unmarks) one entry as checked. Returns False when ``entry_id`` doesn't exist."""
+    from core.state import state_manager
+    history = list(state_manager.get_project_setting(SETTING_KEY, []))
+    for entry in history:
+        if entry.get("id") == entry_id:
+            entry["reviewed"] = reviewed
+            entry["reviewed_at"] = datetime.now(timezone.utc).isoformat() if reviewed else None
+            entry["reviewed_note"] = note if reviewed else None
+            state_manager.set_project_setting(SETTING_KEY, history)
+            return True
+    return False

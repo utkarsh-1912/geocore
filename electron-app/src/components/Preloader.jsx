@@ -5,9 +5,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import logoFull from '../assets/logo-2.png';
+import logoLight from '../assets/logo-2.png';
+import logoDark from '../assets/logo.png';
+import { useTheme } from '../context/ThemeContext';
 
 export const Preloader = ({ status = "Initializing..." }) => {
+    const { isDarkMode } = useTheme();
+    const logoFull = isDarkMode ? logoDark : logoLight;
     return (
         <motion.div
             initial={{ opacity: 1 }}

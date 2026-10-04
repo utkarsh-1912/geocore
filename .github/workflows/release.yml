@@ -16,9 +16,31 @@ permissions:
   contents: write
 
 jobs:
+  # Never publish installers from a commit whose tests, frontend build or site build fail.
+  checks:
+    name: Checks
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
+  verify-version:
+    name: Verify version matches tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      # Manual runs (workflow_dispatch) are checked against the tag typed into the form.
+      - name: Compare tag with package.json, main.py and diagnostics.py
+        run: python .github/scripts/check_version.py "${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}"
+
   build-release:
     name: Build (${{ matrix.os }})
+    needs: [checks, verify-version]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -85,6 +107,15 @@ jobs:
         run: |
           cd python-backend
           pyinstaller --clean main.spec
+
+      # Start the frozen backend and require a ready engine with registered functions and GeoAI
+      # tools. Catches missing hidden imports / native libraries before they reach users.
+      - name: Smoke-test Frozen Backend
+        shell: bash
+        run: |
+          BIN=python-backend/dist/main/main
+          if [ "${{ matrix.platform }}" = "win" ]; then BIN="$BIN.exe"; fi
+          python python-backend/smoke_test_frozen.py "$BIN" --timeout 240
 
       - name: Ad-hoc Sign Python Binary (macOS)
         if: matrix.os == 'macos-latest'

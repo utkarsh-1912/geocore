@@ -42,6 +42,12 @@ git tag -a v1.0.0 -m "Release version 1.0.0"
 git push origin main --tags
 ```
 
+### What the release workflow checks before publishing
+Installers are only built if all of these pass; a failure stops the release:
+1. **CI checks** (the same `ci.yml` jobs): backend tests, frontend build, site build and marketing-page freshness.
+2. **Version match**: the tag must equal the version in `electron-app/package.json`, `python-backend/main.py` and `python-backend/core/diagnostics.py` (`.github/scripts/check_version.py`).
+3. **Frozen-backend smoke test** on each platform, right after PyInstaller: the packaged backend must start and report a ready engine with calculations and GeoAI tools registered (`python-backend/smoke_test_frozen.py`; run it locally with `python smoke_test_frozen.py dist/main/main.exe` while nothing else uses port 8000).
+
 ### Step 3: Automated Build Verification
 1. Navigate to your repository on GitHub: `https://github.com/utkarsh-1912/geocore/actions`
 2. Select the **Build & Release GeoCore** workflow.

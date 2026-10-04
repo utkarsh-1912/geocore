@@ -54,6 +54,15 @@ def create_dynamic_router():
         clear_calculation_history()
         return {"status": "cleared"}
 
+    @router.patch("/calculation-history/{entry_id}")
+    def review_calculation_history_entry(entry_id: str, payload: dict = Body(default={})):
+        """Mark (or unmark) one history entry as checked. Body: {"reviewed": bool, "note": str?}."""
+        from core.calculation_history import mark_reviewed
+        found = mark_reviewed(entry_id, reviewed=payload.get("reviewed", True), note=payload.get("note"))
+        if not found:
+            raise HTTPException(status_code=404, detail=f"No calculation history entry '{entry_id}'.")
+        return {"status": "ok"}
+
     @router.get("/objects/{type_name}")
     def list_objects(type_name: str):
         from .state import state_manager
@@ -125,6 +134,13 @@ def create_dynamic_router():
         if result.get("status") == "ValidationError":
             raise HTTPException(status_code=422, detail=result)
         return result
+
+    @router.get("/schema/bounds")
+    def get_field_bounds():
+        """Groundhog's validated min/max (and display unit) per function parameter, so the forms
+        can flag out-of-range inputs while typing instead of after the calculation runs."""
+        from .geoai.inventory_sync import field_bounds
+        return field_bounds()
 
     @router.get("/schema/overrides")
     def get_overrides():
