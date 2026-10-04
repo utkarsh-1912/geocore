@@ -81,6 +81,11 @@
       <figcaption id="hero-figure-caption">Illustration of a CPT interpretation — not a screenshot or real project data.</figcaption>
     </figure>
   </div>
+  <div class="container">
+    <ul class="lp-tech" aria-label="Built with">
+      <li>Groundhog {{ groundhog_version }}</li><li>llama.cpp</li><li>GGUF models</li><li>Plotly</li><li>AGS 3.1 / 4</li><li>Electron</li>
+    </ul>
+  </div>
 </section>
 
 <div class="container stats-wrap">
@@ -129,6 +134,7 @@
       <p>GeoCore exposes {{ fn_total }} Groundhog {{ groundhog_version }} functions and classes, grouped the way Groundhog groups them. Each one gets a form with units and validation, results you can plot, and an export.</p>
     </div>
     {% set max_count = (domains|max(attribute='count')).count %}
+    <div class="lp-split">
     <div class="bar-chart" aria-hidden="true">
       <p class="bar-chart__title">Functions by area</p>
       {% for d in domains|sort(attribute='count', reverse=True) %}
@@ -142,7 +148,7 @@
       </div>
       {% endfor %}
     </div>
-    <div class="grid grid--3">
+    <div class="grid lp-domains">
       {% for d in domains %}
       <article class="card domain-card" id="domain-{{ d.key }}">
         <div class="card__head">
@@ -157,6 +163,7 @@
       </article>
       {% endfor %}
     </div>
+    </div>
     <p class="domain-total">
       <strong>{{ fn_total }}</strong>
       <span>functions and classes in total, counted from GeoCore’s calculation registry. Method details and references are in the <a href="https://groundhog.readthedocs.io/">Groundhog documentation</a>.</span>
@@ -170,7 +177,7 @@
       <p class="eyebrow">{{ icon('sliders') }}Workflow</p>
       <h2 id="workflow-title">From input to report without leaving the app</h2>
     </div>
-    <div class="grid grid--2">
+    <div class="grid grid--2 lp-steps">
       <div class="feature">
         <span class="card__icon">{{ icon('sliders') }}</span>
         <div><h3>Validated input forms</h3><p>Parameters come with units, defaults and range checks. Invalid values are caught before a calculation runs, and labels can be adjusted with schema overrides.</p></div>
@@ -199,7 +206,7 @@
   </div>
 </section>
 
-<section class="section" id="geoai" aria-labelledby="geoai-title">
+<section class="section lp-dark" id="geoai" aria-labelledby="geoai-title">
   <div class="container geoai">
     <div class="geoai-emblem reveal" aria-hidden="true">
       <svg class="geoai-emblem__svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -239,6 +246,12 @@
       <div class="callout callout--info">
         {{ icon('info') }}
         <p>GeoAI is under active development. Treat its answers as a starting point for engineering judgement, not a substitute for it.</p>
+      </div>
+      <div class="lp-chat" aria-label="Example GeoAI exchange">
+        <div class="lp-chat__bar"><i></i><i></i><i></i><span>GeoAI · local model</span></div>
+        <p class="lp-chat__msg lp-chat__msg--user">Calculate the bearing capacity for the current profile.</p>
+        <p class="lp-chat__tool">{{ icon('calculator') }}<span>Groundhog · schema check</span><b>2 inputs missing</b></p>
+        <p class="lp-chat__msg">The profile provides soil parameters, but I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
       </div>
     </div>
     <ol class="flow" aria-label="How a GeoAI request is handled — select a step to inspect it">
