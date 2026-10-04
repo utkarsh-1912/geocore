@@ -123,8 +123,9 @@ def convert_column_value(raw: Any, column: str, expected_unit: str) -> Tuple[Opt
 
 def load_project_context() -> Any:
     """The current project: the active GeoAI project context, else the saved workspace soil profiles."""
-    from core.geoai.data_access import ProjectContext, active_project_context
+    from core.geoai.data_access import ProjectContext, active_project_context, recorded_groundwater_depth
     if active_project_context.list_profile_names():
+        active_project_context.water_table_depth = recorded_groundwater_depth()
         return active_project_context
     return ProjectContext.from_state_manager()
 
@@ -153,6 +154,8 @@ class ProjectSoil:
         except Exception as exc:  # the project is optional: report, never fail the tool here
             self.unavailable_reason = f"the current project could not be read ({exc})"
             return
+        # The recorded groundwater level is project-wide: usable even without a soil profile.
+        self.project_water_table = getattr(ctx, "water_table_depth", None)
         names = list(ctx.list_profile_names()) if ctx is not None else []
         if not names:
             self.unavailable_reason = "no soil profile is loaded in the current project"
@@ -163,7 +166,6 @@ class ProjectSoil:
             return
         self.name = self._profile_name or names[0]
         self.other_profiles = [n for n in names if n != self.name]
-        self.project_water_table = getattr(ctx, "water_table_depth", None)
         try:
             accessor = ctx.get_profile(self.name)
             self.layers = accessor.get_stratigraphy_summary()
@@ -268,9 +270,15 @@ class ProjectSoil:
         return ResolvedValue(value, unit, source), ""
 
     def groundwater_depth(self) -> Tuple[Optional[ResolvedValue], str]:
-        """Groundwater depth [m] from a water-table column holding one value for the whole profile."""
+        """
+        Groundwater depth [m]: a water-table column holding one value for the whole profile,
+        else the recorded project groundwater level.
+        """
+        from core.geoai.data_access import GROUNDWATER_PROVENANCE
         self._load()
         if self.unavailable_reason:
+            if self.project_water_table is not None:
+                return ResolvedValue(float(self.project_water_table), "m", GROUNDWATER_PROVENANCE), ""
             return None, self.unavailable_reason
         values, column = set(), None
         for layer in self.layers:
@@ -283,7 +291,7 @@ class ProjectSoil:
                 column = col
         if not values:
             if self.project_water_table is not None:
-                return ResolvedValue(float(self.project_water_table), "m", "project groundwater level (recorded)"), ""
+                return ResolvedValue(float(self.project_water_table), "m", GROUNDWATER_PROVENANCE), ""
             return None, f"profile '{self.name}' has no groundwater (water table) column"
         if len(values) > 1:
             return None, f"profile '{self.name}' column '{column}' holds different water-table values {sorted(values)}"

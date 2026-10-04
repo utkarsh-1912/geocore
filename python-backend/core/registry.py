@@ -190,7 +190,15 @@ class Registry:
         # 1. Handle Special Cases (Stateful objects like SoilProfile)
         if function_id == 'SoilProfile':
             from groundhog.general.soilprofile import SoilProfile
-            
+            from .state import DATA_KINDS
+
+            # What the table holds (CPT sounding or layered soil profile), chosen at upload.
+            # Never inferred here: a layered profile may legitimately carry a qc column.
+            data_kind = args.get('data_kind') or None
+            if data_kind is not None and data_kind not in DATA_KINDS:
+                return {"status": "ValidationError",
+                        "error": f"Unknown data_kind '{data_kind}' (expected one of: {', '.join(DATA_KINDS)})."}
+
             file_path = args.get('data')
             raw_data = args.get('raw_data')  # List of dicts
 
@@ -269,11 +277,12 @@ class Registry:
                 
             profile = SoilProfile(df)
             # Keep the user-facing name (e.g. the uploaded file name 'CPT-03.xlsx') so GeoAI can find it by id.
-            obj_id = state_manager.store(profile, "SoilProfile", name=args.get('name'))
+            obj_id = state_manager.store(profile, "SoilProfile", name=args.get('name'), kind=data_kind)
 
             return {
                 "type": "SoilProfile",
                 "id": obj_id,
+                "kind": data_kind,
                 "name": args.get('name', f"SoilProfile_{obj_id[:4]}"),
                 "preview": self._sanitize(profile.head().to_dict(orient='records')),
                 "layers": len(profile),

@@ -2,7 +2,7 @@
 # License: GPL v3
 """
 Local GGUF Model Downloader & Manager.
-Downloads candidate SLM models (Qwen 2.5/3, Gemma, Mistral, and more) from Hugging Face directly
+Downloads candidate SLM models (Qwen 2.5/3, Granite, Mistral, and more) from Hugging Face directly
 to the local GeoCore models directory and configures GeoAI for local inference.
 """
 
@@ -129,16 +129,17 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "description": "Microsoft Phi-4-mini (3.8B), trained for function calling; MIT licence; benchmark candidate",
         "recommended_for": "Workstations with 8 GB+ RAM; permissive licence for redistribution"
     },
-    "granite-4.0-micro": {
+    "granite-4.1-3b": {
         "family": "granite",
         "license": "Apache-2.0",
-        "display_name": "Granite 4.0 Micro (3B)",
-        "repo_id": "ibm-granite/granite-4.0-micro-GGUF",
-        "filename": "granite-4.0-micro-Q4_K_M.gguf",
+        "display_name": "Granite 4.1 (3B)",
+        "repo_id": "ibm-granite/granite-4.1-3b-GGUF",
+        "filename": "granite-4.1-3b-Q4_K_M.gguf",
         "size_mb": 2002,
-        "size_bytes": 2099502528,
-        "sha256": "97c417dcc0534b0737c74016fb2af083cb17c3b51eaac621192d23961b7024eb",
-        "description": "IBM Granite 4.0 Micro (3B) with native tool calling; benchmark candidate",
+        "size_bytes": 2099501664,
+        "sha256": "662b0626cd58f443baea23559b469df6576a81d349649c59413b36a9fb32eb29",
+        "description": "IBM Granite 4.1 (3B) with native tool calling and an improved post-training pipeline "
+                       "(enhanced tool calling over 4.0 Micro); benchmark candidate",
         "recommended_for": "Laptops & workstations with 8 GB RAM"
     },
     "smollm3-3b": {
@@ -175,18 +176,6 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "size_bytes": 4372812000,
         "description": "Mistral 7B Instruct v0.3 with native [TOOL_CALLS] function calling; strong literature & standards synthesis",
         "recommended_for": "Research workstations with 8 GB+ RAM; tool-calling replacement for the old Gemma 2 research tier"
-    },
-    "gemma-3-4b-it": {
-        "family": "gemma",
-        "license": "Gemma Terms of Use",
-        "display_name": "Gemma 3 (4B IT)",
-        "repo_id": "unsloth/gemma-3-4b-it-GGUF",
-        "filename": "gemma-3-4b-it-Q4_K_M.gguf",
-        "size_mb": 2375,
-        "size_bytes": 2489894016,
-        "sha256": "04a43a22e8d2003deda5acc262f68ec1005fa76c735a9962a8c77042a74a7d19",
-        "description": "Google Gemma 3 (4B); its template has no tool section, so GeoAI describes tools in the prompt",
-        "recommended_for": "Workstations with 8 GB+ RAM; research synthesis"
     }
 }
 

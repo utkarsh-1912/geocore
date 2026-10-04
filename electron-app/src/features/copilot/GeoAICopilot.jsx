@@ -15,7 +15,7 @@ import {
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { Button } from '../../components/ui/Button';
 import { api } from '../../api/client';
-import { buildChatHistory } from './chatHistory';
+import { buildChatHistory, nextMessageId } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
 import { finalTurnText, stopGeoAIChat, streamGeoAIChat, stageLabel, useElapsedSeconds } from './geoaiStream';
 
@@ -62,7 +62,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
         if (!text.trim() || isLoading) return;
 
         const userMsg = {
-            id: `user-${Date.now()}`,
+            id: nextMessageId('user'),
             sender: 'user',
             text: text.trim(),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -74,7 +74,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
         setIsLoading(true);
         setStage(null);
 
-        const aiMessageId = Date.now() + 1;
+        const aiMessageId = nextMessageId('ai');
         const setAiMessage = (fields) => setMessages(prev => prev.map(msg =>
             msg.id === aiMessageId ? { ...msg, ...fields } : msg
         ));
@@ -117,7 +117,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
             try {
                 const res = await api.geoaiChat(text, currentContext, history);
                 setMessages(prev => [...prev, {
-                    id: Date.now() + 1,
+                    id: nextMessageId('ai'),
                     sender: 'ai',
                     text: res.response || 'Calculation completed.',
                     executedTool: res.executed_tool,
@@ -127,7 +127,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                 }]);
             } catch (err) {
                 setMessages(prev => [...prev, {
-                    id: Date.now() + 1,
+                    id: nextMessageId('ai'),
                     sender: 'ai',
                     isError: true,
                     text: `Error: ${err.message || 'Execution failed.'}`,

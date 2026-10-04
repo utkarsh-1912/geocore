@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { ProfileViewModal } from './ProfileViewModal';
 import { api } from '../../api/client';
+import { DATA_KIND_OPTIONS, dataKindLabel, readFileColumns, suggestDataKind } from '../../utils/dataKind';
 
 export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "SoilProfile" }) => {
     const [activeTab, setActiveTab] = useState('select'); // select, create, upload
@@ -33,6 +34,8 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
     // Upload State
     const [uploadFile, setUploadFile] = useState(null);
     const [uploadName, setUploadName] = useState('');
+    const [uploadKind, setUploadKind] = useState('soil_profile'); // what the table holds (DATA_KIND_OPTIONS)
+    const showKind = objectType === 'SoilProfile';
 
     useEffect(() => {
         if (isOpen) {
@@ -94,7 +97,8 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
         const payload = {
             raw_data: formattedData,
             name: profileName || `Manual Profile ${new Date().toLocaleTimeString()}`,
-            water_level: waterLevel
+            water_level: waterLevel,
+            data_kind: 'soil_profile'
         };
 
         try {
@@ -115,7 +119,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
 
         try {
             setLoading(true);
-            const data = await api.uploadObjectFile(objectType, uploadFile);
+            const data = await api.uploadObjectFile(objectType, uploadFile, showKind ? uploadKind : null);
             onSelect(data.id);
             onClose();
         } catch (err) {
@@ -124,6 +128,11 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleFileChosen = async (file) => {
+        setUploadFile(file || null);
+        if (file && showKind) setUploadKind(suggestDataKind(await readFileColumns(file)));
     };
 
     const handleDelete = async (e, id) => {
@@ -230,7 +239,9 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                         >
                                             <div>
                                                 <div className="font-medium text-text-main">{p.name}</div>
-                                                <div className="text-xs text-text-muted">ID: {p.id.substring(0, 8)}...</div>
+                                                <div className="text-xs text-text-muted">
+                                                    ID: {p.id.substring(0, 8)}...{showKind && <> &middot; {dataKindLabel(p.kind)}</>}
+                                                </div>
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <button
@@ -345,9 +356,33 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                     type="file"
                                     className="hidden"
                                     accept=".csv,.xlsx,.xls"
-                                    onChange={(e) => setUploadFile(e.target.files[0])}
+                                    onChange={(e) => handleFileChosen(e.target.files[0])}
                                 />
                             </div>
+
+                            {showKind && (
+                                <div className="space-y-2">
+                                    <div className="text-sm text-text-muted">This file contains</div>
+                                    <div className="flex gap-2" role="radiogroup" aria-label="Data kind">
+                                        {DATA_KIND_OPTIONS.map(opt => (
+                                            <button
+                                                key={opt.value}
+                                                type="button"
+                                                role="radio"
+                                                aria-checked={uploadKind === opt.value}
+                                                onClick={() => setUploadKind(opt.value)}
+                                                className={`flex-1 px-3 py-2 rounded border text-sm font-medium transition-colors ${uploadKind === opt.value ? 'border-primary bg-primary/5 text-primary' : 'border-border text-text-muted hover:border-primary/50'}`}
+                                            >
+                                                {opt.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="text-xs text-text-muted">
+                                        GeoAI reads CPT soundings with its CPT tools and layered soil profiles as the project stratigraphy.
+                                        {uploadFile && " Suggested from the file's columns; change it if needed."}
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="flex justify-end pt-4">
                                 <Button onClick={handleUpload} variant="primary" disabled={!uploadFile || loading}>

@@ -152,6 +152,12 @@ class FinetuneConfig:
     optim: str = "adamw_8bit"
     logging_steps: int = 10
     eval_steps: int = 50
+    # HF's default eval batch is 8: 8 x ~4k-token sequences OOM a 15 GB T4 (this killed a run at the
+    # step-50 eval after 76 min of training). Evaluate one sequence at a time.
+    per_device_eval_batch_size: int = 1
+    # Periodic checkpoints (adapter + optimizer, ~100 MB) so a Colab disconnect/OOM can resume.
+    save_steps: int = 25
+    save_total_limit: int = 2
     # ---- GRPO ------------------------------------------------------------
     grpo_learning_rate: float = 5e-6
     grpo_max_steps: int = 300

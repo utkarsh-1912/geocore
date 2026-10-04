@@ -1,93 +1,64 @@
 /**
  * Author: Utkarsh Gupta
  * License: Proprietary / GeoCore
+ *
+ * Explains one already-computed result: method, standard and formula come straight from the
+ * backend (Groundhog's own TOOL_METADATA and docstrings — see core/geoai/calculation_explainer.py),
+ * never guessed in the browser. A short plain-language narration is fetched separately from the
+ * local GeoAI model in the background, so the deterministic facts render immediately and the
+ * narration fills in a moment later (or not at all, if no model is installed).
  */
 
-import React, { useState } from 'react';
-import { Sigma, ChevronDown, ChevronUp, CheckCircle2, Info } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Sigma, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { api } from '../../api/client';
+
+const formatValue = (v) => {
+  if (typeof v === 'number') return Number.isInteger(v) ? String(v) : v.toFixed(4).replace(/0+$/, '').replace(/\.$/, '');
+  return String(v);
+};
 
 export const FormulaDerivationCard = ({ functionName, formData = {}, results = {}, className = '' }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [explanation, setExplanation] = useState(null);
+  const [narration, setNarration] = useState(null);
+  const [narrationState, setNarrationState] = useState('idle'); // idle | loading | done | unavailable
+  const abortRef = useRef(null);
 
-  if (!results || Object.keys(results).length === 0) {
-    return null;
-  }
+  const hasResults = results && Object.keys(results).length > 0;
 
-  // Derive formula explanation based on routine
-  const getDerivationInfo = () => {
-    const fn = (functionName || '').toLowerCase();
+  useEffect(() => {
+    abortRef.current?.abort();
+    setExplanation(null);
+    setNarration(null);
+    setNarrationState('idle');
+    if (!functionName || !hasResults) return;
 
-    // 1. Earth Pressure (Rankine)
-    if (fn.includes('earth_pressure') || fn.includes('rankine')) {
-      const phi = parseFloat(formData.phi_eff || formData.phi || 30);
-      const gamma = parseFloat(formData.gamma || 18);
-      const z = parseFloat(formData.depth || formData.z || 5);
-      const c = parseFloat(formData.cohesion || formData.c || 0);
+    let cancelled = false;
+    api.geoaiExplain(functionName, formData, results)
+      .then((data) => { if (!cancelled) setExplanation(data); })
+      .catch(() => { if (!cancelled) setExplanation(null); });
 
-      const phiRad = (phi * Math.PI) / 180;
-      const Ka = Math.pow(Math.tan((Math.PI / 4) - (phiRad / 2)), 2).toFixed(3);
-      const Kp = Math.pow(Math.tan((Math.PI / 4) + (phiRad / 2)), 2).toFixed(3);
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setNarrationState('loading');
+    api.geoaiExplainNarrate(functionName, formData, results, controller.signal)
+      .then((data) => {
+        if (cancelled) return;
+        if (data?.narration) {
+          setNarration(data.narration);
+          setNarrationState('done');
+        } else {
+          setNarrationState('unavailable');
+        }
+      })
+      .catch(() => { if (!cancelled) setNarrationState('unavailable'); });
 
-      return {
-        title: "Rankine Earth Pressure Theory",
-        formula: "K_a = \\tan^2(45^\\circ - \\phi'/2), \\quad \\sigma'_a = K_a \\gamma z - 2c'\\sqrt{K_a}",
-        steps: [
-          { label: "Active Earth Pressure Coeff. Ka", val: `tan²(45° - ${phi}°/2) = ${Ka}` },
-          { label: "Passive Earth Pressure Coeff. Kp", val: `tan²(45° + ${phi}°/2) = ${Kp}` },
-          { label: "Effective Vertical Stress σ'v", val: `${gamma} kN/m³ × ${z} m = ${(gamma * z).toFixed(2)} kPa` },
-          { label: "Active Horizontal Stress σ'a", val: `${Ka} × ${(gamma * z).toFixed(1)} - 2(${c})√${Ka} = ${results.sigma_a || results.active_pressure || (Ka * gamma * z).toFixed(2)} kPa` }
-        ]
-      };
-    }
+    return () => { cancelled = true; controller.abort(); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [functionName, JSON.stringify(formData), JSON.stringify(results)]);
 
-    // 2. Small-strain shear modulus (Gmax / Vs)
-    if (fn.includes('gmax') || fn.includes('shear_wave') || fn.includes('shear_modulus')) {
-      const vs = parseFloat(formData.vs || formData.Vs || 250);
-      const gamma = parseFloat(formData.gamma || formData.unit_weight || 19);
-      const rho = ((gamma * 1000) / 9.81).toFixed(1);
-
-      return {
-        title: "Dynamic Small-Strain Modulus (Elastic Wave Theory)",
-        formula: "G_{max} = \\rho \\cdot V_s^2, \\quad \\rho = \\gamma / g",
-        steps: [
-          { label: "Bulk Soil Density ρ", val: `(${gamma} × 10³) / 9.81 = ${rho} kg/m³` },
-          { label: "Shear Wave Velocity Vs", val: `${vs} m/s` },
-          { label: "Small-Strain Shear Modulus Gmax", val: `${rho} kg/m³ × (${vs} m/s)² = ${results.g_max || results.Gmax || ((rho * Math.pow(vs, 2)) / 1e6).toFixed(2)} MPa` }
-        ]
-      };
-    }
-
-    // 3. Bearing Capacity (Meyerhof / Terzaghi / Hansen / Vesic)
-    if (fn.includes('bearing') || fn.includes('shallow') || fn.includes('meyerhof')) {
-      const phi = parseFloat(formData.phi_eff || formData.phi || 32);
-      const B = parseFloat(formData.width || formData.B || 2.0);
-      const Df = parseFloat(formData.depth || formData.Df || 1.0);
-      const gamma = parseFloat(formData.gamma || 19.0);
-      const c = parseFloat(formData.cohesion || formData.c || 0);
-
-      return {
-        title: "General Bearing Capacity Formulation (Eurocode 7 / Meyerhof)",
-        formula: "q_{ult} = c' N_c s_c d_c + q_0 N_q s_q d_q + \\frac{1}{2} \\gamma B N_\\gamma s_\\gamma d_\\gamma",
-        steps: [
-          { label: "Overburden at Footing Base q0", val: `${gamma} kN/m³ × ${Df} m = ${(gamma * Df).toFixed(2)} kPa` },
-          { label: "Bearing Capacity Factors", val: `Nq=${results.Nq || results.N_q || '-'}, Nγ=${results.Ngamma || results.N_gamma || '-'}, Nc=${results.Nc || results.N_c || '-'}` },
-          { label: "Ultimate Bearing Capacity q_ult", val: `${results.q_ult || results.bearing_capacity || results.q_net || 'Calculated'} kPa` }
-        ]
-      };
-    }
-
-    // Default Generic Derivation
-    return {
-      title: "Validated Numerical Formulation (Groundhog Core)",
-      formula: "f(\\mathbf{x}) = \\text{Analytical Solution for } " + functionName,
-      steps: Object.entries(results).slice(0, 4).map(([k, v]) => ({
-        label: k.replace(/_/g, ' '),
-        val: typeof v === 'number' ? v.toFixed(3) : String(v)
-      }))
-    };
-  };
-
-  const info = getDerivationInfo();
+  if (!hasResults || !functionName) return null;
 
   return (
     <div className={`geo-card bg-surface/80 border border-border rounded-md overflow-hidden ${className}`}>
@@ -101,8 +72,12 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
             <Sigma size={15} />
           </div>
           <div>
-            <span className="text-xs font-bold text-text-main block">{info.title}</span>
-            <span className="text-[10px] font-mono text-text-muted">Mathematical Step-by-Step Derivation</span>
+            <span className="text-xs font-bold text-text-main block">
+              {explanation?.method || 'Calculation method'}
+            </span>
+            <span className="text-[10px] font-mono text-text-muted">
+              {explanation?.standard || 'Loading method and standard…'}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-1 text-text-muted">
@@ -112,26 +87,57 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
 
       {isExpanded && (
         <div className="p-4 space-y-3 text-xs animate-fade-in">
-          {/* Formula Display */}
-          <div className="p-2.5 rounded bg-background border border-border font-mono text-[11px] text-primary flex items-center gap-2 overflow-x-auto">
-            <span className="font-bold text-text-muted shrink-0">Eq:</span>
-            <code>{info.formula}</code>
-          </div>
+          {!explanation ? (
+            <div className="text-text-muted">Loading…</div>
+          ) : (
+            <>
+              {explanation.formula && (
+                <div className="p-2.5 rounded bg-background border border-border font-mono text-[11px] text-primary overflow-x-auto">
+                  <span className="font-bold text-text-muted block mb-1">Formula (from groundhog's own documentation):</span>
+                  <code>{explanation.formula}</code>
+                </div>
+              )}
 
-          {/* Substituted Steps */}
-          <div className="space-y-1.5 pt-1">
-            {info.steps.map((step, idx) => (
-              <div key={idx} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 font-mono text-[11px] gap-2">
-                <span className="text-text-muted">{step.label}:</span>
-                <span className="font-bold text-text-main">{step.val}</span>
+              {/* Substituted inputs and outputs, exactly as computed — nothing here is invented */}
+              <div className="space-y-1.5 pt-1">
+                {explanation.inputs && Object.entries(explanation.inputs).length > 0 && (
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide">Inputs</div>
+                )}
+                {Object.entries(explanation.inputs || {}).map(([k, v]) => (
+                  <div key={`in-${k}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 font-mono text-[11px] gap-2">
+                    <span className="text-text-muted">{k.replace(/_/g, ' ')}:</span>
+                    <span className="font-bold text-text-main">{formatValue(v)}</span>
+                  </div>
+                ))}
+                {explanation.outputs && explanation.outputs.length > 0 && (
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide pt-1">Outputs</div>
+                )}
+                {(explanation.outputs || []).map((o) => (
+                  <div key={`out-${o.key}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 font-mono text-[11px] gap-2">
+                    <span className="text-text-muted">{o.key.replace(/_/g, ' ')}:</span>
+                    <span className="font-bold text-text-main">{formatValue(o.value)}{o.unit ? ` ${o.unit}` : ''}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="flex items-center gap-1.5 text-[10px] text-text-muted pt-1">
-            <CheckCircle2 size={12} className="text-green-500 shrink-0" />
-            <span>Verified against Eurocode 7 & Groundhog standard analytical test suite.</span>
-          </div>
+              {explanation.assumptions && explanation.assumptions.length > 0 && (
+                <div className="pt-1">
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide mb-1">Assumptions</div>
+                  <ul className="list-disc list-inside space-y-0.5 text-[11px] text-text-muted">
+                    {explanation.assumptions.map((a, idx) => <li key={idx}>{a}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              {/* AI narration: loaded in the background, never replaces the facts above */}
+              <div className="flex items-start gap-1.5 text-[11px] text-text-muted pt-2 border-t border-border/40">
+                <Sparkles size={12} className="text-primary shrink-0 mt-0.5" />
+                {narrationState === 'loading' && <span className="italic">GeoAI is writing a plain-language explanation…</span>}
+                {narrationState === 'done' && <span>{narration}</span>}
+                {narrationState === 'unavailable' && <span className="italic">No plain-language narration available (install a local model in the GeoAI model manager to get one).</span>}
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

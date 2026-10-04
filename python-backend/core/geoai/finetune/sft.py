@@ -211,7 +211,9 @@ def train(cfg: FinetuneConfig) -> Path:
         num_train_epochs=cfg.num_train_epochs, learning_rate=cfg.learning_rate,
         warmup_ratio=cfg.warmup_ratio, weight_decay=cfg.weight_decay, lr_scheduler_type=cfg.lr_scheduler_type,
         optim=cfg.optim, logging_steps=cfg.logging_steps, eval_strategy="steps", eval_steps=cfg.eval_steps,
-        save_strategy="no", seed=cfg.seed, report_to=cfg.report_to,
+        per_device_eval_batch_size=cfg.per_device_eval_batch_size,
+        save_strategy="steps", save_steps=cfg.save_steps, save_total_limit=cfg.save_total_limit,
+        seed=cfg.seed, report_to=cfg.report_to,
     ), renames={"max_seq_length": "max_length", "eval_strategy": "evaluation_strategy"}))
     trainer = SFTTrainer(**filter_kwargs(SFTTrainer, dict(
         model=model, processing_class=tokenizer, train_dataset=Dataset.from_list(train_rows),
@@ -219,12 +221,17 @@ def train(cfg: FinetuneConfig) -> Path:
     ), renames={"processing_class": "tokenizer"}))
     trainer = train_on_responses_only(trainer, instruction_part=cfg.preset.instruction_part,
                                       response_part=cfg.preset.response_part)
-    result = trainer.train()
-    metrics = trainer.evaluate() if val_rows else {}
+    ckpt_dir = Path(cfg.output_dir) / "sft_checkpoints"
+    checkpoints = sorted(ckpt_dir.glob("checkpoint-*"), key=lambda p: int(p.name.rsplit("-", 1)[-1])) if ckpt_dir.is_dir() else []
+    if checkpoints:
+        print(f"Resuming SFT from {checkpoints[-1]}", flush=True)
+    result = trainer.train(resume_from_checkpoint=str(checkpoints[-1]) if checkpoints else None)
 
+    # Save before the final evaluation: a failure there must not lose the trained adapter.
     out = cfg.sft_dir
     model.save_pretrained(str(out))
     tokenizer.save_pretrained(str(out))
+    metrics = trainer.evaluate() if val_rows else {}
     write_run_info(out, cfg, {
         "stage": "sft", "profile": cfg.profile, "base_model": cfg.base_model, "base_model_id": cfg.base_model_id,
         "family": cfg.family, "train_mix": mix,

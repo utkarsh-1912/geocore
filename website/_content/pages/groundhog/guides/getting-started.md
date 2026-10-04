@@ -14,6 +14,8 @@ geocore_edit_note: Converted from reStructuredText.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/gettingstarted.html
 ---
 
+> **Adapted from groundhog's own documentation.** Inside GeoCore, these functions run through the [calculation catalogue](/docs/geocore/using/modules) or through **GeoAI**, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself.
+
 ## 1. Installation
 
 ### 1.1. Installing Python

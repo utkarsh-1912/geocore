@@ -17,6 +17,11 @@ normalises them to one compact structure (depth [m], qc [MPa], fs [kPa], u2 [kPa
 provenance. Units are taken only from the column headers; a channel whose unit is missing
 or unknown is not used (never guessed) and is reported as a data-quality flag.
 
+Uploaded tables carry the data kind chosen at upload (``meta["kind"]``: ``"cpt"`` or
+``"soil_profile"``, core.state.DATA_KINDS). Only ``"cpt"`` tables are CPTs; a layered soil profile
+may also have a qc column, so the columns never decide. Tables saved before the kind was recorded
+keep the earlier rule (a qc column makes a CPT), and every CPT read from one says so in its notes.
+
 Soil behaviour type intervals reuse ``core.geoai.cpt.CPTSounding`` (Robertson Ic).
 """
 from dataclasses import dataclass, field
@@ -28,6 +33,7 @@ import numpy as np
 import pandas as pd
 
 from core.geoai.exceptions import GeoAIValidationError
+from core.state import DATA_KIND_CPT, DATA_KIND_SOIL_PROFILE
 
 #: Unit weight used only for the stress normalisation behind Ic / SBT classification
 #: (the same default as core.geoai.cpt.CPTSounding).
@@ -51,6 +57,11 @@ _DEPTH_FROM = "depthfrom"
 _DEPTH_TO = "depthto"
 
 _TARGET_UNITS = {"depth": "m", "qc": "MPa", "fs": "kPa", "u2": "kPa"}
+
+#: Note on CPTs read from a table whose data kind was not recorded at upload.
+KIND_NOT_RECORDED_NOTE = ("Data kind not recorded for {source} (saved before GeoCore recorded CPT vs soil profile "
+                          "at upload); treated as a CPT because it has a qc column. If it is a layered soil "
+                          "profile, re-upload it as a soil profile.")
 
 
 def _base(name: str) -> str:
@@ -93,6 +104,8 @@ class ProjectCPT:
     groundwater_depth_m: Optional[float] = None
     groundwater_source: Optional[str] = None
     notes: List[str] = field(default_factory=list)
+    #: Set when the source table's data kind was not recorded at upload (KIND_NOT_RECORDED_NOTE).
+    kind_note: Optional[str] = None
 
     @property
     def depth_min(self) -> float:
@@ -112,7 +125,7 @@ class ProjectCPT:
 
     def listing(self) -> Dict[str, Any]:
         loc = {k: v for k, v in self.location.items() if v is not None}
-        return {
+        out = {
             "cpt_id": self.cpt_id,
             "depth_range_m": [round(self.depth_min, 2), round(self.depth_max, 2)],
             "n_points": int(len(self.data)),
@@ -121,6 +134,9 @@ class ProjectCPT:
             "groundwater_depth_m": self.groundwater_depth_m,
             "source": f"{self.source.get('object_type')} '{self.source.get('object_name')}'",
         }
+        if self.kind_note:
+            out["note"] = self.kind_note
+        return out
 
 
 # --------------------------------------------------------------------------- store access
@@ -299,9 +315,20 @@ def discover_project_cpts(store=None) -> Tuple[List[ProjectCPT], List[Dict[str, 
             elif type_name == "AGSConverter" or type(obj).__name__ == "AGSConverter":
                 found, reason = _ags_to_cpts(meta, obj)
             elif isinstance(obj, pd.DataFrame):
+                kind = meta.get("kind")
+                if kind == DATA_KIND_SOIL_PROFILE:
+                    continue                  # recorded as a layered soil profile at upload
                 source = {"object_type": type_name, "object_name": meta.get("name"), "object_id": meta.get("id"),
                           "processing": "column mapping of the stored table"}
                 found, reason = _table_to_cpts(obj, source, str(meta.get("name") or meta.get("id")))
+                if kind == DATA_KIND_CPT and not found and reason is None:
+                    reason = ("recorded as a CPT at upload but no qc column found (expected e.g. 'qc [MPa]' "
+                              "with the unit in the header)")
+                if kind is None:
+                    note = KIND_NOT_RECORDED_NOTE.format(source=f"{type_name} '{meta.get('name')}'")
+                    for cpt in found:
+                        cpt.kind_note = note
+                        cpt.notes.append(note)
             else:
                 continue
         except Exception as e:  # never let one malformed object hide the others

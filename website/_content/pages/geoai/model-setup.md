@@ -38,11 +38,10 @@ The model manager offers these curated models (4-bit `Q4_K_M` quantisations), gr
 | [Qwen 3 (4B Instruct 2507)](https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF) | ~2.3 GB | Apache-2.0 | Qwen 3 (4B) non-thinking instruct release with native tool calling; benchmark candidate |
 | [Qwen 3 (8B)](https://huggingface.co/Qwen/Qwen3-8B-GGUF) | ~4.7 GB | Apache-2.0 | Qwen 3 (8B) hybrid thinking model with native tool calling; quality reference, slow on CPU |
 | [Phi-4-mini (3.8B Instruct)](https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF) | ~2.3 GB | MIT | Microsoft Phi-4-mini (3.8B), trained for function calling; MIT licence; benchmark candidate |
-| [Granite 4.0 Micro (3B)](https://huggingface.co/ibm-granite/granite-4.0-micro-GGUF) | ~2.0 GB | Apache-2.0 | IBM Granite 4.0 Micro (3B) with native tool calling; benchmark candidate |
+| [Granite 4.1 (3B)](https://huggingface.co/ibm-granite/granite-4.1-3b-GGUF) | ~2.0 GB | Apache-2.0 | IBM Granite 4.1 (3B) with native tool calling and an improved post-training pipeline (enhanced tool calling over 4.0 Micro); benchmark candidate |
 | [SmolLM3 (3B)](https://huggingface.co/ggml-org/SmolLM3-3B-GGUF) | ~1.8 GB | Apache-2.0 | Hugging Face SmolLM3 (3B) hybrid thinking model with tool calling; fully open training data |
 | [Llama 3.2 (3B Instruct)](https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF) | ~1.9 GB | Llama 3.2 Community | Meta Llama 3.2 (3B) with JSON tool calls; custom licence with use restrictions |
 | [Mistral 7B Instruct (v0.3)](https://huggingface.co/bartowski/Mistral-7B-Instruct-v0.3-GGUF) | ~4.1 GB | Apache-2.0 | Mistral 7B Instruct v0.3 with native [TOOL_CALLS] function calling; strong literature & standards synthesis |
-| [Gemma 3 (4B IT)](https://huggingface.co/unsloth/gemma-3-4b-it-GGUF) | ~2.3 GB | Gemma Terms of Use | Google Gemma 3 (4B); its template has no tool section, so GeoAI describes tools in the prompt |
 
 Larger models need more memory and respond more slowly on a CPU. Licences differ between families: check a model's licence before using it commercially. How the candidates compare on GeoAI's own test suite is published on the [Model benchmarks](/docs/geoai/model-benchmarks) page.
 

@@ -38,13 +38,10 @@ export const UnitBadge = ({ unit, currentValue, onConvertValue, className = '' }
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef(null);
 
-  if (!unit || unit === '-' || unit === '') {
-    return null;
-  }
+  const cleanUnit = unit ? unit.replace(/[[\]]/g, '').trim() : '';
+  const group = cleanUnit ? (UNIT_GROUPS[cleanUnit] || UNIT_GROUPS[cleanUnit.toLowerCase()]) : null;
 
-  const cleanUnit = unit.replace(/[\[\]]/g, '').trim();
-  const group = UNIT_GROUPS[cleanUnit] || UNIT_GROUPS[cleanUnit.toLowerCase()];
-
+  // Hooks must run on every render regardless of the early return below.
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (popoverRef.current && !popoverRef.current.contains(e.target)) {
@@ -56,6 +53,10 @@ export const UnitBadge = ({ unit, currentValue, onConvertValue, className = '' }
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
+
+  if (!unit || unit === '-' || unit === '') {
+    return null;
+  }
 
   const handleUnitSelect = (targetUnit) => {
     if (!group || targetUnit === cleanUnit || !onConvertValue) {

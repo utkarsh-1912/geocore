@@ -10,9 +10,11 @@ author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
 groundhog_version: 0.15.0
 edited_by_geocore: true
-geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.'
+geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted, with a short note on how to run this in GeoCore prepended.'
 notebook: notebooks/Demo - De Beer unit base resistance calculation.ipynb
 ---
+
+> **Adapted from groundhog's own documentation.** Inside GeoCore, run the same calculation through a [calculation form](/docs/geocore/using/modules) or by asking **GeoAI**, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python code instead.
 
 A tutorial for the application of De Beer's method is given in this notebook. This notebook can be used to apply to other CPT profiles and possibly make modifications to gain further insight in the data and solutions.
 

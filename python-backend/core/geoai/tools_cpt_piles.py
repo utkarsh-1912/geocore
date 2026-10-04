@@ -47,7 +47,11 @@ def list_project_cpts():
     if not cpts:
         note += (" No usable CPT found: load a CPT table with depth and qc columns with units in the headers "
                  "(e.g. 'z [m]', 'qc [MPa]', 'fs [kPa]', 'u2 [kPa]') or an AGS file with an SCPT group.")
-    listed = sorted(cpts, key=lambda c: project_cpt.normalize_cpt_id(c.cpt_id))
+    unrecorded = [c.cpt_id for c in cpts if c.kind_note]
+    if unrecorded:
+        note += (f" {', '.join(sorted(unrecorded))}: data kind not recorded at upload, treated as CPT because the "
+                 "table has a qc column - confirm with the user that it is not a layered soil profile.")
+    listed =sorted(cpts, key=lambda c: project_cpt.normalize_cpt_id(c.cpt_id))
     if len(listed) > MAX_LISTED_CPTS:
         note += f" Showing the first {MAX_LISTED_CPTS} of {len(listed)}."
     return {"count": len(cpts), "cpts": [c.listing() for c in listed[:MAX_LISTED_CPTS]],

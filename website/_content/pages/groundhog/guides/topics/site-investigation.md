@@ -10,9 +10,11 @@ author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
 groundhog_version: 0.15.0
 edited_by_geocore: true
-geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it.
+geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/site_investigation/site_investigation_toplevel.html
 ---
+
+> **Adapted from groundhog's own documentation.** Inside GeoCore, these functions run through the [calculation catalogue](/docs/geocore/using/modules) or through **GeoAI**, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself.
 
 This page follows the structure of the upstream groundhog documentation for *Site investigation*. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference.
 

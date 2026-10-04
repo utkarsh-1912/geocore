@@ -212,12 +212,11 @@ def test_run_stream_direct_answer():
     # A direct answer goes through AnswerStreamCleaner, which releases whole sentences, so the
     # two deltas of one unterminated sentence arrive as a single token on flush. A 'stage' event
     # announcing the decision round precedes it.
-    assert len(events) == 3
-    assert events[0].type == "stage"
-    assert events[0].content == "thinking"
-    assert events[1].type == "token"
-    assert events[1].content == "Hello World"
-    assert events[2].type == "done"
+    assert len(events) == 4
+    assert [e.content for e in events[:2]] == ["checking_tools", "thinking"]
+    assert events[2].type == "token"
+    assert events[2].content == "Hello World"
+    assert events[3].type == "done"
 
 def test_run_stream_tool_call_flow():
     tool_call = ToolCall(id="stream_t1", function_name="calc_tool", arguments={"v": 1})
@@ -242,8 +241,8 @@ def test_run_stream_tool_call_flow():
     # 4. stage (writing_answer: explanation round)
     # 5. token (final explanation)
     # 6. done
-    assert len(events) == 6
-
+    assert len(events) == 7
+    events = events[1:]  # leading 'checking_tools' stage
     assert events[0].type == "stage"
     assert events[0].content == "thinking"
 

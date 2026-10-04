@@ -7,6 +7,7 @@ Agent Chat (with SSE streaming), Model Registry Management, and Memory Lifecycle
 import asyncio
 import json
 import logging
+import time
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, Query, Body, BackgroundTasks, Request
 from fastapi.responses import StreamingResponse
@@ -30,6 +31,8 @@ router = APIRouter(prefix="/geoai", tags=["GeoAI"])
 
 # How often a streaming chat checks whether its client is still connected (seconds).
 DISCONNECT_POLL_S = 0.5
+# A streaming chat sends an SSE comment this often while the model is busy (seconds).
+HEARTBEAT_S = 5.0
 
 
 def _get_agent() -> GeoAIAgent:
@@ -92,7 +95,72 @@ def invoke_geoai_tool(payload: Dict[str, Any] = Body(...)):
         raise HTTPException(status_code=500, detail=f"Execution failed: {str(e)}")
 
 
+# --- Calculation Explanation Endpoints (for the "Formula & Derivation" card, not the chat) ---
+
+@router.post("/explain")
+def explain_calculation_result(payload: Dict[str, Any] = Body(...)):
+    """
+    Deterministic explanation of one already-computed result: method/standard (from
+    TOOL_METADATA), the formula straight from the groundhog function's docstring, and the
+    substituted inputs/outputs. No model call, always available, never fabricated.
+
+    Body format: {"function_id": str, "args": dict, "results": dict}
+    """
+    from core.geoai.calculation_explainer import explain_calculation
+    function_id = payload.get("function_id")
+    if not function_id:
+        raise HTTPException(status_code=400, detail="Field 'function_id' is required.")
+    return explain_calculation(function_id, payload.get("args"), payload.get("results"))
+
+
+@router.post("/explain/narrate")
+def narrate_calculation_result(payload: Dict[str, Any] = Body(...)):
+    """
+    Short plain-language narration of an /explain result, from the lifecycle-managed local model.
+    Meant to be called separately from (and after) /explain so the deterministic card renders
+    immediately; this one can take a few seconds on a cold or CPU-bound model.
+
+    Body format: same as /explain.
+    """
+    from core.geoai.calculation_explainer import explain_calculation, narrate_explanation
+    function_id = payload.get("function_id")
+    if not function_id:
+        raise HTTPException(status_code=400, detail="Field 'function_id' is required.")
+
+    provider = lifecycle_manager.get_provider()
+    if provider.model_info().get("provider") == "heuristic":
+        return {"narration": None, "reason": "No local model is installed — install one in the GeoAI model manager to get a plain-language narration."}
+
+    lifecycle_manager.touch()
+    explanation = explain_calculation(function_id, payload.get("args"), payload.get("results"))
+    try:
+        narration = narrate_explanation(explanation, provider)
+    except GenerationCancelled:
+        return {"narration": None, "reason": "cancelled"}
+    return {"narration": narration or None}
+
+
 # --- Agent Chat Endpoint (with optional SSE streaming) ---
+
+def _with_project_context(context: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """Attach the current project (compact stratigraphy + groundwater) unless the caller passed one.
+
+    Only when the project has a soil profile or a recorded groundwater level: an empty summary
+    would cost prompt tokens on a CPU for nothing.
+    """
+    context = dict(context or {})
+    if "project_context" in context:
+        return context
+    try:
+        from core.geoai.project_soil import load_project_context
+        project = load_project_context()
+    except Exception as e:
+        logger.warning(f"GeoAI: project context unavailable: {e}")
+        return context
+    if project.list_profile_names() or getattr(project, "water_table_depth", None) is not None:
+        context["project_context"] = project
+    return context
+
 
 @router.post("/chat")
 def geoai_chat(request: Request, payload: Dict[str, Any] = Body(...), stream: bool = Query(False)):
@@ -106,7 +174,7 @@ def geoai_chat(request: Request, payload: Dict[str, Any] = Body(...), stream: bo
     Query params: stream=true for SSE streaming
     """
     prompt = payload.get("prompt", "")
-    context = payload.get("context")
+    context = _with_project_context(payload.get("context"))
     history = payload.get("history")
     if history is not None and not isinstance(history, list):
         raise HTTPException(status_code=400, detail="Field 'history' must be a list.")
@@ -138,10 +206,16 @@ def geoai_chat(request: Request, payload: Dict[str, Any] = Body(...), stream: bo
             try:
                 while True:
                     pending = asyncio.ensure_future(run_in_threadpool(next, events, None))
+                    last_sent = time.monotonic()
                     while not pending.done():
                         await asyncio.wait({pending}, timeout=DISCONNECT_POLL_S)
                         if not pending.done() and await request.is_disconnected():
                             return
+                        if not pending.done() and time.monotonic() - last_sent >= HEARTBEAT_S:
+                            # SSE comment: keeps the connection visibly alive through a long
+                            # model call, so the client can tell "busy" from "dead".
+                            last_sent = time.monotonic()
+                            yield ": ping\n\n"
                     chunk = pending.result()
                     if chunk is None:
                         finished = True
@@ -172,6 +246,68 @@ def geoai_chat(request: Request, payload: Dict[str, Any] = Body(...), stream: bo
 def cancel_geoai_chat():
     """Stops the GeoAI request in progress (Stop button); the model stays loaded."""
     return lifecycle_manager.cancel()
+
+
+# --- Project Context Endpoints (recorded groundwater level, what GeoAI sees of the project) ---
+
+def _groundwater_payload(depth: Optional[float]) -> Dict[str, Any]:
+    from core.geoai.data_access import GROUNDWATER_PROVENANCE
+    return {
+        "groundwater_depth_m": depth,
+        "unit": "m",
+        "reference": "depth below ground level",
+        "status": "recorded" if depth is not None else "not recorded",
+        "provenance": GROUNDWATER_PROVENANCE if depth is not None else None,
+    }
+
+
+@router.get("/project/groundwater")
+def get_project_groundwater():
+    """The recorded project groundwater depth [m below ground level]; null when not recorded."""
+    from core.geoai.data_access import recorded_groundwater_depth
+    return _groundwater_payload(recorded_groundwater_depth())
+
+
+@router.put("/project/groundwater")
+def set_project_groundwater(payload: Dict[str, Any] = Body(...)):
+    """
+    Records the project groundwater depth.
+    Body: {"groundwater_depth_m": number >= 0 or null, "unit": "m" (optional)}; null clears it
+    back to "not recorded".
+    """
+    from core.geoai.data_access import record_groundwater_depth
+    if "groundwater_depth_m" not in payload:
+        raise HTTPException(status_code=422, detail={
+            "status": "ValidationError",
+            "error": "Field 'groundwater_depth_m' is required [m below ground level]; null clears the recorded level.",
+            "details": [{"field": "groundwater_depth_m", "type": "missing_parameter", "unit": "m"}]})
+    try:
+        depth = record_groundwater_depth(payload["groundwater_depth_m"], payload.get("unit") or "m")
+    except GeoAIValidationError as ve:
+        raise HTTPException(status_code=422, detail=ve.to_dict())
+    except OSError as e:
+        raise HTTPException(status_code=500, detail=f"The groundwater level could not be saved: {e}")
+    return _groundwater_payload(depth)
+
+
+@router.get("/project/context")
+def get_project_context():
+    """
+    What GeoAI reads from the current project: the recorded groundwater level, the layered soil
+    profiles, the CPTs (compact listing, no raw data) and the compact context text.
+    """
+    from core.geoai.project_soil import load_project_context
+    import core.geoai.tools_cpt_piles as cpt_tools
+    ctx = load_project_context()
+    cpts = cpt_tools.list_project_cpts()
+    return {
+        "groundwater": _groundwater_payload(ctx.water_table_depth),
+        "soil_profiles": ctx.list_profile_names(),
+        "cpts": cpts["cpts"],
+        "unusable_cpt_sources": cpts["unusable_sources"],
+        "cpt_note": cpts["note"],
+        "compact_context": ctx.get_compact_context_string(),
+    }
 
 
 # --- Model Management & Memory Lifecycle Endpoints ---

@@ -6,10 +6,12 @@ Provides on-demand, immutable, sliceable access to Soil Profiles,
 Stratigraphy tables, Groundwater context, and Calculation History.
 """
 
+import math
 from typing import Dict, Any, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
-from core.state import state_manager
+from core.state import state_manager, DATA_KIND_SOIL_PROFILE
+from core.geoai.exceptions import GeoAIValidationError
 from core.geoai.provenance import CalculationProvenance
 
 
@@ -244,20 +246,89 @@ class ProjectContext:
         If profile_id is None, automatically loads all registered SoilProfiles.
         """
         ctx = cls(project_id="workspace_active", name="Active Workspace Project")
-        
+        ctx.water_table_depth = recorded_groundwater_depth()
+
         if profile_id:
             obj = state_manager.get(profile_id)
             if obj is not None:
                 ctx.add_profile(profile_id, obj)
         else:
-            # Discover all SoilProfiles in StateManager
-            for obj_id, meta in state_manager._metadata.items():
-                if meta.get("type") == "SoilProfile":
-                    obj = state_manager.get(obj_id)
-                    if obj is not None:
-                        ctx.add_profile(meta.get("name", obj_id), obj)
+            # Layered soil profiles only: CPT uploads (kind "cpt") are read by the CPT tools.
+            # Objects saved before the kind was recorded keep the earlier behaviour (included),
+            # after the recorded soil profiles so one of those becomes the active profile.
+            recorded, unrecorded = [], []
+            for obj_id, meta in list(state_manager._metadata.items()):
+                if meta.get("type") != "SoilProfile":
+                    continue
+                kind = meta.get("kind")
+                if kind == DATA_KIND_SOIL_PROFILE:
+                    recorded.append((obj_id, meta))
+                elif kind is None:
+                    unrecorded.append((obj_id, meta))
+            for obj_id, meta in recorded + unrecorded:
+                obj = state_manager.get(obj_id)
+                if obj is not None:
+                    ctx.add_profile(meta.get("name", obj_id), obj)
 
         return ctx
+
+
+# --------------------------------------------------------------------------- project groundwater level
+
+#: Project setting key of the recorded groundwater depth [m below ground level].
+GROUNDWATER_SETTING = "groundwater_depth_m"
+#: Provenance of every value taken from the recorded project groundwater level.
+GROUNDWATER_PROVENANCE = "project groundwater level (recorded)"
+
+
+def validate_groundwater_depth(value: Any, unit: Optional[str] = "m") -> Optional[float]:
+    """
+    Groundwater depth [m below ground level] from user input, or None for "not recorded"
+    (None or an empty string). Raises GeoAIValidationError for a non-numeric, non-finite or
+    negative value; other length units are converted deterministically to m.
+    """
+    if value is None or (isinstance(value, str) and not value.strip()):
+        return None
+    field = GROUNDWATER_SETTING
+    if isinstance(value, bool):
+        raise GeoAIValidationError("Groundwater depth must be a number in m.",
+                                   errors=[{"field": field, "type": "not_a_number", "input_value": str(value)}])
+    try:
+        depth = float(value)
+    except (TypeError, ValueError):
+        raise GeoAIValidationError(f"Groundwater depth must be a number in m (got '{value}').",
+                                   errors=[{"field": field, "type": "not_a_number", "input_value": str(value)}])
+    if not math.isfinite(depth):
+        raise GeoAIValidationError("Groundwater depth must be a finite number in m.",
+                                   errors=[{"field": field, "type": "not_finite", "input_value": str(value)}])
+    unit = (unit or "m").strip()
+    if unit != "m":
+        from core.geoai.units import convert_unit
+        depth = float(convert_unit(depth, unit, "m", field_name=field))
+    if depth < 0:
+        raise GeoAIValidationError(
+            f"Groundwater depth must be >= 0 m below ground level (got {depth:g} m).",
+            errors=[{"field": field, "type": "less_than_minimum", "minimum": 0, "unit": "m", "input_value": depth}])
+    return depth
+
+
+def recorded_groundwater_depth(store=None) -> Optional[float]:
+    """The recorded project groundwater depth [m], or None when not recorded."""
+    store = store if store is not None else state_manager
+    value = store.get_project_setting(GROUNDWATER_SETTING)
+    try:
+        return validate_groundwater_depth(value)
+    except GeoAIValidationError:  # a hand-edited settings file: treat as not recorded
+        return None
+
+
+def record_groundwater_depth(value: Any, unit: Optional[str] = "m", store=None) -> Optional[float]:
+    """Validates, saves (None clears) and syncs the project groundwater depth; returns it in m."""
+    depth = validate_groundwater_depth(value, unit)
+    store = store if store is not None else state_manager
+    store.set_project_setting(GROUNDWATER_SETTING, depth)
+    active_project_context.water_table_depth = depth
+    return depth
 
 
 # Active Global Project Memory Singleton

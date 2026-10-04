@@ -125,12 +125,15 @@ def build_state_manager(empty: bool = False):
     sm._loaded = True                       # no disk read, and nothing here calls store()/_save_to_disk
     if empty:
         return sm
-    objects = [(f"synthetic-{cpt_id.lower()}", "SoilProfile", CPT_SPECS[cpt_id][0], _soil_profile(df))
+    # Data kinds as recorded by the desktop upload (core.state.DATA_KINDS).
+    objects = [(f"synthetic-{cpt_id.lower()}", "SoilProfile", CPT_SPECS[cpt_id][0], _soil_profile(df), "cpt")
                for cpt_id, df in cpt_tables().items()]
-    objects.append(("synthetic-bh-01", "SoilProfile", PROFILE_NAME, _soil_profile(soil_profile_table())))
-    for obj_id, type_name, name, obj in objects:
+    objects.append(("synthetic-bh-01", "SoilProfile", PROFILE_NAME, _soil_profile(soil_profile_table()),
+                    "soil_profile"))
+    for obj_id, type_name, name, obj, kind in objects:
         sm._objects_store[obj_id] = obj
-        sm._metadata_store[obj_id] = {"id": obj_id, "type": type_name, "name": name, "timestamp": "synthetic"}
+        sm._metadata_store[obj_id] = {"id": obj_id, "type": type_name, "name": name, "timestamp": "synthetic",
+                                      "kind": kind}
     return sm
 
 

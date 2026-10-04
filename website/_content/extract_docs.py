@@ -1293,6 +1293,26 @@ def upstream_meta(version: str, source_url: str, edited: bool, extra: Optional[D
     return meta
 
 
+def geocore_adaptation_note(kind: str) -> str:
+    """
+    Callout prepended to narrative pages adapted from groundhog's own docs (introduction, getting
+    started, topic overviews, tutorial notebooks), so they read as GeoCore's adaptation of groundhog's
+    documentation rather than a copy of groundhog's own site. The explanation and formulas that follow
+    stay groundhog's own; only this framing, and what is routed to the GeoCore calculation catalogue or
+    GeoAI instead of `pip install groundhog`, is GeoCore's.
+    """
+    if kind == "tutorial":
+        route = ("Inside GeoCore, run the same calculation through a [calculation form]"
+                 "(/docs/geocore/using/modules) or by asking **GeoAI**, which calls the same groundhog "
+                 "function through its validated Tool Registry. This notebook is kept for anyone who wants "
+                 "to call groundhog directly from their own Python code instead.")
+    else:
+        route = ("Inside GeoCore, these functions run through the [calculation catalogue]"
+                 "(/docs/geocore/using/modules) or through **GeoAI**, which selects and calls them through "
+                 "its validated Tool Registry — you never need to install Python or groundhog yourself.")
+    return f"> **Adapted from groundhog's own documentation.** {route}\n\n"
+
+
 def geocore_meta(version: str, source_url: str, extra: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     meta = {
         "description": None,
@@ -1954,13 +1974,17 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
 
         # introduction (index.rst)
         body = rst_to_markdown(index, use_repo, assets, "groundhog/guides/introduction", rst_link,
-                               drop_sections=("Indices and tables",))
+                               drop_sections=("Indices and tables", "Installation requirements",
+                                              "Support groundhog"))
         meta = upstream_meta(use_repo.version, gh_blob("docs/index.rst", use_repo.tag), edited=True,
                              note="Converted from reStructuredText. Sphinx-only 'Indices and tables' section removed; "
-                                  "raw HTML donation button replaced by a plain link.",
+                                  "'Installation requirements' and 'Support groundhog' (pip install steps and a "
+                                  "donation/consultancy pitch) removed as not applicable to GeoCore, which already "
+                                  "bundles groundhog.",
                              extra={"upstream_docs_url": GH_RTD_BASE})
         meta["description"] = "Introduction to groundhog, the geotechnical Python library behind GeoCore's calculations."
-        add(Page("groundhog/guides/introduction", "Introduction to groundhog", SECTION_GUIDES, body, meta))
+        add(Page("groundhog/guides/introduction", "Introduction to groundhog", SECTION_GUIDES,
+                 geocore_adaptation_note("guide") + body, meta))
 
         gs = rst_docs["docs/gettingstarted.rst"]
         body = rst_to_markdown(gs, use_repo, assets, "groundhog/guides/getting-started", rst_link)
@@ -1968,7 +1992,8 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
                              note="Converted from reStructuredText.",
                              extra={"upstream_docs_url": rtd_url(gs.path)})
         meta["description"] = "Installing Python and groundhog, and taking the first steps with groundhog functions."
-        add(Page("groundhog/guides/getting-started", gs.title, SECTION_GUIDES, body, meta))
+        add(Page("groundhog/guides/getting-started", gs.title, SECTION_GUIDES,
+                 geocore_adaptation_note("guide") + body, meta))
         narrative_count += 2
 
         # topic pages (per documentation area)
@@ -2017,14 +2042,16 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
 
         for rel in area_rsts:
             d = rst_docs[rel]
-            out: List[str] = [f"This page follows the structure of the upstream groundhog documentation for "
+            out: List[str] = [geocore_adaptation_note("guide").strip(), "",
+                              f"This page follows the structure of the upstream groundhog documentation for "
                               f"*{d.title}*. For each function it gives the method summary and key formulas from "
                               f"the groundhog docstrings, with a link to the full API reference.", ""]
             render_topic(rel, 1, out)
             slug = topic_slugs[rel]
             meta = upstream_meta(use_repo.version, gh_blob(rel, use_repo.tag), edited=True,
                                  note="Upstream toctree/autodoc structure restructured into a single topic page "
-                                      "that links to the API reference instead of duplicating it.",
+                                      "that links to the API reference instead of duplicating it, with a short "
+                                      "note on how to run this in GeoCore prepended.",
                                  extra={"upstream_docs_url": rtd_url(rel)})
             meta["description"] = f"Overview of groundhog's {d.title.lower()} functionality with links to the API reference."
             add(Page(slug, d.title, SECTION_GUIDES, re.sub(r"\n{3,}", "\n\n", "\n".join(out)).strip() + "\n", meta))
@@ -2044,14 +2071,18 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
             title, body, _ = notebook_to_markdown(nbp, rel, slug, assets)
             meta = upstream_meta(use_repo.version, gh_blob(rel, use_repo.tag), edited=True,
                                  note="Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, "
-                                      "text and image outputs reproduced, interactive Plotly/HTML outputs omitted.",
+                                      "text and image outputs reproduced, interactive Plotly/HTML outputs omitted, "
+                                      "with a short note on how to run this in GeoCore prepended.",
                                  extra={"notebook": rel})
             meta["description"] = first_sentence(body.split("```")[0]) or f"groundhog tutorial notebook: {nbp.stem}."
-            add(Page(slug, title, SECTION_GUIDES, body, meta))
+            add(Page(slug, title, SECTION_GUIDES, geocore_adaptation_note("tutorial") + body, meta))
             tut_nav.append({"title": title, "slug": slug})
             narrative_count += 1
-        tl = ["Tutorial and demo notebooks from the groundhog repository, converted to documentation pages. "
-              "The code needs groundhog (and for some notebooks, data files from the groundhog repository) to run.", ""]
+        tl = ["Tutorial and demo notebooks from the groundhog repository, showing the calculations in raw Python. "
+              "Inside GeoCore, the same calculations run through the calculation forms or GeoAI (see each "
+              "notebook's callout) — these pages are kept for reference and for scripting against groundhog "
+              "directly. The code needs groundhog (and for some notebooks, data files from the groundhog "
+              "repository) to run outside GeoCore.", ""]
         tl += [f"- [{t['title']}]({page_link(t['slug'])})" for t in tut_nav]
         meta = upstream_meta(use_repo.version, f"{GH_REPO_URL}/tree/{use_repo.tag}/notebooks", edited=True,
                              note="Index page generated by GeoCore.")

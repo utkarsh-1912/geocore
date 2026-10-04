@@ -146,4 +146,4 @@ def test_model_downloader_list():
     assert "mistral-7b-instruct-v0.3" in model_ids
     families = {m.get("family") for m in models}
     assert "qwen" in families
-    assert "gemma" in families
+    assert "granite" in families

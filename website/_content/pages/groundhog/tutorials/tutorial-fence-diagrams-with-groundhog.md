@@ -10,9 +10,11 @@ author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
 groundhog_version: 0.15.0
 edited_by_geocore: true
-geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted.'
+geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted, with a short note on how to run this in GeoCore prepended.'
 notebook: notebooks/Tutorial - Fence diagrams with groundhog.ipynb
 ---
+
+> **Adapted from groundhog's own documentation.** Inside GeoCore, run the same calculation through a [calculation form](/docs/geocore/using/modules) or by asking **GeoAI**, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python code instead.
 
 Since version 0.3.0, ```groundhog``` offers the possibility to plot CPT data and ```SoilProfile``` objects along a profile line.
 

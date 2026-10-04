@@ -11,6 +11,7 @@ import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check
 import { motion, AnimatePresence } from 'framer-motion';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
+import { suggestDataKind } from '../../utils/dataKind';
 import { SoilProfileModal } from './SoilProfileModal';
 import { SavedProfilesList } from './SavedProfilesList';
 import { ProfileViewModal } from './ProfileViewModal';
@@ -534,6 +535,14 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
         }
     };
 
+    // Forms with a data-kind field (SoilProfile upload): suggest CPT vs soil profile from the columns;
+    // the field stays visible so the user can change it.
+    const suggestKindFromColumns = (columns) => {
+        if (normalizedInputs.some(i => i.name === 'data_kind')) {
+            setFormData(prev => ({ ...prev, data_kind: suggestDataKind(columns) }));
+        }
+    };
+
     const handleFileUpload = async (name, file) => {
         setUploadError(null);
         if (!file) return;
@@ -577,8 +586,10 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                         console.log("Papa Parse Results (Full):", results);
                         if (results.meta && results.meta.fields) {
                             setFileColumns(results.meta.fields);
+                            suggestKindFromColumns(results.meta.fields);
                         } else if (results.data && results.data.length > 0) {
                             setFileColumns(Object.keys(results.data[0]));
+                            suggestKindFromColumns(Object.keys(results.data[0]));
                         }
 
                         // Store the actual data for the backend
@@ -602,6 +613,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
 
                         if (jsonData && jsonData.length > 0) {
                             setFileColumns(Object.keys(jsonData[0]));
+                            suggestKindFromColumns(Object.keys(jsonData[0]));
                             setFormData(prev => ({ ...prev, raw_data: jsonData }));
                         }
                     } catch (err) {
@@ -749,9 +761,10 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 required={input.required}
                                                 disabled={isEditMode}
                                             >
-                                                {options.map(opt => (
-                                                    <option key={opt} value={opt}>{opt}</option>
-                                                ))}
+                                                {options.map(opt => {
+                                                    const optValue = typeof opt === 'object' ? opt.value : opt;
+                                                    return <option key={optValue} value={optValue}>{typeof opt === 'object' ? opt.label : opt}</option>;
+                                                })}
                                             </select>
                                         </div>
                                     </div>

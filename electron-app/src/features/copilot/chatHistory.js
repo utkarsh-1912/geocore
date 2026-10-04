@@ -6,6 +6,12 @@
  */
 const MAX_HISTORY_MESSAGES = 6;
 
+// Date.now() alone can repeat for messages/conversations created in the same millisecond
+// (e.g. two quick sends that both hit an error fallback path), which React then rejects as
+// a duplicate list key — a counter guarantees every generated id is unique.
+let idCounter = 0;
+export const nextMessageId = (prefix) => `${prefix}-${Date.now()}-${++idCounter}`;
+
 export const buildChatHistory = (messages = []) =>
     messages
         .filter(m => (m.sender === 'user' || m.sender === 'ai') && !m.isError && m.text)

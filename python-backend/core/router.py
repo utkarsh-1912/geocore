@@ -1,6 +1,7 @@
 # Author: Utkarsh Gupta
 # License: GPL v3
 
+from typing import Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File, Body
 from .registry import registry
 import shutil
@@ -65,10 +66,15 @@ def create_dynamic_router():
         return details
 
     @router.post("/objects/upload")
-    def upload_object(type_name: str, file: UploadFile = File(...)):
+    def upload_object(type_name: str, file: UploadFile = File(...), data_kind: Optional[str] = None):
+        """``data_kind`` (``cpt`` or ``soil_profile``) records what the uploaded table holds."""
+        from .state import DATA_KINDS
         if type_name not in ["SoilProfile", "AGSConverter"]:
             raise HTTPException(status_code=400, detail="Only SoilProfile and AGSConverter upload is currently supported")
-        
+        if data_kind and data_kind not in DATA_KINDS:
+            raise HTTPException(status_code=422,
+                                detail=f"Unknown data_kind '{data_kind}' (expected one of: {', '.join(DATA_KINDS)}).")
+
         try:
             # Create temp file
             suffix = os.path.splitext(file.filename)[1]
@@ -79,7 +85,8 @@ def create_dynamic_router():
             # Execute SoilProfile creation through registry
             # We treat it as a function execution
             with _execute_lock:
-                result = registry.execute_function("general", "SoilProfile", {"data": tmp_path, "name": file.filename})
+                result = registry.execute_function("general", "SoilProfile",
+                                                   {"data": tmp_path, "name": file.filename, "data_kind": data_kind})
             
             # Clean up temp file (registry loads it into memory/df)
             os.unlink(tmp_path)
@@ -99,9 +106,11 @@ def create_dynamic_router():
             # For consistency, we expect the frontend to send { "raw_data": [...] } or similar args
             with _execute_lock:
                 result = registry.execute_function("general", "SoilProfile", data)
-            return result
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+        if result.get("status") == "ValidationError":
+            raise HTTPException(status_code=422, detail=result)
+        return result
 
     @router.get("/schema/overrides")
     def get_overrides():

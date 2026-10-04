@@ -91,6 +91,15 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
 
                     {/* Quick Actions */}
                     <div className="flex flex-wrap gap-2 mt-5">
+                        {onOpenCopilot && (
+                            <button
+                                onClick={onOpenCopilot}
+                                className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/30 rounded hover:bg-primary/15 hover:border-primary/50 transition-colors text-sm text-primary font-medium"
+                            >
+                                <GeoAILogo size={14} />
+                                <span>Ask GeoAI</span>
+                            </button>
+                        )}
                         <button
                             onClick={onOpenCommands}
                             className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded hover:border-primary/50 transition-colors text-sm text-text-main"
@@ -154,7 +163,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                                     e.stopPropagation();
                                     setShowClearConfirm(true);
                                 }}
-                                className="text-xs text-text-muted hover:text-red-500 hover:bg-red-500/10 px-2.5 py-1 rounded transition-colors flex items-center gap-1.5 font-medium border border-transparent hover:border-red-500/20"
+                                className="text-xs text-text-muted hover:text-error hover:bg-error/10 px-2.5 py-1 rounded transition-colors flex items-center gap-1.5 font-medium border border-transparent hover:border-error/20"
                                 title="Clear recent calculation history"
                             >
                                 <Trash2 size={13} />

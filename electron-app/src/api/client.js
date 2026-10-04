@@ -190,6 +190,45 @@ export const api = {
         return handleResponse(response);
     },
 
+    // Deterministic explanation of one result (method, standard, formula, substituted values).
+    // No model call, fast — safe to call right after a calculation completes.
+    geoaiExplain: async (function_id, args, results) => {
+        const response = await fetchWithTimeout('/api/geoai/explain', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ function_id, args, results }),
+            timeout: 5000
+        });
+        return handleResponse(response);
+    },
+
+    // Short plain-language narration of the same explanation, from the local model. Call this
+    // separately (and don't block on it) — it can take a few seconds on a cold or CPU-bound model.
+    geoaiExplainNarrate: async (function_id, args, results, signal = undefined) => {
+        const response = await fetch(`${API_BASE}/api/geoai/explain/narrate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ function_id, args, results }),
+            signal
+        });
+        return handleResponse(response);
+    },
+
+    // Project groundwater level [m below ground level]; null = not recorded.
+    geoaiGetGroundwater: async () => {
+        const response = await fetchWithTimeout('/api/geoai/project/groundwater');
+        return handleResponse(response);
+    },
+
+    geoaiSetGroundwater: async (depthM) => {
+        const response = await fetchWithTimeout('/api/geoai/project/groundwater', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ groundwater_depth_m: depthM, unit: 'm' })
+        });
+        return handleResponse(response);
+    },
+
     // Schema Overrides
     getSchemaOverrides: async () => {
         const response = await fetchWithTimeout('/api/schema/overrides');
@@ -286,10 +325,12 @@ export const api = {
         });
         return handleResponse(response);
     },
-    uploadObjectFile: async (objectType, file) => {
+    // dataKind: 'cpt' | 'soil_profile' - what the uploaded table holds (recorded with the object).
+    uploadObjectFile: async (objectType, file, dataKind = null) => {
         const formData = new FormData();
         formData.append('file', file);
-        const response = await fetchWithTimeout(`/api/objects/upload?type_name=${objectType}`, {
+        const kindParam = dataKind ? `&data_kind=${encodeURIComponent(dataKind)}` : '';
+        const response = await fetchWithTimeout(`/api/objects/upload?type_name=${objectType}${kindParam}`, {
             method: 'POST',
             body: formData,
             timeout: EXECUTE_TIMEOUT

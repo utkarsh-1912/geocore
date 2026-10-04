@@ -10,9 +10,11 @@ author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
 groundhog_version: 0.15.0
 edited_by_geocore: true
-geocore_edit_note: Converted from reStructuredText. Sphinx-only 'Indices and tables' section removed; raw HTML donation button replaced by a plain link.
+geocore_edit_note: Converted from reStructuredText. Sphinx-only 'Indices and tables' section removed; 'Installation requirements' and 'Support groundhog' (pip install steps and a donation/consultancy pitch) removed as not applicable to GeoCore, which already bundles groundhog.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/
 ---
+
+> **Adapted from groundhog's own documentation.** Inside GeoCore, these functions run through the [calculation catalogue](/docs/geocore/using/modules) or through **GeoAI**, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself.
 
 [![](https://badge.fury.io/py/groundhog.svg)](https://badge.fury.io/py/groundhog)
 
@@ -32,28 +34,6 @@ The package is developed around four pilars:
 - Soil profiles: Easy encoding and manipulation of soil profiles.
 
 The package was named after the [groundhog](https://en.wikipedia.org/wiki/Groundhog/), an animal that lives in underground burrows. Moreover, the movie [Groundhog Day](https://en.wikipedia.org/wiki/Groundhog_Day_(film)/) where a reporter relives the same day again and again. The groundhog package aims to remove this repetitiveness from your day-to-day geotechnical engineering work.
-
-## Installation requirements
-
-groundhog is written for Python 3.7+. Downloading Anaconda3 is recommended for users not familiar with Python development. Plotting functionality included in the package is built on plotly. The plotly package also needs to be installed and is not included in the default Anaconda installation.
-
-Installation is easily done using pip:
-
-```bash
-pip install groundhog
-```
-
-A more comprehensive Getting Started section with detailed installation instructions is included in the documentation.
-
-- [Getting started with groundhog](/docs/groundhog/guides/getting-started)
-
-## Support groundhog
-
-A lot of time and effort has gone into the creation and maintenance of groundhog. You can support the development of groundhog by buying me a coffee.
-
-[Support groundhog](https://www.buymeacoffee.com/groundhog)
-
-Training, writing of non-shared company-specific software built on groundhog and consultancy are additional revenue streams for the package. Get in touch if you are interested in these services.
 
 ## Tutorials
 

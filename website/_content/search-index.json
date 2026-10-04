@@ -233,7 +233,7 @@
       "Pipelines and cables",
       "Pipeline and cable stability"
     ],
-    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 204 calculators, of which 204 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
+    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 204 calculators, of which 197 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
   },
   {
     "slug": "geocore/using/parameter-overrides",
@@ -469,7 +469,7 @@
     "headings": [
       "piletest_chinkondler"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.piletesting (groundhog 0.15.0). View source. Functions: piletest_chinkondler piletest_chinkondler Available in GeoCore Pile calculations › Pile testing functionality › Chin-Kondler Extrapolation Extrapotates a pile head load-settlement curve based on th"
+    "text": "Module groundhog.deepfoundations.axialcapacity.piletesting (groundhog 0.15.0). View source. Functions: piletest_chinkondler piletest_chinkondler Extrapotates a pile head load-settlement curve based on the procedure by Chin-Kondler. The settlements are divided by the corresponding loads. This yields "
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/skinfriction",
@@ -532,7 +532,7 @@
       "reinforced_circularsection_inertia",
       "pilegroupeffect_reesevanimpe"
     ],
-    "text": "Module groundhog.deepfoundations.lateralresponse.lateral (groundhog 0.15.0). View source. Functions: reinforced_circularsection_inertia, pilegroupeffect_reesevanimpe reinforced_circularsection_inertia Available in GeoCore Pile calculations › Pile lateral behaviour › Reinforced Circular Section Inert"
+    "text": "Module groundhog.deepfoundations.lateralresponse.lateral (groundhog 0.15.0). View source. Functions: reinforced_circularsection_inertia, pilegroupeffect_reesevanimpe reinforced_circularsection_inertia Calculates the combined inertia of a circular section, reinforced with rebar rods at equal center-t"
   },
   {
     "slug": "groundhog/api/excavations",
@@ -560,7 +560,7 @@
       "bendingstiffness_soilmix_method1",
       "bendingstiffness_soilmix_method2"
     ],
-    "text": "Module groundhog.excavations.soilmix (groundhog 0.15.0). View source. Functions: bendingstiffness_soilmix_method1, bendingstiffness_soilmix_method2 bendingstiffness_soilmix_method1 Available in GeoCore Excavations › Soilmix › Bending Stiffness (Method 1) Calculates the bending stiffness of a soilmix"
+    "text": "Module groundhog.excavations.soilmix (groundhog 0.15.0). View source. Functions: bendingstiffness_soilmix_method1, bendingstiffness_soilmix_method2 bendingstiffness_soilmix_method1 Calculates the bending stiffness of a soilmix wall (for use in geotechnical retaining wall calculations) using the comb"
   },
   {
     "slug": "groundhog/api/general",
@@ -1230,21 +1230,19 @@
       "2.2. Online resources",
       "3. First steps with groundhog"
     ],
-    "text": "1. Installation 1.1. Installing Python Anaconda installs a Python environment and 100+ frequently used packages on your computer. Installing Anaconda is recommended if you don’t have Python on your system yet. If you have an existing Python environment on your system, you need to ensure that the pac"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. 1. Installation 1.1. Installing Python Anacon"
   },
   {
     "slug": "groundhog/guides/introduction",
     "title": "Introduction to groundhog",
     "section": "Groundhog Guides",
     "headings": [
-      "Installation requirements",
-      "Support groundhog",
       "Tutorials",
       "Function documentation",
       "Acknowledgements",
       "License and usage restrictions"
     ],
-    "text": "This Python package contains useful functionality for supporting automated geotechnical calculations. groundhog is first and foremost aimed at education on geotechnical engineering automation with Python. It aims to support students and educators with well-developed examples of geotechnical analysis"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This Python package contains useful functiona"
   },
   {
     "slug": "groundhog/guides/topics",
@@ -1263,7 +1261,7 @@
       "Pore pressure dissipation analysis",
       "One-dimensional consolidation"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Consolidation functions. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Groundwater flow Upstream page: Groundwater flow Pumping tests Ups"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/constitutivemodels",
@@ -1276,7 +1274,7 @@
       "Cohesive",
       "Rock"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Constitutive models. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. General Upstream page: General groundhog 0.15.0 has no functions or cl"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/excavations",
@@ -1288,7 +1286,7 @@
       "earthpressurecoefficients_poncelet",
       "earthpressurecoefficients_rankine"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Excavations. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Earth pressure coefficients Upstream page: Earth pressure coefficients Module "
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/general",
@@ -1322,7 +1320,7 @@
       "get_projected_point",
       "offsets"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for General and utility functions. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Soil profiles and gridscd Upstream page: Soil profiles and g"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/piles",
@@ -1354,7 +1352,7 @@
       "Negative skin friction",
       "negativeskinfriction_pilegroup_zeevaertdebeer"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Pile calculations. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Unit skin friction Upstream page: Unit skin friction Module groundhog.de"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/pipelinescables",
@@ -1364,7 +1362,7 @@
       "Pipeline and cable stability",
       "Pipeline and cable penetration"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Pipelines and cables. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Pipeline and cable stability Upstream page: Pipeline and cable stabil"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/shallowfoundations",
@@ -1404,7 +1402,7 @@
       "SettlementCalculation",
       "SettlementCalculation"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Shallow foundations. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Stress distributions Upstream page: Stress distributions Module ground"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/site-investigation",
@@ -1428,7 +1426,7 @@
       "Index tests",
       "Compressibility"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Site investigation. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Soil classification Upstream page: Soil classification Phase relations "
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/soildynamics",
@@ -1480,7 +1478,7 @@
       "Qtn_cs_boulanger_idriss_2014",
       "liquefaction_strains_zhang"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Soil dynamics. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Liquefaction Upstream page: Liquefaction Module groundhog.soildynamics.lique"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/guides/topics/standards",
@@ -1491,14 +1489,14 @@
       "Parameter selection",
       "Partial factor selection"
     ],
-    "text": "This page follows the structure of the upstream groundhog documentation for Standards. For each function it gives the method summary and key formulas from the groundhog docstrings, with a link to the full API reference. Eurocode 7 Upstream page: Eurocode 7 Parameter selection Upstream page: Paramete"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
   {
     "slug": "groundhog/tutorials",
     "title": "Tutorials",
     "section": "Groundhog Guides",
     "headings": [],
-    "text": "Tutorial and demo notebooks from the groundhog repository, converted to documentation pages. The code needs groundhog (and for some notebooks, data files from the groundhog repository) to run. - CGS webinar - CPT processing tutorial - CGS webinar - De Beer method for axial pile resistance - CPT retr"
+    "text": "Tutorial and demo notebooks from the groundhog repository, showing the calculations in raw Python. Inside GeoCore, the same calculations run through the calculation forms or GeoAI (see each notebook's callout) — these pages are kept for reference and for scripting against groundhog directly. The cod"
   },
   {
     "slug": "groundhog/tutorials/cgs-webinar-cpt-processing-tutorial",
@@ -1522,7 +1520,7 @@
       "Visualising soil parameter correlations",
       "Visualising spatial variability"
     ],
-    "text": "CGS webinar - CPT processing tutorial This notebook presents the workflow for CPT processing with , presented during a webinar of the Canadian Geotechnical Society eduction committee on the Future of Geotechnical Engineering Education. This notebook shows how functionality can be used to easily load"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance",
@@ -1538,7 +1536,7 @@
       "Soil profile specification",
       "Unit end bearing calculation"
     ],
-    "text": "CGS webinar - De Beer method for unit base resistance This notebook presents the workflow for calculating unit base resistance according to De Beer's method, which is the method in the Belgian National Annex of Eurocode 7. Calculating unit base resistance from penetrometer results is also described "
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/demo-bro-cpt-retrieval",
@@ -1549,7 +1547,7 @@
       "Retrieval of detailed CPT data",
       "Loading data into groundhog"
     ],
-    "text": "Location-based query First, all CPTs around a certain point can be retrieved (in lat/lon). The XML response contains information on the CPTs found in the area. Multiple CPTs can be returned. Note that detailed CPT data is not included in the response. The response can be parsed to get to IDs for the"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/demo-de-beer-pile-resistance-calculation",
@@ -1561,7 +1559,7 @@
       "Pile base capacity",
       "Shaft capacity"
     ],
-    "text": "In this demo, the pile shaft and base resistance is calculation according to De Beer's method (Belgian practice). Library imports We will import the necessary libraries first. Pile capacity Eurocode 7 in Belgium is applied with pile capacity calculated with De Beer's method. We can apply this method"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation",
@@ -1575,7 +1573,7 @@
       "4. Base resistance calculation",
       "Base resistance at pile tip"
     ],
-    "text": "A tutorial for the application of De Beer's method is given in this notebook. This notebook can be used to apply to other CPT profiles and possibly make modifications to gain further insight in the data and solutions. Loading Python libraries This notebook makes use of the Python library to load and"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/demo-koppejan-pile-resistance-calculation",
@@ -1588,7 +1586,7 @@
       "2.1. Shaft resistance",
       "2.2. Base resistance"
     ],
-    "text": "A tutorial for the application of the Koppejan method is given in this notebook. This notebook can be used to apply to other CPT profiles and possibly make modifications to gain further insight in the data and solutions. Loading Python libraries This notebook makes use of the Python library to load "
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog",
@@ -1612,7 +1610,7 @@
       "Results for the final penetration",
       "Results for all penetrations"
     ],
-    "text": "At the request of users, a routine for axial capacity is developed within groundhog. The pile capacity class AxCapCalculation develops a workflow in which the unit skin friction methods and unit end bearing methods are introduced into a SoilProfile object. A check is then performed to assess whether"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-basic-use-of-groundhog-functions",
@@ -1630,7 +1628,7 @@
       "Testing",
       "International collaboration"
     ],
-    "text": "The library contains geotechnical functions was built around the following core principles: - Transparency: Each function needs to be documented extensively and the user should always know which parameters to enter - Validation: When expert knowledge or calibration to experiments dictates that param"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-fence-diagrams-with-groundhog",
@@ -1643,7 +1641,7 @@
       "4. Soil profile",
       "5. Combined PCPT + soil profile plot"
     ],
-    "text": "Since version 0.3.0, offers the possibility to plot CPT data and objects along a profile line. The profile line is defined either by the name of a start and endpoint or through the specification of coordinates. To make use of the fence diagram plotting functionality, requires and objects to be geore"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux",
@@ -1662,7 +1660,7 @@
       "Retrieval of SPT data",
       "Closing remarks: Using gINT library files for data interpretation"
     ],
-    "text": "gINT is a widely used geodatabase. While the application is widely used in the geotechnical community, the file-based data storage does not facilite use of data across projects and data is often locked in a database file and not used further when the project finishes. Combining data from different p"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows",
@@ -1679,7 +1677,7 @@
       "Retrieval of SPT data",
       "Closing remarks: Using gINT library files for data interpretation"
     ],
-    "text": "gINT is a widely used geodatabase. While the application is widely used in the geotechnical community, the file-based data storage does not facilite use of data across projects and data is often locked in a database file and not used further when the project finishes. Combining data from different p"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-groundhog-parameter-selection-example",
@@ -1702,7 +1700,7 @@
       "Visualization of selected parameters",
       "Export of selection"
     ],
-    "text": "This notebook illustrates how geotechnical parameters can be selected with groundhog using the automatic selection and the LogPlotMatplotlib functionality. Stratigraphy We will need to use the qt plotting backend to allow interactive plotting. We will read a SoilProfile object using the read_excel m"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-loading-ags-data-using-groundhog",
@@ -1715,7 +1713,7 @@
       "3.1. Converting all groups",
       "3.2. Converting selected groups"
     ],
-    "text": "This tutorial outlines how an AGS 4.0 file can be converted to Python-compatible data structures (Pandas Dataframes) using . A file with geotechnical data from the Borssele I offshore wind farm is used to demonstrate the principles. This file is used under a Creative Commons 4.0 license. 1. Importin"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog",
@@ -1727,7 +1725,7 @@
       "3. Normalising PCPT data",
       "5. Applying correlations to PCPT data"
     ],
-    "text": "A PCPT processing tool has been created within the package. This tool is made available to allow rapid import of PCPT data, basic processing and checking of the sensitivity to processing parameters. Moreover, correlations between PCPT properties and other soil mechanical parameters an easily be appl"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog",
@@ -1742,7 +1740,7 @@
       "Loading a00 data",
       "Other file formats"
     ],
-    "text": "A PCPT processing tool has been created within the package. This tool is made available to allow rapid import of PCPT data, basic processing and checking of the sensitivity to processing parameters. Moreover, correlations between PCPT properties and other soil mechanical parameters an easily be appl"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-pore-pressure-dissipation",
@@ -1756,7 +1754,7 @@
       "Pore pressure dissipation for top drainage",
       "Pore pressure dissipation for non-uniform $ c_v $"
     ],
-    "text": "Since v0.8.0, groundhog includes a finite difference routine to calculate pore pressure dissipation. The one-dimensional consolidation equation has the following form: This equation can be solved using two solutions, being Fourier series and finite differences. Both are elaborated in this notebook. "
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-settlement-calculations-with-groundhog",
@@ -1778,7 +1776,7 @@
       "Stress increase",
       "Settlement calculation"
     ],
-    "text": "contains functionality to analyse the settlement of foundations under applied loads. Elastic stress solutions are available for strip foundation, circular foundations and rectangular foundations. Moreover, the basic functionality of for working with soil profiles and rapidly deriving correlations ca"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog",
@@ -1795,7 +1793,7 @@
       "Undrained capacity",
       "Drained capacity"
     ],
-    "text": "The analysis of shallow foundation is a recurring task for geotechnical engineers. While the problem at hand is rather simple (estimating the ultimate capacity of a foundation on soil) the governing equations contain several factors to account for foundation shape, depth, inclination and load inclin"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog",
@@ -1820,7 +1818,7 @@
       "5. Gridding functionality",
       "6. Changing the depth scale"
     ],
-    "text": "A soil profile is a table with several layers where the bottom depth of the previous layer corresponds to the top depth of the next layer. Because a soil profile is a dataframe with additional functionality, the class inherits from the class. Additional functionality is implemented to enable all com"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "groundhog/tutorials/tutorial-spt-data-processing-with-groundhog",
@@ -1835,7 +1833,7 @@
       "Applying correlations to SPT data",
       "Conclusions and outlook"
     ],
-    "text": "Since version v0.6.0 an SPT processing tool has been created within the package. This tool is made available to allow rapid import of SPT data, basic processing and checking of the sensitivity to processing parameters. Moreover, correlations between SPT properties and other soil mechanical parameter"
+    "text": "Adapted from groundhog's own documentation. Inside GeoCore, run the same calculation through a calculation form or by asking GeoAI, which calls the same groundhog function through its validated Tool Registry. This notebook is kept for anyone who wants to call groundhog directly from their own Python"
   },
   {
     "slug": "index",

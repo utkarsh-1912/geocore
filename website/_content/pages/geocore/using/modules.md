@@ -13,7 +13,7 @@ edited_by_geocore: false
 geocore_available: true
 ---
 
-GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 204 calculators, of which 204 link to the groundhog function or class they run.
+GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 204 calculators, of which 197 link to the groundhog function or class they run.
 
 ## General and utility functions
 
@@ -211,8 +211,8 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Pile lateral behaviour
 
-- <a id="pilegroupeffect_reesevanimpe"></a>**Pile Group Effect (Reese & Van Impe)** (`pilegroupeffect_reesevanimpe`) — [groundhog `pilegroupeffect_reesevanimpe`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral#pilegroupeffect_reesevanimpe)
-- <a id="reinforced_circularsection_inertia"></a>**Reinforced Circular Section Inertia** (`reinforced_circularsection_inertia`) — [groundhog `reinforced_circularsection_inertia`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral#reinforced_circularsection_inertia)
+- <a id="pilegroupeffect_reesevanimpe"></a>**Pile Group Effect (Reese & Van Impe)** (`pilegroupeffect_reesevanimpe`) — No upstream documentation.
+- <a id="reinforced_circularsection_inertia"></a>**Reinforced Circular Section Inertia** (`reinforced_circularsection_inertia`) — No upstream documentation.
 
 ### Cavity expansion methods
 
@@ -226,7 +226,7 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Pile testing functionality
 
-- <a id="piletest_chinkondler"></a>**Chin-Kondler Extrapolation** (`piletest_chinkondler`) — [groundhog `piletest_chinkondler`](/docs/groundhog/api/deepfoundations/axialcapacity/piletesting#piletest_chinkondler)
+- <a id="piletest_chinkondler"></a>**Chin-Kondler Extrapolation** (`piletest_chinkondler`) — No upstream documentation.
 
 ## Shallow foundations
 
@@ -234,11 +234,11 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 ### Stress distributions
 
 - <a id="stresses_circle"></a>**Circular Footing Stress** (`stresses_circle`) — [groundhog `stresses_circle`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_circle)
-- <a id="stresses_lineload_retainingwall"></a>**Line Load Stress (Retaining Wall)** (`stresses_lineload_retainingwall`) — [groundhog `stresses_lineload_retainingwall`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_lineload_retainingwall)
+- <a id="stresses_lineload_retainingwall"></a>**Line Load Stress (Retaining Wall)** (`stresses_lineload_retainingwall`) — No upstream documentation.
 - <a id="stresses_pointload"></a>**Point Load Stress** (`stresses_pointload`) — [groundhog `stresses_pointload`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_pointload)
 - <a id="stresses_rectangle"></a>**Rectangular Footing Stress** (`stresses_rectangle`) — [groundhog `stresses_rectangle`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_rectangle)
 - <a id="stresses_stripload"></a>**Strip Load Stress** (`stresses_stripload`) — [groundhog `stresses_stripload`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_stripload)
-- <a id="stresses_stripload_retainingwall"></a>**Strip Load Stress (Retaining Wall)** (`stresses_stripload_retainingwall`) — [groundhog `stresses_stripload_retainingwall`](/docs/groundhog/api/shallowfoundations/stressdistribution#stresses_stripload_retainingwall)
+- <a id="stresses_stripload_retainingwall"></a>**Strip Load Stress (Retaining Wall)** (`stresses_stripload_retainingwall`) — No upstream documentation.
 
 ### Shallow foundation capacity
 
@@ -289,8 +289,8 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 ### Soilmix
 
-- <a id="bendingstiffness_soilmix_method1"></a>**Bending Stiffness (Method 1)** (`bendingstiffness_soilmix_method1`) — [groundhog `bendingstiffness_soilmix_method1`](/docs/groundhog/api/excavations/soilmix#bendingstiffness_soilmix_method1)
-- <a id="bendingstiffness_soilmix_method2"></a>**Bending Stiffness (Method 2)** (`bendingstiffness_soilmix_method2`) — [groundhog `bendingstiffness_soilmix_method2`](/docs/groundhog/api/excavations/soilmix#bendingstiffness_soilmix_method2)
+- <a id="bendingstiffness_soilmix_method1"></a>**Bending Stiffness (Method 1)** (`bendingstiffness_soilmix_method1`) — No upstream documentation.
+- <a id="bendingstiffness_soilmix_method2"></a>**Bending Stiffness (Method 2)** (`bendingstiffness_soilmix_method2`) — No upstream documentation.
 
 ## Soil dynamics
 

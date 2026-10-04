@@ -9,9 +9,12 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../api/client';
 
+// Longer than several backend keepalives (every 5 s), so only a dead backend trips it.
+const STREAM_IDLE_TIMEOUT_MS = 45000;
+
 /**
  * Stream a chat turn. `onText(text)` receives the text to show while streaming; `onStage(stage)`
- * receives the agent's current phase ('loading_model'|'thinking'|'writing_answer') so the UI can
+ * receives the agent's current phase ('checking_tools'|'loading_model'|'thinking'|'calling_tool:<name>'|'writing_answer') so the UI can
  * show what it's actually waiting on instead of a generic spinner.
  * Resolves to { text, executedTool, parameters, results, outcome: 'done'|'cancelled'|'error', error }.
  * Throws only when the request could not be started (the caller may fall back).
@@ -28,15 +31,17 @@ export async function streamGeoAIChat({ text, context, history, signal, onText =
             turn.text += event.content;
             onText(turn.text);
         } else if (event.type === 'stage') {
-            // A new phase starts with nothing shown yet: clear any stale "Calculating with X..."
-            // text so the stage label (rendered while the bubble is empty) takes over.
+            // A new phase starts with nothing shown yet: clear any stale text so the stage
+            // label (rendered while the bubble is empty) takes over.
             turn.text = '';
             onStage(event.content);
             onText('');
         } else if (event.type === 'tool_start') {
             turn.executedTool = event.tool_name;
             turn.parameters = event.tool_args;
-            onText(`Calculating with **${event.tool_name}**...`);
+            // Shown as a stage (with the timer), not as fixed bubble text.
+            onStage(`calling_tool:${event.tool_name}`);
+            onText('');
         } else if (event.type === 'tool_result') {
             turn.results = event.tool_result;
             turn.text = '';
@@ -48,9 +53,23 @@ export async function streamGeoAIChat({ text, context, history, signal, onText =
         }
     };
 
+    // The backend sends a keepalive every few seconds while the model works, so a silent stream
+    // means the backend is dead or wedged, not just slow: stop waiting instead of spinning forever.
+    let stalled = false;
+    let idleTimer = null;
+    const armIdleTimer = () => {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+            stalled = true;
+            reader.cancel().catch(() => {});
+        }, STREAM_IDLE_TIMEOUT_MS);
+    };
+
     try {
+        armIdleTimer();
         while (true) {
             const { done, value } = await reader.read();
+            armIdleTimer();
             if (done) break;
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
@@ -73,6 +92,13 @@ export async function streamGeoAIChat({ text, context, history, signal, onText =
             turn.outcome = 'error';
             turn.error = err.message || 'Connection to GeoAI was lost.';
         }
+    } finally {
+        clearTimeout(idleTimer);
+    }
+    if (stalled && !signal?.aborted) {
+        api.geoaiCancel().catch(() => {});  // free the model for the next question
+        turn.outcome = 'error';
+        turn.error = 'GeoAI stopped responding. The request was cancelled; please try again.';
     }
     return turn;
 }
@@ -111,14 +137,17 @@ export function useElapsedSeconds(active) {
 }
 
 const STAGE_LABELS = {
+    checking_tools: 'Checking for tools...',
     loading_model: 'Loading the local model...',
-    thinking: 'Thinking...',
-    writing_answer: 'Writing the answer...',
+    thinking: 'Interpreting input...',
+    writing_answer: 'Generating output...',
 };
 
 /** Progress label for the current agent phase: the local model processes the prompt on the CPU before the first word. */
 export function stageLabel(stage, seconds) {
-    const base = STAGE_LABELS[stage] || 'Thinking...';
+    const base = stage?.startsWith('calling_tool:')
+        ? `Calling tool ${stage.slice('calling_tool:'.length)}...`
+        : STAGE_LABELS[stage] || 'Interpreting input...';
     if (seconds < 5) return base;
     const hint = seconds >= 20 ? ' (local model on CPU; long questions can take a few minutes)' : '';
     return `${base} ${seconds}s${hint}`;

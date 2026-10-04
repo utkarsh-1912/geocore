@@ -12,6 +12,14 @@ import threading
 from .paths import get_config_dir
 
 SAVED_OBJECTS_FILENAME = "saved_objects.json"
+#: Project-level settings (e.g. the recorded groundwater level), kept next to the saved objects.
+PROJECT_SETTINGS_FILENAME = "project_settings.json"
+
+#: What an uploaded table holds. Recorded at upload (chosen by the user) and kept in the object's
+#: metadata as "kind"; objects saved before kinds were recorded have none.
+DATA_KIND_SOIL_PROFILE = "soil_profile"
+DATA_KIND_CPT = "cpt"
+DATA_KINDS = (DATA_KIND_SOIL_PROFILE, DATA_KIND_CPT)
 _BACKEND_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -75,6 +83,9 @@ class StateManager:
         # backend start-up. main.py pre-loads them in the background.
         self._loaded = False
         self._load_lock = threading.Lock()
+        # Project settings load on first use, independently of the (slower) saved objects.
+        self._settings: Optional[Dict[str, Any]] = None
+        self._settings_lock = threading.Lock()
 
     def ensure_loaded(self):
         if self._loaded:
@@ -136,6 +147,8 @@ class StateManager:
                     "name": name,
                     "timestamp": obj_data.get("timestamp", "restored")
                 }
+                if obj_data.get("kind") in DATA_KINDS:
+                    self._metadata_store[obj_id]["kind"] = obj_data["kind"]
                 
             print(f"Loaded {len(self._objects_store)} objects from disk.")
         except Exception as e:
@@ -150,21 +163,26 @@ class StateManager:
                 if hasattr(obj, 'to_dict'):
                     # Save as records
                     data = obj.to_dict(orient='records')
-                    to_save.append({
+                    record = {
                         "id": obj_id,
                         "type": meta["type"],
                         "name": meta["name"],
                         "timestamp": meta["timestamp"],
                         "data": data
-                    })
+                    }
+                    if meta.get("kind"):
+                        record["kind"] = meta["kind"]
+                    to_save.append(record)
         
         try:
             _atomic_write_bytes(self.path, json.dumps(to_save, indent=2).encode('utf-8'))
         except Exception as e:
             print(f"Failed to save objects to disk: {e}")
 
-    def store(self, obj: Any, type_name: str, name: Optional[str] = None) -> str:
-        """Stores an object and returns its ID."""
+    def store(self, obj: Any, type_name: str, name: Optional[str] = None, kind: Optional[str] = None) -> str:
+        """Stores an object and returns its ID. ``kind`` is one of DATA_KINDS (or None: not recorded)."""
+        if kind is not None and kind not in DATA_KINDS:
+            raise ValueError(f"Unknown data kind '{kind}' (expected one of: {', '.join(DATA_KINDS)}).")
         obj_id = str(uuid.uuid4())
         
         # improved naming strategy
@@ -178,6 +196,8 @@ class StateManager:
             "name": name,
             "timestamp": "now" # In real app, use datetime
         }
+        if kind:
+            self._metadata[obj_id]["kind"] = kind
         
         self._save_to_disk()
         return obj_id
@@ -196,6 +216,42 @@ class StateManager:
             del self._objects[obj_id]
             del self._metadata[obj_id]
             self._save_to_disk()
+
+    # ------------------------------------------------------------------ project settings
+    @property
+    def settings_path(self) -> Path:
+        return self.path.parent / PROJECT_SETTINGS_FILENAME
+
+    def _project_settings(self) -> Dict[str, Any]:
+        if self._settings is None:
+            with self._settings_lock:
+                if self._settings is None:
+                    self._settings = self._read_settings()
+        return self._settings
+
+    def _read_settings(self) -> Dict[str, Any]:
+        try:
+            if self.settings_path.is_file():
+                data = json.loads(self.settings_path.read_text(encoding="utf-8"))
+                if isinstance(data, dict):
+                    return data
+                print(f"Ignoring malformed project settings in {self.settings_path}.")
+        except (OSError, ValueError) as e:
+            print(f"Failed to load project settings: {e}")
+        return {}
+
+    def get_project_setting(self, key: str, default: Any = None) -> Any:
+        return self._project_settings().get(key, default)
+
+    def set_project_setting(self, key: str, value: Any) -> None:
+        """Saves one project setting; None removes it. Raises OSError when it cannot be written."""
+        settings = dict(self._project_settings())
+        if value is None:
+            settings.pop(key, None)
+        else:
+            settings[key] = value
+        _atomic_write_bytes(self.settings_path, json.dumps(settings, indent=2).encode('utf-8'))
+        self._settings = settings
 
 # Global state instance
 state_manager = StateManager()

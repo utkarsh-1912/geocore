@@ -21,8 +21,9 @@ import {
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
-import { buildChatHistory } from './chatHistory';
+import { buildChatHistory, nextMessageId } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
+import { ProjectGroundwaterField } from './ProjectGroundwaterField';
 import { finalTurnText, stopGeoAIChat, streamGeoAIChat, stageLabel, useElapsedSeconds } from './geoaiStream';
 import { toast } from 'sonner';
 
@@ -140,7 +141,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     // Default initial conversation generator
     const createDefaultConv = () => ({
-        id: `conv-${Date.now()}`,
+        id: nextMessageId('conv'),
         title: 'New Analysis',
         createdAt: new Date().toISOString(),
         messages: []
@@ -232,6 +233,20 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     useEffect(() => {
         scrollToBottom();
     }, [messages, isLoading]);
+
+    // Load the local model in the background so the first question doesn't pay the load time.
+    // Also when the user starts typing after the idle timeout released the weights (cheap no-op
+    // on the backend when the model is already loaded or loading).
+    useEffect(() => {
+        api.geoaiWarmup().catch(() => {});
+    }, []);
+    const warmOnTyping = useRef(0);
+    const warmUpIfIdle = () => {
+        const now = Date.now();
+        if (now - warmOnTyping.current < 30000) return;
+        warmOnTyping.current = now;
+        api.geoaiWarmup().catch(() => {});
+    };
 
     // Fetch model & memory status
     useEffect(() => {
@@ -341,7 +356,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         const history = buildChatHistory(msgsToUse);
 
         const userMsg = {
-            id: `user-${Date.now()}`,
+            id: nextMessageId('user'),
             sender: 'user',
             text: text.trim(),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -354,7 +369,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         setIsLoading(true);
         setStage(null);
 
-        const aiMessageId = Date.now() + 1;
+        const aiMessageId = nextMessageId('ai');
         const setAiMessage = (fields) => setConversations(prev => prev.map(c => (
             c.id === targetId
                 ? { ...c, messages: c.messages.map(m => m.id === aiMessageId ? { ...m, ...fields } : m) }
@@ -397,7 +412,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             try {
                 const res = await api.geoaiChat(text, currentContext, history);
                 const aiMsg = {
-                    id: Date.now() + 1,
+                    id: nextMessageId('ai'),
                     sender: 'ai',
                     text: res.response || "Calculation complete.",
                     executedTool: res.executed_tool,
@@ -409,7 +424,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 updateCurrentMessages([...updated, aiMsg]);
             } catch (fallbackErr) {
                 const errorMsg = {
-                    id: Date.now() + 1,
+                    id: nextMessageId('ai'),
                     sender: 'ai',
                     text: `Calculation Error: ${fallbackErr.message || "Failed to execute calculation."}`,
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -617,6 +632,9 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             </div>
                         ))}
                     </div>
+
+                    {/* Project context: recorded groundwater level */}
+                    <ProjectGroundwaterField />
 
                     {downloadStatus?.status === 'downloading' && (
                         <div className="border-t border-border bg-primary/5 shrink-0">
@@ -1022,6 +1040,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             value={inputValue}
                             onChange={(e) => {
                                 setInputValue(e.target.value);
+                                warmUpIfIdle();
                                 adjustTextareaHeight();
                             }}
                             onKeyDown={handleKeyDown}

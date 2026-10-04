@@ -7,6 +7,7 @@ This module provides the main orchestration loop that connects the SLM
 
 import json
 import logging
+import time
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
@@ -28,6 +29,7 @@ from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
 from .exceptions import GeoAIValidationError
 from .argument_grounding import missing_inputs_message, ungrounded_arguments
+from .turn_trace import CANCELLED, EMPTY_ANSWER, EMPTY_ANSWER_MESSAGE, FAILURES, classify_turn, record_turn
 
 logger = logging.getLogger(__name__)
 
@@ -356,7 +358,39 @@ class GeoAIAgent:
 
     def run_stream(self, user_message: str, context: Optional[Dict[str, Any]] = None,
                    history: Optional[List[Dict[str, Any]]] = None) -> Iterator[AgentStreamEvent]:
-        self._provider.clear_cancel()
+        """
+        One streamed turn with reliability guarantees: a turn that ends without any answer text
+        gets an explicit message instead of a blank bubble, and every turn's outcome is traced
+        (turn_trace) so chat failures can be counted by cause.
+        """
+        started = time.monotonic()
+        events: List[AgentStreamEvent] = []
+        outcome: Optional[str] = None
+        try:
+            for event in self._run_stream(user_message, context, history):
+                if event.type == 'done':
+                    outcome = classify_turn(user_message, events)  # before any notice is added
+                    if outcome == EMPTY_ANSWER:
+                        notice = AgentStreamEvent(type='token', content=EMPTY_ANSWER_MESSAGE)
+                        events.append(notice)
+                        yield notice
+                events.append(event)
+                yield event
+        except GeneratorExit:  # the client went away mid-turn
+            record_turn(CANCELLED, user_message, events, started, self._provider.model_info())
+            raise
+        except Exception as e:
+            record_turn(classify_turn(user_message, events, e), user_message, events, started,
+                        self._provider.model_info(), e)
+            raise
+        outcome = outcome or classify_turn(user_message, events)
+        if outcome in FAILURES:
+            logger.warning(f"GeoAI turn outcome: {outcome}")
+        record_turn(outcome, user_message, events, started, self._provider.model_info())
+
+    def _run_stream(self, user_message: str, context: Optional[Dict[str, Any]] = None,
+                    history: Optional[List[Dict[str, Any]]] = None) -> Iterator[AgentStreamEvent]:
+        yield AgentStreamEvent(type='stage', content='checking_tools')  # tool retrieval + context
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
         seed = _history_seed(history)
@@ -366,6 +400,9 @@ class GeoAIAgent:
             # tell the UI which it's waiting on instead of a generic spinner.
             stage = 'loading_model' if round_num == 0 and not self._provider.is_loaded() else 'thinking'
             yield AgentStreamEvent(type='stage', content=stage)
+            if round_num == 0:
+                # Waits for a previous call to release the model; the stage is already shown.
+                self._provider.clear_cancel()
             stream = self._provider.generate_stream(
                 messages=messages,
                 tools=tools_for_model,
