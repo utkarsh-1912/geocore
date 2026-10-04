@@ -239,3 +239,27 @@
     }
   }
 })();
+
+
+/* Header surface: follow whatever is behind the sticky header. Over a dark spotlight section
+   (hero, GeoAI, call-to-action, footer) the header switches to its dark skin, even in the light theme. */
+(function () {
+  'use strict';
+  var header = document.querySelector('.site-header');
+  if (!header) return;
+  var dark = document.querySelectorAll('.hero, .lp-dark, .cta-band, .site-footer');
+  if (!dark.length) return;
+  function update() {
+    var y = header.offsetHeight / 2;
+    var on = false;
+    for (var i = 0; i < dark.length; i++) {
+      var r = dark[i].getBoundingClientRect();
+      if (r.top <= y && r.bottom > y) { on = true; break; }
+    }
+    if (on) header.setAttribute('data-surface', 'dark'); else header.removeAttribute('data-surface');
+  }
+  function request() { update(); }  /* a few rect reads per scroll event: cheap, and works while rAF is throttled */
+  window.addEventListener('scroll', request, { passive: true });
+  window.addEventListener('resize', request);
+  update();
+})();

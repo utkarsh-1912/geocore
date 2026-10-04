@@ -2070,3 +2070,29 @@ h1, h2, h3 { letter-spacing: -0.025em; }
 .site-footer { margin-top: var(--sp-8); }
 
 .bar-chart__track-bg, .bar-chart__fill { rx: 2px; ry: 2px; }
+
+/* Header over a dark section (toggled by site.js) — dark skin regardless of theme */
+.site-header { transition: background-color 220ms var(--ease), box-shadow 220ms var(--ease); }
+.site-header[data-surface="dark"] {
+  --c-header: rgba(6, 16, 12, 0.72);
+  --c-bg: #06100c;
+  --c-surface: #0d1814;
+  --c-surface-2: rgba(255, 255, 255, 0.08);
+  --c-border: rgba(255, 255, 255, 0.12);
+  --c-border-strong: rgba(255, 255, 255, 0.24);
+  --c-text: #eaf3ee;
+  --c-text-muted: #b6c9be;
+  --c-text-subtle: #8aa196;
+  --c-primary: #86efac;
+  --c-primary-soft: rgba(134, 239, 172, 0.12);
+  color: var(--c-text);
+}
+.site-header[data-surface="dark"] .brand__logo--light { display: none !important; }
+.site-header[data-surface="dark"] .brand__logo--dark { display: inline-block !important; }
+.site-header[data-surface="dark"] .btn--primary { background: linear-gradient(135deg, #a3e635 0%, #34d399 100%); color: #052e16; }
+.site-header[data-surface="dark"] .mobile-nav { background: #0a1511; }
+
+/* Landing: the hero runs under the sticky header so the header can adopt its dark skin at the top */
+body:has(.hero) .site-header { margin-bottom: calc(-1 * var(--header-h)); }
+.hero { padding-top: calc(var(--sp-12) + var(--header-h)); }
+@media (max-width: 40rem) { .hero { padding-top: calc(var(--sp-10) + var(--header-h)); } }
