@@ -1,0 +1,2 @@
+# The runner is executed by bash on Linux: keep LF endings even in Windows checkouts (core.autocrlf).
+*.sh text eol=lf

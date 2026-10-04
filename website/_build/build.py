@@ -127,10 +127,8 @@ _FALLBACK_MODELS = [
      "repo_id": "Qwen/Qwen2.5-3B-Instruct-GGUF", "size_mb": 2040},
     {"id": "qwen2.5-7b-instruct", "family": "qwen", "display_name": "Qwen 2.5 (7B Instruct)",
      "repo_id": "Qwen/Qwen2.5-7B-Instruct-GGUF", "size_mb": 4400},
-    {"id": "gemma-2-2b-it", "family": "gemma", "display_name": "Gemma 2 (2.6B IT)",
-     "repo_id": "bartowski/gemma-2-2b-it-GGUF", "size_mb": 1630},
-    {"id": "gemma-2-9b-it", "family": "gemma", "display_name": "Gemma 2 (9B IT)",
-     "repo_id": "bartowski/gemma-2-9b-it-GGUF", "size_mb": 5400},
+    {"id": "mistral-7b-instruct-v0.3", "family": "mistral", "display_name": "Mistral 7B Instruct (v0.3)",
+     "repo_id": "bartowski/Mistral-7B-Instruct-v0.3-GGUF", "size_mb": 4170},
 ]
 
 
@@ -392,7 +390,7 @@ def clean_docs_output() -> None:
 
 
 SECTION_ICONS = {
-    "getting-started": "download", "using-geocore": "sliders", "geoai": "sparkles",
+    "getting-started": "download", "using-geocore": "sliders", "geoai": "geoai",
     "groundhog-guides": "book", "groundhog-api": "code", "changelog": "history", "license": "scale",
 }
 

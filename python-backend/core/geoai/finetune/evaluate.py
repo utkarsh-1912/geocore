@@ -26,6 +26,8 @@ from core.geoai.finetune.config import FinetuneConfig, add_config_args, config_f
 
 def quick_eval(cfg: FinetuneConfig, adapter_dir: Optional[Path], n: int = 40, split: str = "val",
                max_new_tokens: int = 256) -> Dict[str, Any]:
+    import os
+    os.environ["UNSLOTH_DISABLE_STATISTICS"] = "1"  # prevent telemetry subprocess hang on Colab
     from unsloth import FastLanguageModel
 
     from core.geoai.eval.scoring import score_turn
@@ -33,9 +35,13 @@ def quick_eval(cfg: FinetuneConfig, adapter_dir: Optional[Path], n: int = 40, sp
 
     if split in ("test", "gold"):
         raise ValueError("quick_eval is a training-time check; use core.geoai.eval.runner for held-out splits")
+    # Always load the base model first; for adapter evals, layer the PEFT adapter on top.
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=str(adapter_dir) if adapter_dir else cfg.base_model, max_seq_length=cfg.max_seq_length,
+        model_name=cfg.base_model, max_seq_length=cfg.max_seq_length,
         load_in_4bit=cfg.resolved_load_in_4bit, dtype=None)
+    if adapter_dir is not None:
+        from peft import PeftModel
+        model = PeftModel.from_pretrained(model, str(adapter_dir))
     FastLanguageModel.for_inference(model)
     recs = build_grpo_records(replace(cfg, grpo_splits=(split,)), limit=n)["records"]
     by_cat: Dict[str, List[float]] = defaultdict(list)

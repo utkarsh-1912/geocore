@@ -15,8 +15,9 @@ git clone --depth 1 --branch v0.15.0 https://github.com/snakesonabrain/groundhog
 python-backend/venv/Scripts/python.exe website/_content/extract_docs.py --groundhog-repo <tmp>/groundhog
 ```
 
-- Without `--groundhog-repo` only the API reference (from the installed package), GeoCore pages, section
-  indexes and the licence page are built; guides, tutorials, the changelog and figures are skipped.
+- Without `--groundhog-repo` only the API reference (from the installed package), GeoCore pages (including
+  the Changelog, which is hand-written, not upstream), section indexes and the licence page are built;
+  guides, tutorials and figures are skipped.
 - The run deletes and rebuilds `pages/` and `groundhog/assets/`, then verifies the output (every nav slug
   has a page, no orphan pages, front-matter parses with the required fields, internal links and image
   paths resolve). It exits with status 1 if verification fails.
@@ -105,9 +106,10 @@ table `UI_ALIASES` in the extractor (mirrors special cases in `python-backend/co
 ## Counts (last run)
 
 See `build-info.json`. At groundhog 0.15.0: 45 API modules, 198 functions, 22 classes, 183 methods;
-204 GeoCore calculators, all linked to their groundhog item; 33 upstream narrative pages (introduction,
-getting started, 10 topic pages, 20 notebook tutorials, changelog); 14 GeoCore pages (13 hand-written +
-generated catalogue).
+204 GeoCore calculators, all linked to their groundhog item; 32 upstream narrative pages (introduction,
+getting started, 10 topic pages, 20 notebook tutorials); 16 GeoCore pages (15 hand-written, including the
+Changelog, + generated catalogue). groundhog's own release history (`CHANGES.txt`) is not imported; the
+Changelog page links to it upstream instead.
 
 ## Licensing
 
@@ -133,5 +135,4 @@ generated catalogue).
   Plotly/HTML outputs are replaced by a note. Most upstream notebooks are stored without outputs.
 - Upstream `automodule`/`autoclass` directives become links to the API pages. Topic pages keep the upstream
   toctree hierarchy.
-- The upstream changelog at tag v0.15.0 starts with an unreleased "v0.16.0 - TBD" block; it is kept.
 - Readthedocs links point at `/en/main/`, which may be newer than 0.15.0; `source_url` pins the tag.

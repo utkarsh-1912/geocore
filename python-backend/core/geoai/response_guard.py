@@ -37,15 +37,25 @@ def _norm_sentence(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip().lower()
 
 
-def collapse_repetition(text: Optional[str]) -> str:
+def sentence_keys(text: Optional[str]) -> List[str]:
+    """Normalized sentence keys (len > 20) usable to seed cross-turn repetition dedup."""
+    if not text:
+        return []
+    pieces = _SENTENCE_BREAK.split(text)
+    return [key for key in (_norm_sentence(pieces[i]) for i in range(0, len(pieces), 2)) if len(key) > 20]
+
+
+def collapse_repetition(text: Optional[str], seed: Iterable[str] = ()) -> str:
     """
     Remove verbatim repeated sentences (keeping the first occurrence) and a trailing
     fragment that merely restarts an earlier sentence (typical of a max_tokens cut-off).
+    ``seed`` pre-populates the seen set with sentences already shown in earlier turns, so a
+    continuation that restates them (small models often do, see AnswerStreamCleaner) is dropped too.
     """
     if not text:
         return text or ""
     pieces = _SENTENCE_BREAK.split(text)  # [sentence, separator, sentence, separator, ...]
-    seen: List[str] = []
+    seen: List[str] = list(seed)
     kept: List[List[str]] = []  # [sentence, separator]
     removed = False
     for i in range(0, len(pieces), 2):
@@ -143,12 +153,18 @@ def fix_result_units(text: Optional[str], tools_used: Iterable[Dict[str, Any]]) 
     return _NUMBER_WITH_UNIT.sub(_sub, text)
 
 
-_RECORD_LINE = re.compile(r"^[ \t]*\[Calculation record\].*$\n?", re.MULTILINE)
-# A record echoed after other text on the same line ("... [Calculation record] {...}");
-# a plain mention of the tag without a JSON payload is kept.
-_RECORD_INLINE = re.compile(r"[ \t]*\[Calculation record\][ \t]*\{[^\n]*")
-_RECORD_INLINE_DONE = re.compile(r"[ \t]*\[Calculation record\][ \t]*\{[^\n]*(?=\n)")
-_RECORD_INLINE_OPEN = re.compile(r"\[Calculation record\][ \t]*(?:\{|$)")
+# Small models sometimes narrate "[Calculation record: ...]" in free text instead of
+# actually calling a tool (AGENTS.md §5, §17: never fabricate a result). That colon form
+# is not the real tag agent.py._calculation_record emits ("[Calculation record] {json}"),
+# so it is matched here too and stripped the same way.
+_RECORD_LINE = re.compile(r"^[ \t]*\[Calculation record[\]:].*$\n?", re.MULTILINE)
+# A record echoed after other text on the same line ("... [Calculation record] {...}" or
+# the fabricated "... [Calculation record: ..."); a plain mention of the tag with no
+# payload marker following it is kept.
+_RECORD_INLINE = re.compile(r"[ \t]*\[Calculation record\][ \t]*\{[^\n]*|[ \t]*\[Calculation record:[^\n]*")
+_RECORD_INLINE_DONE = re.compile(
+    r"[ \t]*\[Calculation record\][ \t]*\{[^\n]*(?=\n)|[ \t]*\[Calculation record:[^\n]*(?=\n)")
+_RECORD_INLINE_OPEN = re.compile(r"\[Calculation record\][ \t]*(?:\{|$)|\[Calculation record:")
 # Models copy JSON-escaped text from tool results ("EC7 §9.5"); show the character.
 _UNICODE_ESCAPE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
@@ -163,15 +179,18 @@ def unescape_unicode(text: str) -> str:
     return _UNICODE_ESCAPE.sub(lambda m: chr(int(m.group(1), 16)), text)
 
 
-def clean_answer(text: Optional[str], tools_used: Optional[Iterable[Dict[str, Any]]] = None) -> str:
-    """Apply all guards to a final answer."""
-    cleaned = collapse_repetition(strip_calculation_records(text))
+def clean_answer(text: Optional[str], tools_used: Optional[Iterable[Dict[str, Any]]] = None,
+                  seed: Iterable[str] = ()) -> str:
+    """Apply all guards to a final answer. ``seed``: see ``collapse_repetition``."""
+    cleaned = collapse_repetition(strip_calculation_records(text), seed=seed)
     return unescape_unicode(fix_result_units(cleaned, tools_used or []))
 
 
-_RECORD_TAG = "[Calculation record]"
-_RECORD_LINE_DONE = re.compile(r"^[ \t]*\[Calculation record\][^\n]*\n", re.MULTILINE)
-_RECORD_LINE_START = re.compile(r"^[ \t]*\[Calculation record\]", re.MULTILINE)
+# No trailing "]" here: a streamed prefix is checked against this probe before it is known
+# whether the tag will resolve as the real "]" form or the fabricated ":" form (see above).
+_RECORD_TAG = "[Calculation record"
+_RECORD_LINE_DONE = re.compile(r"^[ \t]*\[Calculation record[\]:][^\n]*\n", re.MULTILINE)
+_RECORD_LINE_START = re.compile(r"^[ \t]*\[Calculation record[\]:]", re.MULTILINE)
 
 
 # Verbatim repeated sentences after which a streamed answer is treated as a loop and generation
@@ -187,13 +206,14 @@ class AnswerStreamCleaner:
     sentence at a time, with the same guards applied per sentence (verbatim repeats dropped,
     echoed [Calculation record] lines removed, result units corrected). <think> blocks are
     removed earlier by the model provider. ``feed`` returns the text that is safe to show
-    now; ``flush`` returns the rest.
+    now; ``flush`` returns the rest. ``seed`` (see ``collapse_repetition``) also drops verbatim
+    restatements of sentences already shown in earlier turns, e.g. after the user says "continue".
     """
 
-    def __init__(self, tools_used: Optional[Iterable[Dict[str, Any]]] = None):
+    def __init__(self, tools_used: Optional[Iterable[Dict[str, Any]]] = None, seed: Iterable[str] = ()):
         self._tools = list(tools_used or [])
         self._buf = ""
-        self._seen: List[str] = []
+        self._seen: List[str] = list(seed)
         self._removed = False
         self._started = False
         self._last_sep = ""

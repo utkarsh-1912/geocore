@@ -22,7 +22,7 @@ GeoCore's engineering calculations are performed by [groundhog](https://github.c
 
 > groundhog. A general-purpose Python library for geotechnical engineering. Copyright (C) 2020-2025 Bruno Stuyts. This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-GeoCore ships groundhog 0.15.0. The groundhog API reference, guides, tutorials and changelog in these docs are derived from the groundhog package docstrings and the groundhog repository (https://github.com/snakesonabrain/groundhog, tag `v0.15.0`, commit `12a98f3f4330bf24b5443eb061ca00710420eaa0`) and are redistributed under the same licence. Each page lists its source, author and licence, and states whether GeoCore edited it.
+GeoCore ships groundhog 0.15.0. The groundhog API reference, guides and tutorials in these docs are derived from the groundhog package docstrings and the groundhog repository (https://github.com/snakesonabrain/groundhog, tag `v0.15.0`, commit `12a98f3f4330bf24b5443eb061ca00710420eaa0`) and are redistributed under the same licence. Each page lists its source, author and licence, and states whether GeoCore edited it. groundhog's own release history is not mirrored here — see the [Changelog](/docs/changelog) page for where to find it.
 
 Upstream online documentation: [groundhog.readthedocs.io](https://groundhog.readthedocs.io).
 

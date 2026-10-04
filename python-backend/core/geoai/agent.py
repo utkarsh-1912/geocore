@@ -8,7 +8,7 @@ This module provides the main orchestration loop that connects the SLM
 import json
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
 from .model_provider import (
     ModelProvider,
@@ -21,7 +21,8 @@ from .model_provider import (
     make_user_message,
     make_system_message
 )
-from .response_guard import TRUNCATION_NOTE, AnswerStreamCleaner, clean_answer, collapse_repetition
+from .response_guard import (TRUNCATION_NOTE, AnswerStreamCleaner, clean_answer, collapse_repetition,
+                             sentence_keys, strip_calculation_records)
 from .tool_registry import GeoAIToolRegistry
 from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
@@ -91,6 +92,20 @@ def history_to_messages(history: Optional[List[Dict[str, Any]]]) -> List[ChatMes
             if content:
                 messages.append(ChatMessage(role=MessageRole.ASSISTANT, content=content))
     return messages
+
+
+def _history_seed(history: Optional[List[Dict[str, Any]]]) -> List[str]:
+    """
+    Sentences already shown in prior assistant turns, to seed cross-turn repetition dedup.
+    Without this, a model asked to "continue" after a truncated answer tends to restate the
+    cut-off sentence verbatim before adding anything new; collapse_repetition/AnswerStreamCleaner
+    only dedupe within one generation, so the restatement would otherwise reach the user twice.
+    """
+    seed: List[str] = []
+    for item in (history or [])[-MAX_HISTORY_TURNS:]:
+        if isinstance(item, dict) and item.get("role") == "assistant":
+            seed.extend(sentence_keys(strip_calculation_records(str(item.get("content") or ""))))
+    return seed
 
 
 def _grounding_text(messages: List[ChatMessage]) -> str:
@@ -291,7 +306,8 @@ class GeoAIAgent:
         self._provider.clear_cancel()
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
-        
+        seed = _history_seed(history)
+
         for round_num in range(MAX_TOOL_ROUNDS):
             response = self._provider.generate(
                 messages=messages,
@@ -299,10 +315,10 @@ class GeoAIAgent:
                 temperature=0.1,
                 max_tokens=self._decision_max_tokens if round_num == 0 else self._answer_max_tokens
             )
-            
+
             if response.finish_reason != 'tool_calls' or not response.tool_calls:
                 return AgentResponse(
-                    response_text=_with_truncation_note(clean_answer(response.content, tools_used),
+                    response_text=_with_truncation_note(clean_answer(response.content, tools_used, seed=seed),
                                                         response.finish_reason, response.content),
                     tools_used=tools_used,
                     finish_reason='complete',
@@ -330,8 +346,8 @@ class GeoAIAgent:
         messages.append(make_user_message("Please summarize the results from the tools used."))
         final = self._provider.generate(messages=messages, tools=None, max_tokens=self._answer_max_tokens)
         return AgentResponse(
-            response_text=_with_truncation_note(clean_answer(final.content, tools_used), final.finish_reason,
-                                                final.content)
+            response_text=_with_truncation_note(clean_answer(final.content, tools_used, seed=seed),
+                                                final.finish_reason, final.content)
             or "Maximum tool rounds reached.",
             tools_used=tools_used,
             finish_reason='max_rounds',
@@ -343,20 +359,25 @@ class GeoAIAgent:
         self._provider.clear_cancel()
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
-        
+        seed = _history_seed(history)
+
         for round_num in range(MAX_TOOL_ROUNDS):
+            # The first call on a cold provider pays model load time (seconds on a laptop CPU);
+            # tell the UI which it's waiting on instead of a generic spinner.
+            stage = 'loading_model' if round_num == 0 and not self._provider.is_loaded() else 'thinking'
+            yield AgentStreamEvent(type='stage', content=stage)
             stream = self._provider.generate_stream(
                 messages=messages,
                 tools=tools_for_model,
                 temperature=0.1,
                 max_tokens=self._decision_max_tokens
             )
-            
+
             full_content = ""
             tool_calls = []
             finish_reason = None
             # A direct answer (no tool call) gets the same guards as the explanation round.
-            cleaner = AnswerStreamCleaner(tools_used)
+            cleaner = AnswerStreamCleaner(tools_used, seed=seed)
 
             for chunk in stream:
                 if chunk.delta_content:
@@ -401,20 +422,23 @@ class GeoAIAgent:
             # Explanation round: stream the prose, released sentence by sentence through the
             # same guards clean_answer applies (repeats, echoed records, result units). The
             # offered tools stay in the prompt so the provider can reuse its prompt cache.
-            yield from self._stream_answer(messages, tools_used, tools_for_model)
+            yield AgentStreamEvent(type='stage', content='writing_answer')
+            yield from self._stream_answer(messages, tools_used, tools_for_model, seed=seed)
             yield AgentStreamEvent(type='done')
             return
 
         messages.append(make_user_message("Please summarize the results from the tools used."))
         final = self._provider.generate(messages=messages, tools=None, max_tokens=self._answer_max_tokens)
-        yield AgentStreamEvent(type='token', content=_with_truncation_note(clean_answer(final.content, tools_used),
-                                                                           final.finish_reason, final.content)
+        yield AgentStreamEvent(type='token', content=_with_truncation_note(
+                                                   clean_answer(final.content, tools_used, seed=seed),
+                                                   final.finish_reason, final.content)
                                or "Maximum tool rounds reached.")
         yield AgentStreamEvent(type='done')
 
     def _stream_answer(self, messages: List[ChatMessage], tools_used: List[Dict[str, Any]],
-                       tools_for_model: Optional[List[dict]] = None) -> Iterator[AgentStreamEvent]:
-        cleaner = AnswerStreamCleaner(tools_used)
+                       tools_for_model: Optional[List[dict]] = None,
+                       seed: Iterable[str] = ()) -> Iterator[AgentStreamEvent]:
+        cleaner = AnswerStreamCleaner(tools_used, seed=seed)
         wrote = False
         finish_reason = None
         stream = self._provider.generate_answer_stream(messages=messages, tools=tools_for_model,

@@ -211,15 +211,23 @@
       if (opt) setActive(options().indexOf(opt));
     });
     document.addEventListener('click', function (e) { if (!form.contains(e.target)) hide(); });
+  });
+
+  // One global "/" or Ctrl/Cmd+K shortcut even when a page has more than one search box
+  // (the docs landing page has a hero search as well as the sidebar one): prefer whichever
+  // is currently visible, so the box the reader can actually see is the one that gets focus.
+  var searchInputs = Array.prototype.slice.call(document.querySelectorAll('[data-docs-search] input[type="search"]'));
+  if (searchInputs.length) {
     document.addEventListener('keydown', function (e) {
       var el = document.activeElement;
       var typing = el && (/INPUT|TEXTAREA|SELECT/.test(el.tagName) || el.isContentEditable);
       if (typing) return;
       if (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
         e.preventDefault();
-        input.focus();
-        input.select();
+        var target = searchInputs.find(function (i) { return i.offsetParent !== null; }) || searchInputs[0];
+        target.focus();
+        target.select();
       }
     });
-  });
+  }
 })();

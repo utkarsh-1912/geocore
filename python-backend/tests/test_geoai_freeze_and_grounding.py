@@ -103,8 +103,8 @@ def test_stream_asks_instead_of_running_tool_with_invented_inputs():
 
     events = list(agent.run_stream("0.95", history=history))
 
-    assert [e.type for e in events] == ["token", "done"]
-    assert "qc" in events[0].content and "sigma_vo_eff" in events[0].content
+    assert [e.type for e in events] == ["stage", "token", "done"]
+    assert "qc" in events[1].content and "sigma_vo_eff" in events[1].content
     assert provider.cleared == 1
 
 
@@ -123,8 +123,8 @@ def test_grounded_call_runs_and_answer_keeps_offered_tools():
     events = list(agent.run_stream("Relative density from Baldi for qc = 12 MPa and sigma'vo = 100 kPa"))
 
     types = [e.type for e in events]
-    assert types[:2] == ["tool_start", "tool_result"] and types[-1] == "done"
-    assert events[1].tool_result["status"] == "success"
+    assert types[:3] == ["stage", "tool_start", "tool_result"] and types[-1] == "done"
+    assert events[2].tool_result["status"] == "success"
     # Same tool block as the decision turn, so llama.cpp can reuse the evaluated prompt.
     assert provider.answer_tools and any(t["function"]["name"] == BALDI for t in provider.answer_tools)
 

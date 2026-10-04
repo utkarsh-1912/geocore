@@ -125,7 +125,10 @@
       {% for d in domains|sort(attribute='count', reverse=True) %}
       <div class="bar-chart__row">
         <span class="bar-chart__label">{{ d.title }}</span>
-        <span class="bar-chart__track" style="--w:{{ '%.1f'|format(100 * d.count / max_count) }}%"></span>
+        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
+          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
+          <rect class="bar-chart__fill" width="{{ '%.1f'|format(100 * d.count / max_count) }}" height="10" rx="5"></rect>
+        </svg>
         <span class="bar-chart__value">{{ d.count }}</span>
       </div>
       {% endfor %}
@@ -189,8 +192,32 @@
 
 <section class="section" id="geoai" aria-labelledby="geoai-title">
   <div class="container geoai">
+    <div class="geoai-emblem reveal" aria-hidden="true">
+      <svg class="geoai-emblem__svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="geoai-strata-top" x1="6" y1="6" x2="26" y2="16" gradientUnits="userSpaceOnUse">
+            <stop stop-color="currentColor" stop-opacity="0.9"/>
+            <stop offset="1" stop-color="currentColor" stop-opacity="0.4"/>
+          </linearGradient>
+          <linearGradient id="geoai-strata-left" x1="4" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+            <stop stop-color="currentColor" stop-opacity="0.75"/>
+            <stop offset="1" stop-color="currentColor" stop-opacity="0.25"/>
+          </linearGradient>
+          <linearGradient id="geoai-strata-right" x1="28" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+            <stop stop-color="currentColor" stop-opacity="0.5"/>
+            <stop offset="1" stop-color="currentColor" stop-opacity="0.15"/>
+          </linearGradient>
+        </defs>
+        <path class="geoai-emblem__top" d="M16 3L27 9.5L16 16L5 9.5L16 3Z" fill="url(#geoai-strata-top)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path class="geoai-emblem__left" d="M5 9.5L16 16V29L5 22.5V9.5Z" fill="url(#geoai-strata-left)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path class="geoai-emblem__right" d="M27 9.5L16 16V29L27 22.5V9.5Z" fill="url(#geoai-strata-right)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path class="geoai-emblem__band geoai-emblem__band--1" d="M5 14L16 20.5L27 14" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8"/>
+        <path class="geoai-emblem__band geoai-emblem__band--2" d="M5 18.5L16 25L27 18.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8"/>
+        <path class="geoai-emblem__core" d="M16 6.5L17.2 9.5L20.2 10.7L17.2 11.9L16 14.9L14.8 11.9L11.8 10.7L14.8 9.5L16 6.5Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <div>
-      <p class="eyebrow">{{ icon('sparkles') }}GeoAI</p>
+      <p class="eyebrow">{{ icon('geoai') }}GeoAI</p>
       <h2 id="geoai-title">An assistant that calls the calculation — it doesn’t guess it</h2>
       <p class="lede">GeoAI is a local assistant built into GeoCore. A small language model reads your question and chooses a tool; Groundhog does the engineering arithmetic. If an input is missing, GeoAI should ask rather than invent it.</p>
       <ul class="checklist">
@@ -205,12 +232,12 @@
         <p>GeoAI is under active development. Treat its answers as a starting point for engineering judgement, not a substitute for it.</p>
       </div>
     </div>
-    <ol class="flow" aria-label="How a GeoAI request is handled">
-      <li><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div></li>
-      <li><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div></li>
-      <li><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div></li>
-      <li class="is-det"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div></li>
-      <li><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
+    <ol class="flow" aria-label="How a GeoAI request is handled — select a step to inspect it">
+      <li tabindex="0" role="button" aria-label="Step 1 of 5: You ask a question"><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+      <li tabindex="0" role="button" aria-label="Step 2 of 5: Local model plans, on device"><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+      <li tabindex="0" role="button" aria-label="Step 3 of 5: Tool registry validates"><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+      <li class="is-det" tabindex="0" role="button" aria-label="Step 4 of 5: Groundhog calculates, deterministic"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
+      <li tabindex="0" role="button" aria-label="Step 5 of 5: Grounded answer"><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
     </ol>
   </div>
 </section>

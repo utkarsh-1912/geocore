@@ -247,6 +247,11 @@ def run_example(ex: EvalExample, rec: RecordingProvider, registry: GeoAIToolRegi
     response = first.response if first and first.response is not None else ParsedResponse()
     sb = score_turn(ex, response, registry=registry, execute=execute)
     offered = first.tools_offered if first else []
+    # Token counts summed over every model call of the example (llama.cpp reports them; the
+    # heuristic provider does not -> None). Used for hardware-independent latency estimates.
+    usages = [c.response.usage for c in rec.calls if c.response is not None and c.response.usage]
+    prompt_tokens = sum(int(u.get("prompt_tokens") or 0) for u in usages) if usages else None
+    completion_tokens = sum(int(u.get("completion_tokens") or 0) for u in usages) if usages else None
     return {
         "id": ex.id,
         "category": ex.category,
@@ -261,6 +266,8 @@ def run_example(ex: EvalExample, rec: RecordingProvider, registry: GeoAIToolRegi
         "response_text": (getattr(response, "content", None) or "")[:400],
         "final_text": (final_text or "")[:400] if final_text else None,
         "usage": getattr(response, "usage", None),
+        "prompt_tokens": prompt_tokens,
+        "completion_tokens": completion_tokens,
         "error": error,
     }
 
@@ -322,6 +329,9 @@ def summarise(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         "latency_p95_s": _percentile([r["latency_s"] for r in records], 0.95),
         "decision_latency_p50_s": _percentile([r["decision_latency_s"] for r in records if r["decision_latency_s"] is not None], 0.5),
         "decision_latency_p95_s": _percentile([r["decision_latency_s"] for r in records if r["decision_latency_s"] is not None], 0.95),
+        "prompt_tokens_p50": _percentile([r["prompt_tokens"] for r in records if r.get("prompt_tokens") is not None], 0.5),
+        "completion_tokens_p50": _percentile([r["completion_tokens"] for r in records if r.get("completion_tokens") is not None], 0.5),
+        "completion_tokens_p95": _percentile([r["completion_tokens"] for r in records if r.get("completion_tokens") is not None], 0.95),
     }
     per_cat: Dict[str, Dict[str, Any]] = {}
     groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
@@ -464,6 +474,13 @@ def build_report(run: Dict[str, Any], meta: Dict[str, Any], keep_records: str = 
         "meta": meta,
         "metrics": run["metrics"],
         "per_example": {r["id"]: [r["score"]["total"], r["score"]["passed"]] for r in records},
+        # Every example (not only the kept failure records): tokens and measured latency, so latency
+        # on other hardware can be estimated afterwards (eval.estimate_desktop_latency).
+        "per_example_usage": {r["id"]: {"prompt_tokens": r.get("prompt_tokens"),
+                                        "completion_tokens": r.get("completion_tokens"),
+                                        "model_calls": r.get("n_model_calls"),
+                                        "decision_latency_s": r.get("decision_latency_s"),
+                                        "latency_s": r.get("latency_s")} for r in records},
         "records": kept,
     }
 

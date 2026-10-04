@@ -82,48 +82,21 @@ The adapter is kept only if it beats the base model: a mean score at least 0.02 
 
 ## Results
 
-Run `cpu-test40`: 40 examples from the `test` split (stratified subset of 40), decision mode, `n_ctx` 4096, 5 tools offered per request, CPU only, dataset generator 1.0.0. All models answered the same examples.
+Run `cpu-test40-full-20260929`: 40 examples from the `test` split (stratified subset of 40), decision mode, `n_ctx` 4096, 5 tools offered per request, CPU only, dataset generator 1.0.0. All models answered the same examples.
 
 | Model | Mean score | Strict pass | Tool choice | Arguments | Clarification | Invented inputs | p50 latency (s) | Peak RAM (MB) |
 |---|---|---|---|---|---|---|---|---|
-| Qwen3 4B Instruct 2507 | 0.755 | 60% | 55% | 55% | 57% | 31% | 126.8 | 4792 |
-| Qwen3 1.7B | 0.720 | 52% | 73% | 70% | 29% | 26% | 61.3 | 2399 |
-| Qwen3.5 2B | 0.695 | 48% | 64% | 52% | 36% | 29% | 82.6 | 2092 |
-| Phi-4-mini Instruct | 0.681 | 32% | 0% | 0% | 86% | – | 46.4 | – |
-| Qwen2.5 1.5B Instruct | 0.650 | 45% | 55% | 42% | 29% | 42% | 68.8 | 1810 |
-| Keyword heuristic (no model) | 0.316 | 5% | 45% | 26% | 0% | 0% | 0.0 | 136 |
+| Qwen3 1.7B | 0.669 | 45% | 73% | 71% | 14% | 41% | 69.8 | 2185 |
 
 <div class="bar-chart" aria-hidden="true">
   <p class="bar-chart__title">Mean score by model</p>
   <div class="bar-chart__row">
-    <span class="bar-chart__label">Qwen3 4B Instruct 2507</span>
-    <span class="bar-chart__track" style="--w:100.0%"></span>
-    <span class="bar-chart__value">0.755</span>
-  </div>
-  <div class="bar-chart__row">
     <span class="bar-chart__label">Qwen3 1.7B</span>
-    <span class="bar-chart__track" style="--w:95.4%"></span>
-    <span class="bar-chart__value">0.720</span>
-  </div>
-  <div class="bar-chart__row">
-    <span class="bar-chart__label">Qwen3.5 2B</span>
-    <span class="bar-chart__track" style="--w:92.1%"></span>
-    <span class="bar-chart__value">0.695</span>
-  </div>
-  <div class="bar-chart__row">
-    <span class="bar-chart__label">Phi-4-mini Instruct</span>
-    <span class="bar-chart__track" style="--w:90.2%"></span>
-    <span class="bar-chart__value">0.681</span>
-  </div>
-  <div class="bar-chart__row">
-    <span class="bar-chart__label">Qwen2.5 1.5B Instruct</span>
-    <span class="bar-chart__track" style="--w:86.1%"></span>
-    <span class="bar-chart__value">0.650</span>
-  </div>
-  <div class="bar-chart__row">
-    <span class="bar-chart__label">Keyword heuristic (no model)</span>
-    <span class="bar-chart__track" style="--w:41.9%"></span>
-    <span class="bar-chart__value">0.316</span>
+    <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
+      <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
+      <rect class="bar-chart__fill" width="100.0" height="10" rx="5"></rect>
+    </svg>
+    <span class="bar-chart__value">0.669</span>
   </div>
 </div>
 
@@ -131,25 +104,9 @@ Strict pass rate by category:
 
 | Model | ambiguous request | conflicting data | correct request | missing data | research | tool failure | wrong units |
 |---|---|---|---|---|---|---|---|
-| Qwen3 4B Instruct 2507 | 100% | 25% | 75% | 50% | 62% | 67% | 33% |
-| Qwen3 1.7B | 100% | 0% | 75% | 0% | 88% | 33% | 33% |
-| Qwen3.5 2B | 100% | 0% | 62% | 0% | 62% | 67% | 17% |
-| Phi-4-mini Instruct | 0% | 75% | 25% | 25% | 25% | 67% | 17% |
-| Qwen2.5 1.5B Instruct | 75% | 25% | 75% | 0% | 62% | 17% | 33% |
-| Keyword heuristic | 0% | 0% | 25% | 0% | 0% | 0% | 0% |
+| Qwen3 1.7B | 25% | 25% | 62% | 0% | 88% | 17% | 50% |
 
 No GeoAI fine-tuned adapter is included in this run yet; all rows are base models.
-
-**Recommended base model from this run:** Qwen3 1.7B ([`Qwen3-1.7B-Q4_K_M.gguf`](https://huggingface.co/unsloth/Qwen3-1.7B-GGUF)). It is the model fine-tuning starts from; a fine-tuned adapter replaces it only if it passes the rule above.
-
-Notes on this run:
-
-- Code: frozen snapshot of python-backend (hash 5e7d53fd02852fbe, 2026-09-27) plus one patch: Qwen3.5 XML-style tool calls (&lt;function=...&gt;&lt;parameter=...&gt;) are parsed. Before this patch Qwen3.5-2B's calls were dropped; its result here is the re-run with the patch.
-- Hardware: Intel Core i5-1235U laptop, 16 GB RAM, CPU only, llama-cpp-python 0.3.35, Q4_K_M weights.
-- Phi-4-mini never emitted a tool call: it answered and calculated in prose (for example porosity from void ratio), which GeoAI does not allow. Its high clarification rate follows from never calling tools, not from good judgement.
-- Peak RAM is the peak of the benchmark process. Phi-4-mini ran after Qwen3-4B in the same process, so its peak RAM could not be measured.
-- Qwen3-4B-2507: the machine slept during part of its run; wall time is inflated but the median decision latency is not materially affected.
-- Tool selection (BM25 retrieval) offered the expected tool in every case (selector recall 1.00) with this snapshot's selector; later selector changes may shift this.
 
 Small subsets give noisy rates: with 40 examples one example is 2.5 percentage points. Latency and memory depend on the machine the run used.
 

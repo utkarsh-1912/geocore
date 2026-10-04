@@ -1255,23 +1255,6 @@ def _output_block(txt: str, max_lines: int = 30) -> List[str]:
     return ["```text"] + lines + ["```", ""]
 
 
-def changelog_to_markdown(text: str) -> str:
-    out = []
-    for ln in text.replace("\r\n", "\n").split("\n"):
-        if not ln.strip():
-            continue
-        if indent_of(ln) == 0 and not ln.lstrip().startswith("-"):
-            out.append("")
-            out.append("## " + ln.strip())
-            out.append("")
-        else:
-            s = ln.strip()
-            depth = max(0, (indent_of(ln) - 4) // 4)
-            item = s[1:].strip() if s.startswith("-") else s
-            out.append("  " * depth + "- " + item)
-    return "\n".join(out).strip() + "\n"
-
-
 # ---------------------------------------------------------------------------
 # Page model
 # ---------------------------------------------------------------------------
@@ -1646,7 +1629,11 @@ def _num(v: Any, fmt: str = "{:.2f}") -> str:
 def _bar_chart_html(title: str, rows: List[Tuple[str, float]], max_value: float = 1.0,
                      value_fmt: str = "{:.3f}") -> str:
     """Dependency-free horizontal bar chart (see assets/css/site.css .bar-chart). Decorative: the exact
-    values are already in the adjacent data table, so the chart itself is marked aria-hidden."""
+    values are already in the adjacent data table, so the chart itself is marked aria-hidden.
+
+    The fill is an SVG rect sized with a plain `width` attribute rather than inline CSS: the site's
+    CSP (style-src 'self', no 'unsafe-inline') silently drops any style="..." attribute, which would
+    otherwise make every bar render at the same (fallback) width regardless of its value."""
     if not rows:
         return ""
     lines = ['<div class="bar-chart" aria-hidden="true">', f'  <p class="bar-chart__title">{html.escape(title)}</p>']
@@ -1655,7 +1642,10 @@ def _bar_chart_html(title: str, rows: List[Tuple[str, float]], max_value: float 
         lines += [
             '  <div class="bar-chart__row">',
             f'    <span class="bar-chart__label">{html.escape(label)}</span>',
-            f'    <span class="bar-chart__track" style="--w:{pct:.1f}%"></span>',
+            '    <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">',
+            '      <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>',
+            f'      <rect class="bar-chart__fill" width="{pct:.1f}" height="10" rx="5"></rect>',
+            '    </svg>',
             f'    <span class="bar-chart__value">{html.escape(value_fmt.format(value))}</span>',
             '  </div>',
         ]
@@ -1947,7 +1937,6 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
 
     # ---------------- narrative guides ----------------
     nav_guides: List[Dict[str, Any]] = []
-    nav_changelog: List[Dict[str, Any]] = []
     narrative_count = 0
     topic_slugs: Dict[str, str] = {}
     if use_repo:
@@ -2076,19 +2065,6 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
             {"title": "Tutorials", "slug": "groundhog/tutorials", "children": tut_nav},
         ]
 
-        # changelog
-        ch = use_repo.root / "CHANGES.txt"
-        if ch.exists():
-            body = (f"Release history of groundhog, copied from `CHANGES.txt` at tag `{use_repo.tag}`. "
-                    f"GeoCore ships groundhog {version}; entries above that version were unreleased plans at the time "
-                    f"of that tag.\n\n" + changelog_to_markdown(ch.read_text(encoding="utf-8")))
-            meta = upstream_meta(use_repo.version, gh_blob("CHANGES.txt", use_repo.tag), edited=True,
-                                 note="Plain-text changelog converted to Markdown headings and lists.")
-            meta["description"] = "groundhog release history."
-            add(Page("changelog/groundhog", "groundhog changelog", SECTION_CHANGELOG, body, meta))
-            nav_changelog.append({"title": "groundhog changelog", "slug": "changelog/groundhog"})
-            narrative_count += 1
-
     # ---------------- GeoCore pages ----------------
     geocore_pages: List[Tuple[int, Page]] = []
     generated = {
@@ -2136,11 +2112,12 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
         "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General "
         "Public License as published by the Free Software Foundation, either version 3 of the License, or (at your "
         "option) any later version.", "",
-        f"GeoCore ships groundhog {version}. The groundhog API reference, guides, tutorials and changelog in these docs "
+        f"GeoCore ships groundhog {version}. The groundhog API reference, guides and tutorials in these docs "
         f"are derived from the groundhog package docstrings and the groundhog repository "
         f"({GH_REPO_URL}, tag `{repo.tag if repo else tag}`" + (f", commit `{repo.commit}`" if repo and repo.commit else "")
         + ") and are redistributed under the same licence. Each page lists its source, author and licence, and states "
-          "whether GeoCore edited it.", "",
+          "whether GeoCore edited it. groundhog's own release history is not mirrored here — see the "
+          "[Changelog](/docs/changelog) page for where to find it.", "",
         "Upstream online documentation: [groundhog.readthedocs.io](https://groundhog.readthedocs.io).", "",
         "### Content not imported", "",
     ]
@@ -2177,8 +2154,9 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
         sections.append((SECTION_GUIDES, "groundhog/guides", nav_guides,
                          "Narrative documentation and tutorials from the groundhog project."))
     sections.append((SECTION_API, "groundhog/api", api_nav, None))
-    if nav_changelog:
-        sections.append((SECTION_CHANGELOG, "changelog", nav_changelog, "Release history."))
+    # Single hand-written GeoCore page (geocore/changelog.md, slug "changelog"): no auto-generated
+    # index, no mirrored groundhog CHANGES.txt (see geocore/changelog.md for why).
+    sections.append((SECTION_CHANGELOG, "changelog", [], None))
     sections.append((SECTION_LICENSE, "license", [], None))
 
     nav_sections = []

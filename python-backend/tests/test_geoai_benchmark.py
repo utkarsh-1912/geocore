@@ -38,3 +38,23 @@ def test_leaderboard_detects_different_example_sets(tmp_path):
     _report(tmp_path / "a.json", "a", None, 0.5, ["x"])
     _report(tmp_path / "b.json", "b", None, 0.5, ["y"])
     assert build_leaderboard(tmp_path)["same_examples"] is False
+
+
+def test_run_label_suffix_records_compact_switch(tmp_path, monkeypatch):
+    """Heuristic-only run (no model): --label-suffix keeps two configs apart, meta records the schema switch."""
+    from core.geoai.eval import benchmark
+    from core.geoai.eval.example import save_examples_jsonl
+    from core.geoai.training.scaleup import gold_examples
+    monkeypatch.setenv("GEOCORE_CONFIG_DIR", str(tmp_path / "cfg"))
+    monkeypatch.setenv("GEOAI_MAX_TOOLS", "5")  # cmd_run overwrites it; monkeypatch restores it
+    monkeypatch.setenv("GEOAI_COMPACT_SCHEMAS", "1")
+    monkeypatch.setattr(benchmark, "BENCHMARK_DIR", tmp_path / "bench")
+    data = tmp_path / "mini.jsonl"
+    save_examples_jsonl(gold_examples()[:2], data)
+    assert benchmark.main(["run", "--models", "", "--heuristic", "--dataset", str(data), "--run-id", "r",
+                           "--label-suffix=-compact"]) == 0
+    rep = json.loads((tmp_path / "bench" / "r" / "heuristic-compact.json").read_text(encoding="utf-8"))
+    assert rep["meta"]["compact_tool_schemas"] is True and rep["meta"]["label"] == "heuristic-compact"
+    assert set(rep["per_example_usage"]) == set(rep["per_example"])
+    lb = json.loads((tmp_path / "bench" / "r" / "leaderboard.json").read_text(encoding="utf-8"))
+    assert lb["rows"][0]["compact_tool_schemas"] is True

@@ -769,7 +769,10 @@ table.data td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   grid-template-columns: 2.5rem minmax(0, 1fr);
   gap: var(--sp-4);
   padding-bottom: var(--sp-5);
+  cursor: pointer;
+  border-radius: var(--r-sm);
 }
+.flow li:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 4px; }
 .flow li::before {
   counter-increment: flow;
   content: counter(flow);
@@ -796,10 +799,34 @@ table.data td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   width: 2px;
   background: var(--c-border);
 }
-.flow li.is-det::before { background: var(--c-primary); border-color: var(--c-primary); color: var(--c-on-primary); }
-.flow h3 { margin: 0.45rem 0 var(--sp-1); font-size: var(--fs-md); }
-.flow p { margin: 0; color: var(--c-text-muted); font-size: var(--fs-sm); }
+.flow__fill {
+  position: absolute;
+  left: calc(1.25rem - 1px);
+  top: 2.5rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--c-primary);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.flow li.is-done .flow__fill { transform: scaleY(1); }
+.flow li.is-done::before { background: var(--c-primary); border-color: var(--c-primary); color: var(--c-on-primary); }
+.flow li.is-active::before { border-color: var(--c-primary); color: var(--c-primary); box-shadow: 0 0 0 4px var(--c-primary-soft); }
+.flow li:not(.is-active) h3, .flow li:not(.is-active) p { opacity: 0.62; }
+.flow li.is-active h3, .flow li.is-active p { opacity: 1; }
+.flow li.is-det h3 { color: var(--c-primary); }
+.flow h3 { margin: 0.45rem 0 var(--sp-1); font-size: var(--fs-md); transition: opacity 300ms var(--ease); }
+.flow p { margin: 0; color: var(--c-text-muted); font-size: var(--fs-sm); transition: opacity 300ms var(--ease); }
 .flow .badge { margin-left: var(--sp-2); vertical-align: 0.1em; }
+@media (prefers-reduced-motion: no-preference) {
+  .flow__fill { transition: transform 550ms var(--ease); }
+  .flow li::before { transition: border-color 250ms var(--ease), color 250ms var(--ease), box-shadow 250ms var(--ease), background-color 250ms var(--ease); }
+  .flow li.is-active::before { animation: flow-pulse 1.8s ease-in-out infinite; }
+}
+@keyframes flow-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px var(--c-primary-soft); }
+  50% { box-shadow: 0 0 0 7px var(--c-primary-soft); }
+}
 
 /* Integrations */
 .integration h3 { font-size: var(--fs-md); }
@@ -1034,10 +1061,58 @@ table.data td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pager .next small { justify-content: flex-end; }
 @media (max-width: 39.99rem) { .pager .next { grid-column: auto; } }
 
+/* Docs landing page: hero search, section quick-jump, expandable cards */
+.docs-search--hero { max-width: 34rem; margin: var(--sp-6) 0; }
+.docs-search--hero input { min-height: 3rem; padding-left: 2.75rem; font-size: var(--fs-md); border-radius: var(--r-md); }
+.docs-search--hero input:focus-visible { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-soft); }
+.docs-search--hero .icon { left: 0.9rem; width: 1.25rem; height: 1.25rem; }
+.doc-jump { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-6); }
+.doc-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-pill);
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  background: var(--c-surface);
+}
+.doc-jump a:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.doc-jump .icon { width: 0.9rem; height: 0.9rem; }
+
 .doc-sections { display: grid; gap: var(--sp-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); margin-top: var(--sp-8); }
+.doc-sections h2[id] { scroll-margin-top: calc(var(--header-h) + 1rem); }
+.doc-sections .card__head { margin-bottom: var(--sp-2); }
+.doc-sections .card__count { font-size: var(--fs-xs); color: var(--c-text-subtle); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .doc-sections ul { margin: var(--sp-3) 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
 .doc-sections li { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-1) 0; border-top: 1px dashed var(--c-border); }
 .doc-sections li:first-child { border-top: 0; }
+.doc-sections li.doc-sections__more { display: block; }
+.doc-sections__more summary {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  list-style: none;
+  cursor: pointer;
+  color: var(--c-primary);
+  font-weight: var(--fw-medium);
+}
+.doc-sections__more summary::-webkit-details-marker { display: none; }
+.doc-sections__more summary::before {
+  content: "";
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--dur) var(--ease);
+}
+.doc-sections__more details[open] summary::before { transform: rotate(45deg); }
+.doc-sections__more ul { margin-top: var(--sp-1); }
 
 /* ------------------------------------------------------------------ */
 /* 10. Footer                                                          */
@@ -1196,21 +1271,25 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
 
 /* Bar chart — dependency-free, used in docs and marketing pages. Decorative: pair it with an
    accessible data table or list carrying the same numbers, and mark the chart aria-hidden.
-   The fill is drawn as a background-size on the track element via the --w custom property,
-   avoiding nested-span percentage-width resolution issues. */
+   The fill is an SVG <rect> whose width/rx are plain geometry attributes, not inline CSS: the
+   site's CSP is style-src 'self' with no 'unsafe-inline', which silently drops any style="..."
+   attribute (and with it, custom-property or width tricks that depend on one) — SVG presentation
+   attributes aren't governed by style-src, so they render regardless. */
 .bar-chart { margin: var(--sp-5) 0; padding: var(--sp-4) var(--sp-5); border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface); }
 .bar-chart__title { margin: 0 0 var(--sp-4); font-size: var(--fs-xs); font-weight: var(--fw-semibold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--c-text-subtle); }
 .bar-chart__row { display: grid; grid-template-columns: minmax(7rem, 12rem) 1fr 3.25rem; align-items: center; column-gap: var(--sp-3); }
 .bar-chart__row + .bar-chart__row { margin-top: var(--sp-3); }
 .bar-chart__label { font-size: var(--fs-sm); color: var(--c-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar-chart__track { height: 0.55rem; border-radius: var(--r-sm); background: linear-gradient(var(--c-primary), var(--c-primary)) no-repeat var(--c-surface-2); background-size: var(--w, 0%) 100%; }
+.bar-chart__track { display: block; width: 100%; min-width: 0; height: 0.55rem; }
+.bar-chart__track-bg { fill: var(--c-surface-2); }
+.bar-chart__fill { fill: var(--c-primary); }
 .bar-chart__value { font-size: var(--fs-xs); font-variant-numeric: tabular-nums; color: var(--c-text); text-align: right; }
 @media (max-width: 26rem) {
   .bar-chart__row { grid-template-columns: 1fr 3.25rem; row-gap: 0.3rem; }
   .bar-chart__label { grid-column: 1 / -1; white-space: normal; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .bar-chart__track { transition: background-size 500ms var(--ease); }
+  .bar-chart__fill { transition: width 500ms var(--ease); }
 }
 
 /* Math */
@@ -1370,13 +1449,12 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
 [data-count] { font-variant-numeric: tabular-nums; }
 
 /* GeoAI emblem: the app's actual mark (isometric strata + neural core), built in
-   layers as it scrolls into view, echoing the five steps in the flow beside it. */
+   layers as it scrolls into view. */
 .geoai-emblem {
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-4);
   margin-bottom: var(--sp-4);
   color: var(--c-primary);
 }
@@ -1386,13 +1464,6 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
 }
 .geoai-emblem__band { stroke-dasharray: 40; stroke-dashoffset: 40; }
 .geoai-emblem__core { transform-origin: 16px 10.7px; transform: scale(0.3); }
-.geoai-emblem__steps { display: flex; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
-.geoai-emblem__steps li {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: var(--c-border-strong);
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .geoai-emblem.is-in .geoai-emblem__top { animation: geoai-drop 560ms var(--ease) 0ms forwards; }
@@ -1403,17 +1474,11 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
   .geoai-emblem.is-in .geoai-emblem__core {
     animation: geoai-spark 480ms var(--ease) 1400ms forwards, geoai-pulse 2.4s ease-in-out 1900ms infinite;
   }
-  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(1) { animation: geoai-step-lit 180ms ease 0ms forwards; }
-  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(2) { animation: geoai-step-lit 180ms ease 320ms forwards; }
-  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(3) { animation: geoai-step-lit 180ms ease 640ms forwards; }
-  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(4) { animation: geoai-step-lit 180ms ease 1040ms forwards; }
-  .geoai-emblem.is-in .geoai-emblem__steps li:nth-child(5) { animation: geoai-step-lit 180ms ease 1400ms forwards; }
 }
 @media (prefers-reduced-motion: reduce) {
   .geoai-emblem__top, .geoai-emblem__left, .geoai-emblem__right, .geoai-emblem__band, .geoai-emblem__core {
     opacity: 1; transform: none; stroke-dashoffset: 0;
   }
-  .geoai-emblem__steps li { background: var(--c-primary); }
 }
 
 @keyframes geoai-drop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
@@ -1425,7 +1490,6 @@ table.data td.dl-file { white-space: nowrap; overflow-wrap: normal; }
   0%, 100% { filter: drop-shadow(0 0 0 transparent); transform: scale(1); }
   50% { filter: drop-shadow(0 0 5px currentColor); transform: scale(1.1); }
 }
-@keyframes geoai-step-lit { to { background: var(--c-primary); } }
 
 /* "On this page" rails: a marker slides to the section being read (site.js). */
 .has-marker { position: relative; }

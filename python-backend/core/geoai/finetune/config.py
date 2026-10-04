@@ -104,8 +104,8 @@ DEFAULT_CATEGORY_WEIGHTS: Dict[str, float] = {
     "wrong_units:text": 1.5,  # dimension-mismatch cases that must be flagged, not calculated
 }
 
-SFT_DEFAULTS = dict(learning_rate=2e-4, num_train_epochs=2.0, per_device_train_batch_size=2,
-                    gradient_accumulation_steps=8)
+SFT_DEFAULTS = dict(learning_rate=2e-4, num_train_epochs=2.0, per_device_train_batch_size=1,
+                    gradient_accumulation_steps=16)
 
 
 @dataclass

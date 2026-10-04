@@ -143,7 +143,7 @@ def test_model_downloader_list():
     model_ids = [m["id"] for m in models]
     assert "qwen2.5-1.5b-instruct" in model_ids
     assert "qwen2.5-3b-instruct" in model_ids
-    assert "gemma-2-2b-it" in model_ids
+    assert "mistral-7b-instruct-v0.3" in model_ids
     families = {m.get("family") for m in models}
     assert "qwen" in families
     assert "gemma" in families

@@ -548,13 +548,7 @@
     },
     {
       "title": "Changelog",
-      "slug": "changelog",
-      "children": [
-        {
-          "title": "groundhog changelog",
-          "slug": "changelog/groundhog"
-        }
-      ]
+      "slug": "changelog"
     },
     {
       "title": "License & Credits",

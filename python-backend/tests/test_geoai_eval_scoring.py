@@ -201,6 +201,15 @@ def test_caution_violations():
     assert doi.caution == 0.0
     ok = score_turn(ex, "The calculated capacity depends on the supplied parameters; engineering judgement is required.")
     assert ok.caution == 1.0
+    # Regression: Phi-4-mini wrote a fabricated "[Calculation record: ...]" note instead of
+    # calling classify_cpt_soil_behavior (AGENTS.md §5, §17) - never run, but phrased to look
+    # like it was. agent.py's own real tag for a tool that DID run is also disallowed here:
+    # a scored completion has no legitimate reason to write either form.
+    fabricated = score_turn(ex, "I will use Groundhog calculation tools to interpret these values.\n"
+                                "[Calculation record: CPT Soil Behavior Type Classification.]")
+    assert fabricated.caution == 0.0
+    echoed = score_turn(ex, 'Zone 7.\n[Calculation record] {"tool": "classify_cpt_soil_behavior"}')
+    assert echoed.caution == 0.0
 
 
 # ---------------------------------------------------------- parsing / API

@@ -10,11 +10,13 @@ import { useEffect, useState } from 'react';
 import { api } from '../../api/client';
 
 /**
- * Stream a chat turn. `onText(text)` receives the text to show while streaming.
+ * Stream a chat turn. `onText(text)` receives the text to show while streaming; `onStage(stage)`
+ * receives the agent's current phase ('loading_model'|'thinking'|'writing_answer') so the UI can
+ * show what it's actually waiting on instead of a generic spinner.
  * Resolves to { text, executedTool, parameters, results, outcome: 'done'|'cancelled'|'error', error }.
  * Throws only when the request could not be started (the caller may fall back).
  */
-export async function streamGeoAIChat({ text, context, history, signal, onText = () => {} }) {
+export async function streamGeoAIChat({ text, context, history, signal, onText = () => {}, onStage = () => {} }) {
     const response = await api.geoaiChatStream(text, context, history, signal);
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
@@ -25,6 +27,12 @@ export async function streamGeoAIChat({ text, context, history, signal, onText =
         if (event.type === 'token' && event.content) {
             turn.text += event.content;
             onText(turn.text);
+        } else if (event.type === 'stage') {
+            // A new phase starts with nothing shown yet: clear any stale "Calculating with X..."
+            // text so the stage label (rendered while the bubble is empty) takes over.
+            turn.text = '';
+            onStage(event.content);
+            onText('');
         } else if (event.type === 'tool_start') {
             turn.executedTool = event.tool_name;
             turn.parameters = event.tool_args;
@@ -102,9 +110,16 @@ export function useElapsedSeconds(active) {
     return seconds;
 }
 
-/** Progress label: the local model processes the prompt on the CPU before the first word. */
-export function thinkingLabel(seconds) {
-    if (seconds < 5) return 'Thinking...';
+const STAGE_LABELS = {
+    loading_model: 'Loading the local model...',
+    thinking: 'Thinking...',
+    writing_answer: 'Writing the answer...',
+};
+
+/** Progress label for the current agent phase: the local model processes the prompt on the CPU before the first word. */
+export function stageLabel(stage, seconds) {
+    const base = STAGE_LABELS[stage] || 'Thinking...';
+    if (seconds < 5) return base;
     const hint = seconds >= 20 ? ' (local model on CPU; long questions can take a few minutes)' : '';
-    return `Thinking... ${seconds}s${hint}`;
+    return `${base} ${seconds}s${hint}`;
 }

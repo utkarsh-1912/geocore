@@ -5,7 +5,8 @@ that looped on one sentence and reported dimensionless Qt / Bq in kPa.
 """
 from core.geoai.agent import GeoAIAgent, history_to_messages, MAX_HISTORY_TURNS
 from core.geoai.model_provider import MessageRole, ModelProvider, ModelResponse, StreamChunk, ToolCall
-from core.geoai.response_guard import AnswerStreamCleaner, clean_answer, collapse_repetition, fix_result_units
+from core.geoai.response_guard import (AnswerStreamCleaner, clean_answer, collapse_repetition, fix_result_units,
+                                       sentence_keys)
 from core.geoai.tool_registry import GeoAIToolRegistry
 
 CPT_RESULT = {
@@ -53,6 +54,16 @@ def test_collapse_repetition_preserves_all_text_without_repeats():
 def test_collapse_repetition_handles_empty():
     assert collapse_repetition(None) == ""
     assert collapse_repetition("") == ""
+
+
+def test_collapse_repetition_seed_drops_cross_turn_restatement():
+    # Regression: after a truncated answer, asking the model to "continue" often makes it
+    # restate the cut-off sentence verbatim before adding anything new.
+    cutoff = "Gravels consist of particles larger than 2 mm diameter; sand consists ..."
+    text = cutoff + "\nSands are further subdivided into coarse, medium and fine sands."
+    assert collapse_repetition(text, seed=sentence_keys(cutoff)) == \
+        "Sands are further subdivided into coarse, medium and fine sands."
+    assert collapse_repetition(text) == text  # unseeded, nothing in-turn repeats
 
 
 # --- fix_result_units ---
@@ -188,6 +199,33 @@ def test_agent_stream_streams_cleaned_explanation_and_caps_tokens():
     assert events[-1].type == "done" and not provider.calls  # explanation no longer non-streaming
 
 
+def test_agent_continue_drops_sentence_restated_from_history():
+    # Regression: user asks "continue" after a truncated answer; the model restates the
+    # cut-off sentence before adding new content, which previously reached the user twice.
+    cutoff = "Gravels consist of particles larger than 2 mm diameter; sand consists ..."
+    history = [{"role": "user", "content": "explain USCS"}, {"role": "assistant", "content": cutoff}]
+    provider = RecordingProvider([ModelResponse(
+        content=cutoff + "\nSands are further subdivided into coarse, medium and fine sands.",
+        tool_calls=None, finish_reason="stop")])
+
+    resp = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5).run("continue", history=history)
+
+    assert resp.response_text == "Sands are further subdivided into coarse, medium and fine sands."
+
+
+def test_agent_stream_continue_drops_sentence_restated_from_history():
+    cutoff = "Gravels consist of particles larger than 2 mm diameter; sand consists ..."
+    history = [{"role": "user", "content": "explain USCS"}, {"role": "assistant", "content": cutoff}]
+    answer = cutoff + "\nSands are further subdivided into coarse, medium and fine sands."
+    provider = RecordingProvider([], stream_chunks=[StreamChunk(delta_content=answer[i:i + 5])
+                                                    for i in range(0, len(answer), 5)])
+
+    events = list(GeoAIAgent(provider, MockRegistry(results={}), max_tools=5).run_stream("continue", history=history))
+
+    text = "".join(e.content for e in events if e.type == "token")
+    assert text == "Sands are further subdivided into coarse, medium and fine sands."
+
+
 def test_clean_answer_strips_echoed_calculation_record():
     text = 'Zone 7 is dense sand.\n[Calculation record] {"tool": "classify_cpt_soil_behavior"}\nIc is 1.27.'
     assert clean_answer(text) == "Zone 7 is dense sand.\nIc is 1.27."
@@ -284,3 +322,47 @@ def test_answer_cut_at_cap_gets_truncation_note():
     provider = RecordingProvider([ModelResponse(content="Short complete answer.", tool_calls=None, finish_reason="stop")])
     resp = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5).run("Compare CPT methods")
     assert resp.response_text == "Short complete answer."
+
+
+# ---------------- fabricated "[Calculation record" narration (no tool ever called) ----------------
+
+# Regression: a live Phi-4-mini session asked to classify CPT soil behavior for
+# qc = 14.2 MPa, fs = 65 kPa at 4.5m never called classify_cpt_soil_behavior. It wrote a
+# promise to use "Groundhog calculation tools" and then a "[Calculation record: ...]" note
+# that mimics agent.py's real "[Calculation record] {json}" tag but with a colon instead of
+# a JSON payload, so no tool ever ran even though the text implies one did (AGENTS.md §5, §17).
+FABRICATED_RECORD_ANSWER = (
+    "To classify the CPT soil behavior type at a depth of 4.5m with an in-situ cone "
+    "penetration test (CPT) tip resistance qc = 14.2 MPa and sleeve friction fs = 65 kPa, "
+    "I will use Groundhog calculation tools to interpret these values according to "
+    "standard classification systems such as those proposed by Robertson et al., ISRM or "
+    "other geotechnical standards.\n\n"
+    "[Calculation record: CPT Soil Behavior Type Classification using given parameters "
+    "(qc in MPa) based on established soil behavior type charts.]"
+)
+
+
+def test_clean_answer_strips_fabricated_colon_calculation_record():
+    out = clean_answer(FABRICATED_RECORD_ANSWER)
+    assert "[Calculation record" not in out
+    assert out.startswith("To classify the CPT soil behavior type")
+
+
+def test_agent_run_does_not_surface_fabricated_record_when_model_skips_the_tool():
+    # finish_reason != "tool_calls": the model answered in prose instead of calling the tool.
+    provider = RecordingProvider([ModelResponse(content=FABRICATED_RECORD_ANSWER, tool_calls=None,
+                                                finish_reason="stop")])
+    resp = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5).run(
+        "Classify CPT soil behavior type at depth 4.5m for qc = 14.2 MPa and fs = 65 kPa")
+    assert resp.tools_used == []  # no tool actually ran
+    assert "[Calculation record" not in resp.response_text
+
+
+def test_agent_stream_does_not_surface_fabricated_record_when_model_skips_the_tool():
+    provider = RecordingProvider([], stream_chunks=[StreamChunk(delta_content=FABRICATED_RECORD_ANSWER[i:i + 6])
+                                                    for i in range(0, len(FABRICATED_RECORD_ANSWER), 6)]
+                                 + [StreamChunk(finish_reason="stop")])
+    agent = GeoAIAgent(provider, MockRegistry(results={}), max_tools=5)
+    events = list(agent.run_stream("Classify CPT soil behavior type at depth 4.5m for qc = 14.2 MPa and fs = 65 kPa"))
+    text = "".join(e.content for e in events if e.type == "token")
+    assert "[Calculation record" not in text

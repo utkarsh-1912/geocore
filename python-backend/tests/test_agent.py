@@ -210,11 +210,14 @@ def test_run_stream_direct_answer():
     events = list(agent.run_stream("Hi"))
 
     # A direct answer goes through AnswerStreamCleaner, which releases whole sentences, so the
-    # two deltas of one unterminated sentence arrive as a single token on flush.
-    assert len(events) == 2
-    assert events[0].type == "token"
-    assert events[0].content == "Hello World"
-    assert events[1].type == "done"
+    # two deltas of one unterminated sentence arrive as a single token on flush. A 'stage' event
+    # announcing the decision round precedes it.
+    assert len(events) == 3
+    assert events[0].type == "stage"
+    assert events[0].content == "thinking"
+    assert events[1].type == "token"
+    assert events[1].content == "Hello World"
+    assert events[2].type == "done"
 
 def test_run_stream_tool_call_flow():
     tool_call = ToolCall(id="stream_t1", function_name="calc_tool", arguments={"v": 1})
@@ -231,23 +234,31 @@ def test_run_stream_tool_call_flow():
     agent = GeoAIAgent(provider, registry)
 
     events = list(agent.run_stream("Calculate stream"))
-    
+
     # Expected sequence:
-    # 1. tool_start
-    # 2. tool_result
-    # 3. token (final explanation)
-    # 4. done
-    assert len(events) == 4
-    
-    assert events[0].type == "tool_start"
-    assert events[0].tool_name == "calc_tool"
-    assert events[0].tool_args == {"v": 1}
-    
-    assert events[1].type == "tool_result"
+    # 1. stage (thinking: decision round)
+    # 2. tool_start
+    # 3. tool_result
+    # 4. stage (writing_answer: explanation round)
+    # 5. token (final explanation)
+    # 6. done
+    assert len(events) == 6
+
+    assert events[0].type == "stage"
+    assert events[0].content == "thinking"
+
+    assert events[1].type == "tool_start"
     assert events[1].tool_name == "calc_tool"
-    assert events[1].tool_result["status"] == "success"
-    
-    assert events[2].type == "token"
-    assert events[2].content == "Final response after tool"
-    
-    assert events[3].type == "done"
+    assert events[1].tool_args == {"v": 1}
+
+    assert events[2].type == "tool_result"
+    assert events[2].tool_name == "calc_tool"
+    assert events[2].tool_result["status"] == "success"
+
+    assert events[3].type == "stage"
+    assert events[3].content == "writing_answer"
+
+    assert events[4].type == "token"
+    assert events[4].content == "Final response after tool"
+
+    assert events[5].type == "done"

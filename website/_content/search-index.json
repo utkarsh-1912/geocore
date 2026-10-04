@@ -3,32 +3,12 @@
     "slug": "changelog",
     "title": "Changelog",
     "section": "Changelog",
-    "headings": [],
-    "text": "Release history. - groundhog changelog — groundhog release history."
-  },
-  {
-    "slug": "changelog/groundhog",
-    "title": "groundhog changelog",
-    "section": "Changelog",
     "headings": [
-      "v0.16.0 - TBD",
-      "v0.15.0, 19/09/2025 - The quokka release",
-      "v0.14.0, 03/06/2025 - Ping Li's contribution",
-      "v0.13.0, 11/10/2024 - The Pirate release",
-      "v0.12.0, 30/03/2024 - Dubai release",
-      "v0.11.0, 01/11/2023 - The Nordic release",
-      "v0.10.0, 21/03/2023 - VOP",
-      "v0.9.0, 02/02/2023 - Groundhog day 2023",
-      "v0.8.0, 28/08/2022 - ISFOG2020 release",
-      "v0.7.0, 20/10/2021 -- Streamlit unleashed",
-      "v0.6.1, 23/07/2021 -- Bugfix release",
-      "v0.6.0, 30/06/2021 -- SPT release",
-      "v0.5.0, 12 April 2021 -- CGS webinar release",
-      "v0.4.0, 06 January 2021 -- 2021 New Year's release",
-      "v0.3.0, 14 November 2020 -- End of 2020 update",
-      "v0.2.0 , 20 October 2020 -- Initial release."
+      "Unreleased",
+      "v1.0.0 — 2026-08-21",
+      "Added"
     ],
-    "text": "Release history of groundhog, copied from CHANGES.txt at tag v0.15.0. GeoCore ships groundhog 0.15.0; entries above that version were unreleased plans at the time of that tag. v0.16.0 - TBD - TODO: Prepare functionality for SPT fence diagram creation - TODO: Create a BoreholeLogging object (to log p"
+    "text": "Release history for GeoCore itself — the desktop application, GeoAI and the integration around groundhog. groundhog is a separate project with its own version history; see its release notes on GitHub or the version this build ships, noted on the License & Credits page. Unreleased Nothing recorded ye"
   },
   {
     "slug": "geoai",

@@ -23,7 +23,7 @@ import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
 import { buildChatHistory } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
-import { finalTurnText, stopGeoAIChat, streamGeoAIChat, thinkingLabel, useElapsedSeconds } from './geoaiStream';
+import { finalTurnText, stopGeoAIChat, streamGeoAIChat, stageLabel, useElapsedSeconds } from './geoaiStream';
 import { toast } from 'sonner';
 
 // Display names for the model families in the curated registry (core/geoai/model_downloader.py).
@@ -175,6 +175,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [stage, setStage] = useState(null);
     const abortRef = useRef(null);
     const elapsedSeconds = useElapsedSeconds(isLoading);
 
@@ -351,6 +352,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         if (!textToSend) setInputValue('');
         setEditingMsgId(null);
         setIsLoading(true);
+        setStage(null);
 
         const aiMessageId = Date.now() + 1;
         const setAiMessage = (fields) => setConversations(prev => prev.map(c => (
@@ -372,6 +374,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     shownText = t;
                     setAiMessage({ text: t });
                 },
+                onStage: setStage,
             });
             updateCurrentMessages([...updated, {
                 id: aiMessageId,
@@ -906,7 +909,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                                 {isLoading ? (
                                                                     <>
                                                                         <RefreshCw size={12} className="animate-spin text-primary" />
-                                                                        <span>{thinkingLabel(elapsedSeconds)}</span>
+                                                                        <span>{stageLabel(stage, elapsedSeconds)}</span>
                                                                     </>
                                                                 ) : (
                                                                     <span>No response received.</span>
@@ -1002,7 +1005,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
                                 <div className="flex items-center gap-2 text-xs text-text-muted pl-1">
                                     <RefreshCw size={12} className="animate-spin text-primary" />
-                                    <span>{thinkingLabel(elapsedSeconds)}</span>
+                                    <span>{stageLabel(stage, elapsedSeconds)}</span>
                                 </div>
                             )}
 

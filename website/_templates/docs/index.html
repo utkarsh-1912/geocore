@@ -1,20 +1,49 @@
 {% extends "docs_base.html" %}
 {% block docs_content %}
+{% set ns = namespace(total=0) %}
+{% for section in docs_nav %}{% set ns.total = ns.total + (section.children|length if section.children else 0) %}{% endfor %}
 <h1>{{ page.title }}</h1>
 <p class="lede">Install and use GeoCore, set up GeoAI, and look up every Groundhog method behind the calculations — with parameters, units, formulas and references.</p>
 
+<form class="docs-search docs-search--hero" role="search" data-docs-search data-root="{{ root }}" data-index="{{ url('docs/search-index.json') }}">
+  <label class="visually-hidden" for="docs-search-input-hero">Search the documentation</label>
+  {{ icon('search') }}
+  <input id="docs-search-input-hero" type="search" placeholder="Search {{ ns.total }} pages…  ( / )" autocomplete="off"
+         aria-controls="docs-search-results-hero" aria-autocomplete="list" aria-expanded="false">
+  <ul class="search-results" id="docs-search-results-hero" data-search-results hidden></ul>
+  <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+</form>
+
+<nav class="doc-jump" aria-label="Jump to section">
+  {% for section in docs_nav %}<a href="#{{ section.slug }}">{{ icon(section.icon or 'book') }}{{ section.title }}</a>{% endfor %}
+</nav>
+
 <div class="doc-sections">
   {% for section in docs_nav %}
-  <section class="card" aria-labelledby="{{ section.slug }}">
-    <span class="card__icon">{{ icon(section.icon or 'book') }}</span>
+  {% set kids = section.children or [] %}
+  <section class="card reveal" aria-labelledby="{{ section.slug }}">
+    <div class="card__head">
+      <span class="card__icon">{{ icon(section.icon or 'book') }}</span>
+      {% if kids %}<span class="card__count">{{ kids|length }} page{{ '' if kids|length == 1 else 's' }}</span>{% endif %}
+    </div>
     <h2 id="{{ section.slug }}" class="h-sub"><a class="card-title-link" href="{{ url(section.url) }}">{{ section.title }}</a></h2>
-    {% set kids = section.children or [] %}
     {% if kids %}
     <ul>
       {% for node in kids[:7] %}
       <li><a href="{{ url(node.url) }}">{{ node.title }}</a>{% if node.children %}<span class="badge">{{ node.children|length }}</span>{% endif %}</li>
       {% endfor %}
-      {% if kids|length > 7 %}<li><a href="{{ url(section.url) }}">and {{ kids|length - 7 }} more…</a></li>{% endif %}
+      {% if kids|length > 7 %}
+      <li class="doc-sections__more">
+        <details>
+          <summary>{{ kids|length - 7 }} more…</summary>
+          <ul>
+            {% for node in kids[7:] %}
+            <li><a href="{{ url(node.url) }}">{{ node.title }}</a>{% if node.children %}<span class="badge">{{ node.children|length }}</span>{% endif %}</li>
+            {% endfor %}
+          </ul>
+        </details>
+      </li>
+      {% endif %}
     </ul>
     {% else %}
     <p><a href="{{ url(section.url) }}">Open {{ section.title }}</a></p>

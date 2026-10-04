@@ -2,7 +2,7 @@
 # License: GPL v3
 """
 Local GGUF Model Downloader & Manager.
-Downloads candidate SLM models (Qwen 2.5/3, Gemma) from Hugging Face directly
+Downloads candidate SLM models (Qwen 2.5/3, Gemma, Mistral, and more) from Hugging Face directly
 to the local GeoCore models directory and configures GeoAI for local inference.
 """
 
@@ -165,15 +165,16 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "description": "Meta Llama 3.2 (3B) with JSON tool calls; custom licence with use restrictions",
         "recommended_for": "Laptops & workstations with 8 GB RAM"
     },
-    "gemma-2-2b-it": {
-        "family": "gemma",
-        "license": "Gemma Terms of Use",
-        "display_name": "Gemma 2 (2.6B IT)",
-        "repo_id": "bartowski/gemma-2-2b-it-GGUF",
-        "filename": "gemma-2-2b-it-Q4_K_M.gguf",
-        "size_mb": 1630,
-        "description": "Google DeepMind Gemma 2 architecture optimized for high factual grounding & research synthesis",
-        "recommended_for": "Literature review, standards interpretation (Eurocode 7, ASTM), and technical reports"
+    "mistral-7b-instruct-v0.3": {
+        "family": "mistral",
+        "license": "Apache-2.0",
+        "display_name": "Mistral 7B Instruct (v0.3)",
+        "repo_id": "bartowski/Mistral-7B-Instruct-v0.3-GGUF",
+        "filename": "Mistral-7B-Instruct-v0.3-Q4_K_M.gguf",
+        "size_mb": 4170,
+        "size_bytes": 4372812000,
+        "description": "Mistral 7B Instruct v0.3 with native [TOOL_CALLS] function calling; strong literature & standards synthesis",
+        "recommended_for": "Research workstations with 8 GB+ RAM; tool-calling replacement for the old Gemma 2 research tier"
     },
     "gemma-3-4b-it": {
         "family": "gemma",
@@ -186,16 +187,6 @@ RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
         "sha256": "04a43a22e8d2003deda5acc262f68ec1005fa76c735a9962a8c77042a74a7d19",
         "description": "Google Gemma 3 (4B); its template has no tool section, so GeoAI describes tools in the prompt",
         "recommended_for": "Workstations with 8 GB+ RAM; research synthesis"
-    },
-    "gemma-2-9b-it": {
-        "family": "gemma",
-        "license": "Gemma Terms of Use",
-        "display_name": "Gemma 2 (9B IT)",
-        "repo_id": "bartowski/gemma-2-9b-it-GGUF",
-        "filename": "gemma-2-9b-it-Q4_K_M.gguf",
-        "size_mb": 5400,
-        "description": "Advanced Google Gemma 2 (9B) for deep geotechnical research, site investigation analysis & RAG",
-        "recommended_for": "Dedicated research workstations with 16GB+ RAM"
     }
 }
 

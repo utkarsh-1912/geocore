@@ -189,4 +189,53 @@
       countEls.forEach(function (el) { el.textContent = el.getAttribute('data-count'); });
     }
   }
+
+  // GeoAI flow stepper: plays through the request pipeline once it scrolls into view,
+  // and lets a reader jump to any step by click or keyboard to inspect it out of order.
+  var flow = document.querySelector('.flow');
+  if (flow) {
+    var flowSteps = Array.prototype.slice.call(flow.children);
+    var flowActive = 0, flowTimer = null, flowUserDriven = false;
+    var flowReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function flowSetActive(i) {
+      flowActive = i;
+      flowSteps.forEach(function (li, idx) {
+        li.classList.toggle('is-active', idx === i);
+        li.classList.toggle('is-done', idx < i);
+        li.setAttribute('aria-current', idx === i ? 'step' : 'false');
+      });
+    }
+
+    function flowStop() { if (flowTimer) { clearInterval(flowTimer); flowTimer = null; } }
+
+    function flowPlay() {
+      if (flowReduceMotion || flowUserDriven) return;
+      flowStop();
+      flowTimer = setInterval(function () {
+        if (flowActive >= flowSteps.length - 1) { flowStop(); return; }
+        flowSetActive(flowActive + 1);
+      }, 1900);
+    }
+
+    flowSteps.forEach(function (li, idx) {
+      function jump() { flowUserDriven = true; flowStop(); flowSetActive(idx); }
+      li.addEventListener('click', jump);
+      li.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(); }
+      });
+    });
+
+    flowSetActive(0);
+    if ('IntersectionObserver' in window) {
+      var flowIo = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { flowPlay(); flowIo.unobserve(entry.target); }
+        });
+      }, { threshold: 0.4 });
+      flowIo.observe(flow);
+    } else {
+      flowPlay();
+    }
+  }
 })();

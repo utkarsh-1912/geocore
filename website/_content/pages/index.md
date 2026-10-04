@@ -19,5 +19,5 @@ GeoCore is an offline geotechnical engineering workstation built on the groundho
 - [GeoAI](/docs/geoai) — GeoAI, the local geotechnical assistant inside GeoCore.
 - [Groundhog Guides](/docs/groundhog/guides) — Narrative documentation and tutorials from the groundhog project.
 - [Groundhog API Reference](/docs/groundhog/api) — API reference for groundhog 0.15.0.
-- [Changelog](/docs/changelog) — Release history.
+- [Changelog](/docs/changelog) — GeoCore's own release history.
 - [License & Credits](/docs/license) — Licences and attribution for GeoCore and the groundhog documentation it includes.

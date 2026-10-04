@@ -192,11 +192,14 @@ def cmd_run(args) -> int:
 
     out_dir = BENCHMARK_DIR / args.run_id
     out_dir.mkdir(parents=True, exist_ok=True)
+    from core.geoai.model_config import load_config
     common_meta = {
         "run_id": args.run_id, "split": str(args.dataset) if args.dataset else args.split, "limit": args.limit,
         "turn_type": args.turn_type, "mode": args.mode, "n_ctx": args.n_ctx, "max_tools": args.max_tools,
         "n_gpu_layers": args.n_gpu_layers, "dataset_generator_version": GENERATOR_VERSION,
         "dataset_seed": DEFAULT_SEED, "python": sys.version.split()[0], "platform": sys.platform,
+        # Prompt-shaping switches that change the result (GEOAI_COMPACT_SCHEMAS etc., see model_config).
+        "compact_tool_schemas": bool(load_config().compact_tool_schemas), "label_suffix": args.label_suffix or None,
     }
 
     jobs: List[Dict[str, Any]] = []
@@ -214,6 +217,7 @@ def cmd_run(args) -> int:
                          "path": str(path), "lora": loras[key]})
 
     for job in jobs:
+        job["label"] += args.label_suffix or ""  # e.g. "-compact": two configs of one model in one run
         out_file = out_dir / f"{job['label']}.json"
         if out_file.exists() and not args.overwrite:
             print(f"skip {job['label']}: {out_file.name} exists (use --overwrite)")
@@ -238,28 +242,32 @@ LEADERBOARD_METRICS = ("mean_score", "strict_pass_rate", "action_accuracy", "too
                        "argument_accuracy", "schema_valid_rate", "clarification_accuracy",
                        "hallucinated_parameter_rate", "hallucinated_tool_rate", "unit_trap_accuracy",
                        "caution_violation_rate", "error_rate", "decision_latency_p50_s", "latency_p50_s",
-                       "peak_memory_mb", "model_load_s")
+                       "peak_memory_mb", "model_load_s", "prompt_tokens_p50", "completion_tokens_p50")
 
 
 def build_leaderboard(out_dir: Path) -> Dict[str, Any]:
     rows = []
     example_sets = set()
-    for f in sorted(out_dir.glob("*.json")):
-        if f.name == LEADERBOARD_FILE:
-            continue
-        rep = json.loads(f.read_text(encoding="utf-8"))
+    reports = [(f, json.loads(f.read_text(encoding="utf-8"))) for f in sorted(out_dir.glob("*.json"))
+               if f.name != LEADERBOARD_FILE]
+    # Only result files: auxiliary JSON in the run folder (desktop_latency_estimate.json, ...) has no metrics.
+    reports = [(f, rep) for f, rep in reports if isinstance(rep, dict) and "metrics" in rep and "meta" in rep]
+    for f, rep in reports:
         meta, m = rep.get("meta", {}), rep.get("metrics", {})
         example_sets.add(tuple(sorted(rep.get("per_example", {}))))
         c = CANDIDATES.get(meta.get("model_key") or "")
         rows.append({
             "label": meta.get("label", f.stem),
             "model_key": meta.get("model_key"),
-            "display_name": (c.display_name + (" + GeoAI LoRA" if meta.get("lora_path") else "")) if c else meta.get("label"),
+            "display_name": (c.display_name + (" + GeoAI LoRA" if meta.get("lora_path") else "")
+                             + (f" ({meta['label_suffix'].strip('-_ ')})" if meta.get("label_suffix") else ""))
+            if c else meta.get("label"),
             "params": c.params if c else None,
             "size_mb": c.size_mb if c else None,
             "license": c.license if c else None,
             "fine_tuned": bool(meta.get("lora_path")),
             "chat_format": (meta.get("model_info") or {}).get("chat_format"),
+            "compact_tool_schemas": meta.get("compact_tool_schemas"),
             "n": m.get("n"),
             "metrics": {k: m.get(k) for k in LEADERBOARD_METRICS},
             "per_category": {k: v.get("pass_rate") for k, v in (m.get("per_category") or {}).items()},
@@ -267,8 +275,7 @@ def build_leaderboard(out_dir: Path) -> Dict[str, Any]:
             "file": f.name,
         })
     rows.sort(key=lambda r: -(r["metrics"].get("mean_score") or 0))
-    first = json.loads(next((f for f in sorted(out_dir.glob("*.json")) if f.name != LEADERBOARD_FILE)).read_text(
-        encoding="utf-8")).get("meta", {}) if rows else {}
+    first = reports[0][1].get("meta", {}) if reports else {}
     settings = {k: first.get(k) for k in ("split", "limit", "turn_type", "mode", "n_ctx", "max_tools", "n_gpu_layers",
                                           "dataset_generator_version", "dataset_seed", "platform")}
     return {"schema_version": LEADERBOARD_SCHEMA_VERSION, "run_id": out_dir.name, "settings": settings,
@@ -343,6 +350,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="Force one chat format for every model (default: auto per GGUF)")
     r.add_argument("--max-records", type=int, default=60)
     r.add_argument("--overwrite", action="store_true")
+    r.add_argument("--label-suffix", default="",
+                   help="Appended to every result label/file to keep two configs of one model in one run, "
+                        "e.g. --label-suffix=-compact (use '=' because the value starts with '-')")
 
     lb = sub.add_parser("leaderboard", help="Rebuild the leaderboard of a run")
     lb.add_argument("--run-id", required=True)

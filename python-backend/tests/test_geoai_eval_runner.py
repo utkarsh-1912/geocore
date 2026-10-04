@@ -62,6 +62,9 @@ def test_cli_writes_results_and_compares(tmp_path, small_set):
     assert main(["--provider", "heuristic", "--dataset", str(data), "--mode", "decision", "--out", str(out), "--quiet"]) == 0
     res = json.loads(out.read_text(encoding="utf-8"))
     assert res["metrics"]["n"] == 6 and len(res["per_example"]) == 6
+    # token counts / latency for every example (heuristic provider reports no tokens -> None)
+    assert set(res["per_example_usage"]) == set(res["per_example"])
+    assert all(u["prompt_tokens"] is None and u["latency_s"] is not None for u in res["per_example_usage"].values())
     cmp_out = tmp_path / "cmp.json"
     assert main(["--compare", str(out), str(out), "--out", str(cmp_out)]) == 0
     assert json.loads(cmp_out.read_text(encoding="utf-8"))["n_shared"] == 6

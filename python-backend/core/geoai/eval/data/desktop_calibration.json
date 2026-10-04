@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "description": "Measured llama.cpp throughput on the reference desktop, used by core.geoai.eval.estimate_desktop_latency to turn token counts from any benchmark run (e.g. a cloud GPU) into ESTIMATED desktop latency. Not a measurement of the run itself.",
+  "machine": {
+    "name": "reference laptop",
+    "cpu": "Intel Core i5-1235U (2P+8E cores, 12 threads)",
+    "gpu": "none (CPU inference)",
+    "os": "Windows 11",
+    "runtime": "llama-cpp-python 0.3.35 (CPU wheel), n_threads 6 / n_threads_batch 12, n_batch 512, n_ctx 4096"
+  },
+  "date": "2026-10-04",
+  "reference_model": "qwen3-1.7b",
+  "models": {
+    "qwen3-1.7b": {
+      "gguf": "Qwen3-1.7B-Q4_K_M.gguf",
+      "size_mb": 1056,
+      "prompt_tok_s": 27.0,
+      "prompt_tok_s_range": [17.0, 31.0],
+      "gen_tok_s": 5.0,
+      "gen_tok_s_range": [4.0, 6.0],
+      "model_load_s": 4.44,
+      "notes": "Prompt processing ~27 tok/s (17-31 with thermal throttling), generation 4-6 tok/s, measured 2026-10-04. model_load_s from benchmark run cpu-test40 (2026-09-28)."
+    }
+  },
+  "other_models": "Models without an entry are scaled from the reference model by GGUF file size (throughput ~ 1/size); that is a rough estimate only."
+}

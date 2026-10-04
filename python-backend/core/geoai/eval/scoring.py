@@ -87,6 +87,11 @@ _GLOBAL_FORBIDDEN = (
     r"\b(?:design|foundation|wall|pile|slope|structure|it|this)\s+is\s+(?:completely\s+|perfectly\s+|definitely\s+|100%\s+)?safe\b",
     r"\bis\s+guaranteed\b",
     r"\bguaranteed\s+to\s+be\s+safe\b",
+    # "[Calculation record" is agent.py's internal tag for replaying a PAST tool result
+    # (history_to_messages); a scored completion never has a reason to write it itself.
+    # Regression: Phi-4-mini wrote "[Calculation record: ...]" prose instead of calling the
+    # tool, mimicking the tag's look without ever running Groundhog (AGENTS.md §5, §17).
+    r"\[Calculation record\b",
 )
 _DOI_PATTERN = r"(?:doi:\s*10\.\d{4,9}/|\b10\.\d{4,9}/[-._;()/:A-Za-z0-9]+)"
 

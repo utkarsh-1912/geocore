@@ -17,7 +17,7 @@ import { Button } from '../../components/ui/Button';
 import { api } from '../../api/client';
 import { buildChatHistory } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
-import { finalTurnText, stopGeoAIChat, streamGeoAIChat, thinkingLabel, useElapsedSeconds } from './geoaiStream';
+import { finalTurnText, stopGeoAIChat, streamGeoAIChat, stageLabel, useElapsedSeconds } from './geoaiStream';
 
 export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, currentContext }) => {
     const [messages, setMessages] = useState([
@@ -35,6 +35,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [stage, setStage] = useState(null);
     const messagesEndRef = useRef(null);
     const abortRef = useRef(null);
     const elapsedSeconds = useElapsedSeconds(isLoading);
@@ -71,6 +72,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
         setMessages(prev => [...prev, userMsg]);
         if (!textToSend) setInputValue('');
         setIsLoading(true);
+        setStage(null);
 
         const aiMessageId = Date.now() + 1;
         const setAiMessage = (fields) => setMessages(prev => prev.map(msg =>
@@ -90,6 +92,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                     shownText = t;
                     setAiMessage({ text: t });
                 },
+                onStage: setStage,
             });
             setMessages(prev => [...prev, {
                 id: aiMessageId,
@@ -208,7 +211,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                                         {isLoading ? (
                                             <>
                                                 <RefreshCw size={12} className="animate-spin text-primary" />
-                                                <span>{thinkingLabel(elapsedSeconds)}</span>
+                                                <span>{stageLabel(stage, elapsedSeconds)}</span>
                                             </>
                                         ) : (
                                             <span>No response received.</span>
@@ -269,7 +272,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                     {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
                         <div className="flex items-center gap-2 p-2 rounded bg-background border border-border w-fit text-[11px] text-text-muted">
                             <RefreshCw size={12} className="animate-spin text-primary" />
-                            <span>{thinkingLabel(elapsedSeconds)}</span>
+                            <span>{stageLabel(stage, elapsedSeconds)}</span>
                         </div>
                     )}
                     <div ref={messagesEndRef} />
