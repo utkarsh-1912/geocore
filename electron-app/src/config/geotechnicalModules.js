@@ -506,6 +506,45 @@ export const GEOTECHNICAL_MODULES = [
         ]
     },
     {
+        id: 'indian_standards',
+        title: 'Indian Standards (BIS)',
+        description: 'IS 6403, IS 1498, IS 2131, IS 1892, IS 1904, IS 2950 and IS 2720 calculations.',
+        items: [
+            {
+                id: 'bis_foundations',
+                title: 'Foundations (IS 6403, IS 1904, IS 2950)',
+                functions: [
+                    { id: 'bearing_capacity_is6403', title: 'IS 6403 Bearing Capacity (Shallow Foundation)' },
+                    { id: 'permissible_settlement_is1904', title: 'IS 1904 Permissible Settlement' },
+                    { id: 'stability_check_is1904', title: 'IS 1904 Sliding / Overturning Check' },
+                    { id: 'raft_rigidity_is2950', title: 'IS 2950 Raft Rigidity (Rigid / Flexible)' }
+                ]
+            },
+            {
+                id: 'bis_investigation',
+                title: 'Site investigation (IS 1892, IS 2131, IS 1498)',
+                functions: [
+                    { id: 'investigation_depth_is1892', title: 'IS 1892 Depth of Investigation' },
+                    { id: 'borehole_layout_is1892', title: 'IS 1892 Borehole Disposition' },
+                    { id: 'spt_correction_is2131', title: 'IS 2131 SPT N Corrections' },
+                    { id: 'classify_soil_is1498', title: 'IS 1498 Soil Classification' }
+                ]
+            },
+            {
+                id: 'bis_lab',
+                title: 'Laboratory tests (IS 2720)',
+                functions: [
+                    { id: 'specific_gravity_is2720', title: 'IS 2720-3 Specific Gravity' },
+                    { id: 'liquid_limit_one_point_is2720', title: 'IS 2720-5 One-Point Liquid Limit' },
+                    { id: 'flow_index_is2720', title: 'IS 2720-5 Flow Index' },
+                    { id: 'consistency_indices_is2720', title: 'IS 2720-5 Consistency Indices' },
+                    { id: 'permeability_constant_head_is2720', title: 'IS 2720-17 Constant Head Permeability' },
+                    { id: 'permeability_falling_head_is2720', title: 'IS 2720-17 Falling Head Permeability' }
+                ]
+            }
+        ]
+    },
+    {
         id: 'constitutive',
         title: 'Constitutive models',
         description: 'Models for cohesionless, cohesive, and rock materials.',

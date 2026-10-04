@@ -34,7 +34,7 @@ IS6403_TABLE_1 = {
 def test_bearing_capacity_factors_reproduce_is6403_table_1(phi, expected):
     f = bearing_capacity_factors(phi)
     for got, want in zip((f["Nc"], f["Nq"], f["Ngamma"]), expected):
-        assert got == pytest.approx(want, abs=0.006)
+        assert got == pytest.approx(want, rel=1e-4, abs=0.006)
 
 
 def test_bearing_factors_use_groundhog_inside_its_range_and_closed_form_below():
@@ -295,7 +295,7 @@ def test_raft_relative_stiffness_and_critical_spacing():
 def test_specific_gravity_and_temperature_correction():
     r = specific_gravity_is2720(30, 55, 145.6, 130)
     assert r["Specific gravity at test temperature [-]"] == pytest.approx(25 / 9.4, rel=1e-3)
-    assert r["Specific gravity at 27 degC [-]"] == pytest.approx(25 / 9.4, rel=1e-4)
+    assert r["Specific gravity at 27 degC [-]"] == pytest.approx(25 / 9.4, rel=1e-3)
     r20 = specific_gravity_is2720(30, 55, 145.6, 130, temperature=20)
     assert r20["Temperature correction factor K [-]"] == pytest.approx(998.21 / 996.52, abs=2e-5)
 

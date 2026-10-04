@@ -13,6 +13,7 @@ from core.geoai.schemas import SCHEMA_REGISTRY
 from core.geoai.slm_schema_generator import generate_gemini_tool_definitions, generate_openai_tool_definitions
 from core.geoai.tool_registry import tool_registry
 from core.geoai.validator import validate_and_coerce_inputs
+from core.standards.bis import BIS_FUNCTIONS
 
 # Helpers that must never be offered to the SLM.
 HELPERS = [
@@ -28,7 +29,9 @@ HELPERS = [
 KEPT = ["constant_value", "linear_trend", "logtimemethod", "mohrcoulomb_triaxial_compression",
         "pilegroupeffect_reesevanimpe", "cycliccontours_dssclay_andersen", "nq_frictionangle_sand"]
 
-UI_FUNCTION_COUNT = 222  # core.registry.Registry.function_map (desktop calculation forms)
+# core.registry.Registry.function_map (desktop calculation forms): Groundhog + manual functions,
+# plus the Indian Standard calculations of core.standards.bis.
+UI_FUNCTION_COUNT = 222 + len(BIS_FUNCTIONS)
 
 
 def _model_facing_names():

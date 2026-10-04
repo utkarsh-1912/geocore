@@ -29,6 +29,8 @@ import { lateralSchemas } from './lateral';
 
 import { cavityExpansionSchemas } from './cavity_expansion';
 
+import { bisSchemas } from './bis';
+
 // Combine all schemas
 const allSchemas = {
     ...generalSchemas,
@@ -51,7 +53,8 @@ const allSchemas = {
     ...deepFoundationsSchemas,
     ...siteInvestigationSchemas,
     ...lateralSchemas,
-    ...cavityExpansionSchemas
+    ...cavityExpansionSchemas,
+    ...bisSchemas
 };
 
 // Default schema for unknown functions
