@@ -808,7 +808,7 @@
     <h1>Calculation catalogue</h1>
     <p class="docs-meta">
 <span class="gc-badge gc-available">Available in GeoCore</span>    </p>
-    <div class="prose docs-body"><p>GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 203 calculators, of which 203 link to the groundhog function or class they run.</p>
+    <div class="prose docs-body"><p>GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 220 calculators, of which 206 link to the groundhog function or class they run.</p>
 <h2 id="general-and-utility-functions">General and utility functions</h2>
 <h3 id="soil-profiles-and-grids">Soil profiles and grids</h3>
 <ul>
@@ -946,6 +946,7 @@
 <li><a id="spt_n60_correction"></a><strong>SPT N60 Energy Correction</strong> (<code>spt_N60_correction</code>) — <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#spt_n60_correction">groundhog <code>spt_N60_correction</code></a></li>
 <li><a id="undrainedshearstrength_spt_salgado"></a><strong>Salgado Undrained Shear Strength (SPT)</strong> (<code>undrainedshearstrength_spt_salgado</code>) — <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrength_spt_salgado">groundhog <code>undrainedshearstrength_spt_salgado</code></a></li>
 <li><a id="undrainedshearstrengthclass_spt_terzaghipeck"></a><strong>Terzaghi &amp; Peck Strength Class (SPT)</strong> (<code>undrainedshearstrengthclass_spt_terzaghipeck</code>) — <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#undrainedshearstrengthclass_spt_terzaghipeck">groundhog <code>undrainedshearstrengthclass_spt_terzaghipeck</code></a></li>
+<li><a id="youngsmodulus_spt_aashto"></a><strong>AASHTO Young's Modulus (SPT)</strong> (<code>youngsmodulus_spt_AASHTO</code>) — <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/#youngsmodulus_spt_aashto">groundhog <code>youngsmodulus_spt_AASHTO</code></a></li>
 </ul>
 <h3 id="laboratory-sample-preparation">Laboratory: Sample preparation</h3>
 <ul>
@@ -1136,7 +1137,36 @@
 <ul>
 <li><a id="eurocode7_factors"></a><strong>Eurocode 7 STR/GEO Partial Factors</strong> (<code>eurocode7_factors</code>) — <a href="/docs/groundhog/api/standards/eurocode7/factors/#eurocode7_factoring_str_geo">groundhog <code>Eurocode7_factoring_STR_GEO</code></a></li>
 </ul>
+<h2 id="indian-standards-bis">Indian Standards (BIS)</h2>
+<h3 id="foundations-is-6403-is-1904-is-2950">Foundations (IS 6403, IS 1904, IS 2950)</h3>
+<ul>
+<li><a id="bearing_capacity_is6403"></a><strong>IS 6403 Bearing Capacity (Shallow Foundation)</strong> (<code>bearing_capacity_is6403</code>) — No upstream documentation.</li>
+<li><a id="permissible_settlement_is1904"></a><strong>IS 1904 Permissible Settlement</strong> (<code>permissible_settlement_is1904</code>) — No upstream documentation.</li>
+<li><a id="stability_check_is1904"></a><strong>IS 1904 Sliding / Overturning Check</strong> (<code>stability_check_is1904</code>) — No upstream documentation.</li>
+<li><a id="raft_rigidity_is2950"></a><strong>IS 2950 Raft Rigidity (Rigid / Flexible)</strong> (<code>raft_rigidity_is2950</code>) — No upstream documentation.</li>
+</ul>
+<h3 id="site-investigation-is-1892-is-2131-is-1498">Site investigation (IS 1892, IS 2131, IS 1498)</h3>
+<ul>
+<li><a id="investigation_depth_is1892"></a><strong>IS 1892 Depth of Investigation</strong> (<code>investigation_depth_is1892</code>) — No upstream documentation.</li>
+<li><a id="borehole_layout_is1892"></a><strong>IS 1892 Borehole Disposition</strong> (<code>borehole_layout_is1892</code>) — No upstream documentation.</li>
+<li><a id="spt_correction_is2131"></a><strong>IS 2131 SPT N Corrections</strong> (<code>spt_correction_is2131</code>) — No upstream documentation.</li>
+<li><a id="classify_soil_is1498"></a><strong>IS 1498 Soil Classification</strong> (<code>classify_soil_is1498</code>) — No upstream documentation.</li>
+</ul>
+<h3 id="laboratory-tests-is-2720">Laboratory tests (IS 2720)</h3>
+<ul>
+<li><a id="specific_gravity_is2720"></a><strong>IS 2720-3 Specific Gravity</strong> (<code>specific_gravity_is2720</code>) — No upstream documentation.</li>
+<li><a id="liquid_limit_one_point_is2720"></a><strong>IS 2720-5 One-Point Liquid Limit</strong> (<code>liquid_limit_one_point_is2720</code>) — No upstream documentation.</li>
+<li><a id="flow_index_is2720"></a><strong>IS 2720-5 Flow Index</strong> (<code>flow_index_is2720</code>) — No upstream documentation.</li>
+<li><a id="consistency_indices_is2720"></a><strong>IS 2720-5 Consistency Indices</strong> (<code>consistency_indices_is2720</code>) — No upstream documentation.</li>
+<li><a id="permeability_constant_head_is2720"></a><strong>IS 2720-17 Constant Head Permeability</strong> (<code>permeability_constant_head_is2720</code>) — No upstream documentation.</li>
+<li><a id="permeability_falling_head_is2720"></a><strong>IS 2720-17 Falling Head Permeability</strong> (<code>permeability_falling_head_is2720</code>) — No upstream documentation.</li>
+</ul>
 <h2 id="constitutive-models">Constitutive models</h2>
+<h3 id="general">General</h3>
+<ul>
+<li><a id="mohrcoulomb_triaxial_compression"></a><strong>Mohr-Coulomb Triaxial Compression</strong> (<code>mohrcoulomb_triaxial_compression</code>) — <a href="/docs/groundhog/api/constitutivemodels/general/#mohrcoulomb_triaxial_compression">groundhog <code>mohrcoulomb_triaxial_compression</code></a></li>
+<li><a id="mohrcoulomb_triaxial_extension"></a><strong>Mohr-Coulomb Triaxial Extension</strong> (<code>mohrcoulomb_triaxial_extension</code>) — <a href="/docs/groundhog/api/constitutivemodels/general/#mohrcoulomb_triaxial_extension">groundhog <code>mohrcoulomb_triaxial_extension</code></a></li>
+</ul>
 <h3 id="cohesionless-materials">Cohesionless materials</h3>
 <ul>
 <li><a id="hardening_soil_drained_triaxial"></a><strong>Hardening Soil (Drained Triaxial)</strong> (<code>hardening_soil_drained_triaxial</code>) — <a href="/docs/groundhog/api/constitutivemodels/cohesionless/#hardeningsoil">groundhog <code>HardeningSoil</code></a></li>
@@ -1176,6 +1206,7 @@
       <li class="lvl-2"><a href="#excavations">Excavations</a></li>
       <li class="lvl-2"><a href="#soil-dynamics">Soil dynamics</a></li>
       <li class="lvl-2"><a href="#eurocode7">EuroCode7</a></li>
+      <li class="lvl-2"><a href="#indian-standards-bis">Indian Standards (BIS)</a></li>
       <li class="lvl-2"><a href="#constitutive-models">Constitutive models</a></li>
       <li class="lvl-2"><a href="#pipelines-and-cables">Pipelines and cables</a></li>
     </ul>

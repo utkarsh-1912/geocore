@@ -43,6 +43,7 @@ These tools have hand-written schemas with units, bounds and accepted aliases fo
 | `derive_cpt_parameters` | in_situ | Derives geotechnical design parameters (undrained shear strength su, friction angle phi', relative density Dr, small-strain shear modulus Gmax) from CPT measurements. |
 | `search_local_documents` | research | Searches local project documents, technical notes, papers, and standards using BM25 full-text retrieval. |
 | `index_document_text` | research | Indexes raw text or markdown technical content into the local SQLite full-text search index. |
+| `get_function_documentation` | documentation | Returns the documented inputs (with units and suggested ranges), outputs, formulas and cited references of one Groundhog calculation function. Use it to explain a method or check required inputs; it does not calculate. |
 | `list_project_cpts` | in_situ | Lists the CPTs available in the current project: CPT id, depth range, channels, location. |
 | `get_cpt_summary` | in_situ | Summarises one project CPT: depth range, soil layering from Robertson SBT/Ic intervals with qc [MPa], fs and u2 [kPa] ranges per layer, data-quality flags and provenance. |
 | `calculate_pile_capacity_from_cpt` | deep_foundations | Calculates the ultimate axial pile capacity (shaft, base and total resistance in kN) of a single pile from a project CPT using Groundhog's LCPC, Koppejan or De Beer method. |

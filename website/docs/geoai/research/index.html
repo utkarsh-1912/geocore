@@ -816,6 +816,13 @@
 <li><code>search_local_documents</code> returns the best-matching chunks with document title, section heading, file path and score.</li>
 </ul>
 <p>There is currently no dedicated screen for managing indexed documents; documents are added through the <code>index_document_text</code> tool (for example with <code>POST /api/geoai/invoke</code>, see <a href="/docs/geoai/tools/#api-endpoints">GeoAI tools</a>).</p>
+<h2 id="geocore-documentation-as-a-source">GeoCore documentation as a source</h2>
+<p>The documentation shipped with GeoCore (this site's pages and the groundhog API reference generated from the groundhog docstrings) is added to the index automatically the first time GeoAI searches, and re-indexed only when the documentation changes. Results from it link to the matching page under <code>/docs/</code>. Your own documents are kept separate and are never removed by this.</p>
+<p>A third tool reads the same content directly:</p>
+<ul>
+<li><code>get_function_documentation</code> returns one groundhog function's documented inputs (with units and suggested ranges), outputs, formulas and the references cited in its docstring, with the groundhog licence attribution. It does not calculate anything.</li>
+</ul>
+<p>References returned this way are quoted from the groundhog docstrings; GeoAI does not add references of its own.</p>
 <h2 id="keeping-evidence-types-apart">Keeping evidence types apart</h2>
 <p>GeoAI is instructed to distinguish between the kinds of evidence behind an answer and not to present a literature value as a project measurement:</p>
 <div class="table-wrap"><table class="data">
@@ -859,7 +866,7 @@
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/geoai-research.md">Source</a></p>
-<p class="attribution__note">Written from: <code>python-backend/core/geoai/research/indexer.py</code>, <code>python-backend/core/geoai/research/evidence.py</code>, <code>python-backend/core/geoai/tool_definitions.py</code>, <code>AGENTS.md</code></p>      </div>
+<p class="attribution__note">Written from: <code>python-backend/core/geoai/research/indexer.py</code>, <code>python-backend/core/geoai/research/evidence.py</code>, <code>python-backend/core/geoai/research/docs_adapter.py</code>, <code>python-backend/core/geoai/tool_definitions.py</code>, <code>AGENTS.md</code></p>      </div>
     </aside>
 
 
@@ -871,6 +878,7 @@
     <h2 id="toc-title">On this page</h2>
     <ul data-toc>
       <li class="lvl-2"><a href="#how-it-works">How it works</a></li>
+      <li class="lvl-2"><a href="#geocore-documentation-as-a-source">GeoCore documentation as a source</a></li>
       <li class="lvl-2"><a href="#keeping-evidence-types-apart">Keeping evidence types apart</a></li>
     </ul>
   </aside>

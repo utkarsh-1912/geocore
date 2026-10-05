@@ -12,7 +12,10 @@ groundhog_version: 0.15.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.constitutivemodels.general
-geocore_available: false
+geocore_available: true
+geocore_functions:
+- mohrcoulomb_triaxial_compression
+- mohrcoulomb_triaxial_extension
 ---
 
 Module `groundhog.constitutivemodels.general` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/constitutivemodels/general.py).
@@ -22,6 +25,8 @@ Module `groundhog.constitutivemodels.general` (groundhog 0.15.0). [View source](
 <a id="mohrcoulomb_triaxial_compression"></a>
 
 ## `mohrcoulomb_triaxial_compression`
+
+<span class="gc-badge gc-available" data-geocore-function="mohrcoulomb_triaxial_compression">Available in GeoCore</span> [Constitutive models › General › Mohr-Coulomb Triaxial Compression](/docs/geocore/using/modules#mohrcoulomb_triaxial_compression)
 
 ```python
 mohrcoulomb_triaxial_compression(sigma_3, cohesion, phi, latex_titles=True, **kwargs)
@@ -87,6 +92,8 @@ Dictionary with the following keys:
 <a id="mohrcoulomb_triaxial_extension"></a>
 
 ## `mohrcoulomb_triaxial_extension`
+
+<span class="gc-badge gc-available" data-geocore-function="mohrcoulomb_triaxial_extension">Available in GeoCore</span> [Constitutive models › General › Mohr-Coulomb Triaxial Extension](/docs/geocore/using/modules#mohrcoulomb_triaxial_extension)
 
 ```python
 mohrcoulomb_triaxial_extension(sigma_1, cohesion, phi, latex_titles=True, **kwargs)

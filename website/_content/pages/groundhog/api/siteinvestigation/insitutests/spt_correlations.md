@@ -25,6 +25,7 @@ geocore_functions:
 - spt_N60_correction
 - undrainedshearstrength_spt_salgado
 - undrainedshearstrengthclass_spt_terzaghipeck
+- youngsmodulus_spt_AASHTO
 ---
 
 Module `groundhog.siteinvestigation.insitutests.spt_correlations` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/spt_correlations.py).
@@ -535,6 +536,8 @@ Dictionary with the following keys:
 <a id="youngsmodulus_spt_aashto"></a>
 
 ## `youngsmodulus_spt_AASHTO`
+
+<span class="gc-badge gc-available" data-geocore-function="youngsmodulus_spt_AASHTO">Available in GeoCore</span> [Site investigation › In-situ: SPT corrections & correlations › AASHTO Young's Modulus (SPT)](/docs/geocore/using/modules#youngsmodulus_spt_aashto)
 
 ```python
 youngsmodulus_spt_AASHTO(

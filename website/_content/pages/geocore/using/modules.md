@@ -13,7 +13,7 @@ edited_by_geocore: false
 geocore_available: true
 ---
 
-GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 203 calculators, of which 203 link to the groundhog function or class they run.
+GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 220 calculators, of which 206 link to the groundhog function or class they run.
 
 ## General and utility functions
 
@@ -156,6 +156,7 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 - <a id="spt_n60_correction"></a>**SPT N60 Energy Correction** (`spt_N60_correction`) — [groundhog `spt_N60_correction`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#spt_n60_correction)
 - <a id="undrainedshearstrength_spt_salgado"></a>**Salgado Undrained Shear Strength (SPT)** (`undrainedshearstrength_spt_salgado`) — [groundhog `undrainedshearstrength_spt_salgado`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#undrainedshearstrength_spt_salgado)
 - <a id="undrainedshearstrengthclass_spt_terzaghipeck"></a>**Terzaghi & Peck Strength Class (SPT)** (`undrainedshearstrengthclass_spt_terzaghipeck`) — [groundhog `undrainedshearstrengthclass_spt_terzaghipeck`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#undrainedshearstrengthclass_spt_terzaghipeck)
+- <a id="youngsmodulus_spt_aashto"></a>**AASHTO Young's Modulus (SPT)** (`youngsmodulus_spt_AASHTO`) — [groundhog `youngsmodulus_spt_AASHTO`](/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations#youngsmodulus_spt_aashto)
 
 ### Laboratory: Sample preparation
 
@@ -358,8 +359,39 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 
 - <a id="eurocode7_factors"></a>**Eurocode 7 STR/GEO Partial Factors** (`eurocode7_factors`) — [groundhog `Eurocode7_factoring_STR_GEO`](/docs/groundhog/api/standards/eurocode7/factors#eurocode7_factoring_str_geo)
 
+## Indian Standards (BIS)
+
+
+### Foundations (IS 6403, IS 1904, IS 2950)
+
+- <a id="bearing_capacity_is6403"></a>**IS 6403 Bearing Capacity (Shallow Foundation)** (`bearing_capacity_is6403`) — No upstream documentation.
+- <a id="permissible_settlement_is1904"></a>**IS 1904 Permissible Settlement** (`permissible_settlement_is1904`) — No upstream documentation.
+- <a id="stability_check_is1904"></a>**IS 1904 Sliding / Overturning Check** (`stability_check_is1904`) — No upstream documentation.
+- <a id="raft_rigidity_is2950"></a>**IS 2950 Raft Rigidity (Rigid / Flexible)** (`raft_rigidity_is2950`) — No upstream documentation.
+
+### Site investigation (IS 1892, IS 2131, IS 1498)
+
+- <a id="investigation_depth_is1892"></a>**IS 1892 Depth of Investigation** (`investigation_depth_is1892`) — No upstream documentation.
+- <a id="borehole_layout_is1892"></a>**IS 1892 Borehole Disposition** (`borehole_layout_is1892`) — No upstream documentation.
+- <a id="spt_correction_is2131"></a>**IS 2131 SPT N Corrections** (`spt_correction_is2131`) — No upstream documentation.
+- <a id="classify_soil_is1498"></a>**IS 1498 Soil Classification** (`classify_soil_is1498`) — No upstream documentation.
+
+### Laboratory tests (IS 2720)
+
+- <a id="specific_gravity_is2720"></a>**IS 2720-3 Specific Gravity** (`specific_gravity_is2720`) — No upstream documentation.
+- <a id="liquid_limit_one_point_is2720"></a>**IS 2720-5 One-Point Liquid Limit** (`liquid_limit_one_point_is2720`) — No upstream documentation.
+- <a id="flow_index_is2720"></a>**IS 2720-5 Flow Index** (`flow_index_is2720`) — No upstream documentation.
+- <a id="consistency_indices_is2720"></a>**IS 2720-5 Consistency Indices** (`consistency_indices_is2720`) — No upstream documentation.
+- <a id="permeability_constant_head_is2720"></a>**IS 2720-17 Constant Head Permeability** (`permeability_constant_head_is2720`) — No upstream documentation.
+- <a id="permeability_falling_head_is2720"></a>**IS 2720-17 Falling Head Permeability** (`permeability_falling_head_is2720`) — No upstream documentation.
+
 ## Constitutive models
 
+
+### General
+
+- <a id="mohrcoulomb_triaxial_compression"></a>**Mohr-Coulomb Triaxial Compression** (`mohrcoulomb_triaxial_compression`) — [groundhog `mohrcoulomb_triaxial_compression`](/docs/groundhog/api/constitutivemodels/general#mohrcoulomb_triaxial_compression)
+- <a id="mohrcoulomb_triaxial_extension"></a>**Mohr-Coulomb Triaxial Extension** (`mohrcoulomb_triaxial_extension`) — [groundhog `mohrcoulomb_triaxial_extension`](/docs/groundhog/api/constitutivemodels/general#mohrcoulomb_triaxial_extension)
 
 ### Cohesionless materials
 

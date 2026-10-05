@@ -72,6 +72,7 @@
     "section": "GeoAI",
     "headings": [
       "How it works",
+      "GeoCore documentation as a source",
       "Keeping evidence types apart"
     ],
     "text": "GeoAI includes a small, fully local search index for engineering text: project notes, report extracts, papers or standards you are allowed to use. It is meant to let GeoAI quote your documents instead of relying on the model's memory. How it works - Text is split into chunks by heading and paragraph"
@@ -228,12 +229,17 @@
       "EuroCode7",
       "Parameter selection",
       "Partial factor selection",
+      "Indian Standards (BIS)",
+      "Foundations (IS 6403, IS 1904, IS 2950)",
+      "Site investigation (IS 1892, IS 2131, IS 1498)",
+      "Laboratory tests (IS 2720)",
       "Constitutive models",
+      "General",
       "Cohesionless materials",
       "Pipelines and cables",
       "Pipeline and cable stability"
     ],
-    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 203 calculators, of which 203 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
+    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 220 calculators, of which 206 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
   },
   {
     "slug": "geocore/using/parameter-overrides",
@@ -348,7 +354,7 @@
       "mohrcoulomb_triaxial_compression",
       "mohrcoulomb_triaxial_extension"
     ],
-    "text": "Module groundhog.constitutivemodels.general (groundhog 0.15.0). View source. Functions: mohrcoulomb_triaxial_compression, mohrcoulomb_triaxial_extension mohrcoulomb_triaxial_compression Calculates Mohr's circle and the orientation of the failure plane for a situation in which the radial (effective) "
+    "text": "Module groundhog.constitutivemodels.general (groundhog 0.15.0). View source. Functions: mohrcoulomb_triaxial_compression, mohrcoulomb_triaxial_extension mohrcoulomb_triaxial_compression Available in GeoCore Constitutive models › General › Mohr-Coulomb Triaxial Compression Calculates Mohr's circle an"
   },
   {
     "slug": "groundhog/api/deepfoundations",
