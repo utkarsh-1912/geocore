@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Soil profiles and AGS data — GeoCore Docs</title>
-  <meta name="description" content="Create groundhog SoilProfile objects from CSV or Excel files, and load AGS files.">
+  <meta name="description" content="Create groundhog SoilProfile objects and CPT tables from CSV or Excel files, and load AGS files.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoCore">
   <meta property="og:title" content="Soil profiles and AGS data — GeoCore Docs">
-  <meta property="og:description" content="Create groundhog SoilProfile objects from CSV or Excel files, and load AGS files.">
+  <meta property="og:description" content="Create groundhog SoilProfile objects and CPT tables from CSV or Excel files, and load AGS files.">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
@@ -813,6 +813,12 @@
 <li>a <strong>CSV</strong> (<code>.csv</code>) or <strong>Excel</strong> (<code>.xlsx</code>, <code>.xls</code>) file, or</li>
 <li>a table of layers entered in the application.</li>
 </ul>
+<p>When you upload a file, choose what it contains under <strong>File contains</strong>:</p>
+<ul>
+<li><strong>Layered soil profile:</strong> a table of layers. GeoAI uses it as the project stratigraphy.</li>
+<li><strong>CPT sounding:</strong> a cone penetration test record. GeoAI reads it through its CPT tools.</li>
+</ul>
+<p>GeoCore suggests <strong>CPT sounding</strong> when the file has a cone resistance column (<code>qc</code>), but a layered profile may also carry a representative <code>qc</code>, so check the choice before saving.</p>
 <p>When the profile is created, GeoCore:</p>
 <ol>
 <li>Renames the columns you select as the top and bottom depth to <code>Depth from [m]</code> and <code>Depth to [m]</code>, the names groundhog requires.</li>
@@ -832,7 +838,7 @@
 
 <p>After import, choose <code>Depth from</code> and <code>Depth to</code> as the depth columns. groundhog's own requirements for soil profiles are described in the <a href="/docs/groundhog/api/general/soilprofile/#soilprofile">SoilProfile reference</a>.</p>
 <h2 id="saved-objects">Saved objects</h2>
-<p>Soil profiles and other objects you create are listed in the object manager and can be viewed or deleted. They are saved by the calculation engine to a local <code>saved_objects.json</code> file and restored the next time GeoCore starts.</p>
+<p>Soil profiles and other objects you create are listed in the object manager and can be viewed or deleted. The calculation engine saves them to <code>saved_objects.json</code> in your GeoCore data folder (<code>%APPDATA%\GeoCore</code> on Windows, <code>~/.geocore</code> on macOS and Linux) and restores them the next time GeoCore starts. On first start, a file saved by an earlier version next to the application is copied there.</p>
 <h2 id="ags-files">AGS files</h2>
 <p>The <strong>AGSConverter</strong> calculator loads an AGS file (AGS 4 by default) and lists the groups it contains. <strong>convert_ags_group()</strong> then extracts one group (for example <code>GEOL</code> or <code>SCPT</code>) as a table. Both run groundhog's <a href="/docs/groundhog/api/general/agsconversion/#agsconverter"><code>AGSConverter</code></a>.</p></div>
 
@@ -841,7 +847,7 @@
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/soil-profiles.md">Source</a></p>
-<p class="attribution__note">Written from: <code>python-backend/core/registry.py</code>, <code>python-backend/core/router.py</code>, <code>python-backend/core/state.py</code>, <code>electron-app/src/features/calculations/SoilProfileModal.jsx</code></p>      </div>
+<p class="attribution__note">Written from: <code>python-backend/core/registry.py</code>, <code>python-backend/core/router.py</code>, <code>python-backend/core/state.py</code>, <code>python-backend/core/paths.py</code>, <code>electron-app/src/utils/dataKind.js</code>, <code>electron-app/src/features/calculations/SoilProfileModal.jsx</code></p>      </div>
     </aside>
 
 

@@ -2,7 +2,7 @@
 title: Running and building from source
 slug: geocore/building-from-source
 section: Getting Started
-description: Set up a GeoCore development environment, run the tests and build the desktop installers.
+description: Set up a GeoCore development environment, run the tests, build the desktop installers and rebuild these docs.
 origin: geocore
 source_url: https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/building-from-source.md
 license: GPL-3.0
@@ -13,12 +13,16 @@ edited_by_geocore: false
 sources:
 - README.md
 - RELEASE_GUIDE.md
+- .github/workflows/ci.yml
+- .github/workflows/release.yml
+- electron-app/package.json
+- website/README.md
 ---
 
 ## Prerequisites
 
-- Node.js 18 or newer and npm 9 or newer
-- Python 3.10 or newer with `pip` and virtual environment support
+- Node.js 22 (the version CI uses; Vite 7 needs at least 20.19) and npm
+- Python 3.10 or newer with `pip` and virtual environment support. CI runs on 3.10, so avoid syntax that needs a newer version.
 
 ## Clone the repository
 
@@ -48,8 +52,11 @@ The engine listens on `http://127.0.0.1:8000`.
 
 ```bash
 cd python-backend
-pytest tests -v
+pip install pytest httpx
+python -m pytest tests/
 ```
+
+The GeoAI tests use scripted model providers, so they need no language model: `python -m pytest tests/ -k geoai`.
 
 ### Local LLM runtime for GeoAI (optional)
 
@@ -60,7 +67,7 @@ cd python-backend
 venv/Scripts/python.exe -m pip install llama-cpp-python --prefer-binary --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 ```
 
-If `llama_cpp` is not installed, GeoAI uses its keyword-based fallback.
+On macOS and Linux use `venv/bin/python` instead of `venv/Scripts/python.exe`. If `llama_cpp` is not installed, GeoAI uses its keyword-based fallback.
 
 ## Desktop frontend
 
@@ -72,24 +79,48 @@ npm install
 npm start
 ```
 
-This starts the desktop shell in development mode.
+This runs the Vite dev server and opens Electron once it is ready. Running from source enables development-only tools such as [form customisation](/docs/geocore/using/parameter-overrides).
 
 ## Building installers
 
-Freeze the calculation engine with PyInstaller, then package the desktop app with electron-builder.
+Freeze the calculation engine with PyInstaller, then package the desktop app with electron-builder. Build each platform on that platform: Linux packages cannot be built on Windows or macOS.
 
 ```bash
 # 1. Calculation engine (output: python-backend/dist/main)
 cd python-backend
+python -m core.function_manifest   # refresh the start-up cache of groundhog functions
 pyinstaller --clean main.spec
 
 # 2. Desktop app
 cd ../electron-app
 npm run build
-npm run dist:win   # Windows installer  -> electron-app/release/GeoCore-Setup-<version>.exe
-npm run dist:mac   # macOS disk image   -> electron-app/release/GeoCore-<version>-<arch>.dmg
+npm run dist:win     # electron-app/release/GeoCore-Setup-<version>.exe
+npm run dist:mac     # GeoCore-<version>[-arm64].dmg and -mac.zip
+npm run dist:linux   # GeoCore-<version>.AppImage and geocore_<version>_amd64.deb
 ```
 
-`main.spec` bundles `llama_cpp` and its native libraries when they are installed; otherwise the build prints a warning and the resulting app uses the GeoAI fallback. Model files (`.gguf`) are never bundled.
+The `.deb` target needs `fakeroot` and `dpkg`, which Debian and Ubuntu include.
 
-Local builds never publish anything. Official releases are built by the GitHub Actions workflow when a version tag is pushed.
+To check a frozen engine before packaging it, run `python smoke_test_frozen.py dist/main/main.exe` (or `dist/main/main` on macOS and Linux) while nothing else uses port 8000.
+
+`main.spec` bundles `llama_cpp` and its native libraries when they are installed; otherwise the build prints a warning and the resulting app uses the GeoAI fallback. It also bundles the text of these docs for GeoAI. Model files (`.gguf`) are never bundled.
+
+Local builds never publish anything. Official releases are built by the GitHub Actions workflow when a version tag (`v*`) is pushed. It first runs the CI checks and confirms that the tag matches the version in `electron-app/package.json`, `python-backend/main.py` and `python-backend/core/diagnostics.py`.
+
+## Rebuilding the website and these docs
+
+The website and this documentation are static pages generated from `website/_content` and committed to the repository.
+
+```bash
+# from the repository root; needs jinja2, markdown and pyyaml
+python website/_build/build.py
+```
+
+The groundhog reference pages, guides and tutorials are extracted from groundhog itself. To refresh them, clone groundhog at the tag of the installed version and run the extractor before the build:
+
+```bash
+git clone --depth 1 --branch v0.15.0 https://github.com/snakesonabrain/groundhog.git <tmp>/groundhog
+python website/_content/extract_docs.py --groundhog-repo <tmp>/groundhog
+```
+
+CI fails if the committed marketing pages differ from a fresh build. Details are in `website/README.md` and `website/_content/README.md`.

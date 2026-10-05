@@ -15,5 +15,5 @@ edited_by_geocore: false
 Install GeoCore and learn how the application is put together.
 
 - [What is GeoCore](/docs/geocore/overview) — GeoCore is a desktop geotechnical engineering workstation that runs groundhog calculations locally.
-- [Installing GeoCore](/docs/geocore/installation) — Download and install GeoCore on Windows or macOS, and how automatic updates work.
-- [Running and building from source](/docs/geocore/building-from-source) — Set up a GeoCore development environment, run the tests and build the desktop installers.
+- [Installing GeoCore](/docs/geocore/installation) — Download and install GeoCore on Windows, macOS or Linux, where it keeps your data, and how automatic updates work.
+- [Running and building from source](/docs/geocore/building-from-source) — Set up a GeoCore development environment, run the tests, build the desktop installers and rebuild these docs.

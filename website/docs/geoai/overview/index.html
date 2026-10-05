@@ -827,17 +827,22 @@ Local language model ── explains the result, with units and method
 <p>The language model <strong>does not calculate</strong>. Every number in a GeoAI answer that comes from a calculation is produced by a groundhog function (or a GeoCore CPT/SPT routine), and the model is instructed to report it with its units and method. The model can only call tools registered in GeoCore's tool registry; it cannot run arbitrary code, shell commands or file operations.</p>
 <p>Specifically, GeoAI:</p>
 <ul>
-<li>selects up to 20 candidate tools that match the words in your request (and the calculator you have open), to keep the prompt small enough for local models;</li>
+<li>offers the model the 5 tools that best match your request (and the calculator you have open), to keep the prompt small enough for local models;</li>
 <li>lets the model call tools for up to three rounds, so one answer can chain several calculations;</li>
+<li>splits compound requests (for example <em>"classify CPT-03, then size a footing"</em>) between specialist agents;</li>
 <li>validates every tool call before running it and returns validation errors to the model instead of guessing values;</li>
+<li>refuses a tool call that contains numbers you never gave, instead of running it;</li>
 <li>attaches a provenance record (tool, inputs, method, timestamp) to every tool result.</li>
 </ul>
+<p>For a plain calculation request, GeoAI answers straight away with a fixed summary of the tool result rather than asking the model to write it up: small models sometimes misquote numbers, and the write-up takes tens of seconds on a CPU. Ask GeoAI to <em>explain</em>, <em>interpret</em> or <em>compare</em> when you want a written explanation.</p>
 <h2 id="using-geoai">Using GeoAI</h2>
 <ul>
-<li>Open <strong>GeoAI</strong> from the sidebar for the full chat window. A compact assistant panel can be opened from the GeoAI window.</li>
+<li>Open <strong>GeoAI</strong> from the sidebar for the full chat window. A compact assistant panel can be opened from the GeoAI window, from the command palette, or with <code>Ctrl+Shift+A</code> (<code>Cmd+Shift+A</code> on macOS) from anywhere in the app.</li>
 <li>Type a request such as <em>"Calculate the bulk unit weight for Gs = 2.65, e = 0.6 and full saturation"</em>. Suggested prompt cards are shown when the chat is empty.</li>
-<li>Answers stream in as they are generated. Tool calls, the inputs used and their results are shown with the answer.</li>
+<li>Answers stream in as they are generated, and the chat shows what GeoAI is doing (<em>Checking for tools</em>, <em>Interpreting input</em>, <em>Calling tool</em>, <em>Generating output</em>). Tool calls, the inputs used and their results are shown with the answer. The stop button (<strong>Stop generating</strong>) cancels a turn.</li>
 <li><strong>Open in Form</strong> opens the corresponding GeoCore calculator so you can check the inputs and rerun the calculation yourself.</li>
+<li>Record the project's <strong>groundwater level</strong> in the GeoAI window. When it is not recorded, GeoAI asks for it instead of assuming one.</li>
+<li>The model is loaded in the background when you open the chat, and released after 15 minutes without use.</li>
 </ul>
 <p>If a required input is missing, GeoAI is instructed to ask for it rather than invent a value. See <a href="/docs/geoai/limitations/">Limitations and engineering caution</a> before relying on an answer.</p>
 <h2 id="without-a-model">Without a model</h2>
@@ -848,7 +853,7 @@ Local language model ── explains the result, with units and method
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/geoai-overview.md">Source</a></p>
-<p class="attribution__note">Written from: <code>AGENTS.md</code>, <code>stage/plan.md</code>, <code>python-backend/core/geoai/agent.py</code>, <code>python-backend/core/geoai/system_prompt.py</code>, <code>python-backend/core/geoai/tool_selector.py</code>, <code>python-backend/core/geoai/tool_registry.py</code>, <code>electron-app/src/features/copilot/GeoAIFullWindow.jsx</code>, <code>electron-app/src/features/copilot/GeoAICopilot.jsx</code></p>      </div>
+<p class="attribution__note">Written from: <code>AGENTS.md</code>, <code>stage/plan.md</code>, <code>python-backend/core/geoai/agent.py</code>, <code>python-backend/core/geoai/system_prompt.py</code>, <code>python-backend/core/geoai/tool_selector.py</code>, <code>python-backend/core/geoai/tool_registry.py</code>, <code>python-backend/core/geoai/model_config.py</code>, <code>python-backend/core/geoai/argument_grounding.py</code>, <code>python-backend/core/geoai/multi_agent.py</code>, <code>python-backend/core/geoai/lifecycle.py</code>, <code>electron-app/src/features/copilot/ProjectGroundwaterField.jsx</code>, <code>electron-app/src/features/copilot/GeoAIFullWindow.jsx</code>, <code>electron-app/src/features/copilot/GeoAICopilot.jsx</code></p>      </div>
     </aside>
 
 

@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Installing GeoCore — GeoCore Docs</title>
-  <meta name="description" content="Download and install GeoCore on Windows or macOS, and how automatic updates work.">
+  <meta name="description" content="Download and install GeoCore on Windows, macOS or Linux, where it keeps your data, and how automatic updates work.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoCore">
   <meta property="og:title" content="Installing GeoCore — GeoCore Docs">
-  <meta property="og:description" content="Download and install GeoCore on Windows or macOS, and how automatic updates work.">
+  <meta property="og:description" content="Download and install GeoCore on Windows, macOS or Linux, where it keeps your data, and how automatic updates work.">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
@@ -807,7 +807,7 @@
 
     <h1>Installing GeoCore</h1>
     <div class="prose docs-body"><h2 id="download">Download</h2>
-<p>Installers are published on the <a href="https://github.com/utkarsh-1912/geocore/releases/latest">GeoCore releases page</a>.</p>
+<p>Installers are published on the <a href="https://github.com/utkarsh-1912/geocore/releases/latest">GeoCore releases page</a>. All builds are 64-bit.</p>
 <div class="table-wrap"><table class="data">
 <thead>
 <tr>
@@ -820,27 +820,76 @@
 <tr>
 <td>Windows</td>
 <td><code>GeoCore-Setup-&lt;version&gt;.exe</code></td>
-<td>Per-user installer; administrator rights are not required.</td>
+<td>Installer for the current user; administrator rights are not required.</td>
 </tr>
 <tr>
-<td>macOS</td>
-<td><code>GeoCore-&lt;version&gt;-&lt;arch&gt;.dmg</code></td>
-<td>Disk image. A <code>.zip</code> of the application is also published.</td>
+<td>macOS, Apple Silicon</td>
+<td><code>GeoCore-&lt;version&gt;-arm64.dmg</code></td>
+<td>Disk image. <code>GeoCore-&lt;version&gt;-arm64-mac.zip</code> contains the same application.</td>
+</tr>
+<tr>
+<td>macOS, Intel</td>
+<td><code>GeoCore-&lt;version&gt;.dmg</code></td>
+<td>Disk image. <code>GeoCore-&lt;version&gt;-mac.zip</code> contains the same application.</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><code>GeoCore-&lt;version&gt;.AppImage</code></td>
+<td>Runs without installation and updates itself.</td>
+</tr>
+<tr>
+<td>Linux (Debian, Ubuntu)</td>
+<td><code>geocore_&lt;version&gt;_amd64.deb</code></td>
+<td>System package. Does not update itself.</td>
 </tr>
 </tbody>
 </table></div>
 <p>There is no portable Windows build. It was removed because it unpacked the whole application, including the calculation engine, to a temporary folder on every launch, which made start-up slow.</p>
 <h2 id="install">Install</h2>
 <ul>
-<li><strong>Windows:</strong> run the setup file and follow the installer. GeoCore is installed for the current user.</li>
+<li><strong>Windows:</strong> run the setup file. The installer lets you choose the installation folder and creates desktop and Start menu shortcuts. GeoCore is installed for the current user.</li>
 <li><strong>macOS:</strong> open the disk image and drag GeoCore to Applications.</li>
+<li><strong>Linux, AppImage:</strong> make the file executable (<code>chmod +x GeoCore-&lt;version&gt;.AppImage</code>) and run it.</li>
+<li><strong>Linux, .deb:</strong> install it with <code>sudo apt install ./geocore_&lt;version&gt;_amd64.deb</code>.</li>
 </ul>
 <p>The installer contains everything needed to run calculations, including the Python calculation engine and groundhog. No separate Python installation is required.</p>
 <h2 id="first-start">First start</h2>
-<p>On start-up the desktop app launches the local calculation engine in the background. The first calculation can take a little longer while the scientific libraries finish loading.</p>
+<p>On start-up the desktop app launches the local calculation engine in the background; the status indicator at the bottom of the sidebar shows when it is ready. The first calculation can take a little longer while the scientific libraries finish loading.</p>
+<h2 id="where-geocore-keeps-your-data">Where GeoCore keeps your data</h2>
+<p>Your data is stored per user, outside the installation folder, so it survives updates and reinstalls:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Item</th>
+<th>Windows</th>
+<th>macOS / Linux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Saved soil profiles and CPT tables (<code>saved_objects.json</code>)</td>
+<td><code>%APPDATA%\GeoCore</code></td>
+<td><code>~/.geocore</code></td>
+</tr>
+<tr>
+<td>Project settings, such as the groundwater level used by GeoAI</td>
+<td><code>%APPDATA%\GeoCore</code></td>
+<td><code>~/.geocore</code></td>
+</tr>
+<tr>
+<td>GeoAI models and settings</td>
+<td><code>%APPDATA%\GeoCore</code></td>
+<td><code>~/.geocore</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The calculation history and favourites shown in the app are stored by the desktop app itself.</p>
 <h2 id="updates">Updates</h2>
-<p>Installed builds check GitHub Releases for a newer version about 15 seconds after launch. A newer version is downloaded in the background and installed when you quit GeoCore. The check is skipped when running from source, and any failure (for example, no internet connection) is ignored: GeoCore keeps working offline.</p>
-<p>On macOS, automatic updates only work for properly code-signed builds; ad-hoc signed builds do not update themselves.</p>
+<p>The Windows installer, the macOS app and the Linux AppImage check GitHub Releases for a newer version about 15 seconds after launch. A newer version is downloaded in the background and installed when you quit GeoCore. The check is skipped when running from source, and any failure (for example, no internet connection) is ignored: GeoCore keeps working offline.</p>
+<ul>
+<li>On macOS, automatic updates only work for properly code-signed builds; ad-hoc signed builds do not update themselves.</li>
+<li>The Linux <code>.deb</code> package cannot update itself. Install the new <code>.deb</code> for each release, or use the AppImage.</li>
+</ul>
 <h2 id="geoai-models">GeoAI models</h2>
 <p>GeoAI language models are <strong>not</strong> included in the installer. They are downloaded separately from inside GeoCore; see <a href="/docs/geoai/model-setup/">Setting up a GeoAI model</a>. Without a model, GeoAI falls back to a simple keyword-based mode.</p></div>
 
@@ -849,7 +898,7 @@
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/installation.md">Source</a></p>
-<p class="attribution__note">Written from: <code>README.md</code>, <code>RELEASE_GUIDE.md</code>, <code>electron-app/package.json</code>, <code>electron-app/electron/main.cjs</code></p>      </div>
+<p class="attribution__note">Written from: <code>README.md</code>, <code>RELEASE_GUIDE.md</code>, <code>electron-app/package.json</code>, <code>electron-app/electron/main.cjs</code>, <code>python-backend/core/paths.py</code>, <code>python-backend/core/state.py</code></p>      </div>
     </aside>
 
 
@@ -863,6 +912,7 @@
       <li class="lvl-2"><a href="#download">Download</a></li>
       <li class="lvl-2"><a href="#install">Install</a></li>
       <li class="lvl-2"><a href="#first-start">First start</a></li>
+      <li class="lvl-2"><a href="#where-geocore-keeps-your-data">Where GeoCore keeps your data</a></li>
       <li class="lvl-2"><a href="#updates">Updates</a></li>
       <li class="lvl-2"><a href="#geoai-models">GeoAI models</a></li>
     </ul>

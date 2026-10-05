@@ -842,8 +842,16 @@
 <td>Engine status and version.</td>
 </tr>
 <tr>
+<td><code>GET /health/details</code></td>
+<td>Diagnostics shown in the System Health panel. Never loads the GeoAI model.</td>
+</tr>
+<tr>
 <td><code>GET /modules</code></td>
 <td>Map of all calculator ids known to the engine.</td>
+</tr>
+<tr>
+<td><code>GET /api/schema/bounds</code></td>
+<td>groundhog's validated minimum and maximum (and display unit) for each calculator input.</td>
 </tr>
 <tr>
 <td><code>GET /api/objects/{type}</code></td>
@@ -870,18 +878,47 @@
 <td>Read or save <a href="/docs/geocore/using/parameter-overrides/">form customisations</a>.</td>
 </tr>
 <tr>
+<td><code>POST /api/assets/upload</code></td>
+<td>Upload an image for a form customisation.</td>
+</tr>
+<tr>
 <td><code>/api/geoai/...</code></td>
 <td>GeoAI endpoints, see <a href="/docs/geoai/tools/#api-endpoints">GeoAI tools</a>.</td>
 </tr>
 </tbody>
-</table></div></div>
+</table></div>
+<h2 id="calculation-history">Calculation history</h2>
+<p>Every successful calculation run through <code>POST /api/execute</code> is recorded by the engine: the calculator, its inputs, a short summary of the result and the time. The last 500 entries are kept with your project data.</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /api/calculation-history?limit=50</code></td>
+<td>Most recent entries (<code>limit=0</code> returns all).</td>
+</tr>
+<tr>
+<td><code>PATCH /api/calculation-history/{id}</code></td>
+<td>Mark an entry as checked, with an optional note: <code>{"reviewed": true, "note": "..."}</code>. Send <code>"reviewed": false</code> to clear it.</td>
+</tr>
+<tr>
+<td><code>DELETE /api/calculation-history</code></td>
+<td>Clear the history.</td>
+</tr>
+</tbody>
+</table></div>
+<p>This record is separate from the history panel in the app, which the desktop app keeps itself.</p></div>
 
     <aside class="attribution" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=6b6f069f14#i-scale"></use></svg>
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/local-api.md">Source</a></p>
-<p class="attribution__note">Written from: <code>python-backend/main.py</code>, <code>python-backend/core/router.py</code>, <code>python-backend/core/geoai/api.py</code></p>      </div>
+<p class="attribution__note">Written from: <code>python-backend/main.py</code>, <code>python-backend/core/router.py</code>, <code>python-backend/core/calculation_history.py</code>, <code>python-backend/core/geoai/api.py</code></p>      </div>
     </aside>
 
 
@@ -894,6 +931,7 @@
     <ul data-toc>
       <li class="lvl-2"><a href="#running-a-calculation">Running a calculation</a></li>
       <li class="lvl-2"><a href="#other-endpoints">Other endpoints</a></li>
+      <li class="lvl-2"><a href="#calculation-history">Calculation history</a></li>
     </ul>
   </aside>
 </div>

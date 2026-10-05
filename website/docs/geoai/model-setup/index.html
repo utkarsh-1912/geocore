@@ -811,7 +811,7 @@
 <ol>
 <li>Open <strong>GeoAI</strong>. If no model is installed, the chat shows an installer card; otherwise open the <strong>Local AI Model Manager</strong>.</li>
 <li>Pick a model and click <strong>Download</strong>. The download runs in the background and needs an internet connection. Models are downloaded from Hugging Face.</li>
-<li>When the download completes the model becomes the active model. It is loaded the first time you send a message.</li>
+<li>When the download completes the model becomes the active model. It is loaded the next time you use the chat.</li>
 </ol>
 <p>The model manager offers these curated models (4-bit <code>Q4_K_M</code> quantisations), grouped by model family. The list is generated from the application's model registry:</p>
 <div class="table-wrap"><table class="data">
@@ -964,15 +964,103 @@
 <td>Low temperature for consistent tool calls.</td>
 </tr>
 <tr>
-<td><code>max_tokens</code></td>
+<td><code>max_tools</code></td>
+<td><code>5</code></td>
+<td>Tools offered to the model per request. Each tool description costs about 390 tokens, so 20 tools would not fit in a 4096-token context.</td>
+</tr>
+<tr>
+<td><code>decision_max_tokens</code></td>
+<td><code>512</code></td>
+<td>Length limit for the first step, where the model calls a tool or answers directly.</td>
+</tr>
+<tr>
+<td><code>answer_max_tokens</code></td>
 <td><code>1024</code></td>
-<td>Maximum length of a generated answer.</td>
+<td>Length limit for the answer written after a tool call.</td>
+</tr>
+<tr>
+<td><code>explanations</code></td>
+<td><code>on_request</code></td>
+<td>When the model writes up a tool result: <code>on_request</code> (only when you ask it to explain, interpret or compare), <code>always</code> or <code>never</code>.</td>
+</tr>
+<tr>
+<td><code>generation_timeout_s</code></td>
+<td><code>600</code></td>
+<td>A single model call is stopped after this many seconds (<code>0</code> = no limit).</td>
+</tr>
+<tr>
+<td><code>multi_agent</code></td>
+<td><code>true</code></td>
+<td>Split compound requests between specialist agents.</td>
 </tr>
 </tbody>
 </table></div>
-<p>The environment variables <code>GEOAI_MODEL_PATH</code>, <code>GEOAI_PROVIDER</code>, <code>GEOAI_N_CTX</code> and <code>GEOAI_GPU_LAYERS</code> override these settings. GPU offloading only has an effect with a GPU-enabled build of <code>llama-cpp-python</code>; the official GeoCore builds include the CPU build.</p>
+<p>Environment variables override these settings:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Variable</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GEOAI_MODEL_PATH</code></td>
+<td>Path of the <code>.gguf</code> file</td>
+</tr>
+<tr>
+<td><code>GEOAI_PROVIDER</code></td>
+<td><code>llama_cpp</code>, <code>heuristic</code> or <code>auto</code></td>
+</tr>
+<tr>
+<td><code>GEOAI_N_CTX</code></td>
+<td>Context window</td>
+</tr>
+<tr>
+<td><code>GEOAI_GPU_LAYERS</code></td>
+<td>Layers offloaded to a GPU</td>
+</tr>
+<tr>
+<td><code>GEOAI_N_THREADS</code>, <code>GEOAI_N_THREADS_BATCH</code></td>
+<td>CPU threads for generation and prompt processing (default: chosen for the machine)</td>
+</tr>
+<tr>
+<td><code>GEOAI_MAX_TOOLS</code></td>
+<td>Tools offered per request</td>
+</tr>
+<tr>
+<td><code>GEOAI_DECISION_MAX_TOKENS</code>, <code>GEOAI_ANSWER_MAX_TOKENS</code></td>
+<td>Generation length limits</td>
+</tr>
+<tr>
+<td><code>GEOAI_EXPLANATIONS</code></td>
+<td><code>on_request</code>, <code>always</code> or <code>never</code></td>
+</tr>
+<tr>
+<td><code>GEOAI_GENERATION_TIMEOUT_S</code></td>
+<td>Time limit per model call</td>
+</tr>
+<tr>
+<td><code>GEOAI_MULTI_AGENT</code></td>
+<td><code>0</code> turns off splitting compound requests</td>
+</tr>
+<tr>
+<td><code>GEOAI_CHAT_FORMAT</code></td>
+<td><code>chatml-function-calling</code>, <code>native</code> or <code>prompted</code> (default: chosen from the model)</td>
+</tr>
+<tr>
+<td><code>GEOAI_THINKING</code></td>
+<td><code>1</code> turns on the reasoning mode of models that have one (off by default; it is slow on a CPU)</td>
+</tr>
+<tr>
+<td><code>GEOAI_LORA_PATH</code>, <code>GEOAI_LORA_SCALE</code></td>
+<td>Optional LoRA adapter</td>
+</tr>
+</tbody>
+</table></div>
+<p>GPU offloading only has an effect with a GPU-enabled build of <code>llama-cpp-python</code>; the official GeoCore builds include the CPU build.</p>
 <h2 id="memory-use">Memory use</h2>
-<p>The model is loaded only when GeoAI is first used, not when GeoCore starts. The GeoAI window shows the engine's memory use and whether a model is loaded. Switching or downloading a model unloads the previous one; the new model is loaded on the next request. The engine also exposes an unload endpoint (<code>POST /api/geoai/unload</code>) that releases the model from memory.</p>
+<p>The model is not loaded when GeoCore starts. It is loaded in the background when you open the GeoAI chat (or start typing in it), so the first answer does not wait for the load, and it is released again after 15 minutes without use. The GeoAI window shows the engine's memory use and whether a model is loaded. Switching or downloading a model unloads the previous one. The engine also exposes an unload endpoint (<code>POST /api/geoai/unload</code>) that releases the model from memory.</p>
 <p>If the model cannot be loaded (for example the file is missing or <code>llama-cpp-python</code> is not available), GeoAI falls back to the keyword-based heuristic provider.</p></div>
 
     <aside class="attribution" aria-label="Source and licence">

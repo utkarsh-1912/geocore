@@ -3,11 +3,13 @@ title: Soil profiles and AGS data
 slug: geocore/using/soil-profiles
 section: Using GeoCore
 nav_order: 20
-description: Create groundhog SoilProfile objects from CSV or Excel files, and load AGS files.
+description: Create groundhog SoilProfile objects and CPT tables from CSV or Excel files, and load AGS files.
 sources:
 - python-backend/core/registry.py
 - python-backend/core/router.py
 - python-backend/core/state.py
+- python-backend/core/paths.py
+- electron-app/src/utils/dataKind.js
 - electron-app/src/features/calculations/SoilProfileModal.jsx
 ---
 
@@ -19,6 +21,13 @@ A soil profile can be created from:
 
 - a **CSV** (`.csv`) or **Excel** (`.xlsx`, `.xls`) file, or
 - a table of layers entered in the application.
+
+When you upload a file, choose what it contains under **File contains**:
+
+- **Layered soil profile:** a table of layers. GeoAI uses it as the project stratigraphy.
+- **CPT sounding:** a cone penetration test record. GeoAI reads it through its CPT tools.
+
+GeoCore suggests **CPT sounding** when the file has a cone resistance column (`qc`), but a layered profile may also carry a representative `qc`, so check the choice before saving.
 
 When the profile is created, GeoCore:
 
@@ -44,7 +53,7 @@ After import, choose `Depth from` and `Depth to` as the depth columns. groundhog
 
 ## Saved objects
 
-Soil profiles and other objects you create are listed in the object manager and can be viewed or deleted. They are saved by the calculation engine to a local `saved_objects.json` file and restored the next time GeoCore starts.
+Soil profiles and other objects you create are listed in the object manager and can be viewed or deleted. The calculation engine saves them to `saved_objects.json` in your GeoCore data folder (`%APPDATA%\GeoCore` on Windows, `~/.geocore` on macOS and Linux) and restores them the next time GeoCore starts. On first start, a file saved by an earlier version next to the application is copied there.
 
 ## AGS files
 

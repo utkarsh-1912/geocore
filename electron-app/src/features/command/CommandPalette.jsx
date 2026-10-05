@@ -52,6 +52,7 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
         // Actions
         items.push(makeItem({ type: 'Action', id: 'toggle_theme', title: 'Toggle Dark / Light Mode', icon: Moon, shortcut: '', action: 'toggleTheme' }));
         items.push(makeItem({ type: 'Action', id: 'open_history', title: 'Open Calculation History', icon: History, shortcut: 'Ctrl+H', action: 'openHistory' }));
+        items.push(makeItem({ type: 'Action', id: 'open_copilot', title: 'Open GeoAI Assistant', icon: GeoAILogo, shortcut: 'Ctrl+Shift+A', action: 'openCopilot' }));
         items.push(makeItem({ type: 'Action', id: 'open_help', title: 'Help & Keyboard Shortcuts', icon: HelpCircle, shortcut: '', action: 'openHelp' }));
 
         // Categories, Sub-modules, Functions

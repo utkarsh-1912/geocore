@@ -7,6 +7,7 @@ description: The HTTP endpoints the desktop app uses to talk to GeoCore's local 
 sources:
 - python-backend/main.py
 - python-backend/core/router.py
+- python-backend/core/calculation_history.py
 - python-backend/core/geoai/api.py
 ---
 
@@ -44,11 +45,26 @@ print(r.json())
 | Endpoint | Purpose |
 |---|---|
 | `GET /health` | Engine status and version. |
+| `GET /health/details` | Diagnostics shown in the System Health panel. Never loads the GeoAI model. |
 | `GET /modules` | Map of all calculator ids known to the engine. |
+| `GET /api/schema/bounds` | groundhog's validated minimum and maximum (and display unit) for each calculator input. |
 | `GET /api/objects/{type}` | List stored objects of a type (for example `SoilProfile`). |
 | `GET /api/objects/{type}/{id}` | Columns and data of a stored object. |
 | `POST /api/objects/upload?type_name=SoilProfile` | Create a soil profile from an uploaded CSV/Excel file. |
 | `POST /api/objects/create?type_name=SoilProfile` | Create a soil profile from JSON rows (`raw_data`). |
 | `DELETE /api/objects/{type}/{id}` | Delete a stored object. |
 | `GET /api/schema/overrides`, `POST /api/schema/override` | Read or save [form customisations](/docs/geocore/using/parameter-overrides). |
+| `POST /api/assets/upload` | Upload an image for a form customisation. |
 | `/api/geoai/...` | GeoAI endpoints, see [GeoAI tools](/docs/geoai/tools#api-endpoints). |
+
+## Calculation history
+
+Every successful calculation run through `POST /api/execute` is recorded by the engine: the calculator, its inputs, a short summary of the result and the time. The last 500 entries are kept with your project data.
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/calculation-history?limit=50` | Most recent entries (`limit=0` returns all). |
+| `PATCH /api/calculation-history/{id}` | Mark an entry as checked, with an optional note: `{"reviewed": true, "note": "..."}`. Send `"reviewed": false` to clear it. |
+| `DELETE /api/calculation-history` | Clear the history. |
+
+This record is separate from the history panel in the app, which the desktop app keeps itself.

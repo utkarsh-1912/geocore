@@ -24,7 +24,7 @@ GeoAI runs language models in the GGUF format through [llama.cpp](https://github
 
 1. Open **GeoAI**. If no model is installed, the chat shows an installer card; otherwise open the **Local AI Model Manager**.
 2. Pick a model and click **Download**. The download runs in the background and needs an internet connection. Models are downloaded from Hugging Face.
-3. When the download completes the model becomes the active model. It is loaded the first time you send a message.
+3. When the download completes the model becomes the active model. It is loaded the next time you use the chat.
 
 The model manager offers these curated models (4-bit `Q4_K_M` quantisations), grouped by model family. The list is generated from the application's model registry:
 
@@ -70,12 +70,35 @@ Auto-link also looks in a `models` folder next to the application, in `%ProgramF
 | `n_ctx` | `4096` | Context window in tokens. |
 | `n_gpu_layers` | `0` | Layers offloaded to a GPU (`0` = CPU only, `-1` = all). |
 | `temperature` | `0.1` | Low temperature for consistent tool calls. |
-| `max_tokens` | `1024` | Maximum length of a generated answer. |
+| `max_tools` | `5` | Tools offered to the model per request. Each tool description costs about 390 tokens, so 20 tools would not fit in a 4096-token context. |
+| `decision_max_tokens` | `512` | Length limit for the first step, where the model calls a tool or answers directly. |
+| `answer_max_tokens` | `1024` | Length limit for the answer written after a tool call. |
+| `explanations` | `on_request` | When the model writes up a tool result: `on_request` (only when you ask it to explain, interpret or compare), `always` or `never`. |
+| `generation_timeout_s` | `600` | A single model call is stopped after this many seconds (`0` = no limit). |
+| `multi_agent` | `true` | Split compound requests between specialist agents. |
 
-The environment variables `GEOAI_MODEL_PATH`, `GEOAI_PROVIDER`, `GEOAI_N_CTX` and `GEOAI_GPU_LAYERS` override these settings. GPU offloading only has an effect with a GPU-enabled build of `llama-cpp-python`; the official GeoCore builds include the CPU build.
+Environment variables override these settings:
+
+| Variable | Setting |
+|---|---|
+| `GEOAI_MODEL_PATH` | Path of the `.gguf` file |
+| `GEOAI_PROVIDER` | `llama_cpp`, `heuristic` or `auto` |
+| `GEOAI_N_CTX` | Context window |
+| `GEOAI_GPU_LAYERS` | Layers offloaded to a GPU |
+| `GEOAI_N_THREADS`, `GEOAI_N_THREADS_BATCH` | CPU threads for generation and prompt processing (default: chosen for the machine) |
+| `GEOAI_MAX_TOOLS` | Tools offered per request |
+| `GEOAI_DECISION_MAX_TOKENS`, `GEOAI_ANSWER_MAX_TOKENS` | Generation length limits |
+| `GEOAI_EXPLANATIONS` | `on_request`, `always` or `never` |
+| `GEOAI_GENERATION_TIMEOUT_S` | Time limit per model call |
+| `GEOAI_MULTI_AGENT` | `0` turns off splitting compound requests |
+| `GEOAI_CHAT_FORMAT` | `chatml-function-calling`, `native` or `prompted` (default: chosen from the model) |
+| `GEOAI_THINKING` | `1` turns on the reasoning mode of models that have one (off by default; it is slow on a CPU) |
+| `GEOAI_LORA_PATH`, `GEOAI_LORA_SCALE` | Optional LoRA adapter |
+
+GPU offloading only has an effect with a GPU-enabled build of `llama-cpp-python`; the official GeoCore builds include the CPU build.
 
 ## Memory use
 
-The model is loaded only when GeoAI is first used, not when GeoCore starts. The GeoAI window shows the engine's memory use and whether a model is loaded. Switching or downloading a model unloads the previous one; the new model is loaded on the next request. The engine also exposes an unload endpoint (`POST /api/geoai/unload`) that releases the model from memory.
+The model is not loaded when GeoCore starts. It is loaded in the background when you open the GeoAI chat (or start typing in it), so the first answer does not wait for the load, and it is released again after 15 minutes without use. The GeoAI window shows the engine's memory use and whether a model is loaded. Switching or downloading a model unloads the previous one. The engine also exposes an unload endpoint (`POST /api/geoai/unload`) that releases the model from memory.
 
 If the model cannot be loaded (for example the file is missing or `llama-cpp-python` is not available), GeoAI falls back to the keyword-based heuristic provider.

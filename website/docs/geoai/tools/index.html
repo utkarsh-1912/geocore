@@ -928,7 +928,8 @@
 </ul>
 <p>Each result states the method used. These routines are separate from groundhog's own CPT and SPT functions documented in the <a href="/docs/groundhog/api/siteinvestigation/insitutests/">API reference</a>.</p>
 <h2 id="calculator-tools">Calculator tools</h2>
-<p>In addition to the curated tools, GeoCore registers every calculator in the <a href="/docs/geocore/using/modules/">calculation catalogue</a> as a tool, with a schema generated from the groundhog function signature and GeoCore's parameter inventory (units and bounds where known). The tool description is the first paragraph of the groundhog docstring. Only a relevant subset of tools (at most 20) is offered to the model for any one request.</p>
+<p>In addition to the curated tools, GeoCore registers every calculator in the <a href="/docs/geocore/using/modules/">calculation catalogue</a> as a tool, with a schema generated from the groundhog function signature and GeoCore's parameter inventory (units and bounds where known). The tool description is the first paragraph of the groundhog docstring. Only the most relevant tools (5 by default, see <a href="/docs/geoai/model-setup/#settings">model settings</a>) are offered to the model for any one request.</p>
+<p>Calculators that need stored objects, return only a figure, or read files (soil profile construction, stateful pile and foundation workflows, plotting, AGS file reading) are not offered to the model; they remain available in the calculation forms.</p>
 <h2 id="input-validation-and-units">Input validation and units</h2>
 <p>Before a tool runs:</p>
 <ul>
@@ -965,6 +966,26 @@
 <td>Ask GeoAI: <code>{"prompt": "...", "context": {...}}</code>. Add <code>?stream=true</code> for server-sent events.</td>
 </tr>
 <tr>
+<td><code>POST /cancel</code></td>
+<td>Stop the request in progress; the model stays loaded.</td>
+</tr>
+<tr>
+<td><code>POST /explain</code></td>
+<td>Method, reference and formula for an already computed result, with the inputs substituted: <code>{"function_id": "...", "args": {...}, "results": {...}}</code>. No model is used.</td>
+</tr>
+<tr>
+<td><code>POST /explain/narrate</code></td>
+<td>A short plain-language explanation of the same result, written by the local model.</td>
+</tr>
+<tr>
+<td><code>GET /project/groundwater</code>, <code>PUT /project/groundwater</code></td>
+<td>Read or record the project groundwater depth: <code>{"groundwater_depth_m": 2.5}</code> (m below ground level; <code>null</code> clears it).</td>
+</tr>
+<tr>
+<td><code>GET /project/context</code></td>
+<td>What GeoAI reads from the project: groundwater level, layered soil profiles and a listing of CPTs.</td>
+</tr>
+<tr>
 <td><code>GET /status</code></td>
 <td>Active provider, whether a model is loaded, number of tools.</td>
 </tr>
@@ -985,6 +1006,10 @@
 <td>Find installed <code>.gguf</code> files and activate one.</td>
 </tr>
 <tr>
+<td><code>POST /warmup</code></td>
+<td>Load the model in the background (no effect when it is already loaded or loading).</td>
+</tr>
+<tr>
 <td><code>GET /memory</code></td>
 <td>Engine memory use and model load state.</td>
 </tr>
@@ -1000,7 +1025,7 @@
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/geoai-tools.md">Source</a></p>
-<p class="attribution__note">Written from: <code>python-backend/core/geoai/tool_definitions.py</code>, <code>python-backend/core/geoai/tools_cpt_piles.py</code>, <code>python-backend/core/geoai/tools_shallow.py</code>, <code>python-backend/core/geoai/tool_registry.py</code>, <code>python-backend/core/geoai/schema_factory.py</code>, <code>python-backend/core/geoai/validator.py</code>, <code>python-backend/core/geoai/units.py</code>, <code>python-backend/core/geoai/api.py</code></p>      </div>
+<p class="attribution__note">Written from: <code>python-backend/core/geoai/tool_definitions.py</code>, <code>python-backend/core/geoai/tools_cpt_piles.py</code>, <code>python-backend/core/geoai/tools_shallow.py</code>, <code>python-backend/core/geoai/tool_registry.py</code>, <code>python-backend/core/geoai/schema_factory.py</code>, <code>python-backend/core/geoai/validator.py</code>, <code>python-backend/core/geoai/units.py</code>, <code>python-backend/core/geoai/api.py</code>, <code>python-backend/core/geoai/exposure_policy.py</code>, <code>python-backend/core/geoai/model_config.py</code></p>      </div>
     </aside>
 
 

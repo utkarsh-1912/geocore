@@ -813,7 +813,8 @@
 <li>Fill in the inputs. Field labels show the expected unit and, where groundhog defines one, the suggested range.</li>
 <li>Click <strong>Calculate</strong> to see the results as tables and, for calculators that produce them, interactive Plotly charts.</li>
 </ol>
-<p>Each calculator form also has a guide panel describing the calculation and its fields. For the full method description, formulas and references, follow the link to the groundhog function in the <a href="/docs/groundhog/api/">API reference</a>.</p>
+<p>Each calculator has a <strong>Guide &amp; Theory</strong> panel with the method's theory, formulas, parameters and references, taken from the groundhog documentation and available offline. Figures are left out of the app; they are in the <a href="/docs/groundhog/api/">API reference</a> entry for each function.</p>
+<p>Under the results, the <strong>Formula &amp; Derivation</strong> card shows the method, the standard or reference and the formula behind the result, with your inputs. These come from the calculation engine, not from a language model. If a GeoAI model is installed, a short plain-language explanation is added a moment later.</p>
 <h2 id="finding-calculators">Finding calculators</h2>
 <ul>
 <li><strong>Command palette</strong> (<code>Ctrl+K</code>, or <code>/</code> when no text field is focused): search across categories, sub-modules and calculators, and run actions such as toggling dark mode, opening the calculation history or opening help.</li>
@@ -854,6 +855,7 @@
 </table></div>
 <h2 id="calculation-history">Calculation history</h2>
 <p>GeoCore keeps the 50 most recent calculations in a history panel (<code>Ctrl+H</code>). The history is stored locally by the desktop app. Individual entries can be deleted, or the whole history cleared.</p>
+<p>Separately, the calculation engine keeps an audit trail of the last 500 successful calculations (calculator, inputs, a short summary of the result and the time), stored with your project data. Entries can be marked as checked. It is available through the <a href="/docs/geocore/using/local-api/#calculation-history">local API</a>.</p>
 <h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
 <div class="table-wrap"><table class="data">
 <thead>
@@ -876,6 +878,10 @@
 <td>Toggle calculation history</td>
 </tr>
 <tr>
+<td><code>Ctrl+Shift+A</code> (<code>Cmd+Shift+A</code> on macOS)</td>
+<td>Toggle the GeoAI assistant panel</td>
+</tr>
+<tr>
 <td><code>↑</code> / <code>↓</code></td>
 <td>Move through list selections</td>
 </tr>
@@ -895,7 +901,7 @@
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/calculations.md">Source</a></p>
-<p class="attribution__note">Written from: <code>electron-app/src/App.jsx</code>, <code>electron-app/src/components/HelpModal.jsx</code>, <code>electron-app/src/features/command/CommandPalette.jsx</code>, <code>electron-app/src/context/HistoryContext.jsx</code>, <code>electron-app/src/utils/exportUtils.js</code>, <code>python-backend/core/registry.py</code></p>      </div>
+<p class="attribution__note">Written from: <code>electron-app/src/App.jsx</code>, <code>electron-app/src/components/HelpModal.jsx</code>, <code>electron-app/src/features/command/CommandPalette.jsx</code>, <code>electron-app/src/context/HistoryContext.jsx</code>, <code>electron-app/src/utils/exportUtils.js</code>, <code>electron-app/src/features/calculations/FormulaDerivationCard.jsx</code>, <code>python-backend/core/registry.py</code>, <code>python-backend/core/calculation_history.py</code></p>      </div>
     </aside>
 
 

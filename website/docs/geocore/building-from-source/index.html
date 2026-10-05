@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Running and building from source — GeoCore Docs</title>
-  <meta name="description" content="Set up a GeoCore development environment, run the tests and build the desktop installers.">
+  <meta name="description" content="Set up a GeoCore development environment, run the tests, build the desktop installers and rebuild these docs.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoCore">
   <meta property="og:title" content="Running and building from source — GeoCore Docs">
-  <meta property="og:description" content="Set up a GeoCore development environment, run the tests and build the desktop installers.">
+  <meta property="og:description" content="Set up a GeoCore development environment, run the tests, build the desktop installers and rebuild these docs.">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
@@ -808,8 +808,8 @@
     <h1>Running and building from source</h1>
     <div class="prose docs-body"><h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li>Node.js 18 or newer and npm 9 or newer</li>
-<li>Python 3.10 or newer with <code>pip</code> and virtual environment support</li>
+<li>Node.js 22 (the version CI uses; Vite 7 needs at least 20.19) and npm</li>
+<li>Python 3.10 or newer with <code>pip</code> and virtual environment support. CI runs on 3.10, so avoid syntax that needs a newer version.</li>
 </ul>
 <h2 id="clone-the-repository">Clone the repository</h2>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/utkarsh-1912/geocore.git
@@ -832,16 +832,18 @@ python<span class="w"> </span>main.py
 <p>The engine listens on <code>http://127.0.0.1:8000</code>.</p>
 <h3 id="tests">Tests</h3>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>python-backend
-pytest<span class="w"> </span>tests<span class="w"> </span>-v
+pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>httpx
+python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/
 </code></pre></div>
 
+<p>The GeoAI tests use scripted model providers, so they need no language model: <code>python -m pytest tests/ -k geoai</code>.</p>
 <h3 id="local-llm-runtime-for-geoai-optional">Local LLM runtime for GeoAI (optional)</h3>
 <p>GeoAI runs local models through <code>llama-cpp-python</code>. To install the prebuilt CPU wheel:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>python-backend
 venv/Scripts/python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>llama-cpp-python<span class="w"> </span>--prefer-binary<span class="w"> </span>--extra-index-url<span class="w"> </span>https://abetlen.github.io/llama-cpp-python/whl/cpu
 </code></pre></div>
 
-<p>If <code>llama_cpp</code> is not installed, GeoAI uses its keyword-based fallback.</p>
+<p>On macOS and Linux use <code>venv/bin/python</code> instead of <code>venv/Scripts/python.exe</code>. If <code>llama_cpp</code> is not installed, GeoAI uses its keyword-based fallback.</p>
 <h2 id="desktop-frontend">Desktop frontend</h2>
 <p>In a second terminal:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>electron-app
@@ -849,29 +851,45 @@ npm<span class="w"> </span>install
 npm<span class="w"> </span>start
 </code></pre></div>
 
-<p>This starts the desktop shell in development mode.</p>
+<p>This runs the Vite dev server and opens Electron once it is ready. Running from source enables development-only tools such as <a href="/docs/geocore/using/parameter-overrides/">form customisation</a>.</p>
 <h2 id="building-installers">Building installers</h2>
-<p>Freeze the calculation engine with PyInstaller, then package the desktop app with electron-builder.</p>
+<p>Freeze the calculation engine with PyInstaller, then package the desktop app with electron-builder. Build each platform on that platform: Linux packages cannot be built on Windows or macOS.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1. Calculation engine (output: python-backend/dist/main)</span>
 <span class="nb">cd</span><span class="w"> </span>python-backend
+python<span class="w"> </span>-m<span class="w"> </span>core.function_manifest<span class="w">   </span><span class="c1"># refresh the start-up cache of groundhog functions</span>
 pyinstaller<span class="w"> </span>--clean<span class="w"> </span>main.spec
 
 <span class="c1"># 2. Desktop app</span>
 <span class="nb">cd</span><span class="w"> </span>../electron-app
 npm<span class="w"> </span>run<span class="w"> </span>build
-npm<span class="w"> </span>run<span class="w"> </span>dist:win<span class="w">   </span><span class="c1"># Windows installer  -&gt; electron-app/release/GeoCore-Setup-&lt;version&gt;.exe</span>
-npm<span class="w"> </span>run<span class="w"> </span>dist:mac<span class="w">   </span><span class="c1"># macOS disk image   -&gt; electron-app/release/GeoCore-&lt;version&gt;-&lt;arch&gt;.dmg</span>
+npm<span class="w"> </span>run<span class="w"> </span>dist:win<span class="w">     </span><span class="c1"># electron-app/release/GeoCore-Setup-&lt;version&gt;.exe</span>
+npm<span class="w"> </span>run<span class="w"> </span>dist:mac<span class="w">     </span><span class="c1"># GeoCore-&lt;version&gt;[-arm64].dmg and -mac.zip</span>
+npm<span class="w"> </span>run<span class="w"> </span>dist:linux<span class="w">   </span><span class="c1"># GeoCore-&lt;version&gt;.AppImage and geocore_&lt;version&gt;_amd64.deb</span>
 </code></pre></div>
 
-<p><code>main.spec</code> bundles <code>llama_cpp</code> and its native libraries when they are installed; otherwise the build prints a warning and the resulting app uses the GeoAI fallback. Model files (<code>.gguf</code>) are never bundled.</p>
-<p>Local builds never publish anything. Official releases are built by the GitHub Actions workflow when a version tag is pushed.</p></div>
+<p>The <code>.deb</code> target needs <code>fakeroot</code> and <code>dpkg</code>, which Debian and Ubuntu include.</p>
+<p>To check a frozen engine before packaging it, run <code>python smoke_test_frozen.py dist/main/main.exe</code> (or <code>dist/main/main</code> on macOS and Linux) while nothing else uses port 8000.</p>
+<p><code>main.spec</code> bundles <code>llama_cpp</code> and its native libraries when they are installed; otherwise the build prints a warning and the resulting app uses the GeoAI fallback. It also bundles the text of these docs for GeoAI. Model files (<code>.gguf</code>) are never bundled.</p>
+<p>Local builds never publish anything. Official releases are built by the GitHub Actions workflow when a version tag (<code>v*</code>) is pushed. It first runs the CI checks and confirms that the tag matches the version in <code>electron-app/package.json</code>, <code>python-backend/main.py</code> and <code>python-backend/core/diagnostics.py</code>.</p>
+<h2 id="rebuilding-the-website-and-these-docs">Rebuilding the website and these docs</h2>
+<p>The website and this documentation are static pages generated from <code>website/_content</code> and committed to the repository.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># from the repository root; needs jinja2, markdown and pyyaml</span>
+python<span class="w"> </span>website/_build/build.py
+</code></pre></div>
+
+<p>The groundhog reference pages, guides and tutorials are extracted from groundhog itself. To refresh them, clone groundhog at the tag of the installed version and run the extractor before the build:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--branch<span class="w"> </span>v0.15.0<span class="w"> </span>https://github.com/snakesonabrain/groundhog.git<span class="w"> </span>&lt;tmp&gt;/groundhog
+python<span class="w"> </span>website/_content/extract_docs.py<span class="w"> </span>--groundhog-repo<span class="w"> </span>&lt;tmp&gt;/groundhog
+</code></pre></div>
+
+<p>CI fails if the committed marketing pages differ from a fresh build. Details are in <code>website/README.md</code> and <code>website/_content/README.md</code>.</p></div>
 
     <aside class="attribution" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=6b6f069f14#i-scale"></use></svg>
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/building-from-source.md">Source</a></p>
-<p class="attribution__note">Written from: <code>README.md</code>, <code>RELEASE_GUIDE.md</code></p>      </div>
+<p class="attribution__note">Written from: <code>README.md</code>, <code>RELEASE_GUIDE.md</code>, <code>.github/workflows/ci.yml</code>, <code>.github/workflows/release.yml</code>, <code>electron-app/package.json</code>, <code>website/README.md</code></p>      </div>
     </aside>
 
 
@@ -889,6 +907,7 @@ npm<span class="w"> </span>run<span class="w"> </span>dist:mac<span class="w">  
       <li class="lvl-3"><a href="#local-llm-runtime-for-geoai-optional">Local LLM runtime for GeoAI (optional)</a></li>
       <li class="lvl-2"><a href="#desktop-frontend">Desktop frontend</a></li>
       <li class="lvl-2"><a href="#building-installers">Building installers</a></li>
+      <li class="lvl-2"><a href="#rebuilding-the-website-and-these-docs">Rebuilding the website and these docs</a></li>
     </ul>
   </aside>
 </div>

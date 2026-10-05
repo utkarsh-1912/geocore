@@ -810,11 +810,13 @@
 <p>Calculations run on your own computer. The application starts a local calculation engine on <code>127.0.0.1</code> and never needs a server to compute a result. An internet connection is only used for optional things: checking for application updates and downloading GeoAI models.</p>
 <h2 id="what-you-can-do">What you can do</h2>
 <ul>
-<li>Run the calculators listed in the <a href="/docs/geocore/using/modules/">calculation catalogue</a>: phase relations, CPT and SPT correlations, pile capacity (De Beer, Koppejan, LCPC, API-style unit skin friction and end bearing), shallow foundation capacity and stress distribution, settlement, consolidation, soil dynamics and liquefaction, excavations, pipelines, and Eurocode 7 factors and parameter selection.</li>
-<li>Build <a href="/docs/geocore/using/soil-profiles/">soil profiles</a> from CSV or Excel files and reuse them in calculations that need a stratigraphy.</li>
+<li>Run the calculators listed in the <a href="/docs/geocore/using/modules/">calculation catalogue</a>: phase relations, CPT and SPT correlations, pile capacity (De Beer, Koppejan, LCPC, API-style unit skin friction and end bearing), shallow foundation capacity and stress distribution, settlement, consolidation, soil dynamics and liquefaction, excavations, pipelines, constitutive models (Mohr-Coulomb, Hardening Soil), and Eurocode 7 factors and parameter selection.</li>
+<li>Run Indian Standard (BIS) checks implemented in GeoCore itself: IS 6403, IS 1904, IS 2950, IS 1892, IS 2131, IS 1498 and IS 2720.</li>
+<li>Read each calculator's theory, formulas and references offline in its <strong>Guide &amp; Theory</strong> panel, and see how a result was obtained in the <strong>Formula &amp; Derivation</strong> card under the results.</li>
+<li>Build <a href="/docs/geocore/using/soil-profiles/">soil profiles and CPT tables</a> from CSV or Excel files and reuse them in calculations that need a stratigraphy.</li>
 <li>Load AGS files and extract individual AGS groups as tables.</li>
 <li>Inspect results as tables and interactive Plotly charts, and <a href="/docs/geocore/using/calculations/#exporting-results">export them</a> to PDF, CSV or JSON.</li>
-<li>Ask <a href="/docs/geoai/overview/">GeoAI</a>, the built-in assistant, to pick a calculator and fill in its inputs from a plain-language request.</li>
+<li>Ask <a href="/docs/geoai/overview/">GeoAI</a>, the built-in assistant, to run calculations from a plain-language request, look up a method's documentation, or search your own indexed documents.</li>
 </ul>
 <p>Every calculator documents its inputs with units and suggested ranges. The underlying groundhog documentation is part of these docs: see the <a href="/docs/groundhog/api/">Groundhog API Reference</a>.</p>
 <h2 id="how-geocore-is-built">How GeoCore is built</h2>
@@ -832,7 +834,7 @@
 
 <ul>
 <li>The <strong>frontend</strong> is an Electron shell with a React user interface. It renders a form for each calculator, shows results and charts, and keeps a local calculation history.</li>
-<li>The <strong>calculation engine</strong> is a Python process started by the desktop app. It maps each calculator to its groundhog function or class, validates the inputs and returns the results. In packaged builds it is a frozen PyInstaller executable, so no separate Python installation is needed.</li>
+<li>The <strong>calculation engine</strong> is a Python process started by the desktop app. It maps each calculator to its groundhog function or class (or to GeoCore's own implementation, for the BIS calculators), validates the inputs and returns the results. It also runs GeoAI. In packaged builds it is a frozen PyInstaller executable, so no separate Python installation is needed.</li>
 </ul>
 <h2 id="input-handling">Input handling</h2>
 <p>Before a calculation runs, GeoCore cleans the inputs:</p>

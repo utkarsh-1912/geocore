@@ -37,12 +37,13 @@ These are instructions to a language model. Small local models do not always fol
 ## Known limitations
 
 - **Small models make mistakes.** Local models with a few billion parameters can choose the wrong tool, miss or misread an input, or misstate a unit. Always compare the inputs GeoAI passed to the tool with your request.
-- **Tool preselection is keyword-based.** Only up to 20 tools that match words in your request (or the calculator you have open) are offered to the model. If the right calculation is not among them, GeoAI cannot use it; rephrasing with the method name or opening the relevant calculator first helps.
+- **Only a few tools are offered per request.** The 5 tools that best match your request (or the calculator you have open) are offered to the model. If the right calculation is not among them, GeoAI cannot use it; rephrasing with the method name or opening the relevant calculator first helps.
+- **Plain calculation requests are not written up.** GeoAI shows a fixed summary of the tool result unless you ask it to explain, interpret or compare.
 - **Limited context.** The default context window is 4096 tokens. Long conversations, many tool schemas or large results may not fit.
 - **Heuristic fallback.** Without a model, GeoAI only matches keywords and extracts numbers with regular expressions. It cannot ask follow-up questions or explain results.
 - **Unit handling depends on the tool.** Curated tools convert and check units; tools generated for other calculators take values in the units stated in the calculator and do not convert unit strings.
 - **Not every calculator suits chat.** Calculations that need stored objects (soil profiles, CPT processing objects, AGS files) are best run from the calculation forms.
-- **No web access.** GeoAI only knows what the model learned in training, the tool results and the documents in its [local index](/docs/geoai/research).
+- **No web access.** GeoAI only knows what the model learned in training, the tool results, GeoCore's own documentation and the documents in its [local index](/docs/geoai/research).
 
 ## Checking an answer
 

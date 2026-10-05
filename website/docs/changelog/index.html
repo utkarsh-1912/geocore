@@ -808,14 +808,36 @@
     <div class="prose docs-body"><p>Release history for GeoCore itself — the desktop application, GeoAI and the integration around groundhog.
 groundhog is a separate project with its own version history; see its <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/CHANGES.txt">release notes on GitHub</a> or the version this build ships, noted on the <a href="/docs/license/">License &amp; Credits</a> page.</p>
 <h2 id="unreleased">Unreleased</h2>
-<p>Nothing recorded yet.</p>
-<h2 id="v100-2026-08-21">v1.0.0 — 2026-08-21</h2>
 <h3 id="added">Added</h3>
+<ul>
+<li>Mohr-Coulomb triaxial compression and extension calculators (Constitutive models › General): Mohr's
+  circle at failure, the stresses at failure and the orientation of the failure plane, from groundhog.</li>
+<li>GeoAI can read GeoCore's own documentation. The <code>get_function_documentation</code> tool returns a groundhog
+  function's documented inputs (with units and suggested ranges), outputs, formulas and cited references,
+  and the documentation is searchable through GeoAI's local document index, with links to these pages.</li>
+</ul>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li>The AASHTO Young's modulus (SPT) calculator had no Guide &amp; Theory text in the app and was not marked
+  "Available in GeoCore" in these docs.</li>
+<li>The release workflow, when started by hand from a branch, published the release under the branch name
+  (<code>main</code>) instead of the version tag. The in-app updater needs a version tag to recognise a release.</li>
+</ul>
+<h2 id="v100-2026-10-04">v1.0.0 — 2026-10-04</h2>
+<p>First public release.</p>
+<h3 id="added_1">Added</h3>
 <ul>
 <li>GeoCore desktop application (Electron front end, local Python/FastAPI backend) running groundhog's
   geotechnical calculations entirely offline, with calculators grouped by domain: site investigation,
   shallow and deep foundations, pipelines and cables, soil dynamics, consolidation, excavations and
-  retaining structures, and Eurocode 7 factors.</li>
+  retaining structures, constitutive models, and Eurocode 7 factors and parameter selection.</li>
+<li>Indian Standard (BIS) calculations implemented in GeoCore: IS 6403 bearing capacity, IS 1904
+  settlement and stability checks, IS 2950 raft rigidity, IS 1892 investigation depth and borehole
+  layout, IS 2131 SPT corrections, IS 1498 soil classification and IS 2720 laboratory tests.</li>
+<li>Offline Guide &amp; Theory for each calculator (theory, formulas, parameters and references from the
+  groundhog docstrings), and a Formula &amp; Derivation card that explains a computed result.</li>
+<li>Soil profiles and CPT tables from CSV or Excel files, saved between sessions; calculation history,
+  favourites, a command palette, and export of results to PDF, CSV and JSON.</li>
 <li>GeoAI: a local assistant integrated into GeoCore. A small language model running on-device
   (llama.cpp / GGUF) selects and calls GeoCore's calculation tools through a validated Tool Registry —
   groundhog performs the actual calculation; the model never computes results itself.</li>
@@ -824,7 +846,10 @@ groundhog is a separate project with its own version history; see its <a href="h
 <li>Local document research (RAG) for GeoAI, with evidence tiered by source (project data, calculation
   result, literature, standards/guidance, model interpretation, assumption) so a literature answer is
   never shown as if it were a project measurement.</li>
-<li>Windows, macOS and Linux desktop builds, with auto-updating installer and AppImage targets.</li>
+<li>GeoAI model manager: download a curated GGUF model or link one you already have; the model is loaded
+  in the background when the chat opens and released after 15 minutes without use.</li>
+<li>Windows (installer), macOS (Intel and Apple Silicon <code>.dmg</code>/<code>.zip</code>) and Linux (<code>.AppImage</code>, <code>.deb</code>)
+  builds. The Windows installer, macOS app and AppImage update themselves from GitHub Releases.</li>
 </ul></div>
 
     <aside class="attribution" aria-label="Source and licence">
@@ -844,8 +869,10 @@ groundhog is a separate project with its own version history; see its <a href="h
     <h2 id="toc-title">On this page</h2>
     <ul data-toc>
       <li class="lvl-2"><a href="#unreleased">Unreleased</a></li>
-      <li class="lvl-2"><a href="#v100-2026-08-21">v1.0.0 — 2026-08-21</a></li>
       <li class="lvl-3"><a href="#added">Added</a></li>
+      <li class="lvl-3"><a href="#fixed">Fixed</a></li>
+      <li class="lvl-2"><a href="#v100-2026-10-04">v1.0.0 — 2026-10-04</a></li>
+      <li class="lvl-3"><a href="#added_1">Added</a></li>
     </ul>
   </aside>
 </div>

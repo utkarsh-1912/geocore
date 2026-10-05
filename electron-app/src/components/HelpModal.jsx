@@ -84,6 +84,7 @@ export const HelpModal = ({ isOpen, onClose }) => {
                                         {[
                                             { key: 'Ctrl+K', desc: 'Command search & actions' },
                                             { key: 'Ctrl+H', desc: 'Toggle calculation history' },
+                                            { key: 'Ctrl+Shift+A', desc: 'Toggle GeoAI assistant' },
                                             { key: '↑ / ↓', desc: 'Navigate list selections' },
                                             { key: 'Enter', desc: 'Confirm & execute' },
                                             { key: 'Esc', desc: 'Close dialogs & overlays' }

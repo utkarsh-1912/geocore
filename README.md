@@ -17,8 +17,8 @@ Installers are published on the [Releases page](https://github.com/utkarsh-1912/
 
 | Platform | Package | Architecture |
 | :--- | :--- | :--- |
-| Windows | Setup `.exe` and portable build | x64 |
-| macOS | `.dmg` | Apple Silicon (arm64) and Intel (x64) |
+| Windows | Setup `.exe` (per-user installer, auto-updates) | x64 |
+| macOS | `.dmg` and `.zip` (auto-update needs a code-signed build) | Apple Silicon (arm64) and Intel (x64) |
 | Linux | `.AppImage` (auto-updates) and `.deb` | x64 |
 
 ---
@@ -159,7 +159,7 @@ Fine-tuning scripts (LoRA/QLoRA) live in [`python-backend/core/geoai/finetune`](
 
 ### Prerequisites
 
-- Node.js 18+ and npm 9+
+- Node.js 22 (CI's version; Vite 7 needs at least 20.19) and npm
 - Python 3.10+ (CI runs on 3.10, so avoid syntax that needs a newer version)
 
 ### Backend
@@ -208,8 +208,10 @@ pyinstaller --clean main.spec
 
 ```bash
 cd electron-app
-npm run dist:win    # Windows installer and portable build
+npm run build
+npm run dist:win    # Windows installer
 npm run dist:mac    # macOS .dmg and .zip
+npm run dist:linux  # Linux .AppImage and .deb (build on Linux)
 ```
 
 Tagged pushes (`v*`) build and publish installers automatically through GitHub Actions. See [RELEASE_GUIDE.md](RELEASE_GUIDE.md) for the full release process.

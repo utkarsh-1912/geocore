@@ -17,11 +17,13 @@ Calculations run on your own computer. The application starts a local calculatio
 
 ## What you can do
 
-- Run the calculators listed in the [calculation catalogue](/docs/geocore/using/modules): phase relations, CPT and SPT correlations, pile capacity (De Beer, Koppejan, LCPC, API-style unit skin friction and end bearing), shallow foundation capacity and stress distribution, settlement, consolidation, soil dynamics and liquefaction, excavations, pipelines, and Eurocode 7 factors and parameter selection.
-- Build [soil profiles](/docs/geocore/using/soil-profiles) from CSV or Excel files and reuse them in calculations that need a stratigraphy.
+- Run the calculators listed in the [calculation catalogue](/docs/geocore/using/modules): phase relations, CPT and SPT correlations, pile capacity (De Beer, Koppejan, LCPC, API-style unit skin friction and end bearing), shallow foundation capacity and stress distribution, settlement, consolidation, soil dynamics and liquefaction, excavations, pipelines, constitutive models (Mohr-Coulomb, Hardening Soil), and Eurocode 7 factors and parameter selection.
+- Run Indian Standard (BIS) checks implemented in GeoCore itself: IS 6403, IS 1904, IS 2950, IS 1892, IS 2131, IS 1498 and IS 2720.
+- Read each calculator's theory, formulas and references offline in its **Guide & Theory** panel, and see how a result was obtained in the **Formula & Derivation** card under the results.
+- Build [soil profiles and CPT tables](/docs/geocore/using/soil-profiles) from CSV or Excel files and reuse them in calculations that need a stratigraphy.
 - Load AGS files and extract individual AGS groups as tables.
 - Inspect results as tables and interactive Plotly charts, and [export them](/docs/geocore/using/calculations#exporting-results) to PDF, CSV or JSON.
-- Ask [GeoAI](/docs/geoai/overview), the built-in assistant, to pick a calculator and fill in its inputs from a plain-language request.
+- Ask [GeoAI](/docs/geoai/overview), the built-in assistant, to run calculations from a plain-language request, look up a method's documentation, or search your own indexed documents.
 
 Every calculator documents its inputs with units and suggested ranges. The underlying groundhog documentation is part of these docs: see the [Groundhog API Reference](/docs/groundhog/api).
 
@@ -41,7 +43,7 @@ Every calculator documents its inputs with units and suggested ranges. The under
 ```
 
 - The **frontend** is an Electron shell with a React user interface. It renders a form for each calculator, shows results and charts, and keeps a local calculation history.
-- The **calculation engine** is a Python process started by the desktop app. It maps each calculator to its groundhog function or class, validates the inputs and returns the results. In packaged builds it is a frozen PyInstaller executable, so no separate Python installation is needed.
+- The **calculation engine** is a Python process started by the desktop app. It maps each calculator to its groundhog function or class (or to GeoCore's own implementation, for the BIS calculators), validates the inputs and returns the results. It also runs GeoAI. In packaged builds it is a frozen PyInstaller executable, so no separate Python installation is needed.
 
 ## Input handling
 

@@ -26,7 +26,7 @@ GeoCore utilizes an automated multi-platform release strategy powered by **GitHu
 ## 🚀 2. How to Create a New Release
 
 ### Step 1: Update Version Numbers
-Update the version string in `electron-app/package.json` and `python-backend/main.py`:
+Update the version string in `electron-app/package.json`, `python-backend/main.py` and `python-backend/core/diagnostics.py` (the release workflow refuses a tag that does not match all three):
 ```json
 {
   "name": "geocore",
@@ -53,8 +53,8 @@ Installers are only built if all of these pass; a failure stops the release:
 2. Select the **Build & Release GeoCore** workflow.
 3. Once completed, a release will be automatically created under `https://github.com/utkarsh-1912/geocore/releases` containing:
    - `GeoCore-Setup-1.0.0.exe` (Windows Installer, per-user, no admin required)
-   - `GeoCore-1.0.0-<arch>.dmg` (macOS Installer)
-   - `GeoCore-1.0.0-<arch>-mac.zip` (macOS Compressed Application)
+   - `GeoCore-1.0.0-arm64.dmg` / `GeoCore-1.0.0.dmg` (macOS Installer, Apple Silicon / Intel)
+   - `GeoCore-1.0.0-arm64-mac.zip` / `GeoCore-1.0.0-mac.zip` (macOS Compressed Application)
    - `GeoCore-1.0.0.AppImage` (Linux, portable — auto-updates like Windows/macOS)
    - `geocore_1.0.0_amd64.deb` (Linux, Debian/Ubuntu package — **no auto-update**; reinstall the
      new `.deb` for each release, or use the AppImage instead if you want in-app updates)
@@ -113,7 +113,7 @@ cd ../electron-app
 npm run build
 npm run dist:mac
 ```
-*Output location*: `electron-app/release/GeoCore-1.0.0-<arch>.dmg`
+*Output location*: `electron-app/release/GeoCore-1.0.0-arm64.dmg` (Apple Silicon) or `GeoCore-1.0.0.dmg` (Intel)
 
 ### Linux Executable Build
 Run on a Linux machine (AppImage/deb cannot be cross-built from Windows or macOS):

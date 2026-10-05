@@ -137,8 +137,10 @@ jobs:
       - name: Automatically Create & Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name || inputs.tag_name || 'v1.0.0' }}
-          name: "GeoCore ${{ github.ref_name || inputs.tag_name || 'v1.0.0' }}"
+          # Same expression as verify-version: a manual run from a branch must not publish a release
+          # tagged with the branch name (e.g. "main"), which electron-updater cannot read as a version.
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}
+          name: "GeoCore ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}"
           generate_release_notes: true
           draft: false
           prerelease: false

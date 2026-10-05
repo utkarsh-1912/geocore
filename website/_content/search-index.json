@@ -5,10 +5,12 @@
     "section": "Changelog",
     "headings": [
       "Unreleased",
-      "v1.0.0 — 2026-08-21",
+      "Added",
+      "Fixed",
+      "v1.0.0 — 2026-10-04",
       "Added"
     ],
-    "text": "Release history for GeoCore itself — the desktop application, GeoAI and the integration around groundhog. groundhog is a separate project with its own version history; see its release notes on GitHub or the version this build ships, noted on the License & Credits page. Unreleased Nothing recorded ye"
+    "text": "Release history for GeoCore itself — the desktop application, GeoAI and the integration around groundhog. groundhog is a separate project with its own version history; see its release notes on GitHub or the version this build ships, noted on the License & Credits page. Unreleased Added - Mohr-Coulom"
   },
   {
     "slug": "geoai",
@@ -101,9 +103,10 @@
       "Tests",
       "Local LLM runtime for GeoAI (optional)",
       "Desktop frontend",
-      "Building installers"
+      "Building installers",
+      "Rebuilding the website and these docs"
     ],
-    "text": "Prerequisites - Node.js 18 or newer and npm 9 or newer - Python 3.10 or newer with pip and virtual environment support Clone the repository Python calculation engine The engine listens on http://127.0.0.1:8000. Tests Local LLM runtime for GeoAI (optional) GeoAI runs local models through llama-cpp-py"
+    "text": "Prerequisites - Node.js 22 (the version CI uses; Vite 7 needs at least 20.19) and npm - Python 3.10 or newer with pip and virtual environment support. CI runs on 3.10, so avoid syntax that needs a newer version. Clone the repository Python calculation engine The engine listens on http://127.0.0.1:80"
   },
   {
     "slug": "geocore/installation",
@@ -113,10 +116,11 @@
       "Download",
       "Install",
       "First start",
+      "Where GeoCore keeps your data",
       "Updates",
       "GeoAI models"
     ],
-    "text": "Download Installers are published on the GeoCore releases page. There is no portable Windows build. It was removed because it unpacked the whole application, including the calculation engine, to a temporary folder on every launch, which made start-up slow. Install - Windows: run the setup file and f"
+    "text": "Download Installers are published on the GeoCore releases page. All builds are 64-bit. There is no portable Windows build. It was removed because it unpacked the whole application, including the calculation engine, to a temporary folder on every launch, which made start-up slow. Install - Windows: r"
   },
   {
     "slug": "geocore/overview",
@@ -171,7 +175,8 @@
     "section": "Using GeoCore",
     "headings": [
       "Running a calculation",
-      "Other endpoints"
+      "Other endpoints",
+      "Calculation history"
     ],
     "text": "The desktop frontend talks to the calculation engine over HTTP on 127.0.0.1:8000. The engine only listens on the local loopback address. The endpoints are an internal interface of the desktop app and may change between versions, but they are useful for scripting and debugging while GeoCore is runnin"
   },
@@ -268,7 +273,7 @@
     "title": "Getting Started",
     "section": "Getting Started",
     "headings": [],
-    "text": "Install GeoCore and learn how the application is put together. - What is GeoCore — GeoCore is a desktop geotechnical engineering workstation that runs groundhog calculations locally. - Installing GeoCore — Download and install GeoCore on Windows or macOS, and how automatic updates work. - Running an"
+    "text": "Install GeoCore and learn how the application is put together. - What is GeoCore — GeoCore is a desktop geotechnical engineering workstation that runs groundhog calculations locally. - Installing GeoCore — Download and install GeoCore on Windows, macOS or Linux, where it keeps your data, and how aut"
   },
   {
     "slug": "groundhog/api",
@@ -1866,6 +1871,6 @@
     "title": "Using GeoCore",
     "section": "Using GeoCore",
     "headings": [],
-    "text": "Run calculations, manage soil profiles and export results. - Running calculations — Find a calculator, enter inputs, read the results and export them. - Soil profiles and AGS data — Create groundhog SoilProfile objects from CSV or Excel files, and load AGS files. - Calculation catalogue — Every calc"
+    "text": "Run calculations, manage soil profiles and export results. - Running calculations — Find a calculator, enter inputs, read the results and export them. - Soil profiles and AGS data — Create groundhog SoilProfile objects and CPT tables from CSV or Excel files, and load AGS files. - Calculation catalog"
   }
 ]

@@ -259,6 +259,12 @@ const MainLayout = () => {
         setCommandPaletteOpen(prev => !prev);
       }
 
+      // Ctrl+Shift+A (or Cmd+Shift+A on Mac) to toggle the GeoAI assistant panel
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        setCopilotOpen(prev => !prev);
+      }
+
       // '/' to focus search bar if not already in an input
       if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
         e.preventDefault();

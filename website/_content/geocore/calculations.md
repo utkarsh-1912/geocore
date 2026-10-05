@@ -10,7 +10,9 @@ sources:
 - electron-app/src/features/command/CommandPalette.jsx
 - electron-app/src/context/HistoryContext.jsx
 - electron-app/src/utils/exportUtils.js
+- electron-app/src/features/calculations/FormulaDerivationCard.jsx
 - python-backend/core/registry.py
+- python-backend/core/calculation_history.py
 ---
 
 ## Workflow
@@ -20,7 +22,9 @@ sources:
 3. Fill in the inputs. Field labels show the expected unit and, where groundhog defines one, the suggested range.
 4. Click **Calculate** to see the results as tables and, for calculators that produce them, interactive Plotly charts.
 
-Each calculator form also has a guide panel describing the calculation and its fields. For the full method description, formulas and references, follow the link to the groundhog function in the [API reference](/docs/groundhog/api).
+Each calculator has a **Guide & Theory** panel with the method's theory, formulas, parameters and references, taken from the groundhog documentation and available offline. Figures are left out of the app; they are in the [API reference](/docs/groundhog/api) entry for each function.
+
+Under the results, the **Formula & Derivation** card shows the method, the standard or reference and the formula behind the result, with your inputs. These come from the calculation engine, not from a language model. If a GeoAI model is installed, a short plain-language explanation is added a moment later.
 
 ## Finding calculators
 
@@ -53,6 +57,8 @@ Use the export menu on the results view:
 
 GeoCore keeps the 50 most recent calculations in a history panel (`Ctrl+H`). The history is stored locally by the desktop app. Individual entries can be deleted, or the whole history cleared.
 
+Separately, the calculation engine keeps an audit trail of the last 500 successful calculations (calculator, inputs, a short summary of the result and the time), stored with your project data. Entries can be marked as checked. It is available through the [local API](/docs/geocore/using/local-api#calculation-history).
+
 ## Keyboard shortcuts
 
 | Shortcut | Action |
@@ -60,6 +66,7 @@ GeoCore keeps the 50 most recent calculations in a history panel (`Ctrl+H`). The
 | `Ctrl+K` (`Cmd+K` on macOS) | Command palette |
 | `/` | Open the command palette when no text field is focused |
 | `Ctrl+H` (`Cmd+H` on macOS) | Toggle calculation history |
+| `Ctrl+Shift+A` (`Cmd+Shift+A` on macOS) | Toggle the GeoAI assistant panel |
 | `↑` / `↓` | Move through list selections |
 | `Enter` | Confirm the selection |
 | `Esc` | Close dialogs and panels |
