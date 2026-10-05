@@ -1018,6 +1018,11 @@ class Registry:
             wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.pilegroupeffect_reesevanimpe_wrapper(args))
 
+        # Constitutive models: Mohr-Coulomb triaxial failure (figure + values)
+        if function_id in ('mohrcoulomb_triaxial_compression', 'mohrcoulomb_triaxial_extension'):
+            wrappers = _load_wrapper_module("wrappers")
+            return self._sanitize(wrappers.mohrcoulomb_triaxial_wrapper(function_id, args))
+
         if function_id == 'reinforced_circularsection_inertia':
             wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.reinforced_circularsection_inertia_wrapper(args))

@@ -7,6 +7,7 @@ description: GeoAI's offline full-text index for project notes, reports and stan
 sources:
 - python-backend/core/geoai/research/indexer.py
 - python-backend/core/geoai/research/evidence.py
+- python-backend/core/geoai/research/docs_adapter.py
 - python-backend/core/geoai/tool_definitions.py
 - AGENTS.md
 ---
@@ -22,6 +23,16 @@ GeoAI includes a small, fully local search index for engineering text: project n
   - `search_local_documents` returns the best-matching chunks with document title, section heading, file path and score.
 
 There is currently no dedicated screen for managing indexed documents; documents are added through the `index_document_text` tool (for example with `POST /api/geoai/invoke`, see [GeoAI tools](/docs/geoai/tools#api-endpoints)).
+
+## GeoCore documentation as a source
+
+The documentation shipped with GeoCore (this site's pages and the groundhog API reference generated from the groundhog docstrings) is added to the index automatically the first time GeoAI searches, and re-indexed only when the documentation changes. Results from it link to the matching page under `/docs/`. Your own documents are kept separate and are never removed by this.
+
+A third tool reads the same content directly:
+
+- `get_function_documentation` returns one groundhog function's documented inputs (with units and suggested ranges), outputs, formulas and the references cited in its docstring, with the groundhog licence attribution. It does not calculate anything.
+
+References returned this way are quoted from the groundhog docstrings; GeoAI does not add references of its own.
 
 ## Keeping evidence types apart
 

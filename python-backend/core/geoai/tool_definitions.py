@@ -263,9 +263,12 @@ def derive_cpt_parameters(
 # 13. Local Document Search (RAG)
 from core.geoai.schemas.research import (
     SearchLocalDocumentsInput, SearchLocalDocumentsOutput,
-    IndexDocumentTextInput, IndexDocumentTextOutput
+    IndexDocumentTextInput, IndexDocumentTextOutput,
+    GetFunctionDocumentationInput, GetFunctionDocumentationOutput
 )
 from core.geoai.research.indexer import local_indexer
+from core.geoai.research.docs_adapter import get_docs_adapter
+from core.geoai.exceptions import GeoAIValidationError
 
 
 @geoai_tool(
@@ -276,6 +279,8 @@ from core.geoai.research.indexer import local_indexer
     output_model=SearchLocalDocumentsOutput
 )
 def search_local_documents(query: str, top_k: int = 5):
+    # The shipped GeoCore/Groundhog docs are part of the index (once per process, skipped when unchanged).
+    get_docs_adapter().ensure_indexed(local_indexer)
     results = local_indexer.search(query, top_k=top_k)
     return {
         "query": query,
@@ -309,6 +314,29 @@ def index_document_text(doc_id: str, title: str, content: str):
         "indexed_chunks": chunks,
         "status": "indexed"
     }
+
+
+# 14b. Function documentation (shipped Groundhog docstrings via the docs adaptor)
+@geoai_tool(
+    name="get_function_documentation",
+    description="Returns the documented inputs (with units and suggested ranges), outputs, formulas and cited references of one Groundhog calculation function. Use it to explain a method or check required inputs; it does not calculate.",
+    category="documentation",
+    input_model=GetFunctionDocumentationInput,
+    output_model=GetFunctionDocumentationOutput
+)
+def get_function_documentation(function_name: str):
+    import difflib
+    adapter = get_docs_adapter()
+    if not adapter.available():
+        raise GeoAIValidationError("GeoCore documentation is not available in this installation.")
+    doc = adapter.function_doc(function_name)
+    if doc is None:
+        close = difflib.get_close_matches(function_name, adapter.function_names(), n=5, cutoff=0.6)
+        hint = f" Did you mean: {', '.join(close)}?" if close else ""
+        raise GeoAIValidationError(f"No documentation for '{function_name}'.{hint}")
+    out = doc.to_dict()
+    out["attribution"] = adapter.attribution
+    return out
 
 
 # 15-16. Shallow foundation bearing capacity and settlement (Groundhog stateful workflows as one-shot tools)

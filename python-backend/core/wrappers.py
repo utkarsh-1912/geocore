@@ -1164,6 +1164,44 @@ def pilegroupeffect_reesevanimpe_wrapper(args):
         traceback.print_exc()
         return {"error": f"Pile Group Effect Error: {str(e)}"}
 
+def mohrcoulomb_triaxial_wrapper(function_id, args):
+    """
+    Wrapper for groundhog.constitutivemodels.general.mohrcoulomb_triaxial_compression / _extension.
+    Returns the Mohr circle figure plus the stresses at failure as a table (the generic handler
+    would show the figure as raw JSON and the single-plot view drops the values).
+    """
+    from groundhog.constitutivemodels import general
+
+    func = getattr(general, function_id)
+    held_stress = 'sigma_3' if function_id == 'mohrcoulomb_triaxial_compression' else 'sigma_1'
+    try:
+        res = func(**{held_stress: float(args.get(held_stress)),
+                      'cohesion': float(args.get('cohesion')),
+                      'phi': float(args.get('phi')),
+                      'latex_titles': False})  # the app's Plotly build does not render LaTeX titles
+        fig = res.pop('Plot', None)
+        res.pop('Mohr circle', None)
+        if fig is None:
+            return {"error": "Mohr circle could not be calculated for these inputs (see warnings)."}
+        fig_json = json.loads(plotly.io.to_json(fig))
+        rows = []
+        for key, value in res.items():
+            name, _, unit = key.partition(' [')
+            rows.append({"Output": name, "Value": _sanitize(value), "Unit": unit.rstrip(']') or '-'})
+        loading = "Triaxial compression" if held_stress == 'sigma_3' else "Triaxial extension"
+        return {
+            "type": "multi_plot",
+            "plots": [{"title": f"Mohr circle at failure ({loading.lower()})",
+                       "data": fig_json['data'], "layout": fig_json['layout']}],
+            "results": {"type": "dataframe", "data": rows, "columns": ["Output", "Value", "Unit"]},
+            "message": f"{loading}: Mohr-Coulomb failure state calculated.",
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return {"error": f"Mohr-Coulomb Triaxial Error: {str(e)}"}
+
+
 def reinforced_circularsection_inertia_wrapper(args):
     """
     Wrapper for reinforced_circularsection_inertia.

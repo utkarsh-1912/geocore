@@ -279,6 +279,15 @@ TOOL_METADATA: Dict[str, Dict[str, Any]] = {
         ],
         "output_units": {"total_found": "-"}
     },
+    "get_function_documentation": {
+        "method": "Lookup in the shipped Groundhog docstrings (GeoCore docs adaptor)",
+        "standard": "Groundhog documentation, GPL-3.0-or-later (Bruno Stuyts)",
+        "assumptions": [
+            "Returns documentation only; no calculation is performed",
+            "Units, ranges and references are quoted from the docstrings of the shipped Groundhog version"
+        ],
+        "output_units": {}
+    },
     "index_document_text": {
         "method": "Semantic Text Chunking & FTS5 Indexing",
         "standard": "Local Desktop Offline RAG Engine",

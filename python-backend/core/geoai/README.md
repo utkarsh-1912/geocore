@@ -36,6 +36,7 @@ If a turn would end with no answer text, `run_stream` appends an explicit "nothi
 | `provenance.py` | Method, inputs, units and source recorded with every derived value |
 | `cpt.py`, `spt.py`, `ags.py`, `project_cpt.py`, `project_soil.py`, `data_access.py`, `context_resolver.py` | Project data: parse deterministically, expose compact query tools, resolve missing inputs from the project |
 | `research/` | Local document index (SQLite FTS5) and evidence tiers (project, calculation, literature, standards, interpretation, assumption) |
+| `research/docs_adapter.py` | Docs adaptor: reads the shipped docs content (`website/_content`: Groundhog `api.json` + pages; `docs_content/` in the frozen build). Backs `get_function_documentation`, indexes the docs into the research index on first search, and writes the coverage report (`python -m core.geoai.research.docs_adapter --coverage` → `FUNCTION_COVERAGE.md`) |
 | `calculation_explainer.py` | Deterministic "Formula & Derivation" explanation and optional narration |
 | `turn_trace.py` | Per-turn outcome classification and log (below) |
 | `eval/` | Offline evaluation: scorer, runner, benchmark, baselines in `eval/results/` |

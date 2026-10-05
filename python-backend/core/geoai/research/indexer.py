@@ -6,15 +6,18 @@ Enables offline RAG for local geotechnical reports, papers, standards, and notes
 conforming to AGENTS.md §11 & §13 without heavyweight external vector databases.
 """
 
+import logging
 import os
 import re
 import sqlite3
 import hashlib
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, Iterable, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
 from core.paths import get_config_dir
+
+logger = logging.getLogger("groundhog-backend")
 
 
 @dataclass
@@ -134,33 +137,44 @@ class LocalDocumentIndexer:
         file_path: str = "memory"
     ) -> int:
         """Indexes raw text or markdown content into the FTS5 database."""
-        file_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
-        raw_chunks = self._chunk_text(content)
-        if not raw_chunks:
-            return 0
-
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             # Remove previous chunks if re-indexing same doc_id
             cursor.execute("DELETE FROM document_chunks WHERE doc_id = ?", (doc_id,))
             cursor.execute("DELETE FROM documents WHERE doc_id = ?", (doc_id,))
-
-            # Insert document record
-            cursor.execute("""
-                INSERT INTO documents (doc_id, title, file_path, file_hash, chunk_count)
-                VALUES (?, ?, ?, ?, ?)
-            """, (doc_id, title, file_path, file_hash, len(raw_chunks)))
-
-            # Insert chunks into FTS5
-            for idx, (heading, chunk_text) in enumerate(raw_chunks):
-                chunk_id = f"{doc_id}_c{idx}"
-                cursor.execute("""
-                    INSERT INTO document_chunks (chunk_id, doc_id, doc_title, file_path, section_heading, content, page_number)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (chunk_id, doc_id, title, file_path, heading, chunk_text, 1))
-
+            count = self._insert_document(cursor, doc_id, title, content, file_path)
             conn.commit()
+        return count
 
+    def index_new_documents(self, docs: Iterable[Tuple[str, str, str, str]]) -> int:
+        """Bulk-index ``(doc_id, title, content, file_path)`` in one transaction.
+
+        The ids must not be indexed already (delete them first, e.g. ``delete_documents_with_prefix``);
+        skipping the per-document delete is what makes this fast. Returns the number of chunks.
+        """
+        total = 0
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            for doc_id, title, content, file_path in docs:
+                total += self._insert_document(cursor, doc_id, title, content, file_path)
+            conn.commit()
+        return total
+
+    def _insert_document(self, cursor: sqlite3.Cursor, doc_id: str, title: str, content: str,
+                         file_path: str) -> int:
+        raw_chunks = self._chunk_text(content)
+        if not raw_chunks:
+            return 0
+        file_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        cursor.execute("""
+            INSERT INTO documents (doc_id, title, file_path, file_hash, chunk_count)
+            VALUES (?, ?, ?, ?, ?)
+        """, (doc_id, title, file_path, file_hash, len(raw_chunks)))
+        for idx, (heading, chunk_text) in enumerate(raw_chunks):
+            cursor.execute("""
+                INSERT INTO document_chunks (chunk_id, doc_id, doc_title, file_path, section_heading, content, page_number)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (f"{doc_id}_c{idx}", doc_id, title, file_path, heading, chunk_text, 1))
         return len(raw_chunks)
 
     def index_file(self, file_path: Path) -> int:
@@ -230,6 +244,31 @@ class LocalDocumentIndexer:
                 score=float(r[6])
             ))
         return results
+
+    def get_document_hash(self, doc_id: str) -> Optional[str]:
+        """Stored content hash of a document, or None if it is not indexed."""
+        with sqlite3.connect(self.db_path) as conn:
+            row = conn.execute("SELECT file_hash FROM documents WHERE doc_id = ?", (doc_id,)).fetchone()
+            return row[0] if row else None
+
+    def set_document_marker(self, doc_id: str, title: str, file_hash: str) -> None:
+        """Record a chunk-less document (used as a fingerprint for bulk-indexed sources)."""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("DELETE FROM documents WHERE doc_id = ?", (doc_id,))
+            conn.execute("""
+                INSERT INTO documents (doc_id, title, file_path, file_hash, chunk_count)
+                VALUES (?, ?, ?, ?, 0)
+            """, (doc_id, title, "", file_hash))
+            conn.commit()
+
+    def delete_documents_with_prefix(self, prefix: str) -> int:
+        """Remove every document whose id starts with ``prefix``; returns the number removed."""
+        pattern = prefix.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+        with sqlite3.connect(self.db_path) as conn:
+            cur = conn.execute("DELETE FROM documents WHERE doc_id LIKE ? ESCAPE '\\'", (pattern,))
+            conn.execute("DELETE FROM document_chunks WHERE doc_id LIKE ? ESCAPE '\\'", (pattern,))
+            conn.commit()
+            return cur.rowcount
 
     def get_document_count(self) -> int:
         """Returns total number of indexed documents."""

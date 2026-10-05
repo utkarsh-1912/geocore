@@ -4,6 +4,20 @@
  */
 
 export const constitutiveSchemas = {
+    mohrcoulomb_triaxial_compression: {
+        inputs: [
+            { name: "sigma_3", label: "Radial stress (sigma_3)", type: "float", unit: "kPa", required: true, description: "Radial (total or effective) stress, kept constant during the test - Suggested range: sigma_3 >= 0.0" },
+            { name: "cohesion", label: "Cohesion", type: "float", unit: "kPa", required: true, description: "Cohesion (total or effective) - Suggested range: cohesion >= 0.0" },
+            { name: "phi", label: "Friction angle", type: "float", unit: "deg", required: true, description: "Friction angle (total or effective) - Suggested range: 0.0 <= phi <= 90.0" }
+        ]
+    },
+    mohrcoulomb_triaxial_extension: {
+        inputs: [
+            { name: "sigma_1", label: "Radial stress (sigma_1)", type: "float", unit: "kPa", required: true, description: "Radial (total or effective) stress, kept constant while the axial stress is reduced; it becomes the major principal stress - Suggested range: sigma_1 >= 0.0" },
+            { name: "cohesion", label: "Cohesion", type: "float", unit: "kPa", required: true, description: "Cohesion (total or effective) - Suggested range: cohesion >= 0.0" },
+            { name: "phi", label: "Friction angle", type: "float", unit: "deg", required: true, description: "Friction angle (total or effective) - Suggested range: 0.0 <= phi <= 90.0" }
+        ]
+    },
     hardening_soil_drained_triaxial: {
         inputs: [
             // Material Parameters (__init__)

@@ -827,9 +827,11 @@ def load_geocore_ui() -> Dict[str, Any]:
     if path.exists():
         cat_title = sub_title = None
         for ln in path.read_text(encoding="utf-8").splitlines():
-            fm = re.search(r"\{\s*id:\s*'([^']+)',\s*title:\s*'([^']+)'\s*\}", ln)
+            # Titles may contain escaped quotes, e.g. 'AASHTO Young\'s Modulus (SPT)'.
+            fm = re.search(r"\{\s*id:\s*'([^']+)',\s*title:\s*'((?:[^'\\]|\\.)+)'\s*\}", ln)
             if fm:
-                entries.append({"id": fm.group(1), "title": fm.group(2), "category": cat_title, "submodule": sub_title})
+                title = re.sub(r"\\(.)", r"\1", fm.group(2))
+                entries.append({"id": fm.group(1), "title": title, "category": cat_title, "submodule": sub_title})
                 continue
             tm = re.match(r"^(\s*)title:\s*'([^']+)'", ln)
             if tm:

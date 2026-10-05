@@ -549,7 +549,14 @@ export const GEOTECHNICAL_MODULES = [
         title: 'Constitutive models',
         description: 'Models for cohesionless, cohesive, and rock materials.',
         items: [
-            { id: 'model_general', title: 'General', functions: [] },
+            {
+                id: 'model_general',
+                title: 'General',
+                functions: [
+                    { id: 'mohrcoulomb_triaxial_compression', title: 'Mohr-Coulomb Triaxial Compression' },
+                    { id: 'mohrcoulomb_triaxial_extension', title: 'Mohr-Coulomb Triaxial Extension' }
+                ]
+            },
             {
                 id: 'cohesionless',
                 title: 'Cohesionless materials',

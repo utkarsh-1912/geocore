@@ -48,3 +48,32 @@ class IndexDocumentTextOutput(GeoAIOutputModel):
     doc_id: str = GeotechnicalField(..., description="Document identifier")
     indexed_chunks: int = GeotechnicalField(..., unit="-", description="Number of semantic chunks indexed")
     status: str = GeotechnicalField("indexed", description="Indexing operation status")
+
+
+class GetFunctionDocumentationInput(GeoAIBaseModel):
+    """
+    Looks up the shipped GeoCore/Groundhog documentation of one calculation function.
+    """
+    function_name: str = GeotechnicalField(
+        ...,
+        description="Groundhog function or class name, e.g. 'behaviourindex_pcpt_robertsonwride' or "
+                    "'ShallowFoundationCapacityDrained' (or 'Class.method')",
+        validation_alias=AliasChoices('function_name', 'function', 'name', 'tool_name')
+    )
+
+
+class GetFunctionDocumentationOutput(GeoAIOutputModel):
+    name: str = GeotechnicalField(..., description="Documented function, class or method name")
+    module: str = GeotechnicalField(..., description="Groundhog module")
+    kind: str = GeotechnicalField(..., description="function, class or method")
+    signature: str = GeotechnicalField("", description="Python call signature")
+    summary: str = GeotechnicalField(..., description="One-line docstring summary")
+    description: str = GeotechnicalField("", description="Docstring theory text (Markdown, LaTeX kept)")
+    formulas: List[str] = GeotechnicalField([], description="Formulas from the docstring (LaTeX)")
+    methods: List[str] = GeotechnicalField([], description="Workflow methods, for classes")
+    params: List[Dict[str, Any]] = GeotechnicalField(..., description="Inputs with description, symbol, unit, suggested range, required flag and default")
+    returns: List[Dict[str, Any]] = GeotechnicalField(..., description="Returned keys with description and unit")
+    references: List[str] = GeotechnicalField(..., description="References cited in the docstring (verbatim)")
+    docs_url: str = GeotechnicalField(..., description="GeoCore docs page for the function")
+    source_url: str = GeotechnicalField("", description="Upstream source at the shipped Groundhog version")
+    attribution: str = GeotechnicalField("", description="Licence and attribution of the documentation text")

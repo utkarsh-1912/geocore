@@ -108,6 +108,13 @@ if os.path.exists('core/geoai/parameter_inventory.json'):
 datas.append(('core/function_manifest.json', 'core'))
 datas += copy_metadata('groundhog')
 
+# Docs content for the GeoAI docs adaptor (core/geoai/research/docs_adapter.py): Groundhog API
+# docstrings + docs pages (~4 MB, text only; figures are not needed).
+_docs_content = os.path.join('..', 'website', '_content')
+if os.path.exists(os.path.join(_docs_content, 'groundhog', 'api.json')):
+    datas.append((os.path.join(_docs_content, 'groundhog', 'api.json'), 'docs_content/groundhog'))
+    datas.append((os.path.join(_docs_content, 'pages'), 'docs_content/pages'))
+
 datas += collect_data_files('plotly')
 datas += collect_data_files('jinja2')
 
