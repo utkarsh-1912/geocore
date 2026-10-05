@@ -61,6 +61,7 @@ class _Call:
     latency_s: float
     tools_offered: List[str]
     error: Optional[str] = None
+    messages: Optional[List[ChatMessage]] = None
 
 
 class RecordingProvider(ModelProvider):
@@ -79,9 +80,9 @@ class RecordingProvider(ModelProvider):
         try:
             resp = self.inner.generate(messages, tools=tools, temperature=temperature, max_tokens=max_tokens)
         except Exception as e:
-            self.calls.append(_Call(None, time.perf_counter() - t0, offered, error=str(e)))
+            self.calls.append(_Call(None, time.perf_counter() - t0, offered, error=str(e), messages=list(messages)))
             raise
-        self.calls.append(_Call(resp, time.perf_counter() - t0, offered))
+        self.calls.append(_Call(resp, time.perf_counter() - t0, offered, messages=list(messages)))
         return resp
 
     def generate_stream(self, messages, tools=None, temperature=0.1, max_tokens=1024) -> Iterator[StreamChunk]:
@@ -246,6 +247,15 @@ def run_example(ex: EvalExample, rec: RecordingProvider, registry: GeoAIToolRegi
     first = rec.calls[0] if rec.calls else None
     response = first.response if first and first.response is not None else ParsedResponse()
     sb = score_turn(ex, response, registry=registry, execute=execute)
+    guarded = None
+    if ex.turn_type == "decision":
+        try:
+            g_response = apply_runtime_guard(first, registry)
+            if g_response is not None:
+                guarded = score_turn(ex, g_response, registry=registry, execute=execute)
+        except Exception:  # the guard must never break an evaluation run
+            guarded = None
+    guarded = guarded or sb  # unchanged by the guard
     offered = first.tools_offered if first else []
     # Token counts summed over every model call of the example (llama.cpp reports them; the
     # heuristic provider does not -> None). Used for hardware-independent latency estimates.
@@ -259,6 +269,8 @@ def run_example(ex: EvalExample, rec: RecordingProvider, registry: GeoAIToolRegi
         "expected_action": ex.expected_action,
         "expected_tool": ex.expected_tool,
         "score": sb.to_dict(),
+        "guarded_score": {"total": guarded.total, "passed": guarded.passed,
+                          "predicted_action": guarded.predicted_action},
         "latency_s": round(latency, 4),
         "decision_latency_s": round(first.latency_s, 4) if first else None,
         "n_model_calls": len(rec.calls),
@@ -270,6 +282,30 @@ def run_example(ex: EvalExample, rec: RecordingProvider, registry: GeoAIToolRegi
         "completion_tokens": completion_tokens,
         "error": error,
     }
+
+
+def apply_runtime_guard(call: Optional[_Call], registry: GeoAIToolRegistry) -> Optional[ParsedResponse]:
+    """
+    What the shipped agent would answer for ``call``'s first model response: a tool call whose
+    numeric inputs the user never gave becomes the clarification ``GeoAIAgent`` sends instead
+    (same ``ungrounded_arguments`` rule and grounding text, no extra model call). None when the
+    guard does not change the response. Decision mode scores the raw model output, so this
+    measures the behaviour users actually get.
+    """
+    if call is None or call.response is None or not call.response.tool_calls or call.messages is None:
+        return None
+    from core.geoai.agent import _grounding_text
+    from core.geoai.argument_grounding import missing_inputs_message, ungrounded_arguments
+    grounding = _grounding_text(call.messages)
+    for tc in call.response.tool_calls:
+        tool = registry.get_tool(tc.function_name)
+        if tool is None:
+            continue
+        args = {k: v for k, v in (tc.arguments or {}).items() if v is not None}
+        invented = ungrounded_arguments(tool.input_model, args, grounding)
+        if invented:
+            return ParsedResponse(content=missing_inputs_message(tc.function_name, tool.input_model, invented))
+    return None
 
 
 def _stratified_limit(examples: List[EvalExample], limit: Optional[int]) -> List[EvalExample]:
@@ -310,6 +346,10 @@ def summarise(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         "mean_score": mean(s["total"] for s in sc),
         "strict_pass_rate": mean(1.0 if s["passed"] else 0.0 for s in sc),
         "action_accuracy": mean(1.0 if s["action"] == 1.0 else 0.0 for s in sc),
+        # Same examples after the runtime guard (argument_grounding) that the shipped agent applies.
+        "guarded_mean_score": mean(r["guarded_score"]["total"] for r in records if "guarded_score" in r),
+        "guarded_strict_pass_rate": mean(
+            1.0 if r["guarded_score"]["passed"] else 0.0 for r in records if "guarded_score" in r),
         "tool_selection_accuracy": mean(1.0 if r["score"]["tool"] == 1.0 else 0.0 for r in tool_exp),
         "tool_selection_accuracy_incl_equivalent": mean(1.0 if (r["score"]["tool"] or 0) > 0 else 0.0 for r in tool_exp),
         "argument_accuracy": mean(r["score"]["arguments"] for r in tool_exp),

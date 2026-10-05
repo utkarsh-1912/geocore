@@ -59,6 +59,10 @@ graph TD
     S5 --> S6[Stage 6: Model Evaluation Suite & Benchmarking]
     S6 --> S7[Stage 7: Local Document Research & Citations]
     S7 --> S8[Stage 8: Production Desktop Packaging]
+    S8 --> S9[Stage 9: Eval Harness & Dataset]
+    S9 --> S10[Stage 10: Model Benchmark & Selection]
+    S10 --> S11[Stage 11: LoRA SFT + GRPO Fine-tune]
+    S11 --> S12[Stage 12: Integration, Evidence UI & Release]
 ```
 
 ---
@@ -138,7 +142,7 @@ graph TD
 
 ---
 
-### Stage 9: Evaluation Harness & Registry-Validated Dataset (pre-fine-tuning gate, AGENTS.md §19-21, §31-32) 🚧
+### Stage 9: Evaluation Harness & Registry-Validated Dataset (pre-fine-tuning gate, AGENTS.md §19-21, §31-32) 🚧 (harness done; blockers below to re-verify)
 - [x] **Deterministic scorer** (`core/geoai/eval/scoring.py`): `score_turn(example, model_response, *, registry=None, execute=False) -> ScoreBreakdown`. Criteria: action, tool, schema (real `input_model`), arguments (after `units.py` normalisation, rel. tol 1 %), no-invented-values (total capped at 0.5), wrong stated value (total capped at 0.25 + 0.35 x argument score), wrong tool (capped at 0.2), clarification, unit traps, optional end-to-end Groundhog execution, final-answer grounding, engineering caution. No LLM oracle. Accepts `ModelResponse`, OpenAI dicts or raw `<tool_call>` completions, so it is the GRPO reward (`reward(example, completion)`).
 - [x] **Runner** (`python -m core.geoai.eval.runner --provider heuristic|llama_cpp --model PATH --split test --out results.json`; `--compare BASE CAND`): real `GeoAIAgent` + Tool Registry path (state-mutating tools blocked), per-category pass rates, tool/argument/clarification accuracy, hallucinated-parameter rate, selector recall, p50/p95 latency, peak RAM.
 - [x] **Dataset scale-up** (`python -m core.geoai.training.scaleup`): ~2,450 seeded examples from 24 registered tools; every expected tool call executed through the registry (drops logged in `manifest.json`); group-wise stratified splits; test + gold held out of SFT; TRL/Unsloth ChatML (`messages` + `tools`). Output in `core/geoai/training/data/` (git-ignored).
@@ -151,12 +155,49 @@ graph TD
   | Qwen2.5-1.5B Q4_K_M, `GEOAI_CHAT_FORMAT=native` | 20 | 0.636 | 40 % | 20 % | 13 % | 43 % | 17 % | 33 s |
 
   The Qwen runs are provisional: 20 examples only, and the native run had 1 of 20 generations overflow `n_ctx` (a 5-tool prompt of about 3.3k tokens plus `max_tokens=1024`). Files named `superseded_*` came from the old 20-tool selector and should not be used.
-- [ ] **Blockers found before fine-tuning** (outside this stage's scope):
+- [ ] **Blockers found before fine-tuning** (re-verify each against current code before starting Stage 11; tool_retrieval.py, test_relative_density_convention.py and test_geoai_tool_call_formats.py suggest 1, 2 and 4 may already be addressed):
   1. `LlamaCppProvider.generate` never passes `tool_choice` in the default (legacy `chatml-function-calling`) format, so llama-cpp-python drops the tools from the prompt: the local model cannot call any tool. `GEOAI_CHAT_FORMAT=native` avoids this.
   2. `tool_selector.select_relevant_tools` misses the expected tool in ~40 % of generated tool requests (recall 0.595 on test).
   3. Tool schemas are large. 20 tools were roughly 6-15k tokens (now capped to 5 tools); even 5 tools plus `max_tokens=1024` can exceed `n_ctx=4096`.
   4. `calculate_relative_density` always returns NaN (schema field `voidratio` vs Groundhog `void_ratio`).
   5. Auto-registered schemas (`extra='allow'`, `:math:` units) accept unknown keys and do not convert unit strings (e.g. `"0.55 rad"` becomes 0.55 deg).
+
+---
+
+### Stage 10: Candidate Benchmark & Model Selection (AGENTS.md §31) 🚧
+Infrastructure exists (`eval/benchmark.py`, `eval/remote/` Colab + shell runner, `finetune/` profiles, `model_downloader.RECOMMENDED_MODELS`); results so far are CPU-only, 40-example interim runs in `eval/results/benchmark/`.
+- [ ] Re-baseline on the **full test split** (not 20/40 examples) with identical tools, prompts, context and seed for every candidate (Qwen3 1.7B/4B/8B, Qwen3.5-2B, Qwen2.5, Phi-4-mini, Granite, SmolLM3, Llama-3.2, Gemma 3).
+- [ ] Add Gemma 3 explicitly (AGENTS.md requires Qwen vs Gemma comparison).
+- [ ] Run GPU/remote benchmark; keep CPU latency from `estimate_desktop_latency.py` as the desktop gate (interim Qwen3-1.7B: p50 about 70 s decision latency on CPU, which is too slow to ship).
+- [ ] Fix weakest categories seen interim: clarification (14 %), missing_data (0 %), tool_failure (17 %), hallucinated-parameter rate (41 %), unit-trap accuracy (33 %).
+- [ ] Decision record: chosen base model, quantization, `n_ctx`, `max_tools`, latency/RAM budget.
+
+### Stage 11: Fine-tuning (LoRA SFT, then GRPO) (AGENTS.md §19, §32) 🚧
+Pipeline scaffolded in `core/geoai/finetune/` (profiles, SFT, GRPO with the deterministic scorer as reward, GGUF LoRA export with sidecar, runtime `lora_path` / `GEOAI_LORA_PATH` fallback to base).
+- [ ] Gate: Stage 9 blockers closed and Stage 10 winner chosen.
+- [ ] Train SFT on the winner (Colab T4), then GRPO; export GGUF LoRA.
+- [ ] Compare **base vs prompted base vs fine-tuned** on held-out test + gold sets; ship the adapter only if it wins (go/no-go in `export.py`). Keep base otherwise.
+- [ ] Failure collection loop: log real-use failures (`turn_trace.py`) into new eval/SFT examples.
+
+### Stage 12: Integration, Evidence UI & Release 🔲
+- [ ] Tools/inputs/results/assumptions/sources panel in `GeoAICopilot.jsx` (AGENTS.md §22); evidence-tier labels from Stage 7 visible in answers.
+- [ ] Wire research (optional web with citations) behind explicit opt-in; never fabricate references.
+- [ ] Bundle/first-run model download flow, adapter loading, memory unload on idle; verify installer size and offline behaviour.
+- [ ] CI: run eval regression subset (tool selection, arguments, units, hallucination) on every prompt/tool/model change.
+- [ ] Bump version per `RELEASE_GUIDE.md` and run packaging smoke test.
+
+---
+
+### Stage 13: Multi-Agent Orchestration 🚧
+- [x] **Specialist agents** (`core/geoai/multi_agent.py`): `AgentRole` (site investigation, foundations, geotechnical analysis, research), each a `GeoAIAgent` with a hard tool-domain filter (`select_relevant_tools(domains=...)`) and a role note in the system prompt. All calls still go through the Tool Registry.
+- [x] **Deterministic planner**: compound requests split into role steps (no extra model call); single-topic requests fall through to the plain agent unchanged.
+- [x] **Result hand-off**: earlier steps' tool results reach later specialists as `[Calculation record]`s (grounded, with provenance).
+- [x] **Verifier**: deterministic "Checks" section (failed tools, steps that ran nothing). Disable with `GEOAI_MULTI_AGENT=0`.
+- [x] Tests: `tests/test_multi_agent.py` (8).
+- [ ] Model-assisted planning (JSON plan, validated against `ROLES`) once Stage 10 picks a model fast enough; heuristic planner stays as fallback.
+- [ ] Dependent steps: pass named outputs (e.g. `phi'` from CPT step) into the next step's arguments instead of relying on the model to read the record.
+- [ ] Stream each specialist's answer live (needs `geoaiStream.js` to stop clearing text on `stage`) and render the `plan` event as a step list in the UI.
+- [ ] Missing capabilities found: project-level SPT/borehole/AGS query tools, remote/optional web research, document-index UI, evidence panel, eval cases for multi-step requests.
 
 ---
 

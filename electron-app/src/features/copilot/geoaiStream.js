@@ -147,7 +147,9 @@ const STAGE_LABELS = {
 export function stageLabel(stage, seconds) {
     const base = stage?.startsWith('calling_tool:')
         ? `Calling tool ${stage.slice('calling_tool:'.length)}...`
-        : STAGE_LABELS[stage] || 'Interpreting input...';
+        : stage?.startsWith('agent:')
+            ? `${stage.slice('agent:'.length)} specialist working...`
+            : STAGE_LABELS[stage] || 'Interpreting input...';
     if (seconds < 5) return base;
     const hint = seconds >= 20 ? ' (local model on CPU; long questions can take a few minutes)' : '';
     return `${base} ${seconds}s${hint}`;

@@ -125,6 +125,9 @@ class GeoAIModelConfig:
     # Schemas are most of the prompt, and prompt processing dominates CPU latency.
     # Env: GEOAI_COMPACT_SCHEMAS=1/0.
     compact_tool_schemas: bool = field(default_factory=_env_compact_schemas)
+    # Route compound requests ("classify CPT-03, then size a footing") to specialist agents
+    # (core.geoai.multi_agent). Single-topic requests are unaffected. Env: GEOAI_MULTI_AGENT=1/0.
+    multi_agent: bool = True
 
 
 def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
@@ -214,6 +217,8 @@ def load_config() -> GeoAIModelConfig:
         config.disable_thinking = _env_disable_thinking()
     if "GEOAI_COMPACT_SCHEMAS" in os.environ:
         config.compact_tool_schemas = _env_compact_schemas()
+    if os.environ.get("GEOAI_MULTI_AGENT", "").strip().lower() in ("0", "false", "no", "off"):
+        config.multi_agent = False
     if os.environ.get("GEOAI_EXPLANATIONS", "").strip().lower() in ("always", "on_request", "never"):
         config.explanations = os.environ["GEOAI_EXPLANATIONS"].strip().lower()
     for env, attr in (("GEOAI_N_THREADS", "n_threads"), ("GEOAI_N_THREADS_BATCH", "n_threads_batch"),

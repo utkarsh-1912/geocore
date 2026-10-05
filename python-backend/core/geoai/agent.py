@@ -253,9 +253,13 @@ def _with_truncation_note(text: str, finish_reason: Optional[str], raw: Optional
 
 class GeoAIAgent:
     def __init__(self, provider: ModelProvider, registry: GeoAIToolRegistry, max_tools: Optional[int] = None,
-                 tool_schema_token_budget: Optional[float] = None):
+                 tool_schema_token_budget: Optional[float] = None,
+                 domains: Optional[Iterable[str]] = None, role_instructions: Optional[str] = None):
         self._provider = provider
         self._registry = registry
+        # A specialist (core.geoai.multi_agent) only sees tools of its domains and a role note.
+        self._domains = list(domains) if domains is not None else None
+        self._role_instructions = role_instructions
         from core.geoai.model_config import load_config
         config = load_config()
         if max_tools is None:
@@ -276,6 +280,8 @@ class GeoAIAgent:
     def _build_messages(self, user_message: str, context: Optional[Dict[str, Any]] = None,
                         history: Optional[List[Dict[str, Any]]] = None) -> Tuple[List[ChatMessage], List[dict]]:
         """Build initial message list and select relevant tools for the model."""
+        if self._role_instructions:
+            context = {**(context or {}), "agent_role": self._role_instructions}
         system_prompt = build_system_prompt(context)
         messages = [make_system_message(system_prompt)]
         messages.extend(history_to_messages(history))
@@ -283,7 +289,8 @@ class GeoAIAgent:
         tools_for_model = select_relevant_tools(_tool_selection_query(user_message, history), context,
                                                 max_tools=self._max_tools,
                                                 max_schema_tokens=self._tool_schema_token_budget,
-                                                compact=self._compact_tool_schemas)
+                                                compact=self._compact_tool_schemas,
+                                                domains=self._domains)
         return messages, tools_for_model
 
     def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:

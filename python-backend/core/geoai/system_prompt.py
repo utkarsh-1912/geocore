@@ -53,6 +53,9 @@ def build_system_prompt(context: Optional[Dict[str, Any]] = None) -> str:
         ENGINEERING_CAUTION_RULES,
     ]
 
+    if context and context.get('agent_role'):
+        prompt_parts.append("\n### YOUR ROLE\n" + str(context['agent_role']))
+
     if context:
         active_func = context.get('activeFunction')
         active_cat = context.get('activeCategory')

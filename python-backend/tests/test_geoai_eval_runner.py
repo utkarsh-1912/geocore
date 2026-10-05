@@ -84,3 +84,36 @@ def test_recording_provider_and_memory_probe():
     assert len(rec.calls) == 1 and rec.calls[0].latency_s >= 0
     mem = peak_memory_mb()
     assert mem is None or mem > 0
+
+
+class _InventingProvider:
+    """Scripted model that calls relative_density with a value (e_max) the user never gave."""
+
+    def __init__(self):
+        from core.geoai.model_provider import ModelResponse, ToolCall
+        self._resp = ModelResponse(content="", finish_reason="tool_calls", tool_calls=[ToolCall(
+            id="1", function_name="calculate_relative_density",
+            arguments={"void_ratio": 0.62, "e_min": 0.48, "e_max": 0.91})])
+
+    def generate(self, messages, tools=None, temperature=0.1, max_tokens=1024):
+        return self._resp
+
+    def clear_cancel(self):
+        pass
+
+
+def test_guarded_score_turns_invented_inputs_into_clarification():
+    from core.geoai.eval.example import EvalExample
+    from core.geoai.eval.runner import run_example
+
+    ex = EvalExample(
+        id="guard-1", category="missing_data", expected_action="clarify",
+        messages=[{"role": "user", "content": "What is the relative density? e = 0.62 and e_min = 0.48."}],
+        expected_tool="calculate_relative_density", missing_params=["e_max"],
+        provided_params=["void_ratio", "e_min"], clarify_keywords=[["e_max", "maximum void ratio"]])
+    rec = RecordingProvider(_InventingProvider())
+    r = run_example(ex, EvalRegistry(default_registry()), EvalRegistry(default_registry()), mode="decision") \
+        if False else run_example(ex, rec, EvalRegistry(default_registry()), mode="decision")
+    assert r["score"]["predicted_action"] == "tool_call"        # raw model output: invented e_max
+    assert r["guarded_score"]["predicted_action"] == "clarify"  # what the shipped agent answers
+    assert r["guarded_score"]["total"] > r["score"]["total"]

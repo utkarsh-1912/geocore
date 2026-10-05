@@ -13,7 +13,7 @@ filters -- and the active function is always offered.
 
 import json
 import re
-from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
 from core.geoai.tool_registry import tool_registry
 from core.geoai.slm_schema_generator import _clean_json_schema, generate_openai_tool_definitions
@@ -387,12 +387,25 @@ def schema_tokens(tool: dict) -> float:
     return len(json.dumps(tool)) / CHARS_PER_TOKEN
 
 
+def tool_in_domains(name: str, domains: Iterable[str]) -> bool:
+    """Whether the registered tool ``name`` belongs to any of the engineering ``domains``."""
+    tool = tool_registry._tools.get(name)
+    if tool is None:
+        return False
+    markers: Set[str] = set().union(*(DOMAIN_MARKERS.get(d, set()) for d in domains))
+    return bool(_tool_markers(tool) & markers)
+
+
 def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, max_tools: int = 20, *,
-                          max_schema_tokens: Optional[float] = None, compact: bool = False) -> List[dict]:
+                          max_schema_tokens: Optional[float] = None, compact: bool = False,
+                          domains: Optional[Iterable[str]] = None) -> List[dict]:
     """
     Select the ``max_tools`` most relevant registered tools for ``query`` and
     return them in OpenAI tool-calling format (see ``format_tools_for_prompt``, or
     ``format_tools_compact`` when ``compact``). Ranking is identical either way.
+
+    ``domains`` restricts the offer to tools of those engineering domains (a hard filter, used by
+    specialist agents; ``None`` = every tool).
 
     ``max_schema_tokens`` optionally caps the approximate prompt size of the
     returned schemas: lower-ranked tools that would exceed it are skipped (the
@@ -402,6 +415,9 @@ def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, 
     fmt = format_tools_compact if compact else None
     limit = max(0, int(max_tools))
     ranked = rank_tools(query, context)
+    if domains is not None:
+        domains = list(domains)
+        ranked = [(n, sc) for n, sc in ranked if tool_in_domains(n, domains)]
     if max_schema_tokens is None:
         return [index.prompt_tool(n, fmt) for n, _ in ranked[:limit] if n in index.definitions]
 

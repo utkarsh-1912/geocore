@@ -20,6 +20,7 @@ from core.geoai.lifecycle import lifecycle_manager
 from core.geoai.model_downloader import list_available_models, download_model, DEFAULT_MODEL_ID
 from core.geoai.model_config import load_config, save_config
 from core.geoai.agent import GeoAIAgent
+from core.geoai.multi_agent import MultiAgentOrchestrator
 from core.geoai.model_provider import GenerationCancelled
 
 # Ensure standard tool definitions are registered
@@ -35,9 +36,11 @@ DISCONNECT_POLL_S = 0.5
 HEARTBEAT_S = 5.0
 
 
-def _get_agent() -> GeoAIAgent:
-    """Gets the GeoAI agent backed by the lifecycle-managed provider."""
+def _get_agent():
+    """Gets the GeoAI agent backed by the lifecycle-managed provider (multi-agent unless disabled)."""
     provider = lifecycle_manager.get_provider()
+    if load_config().multi_agent:
+        return MultiAgentOrchestrator(provider=provider, registry=tool_registry)
     return GeoAIAgent(provider=provider, registry=tool_registry)
 
 
