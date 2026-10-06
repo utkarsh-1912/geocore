@@ -140,3 +140,19 @@ def test_directory_cannot_affect_calculations():
         if "quantity_directory" in text or "quantity_scan" in text or "quantity_standard" in text:
             offenders.append(str(path.relative_to(core)))
     assert offenders == [], offenders
+
+
+def test_scan_reads_manifest_docs_indented_by_older_python(tmp_path, monkeypatch):
+    # Python < 3.13 keeps a docstring's indentation in __doc__, and CI rewrites the manifest when
+    # it was generated on another Python version: the scan must find the same units either way.
+    import json
+    from core import quantity_scan
+    doc = ("Robertson & Wride behaviour index.\n\n:returns: Dictionary with the following keys:\n\n"
+           "    - 'Fr [%]': Normalised friction ratio (:math:`F_r`)  [:math:`%`]\n")
+    indented = doc.split("\n")[0] + "\n" + "\n".join("    " + line if line.strip() else line for line in doc.split("\n")[1:])
+    manifest = {"functions": [{"name": "f", "module": "m", "doc": d} for d in (indented,)]}
+    path = tmp_path / "function_manifest.json"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.setattr(quantity_scan, "MANIFEST_PATH", str(path))
+    found = [o for o in quantity_scan.scan_all() if o["function"] == "f"]
+    assert ("Fr", "%") in {(o["key"], o["unit_raw"]) for o in found}
