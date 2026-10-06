@@ -16,9 +16,9 @@ const INLINE = /(`[^`\n]+`|\*\*[^*\n]+?\*\*|(?<![\w*])\*[^*\s](?:[^*\n]*?[^*\s])
 const renderInline = (text, keyPrefix = '') => {
     const parts = [];
     let last = 0;
-    let match;
-    INLINE.lastIndex = 0;
-    while ((match = INLINE.exec(text)) !== null) {
+    // matchAll iterates a copy of INLINE: the recursive calls for **bold** / *italic* contents
+    // must not reset the shared lastIndex, or this loop re-finds the same token forever.
+    for (const match of text.matchAll(INLINE)) {
         if (match.index > last) parts.push(text.slice(last, match.index));
         const token = match[0];
         const key = `${keyPrefix}-${match.index}`;

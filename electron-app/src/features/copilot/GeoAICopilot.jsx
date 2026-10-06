@@ -10,7 +10,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Bot, Send, X, Terminal, ArrowRight, CheckCircle, 
-    RefreshCw, Zap, Square
+    RefreshCw, Zap, Square, Maximize2
 } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { Button } from '../../components/ui/Button';
@@ -19,7 +19,7 @@ import { buildChatHistory, nextMessageId } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
 import { finalTurnText, stopGeoAIChat, streamGeoAIChat, stageLabel, useElapsedSeconds } from './geoaiStream';
 
-export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, currentContext }) => {
+export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canOpenForm, currentContext }) => {
     const [messages, setMessages] = useState([
         {
             id: 'init-1',
@@ -181,13 +181,24 @@ export const GeoAICopilot = ({ isOpen, onClose, onSelectFunction, canOpenForm, c
                         </div>
                     </div>
 
-                    <button
-                        onClick={onClose}
-                        className="p-1.5 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
-                        title="Close (Esc)"
-                    >
-                        <X size={16} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                        {onExpand && (
+                            <button
+                                onClick={onExpand}
+                                className="p-1.5 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+                                title="Open in GeoAI tab"
+                            >
+                                <Maximize2 size={16} />
+                            </button>
+                        )}
+                        <button
+                            onClick={onClose}
+                            className="p-1.5 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+                            title="Close (Esc)"
+                        >
+                            <X size={16} />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Messages Feed */}

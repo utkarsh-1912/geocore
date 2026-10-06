@@ -931,6 +931,13 @@ const MainLayout = () => {
       <GeoAICopilot
         isOpen={copilotOpen}
         onClose={() => setCopilotOpen(false)}
+        onExpand={() => {
+          setCopilotOpen(false);
+          setViewState('geoai');
+          setActiveCategory(null);
+          setActiveSubModule(null);
+          setActiveFunction(null);
+        }}
         onSelectFunction={handleSelectFromAI}
         canOpenForm={(toolName) => !!resolveFormForTool(toolName)}
         currentContext={{

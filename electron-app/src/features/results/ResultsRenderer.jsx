@@ -47,6 +47,13 @@ const applyThemeToTraces = (traces, primary) => (traces || []).map(trace => {
     return next;
 });
 
+// Resolve a chart heading from an explicit title or a Plotly layout title (string or {text}).
+const layoutTitle = (explicit, layout) => {
+    const candidates = [explicit, layout?.title?.text, layout?.title];
+    const found = candidates.find(t => typeof t === 'string' && t.trim());
+    return found ? found.replace(/<[^>]+>/g, '').trim() : '';
+};
+
 export const ResultsRenderer = ({ results, functionName = '', formData = {} }) => {
     const theme = useThemeColors();
     const [expandedSections, setExpandedSections] = useState({
@@ -313,11 +320,12 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                             plot_bgcolor: 'rgba(0,0,0,0)',
                             font: { family: 'Inter, sans-serif', color: 'var(--color-text-main, #333)' },
                             margin: { t: 40, r: 20, l: 50, b: 40 },
-                            ...plotLayout
+                            ...plotLayout,
+                            title: undefined // shown in the Card heading instead
                         };
 
                         return (
-                            <Card key={index} title={plot.title || plotLayout?.title?.text || plotLayout?.title || `Plot ${index + 1}`} className="w-full">
+                            <Card key={index} title={layoutTitle(plot.title, plotLayout) || (functionName ? `${functionName} – Plot ${index + 1}` : `Plot ${index + 1}`)} className="w-full">
                                 <div className="w-full h-[500px]">
                                     <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
                                         <Plot
@@ -384,7 +392,8 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     ...plotLayout.yaxis
                 },
                 margin: { t: 40, r: 20, l: 50, b: 40 },
-                ...plotLayout
+                ...plotLayout,
+                title: undefined // shown as the heading above the chart instead
             };
 
             return (
@@ -395,7 +404,12 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     className="w-full"
                     id="results-visualization"
                 >
-                    <div className="w-full bg-surface p-4 rounded-lg border border-border min-h-[420px] flex items-center justify-center">
+                    <div className="w-full bg-surface p-4 rounded-lg border border-border min-h-[420px] flex flex-col items-center justify-center">
+                        {(layoutTitle(displayData.title, plotLayout) || functionName) && (
+                            <h3 className="w-full text-sm font-semibold text-text-main mb-2">
+                                {layoutTitle(displayData.title, plotLayout) || functionName}
+                            </h3>
+                        )}
                         <Suspense fallback={<div className="text-text-muted text-sm flex items-center gap-2"><div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div> Loading Interactive Chart...</div>}>
                             <Plot
                                 data={plotData}
