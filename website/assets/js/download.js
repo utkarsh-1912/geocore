@@ -256,7 +256,7 @@
       osLabel = 'Windows 10 / 11 (64-bit)';
       primary = win;
       if (env.arch === 'arm64') note = 'GeoCore is built for x64. Windows 11 on Arm runs x64 apps through emulation; this combination has not been tested.';
-      alternatives = [macArm, macIntel];
+      alternatives = [macArm, macIntel, linuxAppImage, linuxDeb];
     } else if (env.os === 'mac') {
       if (env.arch === 'x64') { primary = macIntel; osLabel = 'macOS — Intel'; alternatives = [macArm]; }
       else {
@@ -265,7 +265,7 @@
         alternatives = [macIntel];
         if (env.arch === 'unknown') note = 'Your browser does not report the processor type. This is the Apple silicon (M-series) build; on an Intel Mac use the Intel build below.';
       }
-      alternatives.push(win);
+      alternatives.push(win, linuxAppImage, linuxDeb);
     } else if (env.os === 'linux') {
       osLabel = 'Linux (x64)';
       primary = linuxAppImage || linuxDeb;
