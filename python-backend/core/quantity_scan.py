@@ -75,7 +75,10 @@ def scan_all() -> List[Dict[str, Any]]:
     occurrences: List[Dict[str, Any]] = []
     with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
         for entry in json.load(f)["functions"]:
-            occurrences += parse_docstring(entry["name"], entry["module"], entry.get("doc") or "", "groundhog")
+            # The manifest keeps the raw __doc__, whose indentation depends on the Python version
+            # that wrote it (3.13 dedents docstrings, 3.10 does not); "^:returns:" needs it removed.
+            doc = inspect.cleandoc(entry.get("doc") or "")
+            occurrences += parse_docstring(entry["name"], entry["module"], doc, "groundhog")
 
     from core.standards.bis import BIS_FUNCTIONS
     for name, fn in BIS_FUNCTIONS.items():
