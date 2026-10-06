@@ -22,6 +22,18 @@ APP_VERSION = "1.0.0"
 _STARTED_AT = time.time()
 
 
+def _platform_release() -> str:
+    """OS release; Python < 3.12 reports Windows 11 as "10", so decide by build number."""
+    release = platform.release()
+    if platform.system() == "Windows":
+        try:
+            if release == "10" and int(platform.version().split(".")[-1]) >= 22000:
+                return "11"
+        except ValueError:
+            pass
+    return release
+
+
 def _groundhog_version() -> Optional[str]:
     try:
         from importlib.metadata import version
@@ -103,7 +115,7 @@ def collect_diagnostics(functions_registered: Optional[int] = None) -> Dict[str,
         "runtime": {
             "python": platform.python_version(),
             "platform": platform.system(),
-            "platform_release": platform.release(),
+            "platform_release": _platform_release(),
             "architecture": platform.machine(),
             "frozen": bool(getattr(sys, "frozen", False)),
         },

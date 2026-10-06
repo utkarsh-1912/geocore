@@ -3,7 +3,7 @@
  * License: GPL v3 / GeoCore
  */
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '../../components/ui/Card';
 import { ChevronDown, ChevronUp, Database, Layers, CheckCircle2 } from 'lucide-react';
@@ -13,7 +13,42 @@ import { FormulaDerivationCard } from '../calculations/FormulaDerivationCard';
 
 const Plot = React.lazy(() => import('react-plotly.js'));
 
+// Plotly cannot resolve CSS variables, so read the live theme colours (and follow light/dark switches).
+const readThemeColors = () => {
+    const css = getComputedStyle(document.documentElement);
+    const get = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
+    return { primary: get('--color-primary', '#5f8445'), light: get('--color-primary-light', '#b1d082'), secondary: get('--color-secondary', '#2d473e') };
+};
+
+const useThemeColors = () => {
+    const [colors, setColors] = useState(readThemeColors);
+    useEffect(() => {
+        const observer = new MutationObserver(() => setColors(readThemeColors()));
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme', 'style'] });
+        return () => observer.disconnect();
+    }, []);
+    return colors;
+};
+
+// Plotly / matplotlib default blues that backends emit when no colour was chosen.
+const DEFAULT_BLUES = new Set(['#1f77b4', '#636efa', '#3b82f6', 'rgb(31,119,180)', 'rgb(31, 119, 180)', 'blue']);
+const recolorDefaultBlue = (value, primary) =>
+    typeof value === 'string' && DEFAULT_BLUES.has(value.trim().toLowerCase()) ? primary : value;
+
+const applyThemeToTraces = (traces, primary) => (traces || []).map(trace => {
+    if (!trace || typeof trace !== 'object') return trace;
+    const next = { ...trace };
+    for (const key of ['marker', 'line']) {
+        if (next[key] && typeof next[key] === 'object') {
+            next[key] = { ...next[key], color: recolorDefaultBlue(next[key].color, primary) };
+        }
+    }
+    if (next.fillcolor) next.fillcolor = recolorDefaultBlue(next.fillcolor, primary);
+    return next;
+});
+
 export const ResultsRenderer = ({ results, functionName = '', formData = {} }) => {
+    const theme = useThemeColors();
     const [expandedSections, setExpandedSections] = useState({
         nodes: false,
         elements: false,
@@ -269,10 +304,11 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     id="results-visualization"
                 >
                     {displayData.plots.map((plot, index) => {
-                        const plotData = plot.data || [];
+                        const plotData = applyThemeToTraces(plot.data, theme.primary);
                         const plotLayout = plot.layout || {};
                         const finalLayout = {
                             autosize: true,
+                            colorway: [theme.primary, theme.secondary, theme.light],
                             paper_bgcolor: 'rgba(0,0,0,0)',
                             plot_bgcolor: 'rgba(0,0,0,0)',
                             font: { family: 'Inter, sans-serif', color: 'var(--color-text-main, #333)' },
@@ -325,11 +361,12 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
 
         // 5. Handle Single Plotly Chart
         if (displayData.type === 'plotly' || displayData.type === 'plot') {
-            const plotData = displayData.data || [];
+            const plotData = applyThemeToTraces(displayData.data, theme.primary);
             const plotLayout = displayData.layout || {};
 
             const finalLayout = {
                 autosize: true,
+                colorway: [theme.primary, theme.secondary, theme.light],
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 font: {
