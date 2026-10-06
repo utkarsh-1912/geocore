@@ -53,8 +53,8 @@
    "groundhog.standards.eurocode7.factors",
    "groundhog.standards.eurocode7.parameter_selection"
   ],
-  "groundhog_version": "0.15.0",
-  "groundhog_source_hash": "18054280ce332e5b9e2a31dc4cd24d744a9b23d095dfb970053d88c1da203e19"
+  "groundhog_version": "0.16.0",
+  "groundhog_source_hash": "0bd147a4402e9f2ea7223630626ca8f58735afc0c8f1b12f811d032537f794b9"
  },
  "functions": [
   {
@@ -143,7 +143,7 @@
    "module": "groundhog.consolidation.groundwaterflow.pumpingtests",
    "name": "hydraulicconductivity_unconfinedaquifer",
    "qualname": "hydraulicconductivity_unconfinedaquifer",
-   "doc": "\nCalculates the hydraulic conductivity from observing two standpipes in the vicinity of a pumping well. The standpipes should be within the radius of influence of the pumping well.\n\nThe following conditions must be satisfied:\n\n    - Unconfined and non-leaking water layer\n    - Open base of the pumping well is below the groundwater level\n    - Homogeneous, isotropic soil mass of infinite size\n    - Darcy's law applies\n    - Radial flow\n    - Hydraulic gradient equal to slope of groundwater surface\n\n:param radius_1: Radial distance between the axis of the pumping well and the first standpipe (:math:`r_1`) [:math:`m`] - Suggested range: radius_1 >= 0.0\n:param radius_2: Radial distance between the axis of the pumping well and the second standpipe (:math:`r_2`) [:math:`m`] - Suggested range: radius_2 >= 0.0\n:param piezometric_height_1: Piezometric height in the first standpipe (:math:`h_1`) [:math:`m`] - Suggested range: piezometric_height_1 >= 0.0\n:param piezometric_height_2: Piezometric height in the second standpipe (:math:`h_2`) [:math:`m`] - Suggested range: piezometric_height_2 >= 0.0\n:param flowrate: Flowrate extracted from the pumping well (:math:`q_z`) [:math:`m3/s`] - Suggested range: flowrate >= 0.0\n\n.. math::\n    i = \\frac{dz}{dr}\n    \n    A = 2 \\pi r z\n    \n    q_z = 2 \\pi r z k \\frac{dz}{dr}\n    \n    q_z \\int_{r_1)^{r_2} \\frac{dr}{r} = 2 k \\pi \\int_{h_1}^{h_2} z dz\n    \n    k = \\frac{q_z \\ln \\left( r_2 / r_1 \\right)}{\\pi \\left( h_2^2 - h_1^2 \\right) }\n\n:returns: Dictionary with the following keys:\n    \n    - 'hydraulic_conductivity [m/s]': Hydraulic conductivity (:math:`k`)  [:math:`m/s`]\n\n.. figure:: images/hydraulicconductivity_unconfinedaquifer_1.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Geometry of the pumping test (Budhu, 2011)\n\nReference - Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.\n\n",
+   "doc": "\nCalculates the hydraulic conductivity from observing two standpipes in the vicinity of a pumping well. The standpipes should be within the radius of influence of the pumping well.\n\nThe following conditions must be satisfied:\n\n    - Unconfined and non-leaking water layer\n    - Open base of the pumping well is below the groundwater level\n    - Homogeneous, isotropic soil mass of infinite size\n    - Darcy's law applies\n    - Radial flow\n    - Hydraulic gradient equal to slope of groundwater surface\n\n:param radius_1: Radial distance between the axis of the pumping well and the first standpipe (:math:`r_1`) [:math:`m`] - Suggested range: radius_1 >= 0.0\n:param radius_2: Radial distance between the axis of the pumping well and the second standpipe (:math:`r_2`) [:math:`m`] - Suggested range: radius_2 >= 0.0\n:param piezometric_height_1: Piezometric height in the first standpipe (:math:`h_1`) [:math:`m`] - Suggested range: piezometric_height_1 >= 0.0\n:param piezometric_height_2: Piezometric height in the second standpipe (:math:`h_2`) [:math:`m`] - Suggested range: piezometric_height_2 >= 0.0\n:param flowrate: Flowrate extracted from the pumping well (:math:`q_z`) [:math:`m3/s`] - Suggested range: flowrate >= 0.0\n\n.. math::\n    i = \\frac{dz}{dr}\n    \n    A = 2 \\pi r z\n    \n    q_z = 2 \\pi r z k \\frac{dz}{dr}\n    \n    q_z \\int_{r_1}^{r_2} \\frac{dr}{r} = 2 k \\pi \\int_{h_1}^{h_2} z dz\n    \n    k = \\frac{q_z \\ln \\left( r_2 / r_1 \\right)}{\\pi \\left( h_2^2 - h_1^2 \\right)}\n\n:returns: Dictionary with the following keys:\n    \n    - 'hydraulic_conductivity [m/s]': Hydraulic conductivity (:math:`k`)  [:math:`m/s`]\n\n.. figure:: images/hydraulicconductivity_unconfinedaquifer_1.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Geometry of the pumping test (Budhu, 2011)\n\nReference - Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.\n\n",
    "params": [
     {
      "name": "radius_1",
@@ -2229,7 +2229,7 @@
    "module": "groundhog.pipelinescables.stability.penetration",
    "name": "embedment_undrained_method1",
    "qualname": "embedment_undrained_method1",
-   "doc": "\nCalculates pipeline embedment in soil which behaves in an undrained manner. \n\nMethod 1 uses bearing capacity theory to calculate the embedment where the submerged weight of the pipeline is in equilibrium with the vertical bearing capacity of the soil. The method works in soil with linearly increasing undrained strength. The method includes a depth correction factor and a buoyancy term.\n\nNote that the method assumes quasi-static pipeline penetration. In reality load concentration effects at the touchdown point and dynamic lay effects will lead to increased penetration.\n\nThis formula calculates the bearing capacity for a specified depth. For determining the pipeline penetration, a root finding routine needs to be applied to find the penetration where the bearing capacity is in equilbrium with the submerged weight of the pipeline.\n\n:param diameter: Pipeline diameter (:math:`D`) [m] - Suggested range: 0.01 <= diameter <= 2.0\n:param undrained_shear_strength: Undrained shear strength at the seabed (:math:`s_(u,z=0}`) [kPa] - Suggested range: 0.0 <= undrained_shear_strength <= 500.0\n:param k_su: Linear rate of undrained shear strength increase (:math:`\\rho`) [kPa/m] - Suggested range: 0.0 <= k_su <= 10.0\n:param gamma_eff: Submerged unit weight (:math:`kN/m3`) [kN/m3] - Suggested range: 2.0 <= gamma_eff <= 12.0\n:param penetration: Penetration depth for which the pipeline penetration is calculated (:math:`m`) [m] - Suggested range: 0.0 <= penetration <= 2.0\n:param Nc: Bearing capacity factor (:math:`N_c`) [-] - Suggested range: 4.0 <= Nc <= 9.0 (optional, default= 5.14)\n:param roughness: Measure for the roughness of the pipe of cable (:math:`r`) [-] - Suggested range: 0.0 <= roughness <= 1.0 (optional, default= 0.67)\n\n.. math::\n    Q_v = Q_{v0} \\cdot \\left( 1 + d_{ca} \\right) + \\gamma^{\\prime} \\cdot A_{bm}\n    \n    Q_{v0} = F \\cdot \\left( N_c \\cdot s_{u,0} + \\rho \\cdot B/4 \\right) \\cdot B\n    \n    z_{su,0} = 0 \\quad \\text{for } z < \\frac{D}{2} \\cdot \\left( 1 - \\frac{\\sqrt{2}}{2} \\right)\n    \n    z_{su,0} = z + \\frac{D}{2} \\cdot \\left( \\sqrt{2} - 1 \\right) - \\frac{B}{2} \\quad \\text{for } z \\geq \\frac{D}{2} \\cdot \\left( 1 - \\frac{\\sqrt{2}}{2} \\right)\n    \n    s_{u,0} = s_{u,z=0} + \\rho \\cdot z_{s_{u,0}}\n    \n    d_{ca} = 0.3 \\cdot \\frac{s_{u,1}}{s_{u,2}} \\cdot \\arctan \\left( \\frac{z_{s_{u,0}}}{B} \\right)\n    \n    s_{u,1} = \\frac{s_{u,z=0} + s_{u,0}}{2}\n    \n    s_{u,2} = \\frac{Q_{v0}}{B \\cdot N_c}\n\n:returns: Dictionary with the following keys:\n    \n    - 'F [-]': Roughness correction factor (:math:`F`)  [-]\n    - 'z_su0 [m]': Reference z-level for depth effects (:math:`z_(s_{u,0}}`)  [m]\n    - 'B [m]': Contact width (:math:`B`)  [m]\n    - 'su0 [kPa]': Undrained shear strength at the reference z-level (:math:`s_{u,0}`)  [kPa]\n    - 'Abm [m2]': Penetrated cross-sectional area of the pipe (:math:`A_{bm}`)  [m2]\n    - 'Qv0 [kN/m]': Bearing capacity (excluding depth effects and buoyancy) (:math:`Q_{v0}`)  [kN/m]\n    - 'Qv [kN/m]': Bearing capacity (including depth and buoyancy effect) (:math:`Q_v`)  [kN/m]\n\nReference - DNV-RP-F114\n\n",
+   "doc": "\nCalculates pipeline embedment in soil which behaves in an undrained manner. \n\nMethod 1 uses bearing capacity theory to calculate the embedment where the submerged weight of the pipeline is in equilibrium with the vertical bearing capacity of the soil. The method works in soil with linearly increasing undrained strength. The method includes a depth correction factor and a buoyancy term.\n\nNote that the method assumes quasi-static pipeline penetration. In reality load concentration effects at the touchdown point and dynamic lay effects will lead to increased penetration.\n\nThis formula calculates the bearing capacity for a specified depth. For determining the pipeline penetration, a root finding routine needs to be applied to find the penetration where the bearing capacity is in equilbrium with the submerged weight of the pipeline.\n\n:param diameter: Pipeline diameter (:math:`D`) [m] - Suggested range: 0.01 <= diameter <= 2.0\n:param undrained_shear_strength: Undrained shear strength at the seabed (:math:`s_{u,z=0}`) [kPa] - Suggested range: 0.0 <= undrained_shear_strength <= 500.0\n:param k_su: Linear rate of undrained shear strength increase (:math:`\\rho`) [kPa/m] - Suggested range: 0.0 <= k_su <= 10.0\n:param gamma_eff: Submerged unit weight (:math:`kN/m3`) [kN/m3] - Suggested range: 2.0 <= gamma_eff <= 12.0\n:param penetration: Penetration depth for which the pipeline penetration is calculated (:math:`m`) [m] - Suggested range: 0.0 <= penetration <= 2.0\n:param Nc: Bearing capacity factor (:math:`N_c`) [-] - Suggested range: 4.0 <= Nc <= 9.0 (optional, default= 5.14)\n:param roughness: Measure for the roughness of the pipe of cable (:math:`r`) [-] - Suggested range: 0.0 <= roughness <= 1.0 (optional, default= 0.67)\n\n.. math::\n    Q_v = Q_{v0} \\cdot \\left( 1 + d_{ca} \\right) + \\gamma^{\\prime} \\cdot A_{bm}\n    \n    Q_{v0} = F \\cdot \\left( N_c \\cdot s_{u,0} + \\rho \\cdot B/4 \\right) \\cdot B\n    \n    z_{su,0} = 0 \\quad \\text{for } z < \\frac{D}{2} \\cdot \\left( 1 - \\frac{\\sqrt{2}}{2} \\right)\n    \n    z_{su,0} = z + \\frac{D}{2} \\cdot \\left( \\sqrt{2} - 1 \\right) - \\frac{B}{2} \\quad \\text{for } z \\geq \\frac{D}{2} \\cdot \\left( 1 - \\frac{\\sqrt{2}}{2} \\right)\n    \n    s_{u,0} = s_{u,z=0} + \\rho \\cdot z_{s_{u,0}}\n    \n    d_{ca} = 0.3 \\cdot \\frac{s_{u,1}}{s_{u,2}} \\cdot \\arctan \\left( \\frac{z_{s_{u,0}}}{B} \\right)\n    \n    s_{u,1} = \\frac{s_{u,z=0} + s_{u,0}}{2}\n    \n    s_{u,2} = \\frac{Q_{v0}}{B \\cdot N_c}\n\n:returns: Dictionary with the following keys:\n    \n    - 'F [-]': Roughness correction factor (:math:`F`)  [-]\n    - 'z_su0 [m]': Reference z-level for depth effects (:math:`z_{s_{u,0}}`)  [m]\n    - 'B [m]': Contact width (:math:`B`)  [m]\n    - 'su0 [kPa]': Undrained shear strength at the reference z-level (:math:`s_{u,0}`)  [kPa]\n    - 'Abm [m2]': Penetrated cross-sectional area of the pipe (:math:`A_{bm}`)  [m2]\n    - 'Qv0 [kN/m]': Bearing capacity (excluding depth effects and buoyancy) (:math:`Q_{v0}`)  [kN/m]\n    - 'Qv [kN/m]': Bearing capacity (including depth and buoyancy effect) (:math:`Q_v`)  [kN/m]\n\nReference - DNV-RP-F114\n\n",
    "params": [
     {
      "name": "diameter",
@@ -3910,6 +3910,82 @@
    ]
   },
   {
+   "attr": "icl_scl_burland",
+   "module": "groundhog.siteinvestigation.correlations.cohesive",
+   "name": "icl_scl_burland",
+   "qualname": "icl_scl_burland",
+   "doc": "\nCalculates the Intrinsic Compression Line (ICL), representing void ratios of clays deposited from a slurry (mixed at a water content of at least 125% of the liquid limit). The void ratios at different pressures are calculated. The ICL is a useful reference for any material as it represents the states of a fully destructured clay.\n\nThe Sedimentation Compression Line (SCL) represents the state of a naturally deposited clay. Clays deposited in a very calm environment (slurrylike deposition) can have natural states below the SCL. Clays deposited in environments leading to high amounts of structure (e.g. quick clays) can plot well above the SCL.\n\nNote that the void ratio on the ICL for a pressure of 100kPa can be correlated from the liquid limit of the material. The correlation was developed based on measurements on numerous clays but the plasticity limits need to plot above the A-line for the correlation to apply. This correlation is included in the formulation, but this void ratio can also be specified directly.\n\n:param eL: Void ratio at the liquid limit (:math:`e_L`) [-] - Suggested range: 0.6 <= eL <= 4.5\n:param coefficient_1: First calibration coefficient (:math:`-`) [-] (optional, default= 2.45)\n:param coefficient_2: Second calibration coefficient (:math:`-`) [-] (optional, default= -1.285)\n:param coefficient_3: Third calibration coefficient (:math:`-`) [-] (optional, default= 0.015)\n:param coefficient_4: Fourth calibration coefficient (:math:`-`) [-] (optional, default= 0.109)\n:param coefficient_5: Fifth calibration coefficient (:math:`-`) [-] (optional, default= 0.679)\n:param coefficient_6: Sixth calibration coefficient (:math:`-`) [-] (optional, default= -0.089)\n:param coefficient_7: Seventh calibration coefficient (:math:`-`) [-] (optional, default= 0.016)\n:param coefficient_8: Eighth calibration coefficient (:math:`-`) [-] (optional, default= 0.256)\n:param coefficient_9: Ninth calibration coefficient (:math:`-`) [-] (optional, default= -0.04)\n:param e100star_override: Override value of void ratio on the ICL at 100kPa (:math:`-`) [-] (optional, default= -100.0)\n:param Ccstaroverride: Override value of intrinsic compression index (:math:`-`) [-] (optional, default= -100.0)\n\n.. math::\n    I_v = \\frac{e - e_{100}^*}{e_{100}^* - e_{1000}^*}\n    \n    I_v = 2.45 - 1.285 \\log \\sigma_{v}^{\\prime} + 0.015 \\left(\\log \\sigma_{v}^{\\prime} \\right)^3\n    \n    e = I_v \\left( e_{100}^* - e_{1000}^* \\right) + e_{100}^*\n    \n    e_{100}^* = 0.109 + 0.679 e_L - 0.089 e_L^2 + 0.016 e_L^3\n    \n    C_c^* = 0.256 e_L - 0.04\n\n:returns: Dictionary with the following keys:\n    \n    - 'Ccstar [-]': Intrinsic compression index (:math:`C_c^*`)  [-]\n    - 'e100star [-]': Intrinsic void ratio at 100kPa (:math:`e_{100}^*`)  [-]\n    - 'pressures_icl [kPa]': Array with pressures for the ICL (:math:`\\sigma_v^{\\prime}`)  [kPa]\n    - 'pressures_scl [kPa]': Array with pressures for the SCL (:math:`\\sigma_v^{\\prime}`)  [kPa]\n    - 'Iv_icl [-]': Iv values for ICL (:math:`I_v`)  [-]\n    - 'Iv_scl [-]': Iv values for SCL (:math:`I_v`)  [-]\n    - 'e_icl [-]': Void ratios for ICL (:math:`e_{ICL}`)  [-]\n    - 'e_scl [-]': Void ratios for SCL (:math:`e_{SCL}`)  [-]\n\n.. figure:: images/icl_scl_burland.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    ICL and SCL with associated data based on Burland (1990)\n\nReference - Burland (1990). On the compressibility and shear strength of natural clays. G\u00e9otechnique.\n\n",
+   "params": [
+    {
+     "name": "eL",
+     "kind": 1
+    },
+    {
+     "name": "coefficient_1",
+     "kind": 1,
+     "default": 2.45
+    },
+    {
+     "name": "coefficient_2",
+     "kind": 1,
+     "default": -1.285
+    },
+    {
+     "name": "coefficient_3",
+     "kind": 1,
+     "default": 0.015
+    },
+    {
+     "name": "coefficient_4",
+     "kind": 1,
+     "default": 0.109
+    },
+    {
+     "name": "coefficient_5",
+     "kind": 1,
+     "default": 0.679
+    },
+    {
+     "name": "coefficient_6",
+     "kind": 1,
+     "default": -0.089
+    },
+    {
+     "name": "coefficient_7",
+     "kind": 1,
+     "default": 0.016
+    },
+    {
+     "name": "coefficient_8",
+     "kind": 1,
+     "default": 0.256
+    },
+    {
+     "name": "coefficient_9",
+     "kind": 1,
+     "default": -0.04
+    },
+    {
+     "name": "e100star_override",
+     "kind": 1,
+     "default": {
+      "$float": "nan"
+     }
+    },
+    {
+     "name": "Ccstaroverride",
+     "kind": 1,
+     "default": {
+      "$float": "nan"
+     }
+    },
+    {
+     "name": "kwargs",
+     "kind": 4
+    }
+   ]
+  },
+  {
    "attr": "k0_plasticity_kenney",
    "module": "groundhog.siteinvestigation.correlations.cohesive",
    "name": "k0_plasticity_kenney",
@@ -4120,7 +4196,7 @@
    "module": "groundhog.siteinvestigation.insitutests.pcpt_correlations",
    "name": "behaviourindex_pcpt_robertsonwride",
    "qualname": "behaviourindex_pcpt_robertsonwride",
-   "doc": "\nCalculates the soil behaviour index according to Robertson and Wride (1998). This index is a measure for the behaviour of soils.\nSoils with a value below 2.5 are generally cohesionless and coarse grained whereas a value above 2.7 indicates cohesive, fine-grained sediments.\nBetween 2.5 and 2.7, partially drained behaviour is expected.\nThe exponent n in the equations is used to account for different cone resistance normalisation in non-clayey soils (lower exponent).\nBecause the exponent n is defined implicitly, an iterative approach is required to calculate the soil behaviour type index.\n\nWhen used with ``apply_correlation``, use ``'Ic Robertson and Wride (1998)'`` as correlation name.\n\n:param qt: Corrected cone resistance (:math:`q_t`) [:math:`MPa`] - Suggested range: 0.0 <= qt <= 120.0\n:param fs: Sleeve friction (:math:`f_s`) [:math:`MPa`] - Suggested range: fs >= 0.0\n:param sigma_vo: Total vertical stress (:math:`\\sigma_{vo}`) [:math:`kPa`] - Suggested range: sigma_vo >= 0.0\n:param sigma_vo_eff: Vertical effective stress (:math:`\\sigma_{vo}^{\\prime}`) [:math:`kPa`] - Suggested range: sigma_vo_eff >= 9.0\n:param atmospheric_pressure: Atmospheric pressure (used for normalisation) (:math:`P_a`) [:math:`kPa`] (optional, default= 100.0)\n:param ic_min: Minimum value for soil behaviour type index used in the optimisation routine (:math:`I_{c,min}`) [:math:`-`] (optional, default= 1.0)\n:param ic_max: Maximum value for soil behaviour type index used in the optimisation routine (:math:`I_{c,max}`) [:math:`-`] (optional, default= 4.0)\n:param zhang_multiplier_1: First multiplier in the equation for exponent n (:math:``) [:math:`-`] (optional, default= 0.381)\n:param zhang_multiplier_2: Second multiplier in the equation for exponent n (:math:``) [:math:`-`] (optional, default= 0.05)\n:param zhang_subtraction: Term subtracted in the equation for exponent n (:math:``) [:math:`-`] (optional, default= 0.15)\n:param robertsonwride_coefficient1: First coefficient in the equation by Robertson and Wride (:math:``) [:math:`-`] (optional, default= 3.47)\n:param robertsonwride_coefficient2: Second coefficient in the equation by Robertson and Wride (:math:``) [:math:`-`] (optional, default= 1.22)\n\n.. math::\n    Cn = \\min(1.7, \\left(\frac{P_a}{\\sigma_{vo}^{\\prime}}\right)^n)\n    Q_{tn} = \\frac{q_t - \\sigma_{vo}}{P_a} \\cdot Cn\n    \\\\\n    n = 0.381 \\cdot I_c + 0.05 \\cdot \\frac{\\sigma_{vo}^{\\prime}}{P_a} - 0.15 \\ \\text{where} \\ n \\leq 1\n    \\\\\n    I_c = \\sqrt{ \\left( 3.47 - \\log_{10} Q_{tn} \\right)^2 + \\left( \\log_{10} F_r + 1.22 \\right)^2 }\n\n:returns: Dictionary with the following keys:\n\n    - 'exponent_zhang [-]': Exponent n according to Zhang et al (:math:`n`)  [:math:`-`]\n    - 'Qtn [-]': Normalised cone resistance (:math:`Q_{tn}`)  [:math:`-`]\n    - 'Fr [%]': Normalised friction ratio (:math:`F_r`)  [:math:`%`]\n    - 'Ic [-]': Soil behaviour type index (:math:`I_c`)  [:math:`-`]\n    - 'Ic class number [-]': Soil behaviour type class number according to the Robertson chart\n    - 'Ic class': Soil behaviour type class description according to the Robertson chart\n\n.. figure:: images/behaviourindex_pcpt_robertsonwride_1.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Contour lines for soil behaviour type index\n\nReference - Fugro guidance on PCPT interpretation\n\n",
+   "doc": "\nCalculates the soil behaviour index according to Robertson and Wride (1998). This index is a measure for the behaviour of soils.\nSoils with a value below 2.5 are generally cohesionless and coarse grained whereas a value above 2.7 indicates cohesive, fine-grained sediments.\nBetween 2.5 and 2.7, partially drained behaviour is expected.\nThe exponent n in the equations is used to account for different cone resistance normalisation in non-clayey soils (lower exponent).\nBecause the exponent n is defined implicitly, an iterative approach is required to calculate the soil behaviour type index.\n\nWhen used with ``apply_correlation``, use ``'Ic Robertson and Wride (1998)'`` as correlation name.\n\n:param qt: Corrected cone resistance (:math:`q_t`) [:math:`MPa`] - Suggested range: 0.0 <= qt <= 120.0\n:param fs: Sleeve friction (:math:`f_s`) [:math:`MPa`] - Suggested range: fs >= 0.0\n:param sigma_vo: Total vertical stress (:math:`\\sigma_{vo}`) [:math:`kPa`] - Suggested range: sigma_vo >= 0.0\n:param sigma_vo_eff: Vertical effective stress (:math:`\\sigma_{vo}^{\\prime}`) [:math:`kPa`] - Suggested range: sigma_vo_eff >= 9.0\n:param atmospheric_pressure: Atmospheric pressure (used for normalisation) (:math:`P_a`) [:math:`kPa`] (optional, default= 100.0)\n:param ic_min: Minimum value for soil behaviour type index used in the optimisation routine (:math:`I_{c,min}`) [:math:`-`] (optional, default= 1.0)\n:param ic_max: Maximum value for soil behaviour type index used in the optimisation routine (:math:`I_{c,max}`) [:math:`-`] (optional, default= 4.0)\n:param zhang_multiplier_1: First multiplier in the equation for exponent n (:math:``) [:math:`-`] (optional, default= 0.381)\n:param zhang_multiplier_2: Second multiplier in the equation for exponent n (:math:``) [:math:`-`] (optional, default= 0.05)\n:param zhang_subtraction: Term subtracted in the equation for exponent n (:math:``) [:math:`-`] (optional, default= 0.15)\n:param robertsonwride_coefficient1: First coefficient in the equation by Robertson and Wride (:math:``) [:math:`-`] (optional, default= 3.47)\n:param robertsonwride_coefficient2: Second coefficient in the equation by Robertson and Wride (:math:``) [:math:`-`] (optional, default= 1.22)\n\n.. math::\n    Cn = \\min(1.7, \\left(\\frac{P_a}{\\sigma_{vo}^{\\prime}}\\right)^n)\n    Q_{tn} = \\frac{q_t - \\sigma_{vo}}{P_a} \\cdot Cn\n    \\\\\n    n = 0.381 \\cdot I_c + 0.05 \\cdot \\frac{\\sigma_{vo}^{\\prime}}{P_a} - 0.15 \\ \\text{where} \\ n \\leq 1\n    \\\\\n    I_c = \\sqrt{ \\left( 3.47 - \\log_{10} Q_{tn} \\right)^2 + \\left( \\log_{10} F_r + 1.22 \\right)^2 }\n\n:returns: Dictionary with the following keys:\n\n    - 'exponent_zhang [-]': Exponent n according to Zhang et al (:math:`n`)  [:math:`-`]\n    - 'Qtn [-]': Normalised cone resistance (:math:`Q_{tn}`)  [:math:`-`]\n    - 'Fr [%]': Normalised friction ratio (:math:`F_r`)  [:math:`%`]\n    - 'Ic [-]': Soil behaviour type index (:math:`I_c`)  [:math:`-`]\n    - 'Ic class number [-]': Soil behaviour type class number according to the Robertson chart\n    - 'Ic class': Soil behaviour type class description according to the Robertson chart\n\n.. figure:: images/behaviourindex_pcpt_robertsonwride_1.png\n    :figwidth: 500.0\n    :width: 450.0\n    :align: center\n\n    Contour lines for soil behaviour type index\n\nReference - Fugro guidance on PCPT interpretation\n\n",
    "params": [
     {
      "name": "qt",

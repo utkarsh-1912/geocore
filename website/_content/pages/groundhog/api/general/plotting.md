@@ -4,11 +4,11 @@ slug: groundhog/api/general/plotting
 section: Groundhog API Reference
 description: 'API reference for groundhog.general.plotting: 2 functions, 2 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/general/plotting.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/general/plotting.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.general.plotting
@@ -21,7 +21,7 @@ geocore_functions:
 - plot_with_log
 ---
 
-Module `groundhog.general.plotting` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/general/plotting.py).
+Module `groundhog.general.plotting` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/general/plotting.py).
 
 Upstream documentation: [Plotting](https://groundhog.readthedocs.io/en/main/general/plotting.html).
 
@@ -530,7 +530,7 @@ No upstream documentation.
 ### `LogPlotMatplotlib.save_fig`
 
 ```python
-save_fig(path, dpi=250, bbox_inches='tight', pad_inches=1)
+save_fig(path, dpi=250, bbox_inches='tight', pad_inches=0.05)
 ```
 
 Exports the figure to png format
@@ -542,7 +542,7 @@ Exports the figure to png format
 | `path` |  |  | required | Path of the figure (filename ends in .png) |
 | `dpi` |  |  | `250` | Output resolution |
 | `bbox_inches` |  |  | `'tight'` | Setting for the bounding box |
-| `pad_inches` |  |  | `1` | Inches for padding |
+| `pad_inches` |  |  | `0.05` | Inches for padding |
 
 <a id="logplotmatplotlib-select_additional_layers"></a>
 

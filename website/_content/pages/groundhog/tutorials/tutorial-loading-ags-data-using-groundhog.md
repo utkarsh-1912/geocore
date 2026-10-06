@@ -4,11 +4,11 @@ slug: groundhog/tutorials/tutorial-loading-ags-data-using-groundhog
 section: Groundhog Guides
 description: This tutorial outlines how an AGS 4.0 file can be converted to Python-compatible data structures (Pandas Dataframes) using
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Loading%20ags%20data%20using%20groundhog.ipynb
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Loading%20ags%20data%20using%20groundhog.ipynb
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted, with a short note on how to run this in GeoCore prepended.'
 notebook: notebooks/Tutorial - Loading ags data using groundhog.ipynb

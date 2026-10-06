@@ -1,24 +1,28 @@
 ---
-title: soilmix
+title: Soilmix
 slug: groundhog/api/excavations/soilmix
 section: Groundhog API Reference
 description: 'API reference for groundhog.excavations.soilmix: 2 functions, 0 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/excavations/soilmix.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/excavations/soilmix.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.excavations.soilmix
+upstream_docs_urls:
+- https://groundhog.readthedocs.io/en/main/excavations/soilmix.html
 geocore_available: true
 geocore_functions:
 - bendingstiffness_soilmix_method1
 - bendingstiffness_soilmix_method2
 ---
 
-Module `groundhog.excavations.soilmix` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/excavations/soilmix.py).
+Module `groundhog.excavations.soilmix` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/excavations/soilmix.py).
+
+Upstream documentation: [Soilmix](https://groundhog.readthedocs.io/en/main/excavations/soilmix.html).
 
 **Functions:** [`bendingstiffness_soilmix_method1`](#bendingstiffness_soilmix_method1), [`bendingstiffness_soilmix_method2`](#bendingstiffness_soilmix_method2)
 
@@ -103,7 +107,9 @@ $$
 EI\text{-eff/m} =  EI\text{-eff} = \frac{EI\text{-1} + EI\text{-2}}{2a}
 $$
 
-*Figure `images/IPE_conventions.png` is referenced by the docstring but is not present in the groundhog repository at `v0.15.0`.*
+![Naming conventions for reinforcement geometry](/docs/assets/groundhog/docs/excavations/images/IPE_conventions.png)
+
+*Naming conventions for reinforcement geometry*
 
 **Parameters**
 

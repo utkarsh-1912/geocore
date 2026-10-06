@@ -4,11 +4,11 @@ slug: groundhog/guides/topics/pipelinescables
 section: Groundhog Guides
 description: Overview of groundhog's pipelines and cables functionality with links to the API reference.
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/pipelinescables/pipelinescables_toplevel.rst
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/pipelinescables/pipelinescables_toplevel.rst
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/pipelinescables/pipelinescables_toplevel.html

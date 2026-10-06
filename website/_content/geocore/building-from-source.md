@@ -110,10 +110,12 @@ The website and this documentation are static pages generated from `website/_con
 python website/_build/build.py
 ```
 
-The groundhog reference pages, guides and tutorials are extracted from groundhog itself. To refresh them, clone groundhog at the tag of the installed version and run the extractor before the build:
+The groundhog reference pages, guides and tutorials are extracted from groundhog itself: the API reference from the groundhog installed in `python-backend/venv`, the guides and tutorials from a clone of the groundhog repository. Both must be at the commit pinned in `python-backend/requirements.txt`; GeoCore uses modules that are not in the 0.15.0 release.
 
 ```bash
-git clone --depth 1 --branch v0.15.0 https://github.com/snakesonabrain/groundhog.git <tmp>/groundhog
+pip install -r python-backend/requirements.txt   # in the backend venv
+git clone https://github.com/snakesonabrain/groundhog.git <tmp>/groundhog
+git -C <tmp>/groundhog checkout dc7d554c6b8986bae30f518304546a911b1ca5ab
 python website/_content/extract_docs.py --groundhog-repo <tmp>/groundhog
 ```
 

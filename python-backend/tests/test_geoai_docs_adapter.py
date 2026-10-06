@@ -100,6 +100,16 @@ def test_function_doc_is_structured_with_units_ranges_and_provenance(adapter):
     assert fd.source_url.endswith("/blob/v9.9.9/groundhog/siteinvestigation/insitutests/pcpt_correlations.py#L10")
 
 
+def test_source_links_use_the_pinned_commit_when_recorded(content_dir):
+    # requirements.txt pins a groundhog commit; modules missing from the release tag must link to it.
+    api_path = content_dir / "groundhog" / "api.json"
+    api = json.loads(api_path.read_text(encoding="utf-8"))
+    api["source_ref"] = "dc7d554c6b8986bae30f518304546a911b1ca5ab"
+    api_path.write_text(json.dumps(api), encoding="utf-8")
+    fd = da.DocsAdapter(content_dir).function_doc("relativedensity_sand_test")
+    assert "/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/" in fd.source_url
+
+
 def test_class_doc_merges_method_inputs_and_methods_are_addressable(adapter):
     fd = adapter.function_doc("PileCalc")
     assert fd.kind == "class" and fd.methods == ["calculate_capacity"]

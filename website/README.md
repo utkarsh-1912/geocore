@@ -103,7 +103,7 @@ routes those to `element.style.cssText` (CSSOM, allowed) only while rendering.
 ### Attribution
 
 Every page gets an attribution block from its front-matter: groundhog pages show author, licence
-(`GPL-3.0-or-later`), the upstream source pinned to `v0.15.0`, upstream docs link(s), notebook path and the
+(`GPL-3.0-or-later`), the upstream source pinned to the shipped groundhog commit (`source_ref` in `api.json`), upstream docs link(s), notebook path and the
 "Edited by GeoCore" note; GeoCore pages show author, licence and the files they were written from. API pages
 show the module and an "Available in GeoCore" badge when `geocore_available` is true. The build warns if a
 groundhog page's `source_url` is not pinned to the tag.

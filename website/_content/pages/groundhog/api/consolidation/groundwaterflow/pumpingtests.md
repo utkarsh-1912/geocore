@@ -4,11 +4,11 @@ slug: groundhog/api/consolidation/groundwaterflow/pumpingtests
 section: Groundhog API Reference
 description: 'API reference for groundhog.consolidation.groundwaterflow.pumpingtests: 1 functions, 0 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/consolidation/groundwaterflow/pumpingtests.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/consolidation/groundwaterflow/pumpingtests.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.consolidation.groundwaterflow.pumpingtests
@@ -19,7 +19,7 @@ geocore_functions:
 - hydraulicconductivity_unconfinedaquifer
 ---
 
-Module `groundhog.consolidation.groundwaterflow.pumpingtests` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/consolidation/groundwaterflow/pumpingtests.py).
+Module `groundhog.consolidation.groundwaterflow.pumpingtests` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/consolidation/groundwaterflow/pumpingtests.py).
 
 Upstream documentation: [Pumping tests](https://groundhog.readthedocs.io/en/main/consolidation/pumpingtests.html).
 
@@ -66,14 +66,14 @@ q_z = 2 \pi r z k \frac{dz}{dr}
 $$
 
 $$
-q_z \int_{r_1)^{r_2} \frac{dr}{r} = 2 k \pi \int_{h_1}^{h_2} z dz
+q_z \int_{r_1}^{r_2} \frac{dr}{r} = 2 k \pi \int_{h_1}^{h_2} z dz
 $$
 
 $$
-k = \frac{q_z \ln \left( r_2 / r_1 \right)}{\pi \left( h_2^2 - h_1^2 \right) }
+k = \frac{q_z \ln \left( r_2 / r_1 \right)}{\pi \left( h_2^2 - h_1^2 \right)}
 $$
 
-*Figure `images/hydraulicconductivity_unconfinedaquifer_1.png` is referenced by the docstring but is not present in the groundhog repository at `v0.15.0`.*
+*Figure `images/hydraulicconductivity_unconfinedaquifer_1.png` is referenced by the docstring but is not present in the groundhog repository at `dc7d554c6b8986bae30f518304546a911b1ca5ab`.*
 
 **Parameters**
 

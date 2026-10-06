@@ -2,15 +2,23 @@
   {
     "path": "docs/constitutivemodels/images/mohrs_circle.png",
     "url": "/docs/assets/groundhog/docs/constitutivemodels/images/mohrs_circle.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/constitutivemodels/images/mohrs_circle.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/constitutivemodels/images/mohrs_circle.png",
     "used_by": [
       "groundhog/api/constitutivemodels/general"
     ]
   },
   {
+    "path": "docs/excavations/images/IPE_conventions.png",
+    "url": "/docs/assets/groundhog/docs/excavations/images/IPE_conventions.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/excavations/images/IPE_conventions.png",
+    "used_by": [
+      "groundhog/api/excavations/soilmix"
+    ]
+  },
+  {
     "path": "docs/excavations/images/earthpressurecoefficients_rankine_1.png",
     "url": "/docs/assets/groundhog/docs/excavations/images/earthpressurecoefficients_rankine_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/excavations/images/earthpressurecoefficients_rankine_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/excavations/images/earthpressurecoefficients_rankine_1.png",
     "used_by": [
       "groundhog/api/excavations/basic"
     ]
@@ -18,7 +26,7 @@
   {
     "path": "docs/images/anaconda_command_prompt.png",
     "url": "/docs/assets/groundhog/docs/images/anaconda_command_prompt.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/images/anaconda_command_prompt.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/images/anaconda_command_prompt.png",
     "used_by": [
       "groundhog/guides/getting-started"
     ]
@@ -26,7 +34,7 @@
   {
     "path": "docs/images/download_source.png",
     "url": "/docs/assets/groundhog/docs/images/download_source.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/images/download_source.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/images/download_source.png",
     "used_by": [
       "groundhog/guides/getting-started"
     ]
@@ -34,7 +42,7 @@
   {
     "path": "docs/images/groundhog_install.png",
     "url": "/docs/assets/groundhog/docs/images/groundhog_install.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/images/groundhog_install.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/images/groundhog_install.png",
     "used_by": [
       "groundhog/guides/getting-started"
     ]
@@ -42,7 +50,7 @@
   {
     "path": "docs/images/launch_jupyter.png",
     "url": "/docs/assets/groundhog/docs/images/launch_jupyter.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/images/launch_jupyter.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/images/launch_jupyter.png",
     "used_by": [
       "groundhog/guides/getting-started"
     ]
@@ -50,7 +58,7 @@
   {
     "path": "docs/piles/images/API_unit_end_bearing_sand_1.PNG",
     "url": "/docs/assets/groundhog/docs/piles/images/API_unit_end_bearing_sand_1.PNG",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/API_unit_end_bearing_sand_1.PNG",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/API_unit_end_bearing_sand_1.PNG",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/endbearing"
     ]
@@ -58,15 +66,23 @@
   {
     "path": "docs/piles/images/base_coefficient.png",
     "url": "/docs/assets/groundhog/docs/piles/images/base_coefficient.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/base_coefficient.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/base_coefficient.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/koppejan"
     ]
   },
   {
+    "path": "docs/piles/images/base_factors_LCPC.png",
+    "url": "/docs/assets/groundhog/docs/piles/images/base_factors_LCPC.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/base_factors_LCPC.png",
+    "used_by": [
+      "groundhog/api/deepfoundations/axialcapacity/lcpc"
+    ]
+  },
+  {
     "path": "docs/piles/images/base_increase.png",
     "url": "/docs/assets/groundhog/docs/piles/images/base_increase.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/base_increase.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/base_increase.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/koppejan"
     ]
@@ -74,7 +90,7 @@
   {
     "path": "docs/piles/images/conetype_correction_be.png",
     "url": "/docs/assets/groundhog/docs/piles/images/conetype_correction_be.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/conetype_correction_be.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/conetype_correction_be.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/debeer"
     ]
@@ -82,7 +98,7 @@
   {
     "path": "docs/piles/images/crosssection_coefficient.png",
     "url": "/docs/assets/groundhog/docs/piles/images/crosssection_coefficient.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/crosssection_coefficient.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/crosssection_coefficient.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/koppejan"
     ]
@@ -90,7 +106,7 @@
   {
     "path": "docs/piles/images/koppejan_alphas.png",
     "url": "/docs/assets/groundhog/docs/piles/images/koppejan_alphas.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/koppejan_alphas.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/koppejan_alphas.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/koppejan"
     ]
@@ -98,7 +114,7 @@
   {
     "path": "docs/piles/images/koppejan_base_theory.png",
     "url": "/docs/assets/groundhog/docs/piles/images/koppejan_base_theory.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/koppejan_base_theory.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/koppejan_base_theory.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/koppejan"
     ]
@@ -106,7 +122,7 @@
   {
     "path": "docs/piles/images/negativeskinfriction_pilegroup_zeevaertdebeer_1.png",
     "url": "/docs/assets/groundhog/docs/piles/images/negativeskinfriction_pilegroup_zeevaertdebeer_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/negativeskinfriction_pilegroup_zeevaertdebeer_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/negativeskinfriction_pilegroup_zeevaertdebeer_1.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/negativeskinfriction"
     ]
@@ -114,15 +130,31 @@
   {
     "path": "docs/piles/images/pile_settlement_curves_1.png",
     "url": "/docs/assets/groundhog/docs/piles/images/pile_settlement_curves_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/pile_settlement_curves_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/pile_settlement_curves_1.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialresponse/settlement"
     ]
   },
   {
+    "path": "docs/piles/images/qc_averaging.png",
+    "url": "/docs/assets/groundhog/docs/piles/images/qc_averaging.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/qc_averaging.png",
+    "used_by": [
+      "groundhog/api/deepfoundations/axialcapacity/lcpc"
+    ]
+  },
+  {
+    "path": "docs/piles/images/shaft_factors_LCPC.png",
+    "url": "/docs/assets/groundhog/docs/piles/images/shaft_factors_LCPC.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/shaft_factors_LCPC.png",
+    "used_by": [
+      "groundhog/api/deepfoundations/axialcapacity/lcpc"
+    ]
+  },
+  {
     "path": "docs/piles/images/stress_elastic_isotropic.png",
     "url": "/docs/assets/groundhog/docs/piles/images/stress_elastic_isotropic.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/stress_elastic_isotropic.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/stress_elastic_isotropic.png",
     "used_by": [
       "groundhog/api/deepfoundations/boreholestability/cavityexpansion"
     ]
@@ -130,7 +162,7 @@
   {
     "path": "docs/piles/images/unit_shaft_friction_be.png",
     "url": "/docs/assets/groundhog/docs/piles/images/unit_shaft_friction_be.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/images/unit_shaft_friction_be.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/images/unit_shaft_friction_be.png",
     "used_by": [
       "groundhog/api/deepfoundations/axialcapacity/debeer"
     ]
@@ -138,7 +170,7 @@
   {
     "path": "docs/shallowfoundations/images/api_correction_factor_undrained_linear.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/api_correction_factor_undrained_linear.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/api_correction_factor_undrained_linear.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/api_correction_factor_undrained_linear.png",
     "used_by": [
       "groundhog/api/shallowfoundations/capacity"
     ]
@@ -146,7 +178,7 @@
   {
     "path": "docs/shallowfoundations/images/api_inclination_factors.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/api_inclination_factors.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/api_inclination_factors.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/api_inclination_factors.png",
     "used_by": [
       "groundhog/api/shallowfoundations/capacity"
     ]
@@ -154,7 +186,7 @@
   {
     "path": "docs/shallowfoundations/images/api_reduced_area_circle.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/api_reduced_area_circle.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/api_reduced_area_circle.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/api_reduced_area_circle.png",
     "used_by": [
       "groundhog/api/shallowfoundations/capacity"
     ]
@@ -162,7 +194,7 @@
   {
     "path": "docs/shallowfoundations/images/api_reduced_area_rectangle.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/api_reduced_area_rectangle.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/api_reduced_area_rectangle.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/api_reduced_area_rectangle.png",
     "used_by": [
       "groundhog/api/shallowfoundations/capacity"
     ]
@@ -170,7 +202,7 @@
   {
     "path": "docs/shallowfoundations/images/envelope_undrained_api_1.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/envelope_undrained_api_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/envelope_undrained_api_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/envelope_undrained_api_1.png",
     "used_by": [
       "groundhog/api/shallowfoundations/capacity"
     ]
@@ -178,7 +210,7 @@
   {
     "path": "docs/shallowfoundations/images/failuremechanism_prandtl_1.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/failuremechanism_prandtl_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/failuremechanism_prandtl_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/failuremechanism_prandtl_1.png",
     "used_by": [
       "groundhog/api/shallowfoundations/capacity"
     ]
@@ -186,7 +218,7 @@
   {
     "path": "docs/shallowfoundations/images/primaryconsolidation_settlement.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/primaryconsolidation_settlement.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/primaryconsolidation_settlement.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/primaryconsolidation_settlement.png",
     "used_by": [
       "groundhog/api/shallowfoundations/settlement"
     ]
@@ -194,7 +226,7 @@
   {
     "path": "docs/shallowfoundations/images/stresses_pointload_1.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/stresses_pointload_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/stresses_pointload_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/stresses_pointload_1.png",
     "used_by": [
       "groundhog/api/shallowfoundations/stressdistribution"
     ]
@@ -202,7 +234,7 @@
   {
     "path": "docs/shallowfoundations/images/stresses_rectangle_1.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/stresses_rectangle_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/stresses_rectangle_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/stresses_rectangle_1.png",
     "used_by": [
       "groundhog/api/shallowfoundations/stressdistribution"
     ]
@@ -210,7 +242,7 @@
   {
     "path": "docs/shallowfoundations/images/stresses_stripload_1.png",
     "url": "/docs/assets/groundhog/docs/shallowfoundations/images/stresses_stripload_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/shallowfoundations/images/stresses_stripload_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/shallowfoundations/images/stresses_stripload_1.png",
     "used_by": [
       "groundhog/api/shallowfoundations/stressdistribution"
     ]
@@ -218,7 +250,7 @@
   {
     "path": "docs/site_investigation/images/Phi_Kleven.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/Phi_Kleven.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/Phi_Kleven.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/Phi_Kleven.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -226,7 +258,7 @@
   {
     "path": "docs/site_investigation/images/acousticimpedance_bulkunitweight_chen_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/acousticimpedance_bulkunitweight_chen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/acousticimpedance_bulkunitweight_chen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/acousticimpedance_bulkunitweight_chen_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/general"
     ]
@@ -234,7 +266,7 @@
   {
     "path": "docs/site_investigation/images/behaviourindex_pcpt_nonnormalised_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/behaviourindex_pcpt_nonnormalised_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/behaviourindex_pcpt_nonnormalised_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/behaviourindex_pcpt_nonnormalised_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -242,7 +274,7 @@
   {
     "path": "docs/site_investigation/images/behaviourindex_pcpt_robertsonwride_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/behaviourindex_pcpt_robertsonwride_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/behaviourindex_pcpt_robertsonwride_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/behaviourindex_pcpt_robertsonwride_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -250,7 +282,7 @@
   {
     "path": "docs/site_investigation/images/chaetal_data.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/chaetal_data.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/chaetal_data.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/chaetal_data.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/general"
     ]
@@ -258,7 +290,7 @@
   {
     "path": "docs/site_investigation/images/constrainedmodulus_pcpt_robertson.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/constrainedmodulus_pcpt_robertson.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/constrainedmodulus_pcpt_robertson.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/constrainedmodulus_pcpt_robertson.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -266,7 +298,7 @@
   {
     "path": "docs/site_investigation/images/cv_liquidlimit_usnavy_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/cv_liquidlimit_usnavy_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/cv_liquidlimit_usnavy_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/cv_liquidlimit_usnavy_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/cohesive"
     ]
@@ -274,7 +306,7 @@
   {
     "path": "docs/site_investigation/images/data_bolton.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/data_bolton.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/data_bolton.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/data_bolton.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/cohesionless"
     ]
@@ -282,7 +314,7 @@
   {
     "path": "docs/site_investigation/images/drainedsecantmodulus_sand__1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/drainedsecantmodulus_sand__1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/drainedsecantmodulus_sand__1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/drainedsecantmodulus_sand__1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -290,7 +322,7 @@
   {
     "path": "docs/site_investigation/images/frictionangle_plasticityindex_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/frictionangle_plasticityindex_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/frictionangle_plasticityindex_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/frictionangle_plasticityindex_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/cohesive"
     ]
@@ -298,7 +330,7 @@
   {
     "path": "docs/site_investigation/images/gmax_voidratio_maynerix_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/gmax_voidratio_maynerix_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/gmax_voidratio_maynerix_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/gmax_voidratio_maynerix_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -306,15 +338,23 @@
   {
     "path": "docs/site_investigation/images/hssmall_parameters_sand_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/hssmall_parameters_sand_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/hssmall_parameters_sand_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/hssmall_parameters_sand_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/cohesionless"
     ]
   },
   {
+    "path": "docs/site_investigation/images/icl_scl_burland.png",
+    "url": "/docs/assets/groundhog/docs/site_investigation/images/icl_scl_burland.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/icl_scl_burland.png",
+    "used_by": [
+      "groundhog/api/siteinvestigation/correlations/cohesive"
+    ]
+  },
+  {
     "path": "docs/site_investigation/images/k0_sand_mayne_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/k0_sand_mayne_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/k0_sand_mayne_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/k0_sand_mayne_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -322,7 +362,7 @@
   {
     "path": "docs/site_investigation/images/kulhawy_mayne_data.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/kulhawy_mayne_data.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/kulhawy_mayne_data.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/kulhawy_mayne_data.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -330,7 +370,7 @@
   {
     "path": "docs/site_investigation/images/log_time.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/log_time.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/log_time.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/log_time.png",
     "used_by": [
       "groundhog/api/siteinvestigation/labtesting/compressibility"
     ]
@@ -338,7 +378,7 @@
   {
     "path": "docs/site_investigation/images/ocr_cpt_lunne.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/ocr_cpt_lunne.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/ocr_cpt_lunne.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/ocr_cpt_lunne.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -346,7 +386,7 @@
   {
     "path": "docs/site_investigation/images/pcpt_normalisations_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/pcpt_normalisations_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/pcpt_normalisations_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/pcpt_normalisations_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -354,7 +394,7 @@
   {
     "path": "docs/site_investigation/images/permeability_d10_hazen_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/permeability_d10_hazen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/permeability_d10_hazen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/permeability_d10_hazen_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/correlations/cohesionless"
     ]
@@ -362,7 +402,7 @@
   {
     "path": "docs/site_investigation/images/relativedensity_ncsand_baldi_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/relativedensity_ncsand_baldi_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/relativedensity_ncsand_baldi_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/relativedensity_ncsand_baldi_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -370,7 +410,7 @@
   {
     "path": "docs/site_investigation/images/relativedensity_ocsand_baldi_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/relativedensity_ocsand_baldi_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/relativedensity_ocsand_baldi_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/relativedensity_ocsand_baldi_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -378,7 +418,7 @@
   {
     "path": "docs/site_investigation/images/root_time.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/root_time.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/root_time.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/root_time.png",
     "used_by": [
       "groundhog/api/siteinvestigation/labtesting/compressibility"
     ]
@@ -386,7 +426,7 @@
   {
     "path": "docs/site_investigation/images/sensitivity_frictionratio_lunne_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/sensitivity_frictionratio_lunne_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/sensitivity_frictionratio_lunne_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/sensitivity_frictionratio_lunne_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -394,7 +434,7 @@
   {
     "path": "docs/site_investigation/images/soiltype_vs_longodonohue_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/soiltype_vs_longodonohue_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/soiltype_vs_longodonohue_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/soiltype_vs_longodonohue_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -402,7 +442,7 @@
   {
     "path": "docs/site_investigation/images/spt_principle.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/spt_principle.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/spt_principle.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/spt_principle.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/spt_processing"
     ]
@@ -410,7 +450,7 @@
   {
     "path": "docs/site_investigation/images/undercompaction_cohesionless_ladd_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/undercompaction_cohesionless_ladd_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/undercompaction_cohesionless_ladd_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/undercompaction_cohesionless_ladd_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/labtesting/samplepreparation"
     ]
@@ -418,7 +458,7 @@
   {
     "path": "docs/site_investigation/images/unitweight_mayne_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/unitweight_mayne_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/unitweight_mayne_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/unitweight_mayne_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -426,7 +466,7 @@
   {
     "path": "docs/site_investigation/images/vs_CPT_mcgannetal_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/vs_CPT_mcgannetal_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/vs_CPT_mcgannetal_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/vs_CPT_mcgannetal_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -434,7 +474,7 @@
   {
     "path": "docs/site_investigation/images/vs_CPT_mcgannetal_2.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/vs_CPT_mcgannetal_2.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/vs_CPT_mcgannetal_2.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/vs_CPT_mcgannetal_2.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -442,7 +482,7 @@
   {
     "path": "docs/site_investigation/images/vs_cpt_hegazy_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/vs_cpt_hegazy_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/vs_cpt_hegazy_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/vs_cpt_hegazy_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -450,7 +490,7 @@
   {
     "path": "docs/site_investigation/images/vs_cpt_longdonohue_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/vs_cpt_longdonohue_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/vs_cpt_longdonohue_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/vs_cpt_longdonohue_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -458,7 +498,7 @@
   {
     "path": "docs/site_investigation/images/vs_cpt_tonniandsimonini_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/vs_cpt_tonniandsimonini_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/vs_cpt_tonniandsimonini_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/vs_cpt_tonniandsimonini_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -466,7 +506,7 @@
   {
     "path": "docs/site_investigation/images/vs_cptd50_karrayetal_1.png",
     "url": "/docs/assets/groundhog/docs/site_investigation/images/vs_cptd50_karrayetal_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/images/vs_cptd50_karrayetal_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/images/vs_cptd50_karrayetal_1.png",
     "used_by": [
       "groundhog/api/siteinvestigation/insitutests/pcpt_correlations"
     ]
@@ -474,7 +514,7 @@
   {
     "path": "docs/soildynamics/images/cycliccontours_dssclay_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/cycliccontours_dssclay_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/cycliccontours_dssclay_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/cycliccontours_dssclay_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -482,7 +522,7 @@
   {
     "path": "docs/soildynamics/images/cycliccontours_triaxialclay_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/cycliccontours_triaxialclay_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/cycliccontours_triaxialclay_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/cycliccontours_triaxialclay_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -490,7 +530,7 @@
   {
     "path": "docs/soildynamics/images/cyclicstrength_dsssand_relativedensity_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/cyclicstrength_dsssand_relativedensity_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/cyclicstrength_dsssand_relativedensity_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/cyclicstrength_dsssand_relativedensity_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -498,7 +538,7 @@
   {
     "path": "docs/soildynamics/images/cyclicstrength_dsssand_watercontent_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/cyclicstrength_dsssand_watercontent_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/cyclicstrength_dsssand_watercontent_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/cyclicstrength_dsssand_watercontent_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -506,7 +546,7 @@
   {
     "path": "docs/soildynamics/images/dampingratio_sandgravel_seed_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/dampingratio_sandgravel_seed_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/dampingratio_sandgravel_seed_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/dampingratio_sandgravel_seed_1.png",
     "used_by": [
       "groundhog/api/soildynamics/soilproperties"
     ]
@@ -514,7 +554,7 @@
   {
     "path": "docs/soildynamics/images/liquefaction_robertsonfear_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/liquefaction_robertsonfear_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/liquefaction_robertsonfear_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/liquefaction_robertsonfear_1.png",
     "used_by": [
       "groundhog/api/soildynamics/liquefaction"
     ]
@@ -522,7 +562,7 @@
   {
     "path": "docs/soildynamics/images/liquefactionprobability_moss_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/liquefactionprobability_moss_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/liquefactionprobability_moss_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/liquefactionprobability_moss_1.png",
     "used_by": [
       "groundhog/api/soildynamics/liquefaction"
     ]
@@ -530,7 +570,7 @@
   {
     "path": "docs/soildynamics/images/porepressureaccumulation_dssclay_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/porepressureaccumulation_dssclay_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/porepressureaccumulation_dssclay_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/porepressureaccumulation_dssclay_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -538,7 +578,7 @@
   {
     "path": "docs/soildynamics/images/porepressureaccumulation_triaxialclay_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/porepressureaccumulation_triaxialclay_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/porepressureaccumulation_triaxialclay_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/porepressureaccumulation_triaxialclay_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -546,7 +586,7 @@
   {
     "path": "docs/soildynamics/images/strainaccumulation_dssclay_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/strainaccumulation_dssclay_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/strainaccumulation_dssclay_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/strainaccumulation_dssclay_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -554,7 +594,7 @@
   {
     "path": "docs/soildynamics/images/strainaccumulation_dsssand_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/strainaccumulation_dsssand_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/strainaccumulation_dsssand_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/strainaccumulation_dsssand_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -562,7 +602,7 @@
   {
     "path": "docs/soildynamics/images/strainaccumulation_triaxialclay_andersen_1.png",
     "url": "/docs/assets/groundhog/docs/soildynamics/images/strainaccumulation_triaxialclay_andersen_1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/soildynamics/images/strainaccumulation_triaxialclay_andersen_1.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/soildynamics/images/strainaccumulation_triaxialclay_andersen_1.png",
     "used_by": [
       "groundhog/api/soildynamics/cyclicbehaviour"
     ]
@@ -570,7 +610,7 @@
   {
     "path": "docs/tutorials/images/groundhog_banner_wide.png",
     "url": "/docs/assets/groundhog/docs/tutorials/images/groundhog_banner_wide.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/tutorials/images/groundhog_banner_wide.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/tutorials/images/groundhog_banner_wide.png",
     "used_by": [
       "groundhog/guides/introduction"
     ]
@@ -578,7 +618,7 @@
   {
     "path": "notebooks/Images/BorsseleI_locations.png",
     "url": "/docs/assets/groundhog/notebooks/Images/BorsseleI_locations.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/BorsseleI_locations.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/BorsseleI_locations.png",
     "used_by": [
       "groundhog/tutorials/tutorial-fence-diagrams-with-groundhog"
     ]
@@ -586,7 +626,7 @@
   {
     "path": "notebooks/Images/base_coefficient.png",
     "url": "/docs/assets/groundhog/notebooks/Images/base_coefficient.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/base_coefficient.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/base_coefficient.png",
     "used_by": [
       "groundhog/tutorials/demo-koppejan-pile-resistance-calculation"
     ]
@@ -594,7 +634,7 @@
   {
     "path": "notebooks/Images/base_increase.png",
     "url": "/docs/assets/groundhog/notebooks/Images/base_increase.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/base_increase.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/base_increase.png",
     "used_by": [
       "groundhog/tutorials/demo-koppejan-pile-resistance-calculation"
     ]
@@ -602,7 +642,7 @@
   {
     "path": "notebooks/Images/crosssection_coefficient.png",
     "url": "/docs/assets/groundhog/notebooks/Images/crosssection_coefficient.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/crosssection_coefficient.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/crosssection_coefficient.png",
     "used_by": [
       "groundhog/tutorials/demo-koppejan-pile-resistance-calculation"
     ]
@@ -610,7 +650,7 @@
   {
     "path": "notebooks/Images/debeer_scaling.png",
     "url": "/docs/assets/groundhog/notebooks/Images/debeer_scaling.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/debeer_scaling.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/debeer_scaling.png",
     "used_by": [
       "groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation"
     ]
@@ -618,7 +658,7 @@
   {
     "path": "notebooks/Images/groundhog_banner_wide.png",
     "url": "/docs/assets/groundhog/notebooks/Images/groundhog_banner_wide.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/groundhog_banner_wide.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/groundhog_banner_wide.png",
     "used_by": [
       "groundhog/tutorials/cgs-webinar-cpt-processing-tutorial",
       "groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance"
@@ -627,7 +667,7 @@
   {
     "path": "notebooks/Images/koppejan_alphas.png",
     "url": "/docs/assets/groundhog/notebooks/Images/koppejan_alphas.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/koppejan_alphas.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/koppejan_alphas.png",
     "used_by": [
       "groundhog/tutorials/demo-koppejan-pile-resistance-calculation"
     ]
@@ -635,7 +675,7 @@
   {
     "path": "notebooks/Images/koppejan_base_theory.png",
     "url": "/docs/assets/groundhog/notebooks/Images/koppejan_base_theory.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/koppejan_base_theory.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/koppejan_base_theory.png",
     "used_by": [
       "groundhog/tutorials/demo-koppejan-pile-resistance-calculation"
     ]
@@ -643,7 +683,7 @@
   {
     "path": "notebooks/Images/skin_friction_DeBeer.png",
     "url": "/docs/assets/groundhog/notebooks/Images/skin_friction_DeBeer.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Images/skin_friction_DeBeer.png",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Images/skin_friction_DeBeer.png",
     "used_by": [
       "groundhog/tutorials/demo-de-beer-pile-resistance-calculation"
     ]
@@ -651,7 +691,7 @@
   {
     "path": "notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-1.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog"
     ],
@@ -660,7 +700,7 @@
   {
     "path": "notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-2.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-2.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog"
     ],
@@ -669,7 +709,7 @@
   {
     "path": "notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-3.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-3.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog"
     ],
@@ -678,7 +718,7 @@
   {
     "path": "notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-4.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog-4.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Axial%20pile%20capacity%20calculation%20according%20to%20API%20RP2%20GEO%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog"
     ],
@@ -687,7 +727,7 @@
   {
     "path": "notebooks/outputs/tutorial-fence-diagrams-with-groundhog-1.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-fence-diagrams-with-groundhog-1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Fence%20diagrams%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Fence%20diagrams%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-fence-diagrams-with-groundhog"
     ],
@@ -696,7 +736,7 @@
   {
     "path": "notebooks/outputs/tutorial-fence-diagrams-with-groundhog-2.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-fence-diagrams-with-groundhog-2.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Fence%20diagrams%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Fence%20diagrams%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-fence-diagrams-with-groundhog"
     ],
@@ -705,7 +745,7 @@
   {
     "path": "notebooks/outputs/tutorial-fence-diagrams-with-groundhog-3.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-fence-diagrams-with-groundhog-3.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Fence%20diagrams%20with%20groundhog.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Fence%20diagrams%20with%20groundhog.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-fence-diagrams-with-groundhog"
     ],
@@ -714,7 +754,7 @@
   {
     "path": "notebooks/outputs/tutorial-pore-pressure-dissipation-1.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-pore-pressure-dissipation-1.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-pore-pressure-dissipation"
     ],
@@ -723,7 +763,7 @@
   {
     "path": "notebooks/outputs/tutorial-pore-pressure-dissipation-2.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-pore-pressure-dissipation-2.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-pore-pressure-dissipation"
     ],
@@ -732,7 +772,7 @@
   {
     "path": "notebooks/outputs/tutorial-pore-pressure-dissipation-3.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-pore-pressure-dissipation-3.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-pore-pressure-dissipation"
     ],
@@ -741,7 +781,7 @@
   {
     "path": "notebooks/outputs/tutorial-pore-pressure-dissipation-4.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-pore-pressure-dissipation-4.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-pore-pressure-dissipation"
     ],
@@ -750,7 +790,7 @@
   {
     "path": "notebooks/outputs/tutorial-pore-pressure-dissipation-5.png",
     "url": "/docs/assets/groundhog/notebooks/outputs/tutorial-pore-pressure-dissipation-5.png",
-    "source_url": "https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
+    "source_url": "https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Tutorial%20-%20Pore%20pressure%20dissipation.ipynb",
     "used_by": [
       "groundhog/tutorials/tutorial-pore-pressure-dissipation"
     ],

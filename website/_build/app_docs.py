@@ -127,6 +127,7 @@ def _references(md: Any, item: Dict[str, Any]) -> List[str]:
 def build_app_docs() -> Path:
     api = json.loads(API_JSON.read_text(encoding="utf-8"))
     version = api["groundhog_version"]
+    source_ref = docs_content.groundhog_source_ref(CONTENT_DIR)
     ui = extract_docs.load_geocore_ui()
     md = docs_content.make_markdown()
     functions: Dict[str, Any] = {}
@@ -156,7 +157,7 @@ def build_app_docs() -> Path:
             "validated": bool(item.get("validated")),
             "has_math": theory_math or returns_math,
             "docs_slug": extract_docs.module_slug(item["module"]),
-            "source_url": f"{extract_docs.GH_REPO_URL}/blob/v{version}/{mod['source_path']}#L{item.get('line') or 1}",
+            "source_url": f"{extract_docs.GH_REPO_URL}/blob/{source_ref}/{mod['source_path']}#L{item.get('line') or 1}",
         }
     data = {
         "groundhog_version": version,

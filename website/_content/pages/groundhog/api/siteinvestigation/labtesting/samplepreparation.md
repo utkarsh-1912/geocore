@@ -4,11 +4,11 @@ slug: groundhog/api/siteinvestigation/labtesting/samplepreparation
 section: Groundhog API Reference
 description: 'API reference for groundhog.siteinvestigation.labtesting.samplepreparation: 1 functions, 0 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/labtesting/samplepreparation.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/labtesting/samplepreparation.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.siteinvestigation.labtesting.samplepreparation
@@ -19,7 +19,7 @@ geocore_functions:
 - undercompaction_cohesionless_ladd
 ---
 
-Module `groundhog.siteinvestigation.labtesting.samplepreparation` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/labtesting/samplepreparation.py).
+Module `groundhog.siteinvestigation.labtesting.samplepreparation` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/labtesting/samplepreparation.py).
 
 Upstream documentation: [Sample preparation](https://groundhog.readthedocs.io/en/main/site_investigation/samplepreparation.html).
 

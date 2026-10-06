@@ -8,12 +8,12 @@ source_url: https://github.com/utkarsh-1912/geocore/blob/main/electron-app/src/c
 license: GPL-3.0
 author: Utkarsh Gupta
 attribution: GeoCore documentation by Utkarsh Gupta, licensed under the GNU GPL v3.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: false
 geocore_available: true
 ---
 
-GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 220 calculators, of which 206 link to the groundhog function or class they run.
+GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 221 calculators, of which 207 link to the groundhog function or class they run.
 
 ## General and utility functions
 
@@ -91,6 +91,7 @@ GeoCore's calculation browser groups its calculators into the categories below. 
 - <a id="cv_liquidlimit_usnavy"></a>**US Navy Cv from Liquid Limit** (`cv_liquidlimit_usnavy`) — [groundhog `cv_liquidlimit_usnavy`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#cv_liquidlimit_usnavy)
 - <a id="frictionangle_plasticityindex"></a>**Drained Friction Angle (from Plasticity Index)** (`frictionangle_plasticityindex`) — [groundhog `frictionangle_plasticityindex`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#frictionangle_plasticityindex)
 - <a id="gmax_plasticityocr_andersen"></a>**Andersen Gmax (Plasticity & OCR)** (`gmax_plasticityocr_andersen`) — [groundhog `gmax_plasticityocr_andersen`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#gmax_plasticityocr_andersen)
+- <a id="icl_scl_burland"></a>**Burland (1990) Intrinsic & Sedimentation Compression Lines** (`icl_scl_burland`) — [groundhog `icl_scl_burland`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#icl_scl_burland)
 - <a id="k0_plasticity_kenney"></a>**Kenney K0 (from Plasticity, Clay)** (`k0_plasticity_kenney`) — [groundhog `k0_plasticity_kenney`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#k0_plasticity_kenney)
 
 ### Correlations: Cohesionless soils

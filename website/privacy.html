@@ -135,7 +135,7 @@
         <dt>What is sent</dt>
         <dd>The coordinates you enter, to fetch the geological model at that location.</dd>
         <dt>Source</dt>
-        <dd>Groundhog 0.15.0: <code>groundhog/general/soilprofile.py:1397</code> (DOV) and <code>:1816–1823</code> (GeoTOP). The GeoTOP lookup also needs the optional <code>netCDF4</code> package, which is not in GeoCore’s requirements, so it is not expected to work in standard builds.</dd>
+        <dd>Groundhog 0.16.0: <code>groundhog/general/soilprofile.py:1396</code> (DOV) and <code>:1816–1823</code> (GeoTOP). The GeoTOP lookup also needs the optional <code>netCDF4</code> package, which is not in GeoCore’s requirements, so it is not expected to work in standard builds.</dd>
       </dl>
 
       <h3 id="net-map-tiles">5. Location map in profile plots — OpenStreetMap tiles</h3>
@@ -147,7 +147,7 @@
         <dt>What is sent</dt>
         <dd>Requests for 256-pixel map images (tiles). Each tile address contains a zoom level and x/y tile coordinates (<code>/{z}/{x}/{y}.png</code>) that identify a fixed square of the Earth’s surface. <strong>The tile server can therefore infer the approximate location of your site.</strong> The map is centred on the average of the plotted locations at a fixed zoom (Groundhog ignores the <code>mapbox_zoom</code> input). In a test with three CPTs near Ghent, the first view loaded four tiles at zoom level 11, covering about 25 × 25 km around the site. Panning or zooming the map loads more tiles, and zooming in narrows the area they reveal. Your coordinates, CPT or profile names and test data are not sent; the markers and hover labels are drawn on your computer. The map treats X as longitude and Y as latitude, so the tiles match the real site when your coordinates are in degrees (WGS84).</dd>
         <dt>Source</dt>
-        <dd>Groundhog 0.15.0: <code>groundhog/siteinvestigation/insitutests/pcpt_processing.py:2707–2709</code> and <code>:2801–2805</code>; <code>groundhog/general/soilprofile.py:1214–1216</code> and <code>:1256–1260</code> (<code>mapbox_style='open-street-map'</code>). The tile addresses come from the <code>open-street-map</code> style built into plotly.js (<code>src/plots/mapbox/constants.js</code>), which the app window uses to draw charts. The inputs are defined in <code>electron-app/src/features/calculations/schemas/siteinvestigation.js</code> (<code>plotmap</code>, <code>mapbox_zoom</code>).</dd>
+        <dd>Groundhog 0.16.0: <code>groundhog/siteinvestigation/insitutests/pcpt_processing.py:2707–2709</code> and <code>:2801–2805</code>; <code>groundhog/general/soilprofile.py:1214–1216</code> and <code>:1256–1260</code> (<code>mapbox_style='open-street-map'</code>). The tile addresses come from the <code>open-street-map</code> style built into plotly.js (<code>src/plots/mapbox/constants.js</code>), which the app window uses to draw charts. The inputs are defined in <code>electron-app/src/features/calculations/schemas/siteinvestigation.js</code> (<code>plotmap</code>, <code>mapbox_zoom</code>).</dd>
         <dt>To avoid it</dt>
         <dd>Leave <code>plotmap</code> off, which is the default. If you are offline or block these two hosts, nothing is sent, but the map panel has no background and the chart may report a map error.</dd>
       </dl>

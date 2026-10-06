@@ -305,7 +305,7 @@
                   "slug": "groundhog/api/deepfoundations/axialcapacity/negativeskinfriction"
                 },
                 {
-                  "title": "piletesting",
+                  "title": "Pile testing functionality",
                   "slug": "groundhog/api/deepfoundations/axialcapacity/piletesting"
                 },
                 {
@@ -339,7 +339,7 @@
               "slug": "groundhog/api/deepfoundations/lateralresponse",
               "children": [
                 {
-                  "title": "lateral",
+                  "title": "Pile lateral behaviour",
                   "slug": "groundhog/api/deepfoundations/lateralresponse/lateral"
                 }
               ]
@@ -355,7 +355,7 @@
               "slug": "groundhog/api/excavations/basic"
             },
             {
-              "title": "soilmix",
+              "title": "Soilmix",
               "slug": "groundhog/api/excavations/soilmix"
             }
           ]

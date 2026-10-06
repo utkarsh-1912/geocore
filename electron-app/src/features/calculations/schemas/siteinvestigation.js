@@ -559,6 +559,32 @@ export const siteInvestigationSchemas = {
             },
         ]
     },
+    icl_scl_burland: {
+        inputs: [
+            {
+                name: 'eL',
+                label: 'Void ratio at liquid limit (e_L)',
+                type: 'float',
+                required: true,
+                description: 'Void ratio at the liquid limit (e_L) [-] - Suggested range: 0.6 <= eL <= 4.5',
+                unit: '-'
+            },
+            {
+                name: 'e100star_override',
+                label: 'e*100 override',
+                type: 'float',
+                description: 'Void ratio on the ICL at 100 kPa (e*_100), if measured; otherwise calculated from e_L [-] (optional)',
+                unit: '-'
+            },
+            {
+                name: 'Ccstaroverride',
+                label: 'C*c override',
+                type: 'float',
+                description: 'Intrinsic compression index (C*_c), if measured; otherwise calculated from e_L [-] (optional)',
+                unit: '-'
+            },
+        ]
+    },
     cv_liquidlimit_usnavy: {
         inputs: [
             {

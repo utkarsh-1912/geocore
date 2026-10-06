@@ -4,20 +4,24 @@ slug: groundhog/api/deepfoundations/axialcapacity/lcpc
 section: Groundhog API Reference
 description: 'API reference for groundhog.deepfoundations.axialcapacity.lcpc: 0 functions, 1 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/lcpc.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/deepfoundations/axialcapacity/lcpc.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.deepfoundations.axialcapacity.lcpc
+upstream_docs_urls:
+- https://groundhog.readthedocs.io/en/main/piles/lcpc.html
 geocore_available: true
 geocore_functions:
 - LCPC_Calculation
 ---
 
-Module `groundhog.deepfoundations.axialcapacity.lcpc` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/lcpc.py).
+Module `groundhog.deepfoundations.axialcapacity.lcpc` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/deepfoundations/axialcapacity/lcpc.py).
+
+Upstream documentation: [LCPC pile resistance calculations](https://groundhog.readthedocs.io/en/main/piles/lcpc.html).
 
 **Classes:** [`LCPCAxcapCalculation`](#lcpcaxcapcalculation)
 
@@ -111,7 +115,9 @@ Calculates the depth-averaged cone resistance for the LCPC method.
 
 The average cone resistance in an window 1.5OD above and below the considered is calculated. Points which are higher than 1.3 times the average or lower than 0.7 time the average are left out. The average is recalculated using only the left-over points
 
-*Figure `images/qc_averaging.png` is referenced by the docstring but is not present in the groundhog repository at `v0.15.0`.*
+![Cone resistance averaging procedure](/docs/assets/groundhog/docs/piles/images/qc_averaging.png)
+
+*Cone resistance averaging procedure*
 
 :returns Stored the average cone resistance for the end bearing calculation in the dataframe with calculation data
 
@@ -135,7 +141,9 @@ $$
 
 The factors are taken according to the soil and pile type specified.
 
-*Figure `images/base_factors_LCPC.png` is referenced by the docstring but is not present in the groundhog repository at `v0.15.0`.*
+![Factors on average cone resistance for base resistance calculation.](/docs/assets/groundhog/docs/piles/images/base_factors_LCPC.png)
+
+*Factors on average cone resistance for base resistance calculation.*
 
 **Returns**
 
@@ -163,7 +171,9 @@ $$
 
 The factors are taken according to the soil and pile type specified.
 
-*Figure `images/shaft_factors_LCPC.png` is referenced by the docstring but is not present in the groundhog repository at `v0.15.0`.*
+![Factors on cone resistance for shaft resistance calculation.](/docs/assets/groundhog/docs/piles/images/shaft_factors_LCPC.png)
+
+*Factors on cone resistance for shaft resistance calculation.*
 
 **Parameters**
 

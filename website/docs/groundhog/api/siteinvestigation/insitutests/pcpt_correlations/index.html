@@ -448,7 +448,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
-    <span>piletesting</span>  </a>
+    <span>Pile testing functionality</span>  </a>
 
   </li>
   <li>
@@ -498,7 +498,7 @@
         <ul>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
-    <span>lateral</span>  </a>
+    <span>Pile lateral behaviour</span>  </a>
 
   </li>
 </ul>
@@ -522,7 +522,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/excavations/soilmix/">
-    <span>soilmix</span>  </a>
+    <span>Soilmix</span>  </a>
 
   </li>
 </ul>
@@ -809,8 +809,8 @@
 
     <h1>PCPT functions</h1>
     <p class="docs-meta">
-<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.siteinvestigation.insitutests.pcpt_correlations</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
-    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.insitutests.pcpt_correlations</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/pcpt_correlations.py">View source</a>.</p>
+<span class="badge badge--accent">groundhog 0.16.0</span><code>groundhog.siteinvestigation.insitutests.pcpt_correlations</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.insitutests.pcpt_correlations</code> (groundhog 0.16.0). <a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/insitutests/pcpt_correlations.py">View source</a>.</p>
 <p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_functions.html">PCPT functions</a>.</p>
 <p><strong>Functions:</strong> <a href="#pcpt_normalisations"><code>pcpt_normalisations</code></a>, <a href="#soilclass_robertson"><code>soilclass_robertson</code></a>, <a href="#ic_soilclass_robertson"><code>ic_soilclass_robertson</code></a>, <a href="#behaviourindex_pcpt_robertsonwride"><code>behaviourindex_pcpt_robertsonwride</code></a>, <a href="#gmax_sand_rixstokoe"><code>gmax_sand_rixstokoe</code></a>, <a href="#gmax_clay_maynerix"><code>gmax_clay_maynerix</code></a>, <a href="#relativedensity_ncsand_baldi"><code>relativedensity_ncsand_baldi</code></a>, <a href="#relativedensity_ocsand_baldi"><code>relativedensity_ocsand_baldi</code></a>, <a href="#coneresistance_ocsand_baldi"><code>coneresistance_ocsand_baldi</code></a>, <a href="#relativedensity_sand_jamiolkowski"><code>relativedensity_sand_jamiolkowski</code></a>, <a href="#frictionangle_sand_kulhawymayne"><code>frictionangle_sand_kulhawymayne</code></a>, <a href="#undrainedshearstrength_clay_radlunne"><code>undrainedshearstrength_clay_radlunne</code></a>, <a href="#frictionangle_overburden_kleven"><code>frictionangle_overburden_kleven</code></a>, <a href="#ocr_cpt_lunne"><code>ocr_cpt_lunne</code></a>, <a href="#sensitivity_frictionratio_lunne"><code>sensitivity_frictionratio_lunne</code></a>, <a href="#unitweight_mayne"><code>unitweight_mayne</code></a>, <a href="#vs_ic_robertsoncabal"><code>vs_ic_robertsoncabal</code></a>, <a href="#k0_sand_mayne"><code>k0_sand_mayne</code></a>, <a href="#gmax_cpt_puechen"><code>gmax_cpt_puechen</code></a>, <a href="#behaviourindex_pcpt_nonnormalised"><code>behaviourindex_pcpt_nonnormalised</code></a>, <a href="#drainedsecantmodulus_sand_bellotti"><code>drainedsecantmodulus_sand_bellotti</code></a>, <a href="#gmax_voidratio_maynerix"><code>gmax_voidratio_maynerix</code></a>, <a href="#vs_cpt_andrus"><code>vs_cpt_andrus</code></a>, <a href="#vs_cpt_hegazymayne"><code>vs_cpt_hegazymayne</code></a>, <a href="#vs_cpt_longdonohue"><code>vs_cpt_longdonohue</code></a>, <a href="#soiltype_vs_longodonohue"><code>soiltype_vs_longodonohue</code></a>, <a href="#vs_cptd50_karrayetal"><code>vs_cptd50_karrayetal</code></a>, <a href="#vs_cpt_wrideetal"><code>vs_cpt_wrideetal</code></a>, <a href="#vs_cpt_tonniandsimonini"><code>vs_cpt_tonniandsimonini</code></a>, <a href="#vs_cpt_mcgannetal"><code>vs_cpt_mcgannetal</code></a>, <a href="#constrainedmodulus_pcpt_robertson"><code>constrainedmodulus_pcpt_robertson</code></a>, <a href="#vs_stressdependent_stuyts"><code>vs_stressdependent_stuyts</code></a>, <a href="#dissipation_test_teh"><code>dissipation_test_teh</code></a>, <a href="#clippingdepths_qc1n_tianlehane"><code>clippingdepths_qc1N_tianlehane</code></a></p>
 <p><a id="pcpt_normalisations"></a></p>
@@ -4672,7 +4672,7 @@ q_{c1N,0} = \eta q_{c1N,S} \\
         <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
           <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
         <ul class="attribution__links">
-<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/insitutests/pcpt_correlations.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_functions.html">Upstream documentation</a></li>        </ul>
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/insitutests/pcpt_correlations.py">Upstream source (groundhog 0.16.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/pcpt_functions.html">Upstream documentation</a></li>        </ul>
 <p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
     </aside>
 

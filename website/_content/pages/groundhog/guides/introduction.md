@@ -4,11 +4,11 @@ slug: groundhog/guides/introduction
 section: Groundhog Guides
 description: Introduction to groundhog, the geotechnical Python library behind GeoCore's calculations.
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/index.rst
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/index.rst
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Converted from reStructuredText. Sphinx-only 'Indices and tables' section removed; 'Installation requirements' and 'Support groundhog' (pip install steps and a donation/consultancy pitch) removed as not applicable to GeoCore, which already bundles groundhog.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/
@@ -72,7 +72,7 @@ The code for the validation of function input has been adopted from the python-e
 
 groundhog. A general-purpose Python library for geotechnical engineering.
 
-> Copyright (C) 2020  Bruno Stuyts
+> Copyright (C) 2020, 2020, 2021, 2022, 2023, 2024, 2025 Bruno Stuyts
 >
 > This program is free software: you can redistribute it and/or modify
 > it under the terms of the GNU General Public License as published by

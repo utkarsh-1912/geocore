@@ -4,11 +4,11 @@ slug: groundhog/api/deepfoundations/axialcapacity/debeer
 section: Groundhog API Reference
 description: 'API reference for groundhog.deepfoundations.axialcapacity.debeer: 0 functions, 1 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/debeer.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/deepfoundations/axialcapacity/debeer.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.deepfoundations.axialcapacity.debeer
@@ -19,7 +19,7 @@ geocore_functions:
 - DeBeerCalculation
 ---
 
-Module `groundhog.deepfoundations.axialcapacity.debeer` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/deepfoundations/axialcapacity/debeer.py).
+Module `groundhog.deepfoundations.axialcapacity.debeer` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/deepfoundations/axialcapacity/debeer.py).
 
 Upstream documentation: [De Beer and Eurocode 7 calculations](https://groundhog.readthedocs.io/en/main/piles/debeer.html).
 
@@ -511,7 +511,7 @@ $$
 $$
 
 $$
-R_s = \kappa_s \cdot \Sum \left( \alpha_{s,i} \cdot h_i \cdot q_{s,i} \right)
+R_s = \kappa_s \cdot \sum \left( \alpha_{s,i} \cdot h_i \cdot q_{s,i} \right)
 $$
 
 $$

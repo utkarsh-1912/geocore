@@ -4,11 +4,11 @@ slug: groundhog/guides/topics/piles
 section: Groundhog Guides
 description: Overview of groundhog's pile calculations functionality with links to the API reference.
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/piles_toplevel.rst
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/piles_toplevel.rst
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/piles/piles_toplevel.html
@@ -168,6 +168,14 @@ Upstream page: [Koppejan pile resistance calculations](https://groundhog.readthe
 
 Class [`KoppejanCalculation`](/docs/groundhog/api/deepfoundations/axialcapacity/koppejan#koppejancalculation).
 
+## LCPC pile resistance calculations
+
+Upstream page: [LCPC pile resistance calculations](https://groundhog.readthedocs.io/en/main/piles/lcpc.html)
+
+### LCPCAxcapCalculation
+
+Class [`LCPCAxcapCalculation`](/docs/groundhog/api/deepfoundations/axialcapacity/lcpc#lcpcaxcapcalculation).
+
 ## Pile settlement
 
 Upstream page: [Pile settlement](https://groundhog.readthedocs.io/en/main/piles/settlement.html)
@@ -185,6 +193,44 @@ F_{mob} = a + \frac{b-a}{1 + \left( \frac{\delta_{pile} \ \text{or} \ \delta_{pi
 $$
 
 *Reference:* Syllabus geotechnics
+
+## Pile lateral behaviour
+
+Upstream page: [Pile lateral behaviour](https://groundhog.readthedocs.io/en/main/piles/lateral.html)
+
+Module [`groundhog.deepfoundations.lateralresponse.lateral`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral). Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.
+
+### reinforced_circularsection_inertia
+
+Function [`reinforced_circularsection_inertia`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral#reinforced_circularsection_inertia).
+
+Calculates the combined inertia of a circular section, reinforced with rebar rods at equal center-to-center distance from the concrete section center.
+
+$$
+I_s = \frac{\pi d^4}{64}
+$$
+
+$$
+A_s = \frac{\pi d^2}{4}
+$$
+
+*3 more formulas in the full reference.*
+
+### pilegroupeffect_reesevanimpe
+
+Function [`pilegroupeffect_reesevanimpe`](/docs/groundhog/api/deepfoundations/lateralresponse/lateral#pilegroupeffect_reesevanimpe).
+
+When piles are arranged in a group, they influence one another and the lateral reaction for a given displacement can be less than that for a single pile.
+
+$$
+\text{Side by side piles: } e = 0.64 \left( \frac{s}{D} \right)^{0.34} \text{ for } 1 \leq \frac{s}{D} \leq 3.75, e=1 \text{ for } \frac{s}{D} > 3.75
+$$
+
+$$
+\text{In-line leading piles: } e = 0.70 \left( \frac{s}{D} \right)^{0.26} \text{ for } 1 \leq \frac{s}{D} \leq 4 , e=1 \text{ for } \frac{s}{D} > 4
+$$
+
+*3 more formulas in the full reference.*
 
 ## Cavity expansion methods for cast in-situ piles
 
@@ -270,3 +316,23 @@ $$
 *4 more formulas in the full reference.*
 
 *Reference:* Zeevaert - De Beer (1966)
+
+## Pile testing functionality
+
+Upstream page: [Pile testing functionality](https://groundhog.readthedocs.io/en/main/piles/piletesting.html)
+
+Module [`groundhog.deepfoundations.axialcapacity.piletesting`](/docs/groundhog/api/deepfoundations/axialcapacity/piletesting). Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.
+
+### piletest_chinkondler
+
+Function [`piletest_chinkondler`](/docs/groundhog/api/deepfoundations/axialcapacity/piletesting#piletest_chinkondler).
+
+Extrapotates a pile head load-settlement curve based on the procedure by Chin-Kondler.
+
+$$
+\frac{s}{Q} = a + b \cdot s
+$$
+
+$$
+Q_{\text{ult}} = 1 / b
+$$

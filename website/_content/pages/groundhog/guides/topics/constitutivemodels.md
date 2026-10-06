@@ -4,11 +4,11 @@ slug: groundhog/guides/topics/constitutivemodels
 section: Groundhog Guides
 description: Overview of groundhog's constitutive models functionality with links to the API reference.
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/constitutivemodels/constitutivemodels_toplevel.rst
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/constitutivemodels/constitutivemodels_toplevel.rst
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/constitutivemodels/constitutivemodels_toplevel.html
@@ -22,7 +22,7 @@ This page follows the structure of the upstream groundhog documentation for *Con
 
 Upstream page: [General](https://groundhog.readthedocs.io/en/main/constitutivemodels/general.html)
 
-*groundhog 0.15.0 has no functions or classes under this heading, and the upstream page has no text. GeoCore does not add unsourced theory here.*
+*groundhog 0.16.0 has no functions or classes under this heading, and the upstream page has no text. GeoCore does not add unsourced theory here.*
 
 ## Cohesionless materials
 
@@ -40,10 +40,10 @@ Class for setting up the equations for the hardening soil model and performing f
 
 Upstream page: [Cohesive](https://groundhog.readthedocs.io/en/main/constitutivemodels/cohesive.html)
 
-*groundhog 0.15.0 has no functions or classes under this heading, and the upstream page has no text. GeoCore does not add unsourced theory here.*
+*groundhog 0.16.0 has no functions or classes under this heading, and the upstream page has no text. GeoCore does not add unsourced theory here.*
 
 ## Rock
 
 Upstream page: [Rock](https://groundhog.readthedocs.io/en/main/constitutivemodels/rock.html)
 
-*groundhog 0.15.0 has no functions or classes under this heading, and the upstream page has no text. GeoCore does not add unsourced theory here.*
+*groundhog 0.16.0 has no functions or classes under this heading, and the upstream page has no text. GeoCore does not add unsourced theory here.*

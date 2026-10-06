@@ -4,11 +4,11 @@ slug: groundhog/tutorials/demo-de-beer-pile-resistance-calculation
 section: Groundhog Guides
 description: In this demo, the pile shaft and base resistance is calculation according to De Beer's method (Belgian practice).
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Demo%20-%20De%20Beer%20pile%20resistance%20calculation.ipynb
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Demo%20-%20De%20Beer%20pile%20resistance%20calculation.ipynb
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted, with a short note on how to run this in GeoCore prepended.'
 notebook: notebooks/Demo - De Beer pile resistance calculation.ipynb
@@ -114,6 +114,7 @@ The unit base resistance at 12m depth can be interpolated from the results:
 
 ```python
 qb = np.interp(12, debeer_cpt.depth_qb, debeer_cpt.qb)
+qb
 ```
 
 The construction can be plotted:

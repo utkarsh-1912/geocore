@@ -4,11 +4,11 @@ slug: groundhog/api/pipelinescables/stability/penetration
 section: Groundhog API Reference
 description: 'API reference for groundhog.pipelinescables.stability.penetration: 6 functions, 0 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/pipelinescables/stability/penetration.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/pipelinescables/stability/penetration.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.pipelinescables.stability.penetration
@@ -24,7 +24,7 @@ geocore_functions:
 - penetratedarea
 ---
 
-Module `groundhog.pipelinescables.stability.penetration` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/pipelinescables/stability/penetration.py).
+Module `groundhog.pipelinescables.stability.penetration` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/pipelinescables/stability/penetration.py).
 
 Upstream documentation: [Pipeline and cable penetration](https://groundhog.readthedocs.io/en/main/pipelinescables/penetration.html).
 
@@ -177,7 +177,7 @@ $$
 | Parameter | Unit | Suggested range | Default | Description |
 |---|---|---|---|---|
 | `diameter` | m | 0.01 <= diameter <= 2.0 | required | Pipeline diameter ($D$) |
-| `undrained_shear_strength` | kPa | 0.0 <= undrained_shear_strength <= 500.0 | required | Undrained shear strength at the seabed ($s_(u,z=0}$) |
+| `undrained_shear_strength` | kPa | 0.0 <= undrained_shear_strength <= 500.0 | required | Undrained shear strength at the seabed ($s_{u,z=0}$) |
 | `k_su` | kPa/m | 0.0 <= k_su <= 10.0 | required | Linear rate of undrained shear strength increase ($\rho$) |
 | `gamma_eff` | kN/m3 | 2.0 <= gamma_eff <= 12.0 | required | Submerged unit weight ($kN/m3$) |
 | `penetration` | m | 0.0 <= penetration <= 2.0 | required | Penetration depth for which the pipeline penetration is calculated ($m$) |
@@ -191,7 +191,7 @@ Dictionary with the following keys:
 | Key | Unit | Description |
 |---|---|---|
 | `F [-]` | - | Roughness correction factor [-] ($F$) |
-| `z_su0 [m]` | m | Reference z-level for depth effects [m] ($z_(s_{u,0}}$) |
+| `z_su0 [m]` | m | Reference z-level for depth effects [m] ($z_{s_{u,0}}$) |
 | `B [m]` | m | Contact width [m] ($B$) |
 | `su0 [kPa]` | kPa | Undrained shear strength at the reference z-level [kPa] ($s_{u,0}$) |
 | `Abm [m2]` | m2 | Penetrated cross-sectional area of the pipe [m2] ($A_{bm}$) |

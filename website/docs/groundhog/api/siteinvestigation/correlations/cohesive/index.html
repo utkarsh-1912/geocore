@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cohesive soils — GeoCore Docs</title>
-  <meta name="description" content="API reference for groundhog.siteinvestigation.correlations.cohesive: 5 functions, 0 classes.">
+  <meta name="description" content="API reference for groundhog.siteinvestigation.correlations.cohesive: 6 functions, 0 classes.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoCore">
   <meta property="og:title" content="Cohesive soils — GeoCore Docs">
-  <meta property="og:description" content="API reference for groundhog.siteinvestigation.correlations.cohesive: 5 functions, 0 classes.">
+  <meta property="og:description" content="API reference for groundhog.siteinvestigation.correlations.cohesive: 6 functions, 0 classes.">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
@@ -448,7 +448,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
-    <span>piletesting</span>  </a>
+    <span>Pile testing functionality</span>  </a>
 
   </li>
   <li>
@@ -498,7 +498,7 @@
         <ul>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
-    <span>lateral</span>  </a>
+    <span>Pile lateral behaviour</span>  </a>
 
   </li>
 </ul>
@@ -522,7 +522,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/excavations/soilmix/">
-    <span>soilmix</span>  </a>
+    <span>Soilmix</span>  </a>
 
   </li>
 </ul>
@@ -809,10 +809,10 @@
 
     <h1>Cohesive soils</h1>
     <p class="docs-meta">
-<span class="badge badge--accent">groundhog 0.15.0</span><code>groundhog.siteinvestigation.correlations.cohesive</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
-    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.correlations.cohesive</code> (groundhog 0.15.0). <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/correlations/cohesive.py">View source</a>.</p>
+<span class="badge badge--accent">groundhog 0.16.0</span><code>groundhog.siteinvestigation.correlations.cohesive</code><span class="gc-badge gc-available">Available in GeoCore</span>    </p>
+    <div class="prose docs-body"><p>Module <code>groundhog.siteinvestigation.correlations.cohesive</code> (groundhog 0.16.0). <a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/correlations/cohesive.py">View source</a>.</p>
 <p>Upstream documentation: <a href="https://groundhog.readthedocs.io/en/main/site_investigation/cohesive.html">Cohesive soils</a>.</p>
-<p><strong>Functions:</strong> <a href="#compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></a>, <a href="#frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></a>, <a href="#cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></a>, <a href="#gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></a>, <a href="#k0_plasticity_kenney"><code>k0_plasticity_kenney</code></a></p>
+<p><strong>Functions:</strong> <a href="#compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></a>, <a href="#frictionangle_plasticityindex"><code>frictionangle_plasticityindex</code></a>, <a href="#cv_liquidlimit_usnavy"><code>cv_liquidlimit_usnavy</code></a>, <a href="#gmax_plasticityocr_andersen"><code>gmax_plasticityocr_andersen</code></a>, <a href="#k0_plasticity_kenney"><code>k0_plasticity_kenney</code></a>, <a href="#icl_scl_burland"><code>icl_scl_burland</code></a></p>
 <p><a id="compressionindex_watercontent_koppula"></a></p>
 <h2 id="compressionindex_watercontent_koppula"><code>compressionindex_watercontent_koppula</code></h2>
 <p><span class="gc-badge gc-available" data-geocore-function="compressionindex_watercontent_koppula">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#compressionindex_watercontent_koppula">Site investigation › Correlations: Cohesive soils › Koppula (1981) Compression Index</a></p>
@@ -1012,7 +1012,7 @@
 <p>Calculates the small-strain shear modulus for cohesive soils based on plasticity index, effective overburden pressure and OCR. The proposed relation is calibrated on a number of shear wave velocity tests on clay samples with different plasticity index and OCR.</p>
 <div class="math-display">\[\frac{G_{max}}{\sigma_{ref}^{\prime}} = \left( 30 + \frac{75}{\frac{I_p}{100} + 0.03} \right) \cdot OCR^{0.5}\]</div>
 <div class="math-display">\[\sigma_{ref}^{\prime} = P_a \cdot \left( \sigma_{0}^{\prime}  / P_a \right)^{0.9}\]</div>
-<p><em>Figure <code>images/gmax_plasticityocr_andersen_1.png</code> is referenced by the docstring but is not present in the groundhog repository at <code>v0.15.0</code>.</em></p>
+<p><em>Figure <code>images/gmax_plasticityocr_andersen_1.png</code> is referenced by the docstring but is not present in the groundhog repository at <code>dc7d554c6b8986bae30f518304546a911b1ca5ab</code>.</em></p>
 <p><strong>Parameters</strong></p>
 <div class="table-wrap"><table class="data">
 <thead>
@@ -1218,6 +1218,192 @@
 <ul>
 <li>Alpan (1967) THE EMPIRICAL EVALUATION OF THE COEFFICIENT K0 AND K0R. Soils and Foundations. Volume 7, Issue 1</li>
 </ul>
+<p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p>
+<p><a id="icl_scl_burland"></a></p>
+<h2 id="icl_scl_burland"><code>icl_scl_burland</code></h2>
+<p><span class="gc-badge gc-available" data-geocore-function="icl_scl_burland">Available in GeoCore</span> <a href="/docs/geocore/using/modules/#icl_scl_burland">Site investigation › Correlations: Cohesive soils › Burland (1990) Intrinsic &amp; Sedimentation Compression Lines</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">icl_scl_burland</span><span class="p">(</span>
+    <span class="n">eL</span><span class="p">,</span>
+    <span class="n">coefficient_1</span><span class="o">=</span><span class="mf">2.45</span><span class="p">,</span>
+    <span class="n">coefficient_2</span><span class="o">=-</span><span class="mf">1.285</span><span class="p">,</span>
+    <span class="n">coefficient_3</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>
+    <span class="n">coefficient_4</span><span class="o">=</span><span class="mf">0.109</span><span class="p">,</span>
+    <span class="n">coefficient_5</span><span class="o">=</span><span class="mf">0.679</span><span class="p">,</span>
+    <span class="n">coefficient_6</span><span class="o">=-</span><span class="mf">0.089</span><span class="p">,</span>
+    <span class="n">coefficient_7</span><span class="o">=</span><span class="mf">0.016</span><span class="p">,</span>
+    <span class="n">coefficient_8</span><span class="o">=</span><span class="mf">0.256</span><span class="p">,</span>
+    <span class="n">coefficient_9</span><span class="o">=-</span><span class="mf">0.04</span><span class="p">,</span>
+    <span class="n">e100star_override</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">Ccstaroverride</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Calculates the Intrinsic Compression Line (ICL), representing void ratios of clays deposited from a slurry (mixed at a water content of at least 125% of the liquid limit). The void ratios at different pressures are calculated. The ICL is a useful reference for any material as it represents the states of a fully destructured clay.</p>
+<p>The Sedimentation Compression Line (SCL) represents the state of a naturally deposited clay. Clays deposited in a very calm environment (slurrylike deposition) can have natural states below the SCL. Clays deposited in environments leading to high amounts of structure (e.g. quick clays) can plot well above the SCL.</p>
+<p>Note that the void ratio on the ICL for a pressure of 100kPa can be correlated from the liquid limit of the material. The correlation was developed based on measurements on numerous clays but the plasticity limits need to plot above the A-line for the correlation to apply. This correlation is included in the formulation, but this void ratio can also be specified directly.</p>
+<div class="math-display">\[I_v = \frac{e - e_{100}^*}{e_{100}^* - e_{1000}^*}\]</div>
+<div class="math-display">\[I_v = 2.45 - 1.285 \log \sigma_{v}^{\prime} + 0.015 \left(\log \sigma_{v}^{\prime} \right)^3\]</div>
+<div class="math-display">\[e = I_v \left( e_{100}^* - e_{1000}^* \right) + e_{100}^*\]</div>
+<div class="math-display">\[e_{100}^* = 0.109 + 0.679 e_L - 0.089 e_L^2 + 0.016 e_L^3\]</div>
+<div class="math-display">\[C_c^* = 0.256 e_L - 0.04\]</div>
+<p><img loading="lazy" decoding="async" alt="ICL and SCL with associated data based on Burland (1990)" src="/docs/assets/groundhog/docs/site_investigation/images/icl_scl_burland.png"></p>
+<p><em>ICL and SCL with associated data based on Burland (1990)</em></p>
+<p><strong>Parameters</strong></p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Suggested range</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eL</code></td>
+<td>-</td>
+<td>0.6 &lt;= eL &lt;= 4.5</td>
+<td>required</td>
+<td>Void ratio at the liquid limit (<span class="math">\(e_L\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_1</code></td>
+<td>-</td>
+<td></td>
+<td><code>2.45</code></td>
+<td>First calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_2</code></td>
+<td>-</td>
+<td></td>
+<td><code>-1.285</code></td>
+<td>Second calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_3</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.015</code></td>
+<td>Third calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_4</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.109</code></td>
+<td>Fourth calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_5</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.679</code></td>
+<td>Fifth calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_6</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.089</code></td>
+<td>Sixth calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_7</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.016</code></td>
+<td>Seventh calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_8</code></td>
+<td>-</td>
+<td></td>
+<td><code>0.256</code></td>
+<td>Eighth calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>coefficient_9</code></td>
+<td>-</td>
+<td></td>
+<td><code>-0.04</code></td>
+<td>Ninth calibration coefficient (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>e100star_override</code></td>
+<td>-</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Override value of void ratio on the ICL at 100kPa (<span class="math">\(-\)</span>)</td>
+</tr>
+<tr>
+<td><code>Ccstaroverride</code></td>
+<td>-</td>
+<td></td>
+<td><code>nan</code></td>
+<td>Override value of intrinsic compression index (<span class="math">\(-\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong></p>
+<p>Dictionary with the following keys:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Key</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ccstar [-]</code></td>
+<td>-</td>
+<td>Intrinsic compression index [-] (<span class="math">\(C_c^*\)</span>)</td>
+</tr>
+<tr>
+<td><code>e100star [-]</code></td>
+<td>-</td>
+<td>Intrinsic void ratio at 100kPa [-] (<span class="math">\(e_{100}^*\)</span>)</td>
+</tr>
+<tr>
+<td><code>pressures_icl [kPa]</code></td>
+<td>kPa</td>
+<td>Array with pressures for the ICL [kPa] (<span class="math">\(\sigma_v^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>pressures_scl [kPa]</code></td>
+<td>kPa</td>
+<td>Array with pressures for the SCL [kPa] (<span class="math">\(\sigma_v^{\prime}\)</span>)</td>
+</tr>
+<tr>
+<td><code>Iv_icl [-]</code></td>
+<td>-</td>
+<td>Iv values for ICL [-] (<span class="math">\(I_v\)</span>)</td>
+</tr>
+<tr>
+<td><code>Iv_scl [-]</code></td>
+<td>-</td>
+<td>Iv values for SCL [-] (<span class="math">\(I_v\)</span>)</td>
+</tr>
+<tr>
+<td><code>e_icl [-]</code></td>
+<td>-</td>
+<td>Void ratios for ICL [-] (<span class="math">\(e_{ICL}\)</span>)</td>
+</tr>
+<tr>
+<td><code>e_scl [-]</code></td>
+<td>-</td>
+<td>Void ratios for SCL [-] (<span class="math">\(e_{SCL}\)</span>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>References</strong></p>
+<ul>
+<li>Burland (1990). On the compressibility and shear strength of natural clays. Géotechnique.</li>
+</ul>
 <p><em>Input validation:</em> this function is wrapped by groundhog's <code>Validator</code>. Inputs outside the validation ranges raise a warning and, by default (<code>fail_silently=True</code>), the function returns its error output (typically <code>NaN</code> values) instead of raising.</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
@@ -1226,7 +1412,7 @@
         <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
           <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
         <ul class="attribution__links">
-<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/correlations/cohesive.py">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/cohesive.html">Upstream documentation</a></li>        </ul>
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/correlations/cohesive.py">Upstream source (groundhog 0.16.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/site_investigation/cohesive.html">Upstream documentation</a></li>        </ul>
 <p class="attribution__note"><strong>Edited by GeoCore:</strong> Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.</p>      </div>
     </aside>
 
@@ -1243,6 +1429,7 @@
       <li class="lvl-2"><a href="#cv_liquidlimit_usnavy">cv_liquidlimit_usnavy</a></li>
       <li class="lvl-2"><a href="#gmax_plasticityocr_andersen">gmax_plasticityocr_andersen</a></li>
       <li class="lvl-2"><a href="#k0_plasticity_kenney">k0_plasticity_kenney</a></li>
+      <li class="lvl-2"><a href="#icl_scl_burland">icl_scl_burland</a></li>
     </ul>
   </aside>
 </div>

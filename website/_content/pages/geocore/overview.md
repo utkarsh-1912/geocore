@@ -8,7 +8,7 @@ source_url: https://github.com/utkarsh-1912/geocore/blob/main/website/_content/g
 license: GPL-3.0
 author: Utkarsh Gupta
 attribution: GeoCore documentation by Utkarsh Gupta, licensed under the GNU GPL v3.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: false
 sources:
 - README.md
@@ -41,7 +41,7 @@ Every calculator documents its inputs with units and suggested ranges. The under
 ├───────────────────────────┬──────────────────────────────┤
 │ Electron + React frontend │ Python calculation engine    │
 │  - calculation forms      │  - FastAPI (local only)      │
-│  - results & Plotly charts│  - groundhog 0.15.0          │
+│  - results & Plotly charts│  - groundhog 0.16.0          │
 │  - soil profile manager   │  - input validation          │
 │  - GeoAI panel            │  - GeoAI agent & tools       │
 └─────────────┬─────────────┴───────────────┬──────────────┘

@@ -4,11 +4,11 @@ slug: groundhog/tutorials/demo-bro-cpt-retrieval
 section: Groundhog Guides
 description: 'groundhog tutorial notebook: Demo - BRO CPT retrieval.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/notebooks/Demo%20-%20BRO%20CPT%20retrieval.ipynb
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/notebooks/Demo%20-%20BRO%20CPT%20retrieval.ipynb
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: 'Converted from a Jupyter notebook: Markdown cells kept, code cells shown as code, text and image outputs reproduced, interactive Plotly/HTML outputs omitted, with a short note on how to run this in GeoCore prepended.'
 notebook: notebooks/Demo - BRO CPT retrieval.ipynb

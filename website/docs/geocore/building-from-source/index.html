@@ -448,7 +448,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
-    <span>piletesting</span>  </a>
+    <span>Pile testing functionality</span>  </a>
 
   </li>
   <li>
@@ -498,7 +498,7 @@
         <ul>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
-    <span>lateral</span>  </a>
+    <span>Pile lateral behaviour</span>  </a>
 
   </li>
 </ul>
@@ -522,7 +522,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/excavations/soilmix/">
-    <span>soilmix</span>  </a>
+    <span>Soilmix</span>  </a>
 
   </li>
 </ul>
@@ -877,8 +877,10 @@ npm<span class="w"> </span>run<span class="w"> </span>dist:linux<span class="w">
 python<span class="w"> </span>website/_build/build.py
 </code></pre></div>
 
-<p>The groundhog reference pages, guides and tutorials are extracted from groundhog itself. To refresh them, clone groundhog at the tag of the installed version and run the extractor before the build:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--branch<span class="w"> </span>v0.15.0<span class="w"> </span>https://github.com/snakesonabrain/groundhog.git<span class="w"> </span>&lt;tmp&gt;/groundhog
+<p>The groundhog reference pages, guides and tutorials are extracted from groundhog itself: the API reference from the groundhog installed in <code>python-backend/venv</code>, the guides and tutorials from a clone of the groundhog repository. Both must be at the commit pinned in <code>python-backend/requirements.txt</code>; GeoCore uses modules that are not in the 0.15.0 release.</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>python-backend/requirements.txt<span class="w">   </span><span class="c1"># in the backend venv</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/snakesonabrain/groundhog.git<span class="w"> </span>&lt;tmp&gt;/groundhog
+git<span class="w"> </span>-C<span class="w"> </span>&lt;tmp&gt;/groundhog<span class="w"> </span>checkout<span class="w"> </span>dc7d554c6b8986bae30f518304546a911b1ca5ab
 python<span class="w"> </span>website/_content/extract_docs.py<span class="w"> </span>--groundhog-repo<span class="w"> </span>&lt;tmp&gt;/groundhog
 </code></pre></div>
 

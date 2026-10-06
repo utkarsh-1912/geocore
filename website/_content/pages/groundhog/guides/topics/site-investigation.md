@@ -4,11 +4,11 @@ slug: groundhog/guides/topics/site-investigation
 section: Groundhog Guides
 description: Overview of groundhog's site investigation functionality with links to the API reference.
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/site_investigation/site_investigation_toplevel.rst
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/site_investigation/site_investigation_toplevel.rst
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/site_investigation/site_investigation_toplevel.html
@@ -383,6 +383,24 @@ I_p = -281 \log_{10} \left( 1.85 \lambda \right)
 $$
 
 *Reference:* Alpan (1967) THE EMPIRICAL EVALUATION OF THE COEFFICIENT K0 AND K0R. Soils and Foundations. Volume 7, Issue 1
+
+#### icl_scl_burland
+
+Function [`icl_scl_burland`](/docs/groundhog/api/siteinvestigation/correlations/cohesive#icl_scl_burland).
+
+Calculates the Intrinsic Compression Line (ICL), representing void ratios of clays deposited from a slurry (mixed at a water content of at least 125% of the liquid limit).
+
+$$
+I_v = \frac{e - e_{100}^*}{e_{100}^* - e_{1000}^*}
+$$
+
+$$
+I_v = 2.45 - 1.285 \log \sigma_{v}^{\prime} + 0.015 \left(\log \sigma_{v}^{\prime} \right)^3
+$$
+
+*3 more formulas in the full reference.*
+
+*Reference:* Burland (1990). On the compressibility and shear strength of natural clays. Géotechnique.
 
 ### Cohesionless soils
 

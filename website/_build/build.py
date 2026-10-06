@@ -113,9 +113,10 @@ DOMAINS: List[Dict[str, Any]] = [
     },
 ]
 
-# Snapshot used only if function_manifest.json cannot be read (220 functions, Groundhog 0.15.0).
+# Snapshot used only if function_manifest.json cannot be read (221 functions, Groundhog 0.16.0 at the
+# commit pinned in python-backend/requirements.txt).
 _FALLBACK_COUNTS = {
-    "siteinvestigation": 86, "soildynamics": 40, "general": 27, "shallowfoundations": 26,
+    "siteinvestigation": 87, "soildynamics": 40, "general": 27, "shallowfoundations": 26,
     "deepfoundations": 20, "pipelinescables": 6, "excavations": 5, "consolidation": 4,
     "constitutivemodels": 3, "standards": 3,
 }
@@ -181,6 +182,16 @@ def load_app_version() -> str:
         return json.loads((REPO / "electron-app" / "package.json").read_text(encoding="utf-8"))["version"]
     except (OSError, KeyError, ValueError):
         return ""
+
+
+def load_groundhog_version() -> str:
+    """Version of the groundhog GeoCore ships, as recorded by the docs extractor."""
+    path = WEBSITE / docs_content.CONTENT_DIRNAME / "groundhog" / "api.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))["groundhog_version"]
+    except (OSError, KeyError, ValueError) as exc:
+        _warn(f"could not read the groundhog version from {path} ({exc}); using snapshot 0.16.0")
+        return "0.16.0"
 
 
 def load_json(name: str, default: Any) -> Any:
@@ -434,7 +445,7 @@ def build() -> None:
         "models": models,
         "model_min_mb": min((m["size_mb"] for m in models), default=0),
         "model_max_mb": max((m["size_mb"] for m in models), default=0),
-        "groundhog_version": "0.15.0",
+        "groundhog_version": load_groundhog_version(),
         "privacy_updated": LAST_UPDATED_PRIVACY,
         "year": _dt.date.today().year,
         "docs_nav": docs_nav,

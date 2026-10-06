@@ -448,7 +448,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
-    <span>piletesting</span>  </a>
+    <span>Pile testing functionality</span>  </a>
 
   </li>
   <li>
@@ -498,7 +498,7 @@
         <ul>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
-    <span>lateral</span>  </a>
+    <span>Pile lateral behaviour</span>  </a>
 
   </li>
 </ul>
@@ -522,7 +522,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/excavations/soilmix/">
-    <span>soilmix</span>  </a>
+    <span>Soilmix</span>  </a>
 
   </li>
 </ul>
@@ -808,7 +808,7 @@
 
     <h1>Pile calculations</h1>
     <p class="docs-meta">
-<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+<span class="badge badge--accent">groundhog 0.16.0</span>    </p>
     <div class="prose docs-body"><blockquote>
 <p><strong>Adapted from groundhog's own documentation.</strong> Inside GeoCore, these functions run through the <a href="/docs/geocore/using/modules/">calculation catalogue</a> or through <strong>GeoAI</strong>, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself.</p>
 </blockquote>
@@ -877,6 +877,10 @@
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/koppejan.html">Koppejan pile resistance calculations</a></p>
 <h3 id="koppejancalculation">KoppejanCalculation</h3>
 <p>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/#koppejancalculation"><code>KoppejanCalculation</code></a>.</p>
+<h2 id="lcpc-pile-resistance-calculations">LCPC pile resistance calculations</h2>
+<p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/lcpc.html">LCPC pile resistance calculations</a></p>
+<h3 id="lcpcaxcapcalculation">LCPCAxcapCalculation</h3>
+<p>Class <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/#lcpcaxcapcalculation"><code>LCPCAxcapCalculation</code></a>.</p>
 <h2 id="pile-settlement">Pile settlement</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/settlement.html">Pile settlement</a></p>
 <p>Module <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/"><code>groundhog.deepfoundations.axialresponse.settlement</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
@@ -885,6 +889,21 @@
 <p>Calculates the pile settlement curve for pile shaft and pile base from empirical trends established based on axial pile load tests.</p>
 <div class="math-display">\[F_{mob} = a + \frac{b-a}{1 + \left( \frac{\delta_{pile} \ \text{or} \ \delta_{pile}/D}{c} \right)^d}\]</div>
 <p><em>Reference:</em> Syllabus geotechnics</p>
+<h2 id="pile-lateral-behaviour">Pile lateral behaviour</h2>
+<p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/lateral.html">Pile lateral behaviour</a></p>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/"><code>groundhog.deepfoundations.lateralresponse.lateral</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="reinforced_circularsection_inertia">reinforced_circularsection_inertia</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/#reinforced_circularsection_inertia"><code>reinforced_circularsection_inertia</code></a>.</p>
+<p>Calculates the combined inertia of a circular section, reinforced with rebar rods at equal center-to-center distance from the concrete section center.</p>
+<div class="math-display">\[I_s = \frac{\pi d^4}{64}\]</div>
+<div class="math-display">\[A_s = \frac{\pi d^2}{4}\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
+<h3 id="pilegroupeffect_reesevanimpe">pilegroupeffect_reesevanimpe</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/#pilegroupeffect_reesevanimpe"><code>pilegroupeffect_reesevanimpe</code></a>.</p>
+<p>When piles are arranged in a group, they influence one another and the lateral reaction for a given displacement can be less than that for a single pile.</p>
+<div class="math-display">\[\text{Side by side piles: } e = 0.64 \left( \frac{s}{D} \right)^{0.34} \text{ for } 1 \leq \frac{s}{D} \leq 3.75, e=1 \text{ for } \frac{s}{D} &gt; 3.75\]</div>
+<div class="math-display">\[\text{In-line leading piles: } e = 0.70 \left( \frac{s}{D} \right)^{0.26} \text{ for } 1 \leq \frac{s}{D} \leq 4 , e=1 \text{ for } \frac{s}{D} &gt; 4\]</div>
+<p><em>3 more formulas in the full reference.</em></p>
 <h2 id="cavity-expansion-methods-for-cast-in-situ-piles">Cavity expansion methods for cast in-situ piles</h2>
 <p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/cavityexpansion.html">Cavity expansion methods for cast in-situ piles</a></p>
 <p>Module <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/"><code>groundhog.deepfoundations.boreholestability.cavityexpansion</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
@@ -919,7 +938,15 @@
 <div class="math-display">\[\frac{d \sigma_v^{\prime}}{dz} = \gamma^{\prime} - \tau \cdot \frac{O_s}{A}\]</div>
 <div class="math-display">\[m = K_0 \cdot \tan \delta^{\prime} \cdot \frac{O_s}{A}\]</div>
 <p><em>4 more formulas in the full reference.</em></p>
-<p><em>Reference:</em> Zeevaert - De Beer (1966)</p></div>
+<p><em>Reference:</em> Zeevaert - De Beer (1966)</p>
+<h2 id="pile-testing-functionality">Pile testing functionality</h2>
+<p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/piles/piletesting.html">Pile testing functionality</a></p>
+<p>Module <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/"><code>groundhog.deepfoundations.axialcapacity.piletesting</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="piletest_chinkondler">piletest_chinkondler</h3>
+<p>Function <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/#piletest_chinkondler"><code>piletest_chinkondler</code></a>.</p>
+<p>Extrapotates a pile head load-settlement curve based on the procedure by Chin-Kondler.</p>
+<div class="math-display">\[\frac{s}{Q} = a + b \cdot s\]</div>
+<div class="math-display">\[Q_{\text{ult}} = 1 / b\]</div></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=6b6f069f14#i-scale"></use></svg>
@@ -927,7 +954,7 @@
         <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
           <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
         <ul class="attribution__links">
-<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/piles/piles_toplevel.rst">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/piles/piles_toplevel.html">Upstream documentation</a></li>        </ul>
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/piles/piles_toplevel.rst">Upstream source (groundhog 0.16.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/piles/piles_toplevel.html">Upstream documentation</a></li>        </ul>
 <p class="attribution__note"><strong>Edited by GeoCore:</strong> Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.</p>      </div>
     </aside>
 
@@ -955,14 +982,21 @@
       <li class="lvl-3"><a href="#debeercalculation">DeBeerCalculation</a></li>
       <li class="lvl-2"><a href="#koppejan-pile-resistance-calculations">Koppejan pile resistance calculations</a></li>
       <li class="lvl-3"><a href="#koppejancalculation">KoppejanCalculation</a></li>
+      <li class="lvl-2"><a href="#lcpc-pile-resistance-calculations">LCPC pile resistance calculations</a></li>
+      <li class="lvl-3"><a href="#lcpcaxcapcalculation">LCPCAxcapCalculation</a></li>
       <li class="lvl-2"><a href="#pile-settlement">Pile settlement</a></li>
       <li class="lvl-3"><a href="#pile_settlement_curves">pile_settlement_curves</a></li>
+      <li class="lvl-2"><a href="#pile-lateral-behaviour">Pile lateral behaviour</a></li>
+      <li class="lvl-3"><a href="#reinforced_circularsection_inertia">reinforced_circularsection_inertia</a></li>
+      <li class="lvl-3"><a href="#pilegroupeffect_reesevanimpe">pilegroupeffect_reesevanimpe</a></li>
       <li class="lvl-2"><a href="#cavity-expansion-methods-for-cast-in-situ-piles">Cavity expansion methods for cast in-situ piles</a></li>
       <li class="lvl-3"><a href="#stress_cylinder_elastic_isotropic">stress_cylinder_elastic_isotropic</a></li>
       <li class="lvl-3"><a href="#expansion_tresca_thicksphere">expansion_tresca_thicksphere</a></li>
       <li class="lvl-3"><a href="#expansion_cylinder_tresca">expansion_cylinder_tresca</a></li>
       <li class="lvl-2"><a href="#negative-skin-friction">Negative skin friction</a></li>
       <li class="lvl-3"><a href="#negativeskinfriction_pilegroup_zeevaertdebeer">negativeskinfriction_pilegroup_zeevaertdebeer</a></li>
+      <li class="lvl-2"><a href="#pile-testing-functionality">Pile testing functionality</a></li>
+      <li class="lvl-3"><a href="#piletest_chinkondler">piletest_chinkondler</a></li>
     </ul>
   </aside>
 </div>

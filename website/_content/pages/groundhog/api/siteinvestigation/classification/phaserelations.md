@@ -4,11 +4,11 @@ slug: groundhog/api/siteinvestigation/classification/phaserelations
 section: Groundhog API Reference
 description: 'API reference for groundhog.siteinvestigation.classification.phaserelations: 14 functions, 0 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/classification/phaserelations.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/classification/phaserelations.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.siteinvestigation.classification.phaserelations
@@ -32,7 +32,7 @@ geocore_functions:
 - watercontent_voidratio
 ---
 
-Module `groundhog.siteinvestigation.classification.phaserelations` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/classification/phaserelations.py).
+Module `groundhog.siteinvestigation.classification.phaserelations` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/classification/phaserelations.py).
 
 Upstream documentation: [Phase relations](https://groundhog.readthedocs.io/en/main/site_investigation/phaserelations.html).
 

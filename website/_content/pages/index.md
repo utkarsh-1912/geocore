@@ -8,7 +8,7 @@ source_url: https://github.com/utkarsh-1912/geocore/blob/main/website/_content/e
 license: GPL-3.0
 author: Utkarsh Gupta
 attribution: GeoCore documentation by Utkarsh Gupta, licensed under the GNU GPL v3.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: false
 ---
 
@@ -18,6 +18,6 @@ GeoCore is an offline geotechnical engineering workstation built on the groundho
 - [Using GeoCore](/docs/using-geocore) — Run calculations, manage soil profiles and export results.
 - [GeoAI](/docs/geoai) — GeoAI, the local geotechnical assistant inside GeoCore.
 - [Groundhog Guides](/docs/groundhog/guides) — Narrative documentation and tutorials from the groundhog project.
-- [Groundhog API Reference](/docs/groundhog/api) — API reference for groundhog 0.15.0.
+- [Groundhog API Reference](/docs/groundhog/api) — API reference for groundhog 0.16.0.
 - [Changelog](/docs/changelog) — GeoCore's own release history.
 - [License & Credits](/docs/license) — Licences and attribution for GeoCore and the groundhog documentation it includes.

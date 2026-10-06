@@ -1202,6 +1202,48 @@ def mohrcoulomb_triaxial_wrapper(function_id, args):
         return {"error": f"Mohr-Coulomb Triaxial Error: {str(e)}"}
 
 
+def icl_scl_burland_wrapper(args):
+    """
+    Wrapper for groundhog.siteinvestigation.correlations.cohesive.icl_scl_burland.
+    Plots the Intrinsic and Sedimentation Compression Lines (void ratio vs log vertical effective
+    stress) and tabulates C*c and e*100; the generic view would print the curves as raw arrays.
+    """
+    from groundhog.siteinvestigation.correlations.cohesive import icl_scl_burland
+    import plotly.graph_objects as go
+
+    kwargs = {'eL': float(args.get('eL'))}
+    for name in ('e100star_override', 'Ccstaroverride'):
+        value = args.get(name)
+        if value not in (None, ''):
+            kwargs[name] = float(value)
+    try:
+        res = icl_scl_burland(**kwargs)
+        if res.get('Ccstar [-]') is None or not np.isfinite(res['Ccstar [-]']):
+            return {"error": "The compression lines could not be calculated for these inputs (see warnings)."}
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=list(res['pressures_icl [kPa]']), y=list(res['e_icl [-]']),
+                                 mode='lines', name='Intrinsic Compression Line (ICL)'))
+        fig.add_trace(go.Scatter(x=list(res['pressures_scl [kPa]']), y=list(res['e_scl [-]']),
+                                 mode='lines+markers', name='Sedimentation Compression Line (SCL)'))
+        fig.update_layout(xaxis=dict(type='log', title="Vertical effective stress σ'v [kPa]"),
+                          yaxis=dict(title='Void ratio e [-]'))
+        fig_json = json.loads(plotly.io.to_json(fig))
+        rows = [
+            {"Output": "Intrinsic compression index C*c", "Value": _sanitize(res['Ccstar [-]']), "Unit": "-"},
+            {"Output": "Void ratio on the ICL at 100 kPa e*100", "Value": _sanitize(res['e100star [-]']), "Unit": "-"},
+        ]
+        return {
+            "type": "multi_plot",
+            "plots": [{"title": "Burland (1990) compression lines", "data": fig_json['data'], "layout": fig_json['layout']}],
+            "results": {"type": "dataframe", "data": rows, "columns": ["Output", "Value", "Unit"]},
+            "message": "Intrinsic and sedimentation compression lines calculated.",
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return {"error": f"ICL/SCL Burland Error: {str(e)}"}
+
+
 def reinforced_circularsection_inertia_wrapper(args):
     """
     Wrapper for reinforced_circularsection_inertia.

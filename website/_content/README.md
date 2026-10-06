@@ -8,8 +8,9 @@ never the generated files.
 ## Re-running the extractor
 
 ```bash
-# one-off: clone groundhog at the tag matching the installed version (outside the repo)
-git clone --depth 1 --branch v0.15.0 https://github.com/snakesonabrain/groundhog.git <tmp>/groundhog
+# one-off: clone groundhog at the commit pinned in python-backend/requirements.txt (outside the repo)
+git clone https://github.com/snakesonabrain/groundhog.git <tmp>/groundhog
+git -C <tmp>/groundhog checkout dc7d554c6b8986bae30f518304546a911b1ca5ab
 
 # from the repository root
 python-backend/venv/Scripts/python.exe website/_content/extract_docs.py --groundhog-repo <tmp>/groundhog
@@ -71,7 +72,7 @@ Front-matter fields (always present unless noted):
 | `source_url` | Upstream source: GitHub file at the groundhog tag, or the GeoCore source file. |
 | `license` | `GPL-3.0-or-later` (groundhog) or `GPL-3.0` (GeoCore). |
 | `author`, `attribution` | Author and a ready-to-print attribution sentence. |
-| `groundhog_version` | groundhog version the content matches (`0.15.0`). |
+| `groundhog_version` | groundhog version the content matches (`0.16.0`, the commit pinned in `python-backend/requirements.txt`). |
 | `edited_by_geocore` | `true` when GeoCore converted/restructured upstream content. |
 | `geocore_edit_note` | What was changed (upstream pages only). |
 | `upstream_docs_url` / `upstream_docs_urls` | Matching readthedocs page(s), when known. |
@@ -105,7 +106,7 @@ table `UI_ALIASES` in the extractor (mirrors special cases in `python-backend/co
 
 ## Counts (last run)
 
-See `build-info.json`. At groundhog 0.15.0: 45 API modules, 198 functions, 22 classes, 183 methods;
+See `build-info.json`. At groundhog 0.16.0 (pinned commit): 45 API modules, 199 functions, 22 classes, 183 methods;
 204 GeoCore calculators, all linked to their groundhog item; 32 upstream narrative pages (introduction,
 getting started, 10 topic pages, 20 notebook tutorials); 16 GeoCore pages (15 hand-written, including the
 Changelog, + generated catalogue). groundhog's own release history (`CHANGES.txt`) is not imported; the
@@ -135,4 +136,5 @@ Changelog page links to it upstream instead.
   Plotly/HTML outputs are replaced by a note. Most upstream notebooks are stored without outputs.
 - Upstream `automodule`/`autoclass` directives become links to the API pages. Topic pages keep the upstream
   toctree hierarchy.
-- Readthedocs links point at `/en/main/`, which may be newer than 0.15.0; `source_url` pins the tag.
+- Readthedocs links point at `/en/main/`, which may be newer than the shipped groundhog; `source_url` pins the
+  ref recorded in `groundhog/api.json` (`source_ref`: the installed commit, or `v<version>` for a release install).

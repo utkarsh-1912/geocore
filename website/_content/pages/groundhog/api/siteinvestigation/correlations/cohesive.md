@@ -2,13 +2,13 @@
 title: Cohesive soils
 slug: groundhog/api/siteinvestigation/correlations/cohesive
 section: Groundhog API Reference
-description: 'API reference for groundhog.siteinvestigation.correlations.cohesive: 5 functions, 0 classes.'
+description: 'API reference for groundhog.siteinvestigation.correlations.cohesive: 6 functions, 0 classes.'
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/correlations/cohesive.py
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/correlations/cohesive.py
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Generated from the docstrings of the installed groundhog package; RST converted to Markdown and parameter/return tables derived from the docstrings.
 module: groundhog.siteinvestigation.correlations.cohesive
@@ -20,14 +20,15 @@ geocore_functions:
 - cv_liquidlimit_usnavy
 - frictionangle_plasticityindex
 - gmax_plasticityocr_andersen
+- icl_scl_burland
 - k0_plasticity_kenney
 ---
 
-Module `groundhog.siteinvestigation.correlations.cohesive` (groundhog 0.15.0). [View source](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/groundhog/siteinvestigation/correlations/cohesive.py).
+Module `groundhog.siteinvestigation.correlations.cohesive` (groundhog 0.16.0). [View source](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/groundhog/siteinvestigation/correlations/cohesive.py).
 
 Upstream documentation: [Cohesive soils](https://groundhog.readthedocs.io/en/main/site_investigation/cohesive.html).
 
-**Functions:** [`compressionindex_watercontent_koppula`](#compressionindex_watercontent_koppula), [`frictionangle_plasticityindex`](#frictionangle_plasticityindex), [`cv_liquidlimit_usnavy`](#cv_liquidlimit_usnavy), [`gmax_plasticityocr_andersen`](#gmax_plasticityocr_andersen), [`k0_plasticity_kenney`](#k0_plasticity_kenney)
+**Functions:** [`compressionindex_watercontent_koppula`](#compressionindex_watercontent_koppula), [`frictionangle_plasticityindex`](#frictionangle_plasticityindex), [`cv_liquidlimit_usnavy`](#cv_liquidlimit_usnavy), [`gmax_plasticityocr_andersen`](#gmax_plasticityocr_andersen), [`k0_plasticity_kenney`](#k0_plasticity_kenney), [`icl_scl_burland`](#icl_scl_burland)
 
 <a id="compressionindex_watercontent_koppula"></a>
 
@@ -177,7 +178,7 @@ $$
 \sigma_{ref}^{\prime} = P_a \cdot \left( \sigma_{0}^{\prime}  / P_a \right)^{0.9}
 $$
 
-*Figure `images/gmax_plasticityocr_andersen_1.png` is referenced by the docstring but is not present in the groundhog repository at `v0.15.0`.*
+*Figure `images/gmax_plasticityocr_andersen_1.png` is referenced by the docstring but is not present in the groundhog repository at `dc7d554c6b8986bae30f518304546a911b1ca5ab`.*
 
 **Parameters**
 
@@ -259,5 +260,97 @@ Dictionary with the following keys:
 **References**
 
 - Alpan (1967) THE EMPIRICAL EVALUATION OF THE COEFFICIENT K0 AND K0R. Soils and Foundations. Volume 7, Issue 1
+
+*Input validation:* this function is wrapped by groundhog's `Validator`. Inputs outside the validation ranges raise a warning and, by default (`fail_silently=True`), the function returns its error output (typically `NaN` values) instead of raising.
+
+<a id="icl_scl_burland"></a>
+
+## `icl_scl_burland`
+
+<span class="gc-badge gc-available" data-geocore-function="icl_scl_burland">Available in GeoCore</span> [Site investigation › Correlations: Cohesive soils › Burland (1990) Intrinsic & Sedimentation Compression Lines](/docs/geocore/using/modules#icl_scl_burland)
+
+```python
+icl_scl_burland(
+    eL,
+    coefficient_1=2.45,
+    coefficient_2=-1.285,
+    coefficient_3=0.015,
+    coefficient_4=0.109,
+    coefficient_5=0.679,
+    coefficient_6=-0.089,
+    coefficient_7=0.016,
+    coefficient_8=0.256,
+    coefficient_9=-0.04,
+    e100star_override=nan,
+    Ccstaroverride=nan,
+    **kwargs,
+)
+```
+
+Calculates the Intrinsic Compression Line (ICL), representing void ratios of clays deposited from a slurry (mixed at a water content of at least 125% of the liquid limit). The void ratios at different pressures are calculated. The ICL is a useful reference for any material as it represents the states of a fully destructured clay.
+
+The Sedimentation Compression Line (SCL) represents the state of a naturally deposited clay. Clays deposited in a very calm environment (slurrylike deposition) can have natural states below the SCL. Clays deposited in environments leading to high amounts of structure (e.g. quick clays) can plot well above the SCL.
+
+Note that the void ratio on the ICL for a pressure of 100kPa can be correlated from the liquid limit of the material. The correlation was developed based on measurements on numerous clays but the plasticity limits need to plot above the A-line for the correlation to apply. This correlation is included in the formulation, but this void ratio can also be specified directly.
+
+$$
+I_v = \frac{e - e_{100}^*}{e_{100}^* - e_{1000}^*}
+$$
+
+$$
+I_v = 2.45 - 1.285 \log \sigma_{v}^{\prime} + 0.015 \left(\log \sigma_{v}^{\prime} \right)^3
+$$
+
+$$
+e = I_v \left( e_{100}^* - e_{1000}^* \right) + e_{100}^*
+$$
+
+$$
+e_{100}^* = 0.109 + 0.679 e_L - 0.089 e_L^2 + 0.016 e_L^3
+$$
+
+$$
+C_c^* = 0.256 e_L - 0.04
+$$
+
+![ICL and SCL with associated data based on Burland (1990)](/docs/assets/groundhog/docs/site_investigation/images/icl_scl_burland.png)
+
+*ICL and SCL with associated data based on Burland (1990)*
+
+**Parameters**
+
+| Parameter | Unit | Suggested range | Default | Description |
+|---|---|---|---|---|
+| `eL` | - | 0.6 <= eL <= 4.5 | required | Void ratio at the liquid limit ($e_L$) |
+| `coefficient_1` | - |  | `2.45` | First calibration coefficient ($-$) |
+| `coefficient_2` | - |  | `-1.285` | Second calibration coefficient ($-$) |
+| `coefficient_3` | - |  | `0.015` | Third calibration coefficient ($-$) |
+| `coefficient_4` | - |  | `0.109` | Fourth calibration coefficient ($-$) |
+| `coefficient_5` | - |  | `0.679` | Fifth calibration coefficient ($-$) |
+| `coefficient_6` | - |  | `-0.089` | Sixth calibration coefficient ($-$) |
+| `coefficient_7` | - |  | `0.016` | Seventh calibration coefficient ($-$) |
+| `coefficient_8` | - |  | `0.256` | Eighth calibration coefficient ($-$) |
+| `coefficient_9` | - |  | `-0.04` | Ninth calibration coefficient ($-$) |
+| `e100star_override` | - |  | `nan` | Override value of void ratio on the ICL at 100kPa ($-$) |
+| `Ccstaroverride` | - |  | `nan` | Override value of intrinsic compression index ($-$) |
+
+**Returns**
+
+Dictionary with the following keys:
+
+| Key | Unit | Description |
+|---|---|---|
+| `Ccstar [-]` | - | Intrinsic compression index [-] ($C_c^*$) |
+| `e100star [-]` | - | Intrinsic void ratio at 100kPa [-] ($e_{100}^*$) |
+| `pressures_icl [kPa]` | kPa | Array with pressures for the ICL [kPa] ($\sigma_v^{\prime}$) |
+| `pressures_scl [kPa]` | kPa | Array with pressures for the SCL [kPa] ($\sigma_v^{\prime}$) |
+| `Iv_icl [-]` | - | Iv values for ICL [-] ($I_v$) |
+| `Iv_scl [-]` | - | Iv values for SCL [-] ($I_v$) |
+| `e_icl [-]` | - | Void ratios for ICL [-] ($e_{ICL}$) |
+| `e_scl [-]` | - | Void ratios for SCL [-] ($e_{SCL}$) |
+
+**References**
+
+- Burland (1990). On the compressibility and shear strength of natural clays. Géotechnique.
 
 *Input validation:* this function is wrapped by groundhog's `Validator`. Inputs outside the validation ranges raise a warning and, by default (`fail_silently=True`), the function returns its error output (typically `NaN` values) instead of raising.

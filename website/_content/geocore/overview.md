@@ -35,7 +35,7 @@ Every calculator documents its inputs with units and suggested ranges. The under
 ├───────────────────────────┬──────────────────────────────┤
 │ Electron + React frontend │ Python calculation engine    │
 │  - calculation forms      │  - FastAPI (local only)      │
-│  - results & Plotly charts│  - groundhog 0.15.0          │
+│  - results & Plotly charts│  - groundhog 0.16.0          │
 │  - soil profile manager   │  - input validation          │
 │  - GeoAI panel            │  - GeoAI agent & tools       │
 └─────────────┬─────────────┴───────────────┬──────────────┘

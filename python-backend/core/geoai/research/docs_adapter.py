@@ -194,6 +194,12 @@ class DocsAdapter:
         return str(self._load_api().get("groundhog_version", "unknown"))
 
     @property
+    def source_ref(self) -> str:
+        """Git ref of the shipped groundhog (a pinned commit, or the release tag)."""
+        api = self._load_api()
+        return str(api.get("source_ref") or f"v{self.groundhog_version}")
+
+    @property
     def license(self) -> str:
         return str(self._load_api().get("license", ""))
 
@@ -310,7 +316,7 @@ class DocsAdapter:
             methods=[m["name"] for m in member.get("methods", [])] if src is member else [],
             validated=bool(src.get("validated")),
             docs_url=f"/docs/{_module_slug(mod['module'])}/#{anchor}",
-            source_url=(f"{_GH_REPO_URL}/blob/v{self.groundhog_version}/{mod.get('source_path', '')}#L{line}"
+            source_url=(f"{_GH_REPO_URL}/blob/{self.source_ref}/{mod.get('source_path', '')}#L{line}"
                         if mod.get("source_path") else ""),
         )
 

@@ -20,6 +20,7 @@ License: GPL v3
 from __future__ import annotations
 
 import html
+import json
 import re
 import shutil
 from pathlib import Path
@@ -29,7 +30,6 @@ import markdown
 import yaml
 
 CONTENT_DIRNAME = "_content"
-GROUNDHOG_TAG = "v0.15.0"
 REQUIRED_FIELDS = ("title", "slug", "section", "description", "origin", "source_url", "license",
                    "author", "attribution", "groundhog_version", "edited_by_geocore")
 
@@ -41,6 +41,13 @@ REQUIRED_FIELDS = ("title", "slug", "section", "description", "origin", "source_
 def slug_url(slug: str) -> str:
     """Site-root-relative URL for a docs slug."""
     return "docs/" if slug == "index" else f"docs/{slug}/"
+
+
+def groundhog_source_ref(content_dir: Path) -> str:
+    """Git ref every upstream link must use: the commit (or tag) of the groundhog GeoCore ships,
+    recorded by the extractor in groundhog/api.json."""
+    api = json.loads((content_dir / "groundhog" / "api.json").read_text(encoding="utf-8"))
+    return api.get("source_ref") or f"v{api['groundhog_version']}"
 
 
 def load_nav(content_dir: Path) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
@@ -291,6 +298,7 @@ def mirror_assets(src: Path, dst: Path) -> Tuple[int, int]:
 def build_pages(content_dir: Path, website: Path, problems: List[str]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
     """Return (docs_nav, pages, home_page). Pages are dicts following the docs page contract."""
     home, nav = load_nav(content_dir)
+    source_ref = groundhog_source_ref(content_dir)
     pages_dir = content_dir / "pages"
     asset_src = content_dir / "groundhog" / "assets"
     known = {p.relative_to(pages_dir).with_suffix("").as_posix() for p in pages_dir.rglob("*.md")}
@@ -318,9 +326,9 @@ def build_pages(content_dir: Path, website: Path, problems: List[str]) -> Tuple[
         body_html = rewrite_links(body_html, known, asset_src, problems, slug)
         body_html = decorate_html(body_html)
         title_text, title_html = inline_title(str(meta["title"]))
-        if meta.get("origin") == "groundhog" and GROUNDHOG_TAG not in str(meta.get("source_url", "")) \
+        if meta.get("origin") == "groundhog" and f"/{source_ref}/" not in str(meta.get("source_url", "")) \
                 and "/tree/" not in str(meta.get("source_url", "")):
-            problems.append(f"{slug}: source_url not pinned to {GROUNDHOG_TAG}")
+            problems.append(f"{slug}: source_url not pinned to {source_ref}")
         toc_full = toc
         # Long API pages: keep the right-hand TOC readable (h2 only when there are many entries).
         if len(toc) > 40:

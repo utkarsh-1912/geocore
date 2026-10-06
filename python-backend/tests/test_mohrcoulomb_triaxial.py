@@ -37,7 +37,7 @@ def test_compression_returns_failure_state(registry):
     vals = _values(registry.execute_function(
         "constitutive", "mohrcoulomb_triaxial_compression", {"sigma_3": 100, "cohesion": 0, "phi": 30}))
     assert vals["sigma_3_f"] == (100, "kPa")
-    # Closed form is 300 kPa; groundhog 0.15.0 returns 301.57 kPa for this case (its own construction).
+    # Closed form is 300 kPa; groundhog (0.16.0, pinned commit) returns 301.57 kPa for this case (its own construction).
     assert vals["sigma_1_f"][0] == pytest.approx(300.0, rel=0.01)
     assert vals["Failure angle"][1] == "deg"
 

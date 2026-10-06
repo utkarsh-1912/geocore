@@ -112,6 +112,7 @@ export const GEOTECHNICAL_MODULES = [
                     { id: 'cv_liquidlimit_usnavy', title: 'US Navy Cv from Liquid Limit' },
                     { id: 'frictionangle_plasticityindex', title: 'Drained Friction Angle (from Plasticity Index)' },
                     { id: 'gmax_plasticityocr_andersen', title: 'Andersen Gmax (Plasticity & OCR)' },
+                    { id: 'icl_scl_burland', title: 'Burland (1990) Intrinsic & Sedimentation Compression Lines' },
                     { id: 'k0_plasticity_kenney', title: 'Kenney K0 (from Plasticity, Clay)' }
                 ]
             },

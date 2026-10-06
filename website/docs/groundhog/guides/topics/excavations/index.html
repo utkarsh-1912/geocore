@@ -448,7 +448,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
-    <span>piletesting</span>  </a>
+    <span>Pile testing functionality</span>  </a>
 
   </li>
   <li>
@@ -498,7 +498,7 @@
         <ul>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
-    <span>lateral</span>  </a>
+    <span>Pile lateral behaviour</span>  </a>
 
   </li>
 </ul>
@@ -522,7 +522,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/excavations/soilmix/">
-    <span>soilmix</span>  </a>
+    <span>Soilmix</span>  </a>
 
   </li>
 </ul>
@@ -808,7 +808,7 @@
 
     <h1>Excavations</h1>
     <p class="docs-meta">
-<span class="badge badge--accent">groundhog 0.15.0</span>    </p>
+<span class="badge badge--accent">groundhog 0.16.0</span>    </p>
     <div class="prose docs-body"><blockquote>
 <p><strong>Adapted from groundhog's own documentation.</strong> Inside GeoCore, these functions run through the <a href="/docs/geocore/using/modules/">calculation catalogue</a> or through <strong>GeoAI</strong>, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself.</p>
 </blockquote>
@@ -835,7 +835,23 @@
 <div class="math-display">\[K_{aR} = \frac{\cos (\beta - \eta) \sqrt{1 + \sin ^2 \varphi^{\prime} - 2 \sin \varphi^{\prime} \cos \omega_a }}{\cos ^2 \eta \left( \cos \beta + \sqrt{\sin ^2 \varphi^{\prime} - \sin ^2 \beta} \right)}\]</div>
 <div class="math-display">\[K_{pR} = \frac{\cos (\beta - \eta) \sqrt{1 + \sin ^2 \varphi^{\prime} + 2 \sin \varphi^{\prime} \cos \omega_p }}{\cos ^2 \eta \left( \cos \beta - \sqrt{\sin ^2 \varphi^{\prime} - \sin ^2 \beta} \right)}\]</div>
 <p><em>8 more formulas in the full reference.</em></p>
-<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p></div>
+<p><em>Reference:</em> Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.</p>
+<h2 id="soilmix">Soilmix</h2>
+<p>Upstream page: <a href="https://groundhog.readthedocs.io/en/main/excavations/soilmix.html">Soilmix</a></p>
+<p>Module <a href="/docs/groundhog/api/excavations/soilmix/"><code>groundhog.excavations.soilmix</code></a>. Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.</p>
+<h3 id="bendingstiffness_soilmix_method1">bendingstiffness_soilmix_method1</h3>
+<p>Function <a href="/docs/groundhog/api/excavations/soilmix/#bendingstiffness_soilmix_method1"><code>bendingstiffness_soilmix_method1</code></a>.</p>
+<p>Calculates the bending stiffness of a soilmix wall (for use in geotechnical retaining wall calculations) using the combined stiffness of reinforcements and the soilmix material itself.</p>
+<div class="math-display">\[EI\text{-eff} = \frac{EI\text{-1} + EI\text{-2}}{2}\]</div>
+<div class="math-display">\[EI\text{-1}=E_a I_a + E_{sm}(I_{sm} - I_a)=E_{sm} \left[ (n-1) I_a + I_{sm}\right] \quad \text{where } n=E_a/E_{sm}\]</div>
+<p><em>12 more formulas in the full reference.</em></p>
+<p><em>Reference:</em> Denies, N. and Huybrechts, N. (2016). Handboek soimix-wanden - Ontwerp en uitvoering, SBRCURnet</p>
+<h3 id="bendingstiffness_soilmix_method2">bendingstiffness_soilmix_method2</h3>
+<p>Function <a href="/docs/groundhog/api/excavations/soilmix/#bendingstiffness_soilmix_method2"><code>bendingstiffness_soilmix_method2</code></a>.</p>
+<p>Calculates the bending stiffness of a soilmix wall with internal reinforcements according to a simplified method.</p>
+<div class="math-display">\[EI\text{-eff} = E_a I_a + E_{sm} \left[ \frac{b_{c1} \cdot \left( \frac{h_{sm}}{2} \right)^3}{3} \right]\]</div>
+<div class="math-display">\[EI\text{-eff} / m^{\prime} = EI\text{-eff} / a=\frac{E_a I_a}{a} + E_{sm} \left[ \frac{\left( \frac{h_{sm}}{2} \right)^3}{3} \right]\]</div>
+<p><em>Reference:</em> Denies, N. and Huybrechts, N. (2016). Handboek soimix-wanden - Ontwerp en uitvoering, SBRCURnet</p></div>
 
     <aside class="attribution attribution--upstream" aria-label="Source and licence">
       <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=6b6f069f14#i-scale"></use></svg>
@@ -843,7 +859,7 @@
         <p><strong>Source:</strong> adapted from the groundhog documentation by Bruno Stuyts, licensed under the
           <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3 or later</a> (<code>GPL-3.0-or-later</code>).</p>
         <ul class="attribution__links">
-<li><a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/excavations/excavations_toplevel.rst">Upstream source (groundhog 0.15.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/excavations/excavations_toplevel.html">Upstream documentation</a></li>        </ul>
+<li><a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/excavations/excavations_toplevel.rst">Upstream source (groundhog 0.16.0)</a></li><li><a href="https://groundhog.readthedocs.io/en/main/excavations/excavations_toplevel.html">Upstream documentation</a></li>        </ul>
 <p class="attribution__note"><strong>Edited by GeoCore:</strong> Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.</p>      </div>
     </aside>
 
@@ -859,6 +875,9 @@
       <li class="lvl-3"><a href="#earthpressurecoefficients_frictionangle">earthpressurecoefficients_frictionangle</a></li>
       <li class="lvl-3"><a href="#earthpressurecoefficients_poncelet">earthpressurecoefficients_poncelet</a></li>
       <li class="lvl-3"><a href="#earthpressurecoefficients_rankine">earthpressurecoefficients_rankine</a></li>
+      <li class="lvl-2"><a href="#soilmix">Soilmix</a></li>
+      <li class="lvl-3"><a href="#bendingstiffness_soilmix_method1">bendingstiffness_soilmix_method1</a></li>
+      <li class="lvl-3"><a href="#bendingstiffness_soilmix_method2">bendingstiffness_soilmix_method2</a></li>
     </ul>
   </aside>
 </div>

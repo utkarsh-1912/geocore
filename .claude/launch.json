@@ -28,7 +28,7 @@
     },
     {
       "name": "backend",
-      "runtimeExecutable": "python",
+      "runtimeExecutable": "python-backend/venv/Scripts/python.exe",
       "runtimeArgs": ["python-backend/main.py"],
       "port": 8000
     }

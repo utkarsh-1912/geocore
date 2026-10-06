@@ -244,7 +244,7 @@
       "Pipelines and cables",
       "Pipeline and cable stability"
     ],
-    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 220 calculators, of which 206 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
+    "text": "GeoCore's calculation browser groups its calculators into the categories below. This list is generated from the application's module configuration: 221 calculators, of which 207 link to the groundhog function or class they run. General and utility functions Soil profiles and grids - SoilProfile (Soi"
   },
   {
     "slug": "geocore/using/parameter-overrides",
@@ -280,21 +280,21 @@
     "title": "Groundhog API Reference",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Reference documentation for every public function and class in groundhog 0.15.0, generated from the docstrings of the package that GeoCore ships. 45 modules, 198 functions, 22 classes and 183 public methods are documented. Items marked Available in GeoCore can be run from the GeoCore calculation for"
+    "text": "Reference documentation for every public function and class in groundhog 0.16.0, generated from the docstrings of the package that GeoCore ships. 45 modules, 199 functions, 22 classes and 183 public methods are documented. Items marked Available in GeoCore can be run from the GeoCore calculation for"
   },
   {
     "slug": "groundhog/api/consolidation",
     "title": "Consolidation",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.consolidation in groundhog 0.15.0. - Dissipation — groundhog Dissipation package: 1 documented modules. - Groundwater flow — groundhog Groundwater flow package: 1 documented modules."
+    "text": "Package groundhog.consolidation in groundhog 0.16.0. - Dissipation — groundhog Dissipation package: 1 documented modules. - Groundwater flow — groundhog Groundwater flow package: 1 documented modules."
   },
   {
     "slug": "groundhog/api/consolidation/dissipation",
     "title": "Dissipation",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.consolidation.dissipation in groundhog 0.15.0. - One-dimensional consolidation — API reference for groundhog.consolidation.dissipation.onedimensionalconsolidation: 2 functions, 1 classes. - pore_pressure_fourier: The function returns the excess pore pressure distribution at the spe"
+    "text": "Package groundhog.consolidation.dissipation in groundhog 0.16.0. - One-dimensional consolidation — API reference for groundhog.consolidation.dissipation.onedimensionalconsolidation: 2 functions, 1 classes. - pore_pressure_fourier: The function returns the excess pore pressure distribution at the spe"
   },
   {
     "slug": "groundhog/api/consolidation/dissipation/onedimensionalconsolidation",
@@ -313,14 +313,14 @@
       "pore_pressure_fourier",
       "consolidation_degree"
     ],
-    "text": "Module groundhog.consolidation.dissipation.onedimensionalconsolidation (groundhog 0.15.0). View source. Upstream documentation: One-dimensional consolidation. Classes: ConsolidationCalculation Functions: pore_pressure_fourier, consolidation_degree class ConsolidationCalculation Available in GeoCore "
+    "text": "Module groundhog.consolidation.dissipation.onedimensionalconsolidation (groundhog 0.16.0). View source. Upstream documentation: One-dimensional consolidation. Classes: ConsolidationCalculation Functions: pore_pressure_fourier, consolidation_degree class ConsolidationCalculation Available in GeoCore "
   },
   {
     "slug": "groundhog/api/consolidation/groundwaterflow",
     "title": "Groundwater flow",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.consolidation.groundwaterflow in groundhog 0.15.0. - Pumping tests — API reference for groundhog.consolidation.groundwaterflow.pumpingtests: 1 functions, 0 classes. - hydraulicconductivity_unconfinedaquifer: Calculates the hydraulic conductivity from observing two standpipes in the"
+    "text": "Package groundhog.consolidation.groundwaterflow in groundhog 0.16.0. - Pumping tests — API reference for groundhog.consolidation.groundwaterflow.pumpingtests: 1 functions, 0 classes. - hydraulicconductivity_unconfinedaquifer: Calculates the hydraulic conductivity from observing two standpipes in the"
   },
   {
     "slug": "groundhog/api/consolidation/groundwaterflow/pumpingtests",
@@ -329,14 +329,14 @@
     "headings": [
       "hydraulicconductivity_unconfinedaquifer"
     ],
-    "text": "Module groundhog.consolidation.groundwaterflow.pumpingtests (groundhog 0.15.0). View source. Upstream documentation: Pumping tests. Functions: hydraulicconductivity_unconfinedaquifer hydraulicconductivity_unconfinedaquifer Available in GeoCore Consolidation functions › Pumping tests › Hydraulic Cond"
+    "text": "Module groundhog.consolidation.groundwaterflow.pumpingtests (groundhog 0.16.0). View source. Upstream documentation: Pumping tests. Functions: hydraulicconductivity_unconfinedaquifer hydraulicconductivity_unconfinedaquifer Available in GeoCore Consolidation functions › Pumping tests › Hydraulic Cond"
   },
   {
     "slug": "groundhog/api/constitutivemodels",
     "title": "Constitutive models",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.constitutivemodels in groundhog 0.15.0. - cohesionless — API reference for groundhog.constitutivemodels.cohesionless: 0 functions, 1 classes. - HardeningSoil: Class for setting up the equations for the hardening soil model and performing fitting of drained triaxial tests. - general"
+    "text": "Package groundhog.constitutivemodels in groundhog 0.16.0. - cohesionless — API reference for groundhog.constitutivemodels.cohesionless: 0 functions, 1 classes. - HardeningSoil: Class for setting up the equations for the hardening soil model and performing fitting of drained triaxial tests. - general"
   },
   {
     "slug": "groundhog/api/constitutivemodels/cohesionless",
@@ -349,7 +349,7 @@
       "HardeningSoil.calculate_stiffnesses",
       "HardeningSoil.calculate_drainedtriaxial"
     ],
-    "text": "Module groundhog.constitutivemodels.cohesionless (groundhog 0.15.0). View source. Upstream documentation: Cohesionless materials. Classes: HardeningSoil class HardeningSoil Available in GeoCore Constitutive models › Cohesionless materials › Hardening Soil (Drained Triaxial) Class for setting up the "
+    "text": "Module groundhog.constitutivemodels.cohesionless (groundhog 0.16.0). View source. Upstream documentation: Cohesionless materials. Classes: HardeningSoil class HardeningSoil Available in GeoCore Constitutive models › Cohesionless materials › Hardening Soil (Drained Triaxial) Class for setting up the "
   },
   {
     "slug": "groundhog/api/constitutivemodels/general",
@@ -359,21 +359,21 @@
       "mohrcoulomb_triaxial_compression",
       "mohrcoulomb_triaxial_extension"
     ],
-    "text": "Module groundhog.constitutivemodels.general (groundhog 0.15.0). View source. Functions: mohrcoulomb_triaxial_compression, mohrcoulomb_triaxial_extension mohrcoulomb_triaxial_compression Available in GeoCore Constitutive models › General › Mohr-Coulomb Triaxial Compression Calculates Mohr's circle an"
+    "text": "Module groundhog.constitutivemodels.general (groundhog 0.16.0). View source. Functions: mohrcoulomb_triaxial_compression, mohrcoulomb_triaxial_extension mohrcoulomb_triaxial_compression Available in GeoCore Constitutive models › General › Mohr-Coulomb Triaxial Compression Calculates Mohr's circle an"
   },
   {
     "slug": "groundhog/api/deepfoundations",
     "title": "Deep foundations",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.deepfoundations in groundhog 0.15.0. - Axial capacity — groundhog Axial capacity package: 8 documented modules. - Axial response — groundhog Axial response package: 1 documented modules. - Borehole stability — groundhog Borehole stability package: 1 documented modules. - Lateral re"
+    "text": "Package groundhog.deepfoundations in groundhog 0.16.0. - Axial capacity — groundhog Axial capacity package: 8 documented modules. - Axial response — groundhog Axial response package: 1 documented modules. - Borehole stability — groundhog Borehole stability package: 1 documented modules. - Lateral re"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity",
     "title": "Axial capacity",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.deepfoundations.axialcapacity in groundhog 0.15.0. - axcap — API reference for groundhog.deepfoundations.axialcapacity.axcap: 0 functions, 1 classes. - AxCapCalculation - debeer — API reference for groundhog.deepfoundations.axialcapacity.debeer: 0 functions, 1 classes. - DeBeerCalc"
+    "text": "Package groundhog.deepfoundations.axialcapacity in groundhog 0.16.0. - axcap — API reference for groundhog.deepfoundations.axialcapacity.axcap: 0 functions, 1 classes. - AxCapCalculation - debeer — API reference for groundhog.deepfoundations.axialcapacity.debeer: 0 functions, 1 classes. - DeBeerCalc"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/axcap",
@@ -392,7 +392,7 @@
       "AxCapCalculation.plot_single_penetration",
       "AxCapCalculation.plot_all_penetrations"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.axcap (groundhog 0.15.0). View source. Upstream documentation: Axial capacity calculations. Classes: AxCapCalculation class AxCapCalculation Available in GeoCore Pile calculations › Axial capacity calculations › Axial Capacity (AxCap) AxCapCalculation._"
+    "text": "Module groundhog.deepfoundations.axialcapacity.axcap (groundhog 0.16.0). View source. Upstream documentation: Axial capacity calculations. Classes: AxCapCalculation class AxCapCalculation Available in GeoCore Pile calculations › Axial capacity calculations › Axial Capacity (AxCap) AxCapCalculation._"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/debeer",
@@ -416,7 +416,7 @@
       "DeBeerCalculation.set_shaft_base_factors",
       "DeBeerCalculation.calculate_pile_resistance"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.debeer (groundhog 0.15.0). View source. Upstream documentation: De Beer and Eurocode 7 calculations. Classes: DeBeerCalculation class DeBeerCalculation Available in GeoCore Pile calculations › De Beer and Eurocode 7 calculations › De Beer Calculation De"
+    "text": "Module groundhog.deepfoundations.axialcapacity.debeer (groundhog 0.16.0). View source. Upstream documentation: De Beer and Eurocode 7 calculations. Classes: DeBeerCalculation class DeBeerCalculation Available in GeoCore Pile calculations › De Beer and Eurocode 7 calculations › De Beer Calculation De"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/endbearing",
@@ -428,7 +428,7 @@
       "unitendbearing_sand_almhamre",
       "unitendbearing_clay_almhamre"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.endbearing (groundhog 0.15.0). View source. Upstream documentation: Unit end bearing. Functions: API_unit_end_bearing_clay, API_unit_end_bearing_sand_rp2geo, unitendbearing_sand_almhamre, unitendbearing_clay_almhamre API_unit_end_bearing_clay Available "
+    "text": "Module groundhog.deepfoundations.axialcapacity.endbearing (groundhog 0.16.0). View source. Upstream documentation: Unit end bearing. Functions: API_unit_end_bearing_clay, API_unit_end_bearing_sand_rp2geo, unitendbearing_sand_almhamre, unitendbearing_clay_almhamre API_unit_end_bearing_clay Available "
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/koppejan",
@@ -444,7 +444,7 @@
       "KoppejanCalculation.plot_shaft_resistance",
       "KoppejanCalculation.plot_baseconstruction"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.koppejan (groundhog 0.15.0). View source. Upstream documentation: Koppejan pile resistance calculations. Classes: KoppejanCalculation class KoppejanCalculation Available in GeoCore Pile calculations › Koppejan pile resistance › Koppejan Calculation Kopp"
+    "text": "Module groundhog.deepfoundations.axialcapacity.koppejan (groundhog 0.16.0). View source. Upstream documentation: Koppejan pile resistance calculations. Classes: KoppejanCalculation class KoppejanCalculation Available in GeoCore Pile calculations › Koppejan pile resistance › Koppejan Calculation Kopp"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/lcpc",
@@ -462,7 +462,7 @@
       "LCPCAxcapCalculation.plot_fs_qb",
       "LCPCAxcapCalculation.plot_axcap"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.lcpc (groundhog 0.15.0). View source. Classes: LCPCAxcapCalculation class LCPCAxcapCalculation Available in GeoCore Pile calculations › LCPC pile resistance › LCPC Calculation LCPCAxcapCalculation.__init__ Initializes a pile base resistance calculation "
+    "text": "Module groundhog.deepfoundations.axialcapacity.lcpc (groundhog 0.16.0). View source. Upstream documentation: LCPC pile resistance calculations. Classes: LCPCAxcapCalculation class LCPCAxcapCalculation Available in GeoCore Pile calculations › LCPC pile resistance › LCPC Calculation LCPCAxcapCalculati"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/negativeskinfriction",
@@ -471,16 +471,16 @@
     "headings": [
       "negativeskinfriction_pilegroup_zeevaertdebeer"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.negativeskinfriction (groundhog 0.15.0). View source. Upstream documentation: Negative skin friction. Functions: negativeskinfriction_pilegroup_zeevaertdebeer negativeskinfriction_pilegroup_zeevaertdebeer Available in GeoCore Pile calculations › Negativ"
+    "text": "Module groundhog.deepfoundations.axialcapacity.negativeskinfriction (groundhog 0.16.0). View source. Upstream documentation: Negative skin friction. Functions: negativeskinfriction_pilegroup_zeevaertdebeer negativeskinfriction_pilegroup_zeevaertdebeer Available in GeoCore Pile calculations › Negativ"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/piletesting",
-    "title": "piletesting",
+    "title": "Pile testing functionality",
     "section": "Groundhog API Reference",
     "headings": [
       "piletest_chinkondler"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.piletesting (groundhog 0.15.0). View source. Functions: piletest_chinkondler piletest_chinkondler Available in GeoCore Pile calculations › Pile testing functionality › Chin-Kondler Extrapolation Extrapotates a pile head load-settlement curve based on th"
+    "text": "Module groundhog.deepfoundations.axialcapacity.piletesting (groundhog 0.16.0). View source. Upstream documentation: Pile testing functionality. Functions: piletest_chinkondler piletest_chinkondler Available in GeoCore Pile calculations › Pile testing functionality › Chin-Kondler Extrapolation Extrap"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialcapacity/skinfriction",
@@ -492,14 +492,14 @@
       "unitskinfriction_sand_almhamre",
       "unitskinfriction_clay_almhamre"
     ],
-    "text": "Module groundhog.deepfoundations.axialcapacity.skinfriction (groundhog 0.15.0). View source. Upstream documentation: Unit skin friction. Functions: API_unit_shaft_friction_sand_rp2geo, API_unit_shaft_friction_clay, unitskinfriction_sand_almhamre, unitskinfriction_clay_almhamre API_unit_shaft_frictio"
+    "text": "Module groundhog.deepfoundations.axialcapacity.skinfriction (groundhog 0.16.0). View source. Upstream documentation: Unit skin friction. Functions: API_unit_shaft_friction_sand_rp2geo, API_unit_shaft_friction_clay, unitskinfriction_sand_almhamre, unitskinfriction_clay_almhamre API_unit_shaft_frictio"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialresponse",
     "title": "Axial response",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.deepfoundations.axialresponse in groundhog 0.15.0. - Pile settlement — API reference for groundhog.deepfoundations.axialresponse.settlement: 1 functions, 0 classes. - pile_settlement_curves: Calculates the pile settlement curve for pile shaft and pile base from empirical trends est"
+    "text": "Package groundhog.deepfoundations.axialresponse in groundhog 0.16.0. - Pile settlement — API reference for groundhog.deepfoundations.axialresponse.settlement: 1 functions, 0 classes. - pile_settlement_curves: Calculates the pile settlement curve for pile shaft and pile base from empirical trends est"
   },
   {
     "slug": "groundhog/api/deepfoundations/axialresponse/settlement",
@@ -508,14 +508,14 @@
     "headings": [
       "pile_settlement_curves"
     ],
-    "text": "Module groundhog.deepfoundations.axialresponse.settlement (groundhog 0.15.0). View source. Upstream documentation: Pile settlement. Functions: pile_settlement_curves pile_settlement_curves Available in GeoCore Pile calculations › Pile settlement › Pile Settlement Curves Calculates the pile settlemen"
+    "text": "Module groundhog.deepfoundations.axialresponse.settlement (groundhog 0.16.0). View source. Upstream documentation: Pile settlement. Functions: pile_settlement_curves pile_settlement_curves Available in GeoCore Pile calculations › Pile settlement › Pile Settlement Curves Calculates the pile settlemen"
   },
   {
     "slug": "groundhog/api/deepfoundations/boreholestability",
     "title": "Borehole stability",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.deepfoundations.boreholestability in groundhog 0.15.0. - Cavity expansion methods for cast in-situ piles — API reference for groundhog.deepfoundations.boreholestability.cavityexpansion: 3 functions, 0 classes. - stress_cylinder_elastic_isotropic: Calculates the radial and tangentia"
+    "text": "Package groundhog.deepfoundations.boreholestability in groundhog 0.16.0. - Cavity expansion methods for cast in-situ piles — API reference for groundhog.deepfoundations.boreholestability.cavityexpansion: 3 functions, 0 classes. - stress_cylinder_elastic_isotropic: Calculates the radial and tangentia"
   },
   {
     "slug": "groundhog/api/deepfoundations/boreholestability/cavityexpansion",
@@ -526,31 +526,31 @@
       "expansion_tresca_thicksphere",
       "expansion_cylinder_tresca"
     ],
-    "text": "Module groundhog.deepfoundations.boreholestability.cavityexpansion (groundhog 0.15.0). View source. Upstream documentation: Cavity expansion methods for cast in-situ piles. Functions: stress_cylinder_elastic_isotropic, expansion_tresca_thicksphere, expansion_cylinder_tresca stress_cylinder_elastic_i"
+    "text": "Module groundhog.deepfoundations.boreholestability.cavityexpansion (groundhog 0.16.0). View source. Upstream documentation: Cavity expansion methods for cast in-situ piles. Functions: stress_cylinder_elastic_isotropic, expansion_tresca_thicksphere, expansion_cylinder_tresca stress_cylinder_elastic_i"
   },
   {
     "slug": "groundhog/api/deepfoundations/lateralresponse",
     "title": "Lateral response",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.deepfoundations.lateralresponse in groundhog 0.15.0. - lateral — API reference for groundhog.deepfoundations.lateralresponse.lateral: 2 functions, 0 classes. - reinforced_circularsection_inertia: Calculates the combined inertia of a circular section, reinforced with rebar rods at e"
+    "text": "Package groundhog.deepfoundations.lateralresponse in groundhog 0.16.0. - Pile lateral behaviour — API reference for groundhog.deepfoundations.lateralresponse.lateral: 2 functions, 0 classes. - reinforced_circularsection_inertia: Calculates the combined inertia of a circular section, reinforced with "
   },
   {
     "slug": "groundhog/api/deepfoundations/lateralresponse/lateral",
-    "title": "lateral",
+    "title": "Pile lateral behaviour",
     "section": "Groundhog API Reference",
     "headings": [
       "reinforced_circularsection_inertia",
       "pilegroupeffect_reesevanimpe"
     ],
-    "text": "Module groundhog.deepfoundations.lateralresponse.lateral (groundhog 0.15.0). View source. Functions: reinforced_circularsection_inertia, pilegroupeffect_reesevanimpe reinforced_circularsection_inertia Available in GeoCore Pile calculations › Pile lateral behaviour › Reinforced Circular Section Inert"
+    "text": "Module groundhog.deepfoundations.lateralresponse.lateral (groundhog 0.16.0). View source. Upstream documentation: Pile lateral behaviour. Functions: reinforced_circularsection_inertia, pilegroupeffect_reesevanimpe reinforced_circularsection_inertia Available in GeoCore Pile calculations › Pile later"
   },
   {
     "slug": "groundhog/api/excavations",
     "title": "Excavations",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.excavations in groundhog 0.15.0. - Earth pressure coefficients — API reference for groundhog.excavations.basic: 3 functions, 0 classes. - earthpressurecoefficients_frictionangle: Calculates coefficient of active and passive earth pressure based on a construction with Mohr's circle."
+    "text": "Package groundhog.excavations in groundhog 0.16.0. - Earth pressure coefficients — API reference for groundhog.excavations.basic: 3 functions, 0 classes. - earthpressurecoefficients_frictionangle: Calculates coefficient of active and passive earth pressure based on a construction with Mohr's circle."
   },
   {
     "slug": "groundhog/api/excavations/basic",
@@ -561,24 +561,24 @@
       "earthpressurecoefficients_poncelet",
       "earthpressurecoefficients_rankine"
     ],
-    "text": "Module groundhog.excavations.basic (groundhog 0.15.0). View source. Upstream documentation: Earth pressure coefficients. Functions: earthpressurecoefficients_frictionangle, earthpressurecoefficients_poncelet, earthpressurecoefficients_rankine earthpressurecoefficients_frictionangle Available in GeoC"
+    "text": "Module groundhog.excavations.basic (groundhog 0.16.0). View source. Upstream documentation: Earth pressure coefficients. Functions: earthpressurecoefficients_frictionangle, earthpressurecoefficients_poncelet, earthpressurecoefficients_rankine earthpressurecoefficients_frictionangle Available in GeoC"
   },
   {
     "slug": "groundhog/api/excavations/soilmix",
-    "title": "soilmix",
+    "title": "Soilmix",
     "section": "Groundhog API Reference",
     "headings": [
       "bendingstiffness_soilmix_method1",
       "bendingstiffness_soilmix_method2"
     ],
-    "text": "Module groundhog.excavations.soilmix (groundhog 0.15.0). View source. Functions: bendingstiffness_soilmix_method1, bendingstiffness_soilmix_method2 bendingstiffness_soilmix_method1 Available in GeoCore Excavations › Soilmix › Bending Stiffness (Method 1) Calculates the bending stiffness of a soilmix"
+    "text": "Module groundhog.excavations.soilmix (groundhog 0.16.0). View source. Upstream documentation: Soilmix. Functions: bendingstiffness_soilmix_method1, bendingstiffness_soilmix_method2 bendingstiffness_soilmix_method1 Available in GeoCore Excavations › Soilmix › Bending Stiffness (Method 1) Calculates t"
   },
   {
     "slug": "groundhog/api/general",
     "title": "General",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.general in groundhog 0.15.0. - agsconversion — API reference for groundhog.general.agsconversion: 0 functions, 1 classes. - AGSConverter - Parameter mapping — API reference for groundhog.general.parameter_mapping: 6 functions, 0 classes. - map_depth_properties: Maps properties defi"
+    "text": "Package groundhog.general in groundhog 0.16.0. - agsconversion — API reference for groundhog.general.agsconversion: 0 functions, 1 classes. - AGSConverter - Parameter mapping — API reference for groundhog.general.parameter_mapping: 6 functions, 0 classes. - map_depth_properties: Maps properties defi"
   },
   {
     "slug": "groundhog/api/general/agsconversion",
@@ -594,7 +594,7 @@
       "AGSConverter.convert_ags_group",
       "AGSConverter.create_dataframes"
     ],
-    "text": "Module groundhog.general.agsconversion (groundhog 0.15.0). View source. Upstream documentation: AGS to Pandas converter reference. Classes: AGSConverter class AGSConverter Available in GeoCore General and utility functions › AGS Conversion › AGSConverter AGSConverter.__init__ Initializes an AGS conv"
+    "text": "Module groundhog.general.agsconversion (groundhog 0.16.0). View source. Upstream documentation: AGS to Pandas converter reference. Classes: AGSConverter class AGSConverter Available in GeoCore General and utility functions › AGS Conversion › AGSConverter AGSConverter.__init__ Initializes an AGS conv"
   },
   {
     "slug": "groundhog/api/general/parameter_mapping",
@@ -608,7 +608,7 @@
       "get_projected_point",
       "offsets"
     ],
-    "text": "Module groundhog.general.parameter_mapping (groundhog 0.15.0). View source. Upstream documentation: Parameter mapping. Functions: map_depth_properties, merge_two_dicts, reverse_dict, latlon_distance, get_projected_point, offsets map_depth_properties Available in GeoCore General and utility functions"
+    "text": "Module groundhog.general.parameter_mapping (groundhog 0.16.0). View source. Upstream documentation: Parameter mapping. Functions: map_depth_properties, merge_two_dicts, reverse_dict, latlon_distance, get_projected_point, offsets map_depth_properties Available in GeoCore General and utility functions"
   },
   {
     "slug": "groundhog/api/general/plotting",
@@ -644,7 +644,7 @@
       "plot_with_log",
       "peak_picker"
     ],
-    "text": "Module groundhog.general.plotting (groundhog 0.15.0). View source. Upstream documentation: Plotting. Classes: LogPlot, LogPlotMatplotlib Functions: plot_with_log, peak_picker class LogPlot Available in GeoCore General and utility functions › Plotting › LogPlot Class for planneled plots with a minilo"
+    "text": "Module groundhog.general.plotting (groundhog 0.16.0). View source. Upstream documentation: Plotting. Classes: LogPlot, LogPlotMatplotlib Functions: plot_with_log, peak_picker class LogPlot Available in GeoCore General and utility functions › Plotting › LogPlot Class for planneled plots with a minilo"
   },
   {
     "slug": "groundhog/api/general/soilprofile",
@@ -695,7 +695,7 @@
       "retrieve_geological_profile_dov",
       "retrieve_geological_profile_bro"
     ],
-    "text": "Module groundhog.general.soilprofile (groundhog 0.15.0). View source. Upstream documentation: Soil profiles and gridscd. Classes: SoilProfile, CalculationGrid Functions: create_blank_soilprofile, read_excel, profile_from_dataframe, plot_fence_diagram, retrieve_geological_profile_dov, retrieve_geolog"
+    "text": "Module groundhog.general.soilprofile (groundhog 0.16.0). View source. Upstream documentation: Soil profiles and gridscd. Classes: SoilProfile, CalculationGrid Functions: create_blank_soilprofile, read_excel, profile_from_dataframe, plot_fence_diagram, retrieve_geological_profile_dov, retrieve_geolog"
   },
   {
     "slug": "groundhog/api/general/validation",
@@ -712,21 +712,21 @@
       "map_args",
       "check_layer_overlap"
     ],
-    "text": "Module groundhog.general.validation (groundhog 0.15.0). View source. Upstream documentation: Validation. Classes: Validator Functions: validate_float, validate_integer, validate_boolean, validate_string, validate_list, map_args, check_layer_overlap class Validator The Validator has the following fea"
+    "text": "Module groundhog.general.validation (groundhog 0.16.0). View source. Upstream documentation: Validation. Classes: Validator Functions: validate_float, validate_integer, validate_boolean, validate_string, validate_list, map_args, check_layer_overlap class Validator The Validator has the following fea"
   },
   {
     "slug": "groundhog/api/pipelinescables",
     "title": "Pipelines and cables",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.pipelinescables in groundhog 0.15.0. - Stability — groundhog Stability package: 1 documented modules."
+    "text": "Package groundhog.pipelinescables in groundhog 0.16.0. - Stability — groundhog Stability package: 1 documented modules."
   },
   {
     "slug": "groundhog/api/pipelinescables/stability",
     "title": "Stability",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.pipelinescables.stability in groundhog 0.15.0. - Pipeline and cable penetration — API reference for groundhog.pipelinescables.stability.penetration: 6 functions, 0 classes. - contactwidth: Calculates the contact width depending on the pipeline penetration. - penetratedarea: Calcula"
+    "text": "Package groundhog.pipelinescables.stability in groundhog 0.16.0. - Pipeline and cable penetration — API reference for groundhog.pipelinescables.stability.penetration: 6 functions, 0 classes. - contactwidth: Calculates the contact width depending on the pipeline penetration. - penetratedarea: Calcula"
   },
   {
     "slug": "groundhog/api/pipelinescables/stability/penetration",
@@ -740,14 +740,14 @@
       "embedment_drained",
       "lay_touchdown_factor"
     ],
-    "text": "Module groundhog.pipelinescables.stability.penetration (groundhog 0.15.0). View source. Upstream documentation: Pipeline and cable penetration. Functions: contactwidth, penetratedarea, embedment_undrained_method1, embedment_undrained_method2, embedment_drained, lay_touchdown_factor contactwidth Avai"
+    "text": "Module groundhog.pipelinescables.stability.penetration (groundhog 0.16.0). View source. Upstream documentation: Pipeline and cable penetration. Functions: contactwidth, penetratedarea, embedment_undrained_method1, embedment_undrained_method2, embedment_drained, lay_touchdown_factor contactwidth Avai"
   },
   {
     "slug": "groundhog/api/shallowfoundations",
     "title": "Shallow foundations",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.shallowfoundations in groundhog 0.15.0. - Shallow foundation capacity — API reference for groundhog.shallowfoundations.capacity: 13 functions, 3 classes. - verticalcapacity_undrained_api: Calculates the vertical capacity for a shallow foundation in clay with constant or linearly in"
+    "text": "Package groundhog.shallowfoundations in groundhog 0.16.0. - Shallow foundation capacity — API reference for groundhog.shallowfoundations.capacity: 13 functions, 3 classes. - verticalcapacity_undrained_api: Calculates the vertical capacity for a shallow foundation in clay with constant or linearly in"
   },
   {
     "slug": "groundhog/api/shallowfoundations/capacity",
@@ -785,7 +785,7 @@
       "ngamma_frictionangle_davisbooker",
       "failuremechanism_prandtl"
     ],
-    "text": "Module groundhog.shallowfoundations.capacity (groundhog 0.15.0). View source. Upstream documentation: Shallow foundation capacity. Classes: ShallowFoundationCapacity, ShallowFoundationCapacityUndrained, ShallowFoundationCapacityDrained Functions: verticalcapacity_undrained_api, verticalcapacity_drai"
+    "text": "Module groundhog.shallowfoundations.capacity (groundhog 0.16.0). View source. Upstream documentation: Shallow foundation capacity. Classes: ShallowFoundationCapacity, ShallowFoundationCapacityUndrained, ShallowFoundationCapacityDrained Functions: verticalcapacity_undrained_api, verticalcapacity_drai"
   },
   {
     "slug": "groundhog/api/shallowfoundations/settlement",
@@ -807,7 +807,7 @@
       "primaryconsolidationsettlement_oc",
       "consolidationsettlement_mv"
     ],
-    "text": "Module groundhog.shallowfoundations.settlement (groundhog 0.15.0). View source. Upstream documentation: Settlement. Classes: SettlementCalculation Functions: primaryconsolidationsettlement_nc, primaryconsolidationsettlement_oc, consolidationsettlement_mv class SettlementCalculation Available in GeoC"
+    "text": "Module groundhog.shallowfoundations.settlement (groundhog 0.16.0). View source. Upstream documentation: Settlement. Classes: SettlementCalculation Functions: primaryconsolidationsettlement_nc, primaryconsolidationsettlement_oc, consolidationsettlement_mv class SettlementCalculation Available in GeoC"
   },
   {
     "slug": "groundhog/api/shallowfoundations/stressdistribution",
@@ -821,21 +821,21 @@
       "stresses_lineload_retainingwall",
       "stresses_stripload_retainingwall"
     ],
-    "text": "Module groundhog.shallowfoundations.stressdistribution (groundhog 0.15.0). View source. Upstream documentation: Stress distributions. Functions: stresses_pointload, stresses_stripload, stresses_circle, stresses_rectangle, stresses_lineload_retainingwall, stresses_stripload_retainingwall stresses_poi"
+    "text": "Module groundhog.shallowfoundations.stressdistribution (groundhog 0.16.0). View source. Upstream documentation: Stress distributions. Functions: stresses_pointload, stresses_stripload, stresses_circle, stresses_rectangle, stresses_lineload_retainingwall, stresses_stripload_retainingwall stresses_poi"
   },
   {
     "slug": "groundhog/api/siteinvestigation",
     "title": "Site investigation",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.siteinvestigation in groundhog 0.15.0. - Classification — groundhog Classification package: 2 documented modules. - Correlations — groundhog Correlations package: 3 documented modules. - In-situ tests — groundhog In-situ tests package: 5 documented modules. - Lab testing — groundho"
+    "text": "Package groundhog.siteinvestigation in groundhog 0.16.0. - Classification — groundhog Classification package: 2 documented modules. - Correlations — groundhog Correlations package: 3 documented modules. - In-situ tests — groundhog In-situ tests package: 5 documented modules. - Lab testing — groundho"
   },
   {
     "slug": "groundhog/api/siteinvestigation/classification",
     "title": "Classification",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.siteinvestigation.classification in groundhog 0.15.0. - Soil classes and categories — API reference for groundhog.siteinvestigation.classification.categories: 4 functions, 0 classes. - relativedensity_categories: Categorizes relative densities according to the following definition:"
+    "text": "Package groundhog.siteinvestigation.classification in groundhog 0.16.0. - Soil classes and categories — API reference for groundhog.siteinvestigation.classification.categories: 4 functions, 0 classes. - relativedensity_categories: Categorizes relative densities according to the following definition:"
   },
   {
     "slug": "groundhog/api/siteinvestigation/classification/categories",
@@ -847,7 +847,7 @@
       "uscs_categories",
       "samplequality_voidratio_lunne"
     ],
-    "text": "Module groundhog.siteinvestigation.classification.categories (groundhog 0.15.0). View source. Upstream documentation: Soil classes and categories. Functions: relativedensity_categories, su_categories, uscs_categories, samplequality_voidratio_lunne relativedensity_categories Available in GeoCore Site"
+    "text": "Module groundhog.siteinvestigation.classification.categories (groundhog 0.16.0). View source. Upstream documentation: Soil classes and categories. Functions: relativedensity_categories, su_categories, uscs_categories, samplequality_voidratio_lunne relativedensity_categories Available in GeoCore Site"
   },
   {
     "slug": "groundhog/api/siteinvestigation/classification/phaserelations",
@@ -869,14 +869,14 @@
       "watercontent_voidratio",
       "voidratio_watercontent"
     ],
-    "text": "Module groundhog.siteinvestigation.classification.phaserelations (groundhog 0.15.0). View source. Upstream documentation: Phase relations. Functions: voidratio_porosity, porosity_voidratio, saturation_watercontent, bulkunitweight, dryunitweight_watercontent, voidratio_drydensity, bulkunitweight_dryu"
+    "text": "Module groundhog.siteinvestigation.classification.phaserelations (groundhog 0.16.0). View source. Upstream documentation: Phase relations. Functions: voidratio_porosity, porosity_voidratio, saturation_watercontent, bulkunitweight, dryunitweight_watercontent, voidratio_drydensity, bulkunitweight_dryu"
   },
   {
     "slug": "groundhog/api/siteinvestigation/correlations",
     "title": "Correlations",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.siteinvestigation.correlations in groundhog 0.15.0. - Cohesionless soils — API reference for groundhog.siteinvestigation.correlations.cohesionless: 4 functions, 0 classes. - gmax_sand_hardinblack: Calculates the small-strain shear modulus of sand based on the correlation proposed w"
+    "text": "Package groundhog.siteinvestigation.correlations in groundhog 0.16.0. - Cohesionless soils — API reference for groundhog.siteinvestigation.correlations.cohesionless: 4 functions, 0 classes. - gmax_sand_hardinblack: Calculates the small-strain shear modulus of sand based on the correlation proposed w"
   },
   {
     "slug": "groundhog/api/siteinvestigation/correlations/cohesionless",
@@ -888,7 +888,7 @@
       "hssmall_parameters_sand",
       "stress_dilatancy_bolton"
     ],
-    "text": "Module groundhog.siteinvestigation.correlations.cohesionless (groundhog 0.15.0). View source. Upstream documentation: Cohesionless soils. Functions: gmax_sand_hardinblack, permeability_d10_hazen, hssmall_parameters_sand, stress_dilatancy_bolton gmax_sand_hardinblack Available in GeoCore Site investi"
+    "text": "Module groundhog.siteinvestigation.correlations.cohesionless (groundhog 0.16.0). View source. Upstream documentation: Cohesionless soils. Functions: gmax_sand_hardinblack, permeability_d10_hazen, hssmall_parameters_sand, stress_dilatancy_bolton gmax_sand_hardinblack Available in GeoCore Site investi"
   },
   {
     "slug": "groundhog/api/siteinvestigation/correlations/cohesive",
@@ -899,9 +899,10 @@
       "frictionangle_plasticityindex",
       "cv_liquidlimit_usnavy",
       "gmax_plasticityocr_andersen",
-      "k0_plasticity_kenney"
+      "k0_plasticity_kenney",
+      "icl_scl_burland"
     ],
-    "text": "Module groundhog.siteinvestigation.correlations.cohesive (groundhog 0.15.0). View source. Upstream documentation: Cohesive soils. Functions: compressionindex_watercontent_koppula, frictionangle_plasticityindex, cv_liquidlimit_usnavy, gmax_plasticityocr_andersen, k0_plasticity_kenney compressionindex"
+    "text": "Module groundhog.siteinvestigation.correlations.cohesive (groundhog 0.16.0). View source. Upstream documentation: Cohesive soils. Functions: compressionindex_watercontent_koppula, frictionangle_plasticityindex, cv_liquidlimit_usnavy, gmax_plasticityocr_andersen, k0_plasticity_kenney, icl_scl_burland"
   },
   {
     "slug": "groundhog/api/siteinvestigation/correlations/general",
@@ -912,14 +913,14 @@
       "shearwavevelocity_compressionindex_cha",
       "k0_frictionangle_mesri"
     ],
-    "text": "Module groundhog.siteinvestigation.correlations.general (groundhog 0.15.0). View source. Upstream documentation: All soil types. Functions: acousticimpedance_bulkunitweight_chen, shearwavevelocity_compressionindex_cha, k0_frictionangle_mesri acousticimpedance_bulkunitweight_chen Available in GeoCore"
+    "text": "Module groundhog.siteinvestigation.correlations.general (groundhog 0.16.0). View source. Upstream documentation: All soil types. Functions: acousticimpedance_bulkunitweight_chen, shearwavevelocity_compressionindex_cha, k0_frictionangle_mesri acousticimpedance_bulkunitweight_chen Available in GeoCore"
   },
   {
     "slug": "groundhog/api/siteinvestigation/insitutests",
     "title": "In-situ tests",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.siteinvestigation.insitutests in groundhog 0.15.0. - PCPT functions — API reference for groundhog.siteinvestigation.insitutests.pcpt_correlations: 34 functions, 0 classes. - pcpt_normalisations: Carried out the necessary normalisation and correction on PCPT data to allow calculatio"
+    "text": "Package groundhog.siteinvestigation.insitutests in groundhog 0.16.0. - PCPT functions — API reference for groundhog.siteinvestigation.insitutests.pcpt_correlations: 34 functions, 0 classes. - pcpt_normalisations: Carried out the necessary normalisation and correction on PCPT data to allow calculatio"
   },
   {
     "slug": "groundhog/api/siteinvestigation/insitutests/pcpt_correlations",
@@ -961,7 +962,7 @@
       "dissipation_test_teh",
       "clippingdepths_qc1N_tianlehane"
     ],
-    "text": "Module groundhog.siteinvestigation.insitutests.pcpt_correlations (groundhog 0.15.0). View source. Upstream documentation: PCPT functions. Functions: pcpt_normalisations, soilclass_robertson, ic_soilclass_robertson, behaviourindex_pcpt_robertsonwride, gmax_sand_rixstokoe, gmax_clay_maynerix, relative"
+    "text": "Module groundhog.siteinvestigation.insitutests.pcpt_correlations (groundhog 0.16.0). View source. Upstream documentation: PCPT functions. Functions: pcpt_normalisations, soilclass_robertson, ic_soilclass_robertson, behaviourindex_pcpt_robertsonwride, gmax_sand_rixstokoe, gmax_clay_maynerix, relative"
   },
   {
     "slug": "groundhog/api/siteinvestigation/insitutests/pcpt_processing",
@@ -1011,7 +1012,7 @@
       "plot_longitudinal_profile",
       "plot_combined_longitudinal_profile"
     ],
-    "text": "Module groundhog.siteinvestigation.insitutests.pcpt_processing (groundhog 0.15.0). View source. Upstream documentation: PCPT processing class. Classes: InsituTestProcessing, PCPTProcessing Functions: plot_longitudinal_profile, plot_combined_longitudinal_profile class InsituTestProcessing Abstract ba"
+    "text": "Module groundhog.siteinvestigation.insitutests.pcpt_processing (groundhog 0.16.0). View source. Upstream documentation: PCPT processing class. Classes: InsituTestProcessing, PCPTProcessing Functions: plot_longitudinal_profile, plot_combined_longitudinal_profile class InsituTestProcessing Abstract ba"
   },
   {
     "slug": "groundhog/api/siteinvestigation/insitutests/read_site_data",
@@ -1020,7 +1021,7 @@
     "headings": [
       "read_ags"
     ],
-    "text": "Module groundhog.siteinvestigation.insitutests.read_site_data (groundhog 0.15.0). View source. Functions: read_ags read_ags Reads AGS data from a file and extracts the data for a given groupname into a DataFrame. All data with type \"DP\" is converted to float format Parameters Returns Dataframe with "
+    "text": "Module groundhog.siteinvestigation.insitutests.read_site_data (groundhog 0.16.0). View source. Functions: read_ags read_ags Reads AGS data from a file and extracts the data for a given groupname into a DataFrame. All data with type \"DP\" is converted to float format Parameters Returns Dataframe with "
   },
   {
     "slug": "groundhog/api/siteinvestigation/insitutests/spt_correlations",
@@ -1038,7 +1039,7 @@
       "youngsmodulus_spt_AASHTO",
       "undrainedshearstrengthclass_spt_terzaghipeck"
     ],
-    "text": "Module groundhog.siteinvestigation.insitutests.spt_correlations (groundhog 0.15.0). View source. Upstream documentation: SPT corrections and correlations. Functions: overburdencorrection_spt_liaowhitman, spt_N60_correction, relativedensity_spt_kulhawymayne, undrainedshearstrength_spt_salgado, fricti"
+    "text": "Module groundhog.siteinvestigation.insitutests.spt_correlations (groundhog 0.16.0). View source. Upstream documentation: SPT corrections and correlations. Functions: overburdencorrection_spt_liaowhitman, spt_N60_correction, relativedensity_spt_kulhawymayne, undrainedshearstrength_spt_salgado, fricti"
   },
   {
     "slug": "groundhog/api/siteinvestigation/insitutests/spt_processing",
@@ -1056,14 +1057,14 @@
       "SPTProcessing.plot_raw_spt",
       "SPTProcessing.plot_properties_withlog"
     ],
-    "text": "Module groundhog.siteinvestigation.insitutests.spt_processing (groundhog 0.15.0). View source. Upstream documentation: SPT processing class. Classes: SPTProcessing class SPTProcessing Available in GeoCore Site investigation › In-situ: SPT processing class › SPTProcessing The SPTProcessing class impl"
+    "text": "Module groundhog.siteinvestigation.insitutests.spt_processing (groundhog 0.16.0). View source. Upstream documentation: SPT processing class. Classes: SPTProcessing class SPTProcessing Available in GeoCore Site investigation › In-situ: SPT processing class › SPTProcessing The SPTProcessing class impl"
   },
   {
     "slug": "groundhog/api/siteinvestigation/labtesting",
     "title": "Lab testing",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.siteinvestigation.labtesting in groundhog 0.15.0. - Compressibility — API reference for groundhog.siteinvestigation.labtesting.compressibility: 3 functions, 0 classes. - selectpoints - roottimemethod: Calculates the root-time construction for determining the coefficient of consolid"
+    "text": "Package groundhog.siteinvestigation.labtesting in groundhog 0.16.0. - Compressibility — API reference for groundhog.siteinvestigation.labtesting.compressibility: 3 functions, 0 classes. - selectpoints - roottimemethod: Calculates the root-time construction for determining the coefficient of consolid"
   },
   {
     "slug": "groundhog/api/siteinvestigation/labtesting/compressibility",
@@ -1074,7 +1075,7 @@
       "roottimemethod",
       "logtimemethod"
     ],
-    "text": "Module groundhog.siteinvestigation.labtesting.compressibility (groundhog 0.15.0). View source. Upstream documentation: Compressibility. Functions: selectpoints, roottimemethod, logtimemethod selectpoints No upstream documentation. Parameters roottimemethod Available in GeoCore Site investigation › L"
+    "text": "Module groundhog.siteinvestigation.labtesting.compressibility (groundhog 0.16.0). View source. Upstream documentation: Compressibility. Functions: selectpoints, roottimemethod, logtimemethod selectpoints No upstream documentation. Parameters roottimemethod Available in GeoCore Site investigation › L"
   },
   {
     "slug": "groundhog/api/siteinvestigation/labtesting/indextests",
@@ -1090,7 +1091,7 @@
       "PSDChart.add_trace",
       "PSDChart.show"
     ],
-    "text": "Module groundhog.siteinvestigation.labtesting.indextests (groundhog 0.15.0). View source. Upstream documentation: Index tests. Classes: PlasticityChart, PSDChart class PlasticityChart Available in GeoCore Site investigation › Laboratory: Index tests › PlasticityChart Class for plasticity chart Plast"
+    "text": "Module groundhog.siteinvestigation.labtesting.indextests (groundhog 0.16.0). View source. Upstream documentation: Index tests. Classes: PlasticityChart, PSDChart class PlasticityChart Available in GeoCore Site investigation › Laboratory: Index tests › PlasticityChart Class for plasticity chart Plast"
   },
   {
     "slug": "groundhog/api/siteinvestigation/labtesting/samplepreparation",
@@ -1099,14 +1100,14 @@
     "headings": [
       "undercompaction_cohesionless_ladd"
     ],
-    "text": "Module groundhog.siteinvestigation.labtesting.samplepreparation (groundhog 0.15.0). View source. Upstream documentation: Sample preparation. Functions: undercompaction_cohesionless_ladd undercompaction_cohesionless_ladd Available in GeoCore Site investigation › Laboratory: Sample preparation › Ladd "
+    "text": "Module groundhog.siteinvestigation.labtesting.samplepreparation (groundhog 0.16.0). View source. Upstream documentation: Sample preparation. Functions: undercompaction_cohesionless_ladd undercompaction_cohesionless_ladd Available in GeoCore Site investigation › Laboratory: Sample preparation › Ladd "
   },
   {
     "slug": "groundhog/api/soildynamics",
     "title": "Soil dynamics",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.soildynamics in groundhog 0.15.0. - CPT Liquefaction — API reference for groundhog.soildynamics.cptliquefaction: 14 functions, 0 classes. - fos_liquefaction: Calculates the Factor of Safety (FoS) for liquefaction assessment. - csr_robertson_cabal_2022: Calculates the Cyclic Stress "
+    "text": "Package groundhog.soildynamics in groundhog 0.16.0. - CPT Liquefaction — API reference for groundhog.soildynamics.cptliquefaction: 14 functions, 0 classes. - fos_liquefaction: Calculates the Factor of Safety (FoS) for liquefaction assessment. - csr_robertson_cabal_2022: Calculates the Cyclic Stress "
   },
   {
     "slug": "groundhog/api/soildynamics/cptliquefaction",
@@ -1128,7 +1129,7 @@
       "Qtn_cs_boulanger_idriss_2014",
       "liquefaction_strains_zhang"
     ],
-    "text": "Module groundhog.soildynamics.cptliquefaction (groundhog 0.15.0). View source. Upstream documentation: CPT Liquefaction. Functions: fos_liquefaction, csr_robertson_cabal_2022, csr_robertson_wride_1998, csr_idriss_boulanger_2008, csr_boulanger_idriss_2014, crr_robertson_cabal_2022, crr_robertson_wrid"
+    "text": "Module groundhog.soildynamics.cptliquefaction (groundhog 0.16.0). View source. Upstream documentation: CPT Liquefaction. Functions: fos_liquefaction, csr_robertson_cabal_2022, csr_robertson_wride_1998, csr_idriss_boulanger_2008, csr_boulanger_idriss_2014, crr_robertson_cabal_2022, crr_robertson_wrid"
   },
   {
     "slug": "groundhog/api/soildynamics/cyclicbehaviour",
@@ -1153,7 +1154,7 @@
       "cyclicstrength_dsssand_relativedensity",
       "cyclicstrength_dsssand_watercontent"
     ],
-    "text": "Module groundhog.soildynamics.cyclicbehaviour (groundhog 0.15.0). View source. Upstream documentation: Cyclic behaviour. Functions: cycliccontours_dssclay_andersen, plotcycliccontours_dssclay_andersen, cycliccontours_triaxialclay_andersen, plotcycliccontours_triaxialclay_andersen, strainaccumulation"
+    "text": "Module groundhog.soildynamics.cyclicbehaviour (groundhog 0.16.0). View source. Upstream documentation: Cyclic behaviour. Functions: cycliccontours_dssclay_andersen, plotcycliccontours_dssclay_andersen, cycliccontours_triaxialclay_andersen, plotcycliccontours_triaxialclay_andersen, strainaccumulation"
   },
   {
     "slug": "groundhog/api/soildynamics/liquefaction",
@@ -1166,7 +1167,7 @@
       "liquefactionprobability_saye",
       "cyclicstressratio_youd"
     ],
-    "text": "Module groundhog.soildynamics.liquefaction (groundhog 0.15.0). View source. Upstream documentation: Liquefaction. Functions: cyclicstressratio_moss, liquefaction_robertsonfear, liquefactionprobability_moss, liquefactionprobability_saye, cyclicstressratio_youd cyclicstressratio_moss Available in GeoC"
+    "text": "Module groundhog.soildynamics.liquefaction (groundhog 0.16.0). View source. Upstream documentation: Liquefaction. Functions: cyclicstressratio_moss, liquefaction_robertsonfear, liquefactionprobability_moss, liquefactionprobability_saye, cyclicstressratio_youd cyclicstressratio_moss Available in GeoC"
   },
   {
     "slug": "groundhog/api/soildynamics/soilproperties",
@@ -1178,21 +1179,21 @@
       "dampingratio_sandgravel_seed",
       "modulusreduction_darendeli"
     ],
-    "text": "Module groundhog.soildynamics.soilproperties (groundhog 0.15.0). View source. Upstream documentation: Dynamic soil property correlations. Functions: modulusreduction_plasticity_ishibashi, gmax_shearwavevelocity, dampingratio_sandgravel_seed, modulusreduction_darendeli modulusreduction_plasticity_ish"
+    "text": "Module groundhog.soildynamics.soilproperties (groundhog 0.16.0). View source. Upstream documentation: Dynamic soil property correlations. Functions: modulusreduction_plasticity_ishibashi, gmax_shearwavevelocity, dampingratio_sandgravel_seed, modulusreduction_darendeli modulusreduction_plasticity_ish"
   },
   {
     "slug": "groundhog/api/standards",
     "title": "Standards",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.standards in groundhog 0.15.0. - Eurocode 7 — groundhog Eurocode 7 package: 2 documented modules."
+    "text": "Package groundhog.standards in groundhog 0.16.0. - Eurocode 7 — groundhog Eurocode 7 package: 2 documented modules."
   },
   {
     "slug": "groundhog/api/standards/eurocode7",
     "title": "Eurocode 7",
     "section": "Groundhog API Reference",
     "headings": [],
-    "text": "Package groundhog.standards.eurocode7 in groundhog 0.15.0. - factors — API reference for groundhog.standards.eurocode7.factors: 0 functions, 1 classes. - Eurocode7_factoring_STR_GEO - Parameter selection — API reference for groundhog.standards.eurocode7.parameter_selection: 2 functions, 0 classes. -"
+    "text": "Package groundhog.standards.eurocode7 in groundhog 0.16.0. - factors — API reference for groundhog.standards.eurocode7.factors: 0 functions, 1 classes. - Eurocode7_factoring_STR_GEO - Parameter selection — API reference for groundhog.standards.eurocode7.parameter_selection: 2 functions, 0 classes. -"
   },
   {
     "slug": "groundhog/api/standards/eurocode7/factors",
@@ -1207,7 +1208,7 @@
       "Eurocode7_factoring_STR_GEO.override_factors_resistance",
       "Eurocode7_factoring_STR_GEO.select_correlation_factors"
     ],
-    "text": "Module groundhog.standards.eurocode7.factors (groundhog 0.15.0). View source. Upstream documentation: Partial factor selection. Classes: Eurocode7_factoring_STR_GEO class Eurocode7_factoring_STR_GEO Available in GeoCore EuroCode7 › Partial factor selection › Eurocode 7 STR/GEO Partial Factors Euroco"
+    "text": "Module groundhog.standards.eurocode7.factors (groundhog 0.16.0). View source. Upstream documentation: Partial factor selection. Classes: Eurocode7_factoring_STR_GEO class Eurocode7_factoring_STR_GEO Available in GeoCore EuroCode7 › Partial factor selection › Eurocode 7 STR/GEO Partial Factors Euroco"
   },
   {
     "slug": "groundhog/api/standards/eurocode7/parameter_selection",
@@ -1217,7 +1218,7 @@
       "constant_value",
       "linear_trend"
     ],
-    "text": "Module groundhog.standards.eurocode7.parameter_selection (groundhog 0.15.0). View source. Upstream documentation: Parameter selection. Functions: constant_value, linear_trend constant_value Available in GeoCore EuroCode7 › Parameter selection › Characteristic Value (Constant) Selects the characteris"
+    "text": "Module groundhog.standards.eurocode7.parameter_selection (groundhog 0.16.0). View source. Upstream documentation: Parameter selection. Functions: constant_value, linear_trend constant_value Available in GeoCore EuroCode7 › Parameter selection › Characteristic Value (Constant) Selects the characteris"
   },
   {
     "slug": "groundhog/guides",
@@ -1295,7 +1296,10 @@
       "Earth pressure coefficients",
       "earthpressurecoefficients_frictionangle",
       "earthpressurecoefficients_poncelet",
-      "earthpressurecoefficients_rankine"
+      "earthpressurecoefficients_rankine",
+      "Soilmix",
+      "bendingstiffness_soilmix_method1",
+      "bendingstiffness_soilmix_method2"
     ],
     "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },
@@ -1354,14 +1358,21 @@
       "DeBeerCalculation",
       "Koppejan pile resistance calculations",
       "KoppejanCalculation",
+      "LCPC pile resistance calculations",
+      "LCPCAxcapCalculation",
       "Pile settlement",
       "pile_settlement_curves",
+      "Pile lateral behaviour",
+      "reinforced_circularsection_inertia",
+      "pilegroupeffect_reesevanimpe",
       "Cavity expansion methods for cast in-situ piles",
       "stress_cylinder_elastic_isotropic",
       "expansion_tresca_thicksphere",
       "expansion_cylinder_tresca",
       "Negative skin friction",
-      "negativeskinfriction_pilegroup_zeevaertdebeer"
+      "negativeskinfriction_pilegroup_zeevaertdebeer",
+      "Pile testing functionality",
+      "piletest_chinkondler"
     ],
     "text": "Adapted from groundhog's own documentation. Inside GeoCore, these functions run through the calculation catalogue or through GeoAI, which selects and calls them through its validated Tool Registry — you never need to install Python or groundhog yourself. This page follows the structure of the upstre"
   },

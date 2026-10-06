@@ -1018,6 +1018,11 @@ class Registry:
             wrappers = _load_wrapper_module("wrappers")
             return self._sanitize(wrappers.pilegroupeffect_reesevanimpe_wrapper(args))
 
+        # Cohesive correlations: Burland (1990) ICL/SCL curves (figure + values)
+        if function_id == 'icl_scl_burland':
+            wrappers = _load_wrapper_module("wrappers")
+            return self._sanitize(wrappers.icl_scl_burland_wrapper(args))
+
         # Constitutive models: Mohr-Coulomb triaxial failure (figure + values)
         if function_id in ('mohrcoulomb_triaxial_compression', 'mohrcoulomb_triaxial_extension'):
             wrappers = _load_wrapper_module("wrappers")

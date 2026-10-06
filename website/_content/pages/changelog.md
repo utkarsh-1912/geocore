@@ -8,7 +8,7 @@ source_url: https://github.com/utkarsh-1912/geocore/blob/main/website/_content/g
 license: GPL-3.0
 author: Utkarsh Gupta
 attribution: GeoCore documentation by Utkarsh Gupta, licensed under the GNU GPL v3.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: false
 sources:
 - RELEASE_GUIDE.md
@@ -17,7 +17,7 @@ sources:
 ---
 
 Release history for GeoCore itself — the desktop application, GeoAI and the integration around groundhog.
-groundhog is a separate project with its own version history; see its [release notes on GitHub](https://github.com/snakesonabrain/groundhog/blob/v0.15.0/CHANGES.txt) or the version this build ships, noted on the [License & Credits](/docs/license) page.
+groundhog is a separate project with its own version history; see its [release notes on GitHub](https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/CHANGES.txt) or the version this build ships, noted on the [License & Credits](/docs/license) page.
 
 ## Unreleased
 
@@ -25,12 +25,19 @@ groundhog is a separate project with its own version history; see its [release n
 
 - Mohr-Coulomb triaxial compression and extension calculators (Constitutive models › General): Mohr's
   circle at failure, the stresses at failure and the orientation of the failure plane, from groundhog.
+- Burland (1990) intrinsic and sedimentation compression lines calculator (Site investigation ›
+  Correlations: Cohesive soils): the ICL and SCL plotted against vertical effective stress, with the
+  intrinsic compression index C\*c and the void ratio e\*100.
 - GeoAI can read GeoCore's own documentation. The `get_function_documentation` tool returns a groundhog
   function's documented inputs (with units and suggested ranges), outputs, formulas and cited references,
   and the documentation is searchable through GeoAI's local document index, with links to these pages.
 
 ### Fixed
 
+- The documentation now describes the groundhog GeoCore actually ships: version 0.16.0 at the commit
+  pinned in `python-backend/requirements.txt`, not the 0.15.0 release. Links to groundhog source code
+  point at that commit; several (LCPC, pile testing, lateral response, soil mixing) previously led to
+  files that do not exist in the 0.15.0 release.
 - The AASHTO Young's modulus (SPT) calculator had no Guide & Theory text in the app and was not marked
   "Available in GeoCore" in these docs.
 - The release workflow, when started by hand from a branch, published the release under the branch name

@@ -448,7 +448,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
-    <span>piletesting</span>  </a>
+    <span>Pile testing functionality</span>  </a>
 
   </li>
   <li>
@@ -498,7 +498,7 @@
         <ul>
   <li>
         <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
-    <span>lateral</span>  </a>
+    <span>Pile lateral behaviour</span>  </a>
 
   </li>
 </ul>
@@ -522,7 +522,7 @@
   </li>
   <li>
         <a href="/docs/groundhog/api/excavations/soilmix/">
-    <span>soilmix</span>  </a>
+    <span>Soilmix</span>  </a>
 
   </li>
 </ul>
@@ -806,18 +806,25 @@
 
     <h1>Changelog</h1>
     <div class="prose docs-body"><p>Release history for GeoCore itself — the desktop application, GeoAI and the integration around groundhog.
-groundhog is a separate project with its own version history; see its <a href="https://github.com/snakesonabrain/groundhog/blob/v0.15.0/CHANGES.txt">release notes on GitHub</a> or the version this build ships, noted on the <a href="/docs/license/">License &amp; Credits</a> page.</p>
+groundhog is a separate project with its own version history; see its <a href="https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/CHANGES.txt">release notes on GitHub</a> or the version this build ships, noted on the <a href="/docs/license/">License &amp; Credits</a> page.</p>
 <h2 id="unreleased">Unreleased</h2>
 <h3 id="added">Added</h3>
 <ul>
 <li>Mohr-Coulomb triaxial compression and extension calculators (Constitutive models › General): Mohr's
   circle at failure, the stresses at failure and the orientation of the failure plane, from groundhog.</li>
+<li>Burland (1990) intrinsic and sedimentation compression lines calculator (Site investigation ›
+  Correlations: Cohesive soils): the ICL and SCL plotted against vertical effective stress, with the
+  intrinsic compression index C*c and the void ratio e*100.</li>
 <li>GeoAI can read GeoCore's own documentation. The <code>get_function_documentation</code> tool returns a groundhog
   function's documented inputs (with units and suggested ranges), outputs, formulas and cited references,
   and the documentation is searchable through GeoAI's local document index, with links to these pages.</li>
 </ul>
 <h3 id="fixed">Fixed</h3>
 <ul>
+<li>The documentation now describes the groundhog GeoCore actually ships: version 0.16.0 at the commit
+  pinned in <code>python-backend/requirements.txt</code>, not the 0.15.0 release. Links to groundhog source code
+  point at that commit; several (LCPC, pile testing, lateral response, soil mixing) previously led to
+  files that do not exist in the 0.15.0 release.</li>
 <li>The AASHTO Young's modulus (SPT) calculator had no Guide &amp; Theory text in the app and was not marked
   "Available in GeoCore" in these docs.</li>
 <li>The release workflow, when started by hand from a branch, published the release under the branch name

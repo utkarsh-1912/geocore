@@ -159,6 +159,22 @@ def gh_blob(path: str, tag: str) -> str:
     return f"{GH_REPO_URL}/blob/{tag}/" + quote(path)
 
 
+def installed_source_ref(version: str) -> str:
+    """Git ref the installed groundhog was built from, used for every upstream source link.
+
+    python-backend/requirements.txt pins a groundhog commit (the PyPI/tagged 0.15.0 release lacks
+    modules GeoCore uses), so a pip VCS install records that commit in direct_url.json; links must
+    point at it, not at the release tag. Falls back to the release tag for a regular install.
+    """
+    from importlib import metadata
+    try:
+        raw = metadata.distribution("groundhog").read_text("direct_url.json")
+        commit = (json.loads(raw).get("vcs_info") or {}).get("commit_id") if raw else None
+    except Exception:
+        commit = None
+    return commit or f"v{version}"
+
+
 def geocore_blob(path: str) -> str:
     return f"{GEOCORE_REPO_URL}/blob/main/" + quote(path)
 
@@ -1502,11 +1518,12 @@ def render_callable(d: Dict[str, Any], heading: str, ui: Dict[str, Any], assets:
 
 
 def render_api_module(mod: Dict[str, Any], ui: Dict[str, Any], assets: AssetStore, slug: str,
-                      rst_dirs: List[str], upstream_links: List[Tuple[str, str]], version: str) -> str:
+                      rst_dirs: List[str], upstream_links: List[Tuple[str, str]], version: str,
+                      ref: str) -> str:
     out = []
     mdoc = mod["doc"]
     out.append(f"Module `{mod['module']}` (groundhog {version}). "
-               f"[View source]({gh_blob(mod['source_path'], 'v' + version)}).")
+               f"[View source]({gh_blob(mod['source_path'], ref)}).")
     out.append("")
     if mdoc["description_md"].strip():
         out.append(mdoc["description_md"])
@@ -1808,8 +1825,14 @@ def humanize(seg: str) -> str:
 def build(repo_path: Optional[str]) -> Dict[str, Any]:
     print("Walking installed groundhog package ...")
     version, modules = walk_groundhog()
-    tag = f"v{version}"
+    tag = installed_source_ref(version)
+    print(f"  upstream source ref: {tag}")
     repo = open_repo(repo_path, version)
+    if repo:
+        if repo.commit and not tag.startswith("v") and repo.commit != tag:
+            print(f"  ! groundhog clone is at {repo.commit}, installed package is {tag}; "
+                  f"check out {tag} in the clone so guides match the shipped code", file=sys.stderr)
+        repo.tag = tag  # link narrative pages to the same ref as the API reference
     if repo and not repo.license_ok:
         print("  ! groundhog LICENSE is not GPLv3; narrative docs will NOT be imported", file=sys.stderr)
     use_repo = repo if (repo and repo.license_ok) else None
@@ -1873,7 +1896,7 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
         rels = sorted(set(module_rsts.get(m["module"], [])))
         rst_dirs = [str(Path(r).parent.as_posix()) for r in rels]
         upstream_links = [(rst_docs[r].title, rtd_url(r)) for r in rels] if use_repo else []
-        body = render_api_module(m, ui, assets, slug, rst_dirs, upstream_links, version)
+        body = render_api_module(m, ui, assets, slug, rst_dirs, upstream_links, version, tag)
         funcs = [x for x in m["members"] if x["kind"] == "function"]
         classes = [x for x in m["members"] if x["kind"] == "class"]
         stats["modules"] += 1
@@ -1953,7 +1976,7 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
 
     # structured API data
     dump_json(CONTENT_DIR / "groundhog" / "api.json", {
-        "groundhog_version": version, "source": "installed package", "license": GH_LICENSE, "author": GH_AUTHOR,
+        "groundhog_version": version, "source_ref": tag, "source": "installed package", "license": GH_LICENSE, "author": GH_AUTHOR,
         "modules": [{k: v for k, v in m.items()} for m in api_modules],
     })
 
@@ -2147,7 +2170,7 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
         "option) any later version.", "",
         f"GeoCore ships groundhog {version}. The groundhog API reference, guides and tutorials in these docs "
         f"are derived from the groundhog package docstrings and the groundhog repository "
-        f"({GH_REPO_URL}, tag `{repo.tag if repo else tag}`" + (f", commit `{repo.commit}`" if repo and repo.commit else "")
+        f"({GH_REPO_URL}, ref `{tag}`" + (f", repository clone at commit `{repo.commit}`" if repo and repo.commit else "")
         + ") and are redistributed under the same licence. Each page lists its source, author and licence, and states "
           "whether GeoCore edited it. groundhog's own release history is not mirrored here — see the "
           "[Changelog](/docs/changelog) page for where to find it.", "",
@@ -2246,7 +2269,7 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
 
     counts = {
         "groundhog_version": version,
-        "groundhog_repo": ({"tag": repo.tag, "commit": repo.commit, "license_gplv3": repo.license_ok} if repo else None),
+        "groundhog_repo": ({"ref": repo.tag, "commit": repo.commit, "license_gplv3": repo.license_ok} if repo else None),
         "api_modules": stats["modules"], "api_functions": stats["functions"], "api_classes": stats["classes"],
         "api_methods": stats["methods"], "api_items_available_in_geocore": stats["geocore_available"],
         "narrative_pages": narrative_count,

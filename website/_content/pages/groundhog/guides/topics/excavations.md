@@ -4,11 +4,11 @@ slug: groundhog/guides/topics/excavations
 section: Groundhog Guides
 description: Overview of groundhog's excavations functionality with links to the API reference.
 origin: groundhog
-source_url: https://github.com/snakesonabrain/groundhog/blob/v0.15.0/docs/excavations/excavations_toplevel.rst
+source_url: https://github.com/snakesonabrain/groundhog/blob/dc7d554c6b8986bae30f518304546a911b1ca5ab/docs/excavations/excavations_toplevel.rst
 license: GPL-3.0-or-later
 author: Bruno Stuyts
 attribution: Adapted from the groundhog documentation by Bruno Stuyts (https://github.com/snakesonabrain/groundhog), licensed under the GNU GPL v3 or later.
-groundhog_version: 0.15.0
+groundhog_version: 0.16.0
 edited_by_geocore: true
 geocore_edit_note: Upstream toctree/autodoc structure restructured into a single topic page that links to the API reference instead of duplicating it, with a short note on how to run this in GeoCore prepended.
 upstream_docs_url: https://groundhog.readthedocs.io/en/main/excavations/excavations_toplevel.html
@@ -75,3 +75,43 @@ $$
 *8 more formulas in the full reference.*
 
 *Reference:* Budhu (2011). Soil mechanics and foundations. John Wiley and Sons.
+
+## Soilmix
+
+Upstream page: [Soilmix](https://groundhog.readthedocs.io/en/main/excavations/soilmix.html)
+
+Module [`groundhog.excavations.soilmix`](/docs/groundhog/api/excavations/soilmix). Summaries and formulas below are taken from the docstrings; the API reference has parameters, units and outputs.
+
+### bendingstiffness_soilmix_method1
+
+Function [`bendingstiffness_soilmix_method1`](/docs/groundhog/api/excavations/soilmix#bendingstiffness_soilmix_method1).
+
+Calculates the bending stiffness of a soilmix wall (for use in geotechnical retaining wall calculations) using the combined stiffness of reinforcements and the soilmix material itself.
+
+$$
+EI\text{-eff} = \frac{EI\text{-1} + EI\text{-2}}{2}
+$$
+
+$$
+EI\text{-1}=E_a I_a + E_{sm}(I_{sm} - I_a)=E_{sm} \left[ (n-1) I_a + I_{sm}\right] \quad \text{where } n=E_a/E_{sm}
+$$
+
+*12 more formulas in the full reference.*
+
+*Reference:* Denies, N. and Huybrechts, N. (2016). Handboek soimix-wanden - Ontwerp en uitvoering, SBRCURnet
+
+### bendingstiffness_soilmix_method2
+
+Function [`bendingstiffness_soilmix_method2`](/docs/groundhog/api/excavations/soilmix#bendingstiffness_soilmix_method2).
+
+Calculates the bending stiffness of a soilmix wall with internal reinforcements according to a simplified method.
+
+$$
+EI\text{-eff} = E_a I_a + E_{sm} \left[ \frac{b_{c1} \cdot \left( \frac{h_{sm}}{2} \right)^3}{3} \right]
+$$
+
+$$
+EI\text{-eff} / m^{\prime} = EI\text{-eff} / a=\frac{E_a I_a}{a} + E_{sm} \left[ \frac{\left( \frac{h_{sm}}{2} \right)^3}{3} \right]
+$$
+
+*Reference:* Denies, N. and Huybrechts, N. (2016). Handboek soimix-wanden - Ontwerp en uitvoering, SBRCURnet
