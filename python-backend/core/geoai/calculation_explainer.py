@@ -252,9 +252,10 @@ def build_narration_prompt(explanation: Dict[str, Any]) -> str:
         lines.append(f"Formula: {explanation['formula']}")
     where = next((st.get("where") for st in explanation.get("steps", []) if st.get("where")), None)
     if where:
-        lines.append("Where: " + ", ".join(
-            f"{w['symbol']}{f' ({w['label']})' if w.get('label') else ''} = {_format_value(w['value'], w.get('unit'))}"
-            for w in where))
+        def _where_entry(w: Dict[str, Any]) -> str:
+            label = f" ({w['label']})" if w.get("label") else ""
+            return f"{w['symbol']}{label} = {_format_value(w['value'], w.get('unit'))}"
+        lines.append("Where: " + ", ".join(_where_entry(w) for w in where))
     if explanation.get("inputs"):
         lines.append("Inputs: " + ", ".join(
             f"{i.get('label') or i['key']}={_format_value(i['value'])}" for i in explanation["inputs"]
