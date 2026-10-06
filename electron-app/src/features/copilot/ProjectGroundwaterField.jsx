@@ -106,20 +106,20 @@ export const ProjectGroundwaterField = () => {
                             onChange={(e) => { setDraft(e.target.value); setError(null); }}
                             aria-label="Groundwater depth below ground level in m"
                             placeholder="e.g. 2.5"
-                            className={`w-full min-w-0 bg-background border rounded px-2 py-1 text-text-main focus:outline-none focus:border-primary ${error ? 'border-red-500' : 'border-border'}`}
+                            className={`w-full min-w-0 bg-background border rounded-md px-2 py-1 text-text-main focus:outline-none focus:border-primary ${error ? 'border-red-500' : 'border-border'}`}
                         />
                         <span className="text-text-muted shrink-0">m</span>
                     </div>
                     {error && <div className="text-red-500">{error}</div>}
                     <div className="flex items-center gap-1.5">
-                        <button type="submit" disabled={saving} className="px-2 py-1 rounded bg-primary text-on-primary font-semibold disabled:opacity-50">
+                        <button type="submit" disabled={saving} className="px-2 py-1 rounded-md btn-brand font-semibold disabled:opacity-50">
                             Save
                         </button>
-                        <button type="button" disabled={saving} onClick={() => { setEditing(false); setError(null); }} className="px-2 py-1 rounded border border-border text-text-muted hover:text-text-main">
+                        <button type="button" disabled={saving} onClick={() => { setEditing(false); setError(null); }} className="px-2 py-1 rounded-md border border-border text-text-muted hover:text-text-main">
                             Cancel
                         </button>
                         {recorded != null && (
-                            <button type="button" disabled={saving} onClick={() => save(null)} className="ml-auto px-2 py-1 rounded text-text-muted hover:text-red-500" title="Clear back to not recorded">
+                            <button type="button" disabled={saving} onClick={() => save(null)} className="ml-auto px-2 py-1 rounded-md text-text-muted hover:text-red-500" title="Clear back to not recorded">
                                 Clear
                             </button>
                         )}

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { HelpCircle, X, Book, Loader, Settings, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap, RefreshCw, AlertCircle } from 'lucide-react';
+import { HelpCircle, X, Book, BookOpen, Loader, Settings, SlidersHorizontal, ChevronDown, ChevronRight, Check, Sparkles, Edit2, Save, Zap, RefreshCw, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
@@ -15,7 +15,8 @@ import { suggestDataKind } from '../../utils/dataKind';
 import { SoilProfileModal } from './SoilProfileModal';
 import { SavedProfilesList } from './SavedProfilesList';
 import { ProfileViewModal } from './ProfileViewModal';
-import SchemaEditor from './SchemaEditor';
+import { FormSettingsPanel } from './FormSettingsPanel';
+import { Tooltip } from '../../components/ui/Tooltip';
 import { UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
 import { api } from '../../api/client';
 import { validateForm, resolveLimits, describeRange, isNumericInput } from '../../utils/formValidation';
@@ -34,8 +35,8 @@ const loadFieldBounds = () => {
 };
 
 // Shared control styling: one look for inputs, selects and textareas, with an error state.
-const CONTROL_BASE = 'w-full bg-background border rounded-md px-3 py-2 text-sm text-text-main placeholder-text-muted/60 focus:outline-none focus:ring-2 transition-all disabled:opacity-60';
-const CONTROL_OK = 'border-border hover:border-primary/40 focus:border-primary focus:ring-primary/20';
+const CONTROL_BASE = 'w-full bg-input border rounded-md px-3 py-2 text-sm text-text-main placeholder-text-subtle focus:outline-none focus:ring-2 transition-all disabled:opacity-60';
+const CONTROL_OK = 'border-border-strong hover:border-primary/60 focus:border-primary focus:ring-primary/20';
 const CONTROL_BAD = 'border-error bg-error/5 focus:border-error focus:ring-error/20';
 
 const controlStyle = (invalid, extra = '') => `${CONTROL_BASE} ${invalid ? CONTROL_BAD : CONTROL_OK} ${extra}`;
@@ -102,7 +103,7 @@ const ObjectSelector = ({ id, objectType, value, onChange, required, refreshTrig
                 onClick={fetchObjects}
                 disabled={loading}
                 title={fetchError || "Refresh list"}
-                className={`p-2 rounded border transition-colors disabled:opacity-50 ${fetchError ? 'border-red-500/40 text-red-500 hover:bg-red-500/10' : 'border-border text-text-muted hover:text-primary hover:border-primary/50'}`}
+                className={`p-2 rounded-md border transition-colors disabled:opacity-50 ${fetchError ? 'border-red-500/40 text-red-500 hover:bg-red-500/10' : 'border-border text-text-muted hover:text-primary hover:border-primary/50'}`}
             >
                 <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
             </button>
@@ -205,7 +206,7 @@ const ParameterChipsSelector = ({ name, value, availableColumns, onChange, requi
                     <button
                         type="button"
                         onClick={selectNumeric}
-                        className="text-[11px] px-2 py-0.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors flex items-center gap-1"
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors flex items-center gap-1"
                         title="Select typical numeric columns"
                     >
                         <Zap size={11} className="stroke-[2.5]" />
@@ -214,14 +215,14 @@ const ParameterChipsSelector = ({ name, value, availableColumns, onChange, requi
                     <button
                         type="button"
                         onClick={selectAll}
-                        className="text-[11px] px-2 py-0.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"
                     >
                         All
                     </button>
                     <button
                         type="button"
                         onClick={clearAll}
-                        className="text-[11px] px-2 py-0.5 rounded bg-background hover:bg-border text-text-muted transition-colors"
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-background hover:bg-border text-text-muted transition-colors"
                     >
                         Clear
                     </button>
@@ -236,7 +237,7 @@ const ParameterChipsSelector = ({ name, value, availableColumns, onChange, requi
             </div>
 
             {/* Chips Grid */}
-            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1.5 bg-background/50 rounded border border-border/50">
+            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1.5 bg-background/50 rounded-md border border-border/50">
                 {availableColumns.map(col => {
                     const isSelected = selectedList.includes(col);
                     return (
@@ -245,9 +246,9 @@ const ParameterChipsSelector = ({ name, value, availableColumns, onChange, requi
                             type="button"
                             onClick={() => toggleColumn(col)}
                             disabled={disabled}
-                            className={`px-2.5 py-1 rounded text-xs font-medium transition-all flex items-center gap-1.5 ${
+                            className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
                                 isSelected
-                                    ? 'bg-primary text-on-primary shadow-sm ring-1 ring-primary'
+                                    ? 'btn-brand'
                                     : 'bg-surface border border-border text-text-main hover:border-primary/50 hover:bg-primary/5'
                             }`}
                         >
@@ -337,9 +338,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
 
     // Page Documentation State
     const [pageDocs, setPageDocs] = useState('');
-    const [isEditingDocs, setIsEditingDocs] = useState(false);
     const [editedDocs, setEditedDocs] = useState('');
-    const [activeDocTab, setActiveDocTab] = useState('guide'); // 'guide' | 'fields'
 
     // AI Auto-Fill State
     const [showAutoFillModal, setShowAutoFillModal] = useState(false);
@@ -491,7 +490,6 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
         const metadata = { description: editedDocs }; // Store as description field in metadata object
         handleSaveOverride(functionName, '_page_docs', metadata);
         setPageDocs(editedDocs);
-        setIsEditingDocs(false);
     };
 
     const handleSaveOverride = (funcId, fieldName, metadata) => {
@@ -699,36 +697,43 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                     <div className="min-w-0 flex-1">
                         <h2 className="text-xl font-bold text-text-main flex items-center gap-2.5 truncate">
                             <span className="truncate">{functionName || "Calculation Analysis"}</span>
-                            {isDev && isEditMode && (
-                                <span className="text-[10px] font-mono font-semibold bg-primary/15 text-primary border border-primary/30 px-2 py-0.5 rounded-full uppercase shrink-0">
-                                    Dev Edit Mode
-                                </span>
-                            )}
+                            
                         </h2>
                         <p className="text-xs text-text-muted mt-1">Configure geotechnical parameters and execute validated analysis.</p>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-1.5 shrink-0">
                         {isDev && (
+                            <Tooltip content={isEditMode ? 'Close form settings' : 'Form settings'} position="bottom">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (!isEditMode && !(editedDocs && editedDocs.trim())) {
+                                            const seed = (pageDocs && pageDocs.trim()) || generateDefaultDocumentation(functionName, schema, normalizedInputs);
+                                            setEditedDocs(seed);
+                                        }
+                                        setIsEditMode(!isEditMode);
+                                        setEditingField(null);
+                                    }}
+                                    aria-label="Form settings"
+                                    aria-pressed={isEditMode}
+                                    data-form-settings-keep
+                                    className={`flex h-9 w-9 items-center justify-center rounded-md border transition-all ${isEditMode ? 'btn-brand border-transparent' : 'border-border bg-surface text-text-muted hover:border-primary/40 hover:text-primary'}`}
+                                >
+                                    <SlidersHorizontal size={16} />
+                                </button>
+                            </Tooltip>
+                        )}
+                        <Tooltip content="Guide & theory" position="bottom">
                             <button
                                 type="button"
-                                onClick={() => setIsEditMode(!isEditMode)}
-                                className={`flex items-center gap-1.5 text-xs font-medium transition-colors px-2.5 py-1.5 border border-border rounded ${isEditMode ? 'bg-primary text-on-primary shadow-sm' : 'text-text-muted hover:bg-secondary/10'}`}
-                                title="Toggle Schema Customization Mode (Dev only)"
+                                onClick={() => setShowDocs(true)}
+                                aria-label="Guide and theory"
+                                className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-text-muted transition-all hover:border-primary/40 hover:text-primary"
                             >
-                                {isEditMode ? <Check size={14} /> : <Edit2 size={14} />}
-                                <span>{isEditMode ? 'Done Editing' : 'Customize Form'}</span>
+                                <BookOpen size={16} />
                             </button>
-                        )}
-                        <button
-                            type="button"
-                            onClick={() => setShowDocs(true)}
-                            className="text-text-muted hover:text-primary border border-border hover:border-primary/40 bg-surface px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
-                            title="View Calculation Guide & Formulation"
-                        >
-                            <Book size={14} className="text-primary" />
-                            <span>Guide & Theory</span>
-                        </button>
+                        </Tooltip>
                     </div>
                 </div>
 
@@ -744,11 +749,12 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             const isDropdown = override.displayType === 'dropdown' || (override.allowedOptions && override.allowedOptions.length > 0);
 
                             // Helper for Edit Mode Wrapper
-                            const wrapperClass = `relative ${isEditMode ? 'border border-dashed border-primary/20 rounded-md p-2' : ''}`;
+                            const wrapperClass = `relative min-w-0 ${isEditMode ? 'border border-dashed border-primary/20 rounded-md p-2' : ''}`;
                             const editOverlay = isEditMode ? (
                                 <div
                                     className="absolute inset-0 z-10 cursor-pointer"
                                     onClick={() => setEditingField(input)}
+                                    data-form-settings-keep
                                     title="Click to Edit"
                                 />
                             ) : null;
@@ -772,7 +778,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                         {input.description && (
                                             <div className="relative group/tooltip shrink-0">
                                                 <HelpCircle size={12} className="text-text-muted cursor-help" />
-                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded-md shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
                                                     <div dangerouslySetInnerHTML={{ __html: input.description }} />
                                                 </div>
                                             </div>
@@ -780,7 +786,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                     </div>
 
                                     {rangeHint && (
-                                        <span className="text-[10px] font-mono text-text-muted bg-surface-muted border border-border/60 rounded px-1.5 py-0.5 shrink-0" title="Allowed range">
+                                        <span className="text-[10px] font-mono text-text-muted bg-surface-muted border border-border/60 rounded-md px-1.5 py-0.5 shrink-0" title="Allowed range">
                                             {rangeHint}
                                         </span>
                                     )}
@@ -934,7 +940,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                     {input.description && (
                                                         <div className="relative group/tooltip">
                                                             <HelpCircle size={12} className="text-text-muted cursor-help" />
-                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
+                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded-md shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
                                                                 <div dangerouslySetInnerHTML={{ __html: input.description }} />
                                                             </div>
                                                         </div>
@@ -947,7 +953,8 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                             e.stopPropagation();
                                                             setEditingField(input);
                                                         }}
-                                                        className={`p-0.5 rounded hover:bg-primary/10 text-text-muted hover:text-primary transition-all ${isEditMode ? 'opacity-100' : 'opacity-0'} group-hover/label:opacity-100`}
+                                                        data-form-settings-keep
+                                                        className={`p-0.5 rounded-md hover:bg-primary/10 text-text-muted hover:text-primary transition-all ${isEditMode ? 'opacity-100' : 'opacity-0'} group-hover/label:opacity-100`}
                                                         title="Edit Field"
                                                     >
                                                         <Edit2 size={10} />
@@ -1093,78 +1100,26 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             <div className="flex flex-wrap items-center justify-between px-5 py-3.5 border-b border-border bg-background shrink-0 gap-4">
                                 {/* Left: Title & Icon */}
                                 <div className="flex items-center gap-2.5 min-w-0">
-                                    <div className="p-1.5 rounded bg-primary/10 text-primary border border-primary/20 shrink-0">
+                                    <div className="p-1.5 rounded-md bg-primary/10 text-primary border border-primary/20 shrink-0">
                                         <Book size={18} />
                                     </div>
                                     <div className="min-w-0">
                                         <h3 className="text-base font-bold text-text-main truncate">
                                             {functionName}
                                         </h3>
-                                        <span className="text-[11px] text-text-muted">Documentation & Parameter Configuration</span>
+                                        <span className="text-[11px] text-text-muted">Guide & theory</span>
                                     </div>
                                 </div>
 
-                                {/* Center & Right: Segmented Tabs + Header Actions */}
+                                {/* Right: close */}
                                 <div className="flex items-center gap-2.5 shrink-0">
-                                    {/* Segmented Tab Switcher (Dev Only) */}
-                                    {isDev && (
-                                        <div className="flex bg-surface p-1 rounded border border-border">
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveDocTab('guide')}
-                                                className={`px-3 py-1 text-xs font-medium rounded transition-all ${
-                                                    activeDocTab === 'guide'
-                                                        ? 'bg-primary text-on-primary shadow-sm'
-                                                        : 'text-text-muted hover:text-text-main'
-                                                }`}
-                                            >
-                                                User Guide
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveDocTab('fields')}
-                                                className={`px-3 py-1 text-xs font-medium rounded transition-all ${
-                                                    activeDocTab === 'fields'
-                                                        ? 'bg-primary text-on-primary shadow-sm'
-                                                        : 'text-text-muted hover:text-text-main'
-                                                }`}
-                                            >
-                                                Field Configuration
-                                            </button>
-                                        </div>
-                                    )}
-
-                                    {/* Edit Guide Button (Dev Only) */}
-                                    {isDev && activeDocTab === 'guide' && (
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                if (!isEditingDocs) {
-                                                    const currentOrFallback = (editedDocs && editedDocs.trim()) || (pageDocs && pageDocs.trim()) || generateDefaultDocumentation(functionName, schema, normalizedInputs);
-                                                    setEditedDocs(currentOrFallback);
-                                                    setPageDocs(currentOrFallback);
-                                                }
-                                                setIsEditingDocs(!isEditingDocs);
-                                            }}
-                                            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded border transition-all ${
-                                                isEditingDocs
-                                                    ? 'bg-primary text-on-primary border-primary shadow-sm'
-                                                    : 'bg-surface border-border text-text-muted hover:text-text-main hover:border-primary/50'
-                                            }`}
-                                            title={isEditingDocs ? "Preview documentation" : "Edit documentation source"}
-                                        >
-                                            {isEditingDocs ? <Check size={14} /> : <Edit2 size={13} />}
-                                            <span>{isEditingDocs ? 'Preview' : 'Edit Guide'}</span>
-                                        </button>
-                                    )}
-
                                     <div className="h-4 w-[1px] bg-border my-auto mx-0.5" />
 
                                     {/* Close Button */}
                                     <button
                                         type="button"
                                         onClick={() => setShowDocs(false)}
-                                        className="p-1.5 rounded hover:bg-surface border border-transparent hover:border-border text-text-muted hover:text-text-main transition-colors"
+                                        className="p-1.5 rounded-md hover:bg-surface border border-transparent hover:border-border text-text-muted hover:text-text-main transition-colors"
                                         title="Close documentation (Esc)"
                                     >
                                         <X size={18} />
@@ -1173,129 +1128,16 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             </div>
 
                             <div className="flex-1 overflow-y-auto p-0 bg-surface/50">
-                                {activeDocTab === 'guide' ? (
-                                    <div className="p-6 h-full flex flex-col">
-                                        {isEditingDocs ? (
-                                            <div className="flex-1 flex flex-col gap-3">
-                                                <div className="flex items-center justify-between text-xs text-text-muted">
-                                                    <span>HTML / Markdown Source Editor</span>
-                                                    <span className="font-mono text-[11px]">Supports standard HTML tags and typography</span>
-                                                </div>
-                                                <textarea
-                                                    value={editedDocs}
-                                                    onChange={(e) => setEditedDocs(e.target.value)}
-                                                    className="w-full flex-1 min-h-[420px] p-4 bg-background border border-border rounded-md font-mono text-sm focus:outline-none focus:ring-1 focus:ring-primary text-text-main leading-relaxed"
-                                                    placeholder="Enter HTML or text documentation..."
-                                                />
-                                                <div className="flex justify-between items-center gap-2 pt-2 border-t border-border">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setEditedDocs(generateDefaultDocumentation(functionName, schema, normalizedInputs))}
-                                                        className="text-xs text-text-muted hover:text-primary transition-colors underline"
-                                                    >
-                                                        Reset to default template
-                                                    </button>
-                                                    <div className="flex items-center gap-2">
-                                                        <Button variant="secondary" onClick={() => {
-                                                            setEditedDocs(pageDocs);
-                                                            setIsEditingDocs(false);
-                                                        }}>Cancel</Button>
-                                                        <Button variant="primary" onClick={handleSavePageDocs}>Save Guide</Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <UserGuideTemplate
-                                                functionId={functionId}
-                                                functionName={functionName}
-                                                pageDocs={pageDocs}
-                                                schema={schema}
-                                                normalizedInputs={normalizedInputs}
-                                                overrides={overrides}
-                                            />
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div className="p-6 space-y-6">
-                                        <div className="grid grid-cols-1 gap-4">
-                                            {normalizedInputs.map(baseInput => {
-                                                const override = overrides[functionName]?.[baseInput.name] || {};
-                                                const input = { ...baseInput, ...override };
-
-                                                return (
-                                                    <div key={input.name} className="bg-background border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-                                                        <div className="flex items-start justify-between mb-4">
-                                                            <div>
-                                                                <h4 className="font-semibold text-text-main flex items-center gap-2">
-                                                                    {input.label || input.name}
-                                                                    <span className="text-xs font-mono text-text-muted bg-secondary/10 px-1.5 rounded">{input.name}</span>
-                                                                </h4>
-                                                                <p className="text-xs text-text-muted mt-1 max-w-xl">{input.description || "No description provided."}</p>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                            {/* Validation Section */}
-                                                            <div className="space-y-2">
-                                                                <label className="text-xs font-medium text-text-muted uppercase tracking-wider">Validation Rule</label>
-                                                                <div className="flex gap-2">
-                                                                    <select
-                                                                        className="bg-background border border-border rounded px-2 py-1.5 text-sm w-32 focus:outline-none focus:border-primary"
-                                                                        onChange={(e) => handleSaveOverride(functionName, input.name, { ...override, validationRegex: e.target.value })}
-                                                                        value={['^\\d*\\.?\\d+$', '^-?\\d+$', '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$'].includes(input.validationRegex) ? input.validationRegex : 'custom'}
-                                                                    >
-                                                                        <option value="">None</option>
-                                                                        <option value="^\\d*\\.?\\d+$">Positive Num</option>
-                                                                        <option value="^-?\\d+$">Integer</option>
-                                                                        <option value="^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$">Email</option>
-                                                                        <option value="custom">Custom</option>
-                                                                    </select>
-                                                                    <input
-                                                                        value={input.validationRegex || ''}
-                                                                        onChange={(e) => handleSaveOverride(functionName, input.name, { ...override, validationRegex: e.target.value })}
-                                                                        placeholder="Regex Pattern..."
-                                                                        className="flex-1 bg-surface border border-border rounded px-3 py-1.5 text-sm font-mono focus:outline-none focus:border-primary"
-                                                                    />
-                                                                </div>
-                                                            </div>
-
-                                                            {/* Image Upload Section */}
-                                                            <div className="space-y-2">
-                                                                <label className="text-xs font-medium text-text-muted uppercase tracking-wider">Reference Image</label>
-                                                                <div className="flex items-center gap-4">
-                                                                    {input.imageUrl ? (
-                                                                        <div className="relative h-12 w-12 rounded border border-border overflow-hidden group/img">
-                                                                            <img src={input.imageUrl} alt="Ref" className="h-full w-full object-cover" />
-                                                                            <button
-                                                                                onClick={() => handleSaveOverride(functionName, input.name, { ...override, imageUrl: '' })}
-                                                                                className="absolute inset-0 bg-black/50 text-white flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity"
-                                                                            >
-                                                                                <X size={12} />
-                                                                            </button>
-                                                                        </div>
-                                                                    ) : (
-                                                                        <div className="h-12 w-12 rounded border border-dashed border-border flex items-center justify-center text-text-muted bg-surface/50">
-                                                                            <Settings size={16} />
-                                                                        </div>
-                                                                    )}
-                                                                    <label className="cursor-pointer flex items-center gap-2 text-xs font-medium text-primary hover:underline">
-                                                                        Upload New
-                                                                        <input
-                                                                            type="file"
-                                                                            className="hidden"
-                                                                            accept="image/*"
-                                                                            onChange={(e) => handleSchemaImageUpload(e.target.files[0], input.name)}
-                                                                        />
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
+                                <div className="p-6 h-full flex flex-col">
+                                    <UserGuideTemplate
+                                        functionId={functionId}
+                                        functionName={functionName}
+                                        pageDocs={pageDocs}
+                                        schema={schema}
+                                        normalizedInputs={normalizedInputs}
+                                        overrides={overrides}
+                                    />
+                                </div>
                             </div>
                         </motion.div>
                     </div>
@@ -1355,13 +1197,25 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                 onClose={() => setViewProfileIds(null)}
             />
 
-            {/* Schema Editor Tray */}
-            <SchemaEditor
-                isOpen={!!editingField}
-                onClose={() => setEditingField(null)}
-                field={editingField}
+            {/* Form settings panel (field customisation) */}
+            <FormSettingsPanel
+                isOpen={isEditMode}
+                onClose={() => { setIsEditMode(false); setEditingField(null); }}
+                functionName={functionName}
+                fields={normalizedInputs}
+                overrides={overrides}
+                selectedName={editingField?.name}
+                onSelect={setEditingField}
                 onSave={handleSaveOverride}
-                functionId={functionName}
+                onUploadImage={handleSchemaImageUpload}
+                guide={{
+                    value: editedDocs,
+                    onChange: setEditedDocs,
+                    dirty: editedDocs !== pageDocs,
+                    onSave: handleSavePageDocs,
+                    onResetTemplate: () => setEditedDocs(generateDefaultDocumentation(functionName, schema, normalizedInputs)),
+                    onRevert: () => setEditedDocs(pageDocs),
+                }}
             />
 
             {/* AI Auto-Fill Modal */}
@@ -1378,12 +1232,12 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
-                            className="bg-surface border border-border rounded-xl shadow-2xl max-w-lg w-full p-5 space-y-4"
+                            className="bg-surface border border-border rounded-md shadow-2xl max-w-lg w-full p-5 space-y-4"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="flex items-center justify-between border-b border-border pb-3">
                                 <div className="flex items-center gap-2">
-                                    <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
+                                    <div className="p-1.5 rounded-md bg-primary/10 text-primary">
                                         <Sparkles size={18} />
                                     </div>
                                     <div>
@@ -1405,10 +1259,10 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                     onChange={(e) => setAutoFillText(e.target.value)}
                                     placeholder="e.g.: SPT borehole test at depth 4.5m indicates sand layer with friction angle phi = 32 deg, unit weight gamma = 19 kN/m3 and cohesion c = 0 kPa..."
                                     rows={5}
-                                    className="w-full bg-background border border-border rounded-lg p-3 text-xs text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                                    className="w-full bg-background border border-border rounded-md p-3 text-xs text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                                 />
                                 {autoFillMsg && (
-                                    <div className={`p-2.5 rounded-lg text-xs font-medium ${
+                                    <div className={`p-2.5 rounded-md text-xs font-medium ${
                                         autoFillMsg.type === 'success'
                                             ? 'bg-green-500/10 text-green-500 border border-green-500/20'
                                             : autoFillMsg.type === 'warn'

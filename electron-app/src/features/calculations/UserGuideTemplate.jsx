@@ -33,7 +33,7 @@ ${paramsHtml}
 };
 
 /** Inline LaTeX (parameter symbols, units); shows the source text until KaTeX has loaded. */
-const Tex = ({ tex }) => {
+export const Tex = ({ tex }) => {
     const [html, setHtml] = useState(null);
     useEffect(() => {
         let cancelled = false;
@@ -106,7 +106,7 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
             <div className="bg-gradient-to-br from-primary/10 via-surface to-primary-light/5 border border-border rounded-md p-5 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
-                        <div className="p-2.5 rounded bg-primary/15 text-primary border border-primary/20 shrink-0">
+                        <div className="p-2.5 rounded-md bg-primary/15 text-primary border border-primary/20 shrink-0">
                             <Book size={22} />
                         </div>
                         <div className="min-w-0">
@@ -118,11 +118,11 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         {entry && (
-                            <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-background border border-border text-primary font-medium" title="groundhog implementation">
+                            <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-background border border-border text-primary font-medium" title="groundhog implementation">
                                 {entry.module}.{entry.qualname}
                             </span>
                         )}
-                        <span className="text-[11px] px-2.5 py-1 rounded bg-primary/10 text-primary border border-primary/20 font-medium">
+                        <span className="text-[11px] px-2.5 py-1 rounded-md bg-primary/10 text-primary border border-primary/20 font-medium">
                             {normalizedInputs.length} Parameters
                         </span>
                     </div>
@@ -212,7 +212,7 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                                                 {input.default !== undefined && input.default !== null && input.default !== '' ? String(input.default) : '—'}
                                             </td>
                                             <td className="px-3.5 py-3">
-                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium ${
+                                                <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium ${
                                                     isReq
                                                         ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                                                         : 'bg-background text-text-muted border border-border'

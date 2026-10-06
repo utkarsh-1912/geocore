@@ -12,13 +12,66 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Sigma, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 import { api } from '../../api/client';
+import { Tex } from './UserGuideTemplate';
 
 const formatValue = (v) => {
   if (typeof v === 'number') return Number.isInteger(v) ? String(v) : v.toFixed(4).replace(/0+$/, '').replace(/\.$/, '');
+  if (v !== null && typeof v === 'object') return JSON.stringify(v); // never "[object Object]"
   return String(v);
 };
 
-export const FormulaDerivationCard = ({ functionName, formData = {}, results = {}, className = '' }) => {
+/** "Relative density (D_r)": label with its documented symbol, or the spaced-out key. */
+const QuantityName = ({ q }) => (
+  <span className="text-text-muted">
+    {q.label || q.key.replace(/\s*\[[^\]]*\]$/, '').replace(/_/g, ' ')}
+    {q.symbol && <> (<Tex tex={q.symbol} />)</>}
+  </span>
+);
+
+const QuantityRow = ({ q }) => (
+  <div className="flex flex-wrap items-center justify-between p-2 rounded-md bg-surface/50 border border-border/50 text-[11px] gap-2">
+    <QuantityName q={q} />
+    <span className="font-bold text-text-main font-mono">{formatValue(q.value)}{q.unit && q.unit !== '-' ? ` ${q.unit}` : ''}</span>
+  </div>
+);
+
+/**
+ * One step of the worked derivation (objective, given, governing equation, result). Everything in
+ * a step comes from the backend explainer: groundhog's docstring plus the actual inputs/outputs.
+ */
+const DerivationStep = ({ index, step }) => (
+  <div className="flex gap-2.5">
+    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold flex items-center justify-center">
+      {index + 1}
+    </div>
+    <div className="flex-1 min-w-0 space-y-1.5">
+      <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide pt-0.5">{step.title}</div>
+      {step.text && <div className="text-[11px] text-text-main">{step.text}</div>}
+      {step.formula && (
+        <div className="p-2.5 rounded-md bg-background border border-border text-primary overflow-x-auto">
+          <Tex tex={step.formula} />
+        </div>
+      )}
+      {step.where && step.where.length > 0 && (
+        <div className="text-[11px] text-text-muted space-y-0.5">
+          <span>where</span>
+          {step.where.map((w) => (
+            <div key={w.symbol} className="pl-3">
+              <Tex tex={w.symbol} /> = <span className="font-mono font-bold text-text-main">{formatValue(w.value)}{w.unit && w.unit !== '-' ? ` ${w.unit}` : ''}</span>
+              {w.label && <span> ({w.label})</span>}
+            </div>
+          ))}
+        </div>
+      )}
+      {(step.items || []).map((q) => <QuantityRow key={q.key} q={q} />)}
+    </div>
+  </div>
+);
+
+export const FormulaDerivationCard = ({ functionName, functionId, formData = {}, results = {}, className = '' }) => {
+  // The explainer looks the calculation up by its groundhog id; the title ("API RP2 GEO (Sand)")
+  // is ambiguous and unknown to the backend, which then falls back to generic text.
+  const explainId = functionId || functionName;
   const [isExpanded, setIsExpanded] = useState(true);
   const [explanation, setExplanation] = useState(null);
   const [narration, setNarration] = useState(null);
@@ -32,17 +85,17 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
     setExplanation(null);
     setNarration(null);
     setNarrationState('idle');
-    if (!functionName || !hasResults) return;
+    if (!explainId || !hasResults) return;
 
     let cancelled = false;
-    api.geoaiExplain(functionName, formData, results)
+    api.geoaiExplain(explainId, formData, results)
       .then((data) => { if (!cancelled) setExplanation(data); })
       .catch(() => { if (!cancelled) setExplanation(null); });
 
     const controller = new AbortController();
     abortRef.current = controller;
     setNarrationState('loading');
-    api.geoaiExplainNarrate(functionName, formData, results, controller.signal)
+    api.geoaiExplainNarrate(explainId, formData, results, controller.signal)
       .then((data) => {
         if (cancelled) return;
         if (data?.narration) {
@@ -56,9 +109,9 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
 
     return () => { cancelled = true; controller.abort(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [functionName, JSON.stringify(formData), JSON.stringify(results)]);
+  }, [explainId, JSON.stringify(formData), JSON.stringify(results)]);
 
-  if (!hasResults || !functionName) return null;
+  if (!hasResults || !explainId) return null;
 
   return (
     <div className={`geo-card bg-surface/80 border border-border rounded-md overflow-hidden ${className}`}>
@@ -68,7 +121,7 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
         className="w-full flex items-center justify-between px-4 py-2.5 bg-background border-b border-border text-left hover:bg-surface-elevated transition-colors"
       >
         <div className="flex items-center gap-2">
-          <div className="p-1 rounded bg-primary/10 text-primary border border-primary/20">
+          <div className="p-1 rounded-md bg-primary/10 text-primary border border-primary/20">
             <Sigma size={15} />
           </div>
           <div>
@@ -91,36 +144,17 @@ export const FormulaDerivationCard = ({ functionName, formData = {}, results = {
             <div className="text-text-muted">Loading…</div>
           ) : (
             <>
-              {explanation.formula && (
-                <div className="p-2.5 rounded bg-background border border-border font-mono text-[11px] text-primary overflow-x-auto">
-                  <span className="font-bold text-text-muted block mb-1">Formula (from groundhog's own documentation):</span>
-                  <code>{explanation.formula}</code>
+              {/* Worked derivation, step by step. Nothing here is invented: the steps come from
+                  groundhog's own docstring and the values exactly as computed. */}
+              {explanation.steps && explanation.steps.length > 0 ? (
+                <div className="space-y-3">
+                  {explanation.steps.map((step, idx) => <DerivationStep key={step.title} index={idx} step={step} />)}
+                </div>
+              ) : (
+                <div className="space-y-1.5 pt-1">
+                  {(explanation.outputs || []).map((o) => <QuantityRow key={o.key} q={o} />)}
                 </div>
               )}
-
-              {/* Substituted inputs and outputs, exactly as computed — nothing here is invented.
-                  Labels come from groundhog's own docstring (`:param:`) when it documents the
-                  field; otherwise we fall back to spacing out the raw parameter name. */}
-              <div className="space-y-1.5 pt-1">
-                {explanation.inputs && explanation.inputs.length > 0 && (
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide">Inputs</div>
-                )}
-                {(explanation.inputs || []).map((i) => (
-                  <div key={`in-${i.key}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 text-[11px] gap-2">
-                    <span className="text-text-muted">{i.label || i.key.replace(/_/g, ' ')}:</span>
-                    <span className="font-bold text-text-main font-mono">{formatValue(i.value)}</span>
-                  </div>
-                ))}
-                {explanation.outputs && explanation.outputs.length > 0 && (
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide pt-1">Outputs</div>
-                )}
-                {(explanation.outputs || []).map((o) => (
-                  <div key={`out-${o.key}`} className="flex flex-wrap items-center justify-between p-2 rounded bg-surface/50 border border-border/50 text-[11px] gap-2">
-                    <span className="text-text-muted">{o.label || o.key.replace(/_/g, ' ')}:</span>
-                    <span className="font-bold text-text-main font-mono">{formatValue(o.value)}{o.unit ? ` ${o.unit}` : ''}</span>
-                  </div>
-                ))}
-              </div>
 
               {explanation.assumptions && explanation.assumptions.length > 0 && (
                 <div className="pt-1">

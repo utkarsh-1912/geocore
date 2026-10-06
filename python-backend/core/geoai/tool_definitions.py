@@ -216,7 +216,8 @@ def normalize_spt_test(
     description="Classifies soil behavior type (SBT) and calculates normalized CPT indices (Qt, Fr, Bq, Ic) using Robertson (1990/2009).",
     category="in_situ",
     input_model=ClassifyCPTSoilBehaviorInput,
-    output_model=ClassifyCPTSoilBehaviorOutput
+    output_model=ClassifyCPTSoilBehaviorOutput,
+    interpretive=True
 )
 def classify_cpt_soil_behavior(
     qc_mpa: float,

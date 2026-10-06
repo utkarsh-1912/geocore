@@ -68,6 +68,28 @@ class Registry:
         except Exception as e:
             print(f"Error loading manual_functions: {e}")
 
+    @staticmethod
+    def _null_result_message(function_id, func, func_args):
+        """
+        Why a Groundhog calculation returned only nulls. Groundhog's @Validator swallows an error raised
+        inside the function and returns NaN, so the reason is lost; re-running once with
+        ``fail_silently=False`` recovers the function's own message (e.g. "Normalised average shear
+        stress should be between -0.5 and 1"). Falls back to the generic text when it cannot.
+        """
+        import warnings
+        reason = None
+        try:
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                func(**func_args, fail_silently=False)
+            reason = "; ".join(str(w.message) for w in caught) or None
+        except Exception as exc:  # the function's own error is the answer
+            reason = str(exc).strip() or None
+        if reason:
+            return f"Geotechnical Constraint Error ({function_id}): {reason}"
+        return (f"Calculation returned no output (null). The supplied inputs do not satisfy the "
+                f"geotechnical physical boundary equations for '{function_id}'.")
+
     def _sanitize(self, obj):
         import numpy as np
         import math
@@ -662,7 +684,7 @@ class Registry:
                     if output_vals and all(v is None for v in output_vals):
                         if warning_messages:
                             return {"status": "Error", "error": f"Geotechnical Constraint Error ({function_id}): {'; '.join(warning_messages)}"}
-                        return {"status": "Error", "error": f"Calculation returned no output (null). The supplied inputs do not satisfy the geotechnical physical boundary equations for '{function_id}'."}
+                        return {"status": "Error", "error": self._null_result_message(function_id, func, func_args)}
 
                     if warning_messages:
                         sanitized_res['warnings'] = warning_messages
@@ -1082,7 +1104,7 @@ class Registry:
                 if output_vals and all(v is None for v in output_vals):
                     if warning_messages:
                         return {"status": "Error", "error": f"Geotechnical Constraint Error ({function_id}): {'; '.join(warning_messages)}"}
-                    return {"status": "Error", "error": f"Calculation returned no output (null). The supplied inputs do not satisfy the geotechnical physical boundary equations for '{function_id}'."}
+                    return {"status": "Error", "error": self._null_result_message(function_id, func, func_args)}
 
                 if warning_messages:
                     sanitized_result['warnings'] = warning_messages

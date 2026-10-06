@@ -87,7 +87,7 @@ export const ParameterChipsSelector = ({ name, value, availableColumns, onChange
                     <button
                         type="button"
                         onClick={selectNumeric}
-                        className="text-[11px] px-2 py-0.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors flex items-center gap-1"
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors flex items-center gap-1"
                         title="Select typical numeric columns"
                     >
                         <Zap size={11} className="stroke-[2.5]" />
@@ -96,14 +96,14 @@ export const ParameterChipsSelector = ({ name, value, availableColumns, onChange
                     <button
                         type="button"
                         onClick={selectAll}
-                        className="text-[11px] px-2 py-0.5 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"
                     >
                         All
                     </button>
                     <button
                         type="button"
                         onClick={clearAll}
-                        className="text-[11px] px-2 py-0.5 rounded bg-background hover:bg-border text-text-muted transition-colors"
+                        className="text-[11px] px-2 py-0.5 rounded-md bg-background hover:bg-border text-text-muted transition-colors"
                     >
                         Clear
                     </button>
@@ -118,7 +118,7 @@ export const ParameterChipsSelector = ({ name, value, availableColumns, onChange
             </div>
 
             {/* Chips Grid */}
-            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1.5 bg-background/50 rounded border border-border/50">
+            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1.5 bg-background/50 rounded-md border border-border/50">
                 {availableColumns.map(col => {
                     const isSelected = selectedList.includes(col);
                     return (
@@ -127,9 +127,9 @@ export const ParameterChipsSelector = ({ name, value, availableColumns, onChange
                             type="button"
                             onClick={() => toggleColumn(col)}
                             disabled={disabled}
-                            className={`px-2.5 py-1 rounded text-xs font-medium transition-all flex items-center gap-1.5 ${
+                            className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
                                 isSelected
-                                    ? 'bg-primary text-on-primary shadow-sm ring-1 ring-primary'
+                                    ? 'btn-brand'
                                     : 'bg-surface border border-border text-text-main hover:border-primary/50 hover:bg-primary/5'
                             }`}
                         >

@@ -3,8 +3,12 @@
  * License: Proprietary / GeoCore
  */
 
+import { canonicalUnit, getQuantity, unitFor } from './quantities';
+
 /**
- * Geotechnical Parameter Notation & Mathematical Mapping Dictionary
+ * Legacy notation table. The standard quantity directory (quantities.js) is consulted first; this table
+ * only covers names the directory does not list yet, so new quantities belong in
+ * python-backend/core/quantity_standard.json, not here.
  */
 export const GEOTECHNICAL_NOTATIONS = {
   // Strength Parameters
@@ -85,16 +89,19 @@ export const GEOTECHNICAL_NOTATIONS = {
 /**
  * Get formatted geotechnical notation for a parameter key
  */
-export function getParameterNotation(paramKey, fallbackLabel) {
+export function getParameterNotation(paramKey, fallbackLabel, functionId) {
   if (!paramKey) return null;
-  const key = String(paramKey).trim();
+  // Output keys carry their unit ("f_s [kPa]"): look the name up without it.
+  const key = String(paramKey).replace(/\s*\[[^\]]*\]\s*$/, '').trim();
   const normalizedKey = key.toLowerCase().replace(/[^a-z0-9_]/g, '');
 
-  if (GEOTECHNICAL_NOTATIONS[key]) {
-    return GEOTECHNICAL_NOTATIONS[key];
+  const standard = getQuantity(key, functionId);
+  if (standard) {
+    return { symbol: standard.symbol, label: standard.name, math: standard.latex, unit: unitFor(functionId, key) || standard.unit, category: standard.category, note: standard.note };
   }
-  if (GEOTECHNICAL_NOTATIONS[normalizedKey]) {
-    return GEOTECHNICAL_NOTATIONS[normalizedKey];
+  const legacy = GEOTECHNICAL_NOTATIONS[key] || GEOTECHNICAL_NOTATIONS[normalizedKey];
+  if (legacy) {
+    return { ...legacy, unit: canonicalUnit(legacy.unit) || legacy.unit };
   }
 
   // Subscript heuristic for numbered variables (e.g. z1, B2, q_ult)

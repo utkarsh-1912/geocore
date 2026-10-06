@@ -1160,9 +1160,40 @@ table.data td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 /* ------------------------------------------------------------------ */
 /* 11. 404                                                             */
 /* ------------------------------------------------------------------ */
-.not-found { padding-block: var(--sp-20); text-align: center; }
-.not-found .code { font-family: var(--font-mono); color: var(--c-primary); font-size: var(--fs-xl); margin-bottom: var(--sp-2); }
-.not-found .cluster { justify-content: center; }
+/* Reuses the dark .hero spotlight; fills the viewport between header and footer. */
+.not-found { display: flex; align-items: center; min-height: calc(100vh - var(--header-h) - 22rem); padding-block: var(--sp-16); }
+.not-found .hero__grid { width: 100%; }
+.not-found .eyebrow { font-family: var(--font-mono); }
+.not-found h1 { max-width: 14ch; }
+.not-found .lede { max-width: 26rem; }
+.not-found__figure svg { display: block; width: 100%; height: auto; }
+.nf-l1 { fill: rgba(134, 239, 172, 0.07); }
+.nf-l2 { fill: rgba(134, 239, 172, 0.12); }
+.nf-l3 { fill: rgba(134, 239, 172, 0.09); }
+.nf-l4 { fill: rgba(134, 239, 172, 0.15); }
+.nf-l5 { fill: rgba(134, 239, 172, 0.1); }
+.nf-line { fill: none; stroke: rgba(134, 239, 172, 0.55); stroke-width: 1; }
+.nf-line--thin { stroke: rgba(134, 239, 172, 0.2); stroke-width: 0.8; }
+.nf-vgrid line { stroke: rgba(134, 239, 172, 0.08); stroke-width: 1; }
+.nf-mesh polyline { fill: none; stroke: rgba(134, 239, 172, 0.45); stroke-width: 0.8; stroke-linejoin: round; }
+.nf-dot { fill: rgba(134, 239, 172, 0.45); }
+.nf-stone { fill: none; stroke: rgba(134, 239, 172, 0.3); stroke-width: 1; }
+.nf-mark { fill: none; stroke: var(--c-text-subtle); stroke-width: 1; }
+.nf-rod { stroke: #4ade80; stroke-width: 2; }
+.nf-node { fill: #4ade80; opacity: 0.8; }
+.nf-focus { fill: #06100c; stroke: #4ade80; stroke-width: 2; }
+.nf-pulse { fill: none; stroke: #4ade80; stroke-width: 1.5; opacity: 0.45; }
+@media (prefers-reduced-motion: no-preference) {
+  .nf-pulse { transform-box: fill-box; transform-origin: center; animation: nf-pulse 2.4s ease-out infinite; }
+}
+@keyframes nf-pulse {
+  from { transform: scale(0.8); opacity: 0.7; }
+  to { transform: scale(2.2); opacity: 0; }
+}
+@media (max-width: 47.99rem) {
+  .not-found { min-height: 0; padding-block: var(--sp-12); }
+  .not-found__figure { order: -1; max-width: 26rem; margin-inline: auto; }
+}
 
 /* ------------------------------------------------------------------ */
 /* 12. Motion & print                                                  */
@@ -2111,3 +2142,12 @@ body:has(.hero) .site-header { margin-bottom: calc(-1 * var(--header-h)); }
 }
 .eyebrow .icon { width: 0.9rem; height: 0.9rem; }
 @media (max-width: 30rem) { .eyebrow, .section-head .eyebrow { white-space: normal; } }
+
+@media (min-width: 48rem) {
+  .not-found .hero__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: var(--sp-8); }
+}
+
+/* Even, tighter space between the end of the page content and the footer. */
+.site-footer { margin-top: 0; }
+main > .section:last-child { padding-bottom: var(--sp-12); }
+.hero.not-found { padding-block: calc(var(--sp-12) + var(--header-h)) var(--sp-12); }

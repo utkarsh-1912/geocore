@@ -62,7 +62,7 @@ const summarize = (backendStatus, details, fetchError) => {
 const Badge = ({ tone, children }) => {
     const t = TONES[tone];
     return (
-        <span className={`inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded border text-[10px] uppercase font-bold tracking-wider whitespace-nowrap ${t.bg} ${t.border} ${t.text}`}>
+        <span className={`inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-md border text-[10px] uppercase font-bold tracking-wider whitespace-nowrap ${t.bg} ${t.border} ${t.text}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${t.dot}`} />
             {children}
         </span>
@@ -83,8 +83,8 @@ const Section = ({ icon, title, action, className = '', children }) => (
 );
 
 const ServiceRow = ({ icon, name, detail, tone, status, action }) => (
-    <div className="flex items-center gap-3 p-2.5 bg-background rounded border border-border/50">
-        <div className="p-1.5 rounded bg-primary/10 text-primary shrink-0">{icon}</div>
+    <div className="flex items-center gap-3 p-2.5 bg-background rounded-md border border-border/50">
+        <div className="p-1.5 rounded-md bg-primary/10 text-primary shrink-0">{icon}</div>
         <div className="min-w-0 flex-1">
             <div className="text-xs font-semibold text-text-main">{name}</div>
             <div className="text-[11px] text-text-muted truncate">{detail}</div>
@@ -136,14 +136,14 @@ const Meter = ({ label, percent, hint }) => {
 };
 
 const Stat = ({ label, value, tone }) => (
-    <div className="p-2.5 bg-background rounded border border-border/50">
+    <div className="p-2.5 bg-background rounded-md border border-border/50">
         <div className="text-[10px] uppercase font-bold tracking-wider text-text-muted">{label}</div>
         <div className={`mt-0.5 text-sm font-bold tabular-nums whitespace-nowrap ${tone ? TONES[tone].text : 'text-text-main'}`}>{value}</div>
     </div>
 );
 
 const Fact = ({ label, value, mono }) => (
-    <div className="flex justify-between items-center gap-3 text-xs p-1.5 bg-background rounded border border-border/50 min-w-0">
+    <div className="flex justify-between items-center gap-3 text-xs p-1.5 bg-background rounded-md border border-border/50 min-w-0">
         <span className="text-text-muted shrink-0">{label}</span>
         <span className={`truncate text-right text-text-main ${mono ? 'font-mono text-[11px]' : 'font-semibold'}`} title={value ?? undefined}>
             {value ?? '—'}
@@ -266,7 +266,7 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                         {/* Header */}
                         <div className="flex items-center justify-between p-4 border-b border-border bg-background/50">
                             <div className="flex items-center gap-3">
-                                <div className={`p-2 rounded ${tone.bg} ${tone.text}`}>
+                                <div className={`p-2 rounded-md ${tone.bg} ${tone.text}`}>
                                     <Activity size={22} />
                                 </div>
                                 <div>
@@ -277,7 +277,7 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                             <div className="flex items-center gap-1">
                                 <button
                                     onClick={refresh}
-                                    className="p-1.5 hover:bg-background rounded text-text-muted hover:text-text-main transition-colors"
+                                    className="p-1.5 hover:bg-background rounded-md text-text-muted hover:text-text-main transition-colors"
                                     title="Refresh now"
                                     aria-label="Refresh diagnostics"
                                 >
@@ -285,7 +285,7 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                                 </button>
                                 <button
                                     onClick={onClose}
-                                    className="p-1.5 hover:bg-background rounded text-text-muted hover:text-text-main transition-colors"
+                                    className="p-1.5 hover:bg-background rounded-md text-text-muted hover:text-text-main transition-colors"
                                     aria-label="Close"
                                 >
                                     <X size={18} />
@@ -310,7 +310,7 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                         {/* Content */}
                         <div className="p-6 max-h-[62vh] overflow-y-auto space-y-6">
                             {fetchError && details && (
-                                <div className="flex items-start gap-2.5 p-3 rounded border border-error/30 bg-error/5 text-xs">
+                                <div className="flex items-start gap-2.5 p-3 rounded-md border border-error/30 bg-error/5 text-xs">
                                     <CircleX size={16} className="text-error shrink-0" />
                                     <span className="text-text-muted">
                                         <strong className="text-text-main">Last check failed:</strong> {fetchError}. Showing the previous snapshot.
@@ -340,7 +340,7 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                                             <button
                                                 onClick={handleUnload}
                                                 disabled={unloading}
-                                                className="flex items-center gap-1 px-2 py-1 rounded border border-border text-[11px] font-semibold text-text-muted hover:text-text-main hover:bg-surface transition-colors disabled:opacity-50"
+                                                className="flex items-center gap-1 px-2 py-1 rounded-md border border-border text-[11px] font-semibold text-text-muted hover:text-text-main hover:bg-surface transition-colors disabled:opacity-50"
                                                 title="Release model weights from RAM"
                                             >
                                                 {unloading ? <Loader2 size={12} className="animate-spin" /> : <PowerOff size={12} />}
@@ -362,7 +362,7 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                                         <Stat label="Average" value={avg != null ? `${avg} ms` : '—'} />
                                         <Stat label="Uptime" value={reachable ? formatUptime(details.uptime_seconds) : '—'} />
                                     </div>
-                                    <div className="p-2 bg-background rounded border border-border/50">
+                                    <div className="p-2 bg-background rounded-md border border-border/50">
                                         <Sparkline samples={latencies} />
                                         <div className="flex justify-between text-[10px] text-text-subtle mt-1">
                                             <span>Last {LATENCY_SAMPLES} checks · every {POLL_INTERVAL_MS / 1000}s</span>
@@ -408,14 +408,14 @@ export const StatusModal = ({ isOpen, onClose, backendStatus }) => {
                         <div className="p-3 bg-background/80 border-t border-border flex items-center justify-between">
                             <button
                                 onClick={handleCopy}
-                                className="flex items-center gap-1.5 px-3 py-1.5 border border-border text-text-main text-xs font-semibold rounded hover:bg-surface transition-colors"
+                                className="flex items-center gap-1.5 px-3 py-1.5 border border-border text-text-main text-xs font-semibold rounded-md hover:bg-surface transition-colors"
                             >
                                 {copied ? <Check size={14} className="text-success" /> : <Copy size={14} />}
                                 {copied ? 'Copied' : 'Copy diagnostics'}
                             </button>
                             <button
                                 onClick={onClose}
-                                className="px-4 py-1.5 bg-primary text-on-primary text-xs font-semibold rounded hover:bg-primary/90 transition-all shadow-sm"
+                                className="px-4 py-1.5 btn-brand text-xs font-semibold rounded-md transition-all shadow-sm"
                             >
                                 Done
                             </button>

@@ -37,19 +37,19 @@ export function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            className={`relative z-50 w-full max-w-lg overflow-hidden rounded-md border border-border bg-surface shadow-xl ${className}`}
+            className={`relative z-50 w-full max-w-lg overflow-hidden hairline-top rounded-lg border border-border bg-surface shadow-pop ${className}`}
           >
             <div className="flex items-center justify-between border-b border-border p-4">
-              <h2 className="text-lg font-semibold text-text-main">{title}</h2>
+              <h2 className="text-base font-semibold tracking-tight text-text-main">{title}</h2>
               <button
                 onClick={onClose}
-                className="rounded-md p-1 text-text-muted hover:bg-background hover:text-text-main focus:outline-none focus:ring-2 focus:ring-primary"
+                className="rounded-md p-1.5 text-text-muted hover:bg-surface-muted hover:text-text-main focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <X size={20} />
               </button>
@@ -58,7 +58,7 @@ export function Modal({
               {children}
             </div>
             {footer && (
-              <div className="flex items-center justify-end gap-2 border-t border-border p-4 bg-background/50">
+              <div className="flex items-center justify-end gap-2 border-t border-border p-4 bg-surface-muted/50">
                 {footer}
               </div>
             )}

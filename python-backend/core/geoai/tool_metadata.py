@@ -468,19 +468,38 @@ TOOL_METADATA: Dict[str, Dict[str, Any]] = {
         "standard": "IS 2720 (Part 17):1986 cl. 6.3 (GeoCore implementation; water viscosity by the Vogel equation)",
         "assumptions": ["Laminar flow through a saturated specimen"],
         "output_units": {"Permeability at 27 degC k27 [cm/s]": "cm/s"}
+    },
+    # GeoCore registry wrapper around groundhog's Eurocode7_factoring_STR_GEO (no docstring of its own).
+    "eurocode7_factors": {
+        "method": "Eurocode 7 partial factors for STR/GEO limit states",
+        "standard": "EN 1997-1:2004 Annex A (partial factor sets A, M and R)",
+        "assumptions": [
+            "Recommended Annex A values; the National Annex may prescribe different factors",
+            "Factor sets per design approach (groundhog): DA1-1 A1+M1+R1, DA1-2 A2+M2+R1, DA2 A1+M1+R2, "
+            "DA3-1 A1+M2+R3, DA3-2 A2+M2+R3",
+            "Resistance factors depend on the selected foundation type",
+        ],
+        "output_units": {}
     }
 }
 
 
-def get_tool_metadata(tool_name: str) -> Dict[str, Any]:
-    """Retrieve standard reference and provenance metadata for a tool."""
+def curated_tool_metadata(tool_name: str) -> Optional[Dict[str, Any]]:
+    """The hand-written TOOL_METADATA entry for a tool, or None when it has none."""
     clean_name = tool_name.replace("calculate_", "").lower()
-    
     if tool_name in TOOL_METADATA:
         return dict(TOOL_METADATA[tool_name])
     if clean_name in TOOL_METADATA:
         return dict(TOOL_METADATA[clean_name])
-        
+    return None
+
+
+def get_tool_metadata(tool_name: str) -> Dict[str, Any]:
+    """Retrieve standard reference and provenance metadata for a tool."""
+    curated = curated_tool_metadata(tool_name)
+    if curated is not None:
+        return curated
+
     # Default generic metadata for dynamic Groundhog functions
     return {
         "method": f"Groundhog Deterministic Geotechnical Routine ({tool_name})",

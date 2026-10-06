@@ -33,9 +33,9 @@ export const SavedProfilesList = ({ onSelect, onDelete, onView, refreshTrigger }
 
     if (error) {
         return (
-            <div className="p-4 border border-red-500/20 bg-red-500/10 rounded text-red-500 text-sm flex items-center justify-between">
+            <div className="p-4 border border-red-500/20 bg-red-500/10 rounded-md text-red-500 text-sm flex items-center justify-between">
                 <span>{error}</span>
-                <button onClick={fetchProfiles} className="p-1 hover:bg-red-500/20 rounded"><RefreshCw size={14} /></button>
+                <button onClick={fetchProfiles} className="p-1 hover:bg-red-500/20 rounded-md"><RefreshCw size={14} /></button>
             </div>
         );
     }
@@ -56,10 +56,10 @@ export const SavedProfilesList = ({ onSelect, onDelete, onView, refreshTrigger }
                 {profiles.map(p => (
                     <div
                         key={p.id}
-                        className="p-3 bg-background border border-border rounded-lg flex items-center justify-between hover:border-primary/50 transition-colors group"
+                        className="p-3 bg-background border border-border rounded-md flex items-center justify-between hover:border-primary/50 transition-colors group"
                     >
                         <div className="flex items-center gap-3 overflow-hidden">
-                            <div className="p-2 bg-secondary/10 rounded text-primary">
+                            <div className="p-2 bg-secondary/10 rounded-md text-primary">
                                 <FileText size={18} />
                             </div>
                             <div className="min-w-0">
@@ -76,7 +76,7 @@ export const SavedProfilesList = ({ onSelect, onDelete, onView, refreshTrigger }
                                     console.log("View clicked for", p.id);
                                     onView(p.id);
                                 }}
-                                className="p-2 text-text-muted hover:text-primary hover:bg-primary/10 rounded transition-colors"
+                                className="p-2 text-text-muted hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
                                 title="View Details"
                             >
                                 <Eye size={16} />
@@ -87,7 +87,7 @@ export const SavedProfilesList = ({ onSelect, onDelete, onView, refreshTrigger }
                                     e.stopPropagation();
                                     onDelete(p.id);
                                 }}
-                                className="p-2 text-text-muted hover:text-red-500 hover:bg-red-500/10 rounded transition-colors"
+                                className="p-2 text-text-muted hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
                                 title="Delete Profile"
                             >
                                 <Trash2 size={16} />

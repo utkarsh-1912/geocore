@@ -62,7 +62,7 @@ export const HistoryPanel = ({ isOpen, onClose, onSelect }) => {
                                         <div
                                             key={item.id}
                                             onClick={() => onSelect(item)}
-                                            className="bg-background p-3 rounded border border-border hover:border-text-muted cursor-pointer transition-colors group relative flex flex-col gap-2"
+                                            className="bg-background p-3 rounded-md border border-border hover:border-text-muted cursor-pointer transition-colors group relative flex flex-col gap-2"
                                         >
                                             <div className="flex justify-between items-start pr-6">
                                                 <span className="font-medium text-primary text-sm line-clamp-2">{item.functionName}</span>
@@ -96,7 +96,7 @@ export const HistoryPanel = ({ isOpen, onClose, onSelect }) => {
                                 <div className="p-4 border-t border-border bg-background">
                                     <button
                                         onClick={() => setShowClearAllConfirm(true)}
-                                        className="w-full py-2 text-xs text-red-500 hover:text-red-600 hover:bg-red-500/10 rounded transition-colors flex items-center justify-center gap-1.5 font-medium"
+                                        className="w-full py-2 text-xs text-red-500 hover:text-red-600 hover:bg-red-500/10 rounded-md transition-colors flex items-center justify-center gap-1.5 font-medium"
                                     >
                                         <Trash2 size={13} />
                                         <span>Clear History</span>

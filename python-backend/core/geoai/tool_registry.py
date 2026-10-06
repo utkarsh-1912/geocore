@@ -22,7 +22,8 @@ class GeoAITool:
         input_model: Type[GeoAIBaseModel],
         output_model: Optional[Type[GeoAIBaseModel]],
         func: Callable[..., Any],
-        form_function: Optional[str] = None
+        form_function: Optional[str] = None,
+        interpretive: bool = False
     ):
         self.name = name
         self.description = description
@@ -33,6 +34,9 @@ class GeoAITool:
         # Id of the matching GeoCore calculation form (the Groundhog function
         # name), so the UI can open the tool's call in the right form.
         self.form_function = form_function
+        # The result is a classification/interpretation that needs a short explanation even when
+        # the user did not ask for one (see agent._wants_model_explanation).
+        self.interpretive = interpretive
 
     def target_callable(self) -> Callable[..., Any]:
         """
@@ -117,7 +121,8 @@ class GeoAIToolRegistry:
         category: str,
         input_model: Type[GeoAIBaseModel],
         output_model: Optional[Type[GeoAIBaseModel]] = None,
-        form_function: Optional[str] = None
+        form_function: Optional[str] = None,
+        interpretive: bool = False
     ) -> Callable:
         """Decorator to register a function as an authorized GeoAI tool."""
         def decorator(func: Callable) -> Callable:
@@ -128,7 +133,8 @@ class GeoAIToolRegistry:
                 input_model=input_model,
                 output_model=output_model,
                 func=func,
-                form_function=form_function
+                form_function=form_function,
+                interpretive=interpretive
             )
             self._tools[name] = tool
 

@@ -17,7 +17,7 @@ export const ListField = ({ input, value, onChange, isEditMode, onEditField, val
                 value={value || ''}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={input.description || 'Enter values separated by commas or new lines...'}
-                className="bg-background border border-border rounded px-3 py-2 text-text-main font-mono text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full min-h-[80px]"
+                className="bg-input border border-border-strong rounded-md px-3 py-2 text-text-main font-mono text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full min-h-[80px]"
                 required={input.required}
                 disabled={disabled || isEditMode}
             />

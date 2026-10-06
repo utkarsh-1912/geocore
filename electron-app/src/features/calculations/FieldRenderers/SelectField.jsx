@@ -14,7 +14,7 @@ export const SelectField = ({ input, value, onChange, isEditMode, onEditField, v
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className="w-full p-2 rounded bg-surface border border-border text-text-main"
+        className="w-full p-2 rounded-md bg-surface border border-border text-text-main"
       >
         <option value="">Select an option</option>
         {input.options?.map((opt, idx) => (

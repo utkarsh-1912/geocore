@@ -10,7 +10,7 @@ const FieldLabel = ({ input, currentValue, onConvertValue }) => {
     <div className="flex items-center justify-between mb-1 gap-1.5">
       <label className="text-xs sm:text-sm font-medium text-text-main flex items-center gap-1.5 truncate">
         {notation?.symbol && (
-          <span className="px-1 py-0.2 rounded bg-primary/10 border border-primary/20 text-primary font-mono text-xs font-bold shrink-0" title={notation.label}>
+          <span className="px-1 py-0.2 rounded-md bg-primary/10 border border-primary/20 text-primary font-mono text-xs font-bold shrink-0" title={notation.label}>
             {notation.symbol}
           </span>
         )}

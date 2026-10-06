@@ -29,7 +29,7 @@ export const HelpModal = ({ isOpen, onClose }) => {
                         {/* Header */}
                         <div className="flex items-center justify-between p-4 border-b border-border bg-background/50">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 bg-primary/10 rounded text-primary">
+                                <div className="p-2 bg-primary/10 rounded-md text-primary">
                                     <HelpCircle size={22} />
                                 </div>
                                 <div>
@@ -39,7 +39,7 @@ export const HelpModal = ({ isOpen, onClose }) => {
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-1.5 hover:bg-background rounded text-text-muted hover:text-text-main transition-colors"
+                                className="p-1.5 hover:bg-background rounded-md text-text-muted hover:text-text-main transition-colors"
                             >
                                 <X size={18} />
                             </button>
@@ -89,9 +89,9 @@ export const HelpModal = ({ isOpen, onClose }) => {
                                             { key: 'Enter', desc: 'Confirm & execute' },
                                             { key: 'Esc', desc: 'Close dialogs & overlays' }
                                         ].map((shortcut, i) => (
-                                            <div key={i} className="flex justify-between items-center text-xs p-1.5 bg-background rounded border border-border/50">
+                                            <div key={i} className="flex justify-between items-center text-xs p-1.5 bg-background rounded-md border border-border/50">
                                                 <span className="text-text-muted">{shortcut.desc}</span>
-                                                <kbd className="px-1.5 py-0.5 bg-surface border border-border rounded text-[10px] font-mono font-bold text-primary">
+                                                <kbd className="px-1.5 py-0.5 bg-surface border border-border rounded-md text-[10px] font-mono font-bold text-primary">
                                                     {shortcut.key}
                                                 </kbd>
                                             </div>
@@ -105,7 +105,7 @@ export const HelpModal = ({ isOpen, onClose }) => {
                         <div className="p-3 bg-background/80 border-t border-border flex justify-end">
                             <button
                                 onClick={onClose}
-                                className="px-4 py-1.5 bg-primary text-on-primary text-xs font-semibold rounded hover:bg-primary/90 transition-all shadow-sm"
+                                className="px-4 py-1.5 btn-brand text-xs font-semibold rounded-md transition-all shadow-sm"
                             >
                                 Got it
                             </button>

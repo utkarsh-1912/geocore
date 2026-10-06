@@ -93,7 +93,7 @@ export const GeoAILogo = ({ size = 20, className = '', variant = 'icon', showTex
     if (variant === 'badge') {
         return (
             <div 
-                className={`flex items-center justify-center rounded bg-primary/10 border border-primary/20 text-primary shrink-0 transition-all ${className}`}
+                className={`flex items-center justify-center rounded-md bg-primary/10 border border-primary/20 text-primary shrink-0 transition-all ${className}`}
                 style={{ width: size, height: size }}
             >
                 {React.cloneElement(emblem, {

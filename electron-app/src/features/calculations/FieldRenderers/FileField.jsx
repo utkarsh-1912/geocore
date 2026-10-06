@@ -19,7 +19,7 @@ export const FileField = ({ input, value, onChange, isEditMode, onEditField, val
       validationError={validationError}
     >
       <div className="flex items-center gap-2">
-        <label className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded cursor-pointer hover:bg-surface/80">
+        <label className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded-md cursor-pointer hover:bg-surface/80">
           <Upload size={16} className="text-text-muted" />
           <span className="text-sm">{value ? value.name : 'Choose File'}</span>
           <input

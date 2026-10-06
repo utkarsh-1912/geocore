@@ -18,7 +18,7 @@ export function Tabs({ tabs = [], activeTab, onChange, className = '' }) {
           {activeTab === tab.id && (
             <motion.div
               layoutId="activeTabIndicator"
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+              className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-[image:var(--gradient-brand)]"
               initial={false}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             />

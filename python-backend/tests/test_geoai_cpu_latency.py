@@ -292,7 +292,8 @@ def test_agent_uses_phase_token_caps(clean_env):
                                                 else [StreamChunk(delta_content="Done.")]))
     events = list(GeoAIAgent(p, EchoRegistry(), max_tools=5).run_stream("calc t"))
     assert p.max_tokens[-1] == 222
-    assert [e.content for e in events if e.type == "token"] == ["Done."]
+    tokens = [e.content for e in events if e.type == "token"]
+    assert tokens[0].startswith("**t** result:") and tokens[1:] == ["Done."]  # exact results, then prose
 
 
 # ---------------- streamed answer guard ----------------

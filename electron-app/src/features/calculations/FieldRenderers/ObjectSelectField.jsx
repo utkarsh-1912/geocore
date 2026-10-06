@@ -37,7 +37,7 @@ const ObjectSelectorInner = ({ objectType, value, onChange, required, refreshTri
         <select
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="bg-background border border-border rounded px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+            className="bg-input border border-border-strong rounded-md px-3 py-2 text-text-main focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
             required={required}
             disabled={disabled}
         >
@@ -76,7 +76,7 @@ export const ObjectSelectField = ({ input, value, onChange, isEditMode, onEditFi
                         {input.description && (
                             <div className="relative group/tooltip">
                                 <HelpCircle size={12} className="text-text-muted cursor-help" />
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded-md shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
                                     <div dangerouslySetInnerHTML={{ __html: input.description }} />
                                 </div>
                             </div>
@@ -90,7 +90,7 @@ export const ObjectSelectField = ({ input, value, onChange, isEditMode, onEditFi
                                     e.stopPropagation();
                                     onEditField(input);
                                 }}
-                                className="p-0.5 rounded hover:bg-primary/10 text-text-muted hover:text-primary transition-all"
+                                className="p-0.5 rounded-md hover:bg-primary/10 text-text-muted hover:text-primary transition-all"
                                 title="Edit Field"
                             >
                                 <Edit2 size={10} />

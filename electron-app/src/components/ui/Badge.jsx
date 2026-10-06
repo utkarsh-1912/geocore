@@ -10,7 +10,7 @@ export function Badge({ variant = 'default', size = 'md', children, className = 
   };
 
   const variantClasses = {
-    default: 'bg-primary-light text-primary',
+    default: 'bg-primary/12 text-primary border border-primary/20',
     success: 'bg-success/10 text-success',
     warning: 'bg-warning/10 text-warning',
     error: 'bg-error/10 text-error',

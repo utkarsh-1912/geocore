@@ -136,6 +136,15 @@ export function useElapsedSeconds(active) {
     return seconds;
 }
 
+/** Compact elapsed time: 45s, 1m 05s, 1h 02m. */
+export function formatElapsed(totalSeconds) {
+    const s = Math.max(0, Math.floor(totalSeconds || 0));
+    if (s < 60) return `${s}s`;
+    const m = Math.floor(s / 60);
+    if (m < 60) return `${m}m ${String(s % 60).padStart(2, '0')}s`;
+    return `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m`;
+}
+
 const STAGE_LABELS = {
     checking_tools: 'Checking for tools...',
     loading_model: 'Loading the local model...',
@@ -150,7 +159,61 @@ export function stageLabel(stage, seconds) {
         : stage?.startsWith('agent:')
             ? `${stage.slice('agent:'.length)} specialist working...`
             : STAGE_LABELS[stage] || 'Interpreting input...';
-    if (seconds < 5) return base;
-    const hint = seconds >= 20 ? ' (local model on CPU; long questions can take a few minutes)' : '';
-    return `${base} ${seconds}s${hint}`;
+    return seconds < 5 ? base : `${base} ${formatElapsed(seconds)}`;
+}
+
+const STEP_TITLES = {
+    checking_tools: ['Checking available tools', 'Matching your question against the GeoCore tool registry'],
+    loading_model: ['Loading the local model', 'Reading the model weights into memory'],
+    thinking: ['Interpreting your request', 'Working out the intent, parameters and units'],
+    writing_answer: ['Writing the answer', 'Explaining the result from the evidence gathered'],
+};
+
+/** Human title + one-line description of an agent stage, for the process trace. */
+export function describeStage(stage) {
+    if (stage?.startsWith('calling_tool:')) {
+        const tool = stage.slice('calling_tool:'.length);
+        return { title: `Running ${tool}`, hint: 'Deterministic Groundhog / GeoCore calculation', tool };
+    }
+    if (stage?.startsWith('agent:')) {
+        return { title: `${stage.slice('agent:'.length)} specialist`, hint: 'Delegated to a specialist agent' };
+    }
+    const [title, hint] = STEP_TITLES[stage] || ['Working', ''];
+    return { title, hint };
+}
+
+/**
+ * Records the stages of one turn with timestamps, so the UI can show a live checklist while the
+ * model works and keep it on the finished message. `onChange(steps)` gets a fresh array each time.
+ */
+export function createTraceRecorder(onChange = () => {}) {
+    const startedAt = Date.now();
+    const steps = [];
+    const closeActive = () => {
+        const last = steps[steps.length - 1];
+        if (last && last.endedAt == null) last.endedAt = Date.now();
+    };
+    const emit = () => onChange(steps.map((step) => ({ ...step })));
+    return {
+        stage(stage) {
+            if (!stage) return;
+            const last = steps[steps.length - 1];
+            if (last && last.stage === stage && last.endedAt == null) return;
+            closeActive();
+            steps.push({ stage, startedAt: Date.now(), endedAt: null });
+            emit();
+        },
+        /** Close the trace for a finished turn; the result is stored on the message. */
+        finish(turn) {
+            closeActive();
+            if (turn?.executedTool) {
+                const toolStep = steps.find((step) => step.stage === `calling_tool:${turn.executedTool}`);
+                if (toolStep) toolStep.parameters = turn.parameters || null;
+            }
+            const outcome = turn?.outcome || 'done';
+            if (outcome !== 'done' && steps.length) steps[steps.length - 1].failed = outcome;
+            emit();
+            return { steps: steps.map((step) => ({ ...step })), totalMs: Date.now() - startedAt, outcome };
+        },
+    };
 }

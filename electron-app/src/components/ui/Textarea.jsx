@@ -23,8 +23,8 @@ export function Textarea({
         onChange={onChange}
         placeholder={placeholder}
         rows={rows}
-        className={`w-full rounded-md border bg-surface px-3 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary ${
-          error ? 'border-error focus:ring-error' : 'border-border'
+        className={`w-full rounded-md border bg-input px-3 py-2 text-sm text-text-main placeholder:text-text-subtle focus:outline-none focus:border-primary/70 focus:ring-4 focus:ring-primary/15 ${
+          error ? 'border-error focus:ring-error/20' : 'border-border-strong'
         }`}
         {...props}
       />

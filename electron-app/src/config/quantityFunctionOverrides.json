@@ -1,0 +1,6 @@
+{
+ "_comment": "Curated. A name that means a different quantity in one particular function than everywhere else. Each entry re-maps (function, key) to a standard quantity id. Add an entry when the audit lists a name collision.",
+ "quantity": [
+  {"function": "reinforced_circularsection_inertia", "key": "Ic", "quantity": "second_moment_of_area", "reason": "Ic is the second moment of area of the section here (m4), not the CPT soil behaviour type index."}
+ ]
+}

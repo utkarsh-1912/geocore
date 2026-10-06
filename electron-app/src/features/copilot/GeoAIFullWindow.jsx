@@ -24,7 +24,8 @@ import { api } from '../../api/client';
 import { buildChatHistory, nextMessageId } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
 import { ProjectGroundwaterField } from './ProjectGroundwaterField';
-import { finalTurnText, stopGeoAIChat, streamGeoAIChat, stageLabel, useElapsedSeconds } from './geoaiStream';
+import { createTraceRecorder, finalTurnText, stopGeoAIChat, streamGeoAIChat, useElapsedSeconds } from './geoaiStream';
+import { ProcessTrace } from './ProcessTrace';
 import { toast } from 'sonner';
 
 // Display names for the model families in the curated registry (core/geoai/model_downloader.py).
@@ -34,7 +35,7 @@ const MODEL_FAMILY_LABELS = {
 const familyLabel = (family) => MODEL_FAMILY_LABELS[family] || family;
 
 const LicenseBadge = ({ license }) => license ? (
-    <span className="inline-block text-[10px] text-text-muted px-1.5 py-0.5 rounded border border-border" title="Model licence">
+    <span className="inline-block text-[10px] text-text-muted px-1.5 py-0.5 rounded-md border border-border" title="Model licence">
         {license}
     </span>
 ) : null;
@@ -176,7 +177,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [stage, setStage] = useState(null);
+    const [liveSteps, setLiveSteps] = useState([]);
     const abortRef = useRef(null);
     const elapsedSeconds = useElapsedSeconds(isLoading);
 
@@ -367,7 +368,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         if (!textToSend) setInputValue('');
         setEditingMsgId(null);
         setIsLoading(true);
-        setStage(null);
+        setLiveSteps([]);
+        const trace = createTraceRecorder(setLiveSteps);
 
         const aiMessageId = nextMessageId('ai');
         const setAiMessage = (fields) => setConversations(prev => prev.map(c => (
@@ -389,7 +391,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     shownText = t;
                     setAiMessage({ text: t });
                 },
-                onStage: setStage,
+                onStage: trace.stage,
             });
             updateCurrentMessages([...updated, {
                 id: aiMessageId,
@@ -400,13 +402,14 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             const turn = await turnPromise;
             setAiMessage({
                 text: finalTurnText(turn, shownText),
+                trace: trace.finish(turn),
                 executedTool: turn.executedTool,
                 parameters: turn.parameters,
                 results: turn.results
             });
         } catch {
             if (controller.signal.aborted) {
-                setAiMessage({ text: '_Stopped._' });
+                setAiMessage({ text: '_Stopped._', trace: trace.finish({ outcome: 'cancelled' }) });
                 return;
             }
             try {
@@ -583,7 +586,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     <div className="h-13 border-b border-border px-3 flex items-center justify-between gap-2 shrink-0 bg-surface">
                         <button
                             onClick={createNewChat}
-                            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+                            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 btn-brand rounded-md text-xs font-semibold transition-colors shadow-sm"
                         >
                             <Plus size={14} />
                             <span>New Chat</span>
@@ -591,7 +594,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         <button
                             onClick={() => setSidebarOpen(false)}
                             title="Collapse Sidebar"
-                            className="p-2 border border-border rounded text-text-muted hover:text-text-main hover:bg-background transition-colors shrink-0"
+                            className="p-2 border border-border rounded-md text-text-muted hover:text-text-main hover:bg-background transition-colors shrink-0"
                         >
                             <PanelLeftClose size={15} />
                         </button>
@@ -609,7 +612,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                     setActiveConvId(conv.id);
                                     setEditingMsgId(null);
                                 }}
-                                className={`group flex items-center justify-between px-3 py-2 rounded text-xs font-medium cursor-pointer transition-colors ${
+                                className={`group flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium cursor-pointer transition-colors ${
                                     conv.id === activeConvId 
                                         ? 'bg-primary/10 text-primary border-l-2 border-primary font-semibold' 
                                         : 'text-text-muted hover:bg-background hover:text-text-main'
@@ -625,7 +628,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                         setConvToDelete(conv);
                                     }}
                                     title="Delete conversation"
-                                    className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-500 rounded transition-opacity"
+                                    className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-500 rounded-md transition-opacity"
                                 >
                                     <Trash2 size={12} />
                                 </button>
@@ -658,13 +661,13 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             {/* --- Main Chat Workspace --- */}
             <div className="flex-1 flex flex-col h-full overflow-hidden relative">
                 {/* Top Header Bar */}
-                <div className="h-13 border-b border-border bg-surface px-4 flex items-center justify-between shrink-0">
+                <div className="h-13 border-b border-border bg-surface px-4 flex items-center justify-between shrink-0 relative after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-gradient-to-r after:from-transparent after:via-primary/40 after:to-transparent">
                     <div className="flex items-center gap-3">
                         {!sidebarOpen && (
                             <button
                                 onClick={() => setSidebarOpen(true)}
                                 title="Open Sidebar"
-                                className="p-2 border border-border rounded text-text-muted hover:text-text-main hover:bg-background transition-colors"
+                                className="p-2 border border-border rounded-md text-text-muted hover:text-text-main hover:bg-background transition-colors"
                             >
                                 <PanelLeft size={15} />
                             </button>
@@ -678,7 +681,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     {/* Single Unified Model Selector Button in Header */}
                     <div className="flex items-center gap-2">
                         {downloadStatus?.status === 'downloading' && (
-                            <span className="text-[11px] text-primary flex items-center gap-1.5 animate-pulse border border-primary/30 px-2 py-1 rounded bg-primary/5">
+                            <span className="text-[11px] text-primary flex items-center gap-1.5 animate-pulse border border-primary/30 px-2 py-1 rounded-md bg-primary/5">
                                 <RefreshCw size={11} className="animate-spin" />
                                 <span>
                                     Downloading Model
@@ -690,7 +693,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
                         <button
                             onClick={() => setShowModelModal(true)}
-                            className={`px-3 py-1.5 rounded text-xs transition-all flex items-center gap-2 border ${
+                            className={`px-3 py-1.5 rounded-md text-xs transition-all flex items-center gap-2 border ${
                                 hasAnyModelInstalled
                                     ? 'border-border bg-background hover:border-primary/40 text-text-main shadow-xs'
                                     : 'border-amber-500/40 bg-amber-500/10 text-amber-500 hover:bg-amber-500/20'
@@ -723,7 +726,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         <div className="max-w-4xl mx-auto my-auto py-6 space-y-6">
                             {!hasAnyModelInstalled ? (
                                 /* In-Chat Wrapped SLM Installer Gateway Card */
-                                <div className="p-5 md:p-6 rounded border border-border bg-surface shadow-xs space-y-5">
+                                <div className="p-5 md:p-6 rounded-md border border-border bg-surface shadow-xs space-y-5">
                                     <div className="text-center space-y-2">
                                         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[11px] font-semibold">
                                             <AlertTriangle size={12} />
@@ -768,12 +771,12 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                             {gatewayModels.map((model) => (
                                                 <div
                                                     key={model.id}
-                                                    className="p-3.5 rounded border border-border bg-background flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
+                                                    className="p-3.5 rounded-md border border-border-strong bg-input flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors"
                                                 >
                                                     <div className="space-y-1">
                                                         <div className="flex items-center justify-between gap-2">
                                                             <span className="text-xs font-bold text-text-main">{model.display_name}</span>
-                                                            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-text-muted shrink-0">
+                                                            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-surface border border-border text-text-muted shrink-0">
                                                                 {model.size_mb} MB
                                                             </span>
                                                         </div>
@@ -783,7 +786,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                     <button
                                                         onClick={() => handleSelectModel(model)}
                                                         disabled={downloadStatus?.status === 'downloading'}
-                                                        className="w-full py-1.5 px-3 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 flex items-center justify-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
+                                                        className="w-full py-1.5 px-3 btn-brand rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all disabled:opacity-50"
                                                     >
                                                         <Download size={12} />
                                                         <span>Install ({model.size_mb} MB)</span>
@@ -813,28 +816,33 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 </div>
                             ) : (
                                 /* Standard Welcome Banner When Model is Installed */
-                                <div className="flex flex-col items-center justify-center text-center py-4">
-                                    <GeoAILogo size={44} variant="badge" className="mb-2.5" />
-                                    <h2 className="text-base font-bold text-text-main mb-1">
-                                        Geotechnical Intelligence Assistant
-                                    </h2>
-                                    <p className="text-xs text-text-muted max-w-lg mb-4 leading-relaxed">
-                                        Offline Small Language Model executing 213 deterministic Groundhog calculations with strict parameter validation and provenance tracking.
-                                    </p>
+                                <div className="geoai-hero relative overflow-hidden rounded-lg border border-primary/15 px-6 py-10 text-center sm:px-10">
+                                    <div className="geoai-hero__grid" aria-hidden />
+                                    <div className="relative z-10 flex flex-col items-center">
+                                        <GeoAILogo size={48} variant="badge" className="mb-4" />
+                                        <h2 className="text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl">
+                                            Geotechnical intelligence,{' '}
+                                            <span className="geoai-gradient-text">grounded in your project.</span>
+                                        </h2>
+                                        <p className="mx-auto mt-3 max-w-xl text-[13px] leading-relaxed text-white/70">
+                                            Ask in plain language. GeoAI picks the right tool, runs the deterministic Groundhog calculation with validated inputs, and explains the result with its sources.
+                                        </p>
+                                    </div>
                                 </div>
                             )}
 
                             {/* Prompt Cards (Always available to test immediately) */}
                             <div className="space-y-2">
-                                <div className="text-[11px] font-semibold text-text-muted uppercase tracking-wider px-1">
-                                    Quick Geotechnical Analyses
+                                <div className="flex items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                                    <Sparkles size={12} className="text-primary" />
+                                    Try a quick analysis
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
                                     {promptCards.map((card, idx) => (
                                         <div
                                             key={idx}
                                             onClick={() => handleSendMessage(card.prompt)}
-                                            className="p-3 rounded border border-border bg-surface hover:border-primary/50 hover:bg-background transition-colors cursor-pointer space-y-1 group"
+                                            className="geoai-card group cursor-pointer space-y-1 rounded-md border border-border bg-surface p-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-[0_12px_28px_-14px_var(--glow-brand)]"
                                         >
                                             <div className="text-xs font-bold text-text-main group-hover:text-primary transition-colors">
                                                 {card.title}
@@ -852,6 +860,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         <div className="max-w-4xl mx-auto space-y-4">
                             {messages.map((msg) => {
                                 const isEditing = editingMsgId === msg.id;
+                                const lastMessageId = messages[messages.length - 1]?.id;
 
                                 return (
                                     <div
@@ -862,7 +871,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                             <GeoAILogo size={26} variant="badge" className="mt-0.5 shrink-0" />
                                         )}
 
-                                        <div className={`max-w-[88%] min-w-0 space-y-1.5 ${isEditing ? 'w-full' : ''}`}>
+                                        <div className={`max-w-[88%] min-w-0 space-y-1.5 ${isEditing || msg.sender === 'ai' ? 'w-full' : ''}`}>
                                             {isEditing ? (
                                                 /* Inline Edit Box */
                                                 <motion.div
@@ -898,14 +907,14 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                         <div className="flex items-center gap-1.5">
                                                             <button
                                                                 onClick={cancelEditing}
-                                                                className="px-2.5 py-1 text-xs font-medium text-text-muted hover:text-text-main rounded hover:bg-surface-muted transition-colors"
+                                                                className="px-2.5 py-1 text-xs font-medium text-text-muted hover:text-text-main rounded-md hover:bg-surface-muted transition-colors"
                                                             >
                                                                 Cancel
                                                             </button>
                                                             <button
                                                                 onClick={() => submitEdit(msg.id)}
                                                                 disabled={!editingText.trim() || editingText.trim() === msg.text.trim()}
-                                                                className="px-3 py-1 text-xs bg-primary text-on-primary rounded hover:bg-primary/90 font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                                                className="px-3 py-1 text-xs btn-brand rounded-md font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                                                             >
                                                                 Resend
                                                             </button>
@@ -914,25 +923,28 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                 </motion.div>
                                             ) : (
                                                 /* Standard Message Bubble */
-                                                <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                                                <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start w-full'}`}>
+                                                    {msg.sender === 'ai' && (
+                                                        <div className="w-full">
+                                                            <ProcessTrace
+                                                                steps={msg.id === lastMessageId && isLoading ? liveSteps : msg.trace?.steps}
+                                                                active={msg.id === lastMessageId && isLoading}
+                                                                totalMs={msg.trace?.totalMs}
+                                                                outcome={msg.trace?.outcome}
+                                                                elapsedSeconds={elapsedSeconds}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    {(msg.sender === 'user' || msg.text || !(msg.id === lastMessageId && isLoading)) && (
                                                     <div
-                                                        className={`px-3.5 py-2.5 rounded-md text-xs leading-relaxed transition-colors ${
+                                                        className={`px-4 py-3 text-[13px] leading-relaxed transition-colors ${
                                                             msg.sender === 'user'
-                                                                ? 'bg-primary/10 border border-primary/20 text-text-main rounded-br-sm'
-                                                                : 'bg-surface border border-border text-text-main shadow-xs rounded-bl-sm'
+                                                                ? 'btn-brand font-medium rounded-lg rounded-br-md '
+                                                                : 'bg-surface border border-border text-text-main rounded-lg rounded-tl-md shadow-sm w-full'
                                                         }`}
                                                     >
                                                         {msg.sender === 'ai' && !msg.text ? (
-                                                            <div className="flex items-center gap-2 text-text-muted">
-                                                                {isLoading ? (
-                                                                    <>
-                                                                        <RefreshCw size={12} className="animate-spin text-primary" />
-                                                                        <span>{stageLabel(stage, elapsedSeconds)}</span>
-                                                                    </>
-                                                                ) : (
-                                                                    <span>No response received.</span>
-                                                                )}
-                                                            </div>
+                                                            <span className="text-text-muted">No response received.</span>
                                                         ) : (
                                                             msg.sender === 'ai' ? (
                                                                 <MarkdownText text={msg.text} />
@@ -943,6 +955,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                             )
                                                         )}
                                                     </div>
+                                                    )}
 
                                                     {/* Timestamp & actions (actions appear on hover) */}
                                                     <div className={`flex items-center gap-2.5 mt-1 px-1 text-[10px] text-text-subtle ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}>
@@ -976,7 +989,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
                                             {/* Structured Calculation Output */}
                                             {msg.executedTool && msg.results && (
-                                                <div className="p-3 rounded border border-border bg-surface text-xs space-y-2.5 shadow-xs">
+                                                <div className="p-3 rounded-md border border-border bg-surface text-xs space-y-2.5 shadow-xs">
                                                     <div className="flex items-center justify-between">
                                                         <span className="font-semibold text-primary flex items-center gap-1.5">
                                                             <Zap size={12} />
@@ -993,11 +1006,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                         )}
                                                     </div>
 
-                                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 bg-background p-2 rounded border border-border">
+                                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 bg-background p-2 rounded-md border border-border">
                                                         {Object.entries(msg.results.result || msg.results).map(([k, v]) => {
                                                             if (k.startsWith('_')) return null;
                                                             return (
-                                                                <div key={k} className="p-1.5 rounded bg-surface border border-border/50">
+                                                                <div key={k} className="p-1.5 rounded-md bg-surface border border-border/50">
                                                                     <div className="text-[9px] font-bold text-text-muted uppercase truncate">{k}</div>
                                                                     <div className="text-xs font-semibold text-text-main truncate">
                                                                         {typeof v === 'number' ? v.toFixed(3) : String(v)}
@@ -1021,9 +1034,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             })}
 
                             {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
-                                <div className="flex items-center gap-2 text-xs text-text-muted pl-1">
-                                    <RefreshCw size={12} className="animate-spin text-primary" />
-                                    <span>{stageLabel(stage, elapsedSeconds)}</span>
+                                <div className="pl-10">
+                                    <ProcessTrace steps={liveSteps} active elapsedSeconds={elapsedSeconds} />
                                 </div>
                             )}
 
@@ -1033,8 +1045,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 </div>
 
                 {/* --- Bottom Input Box --- */}
-                <div className="border-t border-border bg-surface px-4 py-3 shrink-0 flex items-center justify-center">
-                    <div className="w-full max-w-4xl flex items-end gap-2 bg-background border border-border focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-primary/15 rounded-md p-2 transition-[border-color,box-shadow] duration-200 shadow-xs">
+                <div className="shrink-0 flex items-center justify-center bg-gradient-to-t from-background via-background to-transparent px-4 pb-4 pt-2">
+                    <div className="w-full max-w-4xl flex items-end gap-2 rounded-lg border border-border bg-surface p-2 shadow-sm transition-[border-color,box-shadow] duration-200 focus-within:border-primary/60 focus-within:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_18%,transparent),0_12px_32px_-16px_var(--glow-brand)]">
                         <textarea
                             ref={textareaRef}
                             value={inputValue}
@@ -1046,7 +1058,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             onKeyDown={handleKeyDown}
                             rows={1}
                             placeholder="Enter geotechnical query, soil parameters, or calculation request..."
-                            className="flex-1 resize-none bg-transparent px-2 py-1 text-xs text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none max-h-40 leading-relaxed"
+                            className="flex-1 resize-none bg-transparent px-2.5 py-1.5 text-[13px] text-text-main placeholder:text-text-subtle focus:outline-none focus-visible:outline-none max-h-40 leading-relaxed"
                         />
 
                         {isLoading ? (
@@ -1054,7 +1066,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 onClick={handleStop}
                                 title="Stop generating"
                                 aria-label="Stop generating"
-                                className="p-2 bg-surface border border-border text-text-main rounded hover:bg-background transition-colors shrink-0 flex items-center justify-center h-8 w-8"
+                                className="p-2 bg-surface border border-border text-text-main rounded-md hover:bg-background transition-colors shrink-0 flex items-center justify-center h-9 w-9"
                             >
                                 <Square size={12} className="fill-current" />
                             </button>
@@ -1064,7 +1076,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 disabled={!inputValue.trim()}
                                 title="Send"
                                 aria-label="Send"
-                                className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0 flex items-center justify-center h-8 w-8"
+                                className="p-2 btn-brand rounded-md hover:brightness-105 disabled:opacity-30 disabled:cursor-not-allowed transition-[filter,opacity] shrink-0 flex items-center justify-center h-9 w-9 "
                             >
                                 <Send size={14} />
                             </button>
@@ -1080,7 +1092,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
                         onMouseDown={(e) => { if (e.target === e.currentTarget) setShowModelModal(false); }}
                     >
-                        <div className="w-full max-w-lg bg-surface border border-border rounded shadow-xl overflow-hidden flex flex-col max-h-[85vh]">
+                        <div className="w-full max-w-lg bg-surface border border-border rounded-md shadow-xl overflow-hidden flex flex-col max-h-[85vh]">
                             <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
                                 <div className="flex items-center gap-2">
                                     <Cpu size={16} className="text-primary" />
@@ -1088,7 +1100,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 </div>
                                 <button
                                     onClick={() => setShowModelModal(false)}
-                                    className="p-1 hover:bg-background rounded text-text-muted hover:text-text-main"
+                                    className="p-1 hover:bg-background rounded-md text-text-muted hover:text-text-main"
                                 >
                                     <X size={14} />
                                 </button>
@@ -1128,22 +1140,22 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 {modalFilteredModels.map((model) => (
                                     <div
                                         key={model.id}
-                                        className={`p-3.5 rounded border bg-background flex items-center justify-between gap-3 ${
+                                        className={`p-3.5 rounded-md border bg-background flex items-center justify-between gap-3 ${
                                             model.is_active ? 'border-primary' : 'border-border'
                                         }`}
                                     >
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-xs font-bold text-text-main">{model.display_name || model.id}</span>
-                                                <span className="text-[10px] text-text-muted font-mono bg-surface px-1.5 py-0.5 rounded border border-border">
+                                                <span className="text-[10px] text-text-muted font-mono bg-surface px-1.5 py-0.5 rounded-md border border-border">
                                                     {model.size_mb} MB
                                                 </span>
                                                 {model.is_active ? (
-                                                    <span className="text-[9px] font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded">
+                                                    <span className="text-[9px] font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded-md">
                                                         Active
                                                     </span>
                                                 ) : model.is_installed && (
-                                                    <span className="text-[9px] font-semibold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.2 rounded">
+                                                    <span className="text-[9px] font-semibold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.2 rounded-md">
                                                         Installed
                                                     </span>
                                                 )}
@@ -1155,11 +1167,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                         <button
                                             onClick={() => handleSelectModel(model)}
                                             disabled={model.is_active || downloadStatus?.status === 'downloading'}
-                                            className={`px-3 py-1.5 rounded text-xs font-semibold shrink-0 transition-colors flex items-center gap-1 ${
+                                            className={`px-3 py-1.5 rounded-md text-xs font-semibold shrink-0 transition-colors flex items-center gap-1 ${
                                                 model.is_active
                                                     ? 'border border-border text-text-muted cursor-default'
                                                     : model.is_installed
-                                                    ? 'bg-primary text-on-primary hover:bg-primary/90'
+                                                    ? 'btn-brand'
                                                     : 'border border-primary text-primary hover:bg-primary/10'
                                             }`}
                                         >
@@ -1190,7 +1202,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 ))}
 
                                 {/* Custom Local GGUF File Linker */}
-                                <div className="p-3 rounded border border-border bg-surface space-y-2 mt-4">
+                                <div className="p-3 rounded-md border border-border bg-surface space-y-2 mt-4">
                                     <div className="text-xs font-bold text-text-main flex items-center gap-1.5">
                                         <FileCode size={13} className="text-primary" />
                                         <span>Link Custom .GGUF File</span>
@@ -1201,12 +1213,12 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                             value={customGgufPath}
                                             onChange={(e) => setCustomGgufPath(e.target.value)}
                                             placeholder="C:\path\to\model.gguf"
-                                            className="flex-1 bg-background border border-border rounded px-2 py-1 text-xs text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary"
+                                            className="flex-1 bg-input border border-border-strong rounded-md px-2 py-1 text-xs text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary"
                                         />
                                         <button
                                             onClick={handleCustomGgufLink}
                                             disabled={!customGgufPath.trim() || isLinkingCustom}
-                                            className="px-2.5 py-1 bg-primary text-on-primary rounded text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-40 shrink-0"
+                                            className="px-2.5 py-1 btn-brand rounded-md text-xs font-semibold transition-colors disabled:opacity-40 shrink-0"
                                         >
                                             Link
                                         </button>

@@ -53,7 +53,7 @@ export const ConfirmationModal = ({
         },
         primary: {
             iconBg: 'bg-primary/10 text-primary border-primary/20',
-            buttonBg: 'bg-primary hover:bg-primary/90 text-on-primary',
+            buttonBg: 'btn-brand',
         }
     }[variant] || {
         iconBg: 'bg-red-500/10 text-red-500 border-red-500/20',
@@ -95,7 +95,7 @@ export const ConfirmationModal = ({
 
                             <button
                                 onClick={onCancel}
-                                className="absolute top-4 right-4 p-1 rounded text-text-muted hover:text-text-main hover:bg-background transition-colors"
+                                className="absolute top-4 right-4 p-1 rounded-md text-text-muted hover:text-text-main hover:bg-background transition-colors"
                             >
                                 <X size={14} />
                             </button>
@@ -106,7 +106,7 @@ export const ConfirmationModal = ({
                                 type="button"
                                 onClick={onCancel}
                                 disabled={isLoading}
-                                className="px-3 py-1.5 rounded text-xs font-medium text-text-muted hover:text-text-main border border-border hover:bg-background transition-colors disabled:opacity-50"
+                                className="px-3 py-1.5 rounded-md text-xs font-medium text-text-muted hover:text-text-main border border-border hover:bg-background transition-colors disabled:opacity-50"
                             >
                                 {cancelText}
                             </button>
@@ -115,7 +115,7 @@ export const ConfirmationModal = ({
                                 type="button"
                                 onClick={onConfirm}
                                 disabled={isLoading}
-                                className={`px-3.5 py-1.5 rounded text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 disabled:opacity-50 ${variantStyles.buttonBg}`}
+                                className={`px-3.5 py-1.5 rounded-md text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 disabled:opacity-50 ${variantStyles.buttonBg}`}
                             >
                                 {variant === 'danger' && <Trash2 size={12} />}
                                 <span>{confirmText}</span>

@@ -239,9 +239,10 @@ def test_run_stream_tool_call_flow():
     # 2. tool_start
     # 3. tool_result
     # 4. stage (writing_answer: explanation round)
-    # 5. token (final explanation)
-    # 6. done
-    assert len(events) == 7
+    # 5. token (deterministic result summary)
+    # 6. token (final explanation)
+    # 7. done
+    assert len(events) == 8
     events = events[1:]  # leading 'checking_tools' stage
     assert events[0].type == "stage"
     assert events[0].content == "thinking"
@@ -258,6 +259,9 @@ def test_run_stream_tool_call_flow():
     assert events[3].content == "writing_answer"
 
     assert events[4].type == "token"
-    assert events[4].content == "Final response after tool"
+    assert events[4].content == "**calc_tool** result: out = 2\n\n"
 
-    assert events[5].type == "done"
+    assert events[5].type == "token"
+    assert events[5].content == "Final response after tool"
+
+    assert events[6].type == "done"

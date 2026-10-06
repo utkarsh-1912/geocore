@@ -36,6 +36,12 @@ from .turn_trace import CANCELLED, EMPTY_ANSWER, EMPTY_ANSWER_MESSAGE, FAILURES,
 logger = logging.getLogger(__name__)
 
 MAX_TOOL_ROUNDS = 3
+# Closing instruction for the write-up after successful tool calls. The exact values are already
+# shown (deterministic result summary), and small models misquote numbers and units when they
+# restate them, so the model only says what the results indicate.
+EXPLANATION_INSTRUCTION = ("The results above are already shown to the user with their units. "
+                           "In a few sentences, explain what they indicate and any limits of the method. "
+                           "Do not restate the numerical values.")
 # Prior conversation turns replayed to the model (small models need a short context).
 MAX_HISTORY_TURNS = 6
 MAX_HISTORY_CHARS = 600
@@ -156,18 +162,23 @@ _EXPLAIN_REQUEST_RE = re.compile(
     re.IGNORECASE)
 
 
-def _wants_model_explanation(mode: str, user_message: str, tools_used: List[Dict[str, Any]]) -> bool:
+def _wants_model_explanation(mode: str, user_message: str, tools_used: List[Dict[str, Any]],
+                             interpretive_tools: Iterable[str] = ()) -> bool:
     """
     Whether the local model should write prose after the tool calls. A plain "calculate X"
     request whose tools all succeeded is answered from the deterministic result summary;
-    failures always go to the model so it can explain them and ask for what is missing.
+    failures always go to the model so it can explain them and ask for what is missing, and
+    so do results of interpretive tools (e.g. a CPT soil behaviour type), which mean little
+    without a sentence on what they indicate.
     """
     if mode == "always":
         return True
+    if mode == "never":
+        return False
     failed = any((t.get("result") or {}).get("status") != "success" for t in tools_used)
-    if failed:
-        return mode != "never"
-    return mode != "never" and bool(_EXPLAIN_REQUEST_RE.search(user_message or ""))
+    interpretive = set(interpretive_tools)
+    return (failed or any(t.get("name") in interpretive for t in tools_used)
+            or bool(_EXPLAIN_REQUEST_RE.search(user_message or "")))
 
 
 def _tool_selection_query(user_message: str, history: Optional[List[Dict[str, Any]]]) -> str:
@@ -320,6 +331,15 @@ class GeoAIAgent:
             return {"status": "error", "tool_name": tool_call.function_name, "error": str(e)}
         except Exception as e:
             return {"status": "error", "tool_name": tool_call.function_name, "error": f"Execution failed: {str(e)}"}
+
+    def _interpretive_tools(self, tools_used: List[Dict[str, Any]]) -> List[str]:
+        """Names of the used tools whose registry entry is marked interpretive."""
+        names = []
+        for t in tools_used:
+            tool = self._registry.get_tool(t.get("name"))
+            if tool is not None and getattr(tool, "interpretive", False):
+                names.append(t["name"])
+        return names
 
     def _clarify_invented_arguments(self, tool_calls: List[ToolCall], messages: List[ChatMessage]) -> Optional[str]:
         """
@@ -495,7 +515,8 @@ class GeoAIAgent:
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
                 
-            if not _wants_model_explanation(self._explanations, user_message, tools_used):
+            if not _wants_model_explanation(self._explanations, user_message, tools_used,
+                                            self._interpretive_tools(tools_used)):
                 yield AgentStreamEvent(type='token', content=_result_summary(tools_used))
                 yield AgentStreamEvent(type='done')
                 return
@@ -519,21 +540,23 @@ class GeoAIAgent:
     def _stream_answer(self, messages: List[ChatMessage], tools_used: List[Dict[str, Any]],
                        tools_for_model: Optional[List[dict]] = None,
                        seed: Iterable[str] = ()) -> Iterator[AgentStreamEvent]:
+        # The exact results first, from the tools; the model's prose follows.
+        yield AgentStreamEvent(type='token', content=_result_summary(tools_used) + "\n\n")
+        if all((t.get("result") or {}).get("status") == "success" for t in tools_used):
+            messages = messages + [make_user_message(EXPLANATION_INSTRUCTION)]
         cleaner = AnswerStreamCleaner(tools_used, seed=seed)
-        wrote = False
         finish_reason = None
         stream = self._provider.generate_answer_stream(messages=messages, tools=tools_for_model,
                                                        temperature=0.1, max_tokens=self._answer_max_tokens)
         for chunk in stream:
             text = cleaner.feed(chunk.delta_content)
             if text:
-                wrote = True
                 yield AgentStreamEvent(type='token', content=text)
             finish_reason = chunk.finish_reason or finish_reason
             if cleaner.looping:
                 _close_stream(stream)  # stop generating: the rest of a loop would be dropped anyway
                 break
-        text = cleaner.flush() or ("" if wrote else _result_summary(tools_used))
+        text = cleaner.flush()
         if text and finish_reason == "length" and not cleaner.looping:
             text += TRUNCATION_NOTE
         if text:

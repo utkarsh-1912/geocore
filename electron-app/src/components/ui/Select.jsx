@@ -41,7 +41,7 @@ export function Select({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-primary"
+        className="flex w-full items-center justify-between rounded-md border border-border-strong bg-input px-3 py-2 text-sm text-text-main transition-all hover:border-primary/60 focus:outline-none focus:border-primary/70 focus:ring-4 focus:ring-primary/15"
       >
         <span className={selectedOption ? '' : 'text-text-muted'}>
           {selectedOption ? selectedOption.label : placeholder}
@@ -56,7 +56,7 @@ export function Select({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-40 mt-1 max-h-60 w-full overflow-auto rounded-md border border-border bg-surface py-1 shadow-lg focus:outline-none"
+            className="absolute z-40 mt-1 max-h-60 w-full overflow-auto rounded-md border border-border bg-surface py-1 shadow-pop focus:outline-none"
           >
             {searchable && (
               <div className="sticky top-0 bg-surface px-2 pb-2 pt-1">
@@ -80,7 +80,7 @@ export function Select({
                 <button
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
-                  className="flex w-full items-center justify-between px-3 py-2 text-sm text-text-main hover:bg-primary-light hover:text-primary focus:bg-primary-light focus:outline-none"
+                  className="flex w-full items-center justify-between px-3 py-2 text-sm text-text-main hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:outline-none"
                 >
                   <span>{opt.label}</span>
                   {value === opt.value && <Check size={16} className="text-primary" />}

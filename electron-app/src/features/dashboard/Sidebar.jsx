@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Activity, ChevronRight } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { getCategoryIcon } from '../../config/categoryIcons';
@@ -19,17 +20,21 @@ import { IS_MAC } from '../../utils/platform';
  */
 const RailTooltip = ({ tip }) => {
     if (!tip) return null;
-    return (
+    // Portal to <body>: the sidebar's backdrop blur makes it a stacking context, which would otherwise
+    // keep this fixed tooltip underneath the page cards regardless of its z-index.
+    return createPortal(
         <div
-            className="fixed z-[70] -translate-y-1/2 px-2 py-1 bg-text-main text-background text-xs font-medium rounded shadow-lg pointer-events-none whitespace-nowrap"
+            className="fixed z-[200] -translate-y-1/2 px-2.5 py-1.5 bg-text-main text-background text-xs font-medium rounded-md shadow-pop pointer-events-none whitespace-nowrap"
             style={{ top: tip.y, left: tip.x }}
+            role="tooltip"
         >
             {tip.label}
-        </div>
+        </div>,
+        document.body
     );
 };
 
-const NavItem = ({ active, collapsed, label, icon, onClick, onTip }) => {
+const NavItem = ({ active, collapsed, label, icon, onClick, onTip, large = false }) => {
     const showTip = (e) => {
         if (!collapsed) return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -44,13 +49,13 @@ const NavItem = ({ active, collapsed, label, icon, onClick, onTip }) => {
             onBlur={() => onTip(null)}
             aria-label={collapsed ? label : undefined}
             aria-current={active ? 'page' : undefined}
-            className={`relative w-full flex items-center h-9 rounded transition-colors ${active
-                ? 'bg-primary/10 text-primary font-semibold'
-                : 'text-text-muted hover:bg-surface-muted hover:text-text-main font-medium'
+            className={`relative w-full flex items-center ${large ? 'h-10' : 'h-9'} rounded-md transition-all ${active
+                ? 'bg-gradient-to-r from-primary/20 to-primary/5 text-primary font-semibold shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-primary)_22%,transparent)]'
+                : 'text-text-muted hover:bg-surface/70 hover:text-text-main font-medium'
                 } ${collapsed ? 'justify-center' : 'gap-3 px-3'}`}
         >
-            {active && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r bg-primary" />}
-            <span className="shrink-0 w-5 h-5 flex items-center justify-center">{icon}</span>
+            {active && <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r bg-[image:var(--gradient-brand)] shadow-[0_0_10px_var(--glow-brand)]" />}
+            <span className={`shrink-0 flex items-center justify-center ${large ? 'w-6 h-6' : 'w-5 h-5'}`}>{icon}</span>
             {!collapsed && <span className="text-sm truncate">{label}</span>}
         </button>
     );
@@ -77,7 +82,7 @@ export const Sidebar = ({
             : { text: 'text-error', dot: 'bg-error', label: 'Engine offline' };
 
     return (
-        <aside className={`bg-surface border-r border-border flex flex-col h-full shrink-0 transition-[width] duration-300 ${collapsed ? 'w-[64px]' : 'w-60'}`}>
+        <aside className={`bg-sidebar/90 backdrop-blur-xl border-r border-border flex flex-col h-full shrink-0 transition-[width] duration-300 ${collapsed ? 'w-[64px]' : 'w-60'}`}>
             {/* Part of the window title bar: draggable, and on macOS it hosts the
                 traffic lights, so the logo shifts right (or hides when collapsed). */}
             <div className={`h-13 shrink-0 flex items-center border-b border-border ${IS_MAC ? 'justify-end pl-[84px] pr-3' : 'justify-center px-3'}`}
@@ -94,14 +99,15 @@ export const Sidebar = ({
                     active={isGeoAIActive}
                     collapsed={collapsed}
                     label="GeoAI"
-                    icon={<GeoAILogo size={18} className="text-primary" />}
+                    icon={<GeoAILogo size={24} className="text-primary" />}
+                    large
                     onClick={onOpenGeoAI}
                     onTip={setTip}
                 />
 
                 {collapsed
                     ? <div className="my-3 mx-2 h-px bg-border" />
-                    : <div className="px-3 pt-5 pb-1.5 text-[11px] font-semibold text-text-subtle uppercase tracking-wider">Modules</div>}
+                    : <div className="px-3 pt-5 pb-1.5 text-[10.5px] font-semibold text-text-subtle uppercase tracking-[0.14em]">Modules</div>}
 
                 <ul className="space-y-0.5">
                     {modules.map((module) => {
@@ -132,7 +138,7 @@ export const Sidebar = ({
                     }}
                     onMouseLeave={() => setTip(null)}
                     aria-label="System health"
-                    className={`group flex items-center w-full rounded hover:bg-surface-muted transition-colors ${collapsed ? 'justify-center h-10' : 'gap-3 px-3 py-2'}`}
+                    className={`group flex items-center w-full rounded-md hover:bg-surface-muted transition-colors ${collapsed ? 'justify-center h-10' : 'gap-3 px-3 py-2'}`}
                 >
                     <span className="relative w-5 h-5 flex items-center justify-center shrink-0">
                         <Activity size={18} className={statusStyle.text} />

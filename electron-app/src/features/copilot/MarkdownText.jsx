@@ -23,7 +23,7 @@ const renderInline = (text, keyPrefix = '') => {
         const token = match[0];
         const key = `${keyPrefix}-${match.index}`;
         if (token.startsWith('`')) {
-            parts.push(<code key={key} className="px-1 py-px rounded bg-background border border-border font-mono text-[0.95em]">{token.slice(1, -1)}</code>);
+            parts.push(<code key={key} className="px-1 py-px rounded-md bg-background border border-border font-mono text-[0.95em]">{token.slice(1, -1)}</code>);
         } else if (token.startsWith('**')) {
             parts.push(<strong key={key} className="font-semibold">{renderInline(token.slice(2, -2), key)}</strong>);
         } else {
@@ -38,6 +38,7 @@ const renderInline = (text, keyPrefix = '') => {
 const TABLE_SEP = /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/;
 const BULLET = /^\s*[-*+]\s+(.*)$/;
 const ORDERED = /^\s*\d+[.)]\s+(.*)$/;
+const ORDERED_START = /^\s*(\d+)[.)]/;
 const HEADING = /^(#{1,6})\s+(.*?)\s*#*\s*$/;
 
 const splitRow = (line) => {
@@ -98,7 +99,10 @@ export const parseMarkdown = (source = '') => {
                 else break;
                 i++;
             }
-            blocks.push({ type: listRe === BULLET ? 'ul' : 'ol', items });
+            // Keep the source numbering: the model often separates items with blank lines, which
+            // splits one list into several that would otherwise each restart at 1.
+            const start = listRe === ORDERED ? Number(line.match(ORDERED_START)[1]) : undefined;
+            blocks.push({ type: listRe === BULLET ? 'ul' : 'ol', items, start });
             continue;
         }
         const para = [line];
@@ -121,14 +125,14 @@ export const MarkdownText = ({ text, className = '' }) => {
                     case 'heading':
                         return <div key={k} className={`${HEADING_CLASS[Math.min(b.level, 4) - 1]} text-text-main mt-1`}>{renderInline(b.text, k)}</div>;
                     case 'code':
-                        return <pre key={k} className="p-2 rounded bg-background border border-border font-mono text-[11px] overflow-x-auto whitespace-pre">{b.text}</pre>;
+                        return <pre key={k} className="p-2 rounded-md bg-background border border-border font-mono text-[11px] overflow-x-auto whitespace-pre">{b.text}</pre>;
                     case 'rule':
                         return <hr key={k} className="border-border" />;
                     case 'ul':
                     case 'ol': {
                         const List = b.type;
                         return (
-                            <List key={k} className={`${b.type === 'ul' ? 'list-disc' : 'list-decimal'} pl-5 space-y-0.5`}>
+                            <List key={k} start={b.start} className={`${b.type === 'ul' ? 'list-disc' : 'list-decimal'} pl-5 space-y-0.5`}>
                                 {b.items.map((item, ii) => <li key={ii}>{renderInline(item, `${k}-${ii}`)}</li>)}
                             </List>
                         );

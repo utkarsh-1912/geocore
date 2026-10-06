@@ -192,6 +192,8 @@ def test_agent_stream_streams_cleaned_explanation_and_caps_tokens():
 
     events = list(agent.run_stream("Classify CPT", history=[{"role": "user", "content": "hi"}]))
     tokens = [e.content for e in events if e.type == "token"]
+    assert tokens[0].startswith("**classify_cpt_soil_behavior** result:")  # exact results first
+    tokens = tokens[1:]
     assert len(tokens) >= 3  # released sentence by sentence, not as one block
     assert "".join(tokens).rstrip() == clean_answer(answer, CPT_TOOLS_USED)
     assert "".join(tokens).rstrip() == "Bq is -0.0031. Zone 7 is dense sand.\n" + LOOP.strip()

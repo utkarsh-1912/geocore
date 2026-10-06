@@ -5,6 +5,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ArrowRightLeft } from 'lucide-react';
+import { canonicalUnit } from '../../utils/quantities';
 
 /**
  * Compatible unit groups and conversion rates relative to standard base SI unit
@@ -38,7 +39,8 @@ export const UnitBadge = ({ unit, currentValue, onConvertValue, className = '' }
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef(null);
 
-  const cleanUnit = unit ? unit.replace(/[[\]]/g, '').trim() : '';
+  // One spelling per unit (pct -> %, kN/m3 -> kN/m³), shared with the standard quantity directory.
+  const cleanUnit = unit ? canonicalUnit(unit) : '';
   const group = cleanUnit ? (UNIT_GROUPS[cleanUnit] || UNIT_GROUPS[cleanUnit.toLowerCase()]) : null;
 
   // Hooks must run on every render regardless of the early return below.
@@ -91,7 +93,7 @@ export const UnitBadge = ({ unit, currentValue, onConvertValue, className = '' }
         }`}
         title={group ? 'Click for instant unit conversion' : ''}
       >
-        <span>[{unit}]</span>
+        <span>[{cleanUnit}]</span>
         {group && <ChevronDown size={10} className="text-text-muted opacity-70" />}
       </button>
 

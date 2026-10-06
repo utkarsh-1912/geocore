@@ -76,17 +76,19 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
             >
-                <div className="bg-gradient-to-br from-primary/10 via-surface to-primary-light/5 border border-border rounded-md p-6 md:p-8">
+                <div className="hero-surface relative overflow-hidden rounded-lg border border-primary/15 p-6 md:p-9">
+                    <div className="hero-surface__grid" aria-hidden />
+                    <div className="relative z-10">
                     <div className="flex items-start justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold text-text-main mb-2">
-                                Welcome to <span className="text-primary">GeoCore</span>
+                            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">
+                                Welcome to <span className="geoai-gradient-text">GeoCore</span>
                             </h1>
-                            <p className="text-text-muted text-sm max-w-xl">
+                            <p className="text-white/70 text-sm max-w-xl leading-relaxed">
                                 Professional Geotechnical Engineering Workstation — 213+ calculation tools powered by Groundhog with offline GeoAI assistance.
                             </p>
                         </div>
-                        <span className="text-xs text-text-muted bg-background border border-border px-2 py-1 rounded font-mono hidden sm:block">v1.0.0</span>
+                        <span className="text-xs text-white/70 bg-white/5 border border-white/10 px-2 py-1 rounded-md font-mono hidden sm:block">v1.0.0</span>
                     </div>
 
                     {/* Quick Actions */}
@@ -94,7 +96,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                         {onOpenCopilot && (
                             <button
                                 onClick={onOpenCopilot}
-                                className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/30 rounded hover:bg-primary/15 hover:border-primary/50 transition-colors text-sm text-primary font-medium"
+                                className="btn-brand flex items-center gap-2 px-3.5 py-2 rounded-md text-sm font-semibold"
                             >
                                 <GeoAILogo size={14} />
                                 <span>Ask GeoAI</span>
@@ -102,19 +104,20 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                         )}
                         <button
                             onClick={onOpenCommands}
-                            className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded hover:border-primary/50 transition-colors text-sm text-text-main"
+                            className="flex items-center gap-2 px-3.5 py-2 bg-white/5 border border-white/15 rounded-md hover:bg-white/10 hover:border-primary/50 transition-colors text-sm text-white"
                         >
                             <Command size={14} className="text-primary" />
                             <span>Commands</span>
-                            <kbd className="text-[10px] font-mono text-text-muted bg-background border border-border rounded px-1 ml-1">Ctrl+K</kbd>
+                            <kbd className="text-[10px] font-mono text-white/70 bg-white/5 border border-white/15 rounded-md px-1 ml-1">Ctrl+K</kbd>
                         </button>
                         <button
                             onClick={onOpenHelp}
-                            className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded hover:border-primary/50 transition-colors text-sm text-text-main"
+                            className="flex items-center gap-2 px-3.5 py-2 bg-white/5 border border-white/15 rounded-md hover:bg-white/10 hover:border-primary/50 transition-colors text-sm text-white"
                         >
                             <Book size={14} className="text-primary" />
                             <span>Guide</span>
                         </button>
+                    </div>
                     </div>
                 </div>
             </motion.div>
@@ -135,7 +138,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                             <button
                                 key={tool.id}
                                 onClick={() => onSelectFunction?.(tool, tool.category, tool.subModule)}
-                                className="shrink-0 bg-surface border border-border rounded-md px-4 py-3 hover:border-primary/50 transition-colors text-left min-w-[160px]"
+                                className="card-lift shrink-0 bg-surface border border-border rounded-md px-4 py-3 text-left min-w-[160px]"
                             >
                                 <div className="text-sm font-medium text-text-main truncate">{tool.title}</div>
                                 <div className="text-xs text-text-muted truncate mt-1">{tool.category?.title}</div>
@@ -163,7 +166,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                                     e.stopPropagation();
                                     setShowClearConfirm(true);
                                 }}
-                                className="text-xs text-text-muted hover:text-error hover:bg-error/10 px-2.5 py-1 rounded transition-colors flex items-center gap-1.5 font-medium border border-transparent hover:border-error/20"
+                                className="text-xs text-text-muted hover:text-error hover:bg-error/10 px-2.5 py-1 rounded-md transition-colors flex items-center gap-1.5 font-medium border border-transparent hover:border-error/20"
                                 title="Clear recent calculation history"
                             >
                                 <Trash2 size={13} />
@@ -171,7 +174,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                             </button>
                         )}
                     </div>
-                    <div className="bg-surface border border-border rounded-md divide-y divide-border">
+                    <div className="bg-surface border border-border rounded-md divide-y divide-border overflow-hidden shadow-card">
                         {recentCalcs.map((calc, idx) => (
                             <button
                                 key={idx}
@@ -219,14 +222,14 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                                 onClick={() => onSelectCategory(category)}
                                 className="cursor-pointer group"
                             >
-                                <Card className="h-full hover:border-primary transition-colors duration-300 relative overflow-hidden group-hover:shadow-md">
+                                <Card className="card-lift h-full relative overflow-hidden">
                                     <div className="flex items-start justify-between mb-3">
-                                        <div className="p-2.5 rounded bg-primary/10 text-primary">
+                                        <div className="p-2.5 rounded-md bg-gradient-to-br from-primary/20 to-primary/5 text-primary ring-1 ring-primary/20">
                                             <Icon size={22} />
                                         </div>
                                         <div className="flex items-center gap-2">
                                             {toolCount > 0 && (
-                                                <span className="text-[10px] font-medium text-text-muted bg-background border border-border rounded px-2 py-0.5">
+                                                <span className="text-[10px] font-medium text-text-muted bg-background border border-border rounded-md px-2 py-0.5">
                                                     {toolCount} tools
                                                 </span>
                                             )}

@@ -175,7 +175,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-surface w-full max-w-4xl max-h-[90vh] rounded-lg shadow-2xl flex flex-col border border-border"
+                className="bg-surface w-full max-w-4xl max-h-[90vh] rounded-md shadow-2xl flex flex-col border border-border"
             >
                 <div className="flex items-center justify-between p-4 border-b border-border">
                     <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
@@ -221,9 +221,9 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                 </button>
                             </div>
                             {fetchError ? (
-                                <div className="p-3 border border-red-500/20 bg-red-500/10 rounded text-red-500 text-sm flex items-center justify-between">
+                                <div className="p-3 border border-red-500/20 bg-red-500/10 rounded-md text-red-500 text-sm flex items-center justify-between">
                                     <span>{fetchError}</span>
-                                    <button onClick={fetchProfiles} className="p-1 hover:bg-red-500/20 rounded"><RefreshCw size={14} /></button>
+                                    <button onClick={fetchProfiles} className="p-1 hover:bg-red-500/20 rounded-md"><RefreshCw size={14} /></button>
                                 </div>
                             ) : profiles.length === 0 ? (
                                 <div className="text-center py-8 text-text-muted">
@@ -235,7 +235,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                         <div
                                             key={p.id}
                                             onClick={() => setSelectedId(p.id)}
-                                            className={`p-3 rounded border cursor-pointer flex items-center justify-between transition-colors ${selectedId === p.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                                            className={`p-3 rounded-md border cursor-pointer flex items-center justify-between transition-colors ${selectedId === p.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
                                         >
                                             <div>
                                                 <div className="font-medium text-text-main">{p.name}</div>
@@ -246,14 +246,14 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                             <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={(e) => handleView(e, p.id)}
-                                                    className="p-1.5 rounded hover:bg-background text-text-muted hover:text-primary transition-colors"
+                                                    className="p-1.5 rounded-md hover:bg-background text-text-muted hover:text-primary transition-colors"
                                                     title="View Details"
                                                 >
                                                     <Eye size={16} />
                                                 </button>
                                                 <button
                                                     onClick={(e) => handleDelete(e, p.id)}
-                                                    className="p-1.5 rounded hover:bg-background text-text-muted hover:text-red-500 transition-colors"
+                                                    className="p-1.5 rounded-md hover:bg-background text-text-muted hover:text-red-500 transition-colors"
                                                     title="Delete"
                                                 >
                                                     <Trash2 size={16} />
@@ -294,7 +294,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                 </div>
                             </div>
 
-                            <div className="border border-border rounded overflow-hidden">
+                            <div className="border border-border rounded-md overflow-hidden">
                                 <table className="w-full text-sm text-left">
                                     <thead className="bg-background text-text-muted font-medium">
                                         <tr>
@@ -341,7 +341,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
 
                     {activeTab === 'upload' && (
                         <div className="space-y-4">
-                            <div className="border-2 border-dashed border-border rounded-lg p-8 flex flex-col items-center justify-center text-center hover:border-primary transition-colors cursor-pointer"
+                            <div className="border-2 border-dashed border-border rounded-md p-8 flex flex-col items-center justify-center text-center hover:border-primary transition-colors cursor-pointer"
                                 onClick={() => document.getElementById('modal-file-upload').click()}
                             >
                                 <Upload size={48} className="text-primary mb-4" />
@@ -371,7 +371,7 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                                                 role="radio"
                                                 aria-checked={uploadKind === opt.value}
                                                 onClick={() => setUploadKind(opt.value)}
-                                                className={`flex-1 px-3 py-2 rounded border text-sm font-medium transition-colors ${uploadKind === opt.value ? 'border-primary bg-primary/5 text-primary' : 'border-border text-text-muted hover:border-primary/50'}`}
+                                                className={`flex-1 px-3 py-2 rounded-md border text-sm font-medium transition-colors ${uploadKind === opt.value ? 'border-primary bg-primary/5 text-primary' : 'border-border text-text-muted hover:border-primary/50'}`}
                                             >
                                                 {opt.label}
                                             </button>

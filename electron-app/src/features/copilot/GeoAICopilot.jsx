@@ -185,7 +185,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                         {onExpand && (
                             <button
                                 onClick={onExpand}
-                                className="p-1.5 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+                                className="p-1.5 rounded-md hover:bg-background text-text-muted hover:text-text-main transition-colors"
                                 title="Open in GeoAI tab"
                             >
                                 <Maximize2 size={16} />
@@ -193,7 +193,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                         )}
                         <button
                             onClick={onClose}
-                            className="p-1.5 rounded hover:bg-background text-text-muted hover:text-text-main transition-colors"
+                            className="p-1.5 rounded-md hover:bg-background text-text-muted hover:text-text-main transition-colors"
                             title="Close (Esc)"
                         >
                             <X size={16} />
@@ -240,7 +240,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
 
                                 {/* Tool Result Card */}
                                 {msg.executedTool && msg.results && (
-                                    <div className="mt-2.5 p-2 bg-surface border border-border rounded text-[11px] space-y-2">
+                                    <div className="mt-2.5 p-2 bg-surface border border-border rounded-md text-[11px] space-y-2">
                                         <div className="text-primary font-semibold truncate">
                                             Routine: `{msg.executedTool}`
                                         </div>
@@ -251,7 +251,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                                                     onSelectFunction(msg.executedTool, msg.parameters);
                                                     onClose();
                                                 }}
-                                                className="w-full py-1 px-2 rounded bg-primary/10 hover:bg-primary/20 text-primary font-medium flex items-center justify-center gap-1 transition-colors text-[11px]"
+                                                className="w-full py-1 px-2 rounded-md bg-primary/10 hover:bg-primary/20 text-primary font-medium flex items-center justify-center gap-1 transition-colors text-[11px]"
                                             >
                                                 <span>Open in Form</span>
                                                 <ArrowRight size={11} />
@@ -267,7 +267,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                                             <button
                                                 key={idx}
                                                 onClick={() => handleSendMessage(p)}
-                                                className="text-left text-[11px] p-1.5 rounded bg-surface hover:bg-primary/10 hover:text-primary transition-colors border border-border text-text-muted truncate w-full flex items-center gap-1.5"
+                                                className="text-left text-[11px] p-1.5 rounded-md bg-surface hover:bg-primary/10 hover:text-primary transition-colors border border-border text-text-muted truncate w-full flex items-center gap-1.5"
                                             >
                                                 <Zap size={10} className="shrink-0 text-primary" />
                                                 <span className="truncate">{p}</span>
@@ -281,7 +281,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                     ))}
 
                     {isLoading && messages[messages.length - 1]?.sender !== 'ai' && (
-                        <div className="flex items-center gap-2 p-2 rounded bg-background border border-border w-fit text-[11px] text-text-muted">
+                        <div className="flex items-center gap-2 p-2 rounded-md bg-background border border-border w-fit text-[11px] text-text-muted">
                             <RefreshCw size={12} className="animate-spin text-primary" />
                             <span>{stageLabel(stage, elapsedSeconds)}</span>
                         </div>
@@ -305,7 +305,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                                 onClick={handleStop}
                                 title="Stop generating"
                                 aria-label="Stop generating"
-                                className="p-2 bg-surface border border-border text-text-main rounded hover:bg-background transition-colors shrink-0"
+                                className="p-2 bg-surface border border-border text-text-main rounded-md hover:bg-background transition-colors shrink-0"
                             >
                                 <Square size={11} className="fill-current" />
                             </button>
@@ -315,7 +315,7 @@ export const GeoAICopilot = ({ isOpen, onClose, onExpand, onSelectFunction, canO
                                 disabled={!inputValue.trim()}
                                 title="Send"
                                 aria-label="Send"
-                                className="p-2 bg-primary text-on-primary rounded hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
+                                className="p-2 btn-brand rounded-md disabled:opacity-30 disabled:cursor-not-allowed transition-colors shrink-0"
                             >
                                 <Send size={13} />
                             </button>

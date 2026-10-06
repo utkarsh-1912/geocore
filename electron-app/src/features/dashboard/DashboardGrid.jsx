@@ -12,7 +12,7 @@ export const DashboardGrid = ({ items, onSelect, title, description, isCategory 
     return (
         <div className="max-w-7xl mx-auto h-full flex flex-col">
             <div className="mb-8 shrink-0">
-                <h2 className="text-3xl font-bold text-text-main mb-2">{title}</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-text-main mb-2">{title}</h2>
                 {description && <p className="text-text-muted">{description}</p>}
             </div>
 
@@ -27,9 +27,9 @@ export const DashboardGrid = ({ items, onSelect, title, description, isCategory 
                             onClick={() => onSelect(item)}
                             className="cursor-pointer group"
                         >
-                            <Card className="h-full hover:border-primary transition-colors duration-300 relative overflow-hidden group-hover:shadow-lg">
+                            <Card className="card-lift h-full relative overflow-hidden">
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className={`p-3 rounded ${isCategory ? 'bg-primary/10 text-primary' : 'bg-primary-light/10 text-primary-light'}`}>
+                                    <div className={`p-3 rounded-md ring-1 ring-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 text-primary`}>
                                         {isCategory ? <Folder size={24} /> : <FileText size={24} />}
                                     </div>
                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
@@ -37,7 +37,7 @@ export const DashboardGrid = ({ items, onSelect, title, description, isCategory 
                                     </div>
                                 </div>
 
-                                <h3 className="text-xl font-semibold text-text-main mb-2 bg-gradient-to-r from-text-main to-text-main bg-[length:0%_2px] bg-no-repeat bg-left-bottom group-hover:bg-[length:100%_2px] transition-all duration-300 from-primary">
+                                <h3 className="text-xl font-semibold text-text-main mb-2 group-hover:text-primary transition-colors duration-300">
                                     {item.title}
                                 </h3>
 

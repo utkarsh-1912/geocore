@@ -9,53 +9,30 @@ import { Card } from '../../components/ui/Card';
 import { ChevronDown, ChevronUp, Database, Layers, CheckCircle2 } from 'lucide-react';
 import Papa from 'papaparse';
 import { getParameterNotation } from '@/utils/geoNotation';
+import { canonicalUnit } from '@/utils/quantities';
 import { FormulaDerivationCard } from '../calculations/FormulaDerivationCard';
+import { ThemedChart } from './ThemedChart';
 
-const Plot = React.lazy(() => import('react-plotly.js'));
-
-// Plotly cannot resolve CSS variables, so read the live theme colours (and follow light/dark switches).
-const readThemeColors = () => {
-    const css = getComputedStyle(document.documentElement);
-    const get = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
-    return { primary: get('--color-primary', '#5f8445'), light: get('--color-primary-light', '#b1d082'), secondary: get('--color-secondary', '#2d473e') };
-};
-
-const useThemeColors = () => {
-    const [colors, setColors] = useState(readThemeColors);
-    useEffect(() => {
-        const observer = new MutationObserver(() => setColors(readThemeColors()));
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme', 'style'] });
-        return () => observer.disconnect();
-    }, []);
-    return colors;
-};
-
-// Plotly / matplotlib default blues that backends emit when no colour was chosen.
-const DEFAULT_BLUES = new Set(['#1f77b4', '#636efa', '#3b82f6', 'rgb(31,119,180)', 'rgb(31, 119, 180)', 'blue']);
-const recolorDefaultBlue = (value, primary) =>
-    typeof value === 'string' && DEFAULT_BLUES.has(value.trim().toLowerCase()) ? primary : value;
-
-const applyThemeToTraces = (traces, primary) => (traces || []).map(trace => {
-    if (!trace || typeof trace !== 'object') return trace;
-    const next = { ...trace };
-    for (const key of ['marker', 'line']) {
-        if (next[key] && typeof next[key] === 'object') {
-            next[key] = { ...next[key], color: recolorDefaultBlue(next[key].color, primary) };
-        }
+/** A table-valued output (e.g. Eurocode 7 factors per action type) as "name  value" rows, not raw JSON. */
+const NestedValue = ({ value }) => {
+    if (value === null || Array.isArray(value) || Object.values(value).some(v => v !== null && typeof v === 'object')) {
+        return JSON.stringify(value);
     }
-    if (next.fillcolor) next.fillcolor = recolorDefaultBlue(next.fillcolor, primary);
-    return next;
-});
-
-// Resolve a chart heading from an explicit title or a Plotly layout title (string or {text}).
-const layoutTitle = (explicit, layout) => {
-    const candidates = [explicit, layout?.title?.text, layout?.title];
-    const found = candidates.find(t => typeof t === 'string' && t.trim());
-    return found ? found.replace(/<[^>]+>/g, '').trim() : '';
+    return (
+        <div className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 font-sans font-normal">
+            {Object.entries(value).map(([k, v]) => (
+                <React.Fragment key={k}>
+                    <span className="text-text-muted break-words">{k}</span>
+                    <span className="font-mono font-semibold text-right">
+                        {typeof v === 'number' ? v.toLocaleString(undefined, { maximumFractionDigits: 5 }) : String(v)}
+                    </span>
+                </React.Fragment>
+            ))}
+        </div>
+    );
 };
 
-export const ResultsRenderer = ({ results, functionName = '', formData = {} }) => {
-    const theme = useThemeColors();
+export const ResultsRenderer =({ results, functionName = '', functionId, formData = {} }) => {
     const [expandedSections, setExpandedSections] = useState({
         nodes: false,
         elements: false,
@@ -121,11 +98,11 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                             {displayData.name || "Soil Profile"}
                         </h4>
                         <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div className="p-2 bg-background/50 rounded border border-border/50">
+                            <div className="p-2 bg-background/50 rounded-md border border-border/50">
                                 <span className="text-text-muted">Status:</span>
                                 <span className="ml-2 font-medium text-green-500">{displayData.message || "Profile Ready"}</span>
                             </div>
-                            <div className="p-2 bg-background/50 rounded border border-border/50">
+                            <div className="p-2 bg-background/50 rounded-md border border-border/50">
                                 <span className="text-text-muted">Total Layers:</span>
                                 <span className="ml-2 font-bold text-text-main">{displayData.layers}</span>
                             </div>
@@ -145,7 +122,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                                     </button>
                                 )}
                             </div>
-                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm max-h-96">
+                            <div className="overflow-x-auto rounded-md border border-border-strong bg-input shadow-sm max-h-96">
                                 <table className="w-full text-xs text-left border-collapse">
                                     <thead className="bg-surface/50 text-text-muted font-medium border-b border-border sticky top-0">
                                         <tr>
@@ -192,11 +169,11 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                             <p className="text-text-muted text-sm">{displayData.message || "Discretized Grid Ready"}</p>
                         </div>
                         <div className="flex gap-4">
-                            <div className="text-center px-4 py-2 bg-background/50 rounded border border-border/50">
+                            <div className="text-center px-4 py-2 bg-background/50 rounded-md border border-border/50">
                                 <div className="text-xl font-bold text-text-main">{displayData.nodes_count || nodes.length}</div>
                                 <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Nodes</div>
                             </div>
-                            <div className="text-center px-4 py-2 bg-background/50 rounded border border-border/50">
+                            <div className="text-center px-4 py-2 bg-background/50 rounded-md border border-border/50">
                                 <div className="text-xl font-bold text-text-main">{displayData.elements_count || elements.length}</div>
                                 <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Elements</div>
                             </div>
@@ -225,7 +202,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                                     </button>
                                 )}
                             </div>
-                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm max-h-96">
+                            <div className="overflow-x-auto rounded-md border border-border-strong bg-input shadow-sm max-h-96">
                                 <table className="w-full text-xs text-left border-collapse">
                                     <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border sticky top-0">
                                         <tr>
@@ -272,7 +249,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                                     </button>
                                 )}
                             </div>
-                            <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm max-h-96">
+                            <div className="overflow-x-auto rounded-md border border-border-strong bg-input shadow-sm max-h-96">
                                 <table className="w-full text-xs text-left border-collapse">
                                     <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border sticky top-0">
                                         <tr>
@@ -310,39 +287,19 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     className="space-y-6 w-full"
                     id="results-visualization"
                 >
-                    {displayData.plots.map((plot, index) => {
-                        const plotData = applyThemeToTraces(plot.data, theme.primary);
-                        const plotLayout = plot.layout || {};
-                        const finalLayout = {
-                            autosize: true,
-                            colorway: [theme.primary, theme.secondary, theme.light],
-                            paper_bgcolor: 'rgba(0,0,0,0)',
-                            plot_bgcolor: 'rgba(0,0,0,0)',
-                            font: { family: 'Inter, sans-serif', color: 'var(--color-text-main, #333)' },
-                            margin: { t: 40, r: 20, l: 50, b: 40 },
-                            ...plotLayout,
-                            title: undefined // shown in the Card heading instead
-                        };
-
-                        return (
-                            <Card key={index} title={layoutTitle(plot.title, plotLayout) || (functionName ? `${functionName} – Plot ${index + 1}` : `Plot ${index + 1}`)} className="w-full">
-                                <div className="w-full h-[500px]">
-                                    <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-background/50 rounded"><span className="text-text-muted text-sm">Loading chart engine...</span></div>}>
-                                        <Plot
-                                            data={plotData}
-                                            layout={finalLayout}
-                                            useResizeHandler={true}
-                                            style={{ width: "100%", height: "100%" }}
-                                            config={{ responsive: true, displayModeBar: true }}
-                                        />
-                                    </Suspense>
-                                </div>
-                            </Card>
-                        );
-                    })}
+                    {displayData.plots.map((plot, index) => (
+                        <ThemedChart
+                            key={index}
+                            figure={plot}
+                            title={plot.title}
+                            fallbackTitle={functionName}
+                            index={index}
+                            total={displayData.plots.length}
+                        />
+                    ))}
 
                     {displayData.results && displayData.results.type === 'dataframe' && displayData.results.data && (
-                        <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm">
+                        <div className="overflow-x-auto rounded-md border border-border-strong bg-input shadow-sm">
                             <table className="w-full text-xs text-left border-collapse">
                                 <thead className="bg-surface/50 text-text-muted font-medium border-b border-border sticky top-0">
                                     <tr>
@@ -369,57 +326,15 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
 
         // 5. Handle Single Plotly Chart
         if (displayData.type === 'plotly' || displayData.type === 'plot') {
-            const plotData = applyThemeToTraces(displayData.data, theme.primary);
-            const plotLayout = displayData.layout || {};
-
-            const finalLayout = {
-                autosize: true,
-                colorway: [theme.primary, theme.secondary, theme.light],
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                font: {
-                    family: 'Inter, sans-serif',
-                    color: 'var(--color-text-main, #333)'
-                },
-                xaxis: {
-                    gridcolor: 'rgba(128, 128, 128, 0.15)',
-                    zerolinecolor: 'rgba(128, 128, 128, 0.25)',
-                    ...plotLayout.xaxis
-                },
-                yaxis: {
-                    gridcolor: 'rgba(128, 128, 128, 0.15)',
-                    zerolinecolor: 'rgba(128, 128, 128, 0.25)',
-                    ...plotLayout.yaxis
-                },
-                margin: { t: 40, r: 20, l: 50, b: 40 },
-                ...plotLayout,
-                title: undefined // shown as the heading above the chart instead
-            };
-
             return (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="w-full"
+                    className="w-full min-w-0"
                     id="results-visualization"
                 >
-                    <div className="w-full bg-surface p-4 rounded-lg border border-border min-h-[420px] flex flex-col items-center justify-center">
-                        {(layoutTitle(displayData.title, plotLayout) || functionName) && (
-                            <h3 className="w-full text-sm font-semibold text-text-main mb-2">
-                                {layoutTitle(displayData.title, plotLayout) || functionName}
-                            </h3>
-                        )}
-                        <Suspense fallback={<div className="text-text-muted text-sm flex items-center gap-2"><div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div> Loading Interactive Chart...</div>}>
-                            <Plot
-                                data={plotData}
-                                layout={finalLayout}
-                                useResizeHandler={true}
-                                style={{ width: '100%', height: '100%', minHeight: '400px' }}
-                                config={{ responsive: true, displayModeBar: true }}
-                            />
-                        </Suspense>
-                    </div>
+                    <ThemedChart figure={displayData} title={displayData.title} fallbackTitle={functionName} index={0} total={1} />
                 </motion.div>
             );
         }
@@ -435,8 +350,8 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     className="w-full flex justify-center"
                     id="results-visualization"
                 >
-                    <Card title="Plot (Static)" className="w-full max-w-4xl">
-                        <div className="flex justify-center p-4 bg-white rounded-lg">
+                    <Card title={functionName || "Plot"} className="w-full max-w-4xl min-w-0 overflow-hidden">
+                        <div className="flex justify-center p-4 bg-white rounded-md">
                             <img
                                 src={`data:image/png;base64,${imgData}`}
                                 alt="Matplotlib Plot"
@@ -452,7 +367,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
         if (displayData.type === 'dataframe' && displayData.data && displayData.data.length > 0) {
             const columns = displayData.columns || Object.keys(displayData.data[0]);
             return (
-                <div className="overflow-x-auto rounded-lg border border-border bg-background shadow-sm">
+                <div className="overflow-x-auto rounded-md border border-border-strong bg-input shadow-sm">
                     <table className="w-full text-xs text-left border-collapse">
                         <thead className="bg-surface/50 text-text-muted font-medium border-b border-border sticky top-0">
                             <tr>
@@ -486,16 +401,16 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     {numericEntries.length > 0 && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                             {numericEntries.slice(0, 3).map(([key, val]) => {
-                                const not = getParameterNotation(key);
+                                const not = getParameterNotation(key, undefined, functionId);
                                 return (
-                                    <div key={key} className="p-3.5 rounded-lg bg-surface border border-primary/20 shadow-sm flex flex-col justify-between">
-                                        <div className="flex items-center justify-between text-xs text-text-muted">
-                                            <span className="font-medium truncate">{not?.label || key.replace(/_/g, ' ')}</span>
-                                            {not?.symbol && <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] font-bold">{not.symbol}</span>}
+                                    <div key={key} className="min-w-0 p-3.5 rounded-md bg-surface border border-primary/20 shadow-sm flex flex-col justify-between">
+                                        <div className="flex items-center justify-between gap-2 text-xs text-text-muted">
+                                            <span className="font-medium truncate" title={not?.label || key}>{not?.label || key.replace(/_/g, ' ')}</span>
+                                            {not?.symbol && <span className="shrink-0 px-1.5 py-0.5 rounded-md bg-primary/10 text-primary font-mono text-[11px] font-bold">{not.symbol}</span>}
                                         </div>
-                                        <div className="text-xl font-mono font-extrabold text-text-main mt-1">
+                                        <div className="text-xl font-mono font-extrabold text-text-main mt-1 break-all">
                                             {Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 })}
-                                            {not?.unit && <span className="text-xs text-text-muted font-normal ml-1.5">{not.unit}</span>}
+                                            {not?.unit && not.unit !== '-' && <span className="text-xs text-text-muted font-normal ml-1.5">{not.unit}</span>}
                                         </div>
                                     </div>
                                 );
@@ -504,7 +419,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     )}
 
                     {/* Detailed Key-Value Table */}
-                    <div className="overflow-x-auto rounded-lg border border-border bg-background">
+                    <div className="max-w-full overflow-x-auto rounded-md border border-border-strong bg-input">
                         <table className="w-full text-left border-collapse text-xs">
                             <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border">
                                 <tr>
@@ -516,28 +431,28 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                             </thead>
                             <tbody className="divide-y divide-border">
                                 {entries.map(([key, value]) => {
-                                    const not = getParameterNotation(key);
+                                    const not = getParameterNotation(key, undefined, functionId);
                                     // Strip embedded [unit] from title if present
                                     const match = key.match(/^(.*?)\s*\[(.*?)\]$/);
                                     const cleanTitle = match ? match[1].trim().replace(/_/g, ' ') : (not?.label || key.replace(/_/g, ' '));
-                                    const cleanUnit = match ? match[2].trim() : (not?.unit || '-');
+                                    const cleanUnit = canonicalUnit(match ? match[2].trim() : (not?.unit || '-'));
 
                                     return (
                                         <tr key={key} className="hover:bg-primary/5 transition-colors">
-                                            <td className="py-2.5 px-4 font-medium text-text-main">
+                                            <td className="py-2.5 px-4 font-medium text-text-main break-words min-w-[8rem]">
                                                 {cleanTitle}
                                             </td>
                                             <td className="py-2.5 px-4 font-mono text-primary font-bold">
                                                 {not?.symbol || '-'}
                                             </td>
-                                            <td className="py-2.5 px-4 text-text-main font-mono font-semibold">
+                                            <td className="py-2.5 px-4 text-text-main font-mono font-semibold break-all min-w-[7rem]">
                                                 {typeof value === 'number'
                                                     ? value.toLocaleString(undefined, { maximumFractionDigits: 5 })
-                                                    : (typeof value === 'object' ? JSON.stringify(value) : String(value))}
+                                                    : (typeof value === 'object' ? <NestedValue value={value} /> : String(value))}
                                             </td>
                                             <td className="py-2.5 px-4 text-text-muted font-mono">
                                                 {cleanUnit && cleanUnit !== '-' ? (
-                                                    <span className="px-1.5 py-0.5 rounded bg-surface border border-border text-[11px] font-semibold text-text-muted">
+                                                    <span className="px-1.5 py-0.5 rounded-md bg-surface border border-border text-[11px] font-semibold text-text-muted">
                                                         [{cleanUnit}]
                                                     </span>
                                                 ) : '-'}
@@ -552,6 +467,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
                     {/* Step-by-step formula breakdown */}
                     <FormulaDerivationCard
                         functionName={functionName}
+                        functionId={functionId}
                         formData={formData}
                         results={displayData}
                     />
@@ -559,7 +475,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             );
         }
 
-        return <pre className="text-xs p-4 bg-background overflow-auto">{JSON.stringify(displayData, null, 2)}</pre>;
+        return <pre className="max-w-full max-h-[32rem] whitespace-pre-wrap break-words text-xs p-4 bg-background overflow-auto">{JSON.stringify(displayData, null, 2)}</pre>;
     };
 
     return (
@@ -567,7 +483,7 @@ export const ResultsRenderer = ({ results, functionName = '', formData = {} }) =
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mt-6 space-y-4"
+            className="mt-6 min-w-0 space-y-4"
         >
             <Card>
                 {/* Warnings */}

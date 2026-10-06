@@ -16,19 +16,17 @@ export const useHistory = () => {
 };
 
 export const HistoryProvider = ({ children }) => {
-    const [history, setHistory] = useState([]);
-
-    // Load from local storage on mount
-    useEffect(() => {
-        const saved = localStorage.getItem('geocore_history');
-        if (saved) {
-            try {
-                setHistory(JSON.parse(saved));
-            } catch (e) {
-                console.error("Failed to parse history", e);
-            }
+    // Read saved history as the initial state: loading it in an effect raced the save effect below,
+    // which wrote the empty initial list first (and, with StrictMode's double effects, wiped it).
+    const [history, setHistory] = useState(() => {
+        try {
+            const saved = localStorage.getItem('geocore_history');
+            return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            console.error("Failed to load history", e);
+            return [];
         }
-    }, []);
+    });
 
     // Save to local storage on change
     useEffect(() => {

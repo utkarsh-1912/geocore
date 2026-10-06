@@ -1,0 +1,1295 @@
+{
+ "_comment": "GeoCore standard quantity directory. One row per physical quantity: the symbol, unit and name every screen, tool and document should use. Hand-curated; `python -m core.quantity_directory` audits all calculations against it and regenerates quantity_audit.md and the app's copy. `keys` are parameter / output names that mean this quantity (compared case-insensitively, ignoring _ - and spaces).",
+ "version": 1,
+ "unit_aliases": {
+  "-": [
+   "",
+   "-",
+   "–",
+   "none",
+   "dimensionless",
+   "[-]",
+   "ratio"
+  ],
+  "%": [
+   "%",
+   "pct",
+   "percent",
+   "percentage"
+  ],
+  "kPa": [
+   "kpa",
+   "kn/m2",
+   "kn/m^2",
+   "kn/m²",
+   "kn_m2"
+  ],
+  "MPa": [
+   "mpa",
+   "mn/m2",
+   "mn/m^2",
+   "n/mm2",
+   "n/mm^2"
+  ],
+  "Pa": [
+   "pa"
+  ],
+  "kN/m³": [
+   "kn/m3",
+   "kn/m^3",
+   "kn_m3",
+   "kn/m³"
+  ],
+  "kg/m³": [
+   "kg/m3",
+   "kg/m^3",
+   "kg_m3",
+   "kg/m³"
+  ],
+  "g/cm³": [
+   "g/cm3",
+   "g/cm^3",
+   "g/cm³"
+  ],
+  "m": [
+   "m",
+   "meter",
+   "meters",
+   "metre",
+   "metres"
+  ],
+  "mm": [
+   "mm"
+  ],
+  "cm": [
+   "cm"
+  ],
+  "cm²": [
+   "cm2",
+   "cm^2",
+   "cm²"
+  ],
+  "m²": [
+   "m2",
+   "m^2",
+   "m²"
+  ],
+  "m⁴": [
+   "m4",
+   "m^4",
+   "m⁴"
+  ],
+  "m³/s": [
+   "m3/s",
+   "m^3/s",
+   "m³/s"
+  ],
+  "m²/yr": [
+   "m2/yr",
+   "m^2/yr",
+   "m²/yr"
+  ],
+  "m/s": [
+   "m/s",
+   "\\text{m/s}"
+  ],
+  "m/s²": [
+   "m/s2",
+   "m/s^2",
+   "m/s²"
+  ],
+  "g": [
+   "g"
+  ],
+  "deg": [
+   "deg",
+   "degree",
+   "degrees",
+   "°"
+  ],
+  "rad": [
+   "rad",
+   "radian",
+   "radians"
+  ],
+  "°C": [
+   "degc",
+   "°c",
+   "celsius"
+  ],
+  "kN": [
+   "kn"
+  ],
+  "kN/m": [
+   "kn/m"
+  ],
+  "kN·m": [
+   "knm",
+   "kn.m",
+   "kn·m"
+  ],
+  "kN·m²": [
+   "knm2",
+   "kn.m2",
+   "kn·m²"
+  ],
+  "kPa/m": [
+   "kpa/m"
+  ],
+  "s": [
+   "s",
+   "sec",
+   "seconds"
+  ],
+  "yr": [
+   "yr",
+   "year",
+   "years"
+  ],
+  "Hz": [
+   "hz"
+  ]
+ },
+ "quantities": [
+  {
+   "id": "friction_angle_eff",
+   "name": "Effective friction angle",
+   "symbol": "φ'",
+   "latex": "\\varphi'",
+   "category": "strength",
+   "dimension": "angle",
+   "unit": "deg",
+   "keys": [
+    "phi_eff",
+    "friction_angle",
+    "effective_friction_angle",
+    "frictionangle",
+    "phi",
+    "phi_prime",
+    "phi_p"
+   ]
+  },
+  {
+   "id": "cohesion_eff",
+   "name": "Effective cohesion",
+   "symbol": "c'",
+   "latex": "c'",
+   "category": "strength",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "cohesion",
+    "effective_cohesion",
+    "c_prime"
+   ]
+  },
+  {
+   "id": "undrained_shear_strength",
+   "name": "Undrained shear strength",
+   "symbol": "sᵤ",
+   "latex": "s_u",
+   "category": "strength",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "undrained_shear_strength",
+    "su",
+    "cu",
+    "undrained_cohesion",
+    "su_base"
+   ]
+  },
+  {
+   "id": "interface_friction_angle",
+   "name": "Interface friction angle",
+   "symbol": "δ",
+   "latex": "\\delta",
+   "category": "strength",
+   "dimension": "angle",
+   "unit": "deg",
+   "keys": [
+    "delta_eff",
+    "interface_friction_angle"
+   ]
+  },
+  {
+   "id": "dilation_angle",
+   "name": "Dilation angle",
+   "symbol": "ψ",
+   "latex": "\\psi",
+   "category": "strength",
+   "dimension": "angle",
+   "unit": "deg",
+   "keys": [
+    "dilation_angle"
+   ]
+  },
+  {
+   "id": "unit_weight",
+   "name": "Bulk (total) unit weight",
+   "symbol": "γ",
+   "latex": "\\gamma",
+   "category": "density",
+   "dimension": "unit_weight",
+   "unit": "kN/m³",
+   "keys": [
+    "gamma",
+    "bulkunitweight",
+    "unit_weight",
+    "unitweight",
+    "bulk_unit_weight",
+    "gamma_total"
+   ]
+  },
+  {
+   "id": "unit_weight_eff",
+   "name": "Effective (submerged) unit weight",
+   "symbol": "γ'",
+   "latex": "\\gamma'",
+   "category": "density",
+   "dimension": "unit_weight",
+   "unit": "kN/m³",
+   "keys": [
+    "gamma_eff",
+    "effective_unit_weight",
+    "submerged_unit_weight"
+   ]
+  },
+  {
+   "id": "unit_weight_dry",
+   "name": "Dry unit weight",
+   "symbol": "γd",
+   "latex": "\\gamma_d",
+   "category": "density",
+   "dimension": "unit_weight",
+   "unit": "kN/m³",
+   "keys": [
+    "gamma_dry",
+    "dry_unit_weight"
+   ]
+  },
+  {
+   "id": "unit_weight_sat",
+   "name": "Saturated unit weight",
+   "symbol": "γsat",
+   "latex": "\\gamma_{sat}",
+   "category": "density",
+   "dimension": "unit_weight",
+   "unit": "kN/m³",
+   "keys": [
+    "gamma_sat",
+    "saturated_unit_weight"
+   ]
+  },
+  {
+   "id": "unit_weight_water",
+   "name": "Unit weight of water",
+   "symbol": "γw",
+   "latex": "\\gamma_w",
+   "category": "density",
+   "dimension": "unit_weight",
+   "unit": "kN/m³",
+   "keys": [
+    "unitweight_water",
+    "gamma_w"
+   ]
+  },
+  {
+   "id": "mass_density",
+   "name": "Mass density",
+   "symbol": "ρ",
+   "latex": "\\rho",
+   "category": "density",
+   "dimension": "mass_density",
+   "unit": "kg/m³",
+   "keys": [
+    "density",
+    "mass_density"
+   ]
+  },
+  {
+   "id": "specific_gravity",
+   "name": "Specific gravity of solids",
+   "symbol": "Gs",
+   "latex": "G_s",
+   "category": "density",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "specific_gravity",
+    "gs"
+   ]
+  },
+  {
+   "id": "sigma_v_total",
+   "name": "Total vertical stress",
+   "symbol": "σv",
+   "latex": "\\sigma_{v}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "sigma_vo",
+    "sigma_vo_tot",
+    "sigma_v",
+    "total_vertical_stress",
+    "base_sigma_v"
+   ]
+  },
+  {
+   "id": "sigma_v_eff",
+   "name": "Vertical effective stress",
+   "symbol": "σ'v",
+   "latex": "\\sigma'_{v}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "sigma_vo_eff",
+    "sigma_v_eff",
+    "effective_stress",
+    "vertical_effective_stress",
+    "effective_stress_increase"
+   ]
+  },
+  {
+   "id": "atmospheric_pressure",
+   "name": "Atmospheric pressure",
+   "symbol": "Pa",
+   "latex": "P_a",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "atmospheric_pressure",
+    "pa",
+    "p_a"
+   ]
+  },
+  {
+   "id": "pore_pressure",
+   "name": "Pore water pressure",
+   "symbol": "u",
+   "latex": "u",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "pore_pressure",
+    "u",
+    "u0"
+   ]
+  },
+  {
+   "id": "applied_stress",
+   "name": "Applied (surcharge) stress",
+   "symbol": "q",
+   "latex": "q",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "imposedstress",
+    "surcharge",
+    "applied_stress"
+   ]
+  },
+  {
+   "id": "delta_sigma",
+   "name": "Stress increase",
+   "symbol": "Δσ",
+   "latex": "\\Delta\\sigma",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "delta sigma z",
+    "delta sigma x",
+    "delta sigma y",
+    "delta_sigma_z",
+    "delta_sigma_x"
+   ]
+  },
+  {
+   "id": "cyclic_shear_stress",
+   "name": "Cyclic shear stress",
+   "symbol": "τcy",
+   "latex": "\\tau_{cy}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "cyclic_shear_stress"
+   ]
+  },
+  {
+   "id": "k0",
+   "name": "At-rest earth pressure coefficient",
+   "symbol": "K₀",
+   "latex": "K_0",
+   "category": "stress",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "k0",
+    "ko",
+    "lateral_earth_pressure_coefficients"
+   ]
+  },
+  {
+   "id": "ka",
+   "name": "Active earth pressure coefficient",
+   "symbol": "Kₐ",
+   "latex": "K_a",
+   "category": "stress",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "ka"
+   ]
+  },
+  {
+   "id": "kp",
+   "name": "Passive earth pressure coefficient",
+   "symbol": "Kₚ",
+   "latex": "K_p",
+   "category": "stress",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "kp"
+   ]
+  },
+  {
+   "id": "gmax",
+   "name": "Small-strain shear modulus",
+   "symbol": "Gmax",
+   "latex": "G_{max}",
+   "category": "stiffness",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "gmax",
+    "g_max"
+   ]
+  },
+  {
+   "id": "shear_modulus",
+   "name": "Shear modulus",
+   "symbol": "G",
+   "latex": "G",
+   "category": "stiffness",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "shear_modulus",
+    "shearmodulus"
+   ]
+  },
+  {
+   "id": "youngs_modulus",
+   "name": "Young's modulus",
+   "symbol": "E",
+   "latex": "E",
+   "category": "stiffness",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "e_modulus",
+    "youngs_modulus",
+    "elastic_modulus"
+   ]
+  },
+  {
+   "id": "poissons_ratio",
+   "name": "Poisson's ratio",
+   "symbol": "ν",
+   "latex": "\\nu",
+   "category": "stiffness",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "poissons_ratio",
+    "poissonsratio",
+    "poisson_ratio",
+    "nu"
+   ]
+  },
+  {
+   "id": "damping_ratio",
+   "name": "Damping ratio",
+   "symbol": "D",
+   "latex": "D",
+   "category": "dynamics",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "damping_ratio"
+   ]
+  },
+  {
+   "id": "vs",
+   "name": "Shear wave velocity",
+   "symbol": "Vₛ",
+   "latex": "V_s",
+   "category": "dynamics",
+   "dimension": "velocity",
+   "unit": "m/s",
+   "keys": [
+    "vs",
+    "shear_wave_velocity"
+   ]
+  },
+  {
+   "id": "vs1",
+   "name": "Normalised shear wave velocity",
+   "symbol": "Vₛ₁",
+   "latex": "V_{s1}",
+   "category": "dynamics",
+   "dimension": "velocity",
+   "unit": "m/s",
+   "keys": [
+    "vs1"
+   ]
+  },
+  {
+   "id": "vp",
+   "name": "Compression wave velocity",
+   "symbol": "Vₚ",
+   "latex": "V_p",
+   "category": "dynamics",
+   "dimension": "velocity",
+   "unit": "m/s",
+   "keys": [
+    "vp"
+   ]
+  },
+  {
+   "id": "amax",
+   "name": "Peak horizontal ground acceleration",
+   "symbol": "a_max",
+   "latex": "a_{max}",
+   "category": "dynamics",
+   "dimension": "acceleration",
+   "unit": "g",
+   "keys": [
+    "acceleration",
+    "amax",
+    "a_max"
+   ]
+  },
+  {
+   "id": "gravity",
+   "name": "Gravitational acceleration",
+   "symbol": "g",
+   "latex": "g",
+   "category": "constants",
+   "dimension": "acceleration",
+   "unit": "m/s²",
+   "keys": [
+    "gravity",
+    "g"
+   ]
+  },
+  {
+   "id": "csr",
+   "name": "Cyclic stress ratio",
+   "symbol": "CSR",
+   "latex": "CSR",
+   "category": "liquefaction",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "csr"
+   ]
+  },
+  {
+   "id": "crr",
+   "name": "Cyclic resistance ratio",
+   "symbol": "CRR",
+   "latex": "CRR",
+   "category": "liquefaction",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "crr"
+   ]
+  },
+  {
+   "id": "msf",
+   "name": "Magnitude scaling factor",
+   "symbol": "MSF",
+   "latex": "MSF",
+   "category": "liquefaction",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "msf"
+   ]
+  },
+  {
+   "id": "k_sigma",
+   "name": "Overburden correction factor",
+   "symbol": "Kσ",
+   "latex": "K_\\sigma",
+   "category": "liquefaction",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "k_sigma",
+    "ksigma"
+   ]
+  },
+  {
+   "id": "magnitude",
+   "name": "Earthquake moment magnitude",
+   "symbol": "Mw",
+   "latex": "M_w",
+   "category": "liquefaction",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "magnitude",
+    "mw"
+   ]
+  },
+  {
+   "id": "depth",
+   "name": "Depth",
+   "symbol": "z",
+   "latex": "z",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "depth",
+    "z",
+    "penetration",
+    "depths",
+    "delta z"
+   ]
+  },
+  {
+   "id": "width",
+   "name": "Foundation width",
+   "symbol": "B",
+   "latex": "B",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "width",
+    "b"
+   ]
+  },
+  {
+   "id": "length",
+   "name": "Foundation length",
+   "symbol": "L",
+   "latex": "L",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "length",
+    "l"
+   ]
+  },
+  {
+   "id": "width_eff",
+   "name": "Effective foundation width",
+   "symbol": "B'",
+   "latex": "B'",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "effective_width"
+   ]
+  },
+  {
+   "id": "length_eff",
+   "name": "Effective foundation length",
+   "symbol": "L'",
+   "latex": "L'",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "effective_length"
+   ]
+  },
+  {
+   "id": "diameter",
+   "name": "Diameter",
+   "symbol": "D",
+   "latex": "D",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "diameter",
+    "pile_diameter",
+    "borehole_diameter"
+   ]
+  },
+  {
+   "id": "embedment",
+   "name": "Embedment depth",
+   "symbol": "Df",
+   "latex": "D_f",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "embedment",
+    "df",
+    "base_depth"
+   ]
+  },
+  {
+   "id": "thickness",
+   "name": "Layer thickness",
+   "symbol": "t",
+   "latex": "t",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "thickness",
+    "layer_thickness",
+    "initial_height",
+    "sample_height"
+   ]
+  },
+  {
+   "id": "radius",
+   "name": "Radius",
+   "symbol": "r",
+   "latex": "r",
+   "category": "geometry",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "borehole_radius",
+    "pile_radius"
+   ]
+  },
+  {
+   "id": "drainage_length",
+   "name": "Drainage length",
+   "symbol": "Hdr",
+   "latex": "H_{dr}",
+   "category": "consolidation",
+   "dimension": "length",
+   "unit": "m",
+   "keys": [
+    "drainage_length",
+    "drainagelength",
+    "h_dr"
+   ]
+  },
+  {
+   "id": "qc",
+   "name": "Cone tip resistance",
+   "symbol": "qc",
+   "latex": "q_c",
+   "category": "insitu",
+   "dimension": "pressure",
+   "unit": "MPa",
+   "keys": [
+    "qc"
+   ]
+  },
+  {
+   "id": "qt",
+   "name": "Corrected cone resistance",
+   "symbol": "qt",
+   "latex": "q_t",
+   "category": "insitu",
+   "dimension": "pressure",
+   "unit": "MPa",
+   "keys": [
+    "qt"
+   ]
+  },
+  {
+   "id": "fs",
+   "name": "Sleeve friction",
+   "symbol": "fs",
+   "latex": "f_s",
+   "category": "insitu",
+   "dimension": "pressure",
+   "unit": "MPa",
+   "keys": [
+    "fs",
+    "sleeve_friction"
+   ]
+  },
+  {
+   "id": "u2",
+   "name": "Pore pressure at the cone shoulder",
+   "symbol": "u₂",
+   "latex": "u_2",
+   "category": "insitu",
+   "dimension": "pressure",
+   "unit": "MPa",
+   "keys": [
+    "u2"
+   ]
+  },
+  {
+   "id": "rf",
+   "name": "Friction ratio",
+   "symbol": "Rf",
+   "latex": "R_f",
+   "category": "insitu",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "rf",
+    "friction_ratio"
+   ]
+  },
+  {
+   "id": "fr",
+   "name": "Normalised friction ratio",
+   "symbol": "Fr",
+   "latex": "F_r",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "fr"
+   ],
+   "note": "Documented both as a fraction and in %; check each function."
+  },
+  {
+   "id": "ic",
+   "name": "Soil behaviour type index",
+   "symbol": "Ic",
+   "latex": "I_c",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "ic"
+   ]
+  },
+  {
+   "id": "qt_norm",
+   "name": "Normalised cone resistance",
+   "symbol": "Qt",
+   "latex": "Q_t",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "Qt"
+   ]
+  },
+  {
+   "id": "qtn",
+   "name": "Normalised cone resistance (stress exponent)",
+   "symbol": "Qtn",
+   "latex": "Q_{tn}",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "Qtn"
+   ]
+  },
+  {
+   "id": "qtn_cs",
+   "name": "Equivalent clean sand normalised resistance",
+   "symbol": "Qtn,cs",
+   "latex": "Q_{tn,cs}",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "Qtn_cs"
+   ]
+  },
+  {
+   "id": "bq",
+   "name": "Pore pressure ratio",
+   "symbol": "Bq",
+   "latex": "B_q",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "bq"
+   ]
+  },
+  {
+   "id": "spt_n",
+   "name": "SPT blow count",
+   "symbol": "N",
+   "latex": "N",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "spt_n",
+    "n_spt"
+   ]
+  },
+  {
+   "id": "spt_n60",
+   "name": "SPT blow count at 60 % energy",
+   "symbol": "N₆₀",
+   "latex": "N_{60}",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "n60"
+   ]
+  },
+  {
+   "id": "spt_n1_60",
+   "name": "Normalised SPT blow count",
+   "symbol": "(N₁)₆₀",
+   "latex": "(N_1)_{60}",
+   "category": "insitu",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "n1_60",
+    "n160"
+   ]
+  },
+  {
+   "id": "void_ratio",
+   "name": "Void ratio",
+   "symbol": "e",
+   "latex": "e",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "voidratio",
+    "void_ratio",
+    "initial_voidratio",
+    "e0"
+   ]
+  },
+  {
+   "id": "void_ratio_min",
+   "name": "Minimum void ratio",
+   "symbol": "emin",
+   "latex": "e_{min}",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "e_min",
+    "emin"
+   ]
+  },
+  {
+   "id": "void_ratio_max",
+   "name": "Maximum void ratio",
+   "symbol": "emax",
+   "latex": "e_{max}",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "e_max",
+    "emax"
+   ]
+  },
+  {
+   "id": "porosity",
+   "name": "Porosity",
+   "symbol": "n",
+   "latex": "n",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "porosity"
+   ]
+  },
+  {
+   "id": "water_content",
+   "name": "Water content",
+   "symbol": "w",
+   "latex": "w",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "water_content",
+    "watercontent"
+   ],
+   "note": "Groundhog takes a fraction (0-1); a few functions are documented in %."
+  },
+  {
+   "id": "saturation",
+   "name": "Degree of saturation",
+   "symbol": "Sr",
+   "latex": "S_r",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "saturation",
+    "degree_of_saturation"
+   ]
+  },
+  {
+   "id": "plasticity_index",
+   "name": "Plasticity index",
+   "symbol": "PI",
+   "latex": "PI",
+   "category": "index",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "pi",
+    "plasticity_index"
+   ]
+  },
+  {
+   "id": "liquid_limit",
+   "name": "Liquid limit",
+   "symbol": "LL",
+   "latex": "LL",
+   "category": "index",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "liquid_limit",
+    "ll"
+   ]
+  },
+  {
+   "id": "plastic_limit",
+   "name": "Plastic limit",
+   "symbol": "PL",
+   "latex": "PL",
+   "category": "index",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "plastic_limit",
+    "pl"
+   ]
+  },
+  {
+   "id": "relative_density",
+   "name": "Relative density",
+   "symbol": "Dr",
+   "latex": "D_r",
+   "category": "index",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "relative_density",
+    "dr",
+    "api_relativedensity"
+   ],
+   "note": "Groundhog takes a fraction (0-1); a few functions are documented in %."
+  },
+  {
+   "id": "fines_content",
+   "name": "Fines content",
+   "symbol": "FC",
+   "latex": "FC",
+   "category": "index",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "fines_content",
+    "fc"
+   ]
+  },
+  {
+   "id": "ocr",
+   "name": "Overconsolidation ratio",
+   "symbol": "OCR",
+   "latex": "OCR",
+   "category": "consolidation",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "ocr"
+   ]
+  },
+  {
+   "id": "compression_index",
+   "name": "Compression index",
+   "symbol": "Cc",
+   "latex": "C_c",
+   "category": "consolidation",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "compression_index",
+    "cc"
+   ]
+  },
+  {
+   "id": "cv",
+   "name": "Coefficient of consolidation",
+   "symbol": "cv",
+   "latex": "c_v",
+   "category": "consolidation",
+   "dimension": "diffusivity",
+   "unit": "m²/yr",
+   "keys": [
+    "cv",
+    "coefficient_of_consolidation"
+   ]
+  },
+  {
+   "id": "time",
+   "name": "Time",
+   "symbol": "t",
+   "latex": "t",
+   "category": "consolidation",
+   "dimension": "time",
+   "unit": "s",
+   "keys": [
+    "time",
+    "total_time",
+    "time_since_deposition"
+   ]
+  },
+  {
+   "id": "vertical_load",
+   "name": "Vertical load",
+   "symbol": "V",
+   "latex": "V",
+   "category": "loads",
+   "dimension": "force",
+   "unit": "kN",
+   "keys": [
+    "vertical_load",
+    "vertical",
+    "loads"
+   ]
+  },
+  {
+   "id": "horizontal_load",
+   "name": "Horizontal load",
+   "symbol": "H",
+   "latex": "H",
+   "category": "loads",
+   "dimension": "force",
+   "unit": "kN",
+   "keys": [
+    "horizontal_load",
+    "horizontal"
+   ]
+  },
+  {
+   "id": "line_load",
+   "name": "Line load",
+   "symbol": "Qv",
+   "latex": "Q_v",
+   "category": "loads",
+   "dimension": "force_per_length",
+   "unit": "kN/m",
+   "keys": [
+    "qv",
+    "lineload"
+   ]
+  },
+  {
+   "id": "nc",
+   "name": "Bearing capacity factor Nc",
+   "symbol": "Nc",
+   "latex": "N_c",
+   "category": "bearing",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "nc",
+    "n_c"
+   ]
+  },
+  {
+   "id": "nq",
+   "name": "Bearing capacity factor Nq",
+   "symbol": "Nq",
+   "latex": "N_q",
+   "category": "bearing",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "nq",
+    "n_q"
+   ]
+  },
+  {
+   "id": "ngamma",
+   "name": "Bearing capacity factor Nγ",
+   "symbol": "Nγ",
+   "latex": "N_\\gamma",
+   "category": "bearing",
+   "dimension": "dimensionless",
+   "unit": "-",
+   "keys": [
+    "ngamma",
+    "n_gamma"
+   ]
+  },
+  {
+   "id": "unit_skin_friction",
+   "name": "Unit shaft friction",
+   "symbol": "fs",
+   "latex": "f_s",
+   "category": "capacity",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "f_s",
+    "unit_skin_friction"
+   ]
+  },
+  {
+   "id": "unit_end_bearing",
+   "name": "Unit end bearing",
+   "symbol": "qb",
+   "latex": "q_b",
+   "category": "capacity",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "q_b",
+    "unit_end_bearing"
+   ]
+  },
+  {
+   "id": "degree_of_consolidation",
+   "name": "Degree of consolidation",
+   "symbol": "U",
+   "latex": "U",
+   "category": "consolidation",
+   "dimension": "percent",
+   "unit": "%",
+   "keys": [
+    "U"
+   ]
+  },
+  {
+   "id": "second_moment_of_area",
+   "name": "Second moment of area",
+   "symbol": "I",
+   "latex": "I",
+   "category": "geometry",
+   "dimension": "second_moment",
+   "unit": "m⁴",
+   "keys": [
+    "second_moment_of_area",
+    "moment_of_inertia"
+   ]
+  }
+ ]
+}

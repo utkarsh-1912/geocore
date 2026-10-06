@@ -30,7 +30,7 @@ import { GeoAIFullWindow } from './features/copilot/GeoAIFullWindow';
 import { CommandPalette } from './features/command/CommandPalette';
 import { IS_MAC } from './utils/platform';
 
-const ICON_BUTTON = 'h-8 w-8 shrink-0 flex items-center justify-center rounded text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors';
+const ICON_BUTTON = 'h-8 w-8 shrink-0 flex items-center justify-center rounded-md text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors';
 
 const MainLayout = () => {
   // Navigation State
@@ -569,7 +569,7 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-background text-text-main font-sans overflow-hidden transition-colors duration-300">
+    <div className="app-ambient flex h-screen text-text-main font-sans overflow-hidden transition-colors duration-300">
       <AnimatePresence mode="wait">
         {!appReady && (
           <Preloader key="preloader" status={getStatusMessage()} />
@@ -607,7 +607,7 @@ const MainLayout = () => {
       />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className={`h-13 shrink-0 border-b border-border flex items-center justify-between gap-3 px-3 drag-region bg-surface transition-colors duration-300 relative z-20 ${IS_MAC ? (sidebarOpen ? '' : 'pl-6') : 'pr-[146px]'}`}
+        <header className={`h-13 shrink-0 border-b border-border flex items-center justify-between gap-3 px-3 drag-region bg-surface/75 backdrop-blur-xl transition-colors duration-300 relative z-20 ${IS_MAC ? (sidebarOpen ? '' : 'pl-6') : 'pr-[146px]'}`}
           style={{ WebkitAppRegion: 'drag' }}>
 
           <div className="flex items-center gap-2 no-drag min-w-0 flex-1" style={{ WebkitAppRegion: 'no-drag' }}>
@@ -634,7 +634,7 @@ const MainLayout = () => {
 
               <button
                 onClick={goHome}
-                className={`flex items-center gap-2 px-2.5 h-8 rounded text-sm font-medium transition-colors shrink-0 ${viewState === 'home' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-muted hover:text-text-main'}`}
+                className={`flex items-center gap-2 px-2.5 h-8 rounded-md text-sm font-medium transition-colors shrink-0 ${viewState === 'home' ? 'bg-primary/12 text-primary' : 'text-text-muted hover:bg-surface-muted hover:text-text-main'}`}
               >
                 <Home size={16} />
                 <span className="hidden sm:inline">Home</span>
@@ -687,12 +687,12 @@ const MainLayout = () => {
             {/* Search / command palette trigger */}
             <button
               onClick={() => setCommandPaletteOpen(true)}
-              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-2.5 mr-1 rounded border border-border bg-background text-text-subtle hover:text-text-muted hover:border-border-strong transition-colors text-sm"
+              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-3 mr-1 rounded-full border border-border bg-background/70 text-text-subtle hover:text-text-muted hover:border-primary/40 hover:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_12%,transparent)] transition-all text-sm"
               title="Search & Commands (Ctrl+K)"
             >
               <Search size={15} />
               <span className="flex-1 text-left truncate">Search calculations…</span>
-              <kbd className="font-sans text-[10px] font-semibold px-1.5 py-0.5 rounded border border-border bg-surface text-text-muted">{IS_MAC ? '⌘K' : 'Ctrl K'}</kbd>
+              <kbd className="font-sans text-[10px] font-semibold px-1.5 py-0.5 rounded-md border border-border bg-surface text-text-muted">{IS_MAC ? '⌘K' : 'Ctrl K'}</kbd>
             </button>
             <button onClick={() => setCommandPaletteOpen(true)} className={`${ICON_BUTTON} md:hidden`} title="Search & Commands (Ctrl+K)" aria-label="Search">
               <Search size={18} />
@@ -809,7 +809,7 @@ const MainLayout = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 15 }}
                 transition={{ duration: 0.2 }}
-                className="max-w-6xl mx-auto w-full space-y-6"
+                className="max-w-6xl mx-auto w-full min-w-0 space-y-6"
               >
                 <SchemaForm
                   functionId={activeFunction.id}
@@ -821,7 +821,7 @@ const MainLayout = () => {
                 />
 
                 {calculationResults && (
-                  <div className="w-full space-y-4 pt-2">
+                  <div className="w-full min-w-0 space-y-4 pt-2">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
                         <span className="w-1 h-5 rounded-full bg-primary" />
@@ -832,7 +832,7 @@ const MainLayout = () => {
                       <div ref={exportDropdownRef} className="relative">
                         <button
                           onClick={() => setShowExportMenu(!showExportMenu)}
-                          className="flex items-center gap-2 h-8 px-3 bg-primary text-on-primary text-xs font-semibold rounded hover:bg-primary/90 transition-colors shadow-card"
+                          className="flex items-center gap-2 h-8 px-3 btn-brand text-xs font-semibold rounded-md transition-colors shadow-card"
                           aria-haspopup="menu"
                           aria-expanded={showExportMenu}
                         >
@@ -853,21 +853,21 @@ const MainLayout = () => {
                             >
                               <button
                                 onClick={() => { handleExport('pdf'); setShowExportMenu(false); }}
-                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded text-left hover:bg-surface-muted transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-md text-left hover:bg-surface-muted transition-colors"
                               >
                                 <FileText size={14} className="text-primary" />
                                 <span>Export PDF Report</span>
                               </button>
                               <button
                                 onClick={() => { handleExport('csv'); setShowExportMenu(false); }}
-                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded text-left hover:bg-surface-muted transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-md text-left hover:bg-surface-muted transition-colors"
                               >
                                 <Sheet size={14} className="text-primary" />
                                 <span>Export CSV Data</span>
                               </button>
                               <button
                                 onClick={() => { handleExport('json'); setShowExportMenu(false); }}
-                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded text-left hover:bg-surface-muted transition-colors"
+                                role="menuitem" className="flex items-center gap-2.5 text-text-main w-full px-3 py-2 rounded-md text-left hover:bg-surface-muted transition-colors"
                               >
                                 <FileJson size={14} className="text-primary" />
                                 <span>Export JSON Data</span>
@@ -881,6 +881,7 @@ const MainLayout = () => {
                     <ResultsRenderer
                       results={calculationResults}
                       functionName={activeFunction?.title}
+                      functionId={activeFunction?.id}
                       formData={calculationInputs}
                     />
                   </div>

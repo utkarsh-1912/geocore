@@ -41,7 +41,7 @@ export const ProfileViewModal = ({ profileId, isOpen, onClose }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-surface w-full max-w-4xl max-h-[90vh] rounded-lg shadow-2xl flex flex-col border border-border"
+                className="bg-surface w-full max-w-4xl max-h-[90vh] rounded-md shadow-2xl flex flex-col border border-border"
             >
                 <div className="flex items-center justify-between p-4 border-b border-border bg-background shrink-0">
                     <div>
@@ -106,7 +106,7 @@ export const ProfileViewModal = ({ profileId, isOpen, onClose }) => {
                     )}
                 </div>
 
-                <div className="p-4 border-t border-border flex justify-end gap-2 shrink-0 bg-background rounded-b-lg">
+                <div className="p-4 border-t border-border flex justify-end gap-2 shrink-0 bg-background rounded-b-md">
                     <Button onClick={onClose} variant="primary">Close</Button>
                 </div>
             </motion.div>
