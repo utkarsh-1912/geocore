@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPT interpretation — GeoCore tutorial</title>
+  <meta name="description" content="Normalise a CPT reading, then estimate relative density with Groundhog correlations.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="CPT interpretation — GeoCore tutorial">
+  <meta property="og:description" content="Normalise a CPT reading, then estimate relative density with Groundhog correlations.">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+  <script src="../../assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="../../assets/css/site.css?v=5916b700b4">
+  <link rel="stylesheet" href="../../assets/css/player.css?v=a4576fd2a2">
+</head>
+<body class="layout-default">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../../" aria-label="GeoCore home">
+        <img class="brand__logo brand__logo--light" src="../../assets/images/logo-2.png" alt="GeoCore" width="150" height="31">
+        <img class="brand__logo brand__logo--dark" src="../../assets/images/logo.png" alt="" width="150" height="31">
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="../../">Home</a></li>
+          <li><a href="../../index.html#features">Features</a></li>
+          <li><a href="../../docs/">Docs</a></li>
+          <li><a href="../../tutorials.html" aria-current="page">Tutorials</a></li>
+          <li><a href="../../download.html">Download</a></li>
+          <li><a href="../../about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="../../download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="../../">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../docs/">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../tutorials.html" aria-current="page">Tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="../../download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+<div class="container tut-page">
+  <nav class="tut-crumbs" aria-label="Breadcrumb">
+    <a href="../../tutorials.html">Tutorials</a><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg><span aria-current="page">CPT interpretation</span>
+  </nav>
+
+  <div class="tut-layout">
+    <div class="tut-main">
+      <div class="gc-player" data-gc-player data-video-id="gOTW31UzJBk" data-duration="130"
+           data-title="CPT interpretation" data-next-url="../../tutorial/pile-and-bearing/" data-next-title="Pile capacity and bearing">
+        <div class="gc-player__stage" tabindex="-1">
+<img class="gc-player__poster" src="../../assets/images/tutorials/cpt-interpretation.jpg" alt="" width="1280" height="720">          <div class="gc-player__video" data-gc-video></div>
+          <button class="gc-player__start" type="button" data-gc-start aria-label="Play: CPT interpretation">
+            <span class="gc-player__start-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
+            <span class="gc-player__start-text">Play 2:10</span>
+          </button>
+          <p class="gc-player__note" data-gc-note>Loads from YouTube (youtube-nocookie.com) when you press play.</p>
+        </div>
+        <noscript><p class="gc-player__fallback">JavaScript is needed for the player. <a href="https://www.youtube.com/watch?v=gOTW31UzJBk">Watch on YouTube</a>.</p></noscript>
+      </div>
+
+      <header class="tut-head">
+        <p class="tut-kicker"><span class="badge badge--primary">Tutorial 2 of 4</span> 2:10</p>
+        <h1>CPT interpretation</h1>
+        <p class="tut-head__lede">Normalise a CPT reading, then estimate relative density with Groundhog correlations.</p>
+        <p class="tut-head__links">
+          <a href="https://www.youtube.com/watch?v=gOTW31UzJBk" rel="noopener">Watch on YouTube <svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-external"></use></svg></a>
+          <button class="tut-link-btn" type="button" data-gc-copy-link>Copy link</button>
+        </p>
+      </header>
+
+      <section class="tut-block" aria-labelledby="steps-h">
+        <h2 id="steps-h">What you will do</h2>
+        <ol class="tut-steps tut-steps--lg">
+<li>PCPT normalisation and correction</li><li>Corrected qt, Qtn, Fr and Ic</li><li>Relative density for sand</li>        </ol>
+      </section>
+
+      <aside class="tut-note" role="note">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-info"></use></svg>
+        <p>Results come from deterministic Groundhog calculations. Check inputs, units and assumptions against your project and the governing code.</p>
+      </aside>
+
+      <nav class="tut-pager" aria-label="More tutorials">
+        <a class="tut-pager__link" href="../../tutorial/getting-started/" rel="prev">
+          <span class="tut-pager__dir"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-left"></use></svg>Previous</span>
+          <span class="tut-pager__title">Getting started with GeoCore</span>
+        </a>
+        <a class="tut-pager__link tut-pager__link--next" href="../../tutorial/pile-and-bearing/" rel="next">
+          <span class="tut-pager__dir">Next<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></span>
+          <span class="tut-pager__title">Pile capacity and bearing</span>
+        </a>
+      </nav>
+    </div>
+
+    <aside class="tut-side">
+      <section class="tut-panel" aria-labelledby="chap-h">
+        <h2 id="chap-h">Chapters</h2>
+        <ol class="tut-chapters" data-gc-chapters>
+          <li><button type="button" class="tut-chapter" data-t="0"><span class="tut-chapter__time">0:00</span><span class="tut-chapter__title">From cone reading to soil parameters</span></button></li>
+          <li><button type="button" class="tut-chapter" data-t="33"><span class="tut-chapter__time">0:33</span><span class="tut-chapter__title">Step 1: normalise the cone data</span></button></li>
+          <li><button type="button" class="tut-chapter" data-t="80"><span class="tut-chapter__time">1:20</span><span class="tut-chapter__title">Corrected qt, Qtn, Fr and Ic</span></button></li>
+          <li><button type="button" class="tut-chapter" data-t="101"><span class="tut-chapter__time">1:41</span><span class="tut-chapter__title">Step 2: relative density for sand</span></button></li>
+          <li><button type="button" class="tut-chapter" data-t="123"><span class="tut-chapter__time">2:03</span><span class="tut-chapter__title">Check your assumptions</span></button></li>
+        </ol>
+      </section>
+
+      <section class="tut-panel" aria-labelledby="all-h">
+        <h2 id="all-h">All tutorials</h2>
+        <ol class="tut-list">
+          <li>
+            <a href="../../tutorial/getting-started/">
+              <span class="tut-list__n">1</span>
+              <span class="tut-list__title">Getting started with GeoCore</span>
+              <span class="tut-list__time">1:05</span>
+            </a>
+          </li>
+          <li>
+            <a href="../../tutorial/cpt-interpretation/" aria-current="page">
+              <span class="tut-list__n">2</span>
+              <span class="tut-list__title">CPT interpretation</span>
+              <span class="tut-list__time">2:10</span>
+            </a>
+          </li>
+          <li>
+            <a href="../../tutorial/pile-and-bearing/">
+              <span class="tut-list__n">3</span>
+              <span class="tut-list__title">Pile capacity and bearing</span>
+              <span class="tut-list__time">2:45</span>
+            </a>
+          </li>
+          <li>
+            <a href="../../tutorial/geoai-assistant/">
+              <span class="tut-list__n">4</span>
+              <span class="tut-list__title">Using the GeoAI assistant</span>
+              <span class="tut-list__time">1:45</span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section class="tut-panel tut-panel--cta">
+        <h2>Try it yourself</h2>
+        <p>Free, offline, open source.</p>
+        <a class="btn btn--primary" href="../../download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download</a>
+      </section>
+
+      <section class="tut-panel tut-panel--keys" aria-labelledby="keys-h">
+        <h2 id="keys-h">Player shortcuts</h2>
+        <dl class="tut-keys">
+          <div><dt><kbd>Space</kbd> <kbd>K</kbd></dt><dd>Play / pause</dd></div>
+          <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Back / forward 5 s</dd></div>
+          <div><dt><kbd>J</kbd> <kbd>L</kbd></dt><dd>Back / forward 10 s</dd></div>
+          <div><dt><kbd>0</kbd>–<kbd>9</kbd></dt><dd>Jump to 0–90%</dd></div>
+          <div><dt><kbd>M</kbd> <kbd>F</kbd></dt><dd>Mute / fullscreen</dd></div>
+        </dl>
+      </section>
+    </aside>
+  </div>
+</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="../../">
+            <img class="brand__logo brand__logo--light" src="../../assets/images/logo-2.png" alt="GeoCore" width="150" height="31" loading="lazy">
+        <img class="brand__logo brand__logo--dark" src="../../assets/images/logo.png" alt="" width="150" height="31" loading="lazy">
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="../../index.html#features">Features</a></li>
+            <li><a href="../../index.html#integrations">Integrations</a></li>
+            <li><a href="../../download.html">Download</a></li>
+            <li><a href="../../docs/">Documentation</a></li>
+            <li><a href="../../tutorials.html">Video tutorials</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="../../about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="../../privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="../../about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="../../docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/site.js?v=c201c36da5" defer></script>
+  <script src="../../assets/js/player.js?v=465b7e06a4" defer></script>
+</body>
+</html>

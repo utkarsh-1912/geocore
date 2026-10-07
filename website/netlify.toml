@@ -28,6 +28,18 @@
   to = "/download.html"
   status = 200
 
+[[redirects]]
+  from = "/tutorials"
+  to = "/tutorials.html"
+  status = 200
+
+# Tutorial pages are directories (tutorial/<id>/index.html), so /tutorial/<id> and /tutorial/<id>/ both resolve.
+# /tutorial on its own goes to the list.
+[[redirects]]
+  from = "/tutorial"
+  to = "/tutorials.html"
+  status = 301
+
 # Docs pages are directories (docs/<slug>/index.html), so /docs/<slug> and /docs/<slug>/ both resolve;
 # docs pages use root-absolute links, so either form works.
 # Unknown paths get the static 404.html automatically (no SPA fallback).
@@ -36,8 +48,9 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    # Only same-origin assets; the download page reads release data from the public GitHub API.
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    # Only same-origin assets; the download page reads release data from the public GitHub API. The tutorial
+    # player loads the YouTube IFrame API (script) and the video (frame, youtube-nocookie.com) only after the visitor presses play.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.youtube.com; frame-src https://www.youtube-nocookie.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"

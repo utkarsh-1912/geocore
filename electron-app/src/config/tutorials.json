@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source for the video tutorials shown in the app Help dialog and on the website (website/_build/build.py reads this file). After uploading a video to YouTube, paste its 11-character video id into youtubeId. Leave it empty until then.",
+  "_comment": "Single source for the video tutorials shown in the app Help dialog and on the website (website/_build/build.py reads this file and generates tutorials.html and tutorial/<id>/). youtubeId is the 11-character video id (the build also accepts a full YouTube URL). chapters are [seconds, title] pairs (first one at 0). The poster image is website/assets/images/tutorials/<id>.jpg.",
   "tutorials": [
     {
       "id": "getting-started",
@@ -7,7 +7,34 @@
       "description": "Tour the workstation, fill in a calculation form, read the results and open Help.",
       "duration": "1:05",
       "youtubeId": "t8sJE-LfkfY",
-      "steps": ["Pick a module and function", "Enter inputs with units and ranges", "Calculate and read results", "Help and Ctrl+K search"]
+      "steps": [
+        "Pick a module and function",
+        "Enter inputs with units and ranges",
+        "Calculate and read results",
+        "Help and Ctrl+K search"
+      ],
+      "chapters": [
+        [
+          0,
+          "Welcome to GeoCore"
+        ],
+        [
+          7,
+          "Modules in the sidebar"
+        ],
+        [
+          24,
+          "Fill in the inputs"
+        ],
+        [
+          53,
+          "Results, tables and charts"
+        ],
+        [
+          60,
+          "Help and Ctrl+K search"
+        ]
+      ]
     },
     {
       "id": "cpt-interpretation",
@@ -15,7 +42,33 @@
       "description": "Normalise a CPT reading, then estimate relative density with Groundhog correlations.",
       "duration": "2:10",
       "youtubeId": "gOTW31UzJBk",
-      "steps": ["PCPT normalisation and correction", "Corrected qt, Qtn, Fr and Ic", "Relative density for sand"]
+      "steps": [
+        "PCPT normalisation and correction",
+        "Corrected qt, Qtn, Fr and Ic",
+        "Relative density for sand"
+      ],
+      "chapters": [
+        [
+          0,
+          "From cone reading to soil parameters"
+        ],
+        [
+          33,
+          "Step 1: normalise the cone data"
+        ],
+        [
+          80,
+          "Corrected qt, Qtn, Fr and Ic"
+        ],
+        [
+          101,
+          "Step 2: relative density for sand"
+        ],
+        [
+          123,
+          "Check your assumptions"
+        ]
+      ]
     },
     {
       "id": "pile-and-bearing",
@@ -23,7 +76,33 @@
       "description": "API RP2GEO unit shaft friction and end bearing for piles, then undrained shallow-foundation capacity.",
       "duration": "2:45",
       "youtubeId": "Mur4CxG6MTU",
-      "steps": ["Unit skin friction (sand)", "Unit end bearing (sand)", "Undrained vertical capacity"]
+      "steps": [
+        "Unit skin friction (sand)",
+        "Unit end bearing (sand)",
+        "Undrained vertical capacity"
+      ],
+      "chapters": [
+        [
+          0,
+          "Overview"
+        ],
+        [
+          21,
+          "Step 1: unit shaft friction"
+        ],
+        [
+          82,
+          "Step 2: unit end bearing"
+        ],
+        [
+          122,
+          "Step 3: undrained bearing capacity"
+        ],
+        [
+          161,
+          "Compare with design loads"
+        ]
+      ]
     },
     {
       "id": "geoai-assistant",
@@ -31,7 +110,34 @@
       "description": "Ask in plain language, inspect which tool ran, and choose a local model.",
       "duration": "1:45",
       "youtubeId": "VTAKHGDK0rc",
-      "steps": ["Quick analysis cards", "Inspect the tool steps", "Ask your own question", "Install a local model"]
+      "steps": [
+        "Quick analysis cards",
+        "Inspect the tool steps",
+        "Ask your own question",
+        "Install a local model"
+      ],
+      "chapters": [
+        [
+          0,
+          "Ask in plain language"
+        ],
+        [
+          16,
+          "Quick analysis cards"
+        ],
+        [
+          47,
+          "Inspect the tool steps"
+        ],
+        [
+          70,
+          "Ask your own question"
+        ],
+        [
+          86,
+          "Install a local model"
+        ]
+      ]
     }
   ]
 }

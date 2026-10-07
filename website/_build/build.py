@@ -184,14 +184,56 @@ def load_app_version() -> str:
         return ""
 
 
+_YT_ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
+_YT_URL_RE = re.compile(r"(?:youtu\.be/|youtube(?:-nocookie)?\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/|live/))([A-Za-z0-9_-]{11})")
+
+
+def extract_youtube_id(value: str) -> str:
+    """The 11-character video id from a bare id or any youtu.be / youtube.com watch, embed, shorts or live URL."""
+    value = (value or "").strip()
+    if not value or _YT_ID_RE.match(value):
+        return value
+    match = _YT_URL_RE.search(value)
+    if not match:
+        raise ValueError(f"not a YouTube id or URL: {value!r}")
+    return match.group(1)
+
+
+def _clock(seconds: int) -> str:
+    return f"{seconds // 3600}:{seconds % 3600 // 60:02d}:{seconds % 60:02d}" if seconds >= 3600 else f"{seconds // 60}:{seconds % 60:02d}"
+
+
 def load_tutorials() -> List[Dict[str, Any]]:
-    """Video tutorials, from the app's own config so the Help dialog and the website cannot drift."""
+    """Video tutorials, from the app's own config so the Help dialog and the website cannot drift.
+
+    Adds what the pages need: the extracted YouTube id and URLs, the duration in seconds, chapters with
+    clock labels, the local poster image and the previous/next tutorial.
+    """
     path = REPO / "electron-app" / "src" / "config" / "tutorials.json"
     try:
-        return json.loads(path.read_text(encoding="utf-8"))["tutorials"]
+        items = json.loads(path.read_text(encoding="utf-8"))["tutorials"]
     except (OSError, KeyError, ValueError) as exc:
         print(f"WARNING: could not read {path}: {exc}")
         return []
+    out: List[Dict[str, Any]] = []
+    for n, raw in enumerate(items, 1):
+        t = dict(raw)
+        t["number"] = n
+        t["youtubeId"] = extract_youtube_id(t.get("youtubeId", ""))
+        t["watch_url"] = f"https://www.youtube.com/watch?v={t['youtubeId']}" if t["youtubeId"] else ""
+        parts = [int(x) for x in str(t.get("duration", "0:00")).split(":")]
+        t["seconds"] = sum(p * 60 ** i for i, p in enumerate(reversed(parts)))
+        t["chapters"] = [{"t": int(s), "label": _clock(int(s)), "title": title} for s, title in t.get("chapters", [])]
+        poster = f"assets/images/tutorials/{t['id']}.jpg"
+        t["poster"] = poster if (WEBSITE / poster).exists() else ""
+        if not t["poster"]:
+            _warn(f"tutorial {t['id']}: missing poster {poster}")
+        t["url"] = f"tutorial/{t['id']}/"
+        out.append(t)
+    for i, t in enumerate(out):
+        t["prev"] = out[i - 1] if i else None
+        t["next"] = out[i + 1] if i + 1 < len(out) else None
+    return out
 
 
 def load_groundhog_version() -> str:
@@ -383,6 +425,9 @@ def seed_search_entries(domains: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
          "summary": "Short screen recordings: getting started, CPT interpretation, pile capacity and bearing, GeoAI.",
          "headings": [t["title"] for t in load_tutorials()],
          "body": "video YouTube tutorial screencast walkthrough"},
+        *[{"id": f"tutorial-{t['id']}", "title": t["title"], "url": t["url"], "section": "Tutorials",
+           "summary": t["description"], "headings": [c["title"] for c in t["chapters"]] or t["steps"],
+           "body": "video tutorial " + " ".join(t["steps"])} for t in load_tutorials()],
         {"id": "privacy", "title": "Privacy", "url": "privacy.html", "section": "Site",
          "summary": "Every network request GeoCore makes, and what is stored on your computer.",
          "headings": ["Network activity", "Data stored on your computer", "This website"],
@@ -477,6 +522,14 @@ def build() -> None:
     for template, out, nav_key in pages:
         target = render(env, template, out, dict(base, nav_active=nav_key), absolute=(out == "404.html"))
         print(f"  wrote {target.relative_to(REPO)}")
+
+    # One page per tutorial: tutorial/<id>/ (directory, so both /tutorial/<id> and /tutorial/<id>/ resolve).
+    tutorial_dir = WEBSITE / "tutorial"
+    if tutorial_dir.exists():
+        shutil.rmtree(tutorial_dir)
+    for t in base["tutorials"]:
+        render(env, "tutorial.html", f"tutorial/{t['id']}/index.html", dict(base, nav_active="tutorials", tutorial=t))
+    print(f"  wrote website/tutorial: {len(base['tutorials'])} pages")
 
     clean_docs_output()
     docs_ctx = dict(base, nav_active="docs")
