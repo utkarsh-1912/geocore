@@ -1,0 +1,14 @@
+{# Shared tutorial card (tutorials list and the landing page). Import "with context" so url()/icon() resolve. #}
+{% macro tv_card(t, heading='h3', show_desc=true) %}
+<article class="tv-card">
+  <div class="tv-card__media">
+    {% if t.poster %}<img src="{{ url(t.poster) }}" alt="" width="1280" height="720" loading="lazy" decoding="async">{% endif %}
+    <span class="tv-time">{{ t.duration }}</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial {{ t.number }}</p>
+    <{{ heading }} class="tv-card__title"><a href="{{ url(t.url) }}">{{ t.title }}</a></{{ heading }}>
+    {% if show_desc %}<p class="tv-card__desc">{{ t.description }}</p>{% endif %}
+  </div>
+</article>
+{% endmacro %}

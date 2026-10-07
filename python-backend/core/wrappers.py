@@ -1180,8 +1180,9 @@ def mohrcoulomb_triaxial_wrapper(function_id, args):
     would show the figure as raw JSON and the single-plot view drops the values).
     """
     from groundhog.constitutivemodels import general
+    from core.groundhog_corrections import CORRECTED_FUNCTIONS
 
-    func = getattr(general, function_id)
+    func = CORRECTED_FUNCTIONS.get(function_id) or getattr(general, function_id)
     held_stress = 'sigma_3' if function_id == 'mohrcoulomb_triaxial_compression' else 'sigma_1'
     try:
         res = func(**{held_stress: float(args.get(held_stress)),

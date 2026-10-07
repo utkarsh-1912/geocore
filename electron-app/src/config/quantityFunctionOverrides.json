@@ -1,6 +1,47 @@
 {
  "_comment": "Curated. A name that means a different quantity in one particular function than everywhere else. Each entry re-maps (function, key) to a standard quantity id. Add an entry when the audit lists a name collision.",
  "quantity": [
-  {"function": "reinforced_circularsection_inertia", "key": "Ic", "quantity": "second_moment_of_area", "reason": "Ic is the second moment of area of the section here (m4), not the CPT soil behaviour type index."}
+  {
+   "function": "reinforced_circularsection_inertia",
+   "key": "Ic",
+   "quantity": "second_moment_of_area",
+   "reason": "Ic is the second moment of area of the section here (m4), not the CPT soil behaviour type index."
+  },
+  {
+   "function": "mohrcoulomb_triaxial_compression",
+   "key": "center",
+   "quantity": "mohr_circle_center",
+   "reason": "Mohr's circle is drawn in stress space (sigma, tau), so its centre is the mean stress s = (sigma_1 + sigma_3)/2 in kPa, not a position."
+  },
+  {
+   "function": "mohrcoulomb_triaxial_compression",
+   "key": "radius",
+   "quantity": "mohr_circle_radius",
+   "reason": "Mohr's circle is drawn in stress space (sigma, tau), so its radius is the maximum shear stress t = (sigma_1 - sigma_3)/2 in kPa, not a length."
+  },
+  {
+   "function": "mohrcoulomb_triaxial_compression",
+   "key": "Failure angle",
+   "quantity": "failure_plane_angle",
+   "reason": "Angle of the failure plane from the vertical, 45 - phi/2, in degrees."
+  },
+  {
+   "function": "mohrcoulomb_triaxial_extension",
+   "key": "center",
+   "quantity": "mohr_circle_center",
+   "reason": "Mohr's circle is drawn in stress space (sigma, tau), so its centre is the mean stress s = (sigma_1 + sigma_3)/2 in kPa, not a position."
+  },
+  {
+   "function": "mohrcoulomb_triaxial_extension",
+   "key": "radius",
+   "quantity": "mohr_circle_radius",
+   "reason": "Mohr's circle is drawn in stress space (sigma, tau), so its radius is the maximum shear stress t = (sigma_1 - sigma_3)/2 in kPa, not a length."
+  },
+  {
+   "function": "mohrcoulomb_triaxial_extension",
+   "key": "Failure angle",
+   "quantity": "failure_plane_angle",
+   "reason": "Angle of the failure plane from the vertical, 45 - phi/2, in degrees."
+  }
  ]
 }

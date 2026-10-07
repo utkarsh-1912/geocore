@@ -1,18 +1,15 @@
 {% extends "base.html" %}
+{% from "_tutorial_card.html" import tv_card with context %}
 {% block title %}Video tutorials — GeoCore{% endblock %}
 {% block description %}Short video tutorials for GeoCore: getting started, CPT interpretation, pile capacity and bearing, and the GeoAI assistant.{% endblock %}
 {% block content %}
 {% set total_min = ((tutorials | sum(attribute='seconds')) / 60) | round | int %}
-<header class="page-header tut-hero">
+<header class="page-header tv-head">
   <div class="container">
-    <p class="eyebrow">{{ icon('book') }}Tutorials</p>
-    <h1>Learn GeoCore in four short videos</h1>
-    <p class="lede">Real workflows recorded in the real app, with narration and chapters. Each video loads from YouTube only when you press play.</p>
-    <ul class="tut-hero__meta" aria-label="Series summary">
-      <li>{{ tutorials | length }} videos</li>
-      <li>about {{ total_min }} minutes in total</li>
-      <li>chapters and keyboard controls</li>
-    </ul>
+    <p class="eyebrow">{{ icon('play') }}Tutorials</p>
+    <h1>Video tutorials</h1>
+    <p class="lede">Short walkthroughs recorded in GeoCore. Watch them in order, or jump to the topic you need.</p>
+    <p class="tv-head__meta">{{ tutorials | length }} videos · {{ total_min }} min in total</p>
   </div>
 </header>
 
@@ -20,54 +17,29 @@
   <div class="container">
     {% if tutorials %}
     {% set first = tutorials[0] %}
-    <article class="tut-feature">
-      <a class="tut-thumb tut-thumb--lg" href="{{ url(first.url) }}" aria-label="Watch: {{ first.title }}">
-        {% if first.poster %}<img src="{{ url(first.poster) }}" alt="" width="1280" height="720" loading="eager">{% endif %}
-        <span class="tut-thumb__play">{{ icon('play') }}</span>
-        <span class="tut-thumb__time">{{ first.duration }}</span>
+    <article class="tv-feature">
+      <a class="tv-feature__media" href="{{ url(first.url) }}" tabindex="-1" aria-hidden="true">
+        {% if first.poster %}<img src="{{ url(first.poster) }}" alt="" width="1280" height="720" decoding="async">{% endif %}
+        <span class="tv-play">{{ icon('play') }}</span>
+        <span class="tv-time">{{ first.duration }}</span>
       </a>
-      <div class="tut-feature__body">
-        <p class="tut-kicker"><span class="badge badge--primary">Start here</span> Tutorial {{ first.number }} of {{ tutorials | length }}</p>
-        <h2 class="tut-feature__title"><a href="{{ url(first.url) }}">{{ first.title }}</a></h2>
-        <p class="tut-feature__desc">{{ first.description }}</p>
-        <ol class="tut-steps">
-          {% for step in first.steps %}<li>{{ step }}</li>{% endfor %}
-        </ol>
-        <a class="btn btn--primary btn--lg" href="{{ url(first.url) }}">{{ icon('play') }}Watch ({{ first.duration }})</a>
+      <div class="tv-feature__body">
+        <p class="tv-card__meta"><span class="tv-badge">Start here</span>Tutorial {{ first.number }} · {{ first.duration }}</p>
+        <h2 class="tv-feature__title"><a href="{{ url(first.url) }}">{{ first.title }}</a></h2>
+        <p class="tv-feature__desc">{{ first.description }}</p>
+        <a class="btn btn--primary" href="{{ url(first.url) }}">{{ icon('play') }}Watch now</a>
       </div>
     </article>
 
-    <h2 class="tut-grid-title">Then keep going</h2>
-    <div class="tut-grid">
-      {% for t in tutorials[1:] %}
-      <article class="tut-card">
-        <a class="tut-thumb" href="{{ url(t.url) }}" tabindex="-1" aria-hidden="true">
-          {% if t.poster %}<img src="{{ url(t.poster) }}" alt="" width="1280" height="720" loading="lazy">{% endif %}
-          <span class="tut-thumb__play">{{ icon('play') }}</span>
-          <span class="tut-thumb__time">{{ t.duration }}</span>
-        </a>
-        <div class="tut-card__body">
-          <p class="tut-kicker">Tutorial {{ t.number }}</p>
-          <h3><a href="{{ url(t.url) }}">{{ t.title }}</a></h3>
-          <p>{{ t.description }}</p>
-          <ul class="tut-chips">
-            {% for step in t.steps[:3] %}<li>{{ step }}</li>{% endfor %}
-          </ul>
-        </div>
-      </article>
-      {% endfor %}
+    {% if tutorials | length > 1 %}
+    <h2 class="tv-section-title">Keep going</h2>
+    <div class="tv-grid">
+      {% for t in tutorials[1:] %}{{ tv_card(t) }}{% endfor %}
     </div>
+    {% endif %}
     {% else %}
     <p class="muted">Tutorials are coming soon.</p>
     {% endif %}
-
-    <aside class="tut-cta">
-      <div>
-        <h2>Follow along in the app</h2>
-        <p>GeoCore is free and works offline. Install it, then repeat each video with your own numbers.</p>
-      </div>
-      <a class="btn btn--primary btn--lg" href="{{ url('download.html') }}">{{ icon('download') }}Download GeoCore</a>
-    </aside>
   </div>
 </section>
 {% endblock %}

@@ -97,7 +97,7 @@ jobs:
     - name: Marketing pages are up to date
       run: |
         if ! git diff --exit-code -I'[0-9]{4}-[0-9]{2}-[0-9]{2}' -- \
-            website/index.html website/about.html website/download.html website/privacy.html website/404.html \n            website/tutorials.html website/tutorial; then
+            website/index.html website/about.html website/download.html website/privacy.html website/404.html \n            website/tutorials.html website/tutorials; then
           echo "::error::Generated site pages are stale. Run 'python website/_build/build.py' and commit the result."
           exit 1
         fi

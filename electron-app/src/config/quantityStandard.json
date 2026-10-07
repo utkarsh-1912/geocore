@@ -148,6 +148,40 @@
   ],
   "Hz": [
    "hz"
+  ],
+  "cm³": [
+   "cm3",
+   "cm^3",
+   "cm³"
+  ],
+  "ha": [
+   "ha",
+   "hectare",
+   "hectares"
+  ],
+  "1/kPa": [
+   "1/kpa",
+   "kpa^-1",
+   "kpa-1"
+  ],
+  "1/kN": [
+   "1/kn",
+   "kn^-1"
+  ],
+  "mm/kN": [
+   "mm/kn"
+  ],
+  "kN·m²/m": [
+   "knm2/m",
+   "kn.m2/m",
+   "kn·m²/m"
+  ],
+  "deg/blow": [
+   "deg/blow"
+  ],
+  "deg/blow²": [
+   "deg/blow^2",
+   "deg/blow2"
   ]
  },
  "quantities": [
@@ -1289,6 +1323,90 @@
    "keys": [
     "second_moment_of_area",
     "moment_of_inertia"
+   ]
+  },
+  {
+   "id": "axial_stress_at_failure",
+   "name": "Axial stress at failure",
+   "symbol": "σ₁f",
+   "latex": "\\sigma_{1,f}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "sigma_1_f"
+   ]
+  },
+  {
+   "id": "radial_stress_at_failure",
+   "name": "Radial stress at failure",
+   "symbol": "σ₃f",
+   "latex": "\\sigma_{3,f}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "sigma_3_f"
+   ]
+  },
+  {
+   "id": "shear_stress_at_failure",
+   "name": "Shear stress at failure",
+   "symbol": "τf",
+   "latex": "\\tau_f",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "tau_f"
+   ]
+  },
+  {
+   "id": "normal_stress_on_failure_plane",
+   "name": "Normal stress on the failure plane",
+   "symbol": "σf",
+   "latex": "\\sigma_f",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "sigma_f"
+   ]
+  },
+  {
+   "id": "mohr_circle_center",
+   "name": "Mean stress s, centre of Mohr's circle",
+   "symbol": "s",
+   "latex": "s = \\frac{\\sigma_1+\\sigma_3}{2}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "mohr_circle_center"
+   ]
+  },
+  {
+   "id": "mohr_circle_radius",
+   "name": "Maximum shear stress t, radius of Mohr's circle",
+   "symbol": "t",
+   "latex": "t = \\frac{\\sigma_1-\\sigma_3}{2}",
+   "category": "stress",
+   "dimension": "pressure",
+   "unit": "kPa",
+   "keys": [
+    "mohr_circle_radius"
+   ]
+  },
+  {
+   "id": "failure_plane_angle",
+   "name": "Failure plane angle (from vertical)",
+   "symbol": "θf",
+   "latex": "\\theta_f",
+   "category": "stress",
+   "dimension": "angle",
+   "unit": "deg",
+   "keys": [
+    "failure_plane_angle"
    ]
   }
  ]

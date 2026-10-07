@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="/assets/css/site.css?v=5916b700b4">
+  <link rel="stylesheet" href="/assets/css/site.css?v=93d053c934">
 </head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -30,8 +30,14 @@
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/index.html#features">Features</a></li>
-          <li><a href="/docs/" aria-current="page">Docs</a></li>
-          <li><a href="/tutorials.html">Tutorials</a></li>
+          <li class="nav-menu" data-nav-menu>
+            <button class="nav-menu__btn" type="button" aria-expanded="false" aria-controls="nav-menu-learn"
+data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></button>
+            <ul class="nav-menu__list" id="nav-menu-learn" hidden>
+              <li><a href="/docs/" aria-current="page"><span>Documentation</span><small>Guides, theory and API reference</small></a></li>
+              <li><a href="/tutorials.html"><span>Video tutorials</span><small>Short walkthroughs of the app</small></a></li>
+            </ul>
+          </li>
           <li><a href="/download.html">Download</a></li>
           <li><a href="/about.html">About</a></li>
         </ul>
@@ -52,8 +58,8 @@
       <ul>
         <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="/docs/" aria-current="page">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="/tutorials.html">Tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Documentation<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/tutorials.html">Video tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
       </ul>
@@ -887,7 +893,7 @@ Local language model ── explains the result, with units and method
           <h2>Product</h2>
           <ul>
             <li><a href="/index.html#features">Features</a></li>
-            <li><a href="/index.html#integrations">Integrations</a></li>
+            <li><a href="/index.html#geoai">GeoAI</a></li>
             <li><a href="/download.html">Download</a></li>
             <li><a href="/docs/">Documentation</a></li>
             <li><a href="/tutorials.html">Video tutorials</a></li>
@@ -919,7 +925,7 @@ Local language model ── explains the result, with units and method
     </div>
   </footer>
 
-  <script src="/assets/js/site.js?v=c201c36da5" defer></script>
+  <script src="/assets/js/site.js?v=5c8704b96e" defer></script>
   <script src="/assets/js/docs.js?v=a62b5efb96" defer></script>
 </body>
 </html>

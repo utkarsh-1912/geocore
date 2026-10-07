@@ -15,8 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
   <script src="../../assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="../../assets/css/site.css?v=5916b700b4">
-  <link rel="stylesheet" href="../../assets/css/player.css?v=a4576fd2a2">
+  <link rel="stylesheet" href="../../assets/css/site.css?v=93d053c934">
 </head>
 <body class="layout-default">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -31,8 +30,14 @@
         <ul>
           <li><a href="../../">Home</a></li>
           <li><a href="../../index.html#features">Features</a></li>
-          <li><a href="../../docs/">Docs</a></li>
-          <li><a href="../../tutorials.html" aria-current="page">Tutorials</a></li>
+          <li class="nav-menu" data-nav-menu>
+            <button class="nav-menu__btn" type="button" aria-expanded="false" aria-controls="nav-menu-learn"
+data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></button>
+            <ul class="nav-menu__list" id="nav-menu-learn" hidden>
+              <li><a href="../../docs/"><span>Documentation</span><small>Guides, theory and API reference</small></a></li>
+              <li><a href="../../tutorials.html" aria-current="page"><span>Video tutorials</span><small>Short walkthroughs of the app</small></a></li>
+            </ul>
+          </li>
           <li><a href="../../download.html">Download</a></li>
           <li><a href="../../about.html">About</a></li>
         </ul>
@@ -53,8 +58,8 @@
       <ul>
         <li><a href="../../">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="../../index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="../../docs/">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="../../tutorials.html" aria-current="page">Tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../docs/">Documentation<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="../../tutorials.html" aria-current="page">Video tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="../../download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="../../about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
       </ul>
@@ -63,116 +68,77 @@
   </header>
 
   <main id="main" tabindex="-1">
-<div class="container tut-page">
-  <nav class="tut-crumbs" aria-label="Breadcrumb">
+<div class="container tv-page">
+  <nav class="tv-crumbs" aria-label="Breadcrumb">
     <a href="../../tutorials.html">Tutorials</a><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg><span aria-current="page">Getting started with GeoCore</span>
   </nav>
 
-  <div class="tut-layout">
-    <div class="tut-main">
-      <div class="gc-player" data-gc-player data-video-id="t8sJE-LfkfY" data-duration="65"
-           data-title="Getting started with GeoCore" data-next-url="../../tutorial/cpt-interpretation/" data-next-title="CPT interpretation">
-        <div class="gc-player__stage" tabindex="-1">
-<img class="gc-player__poster" src="../../assets/images/tutorials/getting-started.jpg" alt="" width="1280" height="720">          <div class="gc-player__video" data-gc-video></div>
-          <button class="gc-player__start" type="button" data-gc-start aria-label="Play: Getting started with GeoCore">
-            <span class="gc-player__start-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
-            <span class="gc-player__start-text">Play 1:05</span>
-          </button>
-          <p class="gc-player__note" data-gc-note>Loads from YouTube (youtube-nocookie.com) when you press play.</p>
-        </div>
-        <noscript><p class="gc-player__fallback">JavaScript is needed for the player. <a href="https://www.youtube.com/watch?v=t8sJE-LfkfY">Watch on YouTube</a>.</p></noscript>
+  <div class="tv-layout">
+    <div class="tv-main">
+      <div class="tv-player" data-yt="t8sJE-LfkfY" data-title="Getting started with GeoCore">
+<img class="tv-player__poster" src="../../assets/images/tutorials/getting-started.jpg" alt="" width="1280" height="720">        <button class="tv-play tv-play--lg" type="button" data-yt-play aria-label="Play: Getting started with GeoCore"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></button>
+        <div class="tv-player__frame" data-yt-frame></div>
       </div>
-
-      <header class="tut-head">
-        <p class="tut-kicker"><span class="badge badge--primary">Tutorial 1 of 4</span> 1:05</p>
+<p class="tv-player__note">Plays from YouTube (youtube-nocookie.com) after you press play.</p>
+      <header class="tv-title">
+        <p class="tv-card__meta">Tutorial 1 of 4 · 1:05</p>
         <h1>Getting started with GeoCore</h1>
-        <p class="tut-head__lede">Tour the workstation, fill in a calculation form, read the results and open Help.</p>
-        <p class="tut-head__links">
-          <a href="https://www.youtube.com/watch?v=t8sJE-LfkfY" rel="noopener">Watch on YouTube <svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-external"></use></svg></a>
-          <button class="tut-link-btn" type="button" data-gc-copy-link>Copy link</button>
-        </p>
+        <p class="tv-title__desc">Tour the workstation, fill in a calculation form, read the results and open Help.</p>
+        <div class="tv-actions">
+          <a class="btn btn--secondary" href="https://www.youtube.com/watch?v=t8sJE-LfkfY" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-external"></use></svg>Watch on YouTube</a>
+          <button class="btn btn--secondary" type="button" data-copy-link><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-hash"></use></svg><span>Copy link</span></button>
+        </div>
       </header>
 
-      <section class="tut-block" aria-labelledby="steps-h">
-        <h2 id="steps-h">What you will do</h2>
-        <ol class="tut-steps tut-steps--lg">
-<li>Pick a module and function</li><li>Enter inputs with units and ranges</li><li>Calculate and read results</li><li>Help and Ctrl+K search</li>        </ol>
-      </section>
-
-      <aside class="tut-note" role="note">
-        <svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-info"></use></svg>
-        <p>Results come from deterministic Groundhog calculations. Check inputs, units and assumptions against your project and the governing code.</p>
-      </aside>
-
-      <nav class="tut-pager" aria-label="More tutorials">
-<span></span>        <a class="tut-pager__link tut-pager__link--next" href="../../tutorial/cpt-interpretation/" rel="next">
-          <span class="tut-pager__dir">Next<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></span>
-          <span class="tut-pager__title">CPT interpretation</span>
-        </a>
+      <nav class="tv-pager" aria-label="Previous and next tutorial">
+<span></span>        <a class="tv-pager__link tv-pager__link--next" href="../../tutorials/cpt-interpretation/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></small><span>CPT interpretation</span></a>
       </nav>
     </div>
 
-    <aside class="tut-side">
-      <section class="tut-panel" aria-labelledby="chap-h">
-        <h2 id="chap-h">Chapters</h2>
-        <ol class="tut-chapters" data-gc-chapters>
-          <li><button type="button" class="tut-chapter" data-t="0"><span class="tut-chapter__time">0:00</span><span class="tut-chapter__title">Welcome to GeoCore</span></button></li>
-          <li><button type="button" class="tut-chapter" data-t="7"><span class="tut-chapter__time">0:07</span><span class="tut-chapter__title">Modules in the sidebar</span></button></li>
-          <li><button type="button" class="tut-chapter" data-t="24"><span class="tut-chapter__time">0:24</span><span class="tut-chapter__title">Fill in the inputs</span></button></li>
-          <li><button type="button" class="tut-chapter" data-t="53"><span class="tut-chapter__time">0:53</span><span class="tut-chapter__title">Results, tables and charts</span></button></li>
-          <li><button type="button" class="tut-chapter" data-t="60"><span class="tut-chapter__time">1:00</span><span class="tut-chapter__title">Help and Ctrl+K search</span></button></li>
+    <aside class="tv-side">
+      <section class="tv-panel" aria-labelledby="tv-chapters">
+        <h2 id="tv-chapters">Chapters</h2>
+        <ol class="tv-chapters">
+          <li><button type="button" data-yt-seek="0"><span>0:00</span>Welcome to GeoCore</button></li>
+          <li><button type="button" data-yt-seek="7"><span>0:07</span>Modules in the sidebar</button></li>
+          <li><button type="button" data-yt-seek="24"><span>0:24</span>Fill in the inputs</button></li>
+          <li><button type="button" data-yt-seek="53"><span>0:53</span>Results, tables and charts</button></li>
+          <li><button type="button" data-yt-seek="60"><span>1:00</span>Help and Ctrl+K search</button></li>
         </ol>
       </section>
 
-      <section class="tut-panel" aria-labelledby="all-h">
-        <h2 id="all-h">All tutorials</h2>
-        <ol class="tut-list">
+      <section class="tv-panel" aria-labelledby="tv-all">
+        <h2 id="tv-all">All tutorials</h2>
+        <ol class="tv-playlist">
           <li>
-            <a href="../../tutorial/getting-started/" aria-current="page">
-              <span class="tut-list__n">1</span>
-              <span class="tut-list__title">Getting started with GeoCore</span>
-              <span class="tut-list__time">1:05</span>
+            <a href="../../tutorials/getting-started/" aria-current="page">
+              <span class="tv-playlist__n">1</span>
+              <span class="tv-playlist__t">Getting started with GeoCore</span>
+              <span class="tv-playlist__d">1:05</span>
             </a>
           </li>
           <li>
-            <a href="../../tutorial/cpt-interpretation/">
-              <span class="tut-list__n">2</span>
-              <span class="tut-list__title">CPT interpretation</span>
-              <span class="tut-list__time">2:10</span>
+            <a href="../../tutorials/cpt-interpretation/">
+              <span class="tv-playlist__n">2</span>
+              <span class="tv-playlist__t">CPT interpretation</span>
+              <span class="tv-playlist__d">2:10</span>
             </a>
           </li>
           <li>
-            <a href="../../tutorial/pile-and-bearing/">
-              <span class="tut-list__n">3</span>
-              <span class="tut-list__title">Pile capacity and bearing</span>
-              <span class="tut-list__time">2:45</span>
+            <a href="../../tutorials/pile-and-bearing/">
+              <span class="tv-playlist__n">3</span>
+              <span class="tv-playlist__t">Pile capacity and bearing</span>
+              <span class="tv-playlist__d">2:45</span>
             </a>
           </li>
           <li>
-            <a href="../../tutorial/geoai-assistant/">
-              <span class="tut-list__n">4</span>
-              <span class="tut-list__title">Using the GeoAI assistant</span>
-              <span class="tut-list__time">1:45</span>
+            <a href="../../tutorials/geoai-assistant/">
+              <span class="tv-playlist__n">4</span>
+              <span class="tv-playlist__t">Using the GeoAI assistant</span>
+              <span class="tv-playlist__d">1:45</span>
             </a>
           </li>
         </ol>
-      </section>
-
-      <section class="tut-panel tut-panel--cta">
-        <h2>Try it yourself</h2>
-        <p>Free, offline, open source.</p>
-        <a class="btn btn--primary" href="../../download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="../../assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download</a>
-      </section>
-
-      <section class="tut-panel tut-panel--keys" aria-labelledby="keys-h">
-        <h2 id="keys-h">Player shortcuts</h2>
-        <dl class="tut-keys">
-          <div><dt><kbd>Space</kbd> <kbd>K</kbd></dt><dd>Play / pause</dd></div>
-          <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Back / forward 5 s</dd></div>
-          <div><dt><kbd>J</kbd> <kbd>L</kbd></dt><dd>Back / forward 10 s</dd></div>
-          <div><dt><kbd>0</kbd>–<kbd>9</kbd></dt><dd>Jump to 0–90%</dd></div>
-          <div><dt><kbd>M</kbd> <kbd>F</kbd></dt><dd>Mute / fullscreen</dd></div>
-        </dl>
       </section>
     </aside>
   </div>
@@ -193,7 +159,7 @@
           <h2>Product</h2>
           <ul>
             <li><a href="../../index.html#features">Features</a></li>
-            <li><a href="../../index.html#integrations">Integrations</a></li>
+            <li><a href="../../index.html#geoai">GeoAI</a></li>
             <li><a href="../../download.html">Download</a></li>
             <li><a href="../../docs/">Documentation</a></li>
             <li><a href="../../tutorials.html">Video tutorials</a></li>
@@ -225,7 +191,7 @@
     </div>
   </footer>
 
-  <script src="../../assets/js/site.js?v=c201c36da5" defer></script>
-  <script src="../../assets/js/player.js?v=465b7e06a4" defer></script>
+  <script src="../../assets/js/site.js?v=5c8704b96e" defer></script>
+  <script src="../../assets/js/tutorials.js?v=05e708402d" defer></script>
 </body>
 </html>

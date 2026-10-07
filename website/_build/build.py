@@ -228,7 +228,7 @@ def load_tutorials() -> List[Dict[str, Any]]:
         t["poster"] = poster if (WEBSITE / poster).exists() else ""
         if not t["poster"]:
             _warn(f"tutorial {t['id']}: missing poster {poster}")
-        t["url"] = f"tutorial/{t['id']}/"
+        t["url"] = f"tutorials/{t['id']}/"
         out.append(t)
     for i, t in enumerate(out):
         t["prev"] = out[i - 1] if i else None
@@ -523,13 +523,14 @@ def build() -> None:
         target = render(env, template, out, dict(base, nav_active=nav_key), absolute=(out == "404.html"))
         print(f"  wrote {target.relative_to(REPO)}")
 
-    # One page per tutorial: tutorial/<id>/ (directory, so both /tutorial/<id> and /tutorial/<id>/ resolve).
-    tutorial_dir = WEBSITE / "tutorial"
-    if tutorial_dir.exists():
-        shutil.rmtree(tutorial_dir)
+    # One page per tutorial: tutorials/<id>/ (a directory, so /tutorials/<id> and /tutorials/<id>/ both resolve).
+    # tutorial/ is the old location; remove it so stale pages are not published.
+    for stale in (WEBSITE / "tutorials", WEBSITE / "tutorial"):
+        if stale.exists():
+            shutil.rmtree(stale)
     for t in base["tutorials"]:
-        render(env, "tutorial.html", f"tutorial/{t['id']}/index.html", dict(base, nav_active="tutorials", tutorial=t))
-    print(f"  wrote website/tutorial: {len(base['tutorials'])} pages")
+        render(env, "tutorial.html", f"tutorials/{t['id']}/index.html", dict(base, nav_active="tutorials", tutorial=t))
+    print(f"  wrote website/tutorials: {len(base['tutorials'])} pages")
 
     clean_docs_output()
     docs_ctx = dict(base, nav_active="docs")

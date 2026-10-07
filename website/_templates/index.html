@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_tutorial_card.html" import tv_card with context %}
 {% block title %}GeoCore — Offline geotechnical engineering, built on Groundhog{% endblock %}
 {% block description %}GeoCore is a free, open-source desktop app for geotechnical engineers: {{ fn_total }} Groundhog calculations behind validated forms, plots and PDF reports, plus GeoAI, a local assistant that runs on your own machine.{% endblock %}
 {% block content %}
@@ -8,16 +9,11 @@
     <div>
       <p class="eyebrow">{{ icon('shield') }}Open source · GPLv3</p>
       <h1 id="hero-title">Geotechnical calculations you can <span class="hl">check</span>.</h1>
-      <p class="lede">A desktop workstation built on {{ fn_total }} open-source <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a> functions, with validated forms, plots and PDF reports. GeoAI, an optional local assistant, hands every number to Groundhog.</p>
+      <p class="lede">{{ fn_total }} open-source <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a> calculations behind validated forms, plots and PDF reports. GeoAI, an optional local assistant, hands every number to Groundhog.</p>
       <div class="cluster hero__cta">
         <a class="btn btn--primary btn--lg" href="{{ url('download.html') }}">{{ icon('download') }}Download for free</a>
         <a class="btn btn--secondary btn--lg" href="{{ url('docs/') }}">{{ icon('book') }}Read the docs</a>
       </div>
-      <p class="hero__meta">
-        <span>{{ icon('lock') }}Works offline</span>
-        <span>{{ icon('hash') }}{{ fn_total }} Groundhog functions</span>
-        <span>{{ icon('cpu') }}Local AI, no cloud</span>
-      </p>
     </div>
 
     <figure class="figure-panel" aria-labelledby="hero-figure-caption">
@@ -81,267 +77,81 @@
       <figcaption id="hero-figure-caption">Illustration of a CPT interpretation — not a screenshot or real project data.</figcaption>
     </figure>
   </div>
-  <div class="container">
-    <ul class="lp-tech" aria-label="Built with">
-      <li>Groundhog {{ groundhog_version }}</li><li>llama.cpp</li><li>GGUF models</li><li>Plotly</li><li>AGS 3.1 / 4</li><li>Electron</li>
-    </ul>
-  </div>
 </section>
 
-<div class="container stats-wrap">
-  <div class="stats reveal" role="list" aria-label="GeoCore at a glance">
-    <div class="stat" role="listitem"><span class="stat__num"><span data-count="{{ fn_total }}">{{ fn_total }}</span></span><span class="stat__label">Groundhog calculations</span></div>
-    <div class="stat" role="listitem"><span class="stat__num">100%</span><span class="stat__label">Offline, on your machine</span></div>
-    <div class="stat" role="listitem"><span class="stat__num">3</span><span class="stat__label">Windows, macOS &amp; Linux</span></div>
-    <div class="stat" role="listitem"><span class="stat__num">GPLv3</span><span class="stat__label">Open source, no licence key</span></div>
-  </div>
-</div>
-
-<section class="section section--tight section--alt" aria-labelledby="principles-title">
+<section class="section section--tight cm-principles" aria-label="Principles">
   <div class="container">
-    <h2 id="principles-title" class="visually-hidden">Principles</h2>
-    <div class="principles">
-      <div class="principle">
-        <span class="card__icon">{{ icon('lock') }}</span>
-        <div>
-          <h3>Offline by default</h3>
-          <p>Calculations, plots, reports and GeoAI run on your computer. Nothing about your project is uploaded. <a href="{{ url('privacy.html') }}">See every network call.</a></p>
-        </div>
-      </div>
-      <div class="principle">
-        <span class="card__icon">{{ icon('calculator') }}</span>
-        <div>
-          <h3>Deterministic results</h3>
-          <p>Every number comes from a Groundhog function with explicit inputs and units — the same inputs always give the same answer.</p>
-        </div>
-      </div>
-      <div class="principle">
-        <span class="card__icon">{{ icon('scale') }}</span>
-        <div>
-          <h3>Open and inspectable</h3>
-          <p>GeoCore and Groundhog are both GPLv3. You can read the method behind any result, down to the source code.</p>
-        </div>
-      </div>
-    </div>
+    <ul class="cm-principles__list">
+      <li>{{ icon('lock') }}<div><h2>Offline</h2><p>Your project never leaves your computer.</p></div></li>
+      <li>{{ icon('calculator') }}<div><h2>Deterministic</h2><p>Same inputs, same answer, with units shown.</p></div></li>
+      <li>{{ icon('scale') }}<div><h2>Open source</h2><p>GPLv3. Read the method behind any result.</p></div></li>
+    </ul>
   </div>
 </section>
 
 <section class="section" id="features" aria-labelledby="features-title">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">{{ icon('layers') }}Capabilities</p>
-      <h2 id="features-title">The Groundhog library, organised for daily work</h2>
-      <p>GeoCore exposes {{ fn_total }} Groundhog {{ groundhog_version }} functions and classes, grouped the way Groundhog groups them. Each one gets a form with units and validation, results you can plot, and an export.</p>
+    <div class="section-head cm-head">
+      <h2 id="features-title">{{ fn_total }} calculations in {{ domains|length }} areas</h2>
+      <p>Each one has a form with units and validation, a plot and an export. <a href="{{ url('docs/') }}">Browse the docs</a></p>
     </div>
-    {% set max_count = (domains|max(attribute='count')).count %}
-    <div class="lp-split">
-    <div class="bar-chart" aria-hidden="true">
-      <p class="bar-chart__title">Functions by area</p>
-      {% for d in domains|sort(attribute='count', reverse=True) %}
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">{{ d.title }}</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="{{ '%.1f'|format(100 * d.count / max_count) }}" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">{{ d.count }}</span>
-      </div>
-      {% endfor %}
-    </div>
-    <div class="grid lp-domains">
+    <ul class="cm-tiles">
       {% for d in domains %}
-      <article class="card domain-card" id="domain-{{ d.key }}">
-        <div class="card__head">
-          <span class="card__icon">{{ icon(d.icon) }}</span>
-          <span class="count"><strong>{{ d.count }}</strong> function{{ '' if d.count == 1 else 's' }}</span>
-        </div>
-        <h3>{{ d.title }}</h3>
-        <p>{{ d.summary }}</p>
-        <ul class="bullets">
-          {% for ex in d.examples %}<li>{{ ex }}</li>{% endfor %}
-        </ul>
-      </article>
+      <li class="cm-tile" id="domain-{{ d.key }}">
+        <span class="cm-tile__icon">{{ icon(d.icon) }}</span>
+        <span class="cm-tile__title">{{ d.title }}</span>
+        <span class="cm-tile__count">{{ d.count }}</span>
+      </li>
       {% endfor %}
-    </div>
-    </div>
-    <p class="domain-total">
-      <strong>{{ fn_total }}</strong>
-      <span>functions and classes in total, counted from GeoCore’s calculation registry. Method details and references are in the <a href="https://groundhog.readthedocs.io/">Groundhog documentation</a>.</span>
-    </p>
-  </div>
-</section>
-
-<section class="section section--alt" aria-labelledby="workflow-title">
-  <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">{{ icon('sliders') }}Workflow</p>
-      <h2 id="workflow-title">From input to report without leaving the app</h2>
-    </div>
-    <div class="grid grid--2 lp-steps">
-      <div class="feature">
-        <span class="card__icon">{{ icon('sliders') }}</span>
-        <div><h3>Validated input forms</h3><p>Parameters come with units, defaults and range checks. Invalid values are caught before a calculation runs, and labels can be adjusted with schema overrides.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon">{{ icon('database') }}</span>
-        <div><h3>Soil profiles as reusable objects</h3><p>Build a SoilProfile once — by hand or from a spreadsheet — and reuse it across calculations that need layered input.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon">{{ icon('chart') }}</span>
-        <div><h3>Interactive plots</h3><p>Results render as interactive Plotly charts, drawn from a copy of Plotly bundled with the app.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon">{{ icon('file-text') }}</span>
-        <div><h3>Reports and exports</h3><p>Export a PDF report with inputs, results and the captured chart, or save results as CSV or JSON.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon">{{ icon('history') }}</span>
-        <div><h3>History and favourites</h3><p>Recent calculations are kept locally so you can recall inputs (<kbd>Ctrl</kbd>&nbsp;<kbd>H</kbd>), and favourite modules stay one click away.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon">{{ icon('search') }}</span>
-        <div><h3>Command palette</h3><p>Jump to any calculation from the keyboard with <kbd>Ctrl</kbd>&nbsp;<kbd>K</kbd> (<kbd>⌘</kbd>&nbsp;<kbd>K</kbd> on macOS).</p></div>
-      </div>
-    </div>
+    </ul>
   </div>
 </section>
 
 <section class="section lp-dark" id="geoai" aria-labelledby="geoai-title">
-  <div class="container geoai">
-    <div class="geoai-emblem reveal" aria-hidden="true">
-      <svg class="geoai-emblem__svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="geoai-strata-top" x1="6" y1="6" x2="26" y2="16" gradientUnits="userSpaceOnUse">
-            <stop stop-color="currentColor" stop-opacity="0.9"/>
-            <stop offset="1" stop-color="currentColor" stop-opacity="0.4"/>
-          </linearGradient>
-          <linearGradient id="geoai-strata-left" x1="4" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-            <stop stop-color="currentColor" stop-opacity="0.75"/>
-            <stop offset="1" stop-color="currentColor" stop-opacity="0.25"/>
-          </linearGradient>
-          <linearGradient id="geoai-strata-right" x1="28" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-            <stop stop-color="currentColor" stop-opacity="0.5"/>
-            <stop offset="1" stop-color="currentColor" stop-opacity="0.15"/>
-          </linearGradient>
-        </defs>
-        <path class="geoai-emblem__top" d="M16 3L27 9.5L16 16L5 9.5L16 3Z" fill="url(#geoai-strata-top)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path class="geoai-emblem__left" d="M5 9.5L16 16V29L5 22.5V9.5Z" fill="url(#geoai-strata-left)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path class="geoai-emblem__right" d="M27 9.5L16 16V29L27 22.5V9.5Z" fill="url(#geoai-strata-right)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path class="geoai-emblem__band geoai-emblem__band--1" d="M5 14L16 20.5L27 14" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8"/>
-        <path class="geoai-emblem__band geoai-emblem__band--2" d="M5 18.5L16 25L27 18.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8"/>
-        <path class="geoai-emblem__core" d="M16 6.5L17.2 9.5L20.2 10.7L17.2 11.9L16 14.9L14.8 11.9L11.8 10.7L14.8 9.5L16 6.5Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-linejoin="round"/>
-      </svg>
-    </div>
+  <div class="container cm-geoai">
     <div>
       <p class="eyebrow">{{ icon('geoai') }}GeoAI</p>
-      <h2 id="geoai-title">An assistant that calls the calculation — it doesn’t guess it</h2>
-      <p class="lede">GeoAI is a local assistant built into GeoCore. A small language model reads your question and chooses a tool; Groundhog does the engineering arithmetic. If an input is missing, GeoAI should ask rather than invent it.</p>
+      <h2 id="geoai-title">An assistant that calls the calculation. It doesn’t guess it.</h2>
+      <p class="lede">A small language model on your computer picks the tool and fills in the inputs. Groundhog does the engineering arithmetic.</p>
       <ul class="checklist">
-        <li>Runs on your CPU through <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>, using open GGUF models from several families (Qwen, Gemma, Phi, Llama, Granite, SmolLM) — swap models freely, GeoAI is not tied to one.</li>
-        <li>Models are downloaded only when you choose one ({{ model_min_mb|mb }} to {{ model_max_mb|mb }}) and stored on your computer.</li>
-        <li>The model can only call whitelisted, schema-validated tools — never arbitrary code, shell or files.</li>
-        <li>A local full-text index lets GeoAI cite your own project notes, reports and standards instead of relying on the model's memory.</li>
-        <li>With no model installed, GeoAI falls back to simpler rule-based tool selection.</li>
+        <li>Runs locally with llama.cpp; models are optional downloads.</li>
+        <li>Can only call validated tools, never arbitrary code or files.</li>
+        <li>Asks when an input is missing instead of inventing it.</li>
       </ul>
-      <div class="callout callout--info">
-        {{ icon('info') }}
-        <p>GeoAI is under active development. Treat its answers as a starting point for engineering judgement, not a substitute for it.</p>
-      </div>
+      <p class="cm-note">Under active development. Treat answers as a starting point for engineering judgement.</p>
     </div>
-    <div class="geoai__side">
-      <ol class="flow" aria-label="How a GeoAI request is handled — select a step to inspect it">
-        <li tabindex="0" role="button" aria-label="Step 1 of 5: You ask a question"><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li tabindex="0" role="button" aria-label="Step 2 of 5: Local model plans, on device"><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li tabindex="0" role="button" aria-label="Step 3 of 5: Tool registry validates"><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li class="is-det" tabindex="0" role="button" aria-label="Step 4 of 5: Groundhog calculates, deterministic"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li tabindex="0" role="button" aria-label="Step 5 of 5: Grounded answer"><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
-      </ol>
     <div class="lp-chat" aria-label="Example GeoAI exchange">
       <div class="lp-chat__bar"><i></i><i></i><i></i><span>GeoAI · local model</span></div>
       <p class="lp-chat__msg lp-chat__msg--user">Calculate the bearing capacity for the current profile.</p>
       <p class="lp-chat__tool">{{ icon('calculator') }}<span>Groundhog · schema check</span><b>2 inputs missing</b></p>
-      <p class="lp-chat__msg">The profile provides soil parameters, but I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
-    </div>
+      <p class="lp-chat__msg">I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
     </div>
   </div>
 </section>
 
-<section class="section section--alt" id="integrations" aria-labelledby="integrations-title">
+{% if tutorials %}
+<section class="section" aria-labelledby="learn-title">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">{{ icon('plug') }}Integrations</p>
-      <h2 id="integrations-title">Works with the data and tools you already use</h2>
-      <p>Everything below ships with GeoCore today. Labels show whether an integration works entirely on your device or uses the network.</p>
+    <div class="section-head cm-head cm-head--row">
+      <h2 id="learn-title">Learn it in a few minutes</h2>
+      <a href="{{ url('tutorials.html') }}">All tutorials {{ icon('arrow-right') }}</a>
     </div>
-    <div class="grid grid--3">
-      <article class="card integration">
-        <span class="card__icon">{{ icon('calculator') }}</span>
-        <h3>Groundhog</h3>
-        <p>The calculation engine: Bruno Stuyts’ open-source geotechnical library (v{{ groundhog_version }}), bundled with the app.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">GPLv3</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('database') }}</span>
-        <h3>AGS 3.1 and AGS 4</h3>
-        <p>Import AGS files through Groundhog’s AGS converter and pull out groups such as SCPT or GEOL as tables.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.ags</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('cpt') }}</span>
-        <h3>CPT and SPT data</h3>
-        <p>Process cone penetration and standard penetration test data with Groundhog’s PCPT and SPT processing tools and correlations.</p>
-        <div class="where"><span class="badge badge--primary">On device</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('table') }}</span>
-        <h3>CSV and Excel</h3>
-        <p>Load tabular input from .csv, .xlsx or .xls files; export results as CSV or JSON.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.csv · .xlsx · .xls · .json</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('file-text') }}</span>
-        <h3>PDF reports</h3>
-        <p>Generate a report with inputs, results table and chart, created in the app with jsPDF.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.pdf</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('cpu') }}</span>
-        <h3>Local GGUF models</h3>
-        <p>{{ models|length }} curated models across the Qwen, Gemma, Phi, Llama, Granite and SmolLM families via llama.cpp, downloaded from Hugging Face on request — or point GeoAI at any .gguf file you already have. Candidates are <a href="{{ url('docs/geoai/model-benchmarks') }}">benchmarked</a>, not chosen by reputation.</p>
-        <div class="where"><span class="badge badge--primary">Runs on device</span><span class="badge badge--info">Download uses network</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('refresh') }}</span>
-        <h3>GitHub Releases updates</h3>
-        <p>Installed builds check GitHub Releases shortly after launch; on Windows and the Linux AppImage, a new version downloads in the background and installs when you quit. Offline, the check simply fails quietly.</p>
-        <div class="where"><span class="badge badge--info">Uses network</span><span class="badge">electron-updater</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('chart') }}</span>
-        <h3>Plotly charts</h3>
-        <p>Interactive, zoomable result plots rendered by a copy of Plotly.js that ships inside the app.</p>
-        <div class="where"><span class="badge badge--primary">On device</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon">{{ icon('code') }}</span>
-        <h3>Open source on GitHub</h3>
-        <p>Read the code, file issues and follow releases. Build from source on any platform with Node.js and Python.</p>
-        <div class="where"><span class="badge">GPLv3</span><a class="badge" href="{{ repo_url }}">utkarsh-1912/geocore</a></div>
-      </article>
+    <div class="tv-grid tv-grid--4">
+      {% for t in tutorials %}{{ tv_card(t, show_desc=false) }}{% endfor %}
     </div>
   </div>
 </section>
+{% endif %}
 
-<section class="section">
+<section class="section section--tight">
   <div class="container">
     <div class="cta-band">
       <div>
         <h2>Try GeoCore on your next calculation</h2>
-        <p>Free and open source for Windows 10/11, macOS and Linux. No account, no licence key.</p>
+        <p>Free for Windows, macOS and Linux. No account.</p>
       </div>
       <div class="cluster">
         <a class="btn btn--primary btn--lg" href="{{ url('download.html') }}">{{ icon('download') }}Download</a>
-        <a class="btn btn--secondary btn--lg" href="{{ url('about.html') }}">About the project</a>
       </div>
     </div>
   </div>

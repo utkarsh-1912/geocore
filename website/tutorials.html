@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <script src="assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="assets/css/site.css?v=5916b700b4">
+  <link rel="stylesheet" href="assets/css/site.css?v=93d053c934">
 </head>
 <body class="layout-default">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -30,8 +30,14 @@
         <ul>
           <li><a href="./">Home</a></li>
           <li><a href="index.html#features">Features</a></li>
-          <li><a href="docs/">Docs</a></li>
-          <li><a href="tutorials.html" aria-current="page">Tutorials</a></li>
+          <li class="nav-menu" data-nav-menu>
+            <button class="nav-menu__btn" type="button" aria-expanded="false" aria-controls="nav-menu-learn"
+data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></button>
+            <ul class="nav-menu__list" id="nav-menu-learn" hidden>
+              <li><a href="docs/"><span>Documentation</span><small>Guides, theory and API reference</small></a></li>
+              <li><a href="tutorials.html" aria-current="page"><span>Video tutorials</span><small>Short walkthroughs of the app</small></a></li>
+            </ul>
+          </li>
           <li><a href="download.html">Download</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
@@ -52,8 +58,8 @@
       <ul>
         <li><a href="./">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="docs/">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="tutorials.html" aria-current="page">Tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="docs/">Documentation<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="tutorials.html" aria-current="page">Video tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
       </ul>
@@ -62,86 +68,60 @@
   </header>
 
   <main id="main" tabindex="-1">
-<header class="page-header tut-hero">
+<header class="page-header tv-head">
   <div class="container">
-    <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-book"></use></svg>Tutorials</p>
-    <h1>Learn GeoCore in four short videos</h1>
-    <p class="lede">Real workflows recorded in the real app, with narration and chapters. Each video loads from YouTube only when you press play.</p>
-    <ul class="tut-hero__meta" aria-label="Series summary">
-      <li>4 videos</li>
-      <li>about 8 minutes in total</li>
-      <li>chapters and keyboard controls</li>
-    </ul>
+    <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg>Tutorials</p>
+    <h1>Video tutorials</h1>
+    <p class="lede">Short walkthroughs recorded in GeoCore. Watch them in order, or jump to the topic you need.</p>
+    <p class="tv-head__meta">4 videos · 8 min in total</p>
   </div>
 </header>
 
 <section class="section section--tight">
   <div class="container">
-    <article class="tut-feature">
-      <a class="tut-thumb tut-thumb--lg" href="tutorial/getting-started/" aria-label="Watch: Getting started with GeoCore">
-<img src="assets/images/tutorials/getting-started.jpg" alt="" width="1280" height="720" loading="eager">        <span class="tut-thumb__play"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
-        <span class="tut-thumb__time">1:05</span>
+    <article class="tv-feature">
+      <a class="tv-feature__media" href="tutorials/getting-started/" tabindex="-1" aria-hidden="true">
+<img src="assets/images/tutorials/getting-started.jpg" alt="" width="1280" height="720" decoding="async">        <span class="tv-play"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
+        <span class="tv-time">1:05</span>
       </a>
-      <div class="tut-feature__body">
-        <p class="tut-kicker"><span class="badge badge--primary">Start here</span> Tutorial 1 of 4</p>
-        <h2 class="tut-feature__title"><a href="tutorial/getting-started/">Getting started with GeoCore</a></h2>
-        <p class="tut-feature__desc">Tour the workstation, fill in a calculation form, read the results and open Help.</p>
-        <ol class="tut-steps">
-<li>Pick a module and function</li><li>Enter inputs with units and ranges</li><li>Calculate and read results</li><li>Help and Ctrl+K search</li>        </ol>
-        <a class="btn btn--primary btn--lg" href="tutorial/getting-started/"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg>Watch (1:05)</a>
+      <div class="tv-feature__body">
+        <p class="tv-card__meta"><span class="tv-badge">Start here</span>Tutorial 1 · 1:05</p>
+        <h2 class="tv-feature__title"><a href="tutorials/getting-started/">Getting started with GeoCore</a></h2>
+        <p class="tv-feature__desc">Tour the workstation, fill in a calculation form, read the results and open Help.</p>
+        <a class="btn btn--primary" href="tutorials/getting-started/"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg>Watch now</a>
       </div>
     </article>
 
-    <h2 class="tut-grid-title">Then keep going</h2>
-    <div class="tut-grid">
-      <article class="tut-card">
-        <a class="tut-thumb" href="tutorial/cpt-interpretation/" tabindex="-1" aria-hidden="true">
-<img src="assets/images/tutorials/cpt-interpretation.jpg" alt="" width="1280" height="720" loading="lazy">          <span class="tut-thumb__play"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
-          <span class="tut-thumb__time">2:10</span>
-        </a>
-        <div class="tut-card__body">
-          <p class="tut-kicker">Tutorial 2</p>
-          <h3><a href="tutorial/cpt-interpretation/">CPT interpretation</a></h3>
-          <p>Normalise a CPT reading, then estimate relative density with Groundhog correlations.</p>
-          <ul class="tut-chips">
-<li>PCPT normalisation and correction</li><li>Corrected qt, Qtn, Fr and Ic</li><li>Relative density for sand</li>          </ul>
-        </div>
-      </article>
-      <article class="tut-card">
-        <a class="tut-thumb" href="tutorial/pile-and-bearing/" tabindex="-1" aria-hidden="true">
-<img src="assets/images/tutorials/pile-and-bearing.jpg" alt="" width="1280" height="720" loading="lazy">          <span class="tut-thumb__play"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
-          <span class="tut-thumb__time">2:45</span>
-        </a>
-        <div class="tut-card__body">
-          <p class="tut-kicker">Tutorial 3</p>
-          <h3><a href="tutorial/pile-and-bearing/">Pile capacity and bearing</a></h3>
-          <p>API RP2GEO unit shaft friction and end bearing for piles, then undrained shallow-foundation capacity.</p>
-          <ul class="tut-chips">
-<li>Unit skin friction (sand)</li><li>Unit end bearing (sand)</li><li>Undrained vertical capacity</li>          </ul>
-        </div>
-      </article>
-      <article class="tut-card">
-        <a class="tut-thumb" href="tutorial/geoai-assistant/" tabindex="-1" aria-hidden="true">
-<img src="assets/images/tutorials/geoai-assistant.jpg" alt="" width="1280" height="720" loading="lazy">          <span class="tut-thumb__play"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-play"></use></svg></span>
-          <span class="tut-thumb__time">1:45</span>
-        </a>
-        <div class="tut-card__body">
-          <p class="tut-kicker">Tutorial 4</p>
-          <h3><a href="tutorial/geoai-assistant/">Using the GeoAI assistant</a></h3>
-          <p>Ask in plain language, inspect which tool ran, and choose a local model.</p>
-          <ul class="tut-chips">
-<li>Quick analysis cards</li><li>Inspect the tool steps</li><li>Ask your own question</li>          </ul>
-        </div>
-      </article>
+    <h2 class="tv-section-title">Keep going</h2>
+    <div class="tv-grid">
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/cpt-interpretation.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">2:10</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 2</p>
+    <h3 class="tv-card__title"><a href="tutorials/cpt-interpretation/">CPT interpretation</a></h3>
+<p class="tv-card__desc">Normalise a CPT reading, then estimate relative density with Groundhog correlations.</p>  </div>
+</article>
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/pile-and-bearing.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">2:45</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 3</p>
+    <h3 class="tv-card__title"><a href="tutorials/pile-and-bearing/">Pile capacity and bearing</a></h3>
+<p class="tv-card__desc">API RP2GEO unit shaft friction and end bearing for piles, then undrained shallow-foundation capacity.</p>  </div>
+</article>
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/geoai-assistant.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">1:45</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 4</p>
+    <h3 class="tv-card__title"><a href="tutorials/geoai-assistant/">Using the GeoAI assistant</a></h3>
+<p class="tv-card__desc">Ask in plain language, inspect which tool ran, and choose a local model.</p>  </div>
+</article>
     </div>
-
-    <aside class="tut-cta">
-      <div>
-        <h2>Follow along in the app</h2>
-        <p>GeoCore is free and works offline. Install it, then repeat each video with your own numbers.</p>
-      </div>
-      <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download GeoCore</a>
-    </aside>
   </div>
 </section>
   </main>
@@ -160,7 +140,7 @@
           <h2>Product</h2>
           <ul>
             <li><a href="index.html#features">Features</a></li>
-            <li><a href="index.html#integrations">Integrations</a></li>
+            <li><a href="index.html#geoai">GeoAI</a></li>
             <li><a href="download.html">Download</a></li>
             <li><a href="docs/">Documentation</a></li>
             <li><a href="tutorials.html">Video tutorials</a></li>
@@ -192,6 +172,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/site.js?v=c201c36da5" defer></script>
+  <script src="assets/js/site.js?v=5c8704b96e" defer></script>
 </body>
 </html>

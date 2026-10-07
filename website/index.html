@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <script src="assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="assets/css/site.css?v=5916b700b4">
+  <link rel="stylesheet" href="assets/css/site.css?v=93d053c934">
 </head>
 <body class="layout-default">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -30,8 +30,14 @@
         <ul>
           <li><a href="./" aria-current="page">Home</a></li>
           <li><a href="index.html#features">Features</a></li>
-          <li><a href="docs/">Docs</a></li>
-          <li><a href="tutorials.html">Tutorials</a></li>
+          <li class="nav-menu" data-nav-menu>
+            <button class="nav-menu__btn" type="button" aria-expanded="false" aria-controls="nav-menu-learn"
+>Learn<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></button>
+            <ul class="nav-menu__list" id="nav-menu-learn" hidden>
+              <li><a href="docs/"><span>Documentation</span><small>Guides, theory and API reference</small></a></li>
+              <li><a href="tutorials.html"><span>Video tutorials</span><small>Short walkthroughs of the app</small></a></li>
+            </ul>
+          </li>
           <li><a href="download.html">Download</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
@@ -52,8 +58,8 @@
       <ul>
         <li><a href="./" aria-current="page">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="docs/">Docs<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
-        <li><a href="tutorials.html">Tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="docs/">Documentation<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="tutorials.html">Video tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
         <li><a href="about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
       </ul>
@@ -68,16 +74,11 @@
     <div>
       <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-shield"></use></svg>Open source · GPLv3</p>
       <h1 id="hero-title">Geotechnical calculations you can <span class="hl">check</span>.</h1>
-      <p class="lede">A desktop workstation built on 221 open-source <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a> functions, with validated forms, plots and PDF reports. GeoAI, an optional local assistant, hands every number to Groundhog.</p>
+      <p class="lede">221 open-source <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a> calculations behind validated forms, plots and PDF reports. GeoAI, an optional local assistant, hands every number to Groundhog.</p>
       <div class="cluster hero__cta">
         <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download for free</a>
         <a class="btn btn--secondary btn--lg" href="docs/"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-book"></use></svg>Read the docs</a>
       </div>
-      <p class="hero__meta">
-        <span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-lock"></use></svg>Works offline</span>
-        <span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-hash"></use></svg>221 Groundhog functions</span>
-        <span><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-cpu"></use></svg>Local AI, no cloud</span>
-      </p>
     </div>
 
     <figure class="figure-panel" aria-labelledby="hero-figure-caption">
@@ -141,423 +142,157 @@
       <figcaption id="hero-figure-caption">Illustration of a CPT interpretation — not a screenshot or real project data.</figcaption>
     </figure>
   </div>
-  <div class="container">
-    <ul class="lp-tech" aria-label="Built with">
-      <li>Groundhog 0.16.0</li><li>llama.cpp</li><li>GGUF models</li><li>Plotly</li><li>AGS 3.1 / 4</li><li>Electron</li>
-    </ul>
-  </div>
 </section>
 
-<div class="container stats-wrap">
-  <div class="stats reveal" role="list" aria-label="GeoCore at a glance">
-    <div class="stat" role="listitem"><span class="stat__num"><span data-count="221">221</span></span><span class="stat__label">Groundhog calculations</span></div>
-    <div class="stat" role="listitem"><span class="stat__num">100%</span><span class="stat__label">Offline, on your machine</span></div>
-    <div class="stat" role="listitem"><span class="stat__num">3</span><span class="stat__label">Windows, macOS &amp; Linux</span></div>
-    <div class="stat" role="listitem"><span class="stat__num">GPLv3</span><span class="stat__label">Open source, no licence key</span></div>
-  </div>
-</div>
-
-<section class="section section--tight section--alt" aria-labelledby="principles-title">
+<section class="section section--tight cm-principles" aria-label="Principles">
   <div class="container">
-    <h2 id="principles-title" class="visually-hidden">Principles</h2>
-    <div class="principles">
-      <div class="principle">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-lock"></use></svg></span>
-        <div>
-          <h3>Offline by default</h3>
-          <p>Calculations, plots, reports and GeoAI run on your computer. Nothing about your project is uploaded. <a href="privacy.html">See every network call.</a></p>
-        </div>
-      </div>
-      <div class="principle">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-calculator"></use></svg></span>
-        <div>
-          <h3>Deterministic results</h3>
-          <p>Every number comes from a Groundhog function with explicit inputs and units — the same inputs always give the same answer.</p>
-        </div>
-      </div>
-      <div class="principle">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-scale"></use></svg></span>
-        <div>
-          <h3>Open and inspectable</h3>
-          <p>GeoCore and Groundhog are both GPLv3. You can read the method behind any result, down to the source code.</p>
-        </div>
-      </div>
-    </div>
+    <ul class="cm-principles__list">
+      <li><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-lock"></use></svg><div><h2>Offline</h2><p>Your project never leaves your computer.</p></div></li>
+      <li><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-calculator"></use></svg><div><h2>Deterministic</h2><p>Same inputs, same answer, with units shown.</p></div></li>
+      <li><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-scale"></use></svg><div><h2>Open source</h2><p>GPLv3. Read the method behind any result.</p></div></li>
+    </ul>
   </div>
 </section>
 
 <section class="section" id="features" aria-labelledby="features-title">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-layers"></use></svg>Capabilities</p>
-      <h2 id="features-title">The Groundhog library, organised for daily work</h2>
-      <p>GeoCore exposes 221 Groundhog 0.16.0 functions and classes, grouped the way Groundhog groups them. Each one gets a form with units and validation, results you can plot, and an export.</p>
+    <div class="section-head cm-head">
+      <h2 id="features-title">221 calculations in 10 areas</h2>
+      <p>Each one has a form with units and validation, a plot and an export. <a href="docs/">Browse the docs</a></p>
     </div>
-    <div class="lp-split">
-    <div class="bar-chart" aria-hidden="true">
-      <p class="bar-chart__title">Functions by area</p>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Site investigation &amp; in-situ testing</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="100.0" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">87</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Soil dynamics &amp; liquefaction</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="46.0" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">40</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Soil profiles, AGS &amp; utilities</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="31.0" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">27</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Shallow foundations</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="29.9" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">26</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Deep foundations</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="23.0" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">20</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Pipelines &amp; cables</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="6.9" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">6</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Excavations &amp; retaining</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="5.7" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">5</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Consolidation &amp; groundwater</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="4.6" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">4</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Constitutive models</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="3.4" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">3</span>
-      </div>
-      <div class="bar-chart__row">
-        <span class="bar-chart__label">Standards (Eurocode 7)</span>
-        <svg class="bar-chart__track" viewBox="0 0 100 10" preserveAspectRatio="none" role="presentation">
-          <rect class="bar-chart__track-bg" width="100" height="10" rx="5"></rect>
-          <rect class="bar-chart__fill" width="3.4" height="10" rx="5"></rect>
-        </svg>
-        <span class="bar-chart__value">3</span>
-      </div>
-    </div>
-    <div class="grid lp-domains">
-      <article class="card domain-card" id="domain-siteinvestigation">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-cpt"></use></svg></span>
-          <span class="count"><strong>87</strong> functions</span>
-        </div>
-        <h3>Site investigation &amp; in-situ testing</h3>
-        <p>CPT and SPT processing, soil classification, phase relations, lab testing and parameter correlations.</p>
-        <ul class="bullets">
-<li>PCPT normalisation &amp; Robertson (Ic) classification</li><li>SPT N60 and overburden corrections</li><li>Shear-wave velocity from CPT (7 correlations)</li><li>PSD and plasticity charts</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-soildynamics">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-waves"></use></svg></span>
-          <span class="count"><strong>40</strong> functions</span>
-        </div>
-        <h3>Soil dynamics &amp; liquefaction</h3>
-        <p>CPT-based liquefaction triggering, cyclic behaviour of clays and sands, and small-strain stiffness.</p>
-        <ul class="bullets">
-<li>Robertson &amp; Wride (1998), Idriss &amp; Boulanger (2008), Boulanger &amp; Idriss (2014), Robertson &amp; Cabal (2022)</li><li>Andersen cyclic contour diagrams (DSS, triaxial)</li><li>Darendeli modulus reduction</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-shallowfoundations">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-layers"></use></svg></span>
-          <span class="count"><strong>26</strong> functions</span>
-        </div>
-        <h3>Shallow foundations</h3>
-        <p>Drained and undrained capacity, sliding, bearing capacity factors, stress distribution and settlement.</p>
-        <ul class="bullets">
-<li>Vertical and sliding capacity (API)</li><li>N-gamma: Meyerhof, Vesic, Davis &amp; Booker</li><li>Stresses under point, strip, rectangular and circular loads</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-deepfoundations">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-pile"></use></svg></span>
-          <span class="count"><strong>20</strong> functions</span>
-        </div>
-        <h3>Deep foundations</h3>
-        <p>Axial pile capacity from CPT and unit resistance methods, load testing and pile groups.</p>
-        <ul class="bullets">
-<li>LCPC, Koppejan and De Beer methods</li><li>API RP 2GEO and Alm &amp; Hamre unit friction / end bearing</li><li>Negative skin friction (Zeevaert–De Beer)</li><li>Chin–Kondler load-test extrapolation</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-general">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-database"></use></svg></span>
-          <span class="count"><strong>27</strong> functions</span>
-        </div>
-        <h3>Soil profiles, AGS &amp; utilities</h3>
-        <p>SoilProfile objects, calculation grids, log plots, AGS conversion and input validation.</p>
-        <ul class="bullets">
-<li>SoilProfile and CalculationGrid</li><li>AGS 3.1 / 4 conversion</li><li>LogPlot depth plots</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-pipelinescables">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-anchor"></use></svg></span>
-          <span class="count"><strong>6</strong> functions</span>
-        </div>
-        <h3>Pipelines &amp; cables</h3>
-        <p>On-bottom stability inputs for subsea pipelines and cables.</p>
-        <ul class="bullets">
-<li>Drained and undrained embedment</li><li>Contact width and penetrated area</li><li>Lay touchdown factor</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-excavations">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-trench"></use></svg></span>
-          <span class="count"><strong>5</strong> functions</span>
-        </div>
-        <h3>Excavations &amp; retaining</h3>
-        <p>Earth pressure coefficients and soil-mix wall stiffness.</p>
-        <ul class="bullets">
-<li>Rankine and Poncelet coefficients</li><li>Soil-mix bending stiffness (two methods)</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-consolidation">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-droplets"></use></svg></span>
-          <span class="count"><strong>4</strong> functions</span>
-        </div>
-        <h3>Consolidation &amp; groundwater</h3>
-        <p>One-dimensional consolidation and groundwater flow.</p>
-        <ul class="bullets">
-<li>Finite-difference 1D consolidation</li><li>Degree of consolidation</li><li>Unconfined aquifer conductivity</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-constitutivemodels">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-curve"></use></svg></span>
-          <span class="count"><strong>3</strong> functions</span>
-        </div>
-        <h3>Constitutive models</h3>
-        <p>Element-level constitutive behaviour.</p>
-        <ul class="bullets">
-<li>Mohr–Coulomb triaxial compression / extension</li><li>Hardening Soil</li>        </ul>
-      </article>
-      <article class="card domain-card" id="domain-standards">
-        <div class="card__head">
-          <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-ruler"></use></svg></span>
-          <span class="count"><strong>3</strong> functions</span>
-        </div>
-        <h3>Standards (Eurocode 7)</h3>
-        <p>Characteristic values and partial factoring according to Eurocode 7.</p>
-        <ul class="bullets">
-<li>STR/GEO partial factors</li><li>Characteristic values: constant value and linear trend</li>        </ul>
-      </article>
-    </div>
-    </div>
-    <p class="domain-total">
-      <strong>221</strong>
-      <span>functions and classes in total, counted from GeoCore’s calculation registry. Method details and references are in the <a href="https://groundhog.readthedocs.io/">Groundhog documentation</a>.</span>
-    </p>
-  </div>
-</section>
-
-<section class="section section--alt" aria-labelledby="workflow-title">
-  <div class="container">
-    <div class="section-head">
-      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-sliders"></use></svg>Workflow</p>
-      <h2 id="workflow-title">From input to report without leaving the app</h2>
-    </div>
-    <div class="grid grid--2 lp-steps">
-      <div class="feature">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-sliders"></use></svg></span>
-        <div><h3>Validated input forms</h3><p>Parameters come with units, defaults and range checks. Invalid values are caught before a calculation runs, and labels can be adjusted with schema overrides.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-database"></use></svg></span>
-        <div><h3>Soil profiles as reusable objects</h3><p>Build a SoilProfile once — by hand or from a spreadsheet — and reuse it across calculations that need layered input.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chart"></use></svg></span>
-        <div><h3>Interactive plots</h3><p>Results render as interactive Plotly charts, drawn from a copy of Plotly bundled with the app.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-file-text"></use></svg></span>
-        <div><h3>Reports and exports</h3><p>Export a PDF report with inputs, results and the captured chart, or save results as CSV or JSON.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-history"></use></svg></span>
-        <div><h3>History and favourites</h3><p>Recent calculations are kept locally so you can recall inputs (<kbd>Ctrl</kbd>&nbsp;<kbd>H</kbd>), and favourite modules stay one click away.</p></div>
-      </div>
-      <div class="feature">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-search"></use></svg></span>
-        <div><h3>Command palette</h3><p>Jump to any calculation from the keyboard with <kbd>Ctrl</kbd>&nbsp;<kbd>K</kbd> (<kbd>⌘</kbd>&nbsp;<kbd>K</kbd> on macOS).</p></div>
-      </div>
-    </div>
+    <ul class="cm-tiles">
+      <li class="cm-tile" id="domain-siteinvestigation">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-cpt"></use></svg></span>
+        <span class="cm-tile__title">Site investigation &amp; in-situ testing</span>
+        <span class="cm-tile__count">87</span>
+      </li>
+      <li class="cm-tile" id="domain-soildynamics">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-waves"></use></svg></span>
+        <span class="cm-tile__title">Soil dynamics &amp; liquefaction</span>
+        <span class="cm-tile__count">40</span>
+      </li>
+      <li class="cm-tile" id="domain-shallowfoundations">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-layers"></use></svg></span>
+        <span class="cm-tile__title">Shallow foundations</span>
+        <span class="cm-tile__count">26</span>
+      </li>
+      <li class="cm-tile" id="domain-deepfoundations">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-pile"></use></svg></span>
+        <span class="cm-tile__title">Deep foundations</span>
+        <span class="cm-tile__count">20</span>
+      </li>
+      <li class="cm-tile" id="domain-general">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-database"></use></svg></span>
+        <span class="cm-tile__title">Soil profiles, AGS &amp; utilities</span>
+        <span class="cm-tile__count">27</span>
+      </li>
+      <li class="cm-tile" id="domain-pipelinescables">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-anchor"></use></svg></span>
+        <span class="cm-tile__title">Pipelines &amp; cables</span>
+        <span class="cm-tile__count">6</span>
+      </li>
+      <li class="cm-tile" id="domain-excavations">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-trench"></use></svg></span>
+        <span class="cm-tile__title">Excavations &amp; retaining</span>
+        <span class="cm-tile__count">5</span>
+      </li>
+      <li class="cm-tile" id="domain-consolidation">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-droplets"></use></svg></span>
+        <span class="cm-tile__title">Consolidation &amp; groundwater</span>
+        <span class="cm-tile__count">4</span>
+      </li>
+      <li class="cm-tile" id="domain-constitutivemodels">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-curve"></use></svg></span>
+        <span class="cm-tile__title">Constitutive models</span>
+        <span class="cm-tile__count">3</span>
+      </li>
+      <li class="cm-tile" id="domain-standards">
+        <span class="cm-tile__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-ruler"></use></svg></span>
+        <span class="cm-tile__title">Standards (Eurocode 7)</span>
+        <span class="cm-tile__count">3</span>
+      </li>
+    </ul>
   </div>
 </section>
 
 <section class="section lp-dark" id="geoai" aria-labelledby="geoai-title">
-  <div class="container geoai">
-    <div class="geoai-emblem reveal" aria-hidden="true">
-      <svg class="geoai-emblem__svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="geoai-strata-top" x1="6" y1="6" x2="26" y2="16" gradientUnits="userSpaceOnUse">
-            <stop stop-color="currentColor" stop-opacity="0.9"/>
-            <stop offset="1" stop-color="currentColor" stop-opacity="0.4"/>
-          </linearGradient>
-          <linearGradient id="geoai-strata-left" x1="4" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-            <stop stop-color="currentColor" stop-opacity="0.75"/>
-            <stop offset="1" stop-color="currentColor" stop-opacity="0.25"/>
-          </linearGradient>
-          <linearGradient id="geoai-strata-right" x1="28" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-            <stop stop-color="currentColor" stop-opacity="0.5"/>
-            <stop offset="1" stop-color="currentColor" stop-opacity="0.15"/>
-          </linearGradient>
-        </defs>
-        <path class="geoai-emblem__top" d="M16 3L27 9.5L16 16L5 9.5L16 3Z" fill="url(#geoai-strata-top)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path class="geoai-emblem__left" d="M5 9.5L16 16V29L5 22.5V9.5Z" fill="url(#geoai-strata-left)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path class="geoai-emblem__right" d="M27 9.5L16 16V29L27 22.5V9.5Z" fill="url(#geoai-strata-right)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path class="geoai-emblem__band geoai-emblem__band--1" d="M5 14L16 20.5L27 14" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8"/>
-        <path class="geoai-emblem__band geoai-emblem__band--2" d="M5 18.5L16 25L27 18.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8"/>
-        <path class="geoai-emblem__core" d="M16 6.5L17.2 9.5L20.2 10.7L17.2 11.9L16 14.9L14.8 11.9L11.8 10.7L14.8 9.5L16 6.5Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-linejoin="round"/>
-      </svg>
-    </div>
+  <div class="container cm-geoai">
     <div>
       <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-geoai"></use></svg>GeoAI</p>
-      <h2 id="geoai-title">An assistant that calls the calculation — it doesn’t guess it</h2>
-      <p class="lede">GeoAI is a local assistant built into GeoCore. A small language model reads your question and chooses a tool; Groundhog does the engineering arithmetic. If an input is missing, GeoAI should ask rather than invent it.</p>
+      <h2 id="geoai-title">An assistant that calls the calculation. It doesn’t guess it.</h2>
+      <p class="lede">A small language model on your computer picks the tool and fills in the inputs. Groundhog does the engineering arithmetic.</p>
       <ul class="checklist">
-        <li>Runs on your CPU through <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a>, using open GGUF models from several families (Qwen, Gemma, Phi, Llama, Granite, SmolLM) — swap models freely, GeoAI is not tied to one.</li>
-        <li>Models are downloaded only when you choose one (1.0 GB to 4.7 GB) and stored on your computer.</li>
-        <li>The model can only call whitelisted, schema-validated tools — never arbitrary code, shell or files.</li>
-        <li>A local full-text index lets GeoAI cite your own project notes, reports and standards instead of relying on the model's memory.</li>
-        <li>With no model installed, GeoAI falls back to simpler rule-based tool selection.</li>
+        <li>Runs locally with llama.cpp; models are optional downloads.</li>
+        <li>Can only call validated tools, never arbitrary code or files.</li>
+        <li>Asks when an input is missing instead of inventing it.</li>
       </ul>
-      <div class="callout callout--info">
-        <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-info"></use></svg>
-        <p>GeoAI is under active development. Treat its answers as a starting point for engineering judgement, not a substitute for it.</p>
-      </div>
+      <p class="cm-note">Under active development. Treat answers as a starting point for engineering judgement.</p>
     </div>
-    <div class="geoai__side">
-      <ol class="flow" aria-label="How a GeoAI request is handled — select a step to inspect it">
-        <li tabindex="0" role="button" aria-label="Step 1 of 5: You ask a question"><div><h3>You ask a question</h3><p>“Calculate the bearing capacity for the current profile.”</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li tabindex="0" role="button" aria-label="Step 2 of 5: Local model plans, on device"><div><h3>Local model plans <span class="badge">on device</span></h3><p>Picks a tool and extracts arguments with units — or asks you for what is missing.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li tabindex="0" role="button" aria-label="Step 3 of 5: Tool registry validates"><div><h3>Tool registry validates</h3><p>Arguments are checked against the tool’s schema before anything runs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li class="is-det" tabindex="0" role="button" aria-label="Step 4 of 5: Groundhog calculates, deterministic"><div><h3>Groundhog calculates <span class="badge badge--primary">deterministic</span></h3><p>The same function you would run from the form, with the same inputs.</p></div><span class="flow__fill" aria-hidden="true"></span></li>
-        <li tabindex="0" role="button" aria-label="Step 5 of 5: Grounded answer"><div><h3>Grounded answer</h3><p>GeoAI explains the result and shows which tool and method produced it.</p></div></li>
-      </ol>
     <div class="lp-chat" aria-label="Example GeoAI exchange">
       <div class="lp-chat__bar"><i></i><i></i><i></i><span>GeoAI · local model</span></div>
       <p class="lp-chat__msg lp-chat__msg--user">Calculate the bearing capacity for the current profile.</p>
       <p class="lp-chat__tool"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-calculator"></use></svg><span>Groundhog · schema check</span><b>2 inputs missing</b></p>
-      <p class="lp-chat__msg">The profile provides soil parameters, but I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
-    </div>
+      <p class="lp-chat__msg">I need the footing width and embedment depth before I can run the calculation. What values should I use?</p>
     </div>
   </div>
 </section>
 
-<section class="section section--alt" id="integrations" aria-labelledby="integrations-title">
+<section class="section" aria-labelledby="learn-title">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-plug"></use></svg>Integrations</p>
-      <h2 id="integrations-title">Works with the data and tools you already use</h2>
-      <p>Everything below ships with GeoCore today. Labels show whether an integration works entirely on your device or uses the network.</p>
+    <div class="section-head cm-head cm-head--row">
+      <h2 id="learn-title">Learn it in a few minutes</h2>
+      <a href="tutorials.html">All tutorials <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-arrow-right"></use></svg></a>
     </div>
-    <div class="grid grid--3">
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-calculator"></use></svg></span>
-        <h3>Groundhog</h3>
-        <p>The calculation engine: Bruno Stuyts’ open-source geotechnical library (v0.16.0), bundled with the app.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">GPLv3</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-database"></use></svg></span>
-        <h3>AGS 3.1 and AGS 4</h3>
-        <p>Import AGS files through Groundhog’s AGS converter and pull out groups such as SCPT or GEOL as tables.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.ags</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-cpt"></use></svg></span>
-        <h3>CPT and SPT data</h3>
-        <p>Process cone penetration and standard penetration test data with Groundhog’s PCPT and SPT processing tools and correlations.</p>
-        <div class="where"><span class="badge badge--primary">On device</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-table"></use></svg></span>
-        <h3>CSV and Excel</h3>
-        <p>Load tabular input from .csv, .xlsx or .xls files; export results as CSV or JSON.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.csv · .xlsx · .xls · .json</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-file-text"></use></svg></span>
-        <h3>PDF reports</h3>
-        <p>Generate a report with inputs, results table and chart, created in the app with jsPDF.</p>
-        <div class="where"><span class="badge badge--primary">On device</span><span class="badge">.pdf</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-cpu"></use></svg></span>
-        <h3>Local GGUF models</h3>
-        <p>12 curated models across the Qwen, Gemma, Phi, Llama, Granite and SmolLM families via llama.cpp, downloaded from Hugging Face on request — or point GeoAI at any .gguf file you already have. Candidates are <a href="docs/geoai/model-benchmarks">benchmarked</a>, not chosen by reputation.</p>
-        <div class="where"><span class="badge badge--primary">Runs on device</span><span class="badge badge--info">Download uses network</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-refresh"></use></svg></span>
-        <h3>GitHub Releases updates</h3>
-        <p>Installed builds check GitHub Releases shortly after launch; on Windows and the Linux AppImage, a new version downloads in the background and installs when you quit. Offline, the check simply fails quietly.</p>
-        <div class="where"><span class="badge badge--info">Uses network</span><span class="badge">electron-updater</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-chart"></use></svg></span>
-        <h3>Plotly charts</h3>
-        <p>Interactive, zoomable result plots rendered by a copy of Plotly.js that ships inside the app.</p>
-        <div class="where"><span class="badge badge--primary">On device</span></div>
-      </article>
-      <article class="card integration">
-        <span class="card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-code"></use></svg></span>
-        <h3>Open source on GitHub</h3>
-        <p>Read the code, file issues and follow releases. Build from source on any platform with Node.js and Python.</p>
-        <div class="where"><span class="badge">GPLv3</span><a class="badge" href="https://github.com/utkarsh-1912/geocore">utkarsh-1912/geocore</a></div>
-      </article>
+    <div class="tv-grid tv-grid--4">
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/getting-started.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">1:05</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 1</p>
+    <h3 class="tv-card__title"><a href="tutorials/getting-started/">Getting started with GeoCore</a></h3>
+  </div>
+</article>
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/cpt-interpretation.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">2:10</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 2</p>
+    <h3 class="tv-card__title"><a href="tutorials/cpt-interpretation/">CPT interpretation</a></h3>
+  </div>
+</article>
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/pile-and-bearing.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">2:45</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 3</p>
+    <h3 class="tv-card__title"><a href="tutorials/pile-and-bearing/">Pile capacity and bearing</a></h3>
+  </div>
+</article>
+<article class="tv-card">
+  <div class="tv-card__media">
+<img src="assets/images/tutorials/geoai-assistant.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">    <span class="tv-time">1:45</span>
+  </div>
+  <div class="tv-card__body">
+    <p class="tv-card__meta">Tutorial 4</p>
+    <h3 class="tv-card__title"><a href="tutorials/geoai-assistant/">Using the GeoAI assistant</a></h3>
+  </div>
+</article>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section section--tight">
   <div class="container">
     <div class="cta-band">
       <div>
         <h2>Try GeoCore on your next calculation</h2>
-        <p>Free and open source for Windows 10/11, macOS and Linux. No account, no licence key.</p>
+        <p>Free for Windows, macOS and Linux. No account.</p>
       </div>
       <div class="cluster">
         <a class="btn btn--primary btn--lg" href="download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download</a>
-        <a class="btn btn--secondary btn--lg" href="about.html">About the project</a>
       </div>
     </div>
   </div>
@@ -578,7 +313,7 @@
           <h2>Product</h2>
           <ul>
             <li><a href="index.html#features">Features</a></li>
-            <li><a href="index.html#integrations">Integrations</a></li>
+            <li><a href="index.html#geoai">GeoAI</a></li>
             <li><a href="download.html">Download</a></li>
             <li><a href="docs/">Documentation</a></li>
             <li><a href="tutorials.html">Video tutorials</a></li>
@@ -610,6 +345,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/site.js?v=c201c36da5" defer></script>
+  <script src="assets/js/site.js?v=5c8704b96e" defer></script>
 </body>
 </html>

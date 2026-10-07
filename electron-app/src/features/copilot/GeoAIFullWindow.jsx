@@ -24,6 +24,7 @@ import { api } from '../../api/client';
 import { buildChatHistory, nextMessageId } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
 import { AnswerWithVisuals } from './VisualBlocks';
+import { ResultValues } from './ResultValues';
 import { imagesOf, stripImageMarkers } from './answerVisuals';
 import { ProjectGroundwaterField } from './ProjectGroundwaterField';
 import { createTraceRecorder, finalTurnText, stopGeoAIChat, streamGeoAIChat, useElapsedSeconds } from './geoaiStream';
@@ -1021,19 +1022,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                         )}
                                                     </div>
 
-                                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 bg-background p-2 rounded-md border border-border">
-                                                        {Object.entries(msg.results.result || msg.results).map(([k, v]) => {
-                                                            if (k.startsWith('_') || (v !== null && typeof v === 'object')) return null;
-                                                            return (
-                                                                <div key={k} className="p-1.5 rounded-md bg-surface border border-border/50">
-                                                                    <div className="text-[9px] font-bold text-text-muted uppercase truncate">{k}</div>
-                                                                    <div className="text-xs font-semibold text-text-main truncate">
-                                                                        {typeof v === 'number' ? v.toFixed(3) : String(v)}
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
+                                                    <ResultValues
+                                                        results={msg.results.result || msg.results}
+                                                        functionId={msg.executedTool}
+                                                        outputUnits={msg.results._provenance?.output_units}
+                                                    />
 
                                                     {msg.results._provenance && (
                                                         <div className="text-[10px] text-text-muted pt-1 border-t border-border/40 flex items-center justify-between">

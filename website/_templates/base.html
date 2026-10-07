@@ -31,8 +31,10 @@
   {% set nav_items = [
     ('home', 'Home', ''),
     ('features', 'Features', 'index.html#features'),
-    ('docs', 'Docs', 'docs/'),
-    ('tutorials', 'Tutorials', 'tutorials.html'),
+    ('learn', 'Learn', '', [
+      ('docs', 'Documentation', 'docs/', 'Guides, theory and API reference'),
+      ('tutorials', 'Video tutorials', 'tutorials.html', 'Short walkthroughs of the app'),
+    ]),
     ('download', 'Download', 'download.html'),
     ('about', 'About', 'about.html'),
   ] %}
@@ -44,8 +46,21 @@
       </a>
       <nav class="nav" aria-label="Main">
         <ul>
-          {% for key, label, href in nav_items %}
+          {% for item in nav_items %}
+          {% set key, label, href = item[0], item[1], item[2] %}
+          {% if item|length > 3 %}
+          <li class="nav-menu" data-nav-menu>
+            <button class="nav-menu__btn" type="button" aria-expanded="false" aria-controls="nav-menu-{{ key }}"
+                    {% for c in item[3] %}{% if c[0] == nav_active %}data-active="true"{% endif %}{% endfor %}>{{ label }}{{ icon('chevron-right') }}</button>
+            <ul class="nav-menu__list" id="nav-menu-{{ key }}" hidden>
+              {% for c in item[3] %}
+              <li><a href="{{ url(c[2]) }}"{% if c[0] == nav_active %} aria-current="page"{% endif %}><span>{{ c[1] }}</span><small>{{ c[3] }}</small></a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% else %}
           <li><a href="{{ url(href) }}"{% if key == nav_active %} aria-current="page"{% endif %}>{{ label }}</a></li>
+          {% endif %}
           {% endfor %}
         </ul>
       </nav>
@@ -63,8 +78,14 @@
     </div>
     <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
       <ul>
-        {% for key, label, href in nav_items %}
-        <li><a href="{{ url(href) }}"{% if key == nav_active %} aria-current="page"{% endif %}>{{ label }}{{ icon('chevron-right') }}</a></li>
+        {% for item in nav_items %}
+        {% if item|length > 3 %}
+        {% for c in item[3] %}
+        <li><a href="{{ url(c[2]) }}"{% if c[0] == nav_active %} aria-current="page"{% endif %}>{{ c[1] }}{{ icon('chevron-right') }}</a></li>
+        {% endfor %}
+        {% else %}
+        <li><a href="{{ url(item[2]) }}"{% if item[0] == nav_active %} aria-current="page"{% endif %}>{{ item[1] }}{{ icon('chevron-right') }}</a></li>
+        {% endif %}
         {% endfor %}
       </ul>
       <a class="btn btn--primary btn--lg" href="{{ url('download.html') }}">{{ icon('download') }}Download GeoCore</a>
@@ -91,7 +112,7 @@
           <h2>Product</h2>
           <ul>
             <li><a href="{{ url('index.html#features') }}">Features</a></li>
-            <li><a href="{{ url('index.html#integrations') }}">Integrations</a></li>
+            <li><a href="{{ url('index.html#geoai') }}">GeoAI</a></li>
             <li><a href="{{ url('download.html') }}">Download</a></li>
             <li><a href="{{ url('docs/') }}">Documentation</a></li>
             <li><a href="{{ url('tutorials.html') }}">Video tutorials</a></li>

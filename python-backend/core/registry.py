@@ -56,6 +56,10 @@ class Registry:
         """
         self.function_map.update(get_function_map())
 
+        # Groundhog functions that return a wrong number in the installed version (core/groundhog_corrections.py)
+        from .groundhog_corrections import CORRECTED_FUNCTIONS
+        self.function_map.update(CORRECTED_FUNCTIONS)
+
         # Indian Standard (BIS) calculations implemented in GeoCore (core/standards/bis)
         from .standards.bis import BIS_FUNCTIONS
         for func_name, obj in BIS_FUNCTIONS.items():

@@ -63,16 +63,16 @@ def test_manifest_lists_images_only_and_no_data():
     wrapper, blocks = _run(ImageIds())
     manifest = image_manifest(blocks)
     assert manifest.count("{{image:img1}}") == 1 and "metrics" not in manifest.lower()
-    assert "112.7" not in manifest and "bdata" not in manifest
+    assert "112.2" not in manifest and "bdata" not in manifest
     assert image_manifest([b for b in blocks if b["type"] != "figure"]) == ""
-    assert "112.7" in json.dumps(wrapper["result"])  # the numbers still reach the model, in the result itself
+    assert "112.2" in json.dumps(wrapper["result"])  # the numbers still reach the model, in the result itself
 
 
 def test_result_summary_does_not_print_the_image_placeholder():
     wrapper, _ = _run(ImageIds())
     text = _result_summary([{"name": "mohr", "result": wrapper}])
     assert "image_id" not in text and "Plot" not in text
-    assert "Mohr circle = table of 250 rows" in text and "sigma_1_f [kPa] = 112.7" in text
+    assert "Mohr circle = table of 250 rows" in text and "sigma_1_f [kPa] = 112.2" in text
 
 
 def test_markers_survive_the_answer_guards_whole_and_split_across_chunks():

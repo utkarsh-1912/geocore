@@ -19,7 +19,7 @@ MOHR = {"sigma_3": 20, "cohesion": 10, "phi": 35}
 def test_mohr_coulomb_triaxial_result_is_json_serialisable():
     result = tool_registry.invoke_tool("mohrcoulomb_triaxial_compression", MOHR)
     json.dumps(result)  # must not raise
-    assert abs(result["sigma_1_f [kPa]"] - 112.73) < 0.01  # the deterministic Groundhog value is unchanged
+    assert abs(result["sigma_1_f [kPa]"] - 112.223) < 0.001  # closed form (core/groundhog_corrections.py)
     image = result["Plot"]
     assert set(image) == {"image_id", "details"} and "Mohr circle" in image["details"]
     assert "data" not in image  # the model gets the description, never the plotted data

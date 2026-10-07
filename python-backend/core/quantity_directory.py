@@ -51,6 +51,8 @@ UNIT_DIMENSION = {
     "deg": "angle", "rad": "angle", "°C": "temperature",
     "kN": "force", "kN/m": "force_per_length", "kN·m": "moment", "kN·m²": "flexural_rigidity",
     "kPa/m": "pressure_gradient", "s": "time", "yr": "time", "Hz": "frequency",
+    "cm³": "volume", "ha": "area", "1/kPa": "compressibility", "1/kN": "flexibility", "mm/kN": "flexibility",
+    "kN·m²/m": "flexural_rigidity_per_length", "deg/blow": "angle_per_blow", "deg/blow²": "angle_per_blow_squared",
 }
 
 

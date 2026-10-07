@@ -62,6 +62,21 @@
     }
   }
 
+  // Desktop "Learn" dropdown: opens on click, closes on Escape, outside click or choosing a link.
+  document.querySelectorAll('[data-nav-menu]').forEach(function (menu) {
+    var btn = menu.querySelector('.nav-menu__btn');
+    var list = menu.querySelector('.nav-menu__list');
+    if (!btn || !list) return;
+    function set(open) { btn.setAttribute('aria-expanded', String(open)); list.hidden = !open; }
+    btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
+    list.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+    document.addEventListener('click', function (e) { if (!menu.contains(e.target)) set(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { set(false); btn.focus(); }
+    });
+    menu.addEventListener('focusout', function (e) { if (!menu.contains(e.relatedTarget)) set(false); });
+  });
+
   disclosure(document.querySelector('[data-nav-toggle]'), document.getElementById('mobile-nav'), true);
   disclosure(document.querySelector('[data-sidebar-toggle]'), document.getElementById('docs-sidebar-panel'), false);
 

@@ -33,11 +33,17 @@
   to = "/tutorials.html"
   status = 200
 
-# Tutorial pages are directories (tutorial/<id>/index.html), so /tutorial/<id> and /tutorial/<id>/ both resolve.
-# /tutorial on its own goes to the list.
+# Tutorial pages are directories (tutorials/<id>/index.html), so /tutorials/<id> and /tutorials/<id>/ both resolve.
+# They used to live under /tutorial/<id>/; keep old links working.
+[[redirects]]
+  from = "/tutorial/*"
+  to = "/tutorials/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/tutorial"
-  to = "/tutorials.html"
+  to = "/tutorials"
   status = 301
 
 # Docs pages are directories (docs/<slug>/index.html), so /docs/<slug> and /docs/<slug>/ both resolve;
@@ -48,9 +54,9 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    # Only same-origin assets; the download page reads release data from the public GitHub API. The tutorial
-    # player loads the YouTube IFrame API (script) and the video (frame, youtube-nocookie.com) only after the visitor presses play.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.youtube.com; frame-src https://www.youtube-nocookie.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    # Only same-origin assets; the download page reads release data from the public GitHub API. Tutorial pages
+    # embed the video (frame, youtube-nocookie.com) only after the visitor presses play; no YouTube script is loaded.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; frame-src https://www.youtube-nocookie.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
