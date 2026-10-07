@@ -4,6 +4,8 @@
  * The backend keeps only the last few turns and replays tool results as a
  * deterministic calculation record (see core/geoai/agent.py: history_to_messages).
  */
+import { stripImageMarkers } from './answerVisuals';
+
 const MAX_HISTORY_MESSAGES = 6;
 
 // Date.now() alone can repeat for messages/conversations created in the same millisecond
@@ -17,7 +19,8 @@ export const buildChatHistory = (messages = []) =>
         .filter(m => (m.sender === 'user' || m.sender === 'ai') && !m.isError && m.text)
         .slice(-MAX_HISTORY_MESSAGES)
         .map(m => {
-            const item = { role: m.sender === 'user' ? 'user' : 'assistant', content: m.text };
+            // Old {{image:ID}} markers mean nothing to the model next turn (ids restart at v1): keep them out.
+            const item = { role: m.sender === 'user' ? 'user' : 'assistant', content: stripImageMarkers(m.text) };
             if (m.sender === 'ai' && m.executedTool) {
                 item.tool = { name: m.executedTool, arguments: m.parameters || {}, result: m.results ?? null };
             }

@@ -5,7 +5,7 @@
  * One themed chart: a heading (title, else the function name, with the axis names as a subtitle) above a
  * Plotly figure that follows the light/dark theme and always fits its container.
  */
-import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { axisSubtitle, figureTitle, readChartPalette, themeFigure } from './chartTheme';
 
 const Plot = React.lazy(() => import('react-plotly.js'));
@@ -21,8 +21,32 @@ export const useChartPalette = () => {
     return palette;
 };
 
+/**
+ * react-plotly's resize handler listens to the window only. A chart that mounts while its container is still
+ * narrow (a chat bubble animating in, a collapsed panel opening) would stay that narrow, so a change of the
+ * container's width is forwarded as a window resize.
+ */
+const useContainerResize = (ref) => {
+    useEffect(() => {
+        const el = ref.current;
+        if (!el || typeof ResizeObserver === 'undefined') return undefined;
+        let last = el.clientWidth;
+        const observer = new ResizeObserver(() => {
+            const width = el.clientWidth;
+            if (Math.abs(width - last) > 8) {
+                last = width;
+                window.dispatchEvent(new Event('resize'));
+            }
+        });
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [ref]);
+};
+
 export const ThemedChart = ({ figure, title, fallbackTitle = '', index, total, bare = false }) => {
     const palette = useChartPalette();
+    const plotBox = useRef(null);
+    useContainerResize(plotBox);
     const themed = useMemo(() => themeFigure(figure, palette), [figure, palette]);
 
     const heading = figureTitle(title, figure?.layout) || fallbackTitle || 'Chart';
@@ -35,7 +59,7 @@ export const ThemedChart = ({ figure, title, fallbackTitle = '', index, total, b
                 <h3 className="truncate text-sm font-semibold text-text-main" title={numbered}>{numbered}</h3>
                 {subtitle && <p className="truncate text-xs text-text-muted" title={subtitle}>{subtitle}</p>}
             </div>
-            <div className="w-full min-w-0 overflow-hidden" style={{ height: themed.layout.height }}>
+            <div ref={plotBox} className="w-full min-w-0 overflow-hidden" style={{ height: themed.layout.height }}>
                 <Suspense
                     fallback={
                         <div className="flex h-full w-full items-center justify-center gap-2 text-sm text-text-muted">

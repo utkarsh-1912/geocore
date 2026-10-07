@@ -5,6 +5,7 @@ This module provides the main orchestration loop that connects the SLM
 (via ModelProvider) to the registered tools (via GeoAIToolRegistry).
 """
 
+import inspect
 import json
 import logging
 import re
@@ -30,7 +31,7 @@ from .system_prompt import build_system_prompt
 from .tool_selector import select_relevant_tools
 from .exceptions import GeoAIValidationError
 from .argument_grounding import missing_inputs_message, ungrounded_arguments
-from .visuals import build_visuals
+from .visuals import ImageIds, assign_image_ids, build_visuals, image_manifest
 from .turn_trace import CANCELLED, EMPTY_ANSWER, EMPTY_ANSWER_MESSAGE, FAILURES, classify_turn, record_turn
 
 logger = logging.getLogger(__name__)
@@ -151,6 +152,11 @@ def _result_summary(tools_used: List[Dict[str, Any]]) -> str:
             if k.startswith("_"):
                 continue
             unit = units.get(k)
+            if isinstance(v, dict) and set(v) == {"image_id", "details"}:
+                continue  # an image: drawn by the UI, not a value to read out
+            if isinstance(v, dict) and set(v) == {"columns", "n_rows"}:  # a long table summarised for the model
+                values.append(f"{k} = table of {v['n_rows']} rows")
+                continue
             values.append(f"{k} = {_compact_value(v)}" + (f" {unit}" if unit and unit != "-" else ""))
         lines.append(f"**{t.get('name')}** result: " + ", ".join(values))
     return "\n".join(lines)
@@ -268,6 +274,8 @@ class GeoAIAgent:
                  domains: Optional[Iterable[str]] = None, role_instructions: Optional[str] = None):
         self._provider = provider
         self._registry = registry
+        # Registries that can also hand back what only the UI shows (figures, full tables).
+        self._registry_displays = "include_display" in inspect.signature(registry.invoke_tool).parameters
         # A specialist (core.geoai.multi_agent) only sees tools of its domains and a role note.
         self._domains = list(domains) if domains is not None else None
         self._role_instructions = role_instructions
@@ -304,7 +312,8 @@ class GeoAIAgent:
                                                 domains=self._domains)
         return messages, tools_for_model
 
-    def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None,
+                           ids: Optional[ImageIds] = None) -> Dict[str, Any]:
         try:
             args = dict(tool_call.arguments) if tool_call.arguments else {}
             # If project context is present, auto-resolve any missing (None) arguments
@@ -318,7 +327,21 @@ class GeoAIAgent:
             # tool's own defaults apply instead of failing validation.
             args = {k: v for k, v in args.items() if v is not None}
 
-            result = self._registry.invoke_tool(tool_call.function_name, args)
+            if self._registry_displays:
+                result = self._registry.invoke_tool(tool_call.function_name, args, include_display=True)
+            else:
+                result = self._registry.invoke_tool(tool_call.function_name, args)
+            # For the UI only: never part of the tool message the model reads or of the saved record.
+            display = result.pop("_display", None) if isinstance(result, dict) else None
+            if display and display.get("figures") and isinstance(result, dict):
+                # The model reads {"image_id", "details"} where the figure was; give each a turn-unique id.
+                display["figure_ids"] = {}
+                for key in display["figures"]:
+                    placeholder = result.get(key)
+                    if isinstance(placeholder, dict) and set(placeholder) == {"image_id", "details"}:
+                        image_id = ids.next() if ids else key
+                        placeholder["image_id"] = image_id
+                        display["figure_ids"][key] = image_id
             
             # Record calculation in project context memory if available
             if context and isinstance(result, dict) and "_provenance" in result:
@@ -326,11 +349,25 @@ class GeoAIAgent:
                 if proj_ctx and hasattr(proj_ctx, 'add_calculation'):
                     proj_ctx.add_calculation(result["_provenance"])
 
-            return {"status": "success", "tool_name": tool_call.function_name, "result": result}
+            wrapper = {"status": "success", "tool_name": tool_call.function_name, "result": result}
+            if display:
+                wrapper["display"] = display
+            return wrapper
         except GeoAIValidationError as e:
             return {"status": "error", "tool_name": tool_call.function_name, "error": str(e)}
         except Exception as e:
             return {"status": "error", "tool_name": tool_call.function_name, "error": f"Execution failed: {str(e)}"}
+
+    def _visuals_for(self, tool_call: ToolCall, wrapper: Dict[str, Any], ids: ImageIds) -> List[Dict[str, Any]]:
+        """
+        Display blocks for one executed call. Charts get the image ids (and descriptions) the model was told
+        about; other blocks are unchanged. Built as soon as the tool returns, so they reach the UI (tool_result
+        event) before the model starts its interpretation. The display-only data is removed from the wrapper.
+        """
+        visuals = build_visuals(tool_call.function_name, tool_call.arguments, wrapper)
+        wrapper.pop("display", None)
+        assign_image_ids(visuals, ids)
+        return visuals
 
     def _interpretive_tools(self, tools_used: List[Dict[str, Any]]) -> List[str]:
         """Names of the used tools whose registry entry is marked interpretive."""
@@ -363,6 +400,7 @@ class GeoAIAgent:
         self._provider.clear_cancel()
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
+        ids = ImageIds()
         seed = _history_seed(history)
 
         for round_num in range(MAX_TOOL_ROUNDS):
@@ -391,12 +429,16 @@ class GeoAIAgent:
             messages.append(assistant_msg)
             
             for tc in response.tool_calls:
-                result = self._execute_tool_call(tc, context=context)
+                result = self._execute_tool_call(tc, context=context, ids=ids)
+                visuals = self._visuals_for(tc, result, ids)
                 tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result,
-                                   "visuals": build_visuals(tc.function_name, tc.arguments, result)})
+                                   "visuals": visuals})
                 
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
+            manifest = image_manifest([v for t in tools_used for v in t.get("visuals") or []])
+            if manifest:
+                messages.append(make_user_message(manifest))
             
             if round_num == MAX_TOOL_ROUNDS - 2:
                 tools_for_model = None
@@ -449,6 +491,7 @@ class GeoAIAgent:
         yield AgentStreamEvent(type='stage', content='checking_tools')  # tool retrieval + context
         messages, tools_for_model = self._build_messages(user_message, context, history)
         tools_used = []
+        ids = ImageIds()
         seed = _history_seed(history)
 
         for round_num in range(MAX_TOOL_ROUNDS):
@@ -505,8 +548,8 @@ class GeoAIAgent:
             
             for tc in tool_calls:
                 yield AgentStreamEvent(type='tool_start', tool_name=tc.function_name, tool_args=tc.arguments)
-                result = self._execute_tool_call(tc, context=context)
-                visuals = build_visuals(tc.function_name, tc.arguments, result)
+                result = self._execute_tool_call(tc, context=context, ids=ids)
+                visuals = self._visuals_for(tc, result, ids)
                 tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result,
                                    "visuals": visuals})
                 yield AgentStreamEvent(type='tool_result', tool_name=tc.function_name, tool_result=result,
@@ -543,7 +586,8 @@ class GeoAIAgent:
         # The exact results first, from the tools; the model's prose follows.
         yield AgentStreamEvent(type='token', content=_result_summary(tools_used) + "\n\n")
         if all((t.get("result") or {}).get("status") == "success" for t in tools_used):
-            messages = messages + [make_user_message(EXPLANATION_INSTRUCTION)]
+            manifest = image_manifest([v for t in tools_used for v in t.get("visuals") or []])
+            messages = messages + [make_user_message(EXPLANATION_INSTRUCTION + ("\n\n" + manifest if manifest else ""))]
         cleaner = AnswerStreamCleaner(tools_used, seed=seed)
         finish_reason = None
         stream = self._provider.generate_answer_stream(messages=messages, tools=tools_for_model,

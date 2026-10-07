@@ -23,6 +23,8 @@ import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
 import { buildChatHistory, nextMessageId } from './chatHistory';
 import { MarkdownText } from './MarkdownText';
+import { AnswerWithVisuals } from './VisualBlocks';
+import { imagesOf, stripImageMarkers } from './answerVisuals';
 import { ProjectGroundwaterField } from './ProjectGroundwaterField';
 import { createTraceRecorder, finalTurnText, stopGeoAIChat, streamGeoAIChat, useElapsedSeconds } from './geoaiStream';
 import { ProcessTrace } from './ProcessTrace';
@@ -392,6 +394,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     setAiMessage({ text: t });
                 },
                 onStage: trace.stage,
+                onVisuals: (visuals) => setAiMessage({ visuals }),
             });
             updateCurrentMessages([...updated, {
                 id: aiMessageId,
@@ -405,7 +408,8 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 trace: trace.finish(turn),
                 executedTool: turn.executedTool,
                 parameters: turn.parameters,
-                results: turn.results
+                results: turn.results,
+                visuals: turn.visuals
             });
         } catch {
             if (controller.signal.aborted) {
@@ -421,6 +425,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     executedTool: res.executed_tool,
                     parameters: res.parameters_extracted,
                     results: res.results,
+                    visuals: res.visuals,
                     provenance: res.provenance,
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 };
@@ -945,7 +950,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                             />
                                                         </div>
                                                     )}
-                                                    {(msg.sender === 'user' || msg.text || !(msg.id === lastMessageId && isLoading)) && (
+                                                    {(msg.sender === 'user' || msg.text || imagesOf(msg.visuals).length || !(msg.id === lastMessageId && isLoading)) && (
                                                     <div
                                                         className={`px-4 py-3 text-[13px] leading-relaxed transition-colors ${
                                                             msg.sender === 'user'
@@ -953,11 +958,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                                 : 'bg-surface border border-border text-text-main rounded-lg rounded-tl-md shadow-sm w-full'
                                                         }`}
                                                     >
-                                                        {msg.sender === 'ai' && !msg.text ? (
+                                                        {msg.sender === 'ai' && !msg.text && !imagesOf(msg.visuals).length ? (
                                                             <span className="text-text-muted">No response received.</span>
                                                         ) : (
                                                             msg.sender === 'ai' ? (
-                                                                <MarkdownText text={msg.text} />
+                                                                <AnswerWithVisuals text={msg.text} visuals={msg.visuals} />
                                                             ) : (
                                                                 <div className="whitespace-pre-wrap break-words">
                                                                     {msg.text}
@@ -983,7 +988,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                                     </button>
                                                                 ) : msg.text ? (
                                                                     <button
-                                                                        onClick={() => handleCopy(msg.text)}
+                                                                        onClick={() => handleCopy(stripImageMarkers(msg.text))}
                                                                         title="Copy response"
                                                                         className="flex items-center gap-1 hover:text-text-main transition-colors"
                                                                     >
@@ -1018,7 +1023,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
                                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 bg-background p-2 rounded-md border border-border">
                                                         {Object.entries(msg.results.result || msg.results).map(([k, v]) => {
-                                                            if (k.startsWith('_')) return null;
+                                                            if (k.startsWith('_') || (v !== null && typeof v === 'object')) return null;
                                                             return (
                                                                 <div key={k} className="p-1.5 rounded-md bg-surface border border-border/50">
                                                                     <div className="text-[9px] font-bold text-text-muted uppercase truncate">{k}</div>

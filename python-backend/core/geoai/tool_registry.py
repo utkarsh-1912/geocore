@@ -12,6 +12,94 @@ from core.geoai.schemas.base import GeoAIBaseModel
 from core.geoai.exceptions import GeoAIValidationError
 
 
+# A DataFrame up to this many rows goes to the model whole (as records); a longer one only as columns and a
+# row count, so a plotted curve of hundreds of points cannot flood a small model's context (AGENTS.md section 9).
+_MODEL_TABLE_ROWS = 50
+_DISPLAY_MAX_TRACE_POINTS = 400
+
+
+def _is_plotly(value: Any) -> bool:
+    return hasattr(value, "to_plotly_json")
+
+
+def _is_image(value: Any) -> bool:
+    return _is_plotly(value) or hasattr(value, "savefig")
+
+
+def _image_placeholder(key: Any, value: Any) -> Dict[str, Any]:
+    """
+    What the model reads in place of a figure object (which cannot be JSON-encoded): an id it can cite to have
+    the UI render the image, and a description of what the image shows. The agent replaces ``image_id``
+    with a turn-unique id when it has the image to show (GeoAIAgent._execute_tool_call).
+    """
+    if _is_plotly(value):
+        from core.geoai.visuals import figure_details
+        return {"image_id": str(key) if key is not None else None, "details": figure_details(value)}
+    return {"image_id": None, "details": "Matplotlib figure (not available in chat)"}
+
+
+def _json_safe(value: Any, key: Any = None) -> Any:
+    """
+    The tool result with the objects JSON cannot encode converted; everything JSON can already encode is
+    returned unchanged. A figure becomes ``{"image_id", "details"}``, numpy numbers/arrays become plain Python,
+    a DataFrame becomes records (or, past ``_MODEL_TABLE_ROWS`` rows, its columns and row count).
+    """
+    import numpy as np
+    import pandas as pd
+
+    if value is None or isinstance(value, (str, bool)):
+        return value
+    if _is_image(value):
+        return _image_placeholder(key, value)
+    if isinstance(value, np.bool_):
+        return bool(value)
+    if isinstance(value, (int, np.integer)):
+        return int(value)
+    if isinstance(value, (float, np.floating)):
+        return float(value)
+    if isinstance(value, pd.DataFrame):
+        if len(value) > _MODEL_TABLE_ROWS:
+            return {"columns": [str(c) for c in value.columns], "n_rows": int(len(value))}
+        return _json_safe(value.to_dict(orient="records"))
+    if isinstance(value, pd.Series):
+        return _json_safe(value.tolist())
+    if isinstance(value, np.ndarray):
+        return _json_safe(value.tolist())
+    if isinstance(value, dict):
+        return {k if isinstance(k, str) else str(k): _json_safe(v, k) for k, v in value.items()}
+    if isinstance(value, (list, tuple, set)):
+        return [_json_safe(v) for v in value]
+    return str(value)
+
+
+def extract_display(res: Any) -> Dict[str, Any]:
+    """
+    The Plotly figures of a raw Groundhog result as JSON, for the UI only (the model gets an image id and details
+    instead). Traces are decimated to a display size. Returns {"figures": {key: {"data", "layout"}}} or {}.
+    """
+    import json
+    import numpy as np
+
+    if not isinstance(res, dict):
+        return {}
+    figures: Dict[str, Any] = {}
+    for key, value in res.items():
+        if not _is_plotly(value):
+            continue
+        try:
+            import plotly.io
+            fig = json.loads(plotly.io.to_json(value))
+        except Exception:
+            continue
+        for trace in fig.get("data", []):
+            x, y = trace.get("x"), trace.get("y")
+            if isinstance(x, list) and isinstance(y, list) and len(x) == len(y) > _DISPLAY_MAX_TRACE_POINTS:
+                idx = np.unique(np.linspace(0, len(x) - 1, _DISPLAY_MAX_TRACE_POINTS).round().astype(int))
+                trace["x"], trace["y"] = [x[i] for i in idx], [y[i] for i in idx]
+        figures[str(key)] = {"data": fig.get("data", []), "layout": fig.get("layout", {})}
+    return {"figures": figures} if figures else {}
+
+
 class GeoAITool:
     """Encapsulates a verified geotechnical calculation tool."""
     def __init__(
@@ -50,9 +138,11 @@ class GeoAITool:
             return getattr(importlib.import_module(module_name), attr)
         return self.func
 
-    def invoke(self, raw_args: Dict[str, Any]) -> Dict[str, Any]:
+    def invoke(self, raw_args: Dict[str, Any], include_display: bool = False) -> Dict[str, Any]:
         """
         Execute tool with strict validation boundary and attach complete provenance.
+        With ``include_display`` the result also carries ``_display`` (see ``extract_display``): data for
+        the UI that the caller must remove before the result reaches the model.
         Arbitrary Python execution, subprocesses, and filesystem modifications are strictly forbidden.
         """
         from core.geoai.provenance import create_calculation_provenance
@@ -89,6 +179,10 @@ class GeoAITool:
                 output_data = dict(res) if isinstance(res, dict) else {"result": res}
         else:
             output_data = dict(res) if isinstance(res, dict) else {"result": res}
+        display = extract_display(res) if include_display else {}
+        output_data = _json_safe(output_data)
+        if display:
+            output_data["_display"] = display
 
         # 4. Attach calculation provenance metadata
         provenance = create_calculation_provenance(self.name, call_args)
@@ -165,12 +259,12 @@ class GeoAIToolRegistry:
             for t in self._tools.values()
         ]
 
-    def invoke_tool(self, tool_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+    def invoke_tool(self, tool_name: str, args: Dict[str, Any], include_display: bool = False) -> Dict[str, Any]:
         """Invoke a tool by name with security checks."""
         tool = self.get_tool(tool_name)
         if not tool:
             raise GeoAIValidationError(f"Tool '{tool_name}' is not in the authorized GeoAI Tool Registry.")
-        return tool.invoke(args)
+        return tool.invoke(args, include_display=include_display)
 
 
 def groundhog_forwarder(tool_name: str, module_name: str, func_name: str,

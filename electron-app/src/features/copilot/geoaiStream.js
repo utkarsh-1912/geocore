@@ -16,14 +16,16 @@ const STREAM_IDLE_TIMEOUT_MS = 45000;
  * Stream a chat turn. `onText(text)` receives the text to show while streaming; `onStage(stage)`
  * receives the agent's current phase ('checking_tools'|'loading_model'|'thinking'|'calling_tool:<name>'|'writing_answer') so the UI can
  * show what it's actually waiting on instead of a generic spinner.
- * Resolves to { text, executedTool, parameters, results, outcome: 'done'|'cancelled'|'error', error }.
+ * `onVisuals(blocks)` receives the display blocks (tables, charts) as soon as a tool returns, before the model
+ * has written its interpretation; the answer places them with {{visual:ID}} markers (see answerVisuals.js).
+ * Resolves to { text, executedTool, parameters, results, visuals, outcome: 'done'|'cancelled'|'error', error }.
  * Throws only when the request could not be started (the caller may fall back).
  */
-export async function streamGeoAIChat({ text, context, history, signal, onText = () => {}, onStage = () => {} }) {
+export async function streamGeoAIChat({ text, context, history, signal, onText = () => {}, onStage = () => {}, onVisuals = () => {} }) {
     const response = await api.geoaiChatStream(text, context, history, signal);
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    const turn = { text: '', executedTool: null, parameters: null, results: null, outcome: 'done', error: null };
+    const turn = { text: '', executedTool: null, parameters: null, results: null, visuals: [], outcome: 'done', error: null };
     let buffer = '';
 
     const handle = (event) => {
@@ -45,6 +47,10 @@ export async function streamGeoAIChat({ text, context, history, signal, onText =
         } else if (event.type === 'tool_result') {
             turn.results = event.tool_result;
             turn.text = '';
+            if (event.visuals?.length) {
+                turn.visuals = [...turn.visuals, ...event.visuals];
+                onVisuals(turn.visuals);
+            }
         } else if (event.type === 'cancelled') {
             turn.outcome = 'cancelled';
         } else if (event.type === 'error') {

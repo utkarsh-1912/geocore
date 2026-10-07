@@ -18,6 +18,14 @@ secondary blocks the UI may collapse):
                       "note"}; a series is {"name", "kind": "line", "depth", "value"} or
                       {"name", "kind": "intervals", "top", "bottom", "value"}
 - ``xy``             {"title", "x": {"label", "unit"}, "y": {"label", "unit"}, "series": [{"name", "x", "y"}]}
+- ``figure``         {"title", "figure": {"data", "layout"}}: a Plotly figure the Groundhog function returned
+                     (decimated; see tool_registry.extract_display)
+
+Chart blocks (``figure``, ``xy``, ``depth_profile``) are the "images": each gets an ``id`` ("img1", "img2", ...:
+unique within a turn) and a ``description``. The model reads, in place of the figure object, ``{"image_id",
+"details"}``, never the plotted data, and may write ``{{image:ID}}`` in its answer where the image belongs; the UI
+draws marked images there and any unmarked ones after the answer (``ImageIds``, ``assign_image_ids``,
+``image_manifest``). Every other block is passed on exactly as before.
 """
 import logging
 import math
@@ -209,8 +217,121 @@ def xy_block(title: str, arrays: Dict[str, List[float]], tool: str,
             "series": series}
 
 
-def generic_visuals(tool: str, result: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Blocks for any tool result dict, by the shape of each value."""
+_LATEX_SYMBOLS = {r"\tau": "τ", r"\sigma": "σ", r"\phi": "φ", r"\gamma": "γ", r"\delta": "δ", r"\epsilon": "ε",
+                  r"\theta": "θ", r"\mu": "μ", r"\alpha": "α", r"\beta": "β", r"\Delta": "Δ", r"\cdot": "·"}
+
+
+def _plain(text: Any) -> Any:
+    """Groundhog axis titles are LaTeX by default; the chat's Plotly build cannot render it, so show plain text."""
+    if not isinstance(text, str) or ("\\" not in text and "$" not in text):
+        return text
+    for tex, ch in _LATEX_SYMBOLS.items():
+        text = text.replace(tex, ch)
+    text = re.sub(r"\\(?:text|mathrm|mathbf)\{([^}]*)\}", r"\1", text)
+    text = re.sub(r"[_^]\{([^}]*)\}", r"\1", text)
+    return re.sub(r"\\[ ,;!]|[$]", "", text).strip()
+
+
+def _fig_dict(figure: Any) -> Dict[str, Any]:
+    return figure.to_plotly_json() if hasattr(figure, "to_plotly_json") else (figure or {})
+
+
+def _axis_text(layout: Dict[str, Any], axis: str) -> Optional[str]:
+    t = (layout.get(axis) or {}).get("title")
+    return _plain(t.get("text") if isinstance(t, dict) else t) or None
+
+
+def figure_details(figure: Any, title: Optional[str] = None) -> str:
+    """What a Plotly figure shows, in one line for the model: title, axes and series names (no values)."""
+    fig = _fig_dict(figure)
+    layout = fig.get("layout") or {}
+    t = layout.get("title")
+    title = _plain(title or (t.get("text") if isinstance(t, dict) else t))
+    names = list(dict.fromkeys(d.get("name") for d in fig.get("data", []) if d.get("name")))
+    x, y = _axis_text(layout, "xaxis"), _axis_text(layout, "yaxis")
+    axes = f" ({y} against {x})" if x and y else ""
+    return (f"Chart '{title}'" if title else "Chart") + axes + (f" with series: {_names(names, 5)}" if names else "")
+
+
+def figure_block(key: str, figure: Dict[str, Any], tool: str, image_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """A Plotly figure from the raw result, titled by its own layout, else by the tool."""
+    if not figure or not figure.get("data"):
+        return None
+    layout = dict(figure.get("layout") or {})
+    for axis in ("xaxis", "yaxis"):
+        ax = dict(layout.get(axis) or {})
+        t = ax.get("title")
+        if isinstance(t, dict) and t.get("text"):
+            ax["title"] = dict(t, text=_plain(t["text"]))
+        elif isinstance(t, str):
+            ax["title"] = _plain(t)
+        layout[axis] = ax
+    title = layout.get("title")
+    title = title.get("text") if isinstance(title, dict) else title
+    if not title:
+        title = _title(tool if key.lower() == "plot" else key)
+    block = {"type": "figure", "tool": tool, "title": _plain(title), "figure": dict(figure, layout=layout)}
+    if image_id:
+        block["id"] = image_id
+    return block
+
+
+def _names(items: List[str], limit: int = 4) -> str:
+    items = [i for i in items if i]
+    return ", ".join(items[:limit]) + (f" and {len(items) - limit} more" if len(items) > limit else "")
+
+
+CHART_TYPES = ("figure", "xy", "depth_profile")
+
+
+def describe_block(b: Dict[str, Any]) -> str:
+    """One line saying what a chart block shows, for the model (never the values)."""
+    kind, title = b.get("type"), b.get("title") or "chart"
+    if kind == "figure":
+        return figure_details(b.get("figure") or {}, title)
+    if kind == "xy":
+        return f"Line chart '{title}': {b['y'].get('label') or 'values'} against {b['x'].get('label')}"
+    if kind == "depth_profile":
+        names = [t.get("title") for t in b.get("tracks", []) if t.get("title")]
+        return f"Depth profile '{title}' of {_names(names)} against depth"
+    return str(title)
+
+
+class ImageIds:
+    """Turn-unique image ids ("img1", "img2", ...), shared by the placeholders the model reads and the blocks the UI draws."""
+
+    def __init__(self) -> None:
+        self._n = 0
+
+    def next(self) -> str:
+        self._n += 1
+        return f"img{self._n}"
+
+
+def assign_image_ids(blocks: List[Dict[str, Any]], ids: "ImageIds") -> None:
+    """Give each chart block an ``id`` (keeping one it already has) and a ``description``. Other blocks are untouched."""
+    for b in blocks:
+        if b.get("type") in CHART_TYPES:
+            b["id"] = b.get("id") or ids.next()
+            b["description"] = describe_block(b)
+
+
+def image_manifest(blocks: List[Dict[str, Any]]) -> str:
+    """What the model is told about the images it can place: id and description only. "" when there are none."""
+    images = [b for b in blocks if b.get("type") in CHART_TYPES and b.get("id")]
+    if not images:
+        return ""
+    lines = [f"- {{{{image:{b['id']}}}}} {b['description']}" for b in images]
+    return ("Images prepared for the user (you do not see the plotted data). To show one at a point in your answer, "
+            "write its marker on its own line; images you do not mark are shown after your answer:\n" + "\n".join(lines))
+
+
+def generic_visuals(tool: str, result: Dict[str, Any], display: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+    """
+    Blocks for any tool result dict, by the shape of each value. ``display`` holds the figures of the raw result
+    (tool_registry.extract_display) and ``figure_ids``, the id each one was given in the model's placeholder.
+    """
+    display = display or {}
     prov = result.get("_provenance") if isinstance(result.get("_provenance"), dict) else {}
     units = prov.get("output_units") if isinstance(prov.get("output_units"), dict) else {}
     scalars: Dict[str, Any] = {}
@@ -228,6 +349,8 @@ def generic_visuals(tool: str, result: Dict[str, Any]) -> List[Dict[str, Any]]:
         elif isinstance(v, list) and v and all(isinstance(x, str) and 0 < len(x) <= 20 and " " not in x
                                                for x in v) and key not in _NOTE_KEYS:
             scalars[key] = ", ".join(v)  # e.g. channels: qc, fs, u2
+        elif isinstance(v, dict) and (set(v) == {"image_id", "details"} or set(v) == {"columns", "n_rows"}):
+            continue  # an image (drawn from ``display``) or a long table summarised for the model
         elif isinstance(v, dict):
             if v and all(_is_scalar(x) or _is_stats(x) or isinstance(x, list) for x in v.values()):
                 blocks.append(kv_table_block(_title(key), v, tool))
@@ -241,7 +364,9 @@ def generic_visuals(tool: str, result: Dict[str, Any]) -> List[Dict[str, Any]]:
             elif len(v) >= 3 and all(_is_number(x) for x in v):
                 arrays[key] = [float(x) for x in v]
 
-    out = [metrics_block("Results", scalars, tool, units)]
+    ids = display.get("figure_ids") or {}
+    figures = [figure_block(k, f, tool, ids.get(k)) for k, f in (display.get("figures") or {}).items()]
+    out = [metrics_block("Results", scalars, tool, units)] + [f for f in figures if f]
     # Groundhog functions that return curves give several equal-length arrays.
     if arrays:
         lengths = {len(a) for a in arrays.values()}
@@ -349,11 +474,12 @@ def build_visuals(tool_name: str, arguments: Optional[Dict[str, Any]], wrapper: 
     result = wrapper.get("result")
     if not isinstance(result, dict):
         result = {"result": result}
+    display = wrapper.get("display") if isinstance(wrapper.get("display"), dict) else {}
     try:
         specific = _SPECIFIC.get(tool_name)
         if specific:
             return _mark_details(specific(tool_name, arguments or {}, result))
-        return _mark_details(generic_visuals(tool_name, result))
+        return _mark_details(generic_visuals(tool_name, result, display))
     except Exception as e:
         logger.warning(f"GeoAI: visuals for {tool_name} failed: {e}")
         try:
