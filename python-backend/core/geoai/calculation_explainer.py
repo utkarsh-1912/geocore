@@ -17,7 +17,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from core.geoai.tool_metadata import curated_tool_metadata, get_tool_metadata
 
-_MATH_BLOCK_RE = re.compile(r"\.\. math::\n((?:[ \t]+\S.*\n?)+)")
+# Blank (or whitespace-only) lines inside the block separate piecewise cases, e.g. contactwidth's
+# "B = ... for z < D/2" and "B = D for z >= D/2"; they must not end the block.
+_MATH_BLOCK_RE = re.compile(r"\.\. math::\n((?:[ \t]+\S.*(?:\n|$)|[ \t]*\n)+)")
 # ":param key: Human description (:math:`symbol`) [:math:`unit`] - Suggested range: ..." — keep only
 # the human description, same convention website/_content/extract_docs.py uses for the API reference.
 _PARAM_RE = re.compile(r"^:param\s+(\w+):\s*(.*)$", re.MULTILINE)

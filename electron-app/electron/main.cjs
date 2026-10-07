@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, nativeImage } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeImage, shell } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
@@ -20,8 +20,8 @@ const TITLE_BAR_OVERLAY_HEIGHT = TITLE_BAR_HEIGHT - 1;
 // Mirrors --color-surface / --color-text-muted in src/index.css so the native
 // minimise / maximise / close buttons blend into the header.
 const TITLE_BAR_THEMES = {
-  dark: { color: '#151c18', symbolColor: '#a1aca5' },
-  light: { color: '#ffffff', symbolColor: '#56625b' },
+  dark: { color: '#121a16', symbolColor: '#a3b5ab' },
+  light: { color: '#f6f8f1', symbolColor: '#51605a' },
 };
 
 // macOS traffic lights are ~14px tall; centre them in the header.
@@ -82,6 +82,12 @@ function createWindow() {
       : isWin
       ? { titleBarStyle: 'hidden', titleBarOverlay: titleBarOverlayFor(true) }
       : {}),
+  });
+
+  // Tutorial videos link out to YouTube: open those in the system browser, never in an app window.
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https:\/\/(www\.)?youtube(-nocookie)?\.com\//.test(url)) shell.openExternal(url);
+    return { action: 'deny' };
   });
 
   // BrowserWindow#setIcon exists only on Windows/Linux; macOS uses the bundle icon.

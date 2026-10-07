@@ -16,7 +16,7 @@ import {
     PanelLeftClose, Download, Pencil, RotateCcw,
     Shield, CheckCircle2, ChevronDown, AlertTriangle,
     HardDrive, Zap, BookOpen, Compass, Layers, User,
-    FileCode, ExternalLink, Sparkles, Square
+    FileCode, ExternalLink, Sparkles, Square, Maximize2
 } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
@@ -136,9 +136,9 @@ const DownloadProgress = ({ status }) => {
     );
 };
 
-export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext, onBackToModules }) => {
-    // UI Layout State
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext, onBackToModules, compact = false, onClose, onExpand }) => {
+    // UI Layout State (compact = hosted in the slide-out copilot drawer: history starts collapsed)
+    const [sidebarOpen, setSidebarOpen] = useState(!compact);
 
     // Default initial conversation generator
     const createDefaultConv = () => ({
@@ -680,6 +680,16 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
                     {/* Single Unified Model Selector Button in Header */}
                     <div className="flex items-center gap-2">
+                        {compact && onExpand && (
+                            <button onClick={onExpand} title="Open in GeoAI tab" className="p-1.5 rounded-md hover:bg-background text-text-muted hover:text-text-main transition-colors order-last">
+                                <Maximize2 size={15} />
+                            </button>
+                        )}
+                        {compact && onClose && (
+                            <button onClick={onClose} title="Close (Esc)" className="p-1.5 rounded-md hover:bg-background text-text-muted hover:text-text-main transition-colors order-last">
+                                <X size={15} />
+                            </button>
+                        )}
                         {downloadStatus?.status === 'downloading' && (
                             <span className="text-[11px] text-primary flex items-center gap-1.5 animate-pulse border border-primary/30 px-2 py-1 rounded-md bg-primary/5">
                                 <RefreshCw size={11} className="animate-spin" />

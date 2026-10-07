@@ -26,6 +26,15 @@ def test_extract_formula_from_real_docstring():
     assert "\\cos" in formula or "\\sin" in formula
 
 
+def test_extract_formula_keeps_piecewise_cases_after_blank_line():
+    doc = ("Summary.\n\n.. math::\n    B = 2 \\cdot \\sqrt{D \\cdot z - z^2} \\quad \\text{for } z < D/2\n"
+           "    \n    B=D \\quad \\text{for } z \\geq D/2\n\n:returns: x")
+    formula = extract_formula(doc)
+    assert "z < D/2" in formula
+    assert "B=D" in formula and "z \\geq D/2" in formula
+    assert ":returns" not in formula
+
+
 def test_extract_formula_returns_none_without_math_block():
     assert extract_formula("No formula here, just prose.") is None
     assert extract_formula(None) is None

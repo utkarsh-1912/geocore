@@ -5,7 +5,10 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, HelpCircle, Keyboard, Info } from 'lucide-react';
+import { X, HelpCircle, Keyboard, Info, PlayCircle } from 'lucide-react';
+import tutorialsConfig from '../config/tutorials.json';
+
+const YOUTUBE_WATCH = 'https://www.youtube.com/watch?v=';
 
 export const HelpModal = ({ isOpen, onClose }) => {
     return (
@@ -99,6 +102,36 @@ export const HelpModal = ({ isOpen, onClose }) => {
                                     </div>
                                 </section>
                             </div>
+
+                            {/* Video tutorials (hosted on YouTube; opens in the system browser) */}
+                            <section className="space-y-3 bg-surface/50 border border-border rounded-md p-4">
+                                <div className="flex items-center gap-2 text-primary font-bold text-sm">
+                                    <PlayCircle size={16} />
+                                    <h3>Video Tutorials</h3>
+                                </div>
+                                <ul className="space-y-1.5">
+                                    {tutorialsConfig.tutorials.map((t) => (
+                                        <li key={t.id} className="flex items-center justify-between gap-3 text-xs p-2 bg-background rounded-md border border-border/50">
+                                            <div className="min-w-0">
+                                                <div className="font-semibold text-text-main">{t.title}</div>
+                                                <div className="text-text-muted">{t.description}</div>
+                                            </div>
+                                            {t.youtubeId ? (
+                                                <a
+                                                    href={YOUTUBE_WATCH + t.youtubeId}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="shrink-0 px-2.5 py-1 btn-brand text-[11px] font-semibold rounded-md"
+                                                >
+                                                    Watch · {t.duration}
+                                                </a>
+                                            ) : (
+                                                <span className="shrink-0 text-[10px] text-text-muted">Coming soon</span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
                         </div>
 
                         {/* Footer */}

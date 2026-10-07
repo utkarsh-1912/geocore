@@ -147,7 +147,11 @@ export const downloadCSV = (data, filename) => {
 const PRIMARY_COLOR = [106, 142, 78]; // Brand Primary Blue
 const SECONDARY_COLOR = [44, 62, 80]; // Dark Navy for contrast
 
-export const generatePDF = async (results, inputs, functionName, filename, capturedImage = null, schema = null, explanation = null) => {
+/**
+ * `plotImages`: report images of the result's plots, [{ dataUrl, width?, height?, title? }]
+ * (see utils/plotImages.js), or a single data URL string (e.g. a backend Matplotlib PNG).
+ */
+export const generatePDF = async (results, inputs, functionName, filename, plotImages = null, schema = null, explanation = null) => {
     console.log("generatePDF: Starting for", functionName);
     const { default: jsPDF } = await import('jspdf');
     const { default: autoTable } = await import('jspdf-autotable');
@@ -213,6 +217,18 @@ export const generatePDF = async (results, inputs, functionName, filename, captu
     doc.text(functionName, 14 + labelWidth, headerY + 10);
 
     let finalY = headerY + 22;
+
+    // Everything below is laid out top-down from finalY; start a new page when the next block
+    // would run into the footer, instead of drawing over it or off the page.
+    const pageHeight = doc.internal.pageSize.height;
+    const contentBottom = pageHeight - 20;
+    const ensureSpace = (needed) => {
+        if (finalY + needed > contentBottom) {
+            doc.addPage();
+            finalY = 20;
+        }
+    };
+    const images = !plotImages ? [] : (Array.isArray(plotImages) ? plotImages : [{ dataUrl: plotImages }]);
 
     // 2b. Method & Standard (from groundhog's own TOOL_METADATA/docstring — see
     // core/geoai/calculation_explainer.py; never fabricated, omitted entirely if unavailable)
@@ -331,6 +347,7 @@ export const generatePDF = async (results, inputs, functionName, filename, captu
             headStyles: { fillColor: PRIMARY_COLOR },
             styles: { fontSize: 8 }
         });
+        finalY = doc.lastAutoTable.finalY + 10;
     } else if (displayData.type === 'CalculationGrid' || (displayData.nodes && displayData.elements)) {
         doc.setFontSize(10);
         doc.text(`Grid Composition: ${displayData.nodes_count || displayData.nodes?.length || 0} Nodes | ${displayData.elements_count || displayData.elements?.length || 0} Elements`, 14, finalY + 5);
@@ -393,43 +410,44 @@ export const generatePDF = async (results, inputs, functionName, filename, captu
             });
             finalY = doc.lastAutoTable.finalY + 15;
         }
-    } else if (displayData.type === 'plotly' || displayData.type === 'plot' || displayData.type === 'multi_plot' || displayData.type === 'image' || capturedImage) {
-        // Render captured visualization (Plotly or Static Image)
-        if (finalY > 240) {
-            doc.addPage();
-            finalY = 20;
-        }
-        doc.setFontSize(11);
-        doc.text("Visualization Plot", 14, finalY + 5);
-
-        if (capturedImage) {
-            // Add the image
-            const imgWidth = pageWidth - 28;
-            try {
-                // Approximate aspect ratio for Plotly (approx 16:9 or similar)
-                // If we want to be exact we could pass height from App.jsx, 
-                // but 0 in doc.addImage often auto-fits.
-                doc.addImage(capturedImage, 'PNG', 14, finalY + 10, imgWidth, 0);
-
-                // Helper to estimate height added by image (since doc.lastAutoTable doesn't apply)
-                // We'll estimate based on a standard Plotly aspect ratio if height is 0
-                // Or just assume a fixed buffer
-                finalY += 100;
-            } catch (e) {
-                console.error("Failed to add captured image to PDF", e);
-                doc.setFontSize(10);
-                doc.setTextColor(255, 0, 0);
-                doc.text("[Error: Could not render plot image]", 14, finalY + 10);
-                doc.setTextColor(0);
-                finalY += 20;
-            }
-        } else {
+    } else if (displayData.type === 'plotly' || displayData.type === 'plot' || displayData.type === 'multi_plot' || displayData.type === 'image' || images.length > 0) {
+        if (images.length === 0) {
+            ensureSpace(20);
             doc.setFontSize(10);
             doc.setTextColor(100);
-            doc.text("[Note: Visualization snapshot was not available for this report]", 14, finalY + 12);
+            doc.text("[Note: Visualization snapshot was not available for this report]", 14, finalY + 7);
             doc.setTextColor(0);
             finalY += 20;
         }
+        images.forEach((img, i) => {
+            // Size each plot from its real aspect ratio (never a fixed guess), fit to the page width,
+            // and shrink it if it would be taller than a page.
+            const props = img.width && img.height ? img : doc.getImageProperties(img.dataUrl);
+            let imgWidth = pageWidth - 28;
+            let imgHeight = imgWidth * (props.height / props.width);
+            const maxHeight = contentBottom - 20 - 12;
+            if (imgHeight > maxHeight) {
+                imgWidth *= maxHeight / imgHeight;
+                imgHeight = maxHeight;
+            }
+            ensureSpace(12 + imgHeight);
+            const title = img.title || "Visualization Plot";
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text(images.length > 1 ? `${title} (${i + 1} of ${images.length})` : title, 14, finalY + 5);
+            doc.setFont(undefined, 'normal');
+            try {
+                doc.addImage(img.dataUrl, 'PNG', 14 + (pageWidth - 28 - imgWidth) / 2, finalY + 9, imgWidth, imgHeight);
+                finalY += 9 + imgHeight + 8;
+            } catch (e) {
+                console.error("Failed to add plot image to PDF", e);
+                doc.setFontSize(10);
+                doc.setTextColor(255, 0, 0);
+                doc.text("[Error: Could not render plot image]", 14, finalY + 12);
+                doc.setTextColor(0);
+                finalY += 20;
+            }
+        });
     } else if (typeof displayData === 'object' && !displayData.image && !displayData.type) {
         // Helper to format values for PDF (truncate large arrays/objects)
         const formatValueForPDF = (value) => {
@@ -463,25 +481,43 @@ export const generatePDF = async (results, inputs, functionName, filename, captu
                 1: { cellWidth: 'auto', overflow: 'linebreak' }
             }
         });
+        finalY = doc.lastAutoTable.finalY + 10;
     } else {
-        // Fallback text
+        // Fallback text, a page at a time
         doc.setFontSize(10);
         const text = JSON.stringify(displayData, null, 2);
         const splitText = doc.splitTextToSize(text, pageWidth - 28);
-        doc.text(splitText, 14, finalY + 5);
+        const lineHeight = 4.5;
+        let line = 0;
+        while (line < splitText.length) {
+            ensureSpace(lineHeight * 2);
+            const fit = Math.max(1, Math.floor((contentBottom - finalY - 5) / lineHeight));
+            const chunk = splitText.slice(line, line + fit);
+            doc.text(chunk, 14, finalY + 5);
+            finalY += chunk.length * lineHeight + 5;
+            line += chunk.length;
+        }
     }
 
     // Warnings
     const warnings = results.warnings || (results.result && results.result.warnings) || [];
     if (warnings.length > 0) {
-        let warnY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : finalY + 50;
+        // Below whatever was drawn last (lastAutoTable may be the inputs table above a plot),
+        // wrapped to the page width and continued on a new page when needed.
+        finalY += 4;
+        ensureSpace(16);
         doc.setTextColor(230, 126, 34); // Orange
         doc.setFontSize(12);
-        doc.text("Warnings:", 14, warnY);
+        doc.text("Warnings:", 14, finalY);
+        finalY += 6;
         doc.setFontSize(10);
-        warnings.forEach((w, i) => {
-            doc.text(`- ${w}`, 14, warnY + 6 + (i * 5));
+        warnings.forEach((w) => {
+            const lines = doc.splitTextToSize(`- ${typeof w === 'string' ? w : JSON.stringify(w)}`, pageWidth - 28);
+            ensureSpace(lines.length * 5);
+            doc.text(lines, 14, finalY);
+            finalY += lines.length * 5;
         });
+        doc.setTextColor(0);
     }
 
     // 5. Footer / Disclaimer

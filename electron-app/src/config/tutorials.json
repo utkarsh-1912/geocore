@@ -1,0 +1,37 @@
+{
+  "_comment": "Single source for the video tutorials shown in the app Help dialog and on the website (website/_build/build.py reads this file). After uploading a video to YouTube, paste its 11-character video id into youtubeId. Leave it empty until then.",
+  "tutorials": [
+    {
+      "id": "getting-started",
+      "title": "Getting started with GeoCore",
+      "description": "Tour the workstation, fill in a calculation form, read the results and open Help.",
+      "duration": "1:05",
+      "youtubeId": "t8sJE-LfkfY",
+      "steps": ["Pick a module and function", "Enter inputs with units and ranges", "Calculate and read results", "Help and Ctrl+K search"]
+    },
+    {
+      "id": "cpt-interpretation",
+      "title": "CPT interpretation",
+      "description": "Normalise a CPT reading, then estimate relative density with Groundhog correlations.",
+      "duration": "2:10",
+      "youtubeId": "gOTW31UzJBk",
+      "steps": ["PCPT normalisation and correction", "Corrected qt, Qtn, Fr and Ic", "Relative density for sand"]
+    },
+    {
+      "id": "pile-and-bearing",
+      "title": "Pile capacity and bearing",
+      "description": "API RP2GEO unit shaft friction and end bearing for piles, then undrained shallow-foundation capacity.",
+      "duration": "2:45",
+      "youtubeId": "Mur4CxG6MTU",
+      "steps": ["Unit skin friction (sand)", "Unit end bearing (sand)", "Undrained vertical capacity"]
+    },
+    {
+      "id": "geoai-assistant",
+      "title": "Using the GeoAI assistant",
+      "description": "Ask in plain language, inspect which tool ran, and choose a local model.",
+      "duration": "1:45",
+      "youtubeId": "VTAKHGDK0rc",
+      "steps": ["Quick analysis cards", "Inspect the tool steps", "Ask your own question", "Install a local model"]
+    }
+  ]
+}

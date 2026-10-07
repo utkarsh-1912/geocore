@@ -666,6 +666,8 @@ def debeer_calculation_wrapper(args):
         
         # 7. Calculate Components
         # Unit Shaft Friction
+        # Groundhog needs the cone-type correction step before averaging; 'E' (electric cone) applies none.
+        calc.correct_shaft_qc(cone_type=args.get('cone_type') or 'E')
         calc.calculate_average_qc()
         calc.calculate_unit_shaft_friction()
         
@@ -903,6 +905,7 @@ def lcpc_calculation_wrapper(args):
     """
     from .state import state_manager
     from groundhog.deepfoundations.axialcapacity.lcpc import LCPCAxcapCalculation
+    from groundhog.general.soilprofile import SoilProfile
     import json
     import plotly
     import numpy as np
@@ -965,6 +968,12 @@ def lcpc_calculation_wrapper(args):
         # Let's check wrappers.py imports. It implies `profile = state_manager.get(profile_id)`.
         # If `profile` is the actual object, we are good.
         
+        # Groundhog needs a boolean 'Ignore shaft friction' column. Profiles uploaded earlier may
+        # carry it with a unit suffix, or not at all (then no layer is ignored).
+        if 'Ignore shaft friction' not in profile.columns:
+            ignore = profile['Ignore shaft friction [-]'].astype(bool)                 if 'Ignore shaft friction [-]' in profile.columns else False
+            profile = SoilProfile(profile.assign(**{'Ignore shaft friction': ignore}))
+
         try:
             calc.set_soil_layers(
                 soilprofile=profile,
@@ -999,8 +1008,8 @@ def lcpc_calculation_wrapper(args):
         # Looking at LCPC source: `axcapplot = LogPlot(...)` ... `axcapplot.show()`.
         # LogPlot likely has a `.fig` attribute which is the plotly Figure.
         
-        axcap_plot_obj = calc.plot_axcap(return_fig=True, show_fig=False)
-        fs_qb_plot_obj = calc.plot_fs_qb(return_fig=True, show_fig=False)
+        axcap_plot_obj = calc.plot_axcap(return_fig=True)
+        fs_qb_plot_obj = calc.plot_fs_qb(return_fig=True)
         
         # Safely access the figure. 
         # If LogPlot is a wrapper, we need the underlying figure.

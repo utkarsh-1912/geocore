@@ -24,6 +24,17 @@ export function readChartPalette() {
     const borderStrong = cssVar(css, '--color-border-strong', isDark ? '#2e4538' : '#b9cdbd');
     const surface = cssVar(css, '--color-surface', isDark ? '#0d1814' : '#ffffff');
     const primary = cssVar(css, '--color-primary', isDark ? '#a9cb7a' : '#5f8445');
+    return buildPalette(isDark, { text, muted, border, borderStrong, surface, primary });
+}
+
+/** Fixed light palette for exported reports: a PDF is printed on white whatever the on-screen theme. */
+export function printChartPalette() {
+    return buildPalette(false, {
+        text: '#13201a', muted: '#51605a', border: '#d6e2d8', borderStrong: '#b9cdbd', surface: '#ffffff', primary: '#5f8445',
+    });
+}
+
+function buildPalette(isDark, { text, muted, border, borderStrong, surface, primary }) {
     return {
         isDark, text, muted, border, borderStrong, surface, primary,
         grid: isDark ? 'rgba(163, 181, 171, 0.14)' : 'rgba(81, 96, 90, 0.14)',

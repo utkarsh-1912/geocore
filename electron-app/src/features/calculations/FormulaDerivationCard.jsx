@@ -31,7 +31,7 @@ const QuantityName = ({ q }) => (
 const QuantityRow = ({ q }) => (
   <div className="flex flex-wrap items-center justify-between p-2 rounded-md bg-surface/50 border border-border/50 text-[11px] gap-2">
     <QuantityName q={q} />
-    <span className="font-bold text-text-main font-mono">{formatValue(q.value)}{q.unit && q.unit !== '-' ? ` ${q.unit}` : ''}</span>
+    <span className="font-bold text-text-main font-mono min-w-0 max-w-full max-h-28 overflow-auto break-all">{formatValue(q.value)}{q.unit && q.unit !== '-' ? ` ${q.unit}` : ''}</span>
   </div>
 );
 
@@ -57,7 +57,7 @@ const DerivationStep = ({ index, step }) => (
           <span>where</span>
           {step.where.map((w) => (
             <div key={w.symbol} className="pl-3">
-              <Tex tex={w.symbol} /> = <span className="font-mono font-bold text-text-main">{formatValue(w.value)}{w.unit && w.unit !== '-' ? ` ${w.unit}` : ''}</span>
+              <Tex tex={w.symbol} /> = <span className="font-mono font-bold text-text-main inline-block align-top max-w-full max-h-28 overflow-auto break-all">{formatValue(w.value)}{w.unit && w.unit !== '-' ? ` ${w.unit}` : ''}</span>
               {w.label && <span> ({w.label})</span>}
             </div>
           ))}

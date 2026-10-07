@@ -184,6 +184,16 @@ def load_app_version() -> str:
         return ""
 
 
+def load_tutorials() -> List[Dict[str, Any]]:
+    """Video tutorials, from the app's own config so the Help dialog and the website cannot drift."""
+    path = REPO / "electron-app" / "src" / "config" / "tutorials.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))["tutorials"]
+    except (OSError, KeyError, ValueError) as exc:
+        print(f"WARNING: could not read {path}: {exc}")
+        return []
+
+
 def load_groundhog_version() -> str:
     """Version of the groundhog GeoCore ships, as recorded by the docs extractor."""
     path = WEBSITE / docs_content.CONTENT_DIRNAME / "groundhog" / "api.json"
@@ -369,6 +379,10 @@ def seed_search_entries(domains: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
          "summary": "Installers for Windows, macOS and Linux, system requirements, installation and GeoAI models.",
          "headings": ["System requirements", "Install on Windows", "Install on macOS", "Install on Linux", "GeoAI models"],
          "body": "SmartScreen Gatekeeper installer dmg exe AppImage deb arm64 x64 RAM GGUF Hugging Face auto-update"},
+        {"id": "tutorials", "title": "Video tutorials", "url": "tutorials.html", "section": "Site",
+         "summary": "Short screen recordings: getting started, CPT interpretation, pile capacity and bearing, GeoAI.",
+         "headings": [t["title"] for t in load_tutorials()],
+         "body": "video YouTube tutorial screencast walkthrough"},
         {"id": "privacy", "title": "Privacy", "url": "privacy.html", "section": "Site",
          "summary": "Every network request GeoCore makes, and what is stored on your computer.",
          "headings": ["Network activity", "Data stored on your computer", "This website"],
@@ -440,6 +454,7 @@ def build() -> None:
         "repo_url": REPO_URL,
         "releases_url": RELEASES_URL,
         "app_version": load_app_version(),
+        "tutorials": load_tutorials(),
         "fn_total": fn["total"],
         "domains": domains,
         "models": models,
@@ -456,6 +471,7 @@ def build() -> None:
         ("about.html", "about.html", "about"),
         ("privacy.html", "privacy.html", "privacy"),
         ("download.html", "download.html", "download"),
+        ("tutorials.html", "tutorials.html", "tutorials"),
         ("404.html", "404.html", ""),
     ]
     for template, out, nav_key in pages:

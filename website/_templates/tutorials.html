@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Video tutorials — GeoCore{% endblock %}
+{% block description %}Short video tutorials for GeoCore: getting started, CPT interpretation, pile capacity and bearing, and the GeoAI assistant.{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div class="container">
+    <p class="eyebrow">{{ icon('book') }}Tutorials</p>
+    <h1>Video tutorials</h1>
+    <p class="lede">Short screen recordings of real GeoCore workflows. Videos are hosted on YouTube and load only when you press play.</p>
+  </div>
+</header>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="grid grid--2">
+      {% for t in tutorials %}
+      <article class="card" id="{{ t.id }}">
+        <h2 class="h-sub">{{ t.title }}</h2>
+        <p>{{ t.description }}</p>
+        <ul>
+          {% for step in t.steps %}<li>{{ step }}</li>{% endfor %}
+        </ul>
+        {% if t.youtubeId %}
+        <details>
+          <summary>Play here ({{ t.duration }})</summary>
+          <iframe src="https://www.youtube-nocookie.com/embed/{{ t.youtubeId }}" title="{{ t.title }}" width="560" height="315" loading="lazy"
+                  style="width:100%;aspect-ratio:16/9;border:0" allow="fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </details>
+        <p><a href="https://www.youtube.com/watch?v={{ t.youtubeId }}">Watch on YouTube {{ icon('external') }}</a></p>
+        {% else %}
+        <p class="muted">Video coming soon.</p>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

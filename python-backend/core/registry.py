@@ -31,6 +31,11 @@ def _load_wrapper_module(name):
         return mod
     return importlib.import_module(full_name)
 
+#: UI functions whose request is a form for a wrapper in wrappers.py, not the constructor of the
+#: Groundhog class of the same name (the wrapper checks its own columns and parameters).
+_FORM_VALIDATED_BY_WRAPPER = frozenset({'KoppejanCalculation', 'DeBeerCalculation'})
+
+
 class Registry:
     def __init__(self):
         self.modules = {}
@@ -198,7 +203,7 @@ class Registry:
         from .warmup import wait_for_warmup
         wait_for_warmup()  # never import heavy modules concurrently with the start-up warm-up
         from .state import state_manager
-        from core.geoai.validator import validate_and_coerce_inputs, GeoAIValidationError
+        from core.geoai.validator import validate_and_coerce_inputs, sanitize_raw_input, GeoAIValidationError
         import pandas as pd
         import inspect
         import importlib
@@ -208,11 +213,16 @@ class Registry:
         import math
         import json
 
-        # Pre-validate and sanitize input arguments
-        try:
-            args, _ = validate_and_coerce_inputs(function_id, args)
-        except GeoAIValidationError as ve:
-            return ve.to_dict()
+        # Pre-validate and sanitize input arguments. The pile wrappers below take form fields
+        # (soilprofile, *_col, pile_diameter...), not Groundhog constructor arguments, so the
+        # schema auto-generated from the constructor would reject every UI request.
+        if function_id in _FORM_VALIDATED_BY_WRAPPER:
+            args = sanitize_raw_input(args)
+        else:
+            try:
+                args, _ = validate_and_coerce_inputs(function_id, args)
+            except GeoAIValidationError as ve:
+                return ve.to_dict()
 
         # 1. Handle Special Cases (Stateful objects like SoilProfile)
         if function_id == 'SoilProfile':
@@ -234,7 +244,13 @@ class Registry:
             elif file_path:
                 # Load data based on extension
                 if file_path.endswith('.csv'):
-                    df = pd.read_csv(file_path)
+                    # Excel-exported CSVs are often cp1252 (e.g. 0x97 em dash), not UTF-8.
+                    for _enc in ('utf-8-sig', 'cp1252', 'latin-1'):
+                        try:
+                            df = pd.read_csv(file_path, encoding=_enc)
+                            break
+                        except UnicodeDecodeError:
+                            continue
                 elif file_path.endswith(('.xls', '.xlsx')):
                     df = pd.read_excel(file_path)
                 else:
@@ -251,6 +267,11 @@ class Registry:
             if depth_to and depth_to in df.columns:
                 df = df.rename(columns={depth_to: 'Depth to [m]'})
             
+            # Groundhog needs these exact spellings (e.g. 'Total unit weight [kN/m3]').
+            _canon = {c.lower(): c for c in ('Total unit weight [kN/m3]', 'Unit weight [kN/m3]')}
+            df = df.rename(columns={c: _canon[c.strip().lower()] for c in df.columns
+                                    if isinstance(c, str) and c.strip().lower() in _canon})
+
             # Ensure unique columns before processing
             df = df.loc[:, ~df.columns.duplicated()]
 
@@ -283,7 +304,7 @@ class Registry:
                          unit = match.group(1)
                          name = col[:match.start()]
                          new_col_name = f"{name} [{unit}]"
-                     elif pd.api.types.is_numeric_dtype(df[col]):
+                     elif pd.api.types.is_numeric_dtype(df[col]) and not pd.api.types.is_bool_dtype(df[col]):
                          new_col_name = f"{col} [-]"
                      else:
                          continue

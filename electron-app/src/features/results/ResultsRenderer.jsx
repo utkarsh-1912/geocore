@@ -16,7 +16,7 @@ import { ThemedChart } from './ThemedChart';
 /** A table-valued output (e.g. Eurocode 7 factors per action type) as "name  value" rows, not raw JSON. */
 const NestedValue = ({ value }) => {
     if (value === null || Array.isArray(value) || Object.values(value).some(v => v !== null && typeof v === 'object')) {
-        return JSON.stringify(value);
+        return <span className="block max-w-full max-h-40 overflow-auto break-all">{JSON.stringify(value)}</span>;
     }
     return (
         <div className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 font-sans font-normal">
@@ -446,9 +446,11 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
                                                 {not?.symbol || '-'}
                                             </td>
                                             <td className="py-2.5 px-4 text-text-main font-mono font-semibold break-all min-w-[7rem]">
-                                                {typeof value === 'number'
-                                                    ? value.toLocaleString(undefined, { maximumFractionDigits: 5 })
-                                                    : (typeof value === 'object' ? <NestedValue value={value} /> : String(value))}
+                                                <div className="max-h-40 overflow-auto">
+                                                    {typeof value === 'number'
+                                                        ? value.toLocaleString(undefined, { maximumFractionDigits: 5 })
+                                                        : (typeof value === 'object' ? <NestedValue value={value} /> : String(value))}
+                                                </div>
                                             </td>
                                             <td className="py-2.5 px-4 text-text-muted font-mono">
                                                 {cleanUnit && cleanUnit !== '-' ? (

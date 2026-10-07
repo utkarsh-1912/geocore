@@ -87,8 +87,8 @@ export const SoilProfileModal = ({ isOpen, onClose, onSelect, objectType = "Soil
                 "Depth from [m]": depthFrom,
                 "Depth to [m]": layer.depth_to,
                 "Soil type": layer.soil_type,
-                "Unit Weight [kN/m3]": layer.unit_weight,
-                "Total Unit Weight [kN/m3]": layer.total_unit_weight,
+                "Unit weight [kN/m3]": layer.unit_weight,
+                "Total unit weight [kN/m3]": layer.total_unit_weight,
                 "Cohesion [kPa]": layer.cohesion,
                 "Friction Angle [deg]": layer.friction_angle
             };

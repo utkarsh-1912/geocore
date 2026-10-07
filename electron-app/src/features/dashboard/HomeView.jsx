@@ -7,7 +7,7 @@ import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import {
-    ArrowRight, Folder, FileText, Clock, Star, Book, Command, Trash2
+    ArrowRight, Folder, Clock, Star, Book, Command, Trash2, Search
 } from 'lucide-react';
 import { getCategoryIcon } from '@/config/categoryIcons';
 import { GeoAILogo } from '@/components/common/GeoAILogo';
@@ -32,6 +32,15 @@ const countTools = (category) => {
  */
 export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history = [], favorites = [], onClearRecent, onOpenCopilot, onOpenCommands, onOpenHelp }) => {
     const [showClearConfirm, setShowClearConfirm] = useState(false);
+    const [moduleFilter, setModuleFilter] = useState('');
+
+    const totalTools = useMemo(() => modules.reduce((n, c) => n + countTools(c), 0), [modules]);
+
+    const visibleModules = useMemo(() => {
+        const q = moduleFilter.trim().toLowerCase();
+        if (!q) return modules;
+        return modules.filter(c => `${c.title} ${c.description || ''}`.toLowerCase().includes(q));
+    }, [modules, moduleFilter]);
 
     const recentCalcs = useMemo(() => {
         return (history || []).slice(0, 5);
@@ -76,7 +85,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
             >
-                <div className="hero-surface relative overflow-hidden rounded-lg border border-primary/15 p-6 md:p-9">
+                <div className="hero-surface relative overflow-hidden rounded-xl border border-primary/15 p-6 md:p-9">
                     <div className="hero-surface__grid" aria-hidden />
                     <div className="relative z-10">
                     <div className="flex items-start justify-between">
@@ -118,6 +127,21 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                             <span>Guide</span>
                         </button>
                     </div>
+
+                    {/* Stat chips */}
+                    <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t border-white/10">
+                        {[
+                            { label: 'modules', value: modules.length },
+                            { label: 'calculation tools', value: totalTools },
+                            { label: 'saved favorites', value: favorites.length },
+                            { label: 'recent calculations', value: (history || []).length },
+                        ].map(stat => (
+                            <div key={stat.label} className="flex items-baseline gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 py-1.5">
+                                <span className="text-base font-semibold text-white tabular-nums">{stat.value}</span>
+                                <span className="text-xs text-white/60">{stat.label}</span>
+                            </div>
+                        ))}
+                    </div>
                     </div>
                 </div>
             </motion.div>
@@ -138,7 +162,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                             <button
                                 key={tool.id}
                                 onClick={() => onSelectFunction?.(tool, tool.category, tool.subModule)}
-                                className="card-lift shrink-0 bg-surface border border-border rounded-md px-4 py-3 text-left min-w-[160px]"
+                                className="card-lift shrink-0 bg-surface border border-border rounded-lg px-4 py-3 text-left min-w-[160px]"
                             >
                                 <div className="text-sm font-medium text-text-main truncate">{tool.title}</div>
                                 <div className="text-xs text-text-muted truncate mt-1">{tool.category?.title}</div>
@@ -174,7 +198,7 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                             </button>
                         )}
                     </div>
-                    <div className="bg-surface border border-border rounded-md divide-y divide-border overflow-hidden shadow-card">
+                    <div className="bg-surface border border-border rounded-lg divide-y divide-border overflow-hidden shadow-card">
                         {recentCalcs.map((calc, idx) => (
                             <button
                                 key={idx}
@@ -204,12 +228,34 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.3 }}
             >
-                <h2 className="text-lg font-semibold text-text-main mb-3 flex items-center gap-2">
-                    <Folder size={18} className="text-primary" />
-                    All Modules
-                </h2>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <h2 className="text-lg font-semibold text-text-main flex items-center gap-2">
+                        <Folder size={18} className="text-primary" />
+                        All Modules
+                        <span className="text-xs font-medium text-text-muted bg-surface-muted border border-border rounded-md px-2 py-0.5 tabular-nums">
+                            {visibleModules.length}
+                        </span>
+                    </h2>
+                    <div className="relative w-full sm:w-64">
+                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-subtle pointer-events-none" />
+                        <input
+                            type="text"
+                            value={moduleFilter}
+                            onChange={(e) => setModuleFilter(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Escape' && setModuleFilter('')}
+                            placeholder="Filter modules…"
+                            aria-label="Filter modules"
+                            className="w-full h-8 pl-8 pr-3 rounded-md border border-border bg-surface text-sm text-text-main placeholder:text-text-subtle outline-none transition-all focus:border-primary/50 focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_12%,transparent)]"
+                        />
+                    </div>
+                </div>
+                {visibleModules.length === 0 && (
+                    <div className="rounded-lg border border-dashed border-border py-10 text-center text-sm text-text-muted">
+                        No modules match “{moduleFilter}”.
+                    </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {modules.map((category, index) => {
+                    {visibleModules.map((category, index) => {
                         const Icon = getCategoryIcon(category.id);
                         const toolCount = countTools(category);
 
@@ -222,9 +268,9 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, history 
                                 onClick={() => onSelectCategory(category)}
                                 className="cursor-pointer group"
                             >
-                                <Card className="card-lift h-full relative overflow-hidden">
+                                <Card className="card-lift h-full relative overflow-hidden !rounded-lg">
                                     <div className="flex items-start justify-between mb-3">
-                                        <div className="p-2.5 rounded-md bg-gradient-to-br from-primary/20 to-primary/5 text-primary ring-1 ring-primary/20">
+                                        <div className="p-2.5 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 text-primary ring-1 ring-primary/20">
                                             <Icon size={22} />
                                         </div>
                                         <div className="flex items-center gap-2">

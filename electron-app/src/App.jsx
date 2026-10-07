@@ -20,6 +20,7 @@ import { GEOTECHNICAL_MODULES } from './config/geotechnicalModules';
 import { getSchema } from './features/calculations/schemas';
 import { api } from './api/client';
 import { generatePDF, downloadCSV, downloadJSON } from './utils/exportUtils';
+import { renderPlotImages } from './utils/plotImages';
 import { Toaster, toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { HelpModal } from './components/HelpModal';
@@ -506,26 +507,25 @@ const MainLayout = () => {
           console.log("PDF Export: Using direct base64 data for static image");
           capturedImage = `data:image/png;base64,${displayData.data}`;
         } else if (displayData.type === 'plotly' || displayData.type === 'plot' || displayData.type === 'multi_plot') {
-          console.log("PDF Export: Attempting visualization capture for Plotly...");
-          const visualElement = document.getElementById('results-visualization');
+          // Render every plot from its figure data (no toolbar, no on-screen zoom, print colours).
+          try {
+            capturedImage = await renderPlotImages(displayData, activeFunction.title);
+          } catch (renderErr) {
+            console.error("PDF Export: Plotly image render failed, falling back to a screenshot", renderErr);
+          }
+          const visualElement = !capturedImage?.length && document.getElementById('results-visualization');
           if (visualElement) {
-            console.log("PDF Export: Visual element found, starting html2canvas...");
-            // Wait a bit for Plotly to be fully stable and rendered
-            await new Promise(r => setTimeout(r, 800));
             try {
               const canvas = await html2canvas(visualElement, {
                 backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
                 scale: 1.5,
                 useCORS: true,
-                logging: true
+                ignoreElements: (el) => el.classList?.contains('modebar-container'),
               });
               capturedImage = canvas.toDataURL('image/png');
-              console.log("PDF Export: Capture successful, image data length:", capturedImage.length);
             } catch (captureErr) {
               console.error("PDF Export: html2canvas failed", captureErr);
             }
-          } else {
-            console.warn("PDF Export: Visual element #results-visualization not found in DOM for Plotly");
           }
         }
 
@@ -687,7 +687,7 @@ const MainLayout = () => {
             {/* Search / command palette trigger */}
             <button
               onClick={() => setCommandPaletteOpen(true)}
-              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-3 mr-1 rounded-full border border-border bg-background/70 text-text-subtle hover:text-text-muted hover:border-primary/40 hover:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_12%,transparent)] transition-all text-sm"
+              className="hidden md:flex items-center gap-2 h-8 w-56 lg:w-64 px-3 mr-1 rounded-md border border-border bg-background/70 text-text-subtle hover:text-text-muted hover:border-primary/40 hover:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_12%,transparent)] transition-all text-sm"
               title="Search & Commands (Ctrl+K)"
             >
               <Search size={15} />
