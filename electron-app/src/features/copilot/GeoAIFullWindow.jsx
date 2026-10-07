@@ -179,10 +179,13 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     });
 
     const [inputValue, setInputValue] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    // Id of the conversation whose answer is running (null when idle). There is one local model and one
+    // stop handle, so only one answer runs at a time; its live trace belongs to that conversation only.
+    const [loadingConvId, setLoadingConvId] = useState(null);
     const [liveSteps, setLiveSteps] = useState([]);
     const abortRef = useRef(null);
-    const elapsedSeconds = useElapsedSeconds(isLoading);
+    const isBusy = loadingConvId !== null;
+    const elapsedSeconds = useElapsedSeconds(isBusy);
 
     // Inline Message Edit State
     const [editingMsgId, setEditingMsgId] = useState(null);
@@ -228,6 +231,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     const activeConversation = conversations.find(c => c.id === activeConvId) || conversations[0] || createDefaultConv();
     const currentConvId = activeConversation?.id;
     const messages = activeConversation?.messages || [];
+    const isLoading = isBusy && loadingConvId === currentConvId; // this conversation is being answered
 
     // Scroll to bottom
     const scrollToBottom = () => {
@@ -353,7 +357,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     const handleSendMessage = async (textToSend, baseMessages = null) => {
         const text = textToSend || inputValue;
-        if (!text.trim() || isLoading) return;
+        if (!text.trim() || isBusy) return;
 
         const targetId = currentConvId || activeConvId;
         const msgsToUse = baseMessages || messages;
@@ -370,7 +374,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         updateCurrentMessages(updated);
         if (!textToSend) setInputValue('');
         setEditingMsgId(null);
-        setIsLoading(true);
+        setLoadingConvId(targetId);
         setLiveSteps([]);
         const trace = createTraceRecorder(setLiveSteps);
 
@@ -442,7 +446,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             }
         } finally {
             abortRef.current = null;
-            setIsLoading(false);
+            setLoadingConvId(null);
         }
     };
 
@@ -477,7 +481,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     };
 
     const submitEdit = (msgId) => {
-        if (!editingText.trim() || isLoading) return;
+        if (!editingText.trim() || isBusy) return;
         const msgIndex = messages.findIndex(m => m.id === msgId);
         if (msgIndex === -1) return;
 
@@ -625,7 +629,9 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                 }`}
                             >
                                 <div className="flex items-center gap-2 truncate">
-                                    <MessageSquare size={13} className="shrink-0 opacity-70" />
+                                    {conv.id === loadingConvId
+                                        ? <RefreshCw size={13} className="shrink-0 animate-spin text-primary" aria-label="Answering" />
+                                        : <MessageSquare size={13} className="shrink-0 opacity-70" />}
                                     <span className="truncate">{conv.title}</span>
                                 </div>
                                 <button
@@ -1081,9 +1087,9 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                         ) : (
                             <button
                                 onClick={() => handleSendMessage()}
-                                disabled={!inputValue.trim()}
-                                title="Send"
-                                aria-label="Send"
+                                disabled={!inputValue.trim() || isBusy}
+                                title={isBusy ? 'GeoAI is answering in another conversation' : 'Send'}
+                                aria-label={isBusy ? 'Send (busy: GeoAI is answering in another conversation)' : 'Send'}
                                 className="p-2 btn-brand rounded-md hover:brightness-105 disabled:opacity-30 disabled:cursor-not-allowed transition-[filter,opacity] shrink-0 flex items-center justify-center h-9 w-9 "
                             >
                                 <Send size={14} />

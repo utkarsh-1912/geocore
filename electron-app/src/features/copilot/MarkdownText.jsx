@@ -2,16 +2,25 @@
  * Minimal Markdown renderer for GeoAI answers.
  *
  * Covers what the local model actually emits: headings, paragraphs, **bold**, *italic*,
- * `code`, fenced code blocks, bullet / numbered lists and GFM tables. Output is built
- * from React elements (never innerHTML), so model text cannot inject markup.
+ * `code`, fenced code blocks, bullet / numbered lists, GFM tables and LaTeX math ($...$, \(...\),
+ * $$...$$, \[...\]). Output is built from React elements; the only HTML is KaTeX's rendering of a
+ * formula (MathTex), so model text cannot inject markup.
  *
  * Author: Utkarsh Gupta
  * License: GPL v3
  */
 import React from 'react';
+import { MathTex } from './MathTex';
 
 // Underscore emphasis is not supported: it would mangle identifiers such as phi_eff.
-const INLINE = /(`[^`\n]+`|\*\*[^*\n]+?\*\*|(?<![\w*])\*[^*\s](?:[^*\n]*?[^*\s])?\*(?![\w*]))/g;
+// Math: $$..$$ and \(..\) always; $..$ only when it looks like TeX (see isInlineMath), so "$5 and $10" stays text.
+const INLINE = /(`[^`\n]+`|\$\$[^$\n]+?\$\$|\\\([^\n]+?\\\)|\$[^$\n]+?\$|\*\*[^*\n]+?\*\*|(?<![\w*])\*[^*\s](?:[^*\n]*?[^*\s])?\*(?![\w*]))/g;
+
+/** A $..$ span is math when it holds TeX syntax or is a short symbol ("$ e $", "$\phi'$"); prices are not. */
+const isInlineMath = (body) => {
+    const tex = body.trim();
+    return tex.length > 0 && (/[\\^_{}=]/.test(tex) || (tex.length <= 3 && !/^\d/.test(tex)));
+};
 
 const renderInline = (text, keyPrefix = '') => {
     const parts = [];
@@ -22,7 +31,14 @@ const renderInline = (text, keyPrefix = '') => {
         if (match.index > last) parts.push(text.slice(last, match.index));
         const token = match[0];
         const key = `${keyPrefix}-${match.index}`;
-        if (token.startsWith('`')) {
+        if (token.startsWith('$$')) {
+            parts.push(<MathTex key={key} tex={token.slice(2, -2).trim()} />);
+        } else if (token.startsWith('\\(')) {
+            parts.push(<MathTex key={key} tex={token.slice(2, -2).trim()} />);
+        } else if (token.startsWith('$')) {
+            const body = token.slice(1, -1);
+            parts.push(isInlineMath(body) ? <MathTex key={key} tex={body.trim()} /> : token);
+        } else if (token.startsWith('`')) {
             parts.push(<code key={key} className="px-1 py-px rounded-md bg-background border border-border font-mono text-[0.95em]">{token.slice(1, -1)}</code>);
         } else if (token.startsWith('**')) {
             parts.push(<strong key={key} className="font-semibold">{renderInline(token.slice(2, -2), key)}</strong>);
@@ -48,8 +64,11 @@ const splitRow = (line) => {
     return row.split('|').map(c => c.trim());
 };
 
+const MATH_OPEN = /^\s*(\$\$|\\\[)/;
+const MATH_CLOSE = { '$$': '$$', '\\[': '\\]' };
+
 const isBlockStart = (line, next) =>
-    /^\s*```/.test(line) || HEADING.test(line) || BULLET.test(line) || ORDERED.test(line)
+    /^\s*```/.test(line) || MATH_OPEN.test(line) || HEADING.test(line) || BULLET.test(line) || ORDERED.test(line)
     || /^\s*([-*_])(\s*\1){2,}\s*$/.test(line)
     || (line.includes('|') && next !== undefined && TABLE_SEP.test(next));
 
@@ -68,6 +87,27 @@ export const parseMarkdown = (source = '') => {
             while (i < lines.length && !/^\s*```/.test(lines[i])) body.push(lines[i++]);
             i++; // closing fence (or end of a still-streaming block)
             blocks.push({ type: 'code', text: body.join('\n') });
+            continue;
+        }
+        const math = line.match(MATH_OPEN);
+        if (math) {
+            // $$ ... $$ / \[ ... \]: on one line, or spread over several (closed or still streaming).
+            const close = MATH_CLOSE[math[1]];
+            const rest = line.trim().slice(math[1].length);
+            const body = [];
+            if (rest.includes(close)) {
+                body.push(rest.slice(0, rest.indexOf(close)));
+                i++;
+            } else {
+                if (rest.trim()) body.push(rest);
+                i++;
+                while (i < lines.length && !lines[i].includes(close)) body.push(lines[i++]);
+                if (i < lines.length) {
+                    body.push(lines[i].slice(0, lines[i].indexOf(close)));
+                    i++;
+                }
+            }
+            blocks.push({ type: 'math', text: body.join('\n').trim() });
             continue;
         }
         const heading = line.match(HEADING);
@@ -128,6 +168,8 @@ export const MarkdownText = ({ text, className = '' }) => {
                         return <pre key={k} className="p-2 rounded-md bg-background border border-border font-mono text-[11px] overflow-x-auto whitespace-pre">{b.text}</pre>;
                     case 'rule':
                         return <hr key={k} className="border-border" />;
+                    case 'math':
+                        return b.text ? <MathTex key={k} tex={b.text} display /> : null;
                     case 'ul':
                     case 'ol': {
                         const List = b.type;
