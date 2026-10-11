@@ -1,0 +1,53 @@
+{
+ "domain": {
+  "id": "material_models",
+  "title": "Material models",
+  "description": "Constitutive models: Mohr-Coulomb and Hardening Soil element tests.",
+  "order": 8
+ },
+ "calculations": [
+  {
+   "id": "mohrcoulomb_triaxial_compression",
+   "title": "Mohr-Coulomb Triaxial Compression",
+   "group": "Mohr-Coulomb",
+   "methods": [
+    {
+     "id": "mohrcoulomb_triaxial_compression",
+     "label": "Mohr-Coulomb Triaxial Compression",
+     "function": "mohrcoulomb_triaxial_compression",
+     "status": "corrected",
+     "status_note": "Groundhog 0.16.0 sigma_1 corrected in core/groundhog_corrections.py; checked against the closed form."
+    }
+   ],
+   "default_method": "mohrcoulomb_triaxial_compression"
+  },
+  {
+   "id": "mohrcoulomb_triaxial_extension",
+   "title": "Mohr-Coulomb Triaxial Extension",
+   "group": "Mohr-Coulomb",
+   "methods": [
+    {
+     "id": "mohrcoulomb_triaxial_extension",
+     "label": "Mohr-Coulomb Triaxial Extension",
+     "function": "mohrcoulomb_triaxial_extension",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "mohrcoulomb_triaxial_extension"
+  },
+  {
+   "id": "hardening_soil_drained_triaxial",
+   "title": "Hardening Soil (Drained Triaxial)",
+   "group": "Hardening Soil",
+   "methods": [
+    {
+     "id": "hardening_soil_drained_triaxial",
+     "label": "Hardening Soil (Drained Triaxial)",
+     "function": "hardening_soil_drained_triaxial",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "hardening_soil_drained_triaxial"
+  }
+ ]
+}

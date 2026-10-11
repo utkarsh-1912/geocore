@@ -259,7 +259,7 @@ def test_run_stream_tool_call_flow():
     assert events[3].content == "writing_answer"
 
     assert events[4].type == "token"
-    assert events[4].content == "**calc_tool** result: out = 2\n\n"
+    assert events[4].content == "**Calc tool:** out = 2\n\n"  # readable tool name when not catalogued
 
     assert events[5].type == "token"
     assert events[5].content == "Final response after tool"

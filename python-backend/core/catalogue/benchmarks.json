@@ -1,0 +1,416 @@
+{
+ "_comment": "Verification cases per catalogue method: run through the same path as the forms (registry.execute_function) and compared with closed-form engineering relations. A method with at least one case is shown as verified. 'source' states the relation used, not a page reference.",
+ "cases": [
+  {
+   "method": "voidratio_porosity",
+   "source": "e = n / (1 - n)",
+   "inputs": {
+    "porosity": 0.4
+   },
+   "expected": {
+    "voidratio [-]": 0.6666666666666667
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "porosity_voidratio",
+   "source": "n = e / (1 + e)",
+   "inputs": {
+    "voidratio": 0.7
+   },
+   "expected": {
+    "porosity [-]": 0.4117647058823529
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "watercontent_voidratio",
+   "source": "w = Sr e / Gs",
+   "inputs": {
+    "voidratio": 0.8,
+    "saturation": 1.0,
+    "specific_gravity": 2.7
+   },
+   "expected": {
+    "Water content [-]": 0.2962962962962963
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "saturation_watercontent",
+   "source": "Sr = w Gs / e",
+   "inputs": {
+    "water_content": 0.2,
+    "voidratio": 0.6,
+    "specific_gravity": 2.7
+   },
+   "expected": {
+    "saturation [-]": 0.9000000000000001
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "bulkunitweight",
+   "source": "gamma = (Gs + Sr e) gamma_w / (1 + e)",
+   "inputs": {
+    "saturation": 1.0,
+    "voidratio": 0.8,
+    "specific_gravity": 2.7,
+    "unitweight_water": 10.0
+   },
+   "expected": {
+    "bulk unit weight [kN/m3]": 19.444444444444443,
+    "effective unit weight [kN/m3]": 9.444444444444443
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "dryunitweight_watercontent",
+   "source": "gamma_d = gamma / (1 + w)",
+   "inputs": {
+    "watercontent": 0.2,
+    "bulkunitweight": 19.0
+   },
+   "expected": {
+    "dry unit weight [kN/m3]": 15.833333333333334
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "unitweight_density",
+   "source": "gamma = rho g",
+   "inputs": {
+    "density": 1800.0,
+    "g": 9.81
+   },
+   "expected": {
+    "Unit weight [kN/m3]": 17.658
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "density_unitweight",
+   "source": "rho = gamma / g",
+   "inputs": {
+    "gamma": 18.0,
+    "g": 9.81
+   },
+   "expected": {
+    "Density [kg/m3]": 1834.8623853211009
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "voidratio_drydensity",
+   "source": "e = Gs rho_w / rho_d - 1",
+   "inputs": {
+    "dry_density": 1600.0,
+    "specific_gravity": 2.65,
+    "water_density": 1000.0
+   },
+   "expected": {
+    "Void ratio [-]": 0.65625
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "relative_density",
+   "source": "Dr = (e_loose - e) / (e_loose - e_dense); Groundhog's e_min is the void ratio at minimum density (loosest)",
+   "inputs": {
+    "void_ratio": 0.7,
+    "e_min": 0.9,
+    "e_max": 0.5
+   },
+   "expected": {
+    "Dr [-]": 0.5
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "earthpressurecoefficients_rankine",
+   "source": "Rankine, vertical wall, horizontal backfill: Ka = tan^2(45 - phi/2), Kp = 1/Ka",
+   "inputs": {
+    "phi_eff": 30,
+    "wall_angle": 0,
+    "top_angle": 0
+   },
+   "expected": {
+    "KaR [-]": 0.3333333333333333,
+    "KpR [-]": 3.0
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "nq_frictionangle_sand",
+   "source": "Prandtl-Reissner: Nq = exp(pi tan phi) tan^2(45 + phi/2)",
+   "inputs": {
+    "friction_angle": 30
+   },
+   "expected": {
+    "Nq [-]": 18.401122218708668
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "ngamma_frictionangle_vesic",
+   "source": "Vesic: Ngamma = 2 (Nq + 1) tan phi",
+   "inputs": {
+    "friction_angle": 30
+   },
+   "expected": {
+    "Ngamma [-]": 22.402486271104557
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "ngamma_frictionangle_meyerhof",
+   "source": "Meyerhof: Ngamma = (Nq - 1) tan(1.4 phi)",
+   "inputs": {
+    "friction_angle": 30
+   },
+   "expected": {
+    "Ngamma [-]": 15.668040821046286
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "gmax_shearwavevelocity",
+   "source": "Gmax = rho Vs^2 with rho = gamma / g",
+   "inputs": {
+    "Vs": 200,
+    "gamma": 18,
+    "g": 9.81
+   },
+   "expected": {
+    "Gmax [kPa]": 73394.49541284403,
+    "rho [kg/m3]": 1834.8623853211009
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "stresses_pointload",
+   "source": "Boussinesq, below the load (r = 0): delta sigma_z = 3 Q / (2 pi z^2)",
+   "inputs": {
+    "pointload": 100,
+    "z": 2,
+    "r": 0,
+    "poissonsratio": 0.3
+   },
+   "expected": {
+    "delta sigma z [kPa]": 11.93662073189215
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "effectivearea_rectangle_api",
+   "source": "Meyerhof effective width: L' = L - 2 e_L, B' = B - 2 e_B, A' = L' B'",
+   "inputs": {
+    "length": 4,
+    "width": 2,
+    "eccentricity_length": 0.5,
+    "eccentricity_width": 0
+   },
+   "expected": {
+    "effective_length [m]": 3.0,
+    "effective_width [m]": 2.0,
+    "effective_area [m2]": 6.0
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "contactwidth",
+   "source": "DNV-RP-F114: B = 2 sqrt(D z - z^2) for z < D/2",
+   "inputs": {
+    "diameter": 2,
+    "penetration": 0.5
+   },
+   "expected": {
+    "B [m]": 1.7320508075688772
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "contactwidth",
+   "source": "DNV-RP-F114: B = D for z >= D/2",
+   "inputs": {
+    "diameter": 2,
+    "penetration": 1.4
+   },
+   "expected": {
+    "B [m]": 2.0
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "mohrcoulomb_triaxial_compression",
+   "source": "sigma_1 = sigma_3 (1 + sin phi)/(1 - sin phi) + 2 c cos phi/(1 - sin phi)",
+   "inputs": {
+    "sigma_3": 100,
+    "cohesion": 0,
+    "phi": 30
+   },
+   "expected": {
+    "sigma_1_f": 300.0,
+    "radius": 100.0,
+    "center": 200.0
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "mohrcoulomb_triaxial_extension",
+   "source": "sigma_3 = sigma_1 (1 - sin phi)/(1 + sin phi) - 2 c cos phi/(1 + sin phi)",
+   "inputs": {
+    "sigma_1": 300,
+    "cohesion": 0,
+    "phi": 30
+   },
+   "expected": {
+    "sigma_3_f": 100.0,
+    "radius": 100.0
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "bulkunitweight_dryunitweight",
+   "source": "gamma = (1 + w) gamma_d",
+   "inputs": {
+    "dryunitweight": 14.0,
+    "watercontent": 0.25
+   },
+   "expected": {
+    "bulk unit weight [kN/m3]": 17.5
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "unitweight_watercontent_saturated",
+   "source": "gamma_sat = Gs (1 + w) gamma_w / (1 + w Gs)",
+   "inputs": {
+    "water_content": 0.3,
+    "specific_gravity": 2.7,
+    "gamma_w": 10.0
+   },
+   "expected": {
+    "gamma [kN/m3]": 19.392265193370164
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "voidratio_bulkunitweight",
+   "source": "e = (gamma_w Gs - gamma) / (gamma - S gamma_w)",
+   "inputs": {
+    "bulkunitweight": 19.0,
+    "saturation": 1.0,
+    "specific_gravity": 2.65,
+    "unitweight_water": 10.0
+   },
+   "expected": {
+    "e [-]": 0.8333333333333334
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "k0_frictionangle_mesri",
+   "source": "Jaky: K0 = 1 - sin(phi'), normally consolidated",
+   "inputs": {
+    "phi_cs": 30.0,
+    "ocr": 1.0
+   },
+   "expected": {
+    "K0 [-]": 0.5
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "k0_frictionangle_mesri",
+   "source": "Mayne & Kulhawy: K0 = (1 - sin phi') OCR^sin phi'",
+   "inputs": {
+    "phi_cs": 30.0,
+    "ocr": 4.0
+   },
+   "expected": {
+    "K0 [-]": 1.0
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "compressionindex_watercontent_koppula",
+   "source": "Koppula (1981): Cc = w_n; Cr = Cc / (Cc/Cr)",
+   "inputs": {
+    "water_content": 0.4,
+    "cc_cr_ratio": 8.0
+   },
+   "expected": {
+    "Cc [-]": 0.4,
+    "Cr [-]": 0.05
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "overburdencorrection_spt_liaowhitman",
+   "source": "Liao & Whitman (1986): CN = (Pa / sigma'v)^0.5",
+   "inputs": {
+    "N": 20,
+    "sigma_vo_eff": 50.0,
+    "atmospheric_pressure": 100.0
+   },
+   "expected": {
+    "CN [-]": 1.4142135623730951,
+    "N1 [-]": 28.284271247461902
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "overburdencorrection_spt_ISO",
+   "source": "ISO 22476-3: CN = (98 / sigma'v0)^0.5",
+   "inputs": {
+    "N": 20,
+    "sigma_vo_eff": 49.0
+   },
+   "expected": {
+    "CN [-]": 1.4142135623730951,
+    "N1 [-]": 28.284271247461902
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "consolidation_degree",
+   "source": "Terzaghi: Tv = cv t / Hdr^2 (cv in m2/yr, t in s, 365-day year); U from the series solution",
+   "inputs": {
+    "time": 6307200.0,
+    "cv": 1.0,
+    "drainage_length": 1.0
+   },
+   "expected": {
+    "Tv [-]": 0.2,
+    "U [pct]": 50.40878202025485
+   },
+   "rel_tol": 0.005
+  },
+  {
+   "method": "stress_dilatancy_bolton",
+   "source": "Bolton (1986): IR = Dr (Q - ln p') - R; phi_max - phi_cs = 3 IR (triaxial)",
+   "inputs": {
+    "relative_density": 0.8,
+    "p_eff": 100.0
+   },
+   "expected": {
+    "Ir [-]": 3.315863851209527,
+    "phi_max - phi_cs [deg]": 9.94759155362858
+   },
+   "rel_tol": 1e-06
+  },
+  {
+   "method": "relativedensity_ncsand_baldi",
+   "source": "Baldi et al. (1986): Dr = ln[qc / (157 sigma'v^0.55)] / 2.41, kPa",
+   "inputs": {
+    "qc": 12.0,
+    "sigma_vo_eff": 100.0
+   },
+   "expected": {
+    "Dr [-]": 0.7483703407171696
+   },
+   "rel_tol": 1e-06
+  }
+ ]
+}

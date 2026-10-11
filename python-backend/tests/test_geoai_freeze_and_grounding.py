@@ -136,7 +136,8 @@ def test_empty_explanation_falls_back_to_deterministic_result():
     events = list(agent.run_stream("Baldi relative density, qc = 12 MPa, sigma'vo = 100 kPa"))
 
     text = "".join(e.content or "" for e in events if e.type == "token")
-    assert f"**{BALDI}** result: Dr" in text
+    # Catalogue title, then the value with its quantity name and symbol.
+    assert "**Baldi Relative Density (NC Sand):** Relative density Dr = 0.7484" in text
 
 
 # --- provider cancellation ---------------------------------------------------------------

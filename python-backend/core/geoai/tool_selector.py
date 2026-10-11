@@ -387,6 +387,19 @@ def schema_tokens(tool: dict) -> float:
     return len(json.dumps(tool)) / CHARS_PER_TOKEN
 
 
+def with_sibling_methods(ranked: List[Tuple[str, float]]) -> List[Tuple[str, float]]:
+    """``ranked`` with each tool followed by the other methods of its catalogue calculation (same score, no repeats)."""
+    from core.geoai.catalogue_link import sibling_tools
+    out: List[Tuple[str, float]] = []
+    seen: Set[str] = set()
+    for name, score in ranked:
+        for n in (name, *sibling_tools(name)):
+            if n not in seen:
+                seen.add(n)
+                out.append((n, score))
+    return out
+
+
 def tool_in_domains(name: str, domains: Iterable[str]) -> bool:
     """Whether the registered tool ``name`` belongs to any of the engineering ``domains``."""
     tool = tool_registry._tools.get(name)
@@ -398,7 +411,7 @@ def tool_in_domains(name: str, domains: Iterable[str]) -> bool:
 
 def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, max_tools: int = 20, *,
                           max_schema_tokens: Optional[float] = None, compact: bool = False,
-                          domains: Optional[Iterable[str]] = None) -> List[dict]:
+                          domains: Optional[Iterable[str]] = None, group_methods: bool = False) -> List[dict]:
     """
     Select the ``max_tools`` most relevant registered tools for ``query`` and
     return them in OpenAI tool-calling format (see ``format_tools_for_prompt``, or
@@ -406,6 +419,9 @@ def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, 
 
     ``domains`` restricts the offer to tools of those engineering domains (a hard filter, used by
     specialist agents; ``None`` = every tool).
+
+    ``group_methods`` offers the other methods of a ranked tool's catalogue calculation right after it
+    (GeoAIModelConfig.catalogue_methods; off by default), so the model can choose between methods.
 
     ``max_schema_tokens`` optionally caps the approximate prompt size of the
     returned schemas: lower-ranked tools that would exceed it are skipped (the
@@ -415,6 +431,8 @@ def select_relevant_tools(query: str, context: Optional[Dict[str, Any]] = None, 
     fmt = format_tools_compact if compact else None
     limit = max(0, int(max_tools))
     ranked = rank_tools(query, context)
+    if group_methods:
+        ranked = with_sibling_methods(ranked)
     if domains is not None:
         domains = list(domains)
         ranked = [(n, sc) for n, sc in ranked if tool_in_domains(n, domains)]

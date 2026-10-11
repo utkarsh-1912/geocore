@@ -145,6 +145,21 @@ export const api = {
         return response;
     },
 
+    // Worked solution of a computed result, written by the local model from the calculation's guide details
+    // (POST /api/geoai/explain/solution, server-sent events like the chat stream).
+    geoaiSolutionStream: async (body, signal = undefined) => {
+        const response = await fetch(`${API_BASE}/api/geoai/explain/solution`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal,
+        });
+        if (!response.ok) {
+            throw new Error(`GeoAI solution request failed: ${response.status}`);
+        }
+        return response;
+    },
+
     geoaiListTools: async () => {
         const response = await fetchWithTimeout('/api/geoai/tools', { timeout: 5000 });
         return handleResponse(response);
@@ -281,6 +296,72 @@ export const api = {
             body: formData
         });
         return handleResponse(response);
+    },
+
+    // Phase relations "solve for" (python-backend/core/catalogue/phase_relations.py)
+    phaseRelationsInfo: async () => {
+        const response = await fetchWithTimeout('/api/calculations/phase_relations', { timeout: 10000 });
+        return handleResponse(response);
+    },
+    // A target that cannot be reached is a 422 whose detail lists what to give ("needs"): keep that list.
+    // The "Auto" method for the data saved in the workspace: {method, label, reason, available, fits}.
+    suggestMethod: async (calculationId) => {
+        const response = await fetchWithTimeout(`/api/calculations/${encodeURIComponent(calculationId)}/suggest`);
+        return handleResponse(response);
+    },
+
+    // Every method of a catalogue calculation on the same inputs: {methods: [{method, label, error, values}], rows}.
+    // methodInputs ({method id: {...}}) gives a method its own values on top of the shared inputs.
+    compareMethods: async (calculationId, inputs, methods, methodInputs) => {
+        const response = await fetchWithTimeout(`/api/calculations/${encodeURIComponent(calculationId)}/compare`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ inputs, methods, method_inputs: methodInputs })
+        });
+        return handleResponse(response);
+    },
+
+    phaseRelationsSolve: async (body) => {
+        const response = await fetchWithTimeout('/api/calculations/phase_relations/solve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        if (response.status === 422) {
+            const data = await response.json().catch(() => ({}));
+            const error = new Error(data.detail?.error || 'The quantity cannot be obtained from these inputs.');
+            error.needs = data.detail?.needs || [];
+            throw error;
+        }
+        return handleResponse(response);
+    },
+
+    // Project ground model, runs and reports (python-backend/core/project)
+    projectSummary: async () => handleResponse(await fetchWithTimeout('/api/project', { timeout: 10000 })),
+    projectSync: async () => handleResponse(await fetchWithTimeout('/api/project/sync', { method: 'POST', timeout: 60000 })),
+    // AGS file content (text) into the project model: holes, strata, SPT per layer.
+    projectImportAgs: async (text, filename) => handleResponse(await fetchWithTimeout('/api/project/import_ags', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, filename }), timeout: 60000 })),
+    projectPrefill: async (body) => handleResponse(await fetchWithTimeout('/api/project/prefill', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), timeout: 20000 })),
+    projectSaveRun: async (body) => handleResponse(await fetchWithTimeout('/api/project/runs', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), timeout: 30000 })),
+    projectRuns: async () => handleResponse(await fetchWithTimeout('/api/project/runs', { timeout: 20000 })),
+    projectDeleteRun: async (id) => handleResponse(await fetchWithTimeout(`/api/project/runs/${id}`, { method: 'DELETE' })),
+    // Sign-off shown in the run's report: {reviewer, note, reviewed_at}.
+    projectReviewRun: async (id, reviewer, note) => handleResponse(await fetchWithTimeout(`/api/project/runs/${id}/review`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reviewer, note }) })),
+    projectClearReview: async (id) => handleResponse(await fetchWithTimeout(`/api/project/runs/${id}/review`, { method: 'DELETE' })),
+    // Reports are HTML pages: returned as text for the caller to save.
+    projectRunReport: async (id) => {
+        const response = await fetchWithTimeout(`/api/project/runs/${id}/report`, { timeout: 30000 });
+        if (!response.ok) throw new Error(`Report failed (HTTP ${response.status})`);
+        return response.text();
+    },
+    projectReport: async () => {
+        const response = await fetchWithTimeout('/api/project/report', { timeout: 60000 });
+        if (!response.ok) throw new Error(`Report failed (HTTP ${response.status})`);
+        return response.text();
     },
 
     // Soil Profiles (As requested by the prompt endpoints)

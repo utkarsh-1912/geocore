@@ -1709,7 +1709,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </tbody>
 </table></div>
 <p><strong>Returns</strong></p>
-<p>Net bearing pressure (<span class="math">\(q_u\)</span>) [<span class="math">\(kPa\)</span>], Vertical capacity (<span class="math">\(Q_d\)</span>) [<span class="math">\(kN\)</span>], Combined correction factor (<span class="math">\(K_c\)</span>) [<span class="math">\(-\)</span>], Shape factor (<span class="math">\(s_c\)</span>) [<span class="math">\(-\)</span>], Depth factor (<span class="math">\(d_c\)</span>) [<span class="math">\(-\)</span>], Load inclination factor (<span class="math">\(i_c\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor (<span class="math">\(b_c\)</span>) [<span class="math">\(-\)</span>], Ground inclination factor (<span class="math">\(g_c\)</span>) [<span class="math">\(-\)</span>], Correction factor for shear strength increase (<span class="math">\(F\)</span>) [<span class="math">\(-\)</span>]</p>
+<p>Net bearing pressure (<span class="math">\(q_u\)</span>) [<span class="math">\(\mathrm{kPa}\)</span>], Vertical capacity (<span class="math">\(Q_d\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Combined correction factor (<span class="math">\(K_c\)</span>) [<span class="math">\(-\)</span>], Shape factor (<span class="math">\(s_c\)</span>) [<span class="math">\(-\)</span>], Depth factor (<span class="math">\(d_c\)</span>) [<span class="math">\(-\)</span>], Load inclination factor (<span class="math">\(i_c\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor (<span class="math">\(b_c\)</span>) [<span class="math">\(-\)</span>], Ground inclination factor (<span class="math">\(g_c\)</span>) [<span class="math">\(-\)</span>], Correction factor for shear strength increase (<span class="math">\(F\)</span>) [<span class="math">\(-\)</span>]</p>
 <p>Return type: <code>Python dictionary with keys ['qu [kPa]', 'vertical_capacity [kN]','K_c [-]','s_c [-]','d_c [-]','i_c [-]','b_c [-]','g_c [-]','F [-]']</code></p>
 <p><strong>References</strong></p>
 <ul>
@@ -1842,7 +1842,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </tbody>
 </table></div>
 <p><strong>Returns</strong></p>
-<p>Vertical capacity of the footing (<span class="math">\(Q_d\)</span>) [<span class="math">\(kN\)</span>], Bearing capacity factor for frictional resistance (<span class="math">\(N_q\)</span>) [<span class="math">\(-\)</span>], Bearing capacity factor for unit weight (<span class="math">\(N_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Combined correction factor for frictional resistance (<span class="math">\(K_q\)</span>) [<span class="math">\(-\)</span>], Combined correction factor for unit weight (<span class="math">\(K_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Shape factor frictional (<span class="math">\(s_q\)</span>) [<span class="math">\(-\)</span>], Shape factor unit weight (<span class="math">\(s_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Depth factor frictional (<span class="math">\(d_q\)</span>) [<span class="math">\(-\)</span>], Depth factor unit weight (<span class="math">\(d_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Inclination factor frictional (<span class="math">\(i_q\)</span>) [<span class="math">\(-\)</span>], Inclination factor unit weight (<span class="math">\(i_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor frictional (<span class="math">\(b_q\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor unit weight (<span class="math">\(b_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Soil surface inclination factor frictional (<span class="math">\(g_q\)</span>) [<span class="math">\(-\)</span>], Soil surface inclination factor unit weight (<span class="math">\(g_gamma\)</span>) [<span class="math">\(-\)</span>]</p>
+<p>Vertical capacity of the footing (<span class="math">\(Q_d\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Bearing capacity factor for frictional resistance (<span class="math">\(N_q\)</span>) [<span class="math">\(-\)</span>], Bearing capacity factor for unit weight (<span class="math">\(N_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Combined correction factor for frictional resistance (<span class="math">\(K_q\)</span>) [<span class="math">\(-\)</span>], Combined correction factor for unit weight (<span class="math">\(K_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Shape factor frictional (<span class="math">\(s_q\)</span>) [<span class="math">\(-\)</span>], Shape factor unit weight (<span class="math">\(s_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Depth factor frictional (<span class="math">\(d_q\)</span>) [<span class="math">\(-\)</span>], Depth factor unit weight (<span class="math">\(d_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Inclination factor frictional (<span class="math">\(i_q\)</span>) [<span class="math">\(-\)</span>], Inclination factor unit weight (<span class="math">\(i_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor frictional (<span class="math">\(b_q\)</span>) [<span class="math">\(-\)</span>], Foundation inclination factor unit weight (<span class="math">\(b_{\gamma}\)</span>) [<span class="math">\(-\)</span>], Soil surface inclination factor frictional (<span class="math">\(g_q\)</span>) [<span class="math">\(-\)</span>], Soil surface inclination factor unit weight (<span class="math">\(g_gamma\)</span>) [<span class="math">\(-\)</span>]</p>
 <p>Return type: <code>Python dictionary with keys ['vertical_capacity [kN]','N_q [-]','N_gamma [-]','K_q [-]','K_gamma [-]','s_q [-]','s_gamma [-]','d_q [-]','d_gamma [-]','i_q [-]','i_gamma [-]','b_q [-]','b_gamma [-]','g_q [-]','g_gamma [-]']</code></p>
 <p><strong>References</strong></p>
 <ul>
@@ -1915,7 +1915,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </tbody>
 </table></div>
 <p><strong>Returns</strong></p>
-<p>Sliding capacity (combined) (<span class="math">\(H_d + \Delta H\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance on the foundation base (<span class="math">\(H_d\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance due to active and passive resistance of the skirts (<span class="math">\(\Delta H\)</span>) [<span class="math">\(kN\)</span>]</p>
+<p>Sliding capacity (combined) (<span class="math">\(H_d + \Delta H\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Sliding resistance on the foundation base (<span class="math">\(H_d\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Sliding resistance due to active and passive resistance of the skirts (<span class="math">\(\Delta H\)</span>) [<span class="math">\(\mathrm{kN}\)</span>]</p>
 <p>Return type: <code>Python dictionary with keys ['sliding_capacity [kN]','base_resistance [kN]','skirt_resistance [kN]']</code></p>
 <p><strong>References</strong></p>
 <ul>
@@ -1998,7 +1998,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </tbody>
 </table></div>
 <p><strong>Returns</strong></p>
-<p>Combined sliding capacity due to base and skirt resistance (<span class="math">\(H_d + \Delta H\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance due to base friction (<span class="math">\(H_d\)</span>) [<span class="math">\(kN\)</span>], Sliding resistance due to active and passive resistance of the skirts (<span class="math">\(\Delta H\)</span>) [<span class="math">\(kN\)</span>], Reaction factor (<span class="math">\(K_{rd}\)</span>) [<span class="math">\(-\)</span>], Passive resistance factor (<span class="math">\(K_p\)</span>) [<span class="math">\(-\)</span>]</p>
+<p>Combined sliding capacity due to base and skirt resistance (<span class="math">\(H_d + \Delta H\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Sliding resistance due to base friction (<span class="math">\(H_d\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Sliding resistance due to active and passive resistance of the skirts (<span class="math">\(\Delta H\)</span>) [<span class="math">\(\mathrm{kN}\)</span>], Reaction factor (<span class="math">\(K_{rd}\)</span>) [<span class="math">\(-\)</span>], Passive resistance factor (<span class="math">\(K_p\)</span>) [<span class="math">\(-\)</span>]</p>
 <p>Return type: <code>Python dictionary with keys ['sliding_capacity [kN]','base_capacity [kN]','skirt_capacity [kN]','K_rd [-]','K_p [-]']</code></p>
 <p><strong>References</strong></p>
 <ul>
@@ -2241,7 +2241,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </tr>
 <tr>
 <td><code>full_area</code></td>
-<td><span class="math">\(m^2\)</span></td>
+<td><span class="math">\(\mathrm{m^2}\)</span></td>
 <td>0.0&lt;=full_area</td>
 <td>required</td>
 <td>Full base area of the foundation (<span class="math">\(A_b\)</span>)</td>
@@ -2376,7 +2376,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </tr>
 <tr>
 <td><code>full_area</code></td>
-<td><span class="math">\(m^2\)</span></td>
+<td><span class="math">\(\mathrm{m^2}\)</span></td>
 <td>full_area &gt;= 0.0</td>
 <td>required</td>
 <td>Total area at the base length (<span class="math">\(A_b\)</span>)</td>

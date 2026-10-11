@@ -65,10 +65,7 @@ const defaultSchema = {
     ]
 };
 
-export const getSchema = (functionId) => {
-    console.log("getSchema called for:", functionId);
-    console.log("Available schemas:", Object.keys(allSchemas));
-    const schema = allSchemas[functionId] || defaultSchema;
-    console.log("Returned schema:", schema);
-    return schema;
-};
+export const getSchema = (functionId) => allSchemas[functionId] || defaultSchema;
+
+/** Whether a function has a form schema of its own (getSchema falls back to a generic one). */
+export const hasSchema = (functionId) => Object.prototype.hasOwnProperty.call(allSchemas, functionId);

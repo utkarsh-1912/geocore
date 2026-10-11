@@ -272,7 +272,8 @@
     "unit_weight",
     "unitweight",
     "bulk_unit_weight",
-    "gamma_total"
+    "gamma_total",
+    "total_unit_weight"
    ]
   },
   {

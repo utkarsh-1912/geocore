@@ -126,6 +126,11 @@ class GeoAITool:
         # the user did not ask for one (see agent._wants_model_explanation).
         self.interpretive = interpretive
 
+    def input_units(self) -> Dict[str, str]:
+        """{field name: unit} for the inputs that declare one (the unit the provenance inputs are in)."""
+        from core.geoai.schemas.base import _field_specs
+        return {name: unit for name, unit, _ in _field_specs(self.input_model).values() if unit}
+
     def target_callable(self) -> Callable[..., Any]:
         """
         The callable whose signature the input schema must match: the Groundhog function
@@ -183,6 +188,11 @@ class GeoAITool:
         output_data = _json_safe(output_data)
         if display:
             output_data["_display"] = display
+        # Inputs outside the range the method applies to (catalogue applicability): only present when a check fails.
+        from core.geoai.catalogue_link import tool_warnings
+        warnings = tool_warnings(self, call_args)
+        if warnings:
+            output_data["_warnings"] = warnings
 
         # 4. Attach calculation provenance metadata
         provenance = create_calculation_provenance(self.name, call_args)
@@ -246,6 +256,7 @@ class GeoAIToolRegistry:
         return len(self._tools)
 
     def list_tools(self) -> List[Dict[str, Any]]:
+        from core.geoai.catalogue_link import tool_catalogue
         return [
             {
                 "name": t.name,
@@ -253,6 +264,7 @@ class GeoAIToolRegistry:
                 "category": t.category,
                 "form_function": t.form_function,
                 "form_arg_map": dict(getattr(t.func, '__geoai_arg_map__', None) or {}),
+                "catalogue": tool_catalogue(t),
                 "input_schema": _clean_json_schema(t.input_model.model_json_schema()) if t.input_model else None,
                 "output_schema": _clean_json_schema(t.output_model.model_json_schema()) if t.output_model else None
             }

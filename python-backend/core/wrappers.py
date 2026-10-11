@@ -31,13 +31,16 @@ def map_depth_properties_wrapper(args):
     target_df = target_obj.copy()
     layering_df = layering_obj.copy()
     
-    res_df = map_depth_properties(
-        target_df,
-        layering_df,
-        target_z_key=args.get('target_z_key'),
-        layering_zfrom_key=args.get('layering_zfrom_key'),
-        layering_zto_key=args.get('layering_zto_key')
-    )
+    try:
+        res_df = map_depth_properties(
+            target_df,
+            layering_df,
+            target_z_key=args.get('target_z_key'),
+            layering_zfrom_key=args.get('layering_zfrom_key'),
+            layering_zto_key=args.get('layering_zto_key')
+        )
+    except (ValueError, KeyError) as e:  # Groundhog's input checks (e.g. layering shallower than the target)
+        return {"error": f"Map depth properties: {e}"}
     
     return {
         "type": "dataframe",
@@ -1484,6 +1487,53 @@ def stress_cylinder_elastic_isotropic_wrapper(args):
         return {"error": f"Elastic Cylinder Stress Error: {str(e)}"}
 
 
+def _table_rows(value):
+    """
+    Rows of the table a form passes: a saved SoilProfile id (what the object picker sends), a JSON string or a
+    list of row dicts. Returns (rows, error message or None).
+    """
+    import json
+    from .state import state_manager
+    if isinstance(value, str):
+        saved = state_manager.get(value.strip())
+        if saved is not None:
+            return saved.to_dict(orient='records'), None
+        try:
+            value = json.loads(value)
+        except Exception:
+            return None, f"Soil profile '{value}' not found."
+    if hasattr(value, 'to_dict'):
+        return value.to_dict(orient='records'), None
+    return value, None
+
+
+def _nsf_points(rows, columns, step=0.1):
+    """
+    Depth points and properties for the finite-difference NSF solution. A table with 'Depth [m]' is used point
+    by point; a layered profile (Depth from/to [m]) is sampled every ``step`` m (and at each layer boundary)
+    with the properties of the layer a point lies in, the lower layer at a boundary.
+    """
+    if rows and 'Depth [m]' in rows[0]:
+        pts = sorted(((float(r.get('Depth [m]', 0)), [float(r.get(c, 0)) for c in columns]) for r in rows),
+                     key=lambda p: p[0])
+        return [p[0] for p in pts], [[p[1][i] for p in pts] for i in range(len(columns))]
+    layers = sorted(rows, key=lambda r: float(r['Depth from [m]']))
+    depths, values = [], [[] for _ in columns]
+    for n, layer in enumerate(layers):
+        top, bottom = float(layer['Depth from [m]']), float(layer['Depth to [m]'])
+        props = [float(layer.get(c, 0)) for c in columns]
+        count = max(1, int(round((bottom - top) / step)))
+        last = n == len(layers) - 1
+        for k in range(count + (1 if last else 0)):
+            z = round(top + (bottom - top) * k / count, 6)
+            if depths and z <= depths[-1]:
+                continue
+            depths.append(z)
+            for i, v in enumerate(props):
+                values[i].append(v)
+    return depths, values
+
+
 def negativeskinfriction_pilegroup_zeevaertdebeer_wrapper(args):
     """
     Wrapper for negativeskinfriction_pilegroup_zeevaertdebeer
@@ -1501,22 +1551,20 @@ def negativeskinfriction_pilegroup_zeevaertdebeer_wrapper(args):
     diameter = float(args.get('diameter', 0.5))
     diameter_influence = float(args.get('diameter_influence', 0.5))
 
-    if isinstance(soilprofile, str):
-        import json
-        try:
-            soilprofile = json.loads(soilprofile)
-        except Exception as e:
-            return {"error": f"Failed to parse soilprofile JSON: {str(e)}"}
+    soilprofile, problem = _table_rows(soilprofile)
+    if problem:
+        return {"error": problem}
 
     if not soilprofile:
         return {"error": "Soil Profile is required"}
 
     # Extract arrays
     try:
-        depths = [float(layer.get('Depth [m]', 0)) for layer in soilprofile]
-        eff_unit_weights = [float(layer.get(eff_unit_weight_col, 0)) for layer in soilprofile]
-        k_values = [float(layer.get(k_col, 0)) for layer in soilprofile]
-        delta_values = [float(layer.get(delta_col, 0)) for layer in soilprofile]
+        missing = [c for c in (eff_unit_weight_col, k_col, delta_col) if c not in soilprofile[0]]
+        if missing:
+            return {"error": f"Column(s) {', '.join(missing)} not found in the soil profile."}
+        depths, (eff_unit_weights, k_values, delta_values) = _nsf_points(
+            soilprofile, [eff_unit_weight_col, k_col, delta_col])
     except (ValueError, KeyError) as e:
         return {"error": f"Error extracting columns from Soil Profile: {str(e)}. Check if selected columns exist and contain numbers."}
 
@@ -1606,14 +1654,9 @@ def piletest_chinkondler_wrapper(args):
     except ImportError:
         return {"error": "Could not import groundhog.deepfoundations.axialcapacity.piletesting"}
 
-    soilprofile = args.get('soilprofile', [])
-    
-    if isinstance(soilprofile, str):
-        import json
-        try:
-            soilprofile = json.loads(soilprofile)
-        except Exception as e:
-            return {"error": f"Failed to parse soilprofile JSON: {str(e)}"}
+    soilprofile, problem = _table_rows(args.get('soilprofile', []))
+    if problem:
+        return {"error": problem}
 
     load_col = args.get('load_col', 'Load [kN]')
     settlement_col = args.get('settlement_col', 'Settlement [mm]')

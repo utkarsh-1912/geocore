@@ -39,8 +39,10 @@ export const classificationSchemas = {
     relative_density: {
         inputs: [
             { name: "void_ratio", type: "float", description: "Void ratio", required: true },
-            { name: "e_min", type: "float", description: "Min void ratio", required: true },
-            { name: "e_max", type: "float", description: "Max void ratio", required: true }
+            // Groundhog names the limits by density: e_min is the void ratio at MINIMUM density (loosest state,
+            // the larger value, conventionally e_max) and e_max the one at maximum density (densest, smaller value).
+            { name: "e_min", label: "Void ratio, loosest state (e at min. density)", type: "float", description: "Void ratio at minimum density (loosest state, the larger limit; conventionally e_max)", required: true },
+            { name: "e_max", label: "Void ratio, densest state (e at max. density)", type: "float", description: "Void ratio at maximum density (densest state, the smaller limit; conventionally e_min)", required: true }
         ]
     },
     saturation_watercontent: {

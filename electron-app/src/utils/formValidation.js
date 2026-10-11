@@ -6,7 +6,7 @@
 
 const NUMERIC_TYPES = new Set(['number', 'float', 'int', 'integer']);
 
-const isBlank = (v) => v === undefined || v === null || v === '' || (typeof v === 'string' && v.trim() === '');
+export const isBlank = (v) => v === undefined || v === null || v === '' || (typeof v === 'string' && v.trim() === '');
 
 const firstDefined = (...vals) => vals.find((v) => v !== undefined && v !== null && v !== '');
 

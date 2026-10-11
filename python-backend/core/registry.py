@@ -31,9 +31,15 @@ def _load_wrapper_module(name):
         return mod
     return importlib.import_module(full_name)
 
-#: UI functions whose request is a form for a wrapper in wrappers.py, not the constructor of the
-#: Groundhog class of the same name (the wrapper checks its own columns and parameters).
-_FORM_VALIDATED_BY_WRAPPER = frozenset({'KoppejanCalculation', 'DeBeerCalculation'})
+#: UI functions whose request is a form for a wrapper in wrappers.py, not the arguments of the Groundhog
+#: function or class of the same name (the wrapper checks its own columns and parameters): the forms send a
+#: saved SoilProfile id and column names where Groundhog takes DataFrames or arrays, so the schema generated
+#: from the Groundhog signature would reject every UI request.
+_FORM_VALIDATED_BY_WRAPPER = frozenset({
+    'KoppejanCalculation', 'DeBeerCalculation',
+    'map_depth_properties', 'check_layer_overlap',
+    'negativeskinfriction_pilegroup_zeevaertdebeer', 'piletest_chinkondler',
+})
 
 
 class Registry:
@@ -374,6 +380,13 @@ class Registry:
             # we can pass calibrated args or just the raw args if the wrapper handles it.
             # However, mapping them here ensures lists are parsed.
             calibrated_args = self._map_args(getattr(labtesting_wrappers, f"{function_id.lower()}_wrapper"), args)
+            if function_id in ('logtimemethod', 'roottimemethod'):
+                # These wrappers take one dict (signature ``args``), so mapping against it keeps nothing: pass the
+                # form fields on (drainage length, picked points) with the time/settlement series parsed.
+                calibrated_args = dict(args)
+                for key in ('times', 'settlements'):
+                    if isinstance(args.get(key), str):
+                        calibrated_args[key] = self._parse_list(args[key])
             
             if function_id == 'PlasticityChart':
                 return labtesting_wrappers.plasticitychart_wrapper(calibrated_args)
@@ -950,7 +963,7 @@ class Registry:
                 # 1. Get Soil Profile
                 profile_id = args.get('soilprofile')
                 profile = state_manager.get(profile_id)
-                if not profile:
+                if profile is None:  # a SoilProfile is a DataFrame: `not profile` is ambiguous
                     return {"error": f"SoilProfile with ID {profile_id} not found."}
 
                 # 2. Initialize Calculation
@@ -962,16 +975,14 @@ class Registry:
                 width = float(args.get('foundation_width', 1.0))
                 length = float(args.get('foundation_length', 1.0))
                 shape = args.get('foundation_shape', 'strip')
-                calc.set_foundation(width=width, shape=shape, length=length)
-                
-                # Create Grid (Required)
-                calc.create_grid()
+                skirt_depth = float(args.get('skirt_depth') or 0.0)
+                calc.set_foundation(width=width, shape=shape, length=length, skirt_depth=skirt_depth)
 
-                # 4. Set Loading and Water Level
-                # Assuming default water level at 0 if not specified (can add to schema later)
+                # 4. Initial state, then the grid: the grid interpolates the initial effective stresses
                 water_level = float(args.get('water_level', 0.0))
                 calc.calculate_initial_state(waterlevel=water_level)
-                
+                calc.create_grid()
+
                 applied_stress = float(args.get('applied_stress', 0.0))
                 calc.calculate_foundation_stress(applied_stress=applied_stress)
 
@@ -985,21 +996,34 @@ class Registry:
                 # plot_result() typically shows a plot. We need to capture the data.
                 # groundhog plotting usually returns a plotly figure or matplotlib fig
                 
-                # Let's try to get the figure from plot_result
-                fig = calc.plot_result(showfig=False)
-                
-                # If fig is a plotly Figure, we can serialize it
+                # Groundhog returns NaN for a sublayer whose inputs are outside its validated ranges
+                # (e.g. Cc < 0.1); the total is then undefined: say where instead of reporting "nan".
+                if not math.isfinite(float(calc.settlement)):
+                    bad = calc.grid.elements[calc.grid.elements['delta z [m]'].isna()]
+                    return {"error": (
+                        "Settlement undefined: the compression of the sublayers at "
+                        f"{bad['z [m]'].min():g}-{bad['z [m]'].max():g} m could not be calculated. Check Cc, Cr "
+                        "and OCR there (Groundhog requires Cc >= 0.1); give 'mv [1/kPa]' for layers described "
+                        "by a coefficient of volume compressibility instead.")}
+
+                # plot_result builds calc.result_plot (a Groundhog LogPlot) and calls its show(), which would
+                # open a browser window from the backend and returns nothing: suppress show, take the figure.
+                from unittest import mock
+                from groundhog.general.plotting import LogPlot
+                with mock.patch.object(LogPlot, 'show', lambda self: None):
+                    calc.plot_result()
+                fig = calc.result_plot.fig
+
                 import plotly
-                
-                # Extract data/layout
                 plot_json = json.loads(plotly.io.to_json(fig))
-                
-                return {
+
+                return self._sanitize({
                     "type": "plotly",
                     "data": plot_json['data'],
                     "layout": plot_json['layout'],
-                    "message": "Settlement calculation completed successfully."
-                }
+                    "settlement [m]": float(calc.settlement),
+                    "message": f"Settlement calculation completed: {float(calc.settlement) * 1000:.1f} mm."
+                })
 
             except Exception as e:
                 return {"error": f"Settlement Calculation Error: {str(e)}"}

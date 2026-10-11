@@ -18,14 +18,15 @@ const STREAM_IDLE_TIMEOUT_MS = 45000;
  * show what it's actually waiting on instead of a generic spinner.
  * `onVisuals(blocks)` receives the display blocks (tables, charts) as soon as a tool returns, before the model
  * has written its interpretation; the answer places them with {{visual:ID}} markers (see answerVisuals.js).
- * Resolves to { text, executedTool, parameters, results, visuals, outcome: 'done'|'cancelled'|'error', error }.
+ * Resolves to { text, executedTool, parameters, results, catalogue, visuals, outcome: 'done'|'cancelled'|'error', error }.
  * Throws only when the request could not be started (the caller may fall back).
  */
-export async function streamGeoAIChat({ text, context, history, signal, onText = () => {}, onStage = () => {}, onVisuals = () => {} }) {
-    const response = await api.geoaiChatStream(text, context, history, signal);
+// `request(signal)` replaces the chat request with another GeoAI stream of the same events (the worked solution).
+export async function streamGeoAIChat({ text, context, history, signal, onText = () => {}, onStage = () => {}, onVisuals = () => {}, request = null }) {
+    const response = request ? await request(signal) : await api.geoaiChatStream(text, context, history, signal);
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    const turn = { text: '', executedTool: null, parameters: null, results: null, visuals: [], outcome: 'done', error: null };
+    const turn = { text: '', executedTool: null, parameters: null, results: null, catalogue: null, visuals: [], outcome: 'done', error: null };
     let buffer = '';
 
     const handle = (event) => {
@@ -46,11 +47,20 @@ export async function streamGeoAIChat({ text, context, history, signal, onText =
             onText('');
         } else if (event.type === 'tool_result') {
             turn.results = event.tool_result;
+            turn.catalogue = event.catalogue || null; // calculation, method, verification status
             turn.text = '';
             if (event.visuals?.length) {
                 turn.visuals = [...turn.visuals, ...event.visuals];
                 onVisuals(turn.visuals);
             }
+        } else if (event.type === 'check') {
+            // Worked solution: numbers in the answer that are not in the calculation's grounding, and whether
+            // its equation differs from the method's (then the method's equation and substitution come along).
+            turn.unverified = event.unverified || [];
+            turn.equationCheck = event.equation_mismatch
+                ? { equation: event.equation, substitution: event.substitution } : null;
+        } else if (event.type === 'unavailable') {
+            turn.unavailable = event.content || 'No local model is installed.';
         } else if (event.type === 'cancelled') {
             turn.outcome = 'cancelled';
         } else if (event.type === 'error') {

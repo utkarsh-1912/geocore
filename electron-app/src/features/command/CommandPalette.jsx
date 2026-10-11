@@ -11,6 +11,7 @@ import { KBD } from '@/components/ui/KBD';
 import { GEOTECHNICAL_MODULES } from '@/config/geotechnicalModules';
 import { useHistory } from '@/context/HistoryContext';
 import { loadFunctionDocs } from '@/features/calculations/guide/functionDocs';
+import { catalogueEntry } from '@/config/navigation';
 
 const MAX_PER_GROUP = { Function: 8, Module: 4, Category: 3, Action: 3 };
 const GROUPS = [
@@ -20,6 +21,26 @@ const GROUPS = [
     ['Action', 'Actions'],
 ];
 const MAX_RECENT = 5;
+const MAX_FILTERED = 60; // calculations listed when only filters are set
+
+// Facet filters (catalogue): what a calculation works from, and its standard.
+const DATA_LABELS = { cpt: 'CPT', spt: 'SPT', soil_profile: 'Soil profile', lab: 'Lab tests', index: 'Index properties', ags: 'AGS' };
+const NO_FILTERS = { data: null, standard: null };
+const passesFilters = (item, f) => {
+    if (!f.data && !f.standard) return true;
+    if (item.type !== 'Function') return false;
+    if (f.data && !item.dataTags.includes(f.data)) return false;
+    if (f.standard && !item.standards.includes(f.standard)) return false;
+    return true;
+};
+
+const Chip = ({ active, onClick, children }) => (
+    <button type="button" onClick={onClick} aria-pressed={active}
+        className={`h-6 shrink-0 whitespace-nowrap rounded-md border px-2 text-[11px] font-medium transition-colors ${active
+            ? 'border-primary/50 bg-primary/10 text-primary' : 'border-border text-text-muted hover:text-text-main'}`}>
+        {children}
+    </button>
+);
 
 // Abbreviations and alternative names engineers type, mapped to the wording the tool titles,
 // descriptions and docstrings use. A query token matches if it, or one of these, matches.
@@ -157,10 +178,12 @@ const ResultRow = ({ item, index, selected, recent, tokens, onSelect, onHover })
  * references, so "API end bearing" or "IS 2720" find the right tools. Recently used
  * calculations are listed when the box is empty.
  */
-export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
+export const CommandPalette = ({ modules = GEOTECHNICAL_MODULES, isOpen, onClose, onNavigate, onAction }) => {
     const [query, setQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [docs, setDocs] = useState(null);
+    const [filters, setFilters] = useState(NO_FILTERS);
+    const filtering = !!filters.data || !!filters.standard;
     const inputRef = useRef(null);
     const listRef = useRef(null);
     const { history } = useHistory();
@@ -182,7 +205,8 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
         const makeItem = (base) => {
             const ancestry = [base.category?.title, base.category?.description, base.subModule?.title,
                 base.subModule?.description].filter(Boolean).join(' ');
-            const haystack = [base.title, base.description, base.summary, base.references, idWords(base.id), ancestry]
+            const facets = [...(base.standards || []), ...(base.dataTags || []).map((t) => DATA_LABELS[t] || t)].join(' ');
+            const haystack = [base.title, base.description, base.summary, base.references, idWords(base.id), ancestry, facets]
                 .filter(Boolean).join(' ').toLowerCase();
             const title = base.title.toLowerCase();
             return { ...base, haystack, haystackWords: words(haystack), titleLower: title, titleWords: words(title) };
@@ -193,27 +217,47 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
         items.push(makeItem({ type: 'Action', id: 'open_copilot', title: 'Open GeoAI assistant', icon: GeoAILogo, shortcut: 'Ctrl+Shift+A', action: 'openCopilot' }));
         items.push(makeItem({ type: 'Action', id: 'open_help', title: 'Help & keyboard shortcuts', icon: HelpCircle, action: 'openHelp' }));
 
-        GEOTECHNICAL_MODULES.forEach((category) => {
+        modules.forEach((category) => {
             items.push(makeItem({ type: 'Category', id: category.id, title: category.title, description: category.description, category }));
             (category.items || []).forEach((subModule) => {
                 items.push(makeItem({ type: 'Module', id: subModule.id || subModule.title, title: subModule.title, description: subModule.description, category, subModule }));
                 (subModule.functions || []).forEach((func) => {
                     const doc = docs?.[func.id];
+                    const entry = catalogueEntry(func.id);
                     items.push(makeItem({
                         type: 'Function', id: func.id, title: func.title, description: func.description,
                         summary: doc?.summary, references: (doc?.references || []).join(' '),
+                        status: entry?.status || 'unverified', standards: entry?.standards || [], dataTags: entry?.data || [],
                         category, subModule, func,
                     }));
                 });
             });
         });
         return items;
-    }, [docs]);
+    }, [docs, modules]);
 
     const queryTokens = useMemo(() => query.toLowerCase().trim().split(/\s+/).filter(Boolean), [query]);
 
+    // Values the filters offer: data types and standards that some calculation actually has.
+    const facetOptions = useMemo(() => {
+        const fns = searchIndex.filter((i) => i.type === 'Function');
+        return {
+            data: [...new Set(fns.flatMap((i) => i.dataTags))].sort(),
+            standards: [...new Set(fns.flatMap((i) => i.standards))].sort(),
+        };
+    }, [searchIndex]);
+
     // Grouped results: [{ label, items, recent? }]
     const groups = useMemo(() => {
+        if (queryTokens.length === 0 && filtering) {
+            const seen = new Set();
+            const items = searchIndex.filter((i) => {
+                if (!passesFilters(i, filters) || seen.has(i.id)) return false;
+                seen.add(i.id);
+                return true;
+            });
+            return [{ label: `Calculations (${items.length})`, items: items.slice(0, MAX_FILTERED) }].filter((g) => g.items.length > 0);
+        }
         if (queryTokens.length === 0) {
             const byId = new Map(searchIndex.filter((i) => i.type === 'Function').map((i) => [i.id, i]));
             const seen = new Set();
@@ -236,6 +280,7 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
         const q = queryTokens.join(' ');
         const scored = [];
         for (const item of searchIndex) {
+            if (!passesFilters(item, filters)) continue;
             // Every token must match somewhere (as typed or as a synonym); the title counts double.
             let total = 0;
             for (const token of queryTokens) {
@@ -259,7 +304,7 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
             label,
             items: scored.filter((s) => s.item.type === type).slice(0, MAX_PER_GROUP[type]).map((s) => s.item),
         })).filter((g) => g.items.length > 0);
-    }, [queryTokens, searchIndex, history]);
+    }, [queryTokens, searchIndex, history, filters, filtering]);
 
     const rows = useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
@@ -267,6 +312,7 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
     useEffect(() => {
         if (isOpen) {
             setQuery('');
+            setFilters(NO_FILTERS);
             setSelectedIndex(0);
             setTimeout(() => inputRef.current?.focus(), 50);
         }
@@ -343,6 +389,30 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
                             <KBD className="hidden sm:inline-flex">Esc</KBD>
                         </div>
 
+                        {/* Filters (catalogue facets) */}
+                        {/* One row that scrolls sideways (a vertical wheel scrolls it too); "Clear" stays in view. */}
+                        <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
+                            <div className="flex flex-1 min-w-0 items-center gap-1.5 overflow-x-auto no-scrollbar" data-palette-filters
+                                onWheel={(e) => { if (e.deltaY && !e.deltaX) e.currentTarget.scrollLeft += e.deltaY; }}>
+                                {facetOptions.data.map((t) => (
+                                    <Chip key={t} active={filters.data === t} onClick={() => { setFilters((f) => ({ ...f, data: f.data === t ? null : t })); setSelectedIndex(0); }}>
+                                        {DATA_LABELS[t] || t}
+                                    </Chip>
+                                ))}
+                                {facetOptions.standards.length > 0 && (
+                                    <select value={filters.standard || ''} aria-label="Standard"
+                                        onChange={(e) => { const standard = e.target.value || null; setFilters((f) => ({ ...f, standard })); setSelectedIndex(0); }}
+                                        className={`h-6 max-w-[11rem] shrink-0 rounded-md border bg-transparent px-1.5 text-[11px] ${filters.standard ? 'border-primary/50 text-primary' : 'border-border text-text-muted'}`}>
+                                        <option value="">Any standard</option>
+                                        {facetOptions.standards.map((s) => <option key={s} value={s}>{s}</option>)}
+                                    </select>
+                                )}
+                            </div>
+                            {filtering && (
+                                <button type="button" onClick={() => setFilters(NO_FILTERS)} className="shrink-0 text-[11px] text-text-muted hover:text-text-main">Clear</button>
+                            )}
+                        </div>
+
                         {/* Results */}
                         <div ref={listRef} id="command-palette-results" className="max-h-[56vh] overflow-y-auto py-1.5" role="listbox">
                             {rows.length > 0 ? groups.map((group) => (
@@ -371,7 +441,7 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
                                 </section>
                             )) : (
                                 <div className="py-10 text-center text-sm text-text-muted">
-                                    <p>No results for “{query}”</p>
+                                    <p>{query ? `No results for “${query}”` : 'No calculation matches these filters'}</p>
                                     <p className="text-xs mt-1 text-text-subtle">Try a method, a parameter (e.g. “phi”, “Su”) or a standard (e.g. “API”, “IS 2720”).</p>
                                 </div>
                             )}
@@ -384,7 +454,7 @@ export const CommandPalette = ({ isOpen, onClose, onNavigate, onAction }) => {
                                 <span className="flex items-center gap-1"><KBD>↵</KBD> open</span>
                                 <span className="flex items-center gap-1"><KBD>Esc</KBD> close</span>
                             </div>
-                            <span>{queryTokens.length ? `${rows.length} result${rows.length !== 1 ? 's' : ''}` : 'Type to search'}</span>
+                            <span>{queryTokens.length || filtering ? `${rows.length} result${rows.length !== 1 ? 's' : ''}` : 'Type to search'}</span>
                         </div>
                     </motion.div>
                 </motion.div>

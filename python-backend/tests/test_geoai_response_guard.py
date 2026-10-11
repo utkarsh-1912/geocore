@@ -3,8 +3,9 @@ Tests for deterministic answer guards (core/geoai/response_guard.py) and the
 conversation-history support in GeoAIAgent. Regression case: the CPT SBT answer
 that looped on one sentence and reported dimensionless Qt / Bq in kPa.
 """
-from core.geoai.agent import GeoAIAgent, history_to_messages, MAX_HISTORY_TURNS
-from core.geoai.model_provider import MessageRole, ModelProvider, ModelResponse, StreamChunk, ToolCall
+from core.geoai.agent import GeoAIAgent, fit_history, history_to_messages, MAX_HISTORY_TURNS, MAX_RECORD_CHARS
+from core.geoai.model_provider import (MessageRole, ModelProvider, ModelResponse, StreamChunk, ToolCall,
+                                      make_system_message, make_user_message)
 from core.geoai.response_guard import (AnswerStreamCleaner, clean_answer, collapse_repetition, fix_result_units,
                                        sentence_keys)
 from core.geoai.tool_registry import GeoAIToolRegistry
@@ -122,6 +123,49 @@ def test_history_error_record():
     assert "Vs: Field required" in msgs[0].content
 
 
+def test_history_record_compacts_saved_tables_and_figures():
+    # Conversations saved by older builds carry full tables / plot data in "result": replaying them
+    # verbatim made a one-line follow-up exceed the context window (17k prompt tokens).
+    rows = [{"tau [kPa]": i * 0.1, "sigma [kPa]": i * 0.2} for i in range(250)]
+    figure = {"data": [{"x": list(range(500)), "y": list(range(500))}], "layout": {"title": "Mohr"}}
+    msgs = history_to_messages([{"role": "assistant", "content": "done", "tool": {
+        "name": "mohrcoulomb_triaxial_compression", "arguments": {"sigma_3": 20, "cohesion": 10, "phi": 35},
+        "result": {"status": "success", "result": {"sigma_1_f [kPa]": 112.7297, "Mohr circle": rows, "Plot": figure}}}}])
+    content = msgs[0].content
+    assert len(content) < MAX_RECORD_CHARS + 100
+    assert '"sigma_1_f [kPa]": 112.7' in content
+    assert '"n_rows": 250' in content
+
+
+def test_history_record_is_capped():
+    big = {f"output_{i} [kPa]": {"nested": "x" * 50} for i in range(100)}
+    msgs = history_to_messages([{"role": "assistant", "content": "", "tool": {
+        "name": "t", "arguments": {}, "result": {"status": "success", "result": big}}}])
+    assert len(msgs[0].content) <= len("[Calculation record] ") + MAX_RECORD_CHARS + 4
+
+
+def test_fit_history_drops_oldest_turns_and_keeps_user_first():
+    long = "x" * 3500  # ~1000 approx tokens each
+    msgs = [make_system_message("sys"), make_user_message(long),
+            *history_to_messages([{"role": "assistant", "content": "a"}]),
+            make_user_message(long), make_user_message("new question")]
+    dropped = fit_history(msgs, None, 1500)
+    assert dropped == 2
+    assert [m.content for m in msgs] == ["sys", long, "new question"]
+    assert fit_history(msgs, None, 10) == 1  # history goes; system prompt and new question stay
+    assert [m.content for m in msgs] == ["sys", "new question"]
+
+
+def test_build_messages_fits_long_history_into_context():
+    agent = GeoAIAgent(RecordingProvider([]), GeoAIToolRegistry(), max_tools=0)
+    agent._n_ctx = 4096
+    history = [{"role": "user" if i % 2 == 0 else "assistant", "content": "y" * 3000} for i in range(6)]
+    messages, _ = agent._build_messages("Calculate Gmax for Vs = 260 m/s", None, history)
+    approx = sum(len(m.content or "") for m in messages) / 3.5
+    assert approx <= 4096 - agent._answer_max_tokens
+    assert messages[1].role == MessageRole.USER and messages[-1].content == "Calculate Gmax for Vs = 260 m/s"
+
+
 class RecordingProvider(ModelProvider):
     """Returns canned responses in order and records every generate() call."""
 
@@ -192,7 +236,7 @@ def test_agent_stream_streams_cleaned_explanation_and_caps_tokens():
 
     events = list(agent.run_stream("Classify CPT", history=[{"role": "user", "content": "hi"}]))
     tokens = [e.content for e in events if e.type == "token"]
-    assert tokens[0].startswith("**classify_cpt_soil_behavior** result:")  # exact results first
+    assert tokens[0].startswith("**Classify cpt soil behavior:** Normalised cone resistance Qt = 361")  # exact results first
     tokens = tokens[1:]
     assert len(tokens) >= 3  # released sentence by sentence, not as one block
     assert "".join(tokens).rstrip() == clean_answer(answer, CPT_TOOLS_USED)

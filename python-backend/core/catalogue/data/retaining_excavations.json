@@ -1,0 +1,80 @@
+{
+ "domain": {
+  "id": "retaining_excavations",
+  "title": "Retaining structures & excavations",
+  "description": "Earth pressure coefficients and soil-mix walls.",
+  "order": 6
+ },
+ "calculations": [
+  {
+   "id": "earthpressurecoefficients_frictionangle",
+   "title": "Earth Pressure (Friction Angle)",
+   "group": "Earth pressure",
+   "methods": [
+    {
+     "id": "earthpressurecoefficients_frictionangle",
+     "label": "Earth Pressure (Friction Angle)",
+     "function": "earthpressurecoefficients_frictionangle",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "earthpressurecoefficients_frictionangle"
+  },
+  {
+   "id": "earthpressurecoefficients_poncelet",
+   "title": "Earth Pressure (Poncelet)",
+   "group": "Earth pressure",
+   "methods": [
+    {
+     "id": "earthpressurecoefficients_poncelet",
+     "label": "Earth Pressure (Poncelet)",
+     "function": "earthpressurecoefficients_poncelet",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "earthpressurecoefficients_poncelet"
+  },
+  {
+   "id": "earthpressurecoefficients_rankine",
+   "title": "Earth Pressure (Rankine)",
+   "group": "Earth pressure",
+   "methods": [
+    {
+     "id": "earthpressurecoefficients_rankine",
+     "label": "Earth Pressure (Rankine)",
+     "function": "earthpressurecoefficients_rankine",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "earthpressurecoefficients_rankine"
+  },
+  {
+   "id": "bendingstiffness_soilmix_method1",
+   "title": "Bending Stiffness (Method 1)",
+   "group": "Soil-mix walls",
+   "methods": [
+    {
+     "id": "bendingstiffness_soilmix_method1",
+     "label": "Bending Stiffness (Method 1)",
+     "function": "bendingstiffness_soilmix_method1",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "bendingstiffness_soilmix_method1"
+  },
+  {
+   "id": "bendingstiffness_soilmix_method2",
+   "title": "Bending Stiffness (Method 2)",
+   "group": "Soil-mix walls",
+   "methods": [
+    {
+     "id": "bendingstiffness_soilmix_method2",
+     "label": "Bending Stiffness (Method 2)",
+     "function": "bendingstiffness_soilmix_method2",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "bendingstiffness_soilmix_method2"
+  }
+ ]
+}

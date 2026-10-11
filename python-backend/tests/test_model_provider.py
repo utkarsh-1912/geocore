@@ -167,7 +167,7 @@ def test_llamacpp_unload():
 
 def test_config_defaults():
     config = GeoAIModelConfig()
-    assert config.n_ctx == 4096
+    assert config.n_ctx == 10240
     assert config.n_gpu_layers == 0
     assert config.provider == "auto"
 
@@ -175,7 +175,7 @@ def test_config_defaults():
 def test_load_config_no_file(mock_get_config_dir, tmp_path):
     mock_get_config_dir.return_value = tmp_path
     config = load_config()
-    assert config.n_ctx == 4096
+    assert config.n_ctx == 10240
     assert config.provider == "auto"
 
 @patch.dict(os.environ, {"GEOAI_MODEL_PATH": "/custom/path.gguf", "GEOAI_PROVIDER": "llama_cpp", "GEOAI_N_CTX": "8192", "GEOAI_GPU_LAYERS": "-1"})
@@ -187,6 +187,15 @@ def test_load_config_env_vars(mock_get_config_dir, tmp_path):
     assert config.provider == "llama_cpp"
     assert config.n_ctx == 8192
     assert config.n_gpu_layers == -1
+
+@patch("core.geoai.model_config.get_config_dir")
+def test_load_config_upgrades_old_default_context_window(mock_get_config_dir, tmp_path):
+    # A saved config pins the n_ctx default of the version that wrote it; 4096 overflowed follow-ups.
+    mock_get_config_dir.return_value = tmp_path
+    (tmp_path / "geoai_config.json").write_text(json.dumps({"n_ctx": 4096}))
+    assert load_config().n_ctx == 10240
+    (tmp_path / "geoai_config.json").write_text(json.dumps({"n_ctx": 8192}))
+    assert load_config().n_ctx == 8192  # a deliberate choice is kept
 
 def test_find_gguf_models_empty(tmp_path):
     models = find_gguf_models(search_dir=tmp_path)

@@ -500,6 +500,23 @@ def get_tool_metadata(tool_name: str) -> Dict[str, Any]:
     if curated is not None:
         return curated
 
+    # Not curated: the calculation catalogue names the method and its standards (single source). The tool name of
+    # an auto-registered Groundhog tool is the function id.
+    try:
+        from core.catalogue import find_method
+        hit = find_method(tool_name)
+    except Exception:  # a malformed catalogue must not break provenance
+        hit = None
+    if hit:
+        calc, method = hit["calculation"], hit["method"]
+        label = method["label"] if method["label"] == calc["title"] else f"{calc['title']}: {method['label']}"
+        return {
+            "method": f"{label} (Groundhog {tool_name})",
+            "standard": ", ".join(method.get("standards") or []) or "Groundhog Open-Source Geotechnical Engineering Library",
+            "assumptions": ["Deterministic calculation based on supplied parameters."],
+            "output_units": {}
+        }
+
     # Default generic metadata for dynamic Groundhog functions
     return {
         "method": f"Groundhog Deterministic Geotechnical Routine ({tool_name})",

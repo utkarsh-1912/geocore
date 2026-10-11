@@ -112,3 +112,21 @@ export function getParameterNotation(paramKey, fallbackLabel, functionId) {
 
   return null;
 }
+
+/** "wall_angle" -> "Wall angle": a readable fallback for parameter keys nothing else names. */
+export function humanizeKey(key) {
+  const words = String(key ?? '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/_+/g, ' ').trim();
+  return words ? words.charAt(0).toUpperCase() + words.slice(1) : '';
+}
+
+/**
+ * What a form shows for an input: {text, symbol}. An explicit schema label wins (its trailing "[unit]" is
+ * stripped by the caller), then the standard quantity directory's name and symbol, then the humanized key.
+ * Only the directory supplies a symbol, so no notation is guessed for unknown parameters.
+ */
+export function inputLabel(input, functionId) {
+  if (input.label) return { text: input.label, symbol: null };
+  const quantity = getQuantity(input.name, functionId);
+  if (quantity) return { text: quantity.name, symbol: quantity.symbol || null };
+  return { text: humanizeKey(input.name), symbol: null };
+}

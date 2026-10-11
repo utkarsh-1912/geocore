@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, nativeImage, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeImage, shell, dialog } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
@@ -39,6 +39,32 @@ ipcMain.on('set-title-bar-overlay', (event, { isDark } = {}) => {
     mainWindow.setTitleBarOverlay(titleBarOverlayFor(Boolean(isDark)));
   } catch (e) {
     console.error('Failed to update titleBarOverlay:', e);
+  }
+});
+
+// A calculation report (self-contained HTML, no scripts) saved as a PDF: rendered in a hidden window with
+// JavaScript off, printed to A4, then written where the user chooses. Returns the saved path, or null if cancelled.
+ipcMain.handle('report-to-pdf', async (event, { html, fileName } = {}) => {
+  if (typeof html !== 'string' || !html) throw new Error('No report to print.');
+  const owner = BrowserWindow.fromWebContents(event.sender) || undefined;
+  const { canceled, filePath } = await dialog.showSaveDialog(owner, {
+    defaultPath: fileName || 'geocore-report.pdf',
+    filters: [{ name: 'PDF', extensions: ['pdf'] }],
+  });
+  if (canceled || !filePath) return null;
+  // Loaded from a temporary file, not a data: URL: Chromium caps URLs at about 2 MB, which a project report with
+  // many runs can exceed.
+  const tmp = path.join(app.getPath('temp'), `geocore-report-${process.pid}-${Date.now()}.html`);
+  const win = new BrowserWindow({ show: false, webPreferences: { javascript: false, sandbox: true } });
+  try {
+    await fs.promises.writeFile(tmp, html, 'utf8');
+    await win.loadFile(tmp);
+    const pdf = await win.webContents.printToPDF({ printBackground: true, pageSize: 'A4' });
+    await fs.promises.writeFile(filePath, pdf);
+    return filePath;
+  } finally {
+    win.destroy();
+    fs.promises.unlink(tmp).catch(() => {});
   }
 });
 
@@ -84,9 +110,11 @@ function createWindow() {
       : {}),
   });
 
-  // Tutorial videos link out to YouTube: open those in the system browser, never in an app window.
+  // Tutorial videos (YouTube) and the guides' groundhog source links open in the system browser, never in an
+  // app window.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (/^https:\/\/(www\.)?youtube(-nocookie)?\.com\//.test(url)) shell.openExternal(url);
+    if (/^https:\/\/(www\.)?youtube(-nocookie)?\.com\//.test(url)
+      || /^https:\/\/github\.com\/snakesonabrain\/groundhog(\/|$)/.test(url)) shell.openExternal(url);
     return { action: 'deny' };
   });
 

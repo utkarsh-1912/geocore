@@ -918,7 +918,7 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </code></pre></div>
 
 <p>Sets the soil type for the pile resistance calculation. For the shaft resistance calculation, a column 'Soil type' is required.</p>
-<p>The calculation of overburden pressure is included in this routine. According to the Belgian practice, a total unit weight of 15.696<span class="math">\(kN/m^3\)</span> is used for dry soil and a unit weight of 19.62<span class="math">\(kN/m^3\)</span> for wet soil. An array with total unit weights for each soil layer can be specified (<code>total_unit_weight</code>) to override these defaults. If the water level is not at a layer interface, this array need to contain an additional entry to account for the difference between the dry and wet unit weight in the layer containing the water table.</p>
+<p>The calculation of overburden pressure is included in this routine. According to the Belgian practice, a total unit weight of 15.696&#8239;<span class="math">\(\mathrm{kN/m^3}\)</span> is used for dry soil and a unit weight of 19.62&#8239;<span class="math">\(\mathrm{kN/m^3}\)</span> for wet soil. An array with total unit weights for each soil layer can be specified (<code>total_unit_weight</code>) to override these defaults. If the water level is not at a layer interface, this array need to contain an additional entry to account for the difference between the dry and wet unit weight in the layer containing the water table.</p>
 <p>The unit weight used in De Beer's base resistance calculation is the total unit weight above the water table and the effective unit weight below.</p>
 <p>The soil types need to be specified in accordance with Table 4 of the paper Design of deepfoundations - Belgian practice (Huybrechts et al, 2016).</p>
 <p>Finally, it is possible to specify whether each layer is tertiary clay or not using an array of Booleans. Occurence of stiff tertiary clays can be taken into account by specifying the array <code>tertiary_clay</code>.</p>
@@ -974,21 +974,21 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 <td></td>
 <td></td>
 <td><code>15.696</code></td>
-<td>Dry unit weight used for all soils (default=15.696<span class="math">\(kN/m^3\)</span>)</td>
+<td>Dry unit weight used for all soils (default=15.696&#8239;<span class="math">\(\mathrm{kN/m^3}\)</span>)</td>
 </tr>
 <tr>
 <td><code>total_unit_weight_wet</code></td>
 <td></td>
 <td></td>
 <td><code>19.62</code></td>
-<td>Wet unit weight used for all soils (default=19.62<span class="math">\(kN/m^3\)</span>)</td>
+<td>Wet unit weight used for all soils (default=19.62&#8239;<span class="math">\(\mathrm{kN/m^3}\)</span>)</td>
 </tr>
 <tr>
 <td><code>water_unit_weight</code></td>
 <td></td>
 <td></td>
 <td></td>
-<td>Unit weight of water used for the calculations (default=10<span class="math">\(kN/m^3\)</span>)</td>
+<td>Unit weight of water used for the calculations (default=10&#8239;<span class="math">\(\mathrm{kN/m^3}\)</span>)</td>
 </tr>
 <tr>
 <td><code>total_unit_weight</code></td>

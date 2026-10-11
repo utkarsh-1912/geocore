@@ -100,6 +100,32 @@ def invoke_geoai_tool(payload: Dict[str, Any] = Body(...)):
 
 # --- Calculation Explanation Endpoints (for the "Formula & Derivation" card, not the chat) ---
 
+def _explain_target(payload: Dict[str, Any]):
+    """
+    (Groundhog function id, args by its parameter names, results) for the explainer. ``function_id`` may also be a
+    GeoAI tool name (a chat result): the tool's function and its argument renames (form_arg_map) are applied, so
+    the docstring's symbols and units line up with the values.
+    """
+    from core.geoai.catalogue_link import tool_function_id
+    function_id = payload.get("function_id")
+    if not function_id:
+        raise HTTPException(status_code=400, detail="Field 'function_id' is required.")
+    args = payload.get("args") or {}
+    results = payload.get("results")
+    tool = tool_registry.get_tool(function_id)
+    if tool is not None and tool_function_id(tool) != function_id:
+        from core.geoai.tool_metadata import get_tool_metadata
+        arg_map = getattr(tool.func, "__geoai_arg_map__", None) or {}
+        args = {arg_map.get(k, k): v for k, v in args.items()}
+        # The tool names its outputs without Groundhog's "[unit]" ("Gmax"): add the tool's documented unit so the
+        # explanation shows it ("Gmax [kPa]").
+        units = get_tool_metadata(tool.name).get("output_units") or {}
+        if isinstance(results, dict):
+            results = {(f"{k} [{units[k]}]" if units.get(k) and "[" not in k else k): v for k, v in results.items()}
+        function_id = tool_function_id(tool)
+    return function_id, args, results
+
+
 @router.post("/explain")
 def explain_calculation_result(payload: Dict[str, Any] = Body(...)):
     """
@@ -107,13 +133,10 @@ def explain_calculation_result(payload: Dict[str, Any] = Body(...)):
     TOOL_METADATA), the formula straight from the groundhog function's docstring, and the
     substituted inputs/outputs. No model call, always available, never fabricated.
 
-    Body format: {"function_id": str, "args": dict, "results": dict}
+    Body format: {"function_id": str (a GeoCore function id or a GeoAI tool name), "args": dict, "results": dict}
     """
     from core.geoai.calculation_explainer import explain_calculation
-    function_id = payload.get("function_id")
-    if not function_id:
-        raise HTTPException(status_code=400, detail="Field 'function_id' is required.")
-    return explain_calculation(function_id, payload.get("args"), payload.get("results"))
+    return explain_calculation(*_explain_target(payload))
 
 
 @router.post("/explain/narrate")
@@ -126,16 +149,14 @@ def narrate_calculation_result(payload: Dict[str, Any] = Body(...)):
     Body format: same as /explain.
     """
     from core.geoai.calculation_explainer import explain_calculation, narrate_explanation
-    function_id = payload.get("function_id")
-    if not function_id:
-        raise HTTPException(status_code=400, detail="Field 'function_id' is required.")
+    target = _explain_target(payload)
 
     provider = lifecycle_manager.get_provider()
     if provider.model_info().get("provider") == "heuristic":
         return {"narration": None, "reason": "No local model is installed — install one in the GeoAI model manager to get a plain-language narration."}
 
     lifecycle_manager.touch()
-    explanation = explain_calculation(function_id, payload.get("args"), payload.get("results"))
+    explanation = explain_calculation(*target)
     try:
         narration = narrate_explanation(explanation, provider)
     except GenerationCancelled:
@@ -163,6 +184,89 @@ def _with_project_context(context: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     if project.list_profile_names() or getattr(project, "water_table_depth", None) is not None:
         context["project_context"] = project
     return context
+
+
+def _sse_response(request: Request, event_generator) -> StreamingResponse:
+    """
+    Server-sent events from ``event_generator`` (a function returning an iterator of "data: ..." strings), with the
+    model call aborted when the client goes away (Stop, closed window) and a heartbeat during long model calls.
+    """
+    async def disconnect_aware_stream():
+        # The server only notices a closed connection when it next sends a chunk, and the
+        # model may compute for minutes before the first one (prompt processing on a laptop
+        # CPU). Poll for the disconnect meanwhile and abort the model call, so a closed
+        # window or Stop does not leave the CPU busy and the model locked for no one.
+        events = event_generator()
+        finished = False
+        try:
+            while True:
+                pending = asyncio.ensure_future(run_in_threadpool(next, events, None))
+                last_sent = time.monotonic()
+                while not pending.done():
+                    await asyncio.wait({pending}, timeout=DISCONNECT_POLL_S)
+                    if not pending.done() and await request.is_disconnected():
+                        return
+                    if not pending.done() and time.monotonic() - last_sent >= HEARTBEAT_S:
+                        # SSE comment: keeps the connection visibly alive through a long
+                        # model call, so the client can tell "busy" from "dead".
+                        last_sent = time.monotonic()
+                        yield ": ping\n\n"
+                chunk = pending.result()
+                if chunk is None:
+                    finished = True
+                    return
+                yield chunk
+        finally:
+            if not finished:
+                lifecycle_manager.cancel()
+
+    return StreamingResponse(
+        disconnect_aware_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
+
+@router.post("/explain/solution")
+def solution_stream(request: Request, payload: Dict[str, Any] = Body(...)):
+    """
+    Worked solution of an already-computed result, written by the local model and grounded in the calculation's
+    guide details (core.geoai.solution). Server-sent events: "token" (prose), "check" ({"unverified": numbers in the
+    answer that are not in the grounding}), "unavailable" (no local model: show the calculation details instead),
+    "done" / "error" / "cancelled".
+
+    Body: same as /explain, plus optional "applicability" (the method's conditions of use, shown as a note).
+    """
+    from core.geoai.solution import stream_solution
+    function_id, args, results = _explain_target(payload)
+    provider = lifecycle_manager.get_provider()
+
+    def event_generator():
+        def sse(event: Dict[str, Any]) -> str:
+            return f"data: {json.dumps(event, default=str)}\n\n"
+        if provider.model_info().get("provider") == "heuristic":
+            yield sse({"type": "unavailable", "content": "No local model is installed, so GeoAI cannot write the "
+                                                         "worked solution. Install one in the GeoAI model manager."})
+            yield sse({"type": "done"})
+            return
+        lifecycle_manager.touch()
+        try:
+            yield sse({"type": "stage", "content": "writing_answer"})
+            for event in stream_solution(provider, function_id, args, results, payload.get("applicability")):
+                yield sse(event)
+            yield sse({"type": "done"})
+        except GenerationCancelled as e:
+            yield sse({"type": "cancelled", "content": str(e)})
+        except Exception as e:
+            logger.error(f"Solution streaming error: {e}")
+            yield sse({"type": "error", "content": str(e)})
+
+    return _sse_response(request, event_generator)
+
 
 
 @router.post("/chat")
@@ -199,44 +303,7 @@ def geoai_chat(request: Request, payload: Dict[str, Any] = Body(...), stream: bo
                 logger.error(f"Streaming error in GeoAI chat: {e}")
                 yield f"data: {json.dumps({'type': 'error', 'content': str(e)})}\n\n"
 
-        async def disconnect_aware_stream():
-            # The server only notices a closed connection when it next sends a chunk, and the
-            # model may compute for minutes before the first one (prompt processing on a laptop
-            # CPU). Poll for the disconnect meanwhile and abort the model call, so a closed
-            # window or Stop does not leave the CPU busy and the model locked for no one.
-            events = event_generator()
-            finished = False
-            try:
-                while True:
-                    pending = asyncio.ensure_future(run_in_threadpool(next, events, None))
-                    last_sent = time.monotonic()
-                    while not pending.done():
-                        await asyncio.wait({pending}, timeout=DISCONNECT_POLL_S)
-                        if not pending.done() and await request.is_disconnected():
-                            return
-                        if not pending.done() and time.monotonic() - last_sent >= HEARTBEAT_S:
-                            # SSE comment: keeps the connection visibly alive through a long
-                            # model call, so the client can tell "busy" from "dead".
-                            last_sent = time.monotonic()
-                            yield ": ping\n\n"
-                    chunk = pending.result()
-                    if chunk is None:
-                        finished = True
-                        return
-                    yield chunk
-            finally:
-                if not finished:
-                    lifecycle_manager.cancel()
-
-        return StreamingResponse(
-            disconnect_aware_stream(),
-            media_type="text/event-stream",
-            headers={
-                "Cache-Control": "no-cache",
-                "Connection": "keep-alive",
-                "X-Accel-Buffering": "no"
-            }
-        )
+        return _sse_response(request, event_generator)
     else:
         try:
             response = agent.run(user_message=prompt, context=context, history=history)
@@ -323,7 +390,7 @@ def get_geoai_status():
         "status": "ready",
         "loaded": provider.is_loaded(),
         "model_info": provider.model_info(),
-        "tools_registered": len(tool_registry.list_tools())
+        "tools_registered": tool_registry.tool_count()
     }
 
 

@@ -1,0 +1,1445 @@
+{
+ "domain": {
+  "id": "ground_characterisation",
+  "title": "Ground characterisation",
+  "description": "Phase relations, classification, CPT/SPT interpretation, correlations, lab tests and characteristic values.",
+  "order": 2
+ },
+ "calculations": [
+  {
+   "id": "phase_relations",
+   "title": "Phase relations",
+   "group": "Phase relations",
+   "summary": "Unit weights, void ratio, porosity, water content and saturation from the quantities you know.",
+   "methods": [
+    {
+     "id": "bulkunitweight",
+     "label": "Bulk Unit Weight (from Gs, e, Sr)",
+     "function": "bulkunitweight",
+     "status": "unverified"
+    },
+    {
+     "id": "bulkunitweight_dryunitweight",
+     "label": "Bulk Unit Weight (from Dry Unit Weight)",
+     "function": "bulkunitweight_dryunitweight",
+     "status": "unverified"
+    },
+    {
+     "id": "density_unitweight",
+     "label": "Unit Weight to Density",
+     "function": "density_unitweight",
+     "status": "unverified"
+    },
+    {
+     "id": "dryunitweight_watercontent",
+     "label": "Dry Unit Weight (from Water Content)",
+     "function": "dryunitweight_watercontent",
+     "status": "unverified"
+    },
+    {
+     "id": "porosity_voidratio",
+     "label": "Porosity (from Void Ratio)",
+     "function": "porosity_voidratio",
+     "status": "unverified"
+    },
+    {
+     "id": "relative_density",
+     "label": "Relative Density (from Void Ratio)",
+     "function": "relative_density",
+     "status": "unverified"
+    },
+    {
+     "id": "saturation_watercontent",
+     "label": "Degree of Saturation (from Water Content)",
+     "function": "saturation_watercontent",
+     "status": "unverified"
+    },
+    {
+     "id": "unitweight_density",
+     "label": "Density to Unit Weight",
+     "function": "unitweight_density",
+     "status": "unverified"
+    },
+    {
+     "id": "unitweight_watercontent_saturated",
+     "label": "Saturated Unit Weight (from Water Content)",
+     "function": "unitweight_watercontent_saturated",
+     "status": "unverified"
+    },
+    {
+     "id": "voidratio_bulkunitweight",
+     "label": "Void Ratio (from Bulk Unit Weight)",
+     "function": "voidratio_bulkunitweight",
+     "status": "unverified"
+    },
+    {
+     "id": "voidratio_drydensity",
+     "label": "Void Ratio (from Dry Density)",
+     "function": "voidratio_drydensity",
+     "status": "unverified"
+    },
+    {
+     "id": "voidratio_porosity",
+     "label": "Void Ratio (from Porosity)",
+     "function": "voidratio_porosity",
+     "status": "unverified"
+    },
+    {
+     "id": "voidratio_watercontent",
+     "label": "Void Ratio (from Water Content)",
+     "function": "voidratio_watercontent",
+     "status": "unverified"
+    },
+    {
+     "id": "watercontent_voidratio",
+     "label": "Water Content (from Void Ratio)",
+     "function": "watercontent_voidratio",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "index"
+   ],
+   "default_method": "bulkunitweight"
+  },
+  {
+   "id": "relativedensity_categories",
+   "title": "Relative Density Classification",
+   "group": "Classification",
+   "methods": [
+    {
+     "id": "relativedensity_categories",
+     "label": "Relative Density Classification",
+     "function": "relativedensity_categories",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "index"
+   ],
+   "default_method": "relativedensity_categories"
+  },
+  {
+   "id": "samplequality_voidratio_lunne",
+   "title": "Lunne Sample Quality (Void Ratio Change)",
+   "group": "Classification",
+   "methods": [
+    {
+     "id": "samplequality_voidratio_lunne",
+     "label": "Lunne Sample Quality (Void Ratio Change)",
+     "function": "samplequality_voidratio_lunne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "index"
+   ],
+   "default_method": "samplequality_voidratio_lunne"
+  },
+  {
+   "id": "su_categories",
+   "title": "Undrained Shear Strength Classification",
+   "group": "Classification",
+   "methods": [
+    {
+     "id": "su_categories",
+     "label": "Undrained Shear Strength Classification",
+     "function": "su_categories",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "index"
+   ],
+   "default_method": "su_categories"
+  },
+  {
+   "id": "uscs_categories",
+   "title": "USCS Soil Type Descriptions",
+   "group": "Classification",
+   "methods": [
+    {
+     "id": "uscs_categories",
+     "label": "USCS Soil Type Descriptions",
+     "function": "uscs_categories",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "index"
+   ],
+   "default_method": "uscs_categories"
+  },
+  {
+   "id": "acousticimpedance_bulkunitweight_chen",
+   "title": "Chen Acoustic Impedance–Porosity Correlation",
+   "group": "Correlations: all soils",
+   "methods": [
+    {
+     "id": "acousticimpedance_bulkunitweight_chen",
+     "label": "Chen Acoustic Impedance–Porosity Correlation",
+     "function": "acousticimpedance_bulkunitweight_chen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "acousticimpedance_bulkunitweight_chen"
+  },
+  {
+   "id": "k0_frictionangle_mesri",
+   "title": "Mesri K0 (Normally/Overconsolidated Soils)",
+   "group": "Correlations: all soils",
+   "methods": [
+    {
+     "id": "k0_frictionangle_mesri",
+     "label": "Mesri K0 (Normally/Overconsolidated Soils)",
+     "function": "k0_frictionangle_mesri",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "k0_frictionangle_mesri"
+  },
+  {
+   "id": "shearwavevelocity_compressionindex_cha",
+   "title": "Cha Vs–Compression Index Correlation",
+   "group": "Correlations: all soils",
+   "methods": [
+    {
+     "id": "shearwavevelocity_compressionindex_cha",
+     "label": "Cha Vs–Compression Index Correlation",
+     "function": "shearwavevelocity_compressionindex_cha",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "shearwavevelocity_compressionindex_cha"
+  },
+  {
+   "id": "compressionindex_watercontent_koppula",
+   "title": "Koppula (1981) Compression Index",
+   "group": "Correlations: cohesive soils",
+   "methods": [
+    {
+     "id": "compressionindex_watercontent_koppula",
+     "label": "Koppula (1981) Compression Index",
+     "function": "compressionindex_watercontent_koppula",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "compressionindex_watercontent_koppula"
+  },
+  {
+   "id": "cv_liquidlimit_usnavy",
+   "title": "US Navy Cv from Liquid Limit",
+   "group": "Correlations: cohesive soils",
+   "methods": [
+    {
+     "id": "cv_liquidlimit_usnavy",
+     "label": "US Navy Cv from Liquid Limit",
+     "function": "cv_liquidlimit_usnavy",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cv_liquidlimit_usnavy"
+  },
+  {
+   "id": "frictionangle_plasticityindex",
+   "title": "Drained Friction Angle (from Plasticity Index)",
+   "group": "Correlations: cohesive soils",
+   "methods": [
+    {
+     "id": "frictionangle_plasticityindex",
+     "label": "Drained Friction Angle (from Plasticity Index)",
+     "function": "frictionangle_plasticityindex",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "frictionangle_plasticityindex"
+  },
+  {
+   "id": "gmax_plasticityocr_andersen",
+   "title": "Andersen Gmax (Plasticity & OCR)",
+   "group": "Correlations: cohesive soils",
+   "methods": [
+    {
+     "id": "gmax_plasticityocr_andersen",
+     "label": "Andersen Gmax (Plasticity & OCR)",
+     "function": "gmax_plasticityocr_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "gmax_plasticityocr_andersen"
+  },
+  {
+   "id": "icl_scl_burland",
+   "title": "Burland (1990) Intrinsic & Sedimentation Compression Lines",
+   "group": "Correlations: cohesive soils",
+   "methods": [
+    {
+     "id": "icl_scl_burland",
+     "label": "Burland (1990) Intrinsic & Sedimentation Compression Lines",
+     "function": "icl_scl_burland",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "icl_scl_burland"
+  },
+  {
+   "id": "k0_plasticity_kenney",
+   "title": "Kenney K0 (from Plasticity, Clay)",
+   "group": "Correlations: cohesive soils",
+   "methods": [
+    {
+     "id": "k0_plasticity_kenney",
+     "label": "Kenney K0 (from Plasticity, Clay)",
+     "function": "k0_plasticity_kenney",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "k0_plasticity_kenney"
+  },
+  {
+   "id": "gmax_sand_hardinblack",
+   "title": "Hardin & Black (1968) Gmax for Sand",
+   "group": "Correlations: cohesionless soils",
+   "methods": [
+    {
+     "id": "gmax_sand_hardinblack",
+     "label": "Hardin & Black (1968) Gmax for Sand",
+     "function": "gmax_sand_hardinblack",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "gmax_sand_hardinblack"
+  },
+  {
+   "id": "hssmall_parameters_sand",
+   "title": "HS Small Parameters (from Relative Density)",
+   "group": "Correlations: cohesionless soils",
+   "methods": [
+    {
+     "id": "hssmall_parameters_sand",
+     "label": "HS Small Parameters (from Relative Density)",
+     "function": "hssmall_parameters_sand",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "hssmall_parameters_sand"
+  },
+  {
+   "id": "permeability_d10_hazen",
+   "title": "Hazen Permeability (from D10)",
+   "group": "Correlations: cohesionless soils",
+   "methods": [
+    {
+     "id": "permeability_d10_hazen",
+     "label": "Hazen Permeability (from D10)",
+     "function": "permeability_d10_hazen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "permeability_d10_hazen"
+  },
+  {
+   "id": "stress_dilatancy_bolton",
+   "title": "Bolton Stress–Dilatancy Relation",
+   "group": "Correlations: cohesionless soils",
+   "methods": [
+    {
+     "id": "stress_dilatancy_bolton",
+     "label": "Bolton Stress–Dilatancy Relation",
+     "function": "stress_dilatancy_bolton",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stress_dilatancy_bolton"
+  },
+  {
+   "id": "PCPTProcessing",
+   "title": "PCPTProcessing",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "PCPTProcessing",
+     "label": "PCPTProcessing",
+     "function": "PCPTProcessing",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "PCPTProcessing"
+  },
+  {
+   "id": "behaviourindex_pcpt_nonnormalised",
+   "title": "Non-Normalised Soil Behaviour Index",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "behaviourindex_pcpt_nonnormalised",
+     "label": "Non-Normalised Soil Behaviour Index",
+     "function": "behaviourindex_pcpt_nonnormalised",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "behaviourindex_pcpt_nonnormalised"
+  },
+  {
+   "id": "behaviourindex_pcpt_robertsonwride",
+   "title": "Robertson & Wride (1998) Soil Behaviour Index",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "behaviourindex_pcpt_robertsonwride",
+     "label": "Robertson & Wride (1998) Soil Behaviour Index",
+     "function": "behaviourindex_pcpt_robertsonwride",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "behaviourindex_pcpt_robertsonwride"
+  },
+  {
+   "id": "clippingdepths_qc1N_tianlehane",
+   "title": "Tian & Lehane (2025) Layer Clipping Depths",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "clippingdepths_qc1N_tianlehane",
+     "label": "Tian & Lehane (2025) Layer Clipping Depths",
+     "function": "clippingdepths_qc1N_tianlehane",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "clippingdepths_qc1N_tianlehane"
+  },
+  {
+   "id": "coneresistance_ocsand_baldi",
+   "title": "Baldi Cone Resistance (Overconsolidated Sand)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "coneresistance_ocsand_baldi",
+     "label": "Baldi Cone Resistance (Overconsolidated Sand)",
+     "function": "coneresistance_ocsand_baldi",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "coneresistance_ocsand_baldi"
+  },
+  {
+   "id": "constrainedmodulus_pcpt_robertson",
+   "title": "Robertson Constrained Modulus (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "constrainedmodulus_pcpt_robertson",
+     "label": "Robertson Constrained Modulus (CPT)",
+     "function": "constrainedmodulus_pcpt_robertson",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "constrainedmodulus_pcpt_robertson"
+  },
+  {
+   "id": "dissipation_test_teh",
+   "title": "Teh & Houlsby (1991) Dissipation Curve",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "dissipation_test_teh",
+     "label": "Teh & Houlsby (1991) Dissipation Curve",
+     "function": "dissipation_test_teh",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "dissipation_test_teh"
+  },
+  {
+   "id": "drainedsecantmodulus_sand_bellotti",
+   "title": "Bellotti Drained Secant Modulus (Sand)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "drainedsecantmodulus_sand_bellotti",
+     "label": "Bellotti Drained Secant Modulus (Sand)",
+     "function": "drainedsecantmodulus_sand_bellotti",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "drainedsecantmodulus_sand_bellotti"
+  },
+  {
+   "id": "frictionangle_overburden_kleven",
+   "title": "Kleven (1986) Friction Angle Chart",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "frictionangle_overburden_kleven",
+     "label": "Kleven (1986) Friction Angle Chart",
+     "function": "frictionangle_overburden_kleven",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "frictionangle_overburden_kleven"
+  },
+  {
+   "id": "frictionangle_sand_kulhawymayne",
+   "title": "Kulhawy & Mayne Friction Angle (Sand, CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "frictionangle_sand_kulhawymayne",
+     "label": "Kulhawy & Mayne Friction Angle (Sand, CPT)",
+     "function": "frictionangle_sand_kulhawymayne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "frictionangle_sand_kulhawymayne"
+  },
+  {
+   "id": "gmax_clay_maynerix",
+   "title": "Mayne & Rix (1993) Gmax for Clay",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "gmax_clay_maynerix",
+     "label": "Mayne & Rix (1993) Gmax for Clay",
+     "function": "gmax_clay_maynerix",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "gmax_clay_maynerix"
+  },
+  {
+   "id": "gmax_cpt_puechen",
+   "title": "Puechen Gmax (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "gmax_cpt_puechen",
+     "label": "Puechen Gmax (CPT)",
+     "function": "gmax_cpt_puechen",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "gmax_cpt_puechen"
+  },
+  {
+   "id": "gmax_sand_rixstokoe",
+   "title": "Rix & Stokoe Gmax (Sand, CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "gmax_sand_rixstokoe",
+     "label": "Rix & Stokoe Gmax (Sand, CPT)",
+     "function": "gmax_sand_rixstokoe",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "gmax_sand_rixstokoe"
+  },
+  {
+   "id": "gmax_voidratio_maynerix",
+   "title": "Mayne & Rix Gmax (from Void Ratio)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "gmax_voidratio_maynerix",
+     "label": "Mayne & Rix Gmax (from Void Ratio)",
+     "function": "gmax_voidratio_maynerix",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "gmax_voidratio_maynerix"
+  },
+  {
+   "id": "ic_soilclass_robertson",
+   "title": "Robertson & Wride Soil Classification (Ic)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "ic_soilclass_robertson",
+     "label": "Robertson & Wride Soil Classification (Ic)",
+     "function": "ic_soilclass_robertson",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "ic_soilclass_robertson"
+  },
+  {
+   "id": "k0_sand_mayne",
+   "title": "Mayne K0 (Clean Sand, CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "k0_sand_mayne",
+     "label": "Mayne K0 (Clean Sand, CPT)",
+     "function": "k0_sand_mayne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "k0_sand_mayne"
+  },
+  {
+   "id": "ocr_cpt_lunne",
+   "title": "Lunne OCR (CPT, Clay)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "ocr_cpt_lunne",
+     "label": "Lunne OCR (CPT, Clay)",
+     "function": "ocr_cpt_lunne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "ocr_cpt_lunne"
+  },
+  {
+   "id": "pcpt_normalisations",
+   "title": "PCPT Normalisation & Correction",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "pcpt_normalisations",
+     "label": "PCPT Normalisation & Correction",
+     "function": "pcpt_normalisations",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "pcpt_normalisations"
+  },
+  {
+   "id": "relativedensity_ncsand_baldi",
+   "title": "Baldi Relative Density (NC Sand)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "relativedensity_ncsand_baldi",
+     "label": "Baldi Relative Density (NC Sand)",
+     "function": "relativedensity_ncsand_baldi",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "relativedensity_ncsand_baldi"
+  },
+  {
+   "id": "relativedensity_ocsand_baldi",
+   "title": "Baldi Relative Density (OC Sand)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "relativedensity_ocsand_baldi",
+     "label": "Baldi Relative Density (OC Sand)",
+     "function": "relativedensity_ocsand_baldi",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "relativedensity_ocsand_baldi"
+  },
+  {
+   "id": "relativedensity_sand_jamiolkowski",
+   "title": "Jamiolkowski Relative Density (Sand, CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "relativedensity_sand_jamiolkowski",
+     "label": "Jamiolkowski Relative Density (Sand, CPT)",
+     "function": "relativedensity_sand_jamiolkowski",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "relativedensity_sand_jamiolkowski"
+  },
+  {
+   "id": "sensitivity_frictionratio_lunne",
+   "title": "Rad & Lunne (1986) Sensitivity (Friction Ratio)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "sensitivity_frictionratio_lunne",
+     "label": "Rad & Lunne (1986) Sensitivity (Friction Ratio)",
+     "function": "sensitivity_frictionratio_lunne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "sensitivity_frictionratio_lunne"
+  },
+  {
+   "id": "soilclass_robertson",
+   "title": "Robertson & Wride Soil Classification",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "soilclass_robertson",
+     "label": "Robertson & Wride Soil Classification",
+     "function": "soilclass_robertson",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "soilclass_robertson"
+  },
+  {
+   "id": "soiltype_vs_longodonohue",
+   "title": "Long & Donohue Soil Type (Vs, CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "soiltype_vs_longodonohue",
+     "label": "Long & Donohue Soil Type (Vs, CPT)",
+     "function": "soiltype_vs_longodonohue",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "soiltype_vs_longodonohue"
+  },
+  {
+   "id": "undrainedshearstrength_clay_radlunne",
+   "title": "Rad & Lunne Undrained Shear Strength (Net qt)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "undrainedshearstrength_clay_radlunne",
+     "label": "Rad & Lunne Undrained Shear Strength (Net qt)",
+     "function": "undrainedshearstrength_clay_radlunne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "undrainedshearstrength_clay_radlunne"
+  },
+  {
+   "id": "unitweight_mayne",
+   "title": "Mayne Total Unit Weight (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "unitweight_mayne",
+     "label": "Mayne Total Unit Weight (CPT)",
+     "function": "unitweight_mayne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "unitweight_mayne"
+  },
+  {
+   "id": "vs_cpt_andrus",
+   "title": "Andrus Shear Wave Velocity (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cpt_andrus",
+     "label": "Andrus Shear Wave Velocity (CPT)",
+     "function": "vs_cpt_andrus",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cpt_andrus"
+  },
+  {
+   "id": "vs_cpt_hegazymayne",
+   "title": "Hegazy & Mayne Shear Wave Velocity (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cpt_hegazymayne",
+     "label": "Hegazy & Mayne Shear Wave Velocity (CPT)",
+     "function": "vs_cpt_hegazymayne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cpt_hegazymayne"
+  },
+  {
+   "id": "vs_cpt_longdonohue",
+   "title": "Long & Donohue Shear Wave Velocity (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cpt_longdonohue",
+     "label": "Long & Donohue Shear Wave Velocity (CPT)",
+     "function": "vs_cpt_longdonohue",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cpt_longdonohue"
+  },
+  {
+   "id": "vs_cpt_mcgannetal",
+   "title": "McGann et al. Shear Wave Velocity (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cpt_mcgannetal",
+     "label": "McGann et al. Shear Wave Velocity (CPT)",
+     "function": "vs_cpt_mcgannetal",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cpt_mcgannetal"
+  },
+  {
+   "id": "vs_cpt_tonniandsimonini",
+   "title": "Tonni & Simonini Shear Wave Velocity (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cpt_tonniandsimonini",
+     "label": "Tonni & Simonini Shear Wave Velocity (CPT)",
+     "function": "vs_cpt_tonniandsimonini",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cpt_tonniandsimonini"
+  },
+  {
+   "id": "vs_cpt_wrideetal",
+   "title": "Wride et al. Shear Wave Velocity (CPT)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cpt_wrideetal",
+     "label": "Wride et al. Shear Wave Velocity (CPT)",
+     "function": "vs_cpt_wrideetal",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cpt_wrideetal"
+  },
+  {
+   "id": "vs_cptd50_karrayetal",
+   "title": "Karray et al. Shear Wave Velocity (CPT, D50)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_cptd50_karrayetal",
+     "label": "Karray et al. Shear Wave Velocity (CPT, D50)",
+     "function": "vs_cptd50_karrayetal",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_cptd50_karrayetal"
+  },
+  {
+   "id": "vs_ic_robertsoncabal",
+   "title": "Robertson & Cabal Shear Wave Velocity (Ic)",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_ic_robertsoncabal",
+     "label": "Robertson & Cabal Shear Wave Velocity (Ic)",
+     "function": "vs_ic_robertsoncabal",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_ic_robertsoncabal"
+  },
+  {
+   "id": "vs_stressdependent_stuyts",
+   "title": "Stuyts (2024) Stress-Dependent Shear Wave Velocity",
+   "group": "CPT",
+   "methods": [
+    {
+     "id": "vs_stressdependent_stuyts",
+     "label": "Stuyts (2024) Stress-Dependent Shear Wave Velocity",
+     "function": "vs_stressdependent_stuyts",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "vs_stressdependent_stuyts"
+  },
+  {
+   "id": "SPTProcessing",
+   "title": "SPTProcessing",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "SPTProcessing",
+     "label": "SPTProcessing",
+     "function": "SPTProcessing",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "SPTProcessing"
+  },
+  {
+   "id": "frictionangle_spt_PHT",
+   "title": "Peck, Hanson & Thornburn (1974) Friction Angle",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "frictionangle_spt_PHT",
+     "label": "Peck, Hanson & Thornburn (1974) Friction Angle",
+     "function": "frictionangle_spt_PHT",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "frictionangle_spt_PHT"
+  },
+  {
+   "id": "frictionangle_spt_kulhawymayne",
+   "title": "Kulhawy & Mayne Friction Angle (SPT)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "frictionangle_spt_kulhawymayne",
+     "label": "Kulhawy & Mayne Friction Angle (SPT)",
+     "function": "frictionangle_spt_kulhawymayne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "frictionangle_spt_kulhawymayne"
+  },
+  {
+   "id": "overburdencorrection_spt_ISO",
+   "title": "ISO Overburden Correction (SPT N)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "overburdencorrection_spt_ISO",
+     "label": "ISO Overburden Correction (SPT N)",
+     "function": "overburdencorrection_spt_ISO",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "overburdencorrection_spt_ISO"
+  },
+  {
+   "id": "overburdencorrection_spt_liaowhitman",
+   "title": "Liao & Whitman Overburden Correction (SPT N)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "overburdencorrection_spt_liaowhitman",
+     "label": "Liao & Whitman Overburden Correction (SPT N)",
+     "function": "overburdencorrection_spt_liaowhitman",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "overburdencorrection_spt_liaowhitman"
+  },
+  {
+   "id": "relativedensity_spt_kulhawymayne",
+   "title": "Kulhawy & Mayne Relative Density (SPT)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "relativedensity_spt_kulhawymayne",
+     "label": "Kulhawy & Mayne Relative Density (SPT)",
+     "function": "relativedensity_spt_kulhawymayne",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "relativedensity_spt_kulhawymayne"
+  },
+  {
+   "id": "relativedensityclass_spt_terzaghipeck",
+   "title": "Terzaghi & Peck Relative Density Class (SPT)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "relativedensityclass_spt_terzaghipeck",
+     "label": "Terzaghi & Peck Relative Density Class (SPT)",
+     "function": "relativedensityclass_spt_terzaghipeck",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "relativedensityclass_spt_terzaghipeck"
+  },
+  {
+   "id": "spt_N60_correction",
+   "title": "SPT N60 Energy Correction",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "spt_N60_correction",
+     "label": "SPT N60 Energy Correction",
+     "function": "spt_N60_correction",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "spt_N60_correction"
+  },
+  {
+   "id": "undrainedshearstrength_spt_salgado",
+   "title": "Salgado Undrained Shear Strength (SPT)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "undrainedshearstrength_spt_salgado",
+     "label": "Salgado Undrained Shear Strength (SPT)",
+     "function": "undrainedshearstrength_spt_salgado",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "undrainedshearstrength_spt_salgado"
+  },
+  {
+   "id": "undrainedshearstrengthclass_spt_terzaghipeck",
+   "title": "Terzaghi & Peck Strength Class (SPT)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "undrainedshearstrengthclass_spt_terzaghipeck",
+     "label": "Terzaghi & Peck Strength Class (SPT)",
+     "function": "undrainedshearstrengthclass_spt_terzaghipeck",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "undrainedshearstrengthclass_spt_terzaghipeck"
+  },
+  {
+   "id": "youngsmodulus_spt_AASHTO",
+   "title": "AASHTO Young's Modulus (SPT)",
+   "group": "SPT",
+   "methods": [
+    {
+     "id": "youngsmodulus_spt_AASHTO",
+     "label": "AASHTO Young's Modulus (SPT)",
+     "function": "youngsmodulus_spt_AASHTO",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "spt"
+   ],
+   "default_method": "youngsmodulus_spt_AASHTO"
+  },
+  {
+   "id": "undercompaction_cohesionless_ladd",
+   "title": "Ladd Undercompaction (Sample Preparation)",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "undercompaction_cohesionless_ladd",
+     "label": "Ladd Undercompaction (Sample Preparation)",
+     "function": "undercompaction_cohesionless_ladd",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "undercompaction_cohesionless_ladd"
+  },
+  {
+   "id": "PlasticityChart",
+   "title": "PlasticityChart",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "PlasticityChart",
+     "label": "PlasticityChart",
+     "function": "PlasticityChart",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "PlasticityChart"
+  },
+  {
+   "id": "PSDChart",
+   "title": "PSDChart",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "PSDChart",
+     "label": "PSDChart",
+     "function": "PSDChart",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "PSDChart"
+  },
+  {
+   "id": "logtimemethod",
+   "title": "Log-Time Method (Coefficient of Consolidation)",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "logtimemethod",
+     "label": "Log-Time Method (Coefficient of Consolidation)",
+     "function": "logtimemethod",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "logtimemethod"
+  },
+  {
+   "id": "roottimemethod",
+   "title": "Root-Time Method (Coefficient of Consolidation)",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "roottimemethod",
+     "label": "Root-Time Method (Coefficient of Consolidation)",
+     "function": "roottimemethod",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "roottimemethod"
+  },
+  {
+   "id": "parameter_selection_constant_value",
+   "title": "Characteristic Value (Constant)",
+   "group": "Characteristic values",
+   "methods": [
+    {
+     "id": "parameter_selection_constant_value",
+     "label": "Characteristic Value (Constant)",
+     "function": "parameter_selection_constant_value",
+     "standards": [
+      "Eurocode 7"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "parameter_selection_constant_value"
+  },
+  {
+   "id": "parameter_selection_linear_trend",
+   "title": "Characteristic Value (Linear Trend)",
+   "group": "Characteristic values",
+   "methods": [
+    {
+     "id": "parameter_selection_linear_trend",
+     "label": "Characteristic Value (Linear Trend)",
+     "function": "parameter_selection_linear_trend",
+     "standards": [
+      "Eurocode 7"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "parameter_selection_linear_trend"
+  },
+  {
+   "id": "investigation_depth_is1892",
+   "title": "IS 1892 Depth of Investigation",
+   "group": "Site investigation (IS)",
+   "methods": [
+    {
+     "id": "investigation_depth_is1892",
+     "label": "IS 1892 Depth of Investigation",
+     "function": "investigation_depth_is1892",
+     "standards": [
+      "IS 1892"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "investigation_depth_is1892"
+  },
+  {
+   "id": "borehole_layout_is1892",
+   "title": "IS 1892 Borehole Disposition",
+   "group": "Site investigation (IS)",
+   "methods": [
+    {
+     "id": "borehole_layout_is1892",
+     "label": "IS 1892 Borehole Disposition",
+     "function": "borehole_layout_is1892",
+     "standards": [
+      "IS 1892"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "borehole_layout_is1892"
+  },
+  {
+   "id": "spt_correction_is2131",
+   "title": "IS 2131 SPT N Corrections",
+   "group": "Site investigation (IS)",
+   "methods": [
+    {
+     "id": "spt_correction_is2131",
+     "label": "IS 2131 SPT N Corrections",
+     "function": "spt_correction_is2131",
+     "standards": [
+      "IS 2131"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "spt_correction_is2131"
+  },
+  {
+   "id": "classify_soil_is1498",
+   "title": "IS 1498 Soil Classification",
+   "group": "Site investigation (IS)",
+   "methods": [
+    {
+     "id": "classify_soil_is1498",
+     "label": "IS 1498 Soil Classification",
+     "function": "classify_soil_is1498",
+     "standards": [
+      "IS 1498"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "classify_soil_is1498"
+  },
+  {
+   "id": "specific_gravity_is2720",
+   "title": "IS 2720-3 Specific Gravity",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "specific_gravity_is2720",
+     "label": "IS 2720-3 Specific Gravity",
+     "function": "specific_gravity_is2720",
+     "standards": [
+      "IS 2720"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "specific_gravity_is2720"
+  },
+  {
+   "id": "liquid_limit_one_point_is2720",
+   "title": "IS 2720-5 One-Point Liquid Limit",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "liquid_limit_one_point_is2720",
+     "label": "IS 2720-5 One-Point Liquid Limit",
+     "function": "liquid_limit_one_point_is2720",
+     "standards": [
+      "IS 2720"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "liquid_limit_one_point_is2720"
+  },
+  {
+   "id": "flow_index_is2720",
+   "title": "IS 2720-5 Flow Index",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "flow_index_is2720",
+     "label": "IS 2720-5 Flow Index",
+     "function": "flow_index_is2720",
+     "standards": [
+      "IS 2720"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "flow_index_is2720"
+  },
+  {
+   "id": "consistency_indices_is2720",
+   "title": "IS 2720-5 Consistency Indices",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "consistency_indices_is2720",
+     "label": "IS 2720-5 Consistency Indices",
+     "function": "consistency_indices_is2720",
+     "standards": [
+      "IS 2720"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "consistency_indices_is2720"
+  },
+  {
+   "id": "permeability_constant_head_is2720",
+   "title": "IS 2720-17 Constant Head Permeability",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "permeability_constant_head_is2720",
+     "label": "IS 2720-17 Constant Head Permeability",
+     "function": "permeability_constant_head_is2720",
+     "standards": [
+      "IS 2720"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "permeability_constant_head_is2720"
+  },
+  {
+   "id": "permeability_falling_head_is2720",
+   "title": "IS 2720-17 Falling Head Permeability",
+   "group": "Laboratory tests",
+   "methods": [
+    {
+     "id": "permeability_falling_head_is2720",
+     "label": "IS 2720-17 Falling Head Permeability",
+     "function": "permeability_falling_head_is2720",
+     "standards": [
+      "IS 2720"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "lab"
+   ],
+   "default_method": "permeability_falling_head_is2720"
+  }
+ ]
+}

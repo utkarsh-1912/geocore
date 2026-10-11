@@ -77,9 +77,13 @@ def list_modules():
 
 from fastapi.staticfiles import StaticFiles
 from core.geoai.api import router as geoai_router
+from core.catalogue.api import router as catalogue_router
+from core.project.api import router as project_router
 
 app.include_router(create_dynamic_router(), prefix="/api")
 app.include_router(geoai_router, prefix="/api")
+app.include_router(catalogue_router, prefix="/api")
+app.include_router(project_router, prefix="/api")
 
 # Mount assets directory
 assets_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")

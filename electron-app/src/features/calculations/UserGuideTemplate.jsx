@@ -4,8 +4,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Book, Info, Layers, AlertTriangle, FileText, Library, Sigma, ListOrdered, RefreshCw } from 'lucide-react';
-import { loadFunctionDocs, loadKatex, renderMathHtml } from './guide/functionDocs';
+import { Info, Layers, AlertTriangle, FileText, Library, Sigma, ListOrdered, RefreshCw } from 'lucide-react';
+import { loadFunctionDocs, loadKatex, renderMathHtml, textToMathHtml, tidyTex, unitTex } from './guide/functionDocs';
 
 /**
  * Starting template for a GeoCore note in the (dev-only) guide editor. The theory itself comes from the
@@ -33,17 +33,17 @@ ${paramsHtml}
 };
 
 /** Inline LaTeX (parameter symbols, units); shows the source text until KaTeX has loaded. */
-export const Tex = ({ tex }) => {
+export const Tex = ({ tex, unit = false }) => {
     const [html, setHtml] = useState(null);
     useEffect(() => {
         let cancelled = false;
         loadKatex()
             .then(({ katex }) => {
-                if (!cancelled) setHtml(katex.renderToString(tex, { throwOnError: false }));
+                if (!cancelled) setHtml(katex.renderToString(tidyTex(unit ? unitTex(tex) : tex), { throwOnError: false }));
             })
             .catch(() => {});
         return () => { cancelled = true; };
-    }, [tex]);
+    }, [tex, unit]);
     return html ? <span dangerouslySetInnerHTML={{ __html: html }} /> : <span className="font-mono">{tex}</span>;
 };
 
@@ -76,6 +76,24 @@ const MathHtml = ({ html, className = '' }) => {
     return <div className={`doc-content max-w-none text-text-main ${className}`} dangerouslySetInnerHTML={{ __html: rendered ?? html }} />;
 };
 
+/**
+ * Plain text that may contain math ("Unit weight of water (\gamma_w)", "$1.0 \leq I_c \leq 3.5$"): the math is
+ * set by KaTeX, the rest stays text. Shows the text as written until KaTeX has loaded.
+ */
+export const MathText = ({ text, className = '' }) => {
+    const source = textToMathHtml(text);
+    const hasMath = source.includes('\\(');
+    const [rendered, setRendered] = useState(null);
+    useEffect(() => {
+        if (!hasMath) return undefined;
+        let cancelled = false;
+        renderMathHtml(source).then((out) => { if (!cancelled) setRendered(out); }).catch(() => {});
+        return () => { cancelled = true; };
+    }, [source, hasMath]);
+    if (!hasMath) return <span className={className}>{text}</span>;
+    return <span className={className} dangerouslySetInnerHTML={{ __html: rendered ?? source }} />;
+};
+
 export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, normalizedInputs = [], overrides = {} }) => {
     const [docs, setDocs] = useState(null);
     const [docsState, setDocsState] = useState('loading'); // 'loading' | 'ready' | 'error'
@@ -105,14 +123,11 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
             {/* Header */}
             <div className="bg-gradient-to-br from-primary/10 via-surface to-primary-light/5 border border-border rounded-md p-5 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                        <div className="p-2.5 rounded-md bg-primary/15 text-primary border border-primary/20 shrink-0">
-                            <Book size={22} />
-                        </div>
+                    <div className="min-w-0">
                         <div className="min-w-0">
                             <h2 className="text-xl font-bold text-text-main truncate">{functionName}</h2>
                             <p className="text-xs text-text-muted mt-0.5">
-                                {entry?.summary || schema?.description || 'Calculation guide and parameter reference.'}
+                                <MathText text={entry?.summary || schema?.description || 'Calculation guide and parameter reference.'} />
                             </p>
                         </div>
                     </div>
@@ -155,7 +170,7 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
             {/* GeoCore-specific usage notes (hand-written or edited in the guide editor) */}
             {hasNotes && (
                 <Section icon={Info} title="Using this in GeoCore">
-                    <div className="doc-content prose dark:prose-invert max-w-none text-text-main" dangerouslySetInnerHTML={{ __html: pageDocs }} />
+                    <MathHtml html={pageDocs} className="prose dark:prose-invert" />
                 </Section>
             )}
 
@@ -203,10 +218,10 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                                                 {pd.symbol ? <Tex tex={pd.symbol} /> : '—'}
                                             </td>
                                             <td className="px-3.5 py-3 font-medium text-text-main">
-                                                {unit ? (isTex(unit) ? <Tex tex={unit} /> : unit) : '—'}
+                                                {unit ? (isTex(unit) ? <Tex tex={unit} unit /> : unit) : '—'}
                                             </td>
                                             <td className="px-3.5 py-3 font-mono text-text-muted text-[11px]">
-                                                {pd.range || '—'}
+                                                {pd.range ? <MathText text={pd.range} /> : '—'}
                                             </td>
                                             <td className="px-3.5 py-3 font-mono text-text-muted text-[11px]">
                                                 {input.default !== undefined && input.default !== null && input.default !== '' ? String(input.default) : '—'}
@@ -221,7 +236,7 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                                                 </span>
                                             </td>
                                             <td className="px-3.5 py-3 text-text-muted max-w-sm leading-relaxed">
-                                                {input.description || pd.description || 'No description provided.'}
+                                                <MathText text={input.description || pd.description || 'No description provided.'} />
                                             </td>
                                         </tr>
                                     );
@@ -264,10 +279,11 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                     method applies to your soil conditions, that inputs are in the stated units and within the
                     suggested ranges, and review results with engineering judgement before using them in design.
                 </p>
+                {/* Credit for the adapted groundhog docstrings (GPL): author, version and licence, source as a link. */}
                 {entry && docs?.attribution && (
-                    <p className="text-[10px] text-text-muted/80 pt-1 border-t border-primary/10">
-                        {docs.attribution}
-                        {entry.source_url && <> Source: <span className="font-mono select-all">{entry.source_url}</span></>}
+                    <p className="text-[10px] text-text-muted/80 pt-1 border-t border-primary/10" title={docs.attribution}>
+                        Adapted from groundhog {docs.groundhog_version} by {docs.author} ({docs.license})
+                        {entry.source_url && <> · <a href={entry.source_url} target="_blank" rel="noreferrer" className="underline hover:text-primary">source</a></>}
                     </p>
                 )}
             </div>

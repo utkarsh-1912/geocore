@@ -1,0 +1,143 @@
+{
+ "_comment": "Functions the app or backend can reach that are not user-facing calculations. Every entry needs a reason.",
+ "sidebar": [
+  {
+   "function": "validate_boolean",
+   "reason": "Input-validation helper of the Groundhog library, not an engineering calculation."
+  },
+  {
+   "function": "validate_float",
+   "reason": "Input-validation helper of the Groundhog library, not an engineering calculation."
+  },
+  {
+   "function": "validate_integer",
+   "reason": "Input-validation helper of the Groundhog library, not an engineering calculation."
+  },
+  {
+   "function": "validate_list",
+   "reason": "Input-validation helper of the Groundhog library, not an engineering calculation."
+  },
+  {
+   "function": "validate_string",
+   "reason": "Input-validation helper of the Groundhog library, not an engineering calculation."
+  },
+  {
+   "function": "merge_two_dicts",
+   "reason": "Python dictionary helper of the Groundhog library, not an engineering calculation."
+  },
+  {
+   "function": "reverse_dict",
+   "reason": "Python dictionary helper of the Groundhog library, not an engineering calculation."
+  }
+ ],
+ "backend_only": [
+  {
+   "function": "ConsolidationCalculation",
+   "reason": "Engine of the consolidation_calculation form (registry wrapper)."
+  },
+  {
+   "function": "Eurocode7_factoring_STR_GEO",
+   "reason": "Engine of the eurocode7_factors form (registry wrapper)."
+  },
+  {
+   "function": "HardeningSoil",
+   "reason": "Engine of the hardening_soil_drained_triaxial form (registry wrapper)."
+  },
+  {
+   "function": "InsituTestProcessing",
+   "reason": "Base class of PCPTProcessing / SPTProcessing."
+  },
+  {
+   "function": "LCPCAxcapCalculation",
+   "reason": "Engine of the LCPC_Calculation form (registry wrapper)."
+  },
+  {
+   "function": "SettlementCalculation",
+   "reason": "Engine of the settlement_calculation form (registry wrapper)."
+  },
+  {
+   "function": "ShallowFoundationCapacity",
+   "reason": "Base class of the shallow foundation capacity engines."
+  },
+  {
+   "function": "ShallowFoundationCapacityDrained",
+   "reason": "Engine of the shallow_foundation_capacity_drained form (registry wrapper)."
+  },
+  {
+   "function": "ShallowFoundationCapacityUndrained",
+   "reason": "Engine of the shallow_foundation_capacity_undrained form (registry wrapper)."
+  },
+  {
+   "function": "Validator",
+   "reason": "Groundhog's input-validation decorator."
+  },
+  {
+   "function": "constant_value",
+   "reason": "Engine of the parameter_selection_constant_value form (registry wrapper)."
+  },
+  {
+   "function": "linear_trend",
+   "reason": "Engine of the parameter_selection_linear_trend form (registry wrapper)."
+  },
+  {
+   "function": "offsets",
+   "reason": "Engine of the offsets_api form (registry wrapper)."
+  },
+  {
+   "function": "pile_settlement_curves",
+   "reason": "Engine of the PileSettlementCurves form (registry wrapper)."
+  },
+  {
+   "function": "create_blank_soilprofile",
+   "reason": "Soil-profile constructor used by the SoilProfile upload."
+  },
+  {
+   "function": "profile_from_dataframe",
+   "reason": "Soil-profile constructor used by the SoilProfile upload."
+  },
+  {
+   "function": "map_args",
+   "reason": "Argument-mapping helper of the Groundhog library."
+  },
+  {
+   "function": "example_manual_function",
+   "reason": "Example in core/manual_functions.py, not exposed."
+  },
+  {
+   "function": "peak_picker",
+   "reason": "Signal-processing helper used inside Groundhog pile-test routines; no form yet."
+  },
+  {
+   "function": "plot_combined_longitudinal_profile",
+   "reason": "Plotting routine needing several profile objects; no form yet."
+  },
+  {
+   "function": "plot_fence_diagram",
+   "reason": "Plotting routine needing several profile objects; no form yet."
+  },
+  {
+   "function": "plot_longitudinal_profile",
+   "reason": "Plotting routine needing several profile objects; no form yet."
+  },
+  {
+   "function": "read_ags",
+   "reason": "File reader used by the AGS import."
+  },
+  {
+   "function": "read_excel",
+   "reason": "File reader used by the table import."
+  },
+  {
+   "function": "retrieve_geological_profile_bro",
+   "reason": "Online data retrieval (Dutch BRO); GeoCore is offline by default."
+  },
+  {
+   "function": "retrieve_geological_profile_dov",
+   "reason": "Online data retrieval (Flemish DOV); GeoCore is offline by default."
+  },
+  {
+   "function": "selectpoints",
+   "reason": "Interactive point-selection helper; no form."
+  }
+ ]
+}

@@ -32,7 +32,8 @@ const NestedValue = ({ value }) => {
     );
 };
 
-export const ResultsRenderer =({ results, functionName = '', functionId, formData = {} }) => {
+// `actions`: buttons for the results header (save, export), shown next to the "Results" title.
+export const ResultsRenderer =({ results, functionName = '', functionId, formData = {}, actions = null }) => {
     const [expandedSections, setExpandedSections] = useState({
         nodes: false,
         elements: false,
@@ -92,17 +93,17 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
 
             return (
                 <div className="space-y-4">
-                    <div className="bg-surface p-4 rounded-md border border-border">
-                        <h4 className="font-bold text-lg mb-2 flex items-center gap-2 text-primary">
+                    <div>
+                        <h4 className="font-semibold text-base mb-3 flex items-center gap-2 text-text-main">
                             <Database size={20} />
                             {displayData.name || "Soil Profile"}
                         </h4>
                         <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div className="p-2 bg-background/50 rounded-md border border-border/50">
+                            <div className="p-2 bg-background/60 rounded-md">
                                 <span className="text-text-muted">Status:</span>
                                 <span className="ml-2 font-medium text-green-500">{displayData.message || "Profile Ready"}</span>
                             </div>
-                            <div className="p-2 bg-background/50 rounded-md border border-border/50">
+                            <div className="p-2 bg-background/60 rounded-md">
                                 <span className="text-text-muted">Total Layers:</span>
                                 <span className="ml-2 font-bold text-text-main">{displayData.layers}</span>
                             </div>
@@ -160,20 +161,20 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
 
             return (
                 <div className="space-y-6">
-                    <div className="bg-surface p-4 rounded-md border border-border flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
                         <div>
-                            <h4 className="font-bold text-lg text-primary flex items-center gap-2">
+                            <h4 className="font-semibold text-base text-text-main flex items-center gap-2">
                                 <Layers size={20} />
                                 Calculation Grid
                             </h4>
                             <p className="text-text-muted text-sm">{displayData.message || "Discretized Grid Ready"}</p>
                         </div>
                         <div className="flex gap-4">
-                            <div className="text-center px-4 py-2 bg-background/50 rounded-md border border-border/50">
+                            <div className="text-center px-4 py-2 bg-background/60 rounded-md">
                                 <div className="text-xl font-bold text-text-main">{displayData.nodes_count || nodes.length}</div>
                                 <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Nodes</div>
                             </div>
-                            <div className="text-center px-4 py-2 bg-background/50 rounded-md border border-border/50">
+                            <div className="text-center px-4 py-2 bg-background/60 rounded-md">
                                 <div className="text-xl font-bold text-text-main">{displayData.elements_count || elements.length}</div>
                                 <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Elements</div>
                             </div>
@@ -403,12 +404,12 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
                             {numericEntries.slice(0, 3).map(([key, val]) => {
                                 const not = getParameterNotation(key, undefined, functionId);
                                 return (
-                                    <div key={key} className="min-w-0 p-3.5 rounded-md bg-surface border border-primary/20 shadow-sm flex flex-col justify-between">
+                                    <div key={key} className="min-w-0 px-4 py-3 rounded-md bg-background/60 flex flex-col justify-between">
                                         <div className="flex items-center justify-between gap-2 text-xs text-text-muted">
                                             <span className="font-medium truncate" title={not?.label || key}>{not?.label || key.replace(/_/g, ' ')}</span>
-                                            {not?.symbol && <span className="shrink-0 px-1.5 py-0.5 rounded-md bg-primary/10 text-primary font-mono text-[11px] font-bold">{not.symbol}</span>}
+                                            {not?.symbol && <span className="shrink-0 text-primary font-mono text-[11px] font-semibold">{not.symbol}</span>}
                                         </div>
-                                        <div className="text-xl font-mono font-extrabold text-text-main mt-1 break-all">
+                                        <div className="text-xl font-mono font-semibold text-text-main mt-1 break-all">
                                             {Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 })}
                                             {not?.unit && not.unit !== '-' && <span className="text-xs text-text-muted font-normal ml-1.5">{not.unit}</span>}
                                         </div>
@@ -419,14 +420,14 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
                     )}
 
                     {/* Detailed Key-Value Table */}
-                    <div className="max-w-full overflow-x-auto rounded-md border border-border-strong bg-input">
+                    <div className="max-w-full overflow-x-auto rounded-md border border-border">
                         <table className="w-full text-left border-collapse text-xs">
-                            <thead className="bg-surface/60 text-text-muted font-semibold border-b border-border">
+                            <thead className="text-text-muted font-medium border-b border-border">
                                 <tr>
-                                    <th className="py-2.5 px-4">Parameter Output</th>
-                                    <th className="py-2.5 px-4">Symbol</th>
-                                    <th className="py-2.5 px-4">Computed Value</th>
-                                    <th className="py-2.5 px-4">Unit</th>
+                                    <th className="py-2 px-4 font-medium">Output</th>
+                                    <th className="py-2 px-4 font-medium">Symbol</th>
+                                    <th className="py-2 px-4 font-medium">Value</th>
+                                    <th className="py-2 px-4 font-medium">Unit</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
@@ -453,11 +454,7 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
                                                 </div>
                                             </td>
                                             <td className="py-2.5 px-4 text-text-muted font-mono">
-                                                {cleanUnit && cleanUnit !== '-' ? (
-                                                    <span className="px-1.5 py-0.5 rounded-md bg-surface border border-border text-[11px] font-semibold text-text-muted">
-                                                        [{cleanUnit}]
-                                                    </span>
-                                                ) : '-'}
+                                                {cleanUnit && cleanUnit !== '-' ? cleanUnit : '-'}
                                             </td>
                                         </tr>
                                     );
@@ -485,9 +482,13 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mt-6 min-w-0 space-y-4"
+            className="min-w-0"
         >
-            <Card>
+            <Card className="sm:p-6">
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-lg font-semibold leading-tight text-text-main">Results</h3>
+                    {actions}
+                </div>
                 {/* Warnings */}
                 {warnings && warnings.length > 0 && (
                     <div className="mb-4 p-4 border-l-4 border-yellow-500 bg-yellow-500/10 rounded-r-md">

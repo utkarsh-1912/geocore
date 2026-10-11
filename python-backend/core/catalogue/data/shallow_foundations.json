@@ -1,0 +1,384 @@
+{
+ "domain": {
+  "id": "shallow_foundations",
+  "title": "Shallow foundations",
+  "description": "Stresses below loads, bearing and sliding capacity.",
+  "order": 3
+ },
+ "calculations": [
+  {
+   "id": "stresses_circle",
+   "title": "Circular Footing Stress",
+   "group": "Stresses below loads",
+   "methods": [
+    {
+     "id": "stresses_circle",
+     "label": "Circular Footing Stress",
+     "function": "stresses_circle",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stresses_circle"
+  },
+  {
+   "id": "stresses_lineload_retainingwall",
+   "title": "Line Load Stress (Retaining Wall)",
+   "group": "Stresses below loads",
+   "methods": [
+    {
+     "id": "stresses_lineload_retainingwall",
+     "label": "Line Load Stress (Retaining Wall)",
+     "function": "stresses_lineload_retainingwall",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stresses_lineload_retainingwall"
+  },
+  {
+   "id": "stresses_pointload",
+   "title": "Point Load Stress",
+   "group": "Stresses below loads",
+   "methods": [
+    {
+     "id": "stresses_pointload",
+     "label": "Point Load Stress",
+     "function": "stresses_pointload",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stresses_pointload"
+  },
+  {
+   "id": "stresses_rectangle",
+   "title": "Rectangular Footing Stress",
+   "group": "Stresses below loads",
+   "methods": [
+    {
+     "id": "stresses_rectangle",
+     "label": "Rectangular Footing Stress",
+     "function": "stresses_rectangle",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stresses_rectangle"
+  },
+  {
+   "id": "stresses_stripload",
+   "title": "Strip Load Stress",
+   "group": "Stresses below loads",
+   "methods": [
+    {
+     "id": "stresses_stripload",
+     "label": "Strip Load Stress",
+     "function": "stresses_stripload",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stresses_stripload"
+  },
+  {
+   "id": "stresses_stripload_retainingwall",
+   "title": "Strip Load Stress (Retaining Wall)",
+   "group": "Stresses below loads",
+   "methods": [
+    {
+     "id": "stresses_stripload_retainingwall",
+     "label": "Strip Load Stress (Retaining Wall)",
+     "function": "stresses_stripload_retainingwall",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stresses_stripload_retainingwall"
+  },
+  {
+   "id": "shallow_foundation_capacity_undrained",
+   "title": "Undrained Capacity Analysis",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "shallow_foundation_capacity_undrained",
+     "label": "Undrained Capacity Analysis",
+     "function": "shallow_foundation_capacity_undrained",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "shallow_foundation_capacity_undrained"
+  },
+  {
+   "id": "shallow_foundation_capacity_drained",
+   "title": "Drained Capacity Analysis",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "shallow_foundation_capacity_drained",
+     "label": "Drained Capacity Analysis",
+     "function": "shallow_foundation_capacity_drained",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "shallow_foundation_capacity_drained"
+  },
+  {
+   "id": "effectivearea_circle_api",
+   "title": "Effective Area (Circular)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "effectivearea_circle_api",
+     "label": "Effective Area (Circular)",
+     "function": "effectivearea_circle_api",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "effectivearea_circle_api"
+  },
+  {
+   "id": "effectivearea_rectangle_api",
+   "title": "Effective Area (Rectangular)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "effectivearea_rectangle_api",
+     "label": "Effective Area (Rectangular)",
+     "function": "effectivearea_rectangle_api",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "effectivearea_rectangle_api"
+  },
+  {
+   "id": "envelope_drained_api",
+   "title": "Envelope (Drained)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "envelope_drained_api",
+     "label": "Envelope (Drained)",
+     "function": "envelope_drained_api",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "envelope_drained_api"
+  },
+  {
+   "id": "envelope_undrained_api",
+   "title": "Envelope (Undrained)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "envelope_undrained_api",
+     "label": "Envelope (Undrained)",
+     "function": "envelope_undrained_api",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "envelope_undrained_api"
+  },
+  {
+   "id": "failuremechanism_prandtl",
+   "title": "Failure Mechanism (Prandtl)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "failuremechanism_prandtl",
+     "label": "Failure Mechanism (Prandtl)",
+     "function": "failuremechanism_prandtl",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "failuremechanism_prandtl"
+  },
+  {
+   "id": "ngamma_frictionangle_davisbooker",
+   "title": "N_gamma (Davis & Booker)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "ngamma_frictionangle_davisbooker",
+     "label": "N_gamma (Davis & Booker)",
+     "function": "ngamma_frictionangle_davisbooker",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "ngamma_frictionangle_davisbooker"
+  },
+  {
+   "id": "ngamma_frictionangle_meyerhof",
+   "title": "N_gamma (Meyerhof)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "ngamma_frictionangle_meyerhof",
+     "label": "N_gamma (Meyerhof)",
+     "function": "ngamma_frictionangle_meyerhof",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "ngamma_frictionangle_meyerhof"
+  },
+  {
+   "id": "ngamma_frictionangle_vesic",
+   "title": "N_gamma (Vesic)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "ngamma_frictionangle_vesic",
+     "label": "N_gamma (Vesic)",
+     "function": "ngamma_frictionangle_vesic",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "ngamma_frictionangle_vesic"
+  },
+  {
+   "id": "nq_frictionangle_sand",
+   "title": "N_q (Sand)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "nq_frictionangle_sand",
+     "label": "N_q (Sand)",
+     "function": "nq_frictionangle_sand",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "nq_frictionangle_sand"
+  },
+  {
+   "id": "slidingcapacity_drained_api",
+   "title": "Sliding Capacity (Drained)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "slidingcapacity_drained_api",
+     "label": "Sliding Capacity (Drained)",
+     "function": "slidingcapacity_drained_api",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "slidingcapacity_drained_api"
+  },
+  {
+   "id": "slidingcapacity_undrained_api",
+   "title": "Sliding Capacity (Undrained)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "slidingcapacity_undrained_api",
+     "label": "Sliding Capacity (Undrained)",
+     "function": "slidingcapacity_undrained_api",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "slidingcapacity_undrained_api"
+  },
+  {
+   "id": "verticalcapacity_drained_api",
+   "title": "Vertical Capacity (Drained)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "verticalcapacity_drained_api",
+     "label": "Vertical Capacity (Drained)",
+     "function": "verticalcapacity_drained_api",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "verticalcapacity_drained_api"
+  },
+  {
+   "id": "verticalcapacity_undrained_api",
+   "title": "Vertical Capacity (Undrained)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "verticalcapacity_undrained_api",
+     "label": "Vertical Capacity (Undrained)",
+     "function": "verticalcapacity_undrained_api",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "verticalcapacity_undrained_api"
+  },
+  {
+   "id": "bearing_capacity_is6403",
+   "title": "IS 6403 Bearing Capacity (Shallow Foundation)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "bearing_capacity_is6403",
+     "label": "IS 6403 Bearing Capacity (Shallow Foundation)",
+     "function": "bearing_capacity_is6403",
+     "standards": [
+      "IS 6403"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "bearing_capacity_is6403"
+  },
+  {
+   "id": "permissible_settlement_is1904",
+   "title": "IS 1904 Permissible Settlement",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "permissible_settlement_is1904",
+     "label": "IS 1904 Permissible Settlement",
+     "function": "permissible_settlement_is1904",
+     "standards": [
+      "IS 1904"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "permissible_settlement_is1904"
+  },
+  {
+   "id": "stability_check_is1904",
+   "title": "IS 1904 Sliding / Overturning Check",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "stability_check_is1904",
+     "label": "IS 1904 Sliding / Overturning Check",
+     "function": "stability_check_is1904",
+     "standards": [
+      "IS 1904"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stability_check_is1904"
+  },
+  {
+   "id": "raft_rigidity_is2950",
+   "title": "IS 2950 Raft Rigidity (Rigid / Flexible)",
+   "group": "Bearing & sliding capacity",
+   "methods": [
+    {
+     "id": "raft_rigidity_is2950",
+     "label": "IS 2950 Raft Rigidity (Rigid / Flexible)",
+     "function": "raft_rigidity_is2950",
+     "standards": [
+      "IS 2950"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "raft_rigidity_is2950"
+  }
+ ]
+}

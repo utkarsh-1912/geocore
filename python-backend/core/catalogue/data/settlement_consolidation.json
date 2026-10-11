@@ -1,0 +1,122 @@
+{
+ "domain": {
+  "id": "settlement_consolidation",
+  "title": "Settlement & consolidation",
+  "description": "Settlement, consolidation and groundwater flow.",
+  "order": 4
+ },
+ "calculations": [
+  {
+   "id": "settlement_calculation",
+   "title": "Settlement Calculation (Profile)",
+   "group": "Settlement",
+   "methods": [
+    {
+     "id": "settlement_calculation",
+     "label": "Settlement Calculation (Profile)",
+     "function": "settlement_calculation",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "settlement_calculation"
+  },
+  {
+   "id": "consolidationsettlement_mv",
+   "title": "Consolidation Settlement (mv)",
+   "group": "Settlement",
+   "methods": [
+    {
+     "id": "consolidationsettlement_mv",
+     "label": "Consolidation Settlement (mv)",
+     "function": "consolidationsettlement_mv",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "consolidationsettlement_mv"
+  },
+  {
+   "id": "primaryconsolidationsettlement_nc",
+   "title": "Primary Settlement (NC)",
+   "group": "Settlement",
+   "methods": [
+    {
+     "id": "primaryconsolidationsettlement_nc",
+     "label": "Primary Settlement (NC)",
+     "function": "primaryconsolidationsettlement_nc",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "primaryconsolidationsettlement_nc"
+  },
+  {
+   "id": "primaryconsolidationsettlement_oc",
+   "title": "Primary Settlement (OC)",
+   "group": "Settlement",
+   "methods": [
+    {
+     "id": "primaryconsolidationsettlement_oc",
+     "label": "Primary Settlement (OC)",
+     "function": "primaryconsolidationsettlement_oc",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "primaryconsolidationsettlement_oc"
+  },
+  {
+   "id": "hydraulicconductivity_unconfinedaquifer",
+   "title": "Hydraulic Conductivity (Unconfined Aquifer)",
+   "group": "Groundwater",
+   "methods": [
+    {
+     "id": "hydraulicconductivity_unconfinedaquifer",
+     "label": "Hydraulic Conductivity (Unconfined Aquifer)",
+     "function": "hydraulicconductivity_unconfinedaquifer",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "hydraulicconductivity_unconfinedaquifer"
+  },
+  {
+   "id": "consolidation_calculation",
+   "title": "Consolidation Calculation (Numerical)",
+   "group": "Consolidation",
+   "methods": [
+    {
+     "id": "consolidation_calculation",
+     "label": "Consolidation Calculation (Numerical)",
+     "function": "consolidation_calculation",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "consolidation_calculation"
+  },
+  {
+   "id": "consolidation_degree",
+   "title": "Degree of Consolidation",
+   "group": "Consolidation",
+   "methods": [
+    {
+     "id": "consolidation_degree",
+     "label": "Degree of Consolidation",
+     "function": "consolidation_degree",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "consolidation_degree"
+  },
+  {
+   "id": "pore_pressure_fourier",
+   "title": "Excess Pore Pressure (Fourier)",
+   "group": "Consolidation",
+   "methods": [
+    {
+     "id": "pore_pressure_fourier",
+     "label": "Excess Pore Pressure (Fourier)",
+     "function": "pore_pressure_fourier",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "pore_pressure_fourier"
+  }
+ ]
+}

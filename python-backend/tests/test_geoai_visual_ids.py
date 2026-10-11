@@ -72,7 +72,7 @@ def test_result_summary_does_not_print_the_image_placeholder():
     wrapper, _ = _run(ImageIds())
     text = _result_summary([{"name": "mohr", "result": wrapper}])
     assert "image_id" not in text and "Plot" not in text
-    assert "Mohr circle = table of 250 rows" in text and "sigma_1_f [kPa] = 112.2" in text
+    assert "Mohr circle: table of 250 rows" in text and "Axial stress at failure σ₁f = 112.2" in text
 
 
 def test_markers_survive_the_answer_guards_whole_and_split_across_chunks():

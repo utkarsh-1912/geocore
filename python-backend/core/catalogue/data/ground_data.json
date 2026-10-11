@@ -1,0 +1,202 @@
+{
+ "domain": {
+  "id": "ground_data",
+  "title": "Project & ground data",
+  "description": "Soil profiles, calculation grids, AGS import, logs and geometry helpers.",
+  "order": 1
+ },
+ "calculations": [
+  {
+   "id": "SoilProfile",
+   "title": "SoilProfile",
+   "group": "Soil profiles & grids",
+   "methods": [
+    {
+     "id": "SoilProfile",
+     "label": "SoilProfile",
+     "function": "SoilProfile",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "SoilProfile"
+  },
+  {
+   "id": "CalculationGrid",
+   "title": "CalculationGrid",
+   "group": "Soil profiles & grids",
+   "methods": [
+    {
+     "id": "CalculationGrid",
+     "label": "CalculationGrid",
+     "function": "CalculationGrid",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "CalculationGrid"
+  },
+  {
+   "id": "LogPlot",
+   "title": "LogPlot",
+   "group": "Logs & plots",
+   "methods": [
+    {
+     "id": "LogPlot",
+     "label": "LogPlot",
+     "function": "LogPlot",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "LogPlot"
+  },
+  {
+   "id": "LogPlotMatplotlib",
+   "title": "LogPlotMatplotlib",
+   "group": "Logs & plots",
+   "methods": [
+    {
+     "id": "LogPlotMatplotlib",
+     "label": "LogPlotMatplotlib",
+     "function": "LogPlotMatplotlib",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "LogPlotMatplotlib"
+  },
+  {
+   "id": "plot_with_log",
+   "title": "Multi-Trace Log Plot",
+   "group": "Logs & plots",
+   "methods": [
+    {
+     "id": "plot_with_log",
+     "label": "Multi-Trace Log Plot",
+     "function": "plot_with_log",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "plot_with_log"
+  },
+  {
+   "id": "AGSConverter",
+   "title": "AGSConverter",
+   "group": "AGS import",
+   "methods": [
+    {
+     "id": "AGSConverter",
+     "label": "AGSConverter",
+     "function": "AGSConverter",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "ags"
+   ],
+   "default_method": "AGSConverter"
+  },
+  {
+   "id": "AGSConverter_convert_ags_group",
+   "title": "Convert AGS Group to Table",
+   "group": "AGS import",
+   "methods": [
+    {
+     "id": "AGSConverter_convert_ags_group",
+     "label": "Convert AGS Group to Table",
+     "function": "AGSConverter_convert_ags_group",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "ags"
+   ],
+   "default_method": "AGSConverter_convert_ags_group"
+  },
+  {
+   "id": "get_projected_point",
+   "title": "Project Point onto Line",
+   "group": "Mapping & geometry",
+   "methods": [
+    {
+     "id": "get_projected_point",
+     "label": "Project Point onto Line",
+     "function": "get_projected_point",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "get_projected_point"
+  },
+  {
+   "id": "latlon_distance",
+   "title": "Distance from Lat/Lon Coordinates",
+   "group": "Mapping & geometry",
+   "methods": [
+    {
+     "id": "latlon_distance",
+     "label": "Distance from Lat/Lon Coordinates",
+     "function": "latlon_distance",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "latlon_distance"
+  },
+  {
+   "id": "map_depth_properties",
+   "title": "Map Layer Properties to Depths",
+   "group": "Mapping & geometry",
+   "methods": [
+    {
+     "id": "map_depth_properties",
+     "label": "Map Layer Properties to Depths",
+     "function": "map_depth_properties",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "map_depth_properties"
+  },
+  {
+   "id": "offsets_api",
+   "title": "Offset from Point to Line",
+   "group": "Mapping & geometry",
+   "methods": [
+    {
+     "id": "offsets_api",
+     "label": "Offset from Point to Line",
+     "function": "offsets_api",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "offsets_api"
+  },
+  {
+   "id": "check_layer_overlap",
+   "title": "Check Layer Overlap",
+   "group": "Data checks",
+   "methods": [
+    {
+     "id": "check_layer_overlap",
+     "label": "Check Layer Overlap",
+     "function": "check_layer_overlap",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "check_layer_overlap"
+  }
+ ]
+}

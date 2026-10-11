@@ -132,6 +132,38 @@ def _stash_math(body: str) -> Tuple[str, List[Tuple[str, str]]]:
     return "".join(out), stash
 
 
+# Units written as math (":math:`kN/m^3`") would be set as italic variables k, N, m. A unit-only expression is set
+# upright instead. Single letters alone (m, s, N, t, g) stay as they are: they may be variables.
+_UNIT_ATOM = r"(?:kN|MN|N|kPa|MPa|GPa|Pa|kg|g|t|mm|cm|km|m|s|min|hr|h|yr|day|deg|rad|Hz|kJ|J)"
+_UNIT_POW = r"(?:\^\{?-?\d+(?:\.\d+)?\}?)?"
+_UNIT = re.compile(rf"^\s*{_UNIT_ATOM}{_UNIT_POW}(?:\s*(?:/|\\cdot|\*)\s*{_UNIT_ATOM}{_UNIT_POW})*\s*$")
+
+
+def is_unit_tex(tex_src: str) -> bool:
+    """True for math that is only a unit (kN/m^3, kPa, m^2/yr), not a lone single letter."""
+    src = tex_src.strip()
+    return bool(_UNIT.match(src)) and (len(re.sub(r"[^A-Za-z]", "", src)) > 1 or "/" in src or "^" in src)
+
+
+def tidy_tex(kind: str, tex_src: str) -> str:
+    """
+    Repairs Groundhog docstring math KaTeX cannot set or sets wrongly:
+    - a subscript closed with ')' instead of '}' ("D_{r)", "\\sigma_{v0)^{\\prime}");
+    - a unit written as math, set upright (\\mathrm) instead of as italic variables.
+    """
+    out = tex_src
+    for _ in range(5):
+        if out.count("{") <= out.count("}"):
+            break
+        fixed = re.sub(r"([_^])\{([^{}()]*)\)", r"\1{\2}", out, count=1)
+        if fixed == out:
+            break
+        out = fixed
+    if kind == "inline" and is_unit_tex(out):
+        out = "\\mathrm{" + out.strip() + "}"
+    return out
+
+
 def _sphinx_compat(kind: str, tex_src: str) -> str:
     """Sphinx wraps display math containing '&' or '\\\\' in a split environment; KaTeX needs it explicit."""
     if kind == "display" and ("&" in tex_src or "\\\\" in tex_src) and "\\begin{" not in tex_src:
@@ -141,7 +173,8 @@ def _sphinx_compat(kind: str, tex_src: str) -> str:
 
 def _restore_math(html_text: str, stash: List[Tuple[str, str]]) -> str:
     def tex(i: int) -> str:
-        return html.escape(_sphinx_compat(*stash[i]), quote=False)
+        kind, src = stash[i]
+        return html.escape(_sphinx_compat(kind, tidy_tex(kind, src)), quote=False)
 
     def block(m: "re.Match[str]") -> str:
         i = int(m.group(1))
@@ -157,7 +190,9 @@ def _restore_math(html_text: str, stash: List[Tuple[str, str]]) -> str:
             return f'<span class="math-display-inline">\\[{tex(i)}\\]</span>'
         return f'<span class="math">\\({tex(i)}\\)</span>'
 
-    return re.sub(r"GCMATH(\d+)X", inline, html_text)
+    html_text = re.sub(r"GCMATH(\d+)X", inline, html_text)
+    # A number followed by a unit ("15.696 kN/m3"): keep them together with a narrow no-break space.
+    return re.sub(r'(\d)\s*(<span class="math">\\\(\\mathrm\{)', r"\1&#8239;\2", html_text)
 
 
 def _plain_math(text: str, stash: List[Tuple[str, str]]) -> str:

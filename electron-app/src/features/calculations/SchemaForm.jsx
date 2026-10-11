@@ -17,22 +17,11 @@ import { SavedProfilesList } from './SavedProfilesList';
 import { ProfileViewModal } from './ProfileViewModal';
 import { FormSettingsPanel } from './FormSettingsPanel';
 import { Tooltip } from '../../components/ui/Tooltip';
-import { UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
+import { MathText, UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
 import { api } from '../../api/client';
 import { validateForm, resolveLimits, describeRange, isNumericInput } from '../../utils/formValidation';
-
-// Groundhog's validated ranges never change while the app runs: fetch once, share across forms.
-let boundsPromise = null;
-const loadFieldBounds = () => {
-    if (!boundsPromise) {
-        boundsPromise = api.getFieldBounds().catch(err => {
-            boundsPromise = null; // allow a retry once the engine is up
-            console.warn('Field bounds unavailable; forms fall back to schema limits.', err);
-            return {};
-        });
-    }
-    return boundsPromise;
-};
+import { inputLabel } from '../../utils/geoNotation';
+import { normalizeSchemaInputs, loadFieldBounds } from './schemaInputs';
 
 // Shared control styling: one look for inputs, selects and textareas, with an error state.
 const CONTROL_BASE = 'w-full bg-input border rounded-md px-3 py-2 text-sm text-text-main placeholder-text-subtle focus:outline-none focus:ring-2 transition-all disabled:opacity-60';
@@ -50,7 +39,7 @@ const FieldError = ({ id, message }) => message ? (
 
 
 // Object Selector Component
-const ObjectSelector = ({ id, objectType, value, onChange, required, refreshTrigger, invalid }) => {
+export const ObjectSelector = ({ id, objectType, value, onChange, required, refreshTrigger, invalid }) => {
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState(null);
@@ -315,8 +304,12 @@ const ColumnSelectDropdown = ({ id, value, availableColumns, onChange, disabled,
     );
 };
 
-export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLoading, initialValues }) => {
+// Optional header slots: `toolbar` replaces the generic subtitle under the title (status, standards),
+// `actions` are icon buttons placed before the guide/settings buttons (e.g. "More options"), `panel` is a tool's
+// panel shown between the header and the fields. `onValuesChange` receives the values as typed, before any run.
+export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLoading, initialValues, patchValues, toolbar, actions, panel, onValuesChange }) => {
     const [formData, setFormData] = useState({});
+    useEffect(() => { onValuesChange?.(formData); }, [formData, onValuesChange]);
     const [showDocs, setShowDocs] = useState(false);
     const [fileColumns, setFileColumns] = useState([]);
 
@@ -410,26 +403,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
     };
 
     // Normalize schema inputs (support both 'inputs' array and JSON Schema 'properties')
-    const normalizedInputs = React.useMemo(() => {
-        if (!schema) return [];
-        if (schema.inputs) return schema.inputs;
-        if (schema.properties) {
-            return Object.entries(schema.properties).map(([key, prop]) => ({
-                name: key,
-                label: prop.title || key,
-                type: prop.type,
-                description: prop.description,
-                default: prop.default,
-                required: schema.required?.includes(key),
-                enum: prop.enum,
-                minimum: prop.minimum,
-                maximum: prop.maximum,
-                unit: prop.unit,
-                objectType: prop.objectType
-            }));
-        }
-        return [];
-    }, [schema]);
+    const normalizedInputs = React.useMemo(() => normalizeSchemaInputs(schema), [schema]);
 
     useEffect(() => {
         let alive = true;
@@ -531,6 +505,13 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
             setFormData(defaults);
         }
     }, [normalizedInputs, initialValues]);
+
+    // Values applied from outside (e.g. the project panel) merge into what is already typed; absent = no effect.
+    useEffect(() => {
+        if (patchValues && patchValues.values && Object.keys(patchValues.values).length > 0) {
+            setFormData(prev => ({ ...prev, ...patchValues.values }));
+        }
+    }, [patchValues]);
 
     const fetchObjectDetails = (type, id) => {
         if (!type || !id) return;
@@ -692,17 +673,15 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
     return (
 
         <>
-            <Card className="w-full relative shadow-sm">
-                <div className="flex flex-wrap items-center justify-between border-b border-border pb-4 mb-6 gap-3">
-                    <div className="min-w-0 flex-1">
-                        <h2 className="text-xl font-bold text-text-main flex items-center gap-2.5 truncate">
-                            <span className="truncate">{functionName || "Calculation Analysis"}</span>
-                            
-                        </h2>
-                        <p className="text-xs text-text-muted mt-1">Configure geotechnical parameters and execute validated analysis.</p>
-                    </div>
+            <Card className="w-full relative shadow-sm sm:p-6">
+                <div className="mb-6 space-y-3">
+                <div className="flex items-start justify-between gap-4">
+                    <h2 className="min-w-0 pt-1 text-lg font-semibold leading-snug text-text-main break-words">
+                        {functionName || "Calculation Analysis"}
+                    </h2>
 
                     <div className="flex items-center gap-1.5 shrink-0">
+                        {actions}
                         {isDev && (
                             <Tooltip content={isEditMode ? 'Close form settings' : 'Form settings'} position="bottom">
                                 <button
@@ -718,9 +697,9 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                     aria-label="Form settings"
                                     aria-pressed={isEditMode}
                                     data-form-settings-keep
-                                    className={`flex h-9 w-9 items-center justify-center rounded-md border transition-all ${isEditMode ? 'btn-brand border-transparent' : 'border-border bg-surface text-text-muted hover:border-primary/40 hover:text-primary'}`}
+                                    className={`inline-flex h-8 w-8 items-center justify-center rounded-md border text-xs transition-colors ${isEditMode ? 'btn-brand border-transparent' : 'border-border bg-surface text-text-muted hover:border-primary/40 hover:text-text-main'}`}
                                 >
-                                    <SlidersHorizontal size={16} />
+                                    <SlidersHorizontal size={14} />
                                 </button>
                             </Tooltip>
                         )}
@@ -729,16 +708,24 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                 type="button"
                                 onClick={() => setShowDocs(true)}
                                 aria-label="Guide and theory"
-                                className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-text-muted transition-all hover:border-primary/40 hover:text-primary"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border text-xs transition-colors border-border bg-surface text-text-muted hover:border-primary/40 hover:text-text-main"
                             >
-                                <BookOpen size={16} />
+                                <BookOpen size={14} />
                             </button>
                         </Tooltip>
                     </div>
                 </div>
+                {toolbar ? (
+                    <div className="min-w-0 empty:hidden">{toolbar}</div>
+                ) : (
+                    <p className="text-xs text-text-muted">Configure geotechnical parameters and execute validated analysis.</p>
+                )}
+                </div>
+
+                {panel && <div className="mb-6 border-y border-border py-5" data-form-panel>{panel}</div>}
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                         {normalizedInputs.map((baseInput) => {
                             // Apply Overrides
                             const override = overrides[functionName]?.[baseInput.name] || {};
@@ -762,7 +749,8 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             // Label row: name, required mark, help, and the allowed range for numeric inputs.
                             // Schema titles carry the unit as "Name [unit]": show it inside the input, not in the label.
                             const titleMatch = /^(.*?)\s*\[([^\]]+)\]\s*$/.exec(input.label || '');
-                            const displayLabel = titleMatch ? titleMatch[1] : (input.label || input.name);
+                            const label = inputLabel(input, functionId);
+                            const displayLabel = titleMatch ? titleMatch[1] : label.text;
                             const rawUnit = input.unit || (titleMatch ? titleMatch[2] : null);
                             const displayUnit = rawUnit && rawUnit !== '-' ? rawUnit : null;
                             const limits = resolveLimits(input, functionBounds);
@@ -770,7 +758,10 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             const renderLabel = () => (
                                 <div className="flex items-center justify-between gap-2 mb-1.5 group/label">
                                     <div className="flex items-center gap-1.5 min-w-0">
-                                        <label htmlFor={`field-${input.name}`} className="text-sm font-medium text-text-main flex items-center gap-1 cursor-default truncate">
+                                        <label htmlFor={`field-${input.name}`} title={input.name} className="text-sm font-medium text-text-main flex items-center gap-1.5 cursor-default truncate">
+                                            {label.symbol && (
+                                                <span className="px-1 rounded bg-primary/10 text-primary font-mono text-xs shrink-0">{label.symbol}</span>
+                                            )}
                                             <span className="truncate">{displayLabel}</span>
                                             {input.required && <span className="text-primary font-bold" title="Required">*</span>}
                                         </label>
@@ -779,7 +770,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                             <div className="relative group/tooltip shrink-0">
                                                 <HelpCircle size={12} className="text-text-muted cursor-help" />
                                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded-md shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
-                                                    <div dangerouslySetInnerHTML={{ __html: input.description }} />
+                                                    <MathText text={input.description} />
                                                 </div>
                                             </div>
                                         )}
@@ -932,8 +923,8 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                         <div className="flex flex-col">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-1.5 mb-1 group/label">
-                                                    <label className="text-sm text-text-muted flex items-center gap-1 cursor-default">
-                                                        {input.label || input.name}
+                                                    <label title={input.name} className="text-sm text-text-muted flex items-center gap-1 cursor-default">
+                                                        {inputLabel(input, functionId).text}
                                                         {input.required && <span className="text-primary font-bold">*</span>}
                                                     </label>
 
@@ -941,7 +932,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                         <div className="relative group/tooltip">
                                                             <HelpCircle size={12} className="text-text-muted cursor-help" />
                                                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 bg-surface border border-border rounded-md shadow-xl text-xs text-text-main opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 pointer-events-none">
-                                                                <div dangerouslySetInnerHTML={{ __html: input.description }} />
+                                                                <MathText text={input.description} />
                                                             </div>
                                                         </div>
                                                     )}
@@ -1058,7 +1049,7 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                         })}
                     </div>
 
-                    <div className="sticky bottom-0 -mx-4 -mb-4 px-4 py-3 mt-6 flex items-center justify-between gap-3 border-t border-border bg-surface/95 backdrop-blur rounded-b-md">
+                    <div className="sticky bottom-0 -mx-4 -mb-4 px-4 sm:-mx-6 sm:-mb-6 sm:px-6 py-3 mt-6 flex items-center justify-between gap-3 border-t border-border bg-surface/95 backdrop-blur rounded-b-md">
                         <div className="text-xs min-w-0" aria-live="polite">
                             {submitAttempted && invalidCount > 0 ? (
                                 <span className="flex items-center gap-1.5 text-error font-medium">

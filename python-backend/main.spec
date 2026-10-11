@@ -106,6 +106,12 @@ if os.path.exists('core/geoai/parameter_inventory.json'):
 # Lazy-registry manifest; without it the frozen app falls back to the slow eager scan.
 # Regenerate before building: python -m core.function_manifest
 datas.append(('core/function_manifest.json', 'core'))
+# Calculation catalogue (core/catalogue/data) and the quantity directory it names results with.
+datas.append(('core/catalogue/data', 'core/catalogue/data'))
+# Verification cases: the "verified" status of every method is derived from them (core.catalogue.load_benchmarks).
+datas.append(('core/catalogue/benchmarks.json', 'core/catalogue'))
+for json_file in ['quantity_standard.json', 'quantity_function_units.json', 'quantity_function_overrides.json']:
+    datas.append((os.path.join('core', json_file), 'core'))
 datas += copy_metadata('groundhog')
 
 # Docs content for the GeoAI docs adaptor (core/geoai/research/docs_adapter.py): Groundhog API

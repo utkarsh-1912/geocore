@@ -3,7 +3,7 @@
  * License: GPL v3
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Sidebar } from './features/dashboard/Sidebar';
 import { SchemaForm } from './features/calculations/SchemaForm';
 import { ResultsRenderer } from './features/results/ResultsRenderer';
@@ -12,11 +12,19 @@ import { DashboardGrid } from './features/dashboard/DashboardGrid';
 import { HomeView } from './features/dashboard/HomeView';
 import { HistoryProvider, useHistory } from './context/HistoryContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import { FavoritesProvider, useFavorites } from './context/FavoritesContext';
-import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, ChevronRight, ChevronDown, Sheet } from 'lucide-react';
+import { FavoritesProvider } from './context/FavoritesContext';
+import { FavoriteStar } from './components/common/FavoriteStar';
+import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, ChevronRight, ChevronDown, Sheet, FolderKanban, Save } from 'lucide-react';
 import { GeoAILogo } from './components/common/GeoAILogo';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GEOTECHNICAL_MODULES } from './config/geotechnicalModules';
+import { catalogueEntry, findFunction, folderKey, modulesFor, readNavMode, storeNavMode } from './config/navigation';
+import { CalculationMenu, CalculationMeta, ToolModal, ToolPanel } from './features/calculations/CalculationToolbar';
+import { CompareAllMethods } from './features/calculations/CompareAllMethods';
+import { MethodCompare } from './features/calculations/MethodCompare';
+import { PhaseSolver } from './features/calculations/PhaseSolver';
+import { ProjectValues } from './features/calculations/ProjectValues';
+import { ProjectRuns } from './features/calculations/ProjectRuns';
+import { downloadHtml } from './utils/downloadHtml';
 import { getSchema } from './features/calculations/schemas';
 import { api } from './api/client';
 import { generatePDF, downloadCSV, downloadJSON } from './utils/exportUtils';
@@ -28,6 +36,7 @@ import { StatusModal } from './components/StatusModal';
 import { Preloader } from './components/Preloader';
 import { GeoAICopilot } from './features/copilot/GeoAICopilot';
 import { GeoAIFullWindow } from './features/copilot/GeoAIFullWindow';
+import { useShared, unreadStore } from './features/copilot/geoaiSession';
 import { CommandPalette } from './features/command/CommandPalette';
 import { IS_MAC } from './utils/platform';
 
@@ -39,6 +48,30 @@ const MainLayout = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeSubModule, setActiveSubModule] = useState(null);
   const [activeFunction, setActiveFunction] = useState(null);
+  // Sidebar grouping: engineering tasks (calculation catalogue) or the classic library layout.
+  const [navMode, setNavMode] = useState(readNavMode);
+  const modules = useMemo(() => modulesFor(navMode), [navMode]);
+  // Latest successful run of each method of a catalogue calculation in this session, for "Compare methods":
+  // { [calculationId]: { [functionId]: { id, title, inputs, results } } }. Not persisted.
+  const [methodRuns, setMethodRuns] = useState({});
+  // The form tool whose panel is open inside the form card: 'project' | 'solver' | 'compare' | null.
+  const [toolPanel, setToolPanel] = useState(null);
+  // The open form's values as typed (kept in a ref: no re-render per keystroke), and the copy the method
+  // comparison starts from, taken when it opens.
+  const formValuesRef = useRef(null);
+  const trackFormValues = useCallback((values) => { formValuesRef.current = values; }, []);
+  const [compareSeed, setCompareSeed] = useState(null);
+  const openToolPanel = useCallback((panel) => {
+    if (panel === 'compare') setCompareSeed(formValuesRef.current ? { ...formValuesRef.current } : null);
+    setToolPanel(panel);
+  }, []);
+  // Project ground model: values applied to the open form (merged by SchemaForm), where each came from, the
+  // location they belong to, the run saved for the current result, and the project calculations panel.
+  const [patchValues, setPatchValues] = useState(null);
+  const [inputSources, setInputSources] = useState({});
+  const [projectLocation, setProjectLocation] = useState(null);
+  const [savedRunId, setSavedRunId] = useState(null);
+  const [projectOpen, setProjectOpen] = useState(false);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -56,15 +89,22 @@ const MainLayout = () => {
   // UI State
   const [showExportMenu, setShowExportMenu] = useState(false);
   const exportDropdownRef = useRef(null);
+  const mainRef = useRef(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
   const [backendStatus, setBackendStatus] = useState('connecting');
   const [selectedSearchIndex, setSelectedSearchIndex] = useState(-1);
   const [copilotOpen, setCopilotOpen] = useState(false);
+  // GeoAI opened from the home "Select Model" button: show its model manager straight away.
+  const [geoaiModelManager, setGeoaiModelManager] = useState(false);
+  // Set on the first visit to the GeoAI tab; from then on it stays mounted (see <main>).
+  const [geoaiMounted, setGeoaiMounted] = useState(false);
+  useEffect(() => { if (viewState === 'geoai') setGeoaiMounted(true); }, [viewState]);
+  const [geoaiUnread] = useShared(unreadStore);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   const { isDarkMode, toggleTheme } = useTheme();
-  const { history, addToHistory, clearHistory } = useHistory();
+  const { history, addToHistory, removeFromHistory, clearHistory } = useHistory();
 
   // Sync native window controls overlay background on Windows with active theme
   useEffect(() => {
@@ -72,7 +112,12 @@ const MainLayout = () => {
       window.electronAPI.setTitleBarTheme(isDarkMode);
     }
   }, [isDarkMode]);
-  const { favorites } = useFavorites();
+
+  // Each page opens at its top: the main pane is one scroll container shared by every view, so without this a
+  // page opened from far down the home page would start scrolled past its content.
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0 });
+  }, [viewState, activeCategory?.id, activeSubModule?.id, activeFunction?.id]);
 
   // Close export dropdown on click outside
   useEffect(() => {
@@ -90,18 +135,7 @@ const MainLayout = () => {
   }, [showExportMenu]);
 
   // Navigation from AI Assistant
-  const findModuleFunction = (funcId) => {
-    for (const cat of GEOTECHNICAL_MODULES) {
-      for (const sub of cat.subModules || []) {
-        for (const fn of sub.functions || []) {
-          if (fn.id === funcId || fn.name === funcId) {
-            return { fn, cat, sub };
-          }
-        }
-      }
-    }
-    return null;
-  };
+  const findModuleFunction = (funcId) => findFunction(modules, funcId);
 
   // GeoAI tool names (e.g. calculate_gmax_from_shear_wave_velocity) differ from
   // the calculation form ids; the tool registry records which form each tool uses.
@@ -216,7 +250,7 @@ const MainLayout = () => {
     const query = searchQuery.toLowerCase();
     const results = [];
 
-    GEOTECHNICAL_MODULES.forEach(category => {
+    modules.forEach(category => {
       // Check category
       if (category.title.toLowerCase().includes(query)) {
         results.push({ type: 'Category', item: category, category: category });
@@ -243,7 +277,7 @@ const MainLayout = () => {
 
     setSearchResults(results.slice(0, 10)); // Limit results
     setSelectedSearchIndex(-1);
-  }, [searchQuery]);
+  }, [searchQuery, modules]);
 
   // Global Keyboard Shortcuts
   useEffect(() => {
@@ -310,6 +344,28 @@ const MainLayout = () => {
     setSearchQuery('');
   };
 
+  // Switching the grouping keeps the open calculation, re-filed under its group in the new navigation;
+  // an open module or group page has no counterpart there, so that goes back home.
+  const changeNavMode = (mode) => {
+    if (mode === navMode) return;
+    storeNavMode(mode);
+    setNavMode(mode);
+    const next = modulesFor(mode);
+    if (viewState === 'function' && activeFunction) {
+      const match = findFunction(next, activeFunction.id);
+      if (match) {
+        setActiveCategory(match.cat);
+        setActiveSubModule(match.sub);
+        return;
+      }
+    }
+    if (viewState === 'category' || viewState === 'sub-module') goHome();
+    else if (viewState === 'function') {
+      setActiveCategory(null);
+      setActiveSubModule(null);
+    }
+  };
+
   const selectCategory = (category) => {
     setActiveCategory(category);
     setViewState('category');
@@ -325,7 +381,80 @@ const MainLayout = () => {
     setSearchQuery('');
   };
 
+  // Another method of the same catalogue calculation: open its own form, filed where it sits in this navigation.
+  const selectMethod = (functionId) => {
+    const match = findFunction(modules, functionId);
+    if (match) {
+      setActiveCategory(match.cat);
+      setActiveSubModule(match.sub);
+      selectFunction(match.fn);
+    } else {
+      const entry = catalogueEntry(functionId);
+      selectFunction({ id: functionId, title: entry?.methods.find(m => m.id === functionId)?.title || functionId });
+    }
+  };
+
+  // Form tools shown in a dialog over the form; the others (the phase solver) open inside the form card.
+  const MODAL_TOOLS = ['project', 'compare'];
+  const closeTool = useCallback(() => setToolPanel(null), []);
+
+  // The open form tool's panel (inside the form card, with its name and a close button), or null.
+  const formToolPanel = () => {
+    if (MODAL_TOOLS.includes(toolPanel)) return null;
+    const content = formToolContent();
+    return content ? <ToolPanel tool={toolPanel} onClose={closeTool}>{content}</ToolPanel> : null;
+  };
+
+  // The open form tool's dialog, or null.
+  const formToolModal = () => {
+    if (!MODAL_TOOLS.includes(toolPanel) || viewState !== 'function') return null;
+    if (!formToolContent(null)) return null;
+    return <ToolModal tool={toolPanel} onClose={closeTool}>{(slot) => formToolContent(slot)}</ToolModal>;
+  };
+
+  const formToolContent = (actionsSlot = null) => {
+    if (!activeFunction) return null;
+    const entry = catalogueEntry(activeFunction.id);
+    if (toolPanel === 'project') {
+      return (
+        <ProjectValues
+          embedded
+          actionsSlot={actionsSlot}
+          functionId={activeFunction.id}
+          onApply={(values, sources, locationId) => {
+            setPatchValues({ values, at: Date.now() });
+            setInputSources(prev => ({
+              ...prev,
+              ...Object.fromEntries(Object.entries(sources).map(([k, src]) => [k, { ...src, value: values[k] }])),
+            }));
+            setProjectLocation(locationId);
+            setToolPanel(null);
+            toast.success(`Applied ${Object.keys(values).length} project value(s) to the form.`);
+          }}
+        />
+      );
+    }
+    if (toolPanel === 'solver' && entry?.calculation === 'phase_relations') {
+      return <PhaseSolver embedded functionId={activeFunction.id} />;
+    }
+    if (toolPanel === 'compare' && entry) {
+      const runs = entry.methods.map(m => methodRuns[entry.calculation]?.[m.id]).filter(Boolean);
+      return (
+        <div className="space-y-6">
+          <CompareAllMethods key={entry.calculation} calculationId={entry.calculation} methods={entry.methods} inputs={compareSeed || calculationInputs} activeFunctionId={activeFunction.id} />
+          {runs.length >= 2 && <MethodCompare embedded title={entry.title} runs={runs} onClose={() => setToolPanel(null)} />}
+        </div>
+      );
+    }
+    return null;
+  };
+
   const selectFunction = (func) => {
+    const sameCalculation = activeFunction && catalogueEntry(activeFunction.id)?.calculation === catalogueEntry(func.id)?.calculation;
+    if (!sameCalculation) setToolPanel(null);
+    setPatchValues(null);
+    setInputSources({});
+    setSavedRunId(null);
     setActiveFunction(func);
     setViewState('function');
     setCalculationResults(null);
@@ -464,6 +593,17 @@ const MainLayout = () => {
       }
 
       setCalculationResults(results);
+      setSavedRunId(null);
+      const methodEntry = catalogueEntry(activeFunction.id);
+      if (methodEntry && methodEntry.methods.length > 1) {
+        setMethodRuns(prev => ({
+          ...prev,
+          [methodEntry.calculation]: {
+            ...prev[methodEntry.calculation],
+            [activeFunction.id]: { id: activeFunction.id, title: activeFunction.title, inputs: { ...data }, results },
+          },
+        }));
+      }
       console.log("App.jsx: Calling addToHistory with results");
       addToHistory({
         functionName: activeFunction.title,
@@ -485,6 +625,35 @@ const MainLayout = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Save the current result to the project; a value keeps its project source only if the form still holds it.
+  const saveToProject = async () => {
+    try {
+      // A project value the user then edited is an override: the report names both values; the run no longer
+      // depends on the project value (no staleness link).
+      const sources = Object.fromEntries(Object.entries(inputSources).map(([k, src]) => (
+        calculationInputs && String(calculationInputs[k]) === String(src.value)
+          ? [k, src]
+          : [k, { source: `entered by the user, overriding the project value ${src.value} (${src.source})`, inputs: [] }]
+      )).filter(([k]) => calculationInputs && k in calculationInputs));
+      const { id } = await api.projectSaveRun({
+        function_id: activeFunction.id, inputs: calculationInputs || {}, results: calculationResults,
+        input_sources: sources, location_id: projectLocation,
+      });
+      setSavedRunId(id);
+      toast.success(`Saved to the project as run #${id}.`);
+    } catch (e) {
+      toast.error(`Could not save to the project: ${e.message}`);
+    }
+  };
+
+  const downloadRunReport = async () => {
+    try {
+      downloadHtml(await api.projectRunReport(savedRunId), `geocore-run-${savedRunId}-report.html`);
+    } catch (e) {
+      toast.error(`Report failed: ${e.message}`);
     }
   };
 
@@ -562,6 +731,29 @@ const MainLayout = () => {
   };
 
   // HomeView function selection handler
+  // Reopen a past calculation (History panel, home "Recent") with its inputs and results.
+  const openHistoryItem = (item) => {
+    if (item.category) setActiveCategory(item.category);
+    if (item.subModule) setActiveSubModule(item.subModule);
+    const funcObj = {
+      title: item.functionName,
+      id: item.functionId || item.functionName // Fallback for old history
+    };
+    setActiveFunction(funcObj);
+    setCurrentSchema(getSchema(funcObj.id));
+    setViewState('function');
+    setCalculationResults(item.results);
+    setCalculationInputs(item.inputs);
+    setHistoryOpen(false);
+    if (window.innerWidth < 1024) setSidebarOpen(false);
+  };
+
+  // A starred folder: its module, then the folder's calculations.
+  const openFolder = (category, subModule) => {
+    setActiveCategory(category);
+    selectSubModule(subModule);
+  };
+
   const handleHomeSelectFunction = (func, category, subModule) => {
     if (category) setActiveCategory(category);
     if (subModule) setActiveSubModule(subModule);
@@ -591,19 +783,23 @@ const MainLayout = () => {
         }}
       />
       <Sidebar
-        modules={GEOTECHNICAL_MODULES}
+        modules={modules}
+        navMode={navMode}
+        onNavModeChange={changeNavMode}
         onSelectCategory={(cat) => selectCategory(cat)}
         selectedCategory={activeCategory}
         collapsed={!sidebarOpen}
         backendStatus={backendStatus}
         onStatusClick={() => setStatusOpen(true)}
         onOpenGeoAI={() => {
+          setGeoaiModelManager(false);
           setViewState('geoai');
           setActiveCategory(null);
           setActiveSubModule(null);
           setActiveFunction(null);
         }}
         isGeoAIActive={viewState === 'geoai'}
+        geoaiUnread={geoaiUnread.length}
       />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -704,6 +900,9 @@ const MainLayout = () => {
             <button onClick={() => setHelpOpen(true)} className={ICON_BUTTON} title="Help & Shortcuts" aria-label="Help">
               <HelpCircle size={18} />
             </button>
+            <button onClick={() => setProjectOpen(true)} className={ICON_BUTTON} title="Project calculations and reports" aria-label="Project">
+              <FolderKanban size={18} />
+            </button>
             <button onClick={() => setHistoryOpen(true)} className={ICON_BUTTON} title="Calculation History (Ctrl+H)" aria-label="History">
               <HistoryIcon size={18} />
             </button>
@@ -713,30 +912,26 @@ const MainLayout = () => {
           </div>
         </header>
 
-        <main className={`flex-1 ${viewState === 'geoai' ? 'overflow-hidden p-0' : 'overflow-auto p-6 md:p-8'} relative`}>
+        <main ref={mainRef} className={`flex-1 ${viewState === 'geoai' ? 'overflow-hidden p-0' : 'overflow-auto p-6 md:p-8'} relative`}>
+          {/* The GeoAI tab stays mounted (hidden) once opened, so an answer keeps running while you work
+              elsewhere; it is marked unread with a chime when it lands (features/copilot/geoaiSession.js). */}
+          {geoaiMounted && (
+            <div className={viewState === 'geoai' ? 'h-full w-full' : 'hidden'} aria-hidden={viewState !== 'geoai'}>
+              <GeoAIFullWindow
+                visible={viewState === 'geoai'}
+                onSelectFunction={handleSelectFromAI}
+                canOpenForm={(toolName) => !!resolveFormForTool(toolName)}
+                currentContext={{
+                  activeFunction: activeFunction?.id || activeFunction?.name,
+                  activeCategory: activeCategory?.id,
+                  activeSubModule: activeSubModule?.id
+                }}
+                onBackToModules={goHome}
+                openModelManager={geoaiModelManager}
+              />
+            </div>
+          )}
           <AnimatePresence mode="wait">
-            {viewState === 'geoai' && (
-              <motion.div
-                key="geoai"
-                initial={{ opacity: 0, scale: 0.99 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.99 }}
-                transition={{ duration: 0.2 }}
-                className="h-full w-full"
-              >
-                <GeoAIFullWindow
-                  onSelectFunction={handleSelectFromAI}
-                  canOpenForm={(toolName) => !!resolveFormForTool(toolName)}
-                  currentContext={{
-                    activeFunction: activeFunction?.id || activeFunction?.name,
-                    activeCategory: activeCategory?.id,
-                    activeSubModule: activeSubModule?.id
-                  }}
-                  onBackToModules={goHome}
-                />
-              </motion.div>
-            )}
-
             {viewState === 'home' && (
               <motion.div
                 key="home"
@@ -747,11 +942,14 @@ const MainLayout = () => {
                 className="h-full"
               >
                 <HomeView
-                  modules={GEOTECHNICAL_MODULES}
+                  modules={modules}
                   onSelectCategory={selectCategory}
                   onSelectFunction={handleHomeSelectFunction}
+                  onSelectFolder={openFolder}
+                  onOpenRecent={openHistoryItem}
+                  onRemoveRecent={removeFromHistory}
+                  onViewHistory={() => setHistoryOpen(true)}
                   history={history}
-                  favorites={favorites}
                   onClearRecent={clearHistory}
                   onOpenCopilot={() => setCopilotOpen(true)}
                   onOpenCommands={() => setCommandPaletteOpen(true)}
@@ -773,6 +971,8 @@ const MainLayout = () => {
                   title={activeCategory.title}
                   description={activeCategory.description}
                   items={activeCategory.items}
+                  isCategory
+                  favoriteOf={(item) => ({ id: folderKey(activeCategory, item), type: 'folder' })}
                   onSelect={(item) => {
                     if (item.functions && item.functions.length > 0) {
                       selectSubModule(item);
@@ -797,6 +997,7 @@ const MainLayout = () => {
                   title={activeSubModule.title}
                   description={`Select a function from ${activeSubModule.title}`}
                   items={activeSubModule.functions || []}
+                  favoriteOf={(item) => ({ id: item.id, type: 'method' })}
                   onSelect={selectFunction}
                 />
               </motion.div>
@@ -809,30 +1010,55 @@ const MainLayout = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 15 }}
                 transition={{ duration: 0.2 }}
-                className="max-w-6xl mx-auto w-full min-w-0 space-y-6"
+                className="max-w-6xl mx-auto w-full min-w-0 space-y-5"
               >
                 <SchemaForm
+                  toolbar={<CalculationMeta functionId={activeFunction.id} />}
+                  actions={
+                    <>
+                      <FavoriteStar id={activeFunction.id} label={activeFunction.title} size={16} className="h-8 w-8 flex items-center justify-center" />
+                      <CalculationMenu
+                        functionId={activeFunction.id}
+                        onSelectMethod={selectMethod}
+                        runsCount={Object.keys(methodRuns[catalogueEntry(activeFunction.id)?.calculation] || {}).length}
+                        panel={toolPanel}
+                        onPanel={openToolPanel}
+                      />
+                    </>
+                  }
+                  panel={formToolPanel()}
+                  patchValues={patchValues}
                   functionId={activeFunction.id}
                   functionName={activeFunction.title}
                   schema={currentSchema}
                   onCalculate={handleCalculate}
                   isLoading={isLoading}
                   initialValues={calculationInputs}
+                  onValuesChange={trackFormValues}
                 />
 
                 {calculationResults && (
-                  <div className="w-full min-w-0 space-y-4 pt-2">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
-                        <span className="w-1 h-5 rounded-full bg-primary" />
-                        <span>Analysis Results</span>
-                      </h3>
-
+                  <div className="w-full min-w-0">
+                    <ResultsRenderer
+                      results={calculationResults}
+                      functionName={activeFunction?.title}
+                      functionId={activeFunction?.id}
+                      formData={calculationInputs}
+                      actions={
+                      <div className="flex items-center gap-1.5">
+                      {!calculationResults.error && (
+                        <button onClick={savedRunId ? downloadRunReport : saveToProject}
+                          className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-border bg-surface text-xs font-medium text-text-muted hover:border-primary/40 hover:text-text-main transition-colors"
+                          title={savedRunId ? 'Download the calculation report of this run' : 'Save this result, its inputs and their sources to the project'}>
+                          {savedRunId ? <FileText size={14} /> : <Save size={14} />}
+                          <span>{savedRunId ? `Report (run #${savedRunId})` : 'Save to project'}</span>
+                        </button>
+                      )}
                       {/* Export Dropdown */}
                       <div ref={exportDropdownRef} className="relative">
                         <button
                           onClick={() => setShowExportMenu(!showExportMenu)}
-                          className="flex items-center gap-2 h-8 px-3 btn-brand text-xs font-semibold rounded-md transition-colors shadow-card"
+                          className="inline-flex items-center gap-1.5 h-8 px-2.5 btn-brand text-xs font-medium rounded-md transition-colors"
                           aria-haspopup="menu"
                           aria-expanded={showExportMenu}
                         >
@@ -876,13 +1102,8 @@ const MainLayout = () => {
                           )}
                         </AnimatePresence>
                       </div>
-                    </div>
-
-                    <ResultsRenderer
-                      results={calculationResults}
-                      functionName={activeFunction?.title}
-                      functionId={activeFunction?.id}
-                      formData={calculationInputs}
+                      </div>
+                      }
                     />
                   </div>
                 )}
@@ -895,27 +1116,7 @@ const MainLayout = () => {
       <HistoryPanel
         isOpen={historyOpen}
         onClose={() => setHistoryOpen(false)}
-        onSelect={(item) => {
-          // Restore full context
-          if (item.category) setActiveCategory(item.category);
-          if (item.subModule) setActiveSubModule(item.subModule);
-
-          const funcObj = {
-            title: item.functionName,
-            id: item.functionId || item.functionName // Fallback for old history
-          };
-          setActiveFunction(funcObj);
-
-          // Restore Schema
-          const schema = getSchema(funcObj.id);
-          setCurrentSchema(schema);
-
-          setViewState('function');
-          setCalculationResults(item.results);
-          setCalculationInputs(item.inputs); // Restore Inputs
-          setHistoryOpen(false);
-          if (window.innerWidth < 1024) setSidebarOpen(false);
-        }}
+        onSelect={openHistoryItem}
       />
 
       <HelpModal
@@ -934,6 +1135,7 @@ const MainLayout = () => {
         onClose={() => setCopilotOpen(false)}
         onExpand={() => {
           setCopilotOpen(false);
+          setGeoaiModelManager(false);
           setViewState('geoai');
           setActiveCategory(null);
           setActiveSubModule(null);
@@ -947,7 +1149,11 @@ const MainLayout = () => {
         }}
       />
 
+      <ProjectRuns isOpen={projectOpen} onClose={() => setProjectOpen(false)} />
+      {formToolModal()}
+
       <CommandPalette
+        modules={modules}
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
         onNavigate={handleCommandNavigate}

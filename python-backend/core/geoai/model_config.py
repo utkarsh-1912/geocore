@@ -60,10 +60,22 @@ def _env_compact_schemas() -> bool:
     return COMPACT_TOOL_SCHEMAS_DEFAULT
 
 
+def _env_flag(name: str, default: bool) -> bool:
+    """Environment variable ``name`` as 1/true/yes/on or 0/false/no/off; unset (or other) = ``default``."""
+    value = os.environ.get(name, "").strip().lower()
+    if value in ("1", "true", "yes", "on"):
+        return True
+    if value in ("0", "false", "no", "off"):
+        return False
+    return default
+
+
 @dataclass
 class GeoAIModelConfig:
     model_path: Optional[str] = None  # Absolute path to GGUF file
-    n_ctx: int = 4096  # Context window size
+    # Context window (tokens). Room for the system prompt, ~5 tool schemas, a few replayed turns and
+    # tool results; 4096 overflowed on follow-up turns. The agent trims old history to fit it.
+    n_ctx: int = 10240
     n_gpu_layers: int = 0  # 0 = CPU only, -1 = all layers on GPU
     temperature: float = 0.1  # Low temperature for deterministic tool calling
     max_tokens: int = 1024  # Max generation length
@@ -128,6 +140,11 @@ class GeoAIModelConfig:
     # Route compound requests ("classify CPT-03, then size a footing") to specialist agents
     # (core.geoai.multi_agent). Single-topic requests are unaffected. Env: GEOAI_MULTI_AGENT=1/0.
     multi_agent: bool = True
+    # Offer the other methods of a selected tool's catalogue calculation with it (tool_selector.
+    # with_sibling_methods), so the model can choose between methods. Off: on selector_recall (2026-10-11) it
+    # changed nothing at k=1/3 and cost recall at k=5 (natural 0.990 -> 0.980) and k=10 (test 1.000 -> 0.995).
+    # Env: GEOAI_CATALOGUE_METHODS=1/0.
+    catalogue_methods: bool = field(default_factory=lambda: _env_flag("GEOAI_CATALOGUE_METHODS", False))
 
 
 def resolve_thread_counts(config: "GeoAIModelConfig") -> "tuple[int, int]":
@@ -154,6 +171,7 @@ def get_default_model_dir() -> Path:
 # Values equal to a superseded default are treated as "never chosen" and move to the current
 # default; any other saved value (a deliberate choice) and env overrides are kept.
 _LEGACY_DEFAULTS = {
+    "n_ctx": (4096,),
     "decision_max_tokens": (200,),
     "answer_max_tokens": (320, 512),
 }

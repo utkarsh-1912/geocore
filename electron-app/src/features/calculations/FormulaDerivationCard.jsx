@@ -9,9 +9,9 @@
  * narration fills in a moment later (or not at all, if no model is installed).
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Sigma, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
-import { api } from '../../api/client';
+import { useCalculationExplanation } from './useCalculationExplanation';
 import { Tex } from './UserGuideTemplate';
 
 const formatValue = (v) => {
@@ -29,7 +29,7 @@ const QuantityName = ({ q }) => (
 );
 
 const QuantityRow = ({ q }) => (
-  <div className="flex flex-wrap items-center justify-between p-2 rounded-md bg-surface/50 border border-border/50 text-[11px] gap-2">
+  <div className="flex flex-wrap items-center justify-between py-1.5 border-b border-border/50 last:border-b-0 text-[11px] gap-2">
     <QuantityName q={q} />
     <span className="font-bold text-text-main font-mono min-w-0 max-w-full max-h-28 overflow-auto break-all">{formatValue(q.value)}{q.unit && q.unit !== '-' ? ` ${q.unit}` : ''}</span>
   </div>
@@ -68,69 +68,76 @@ const DerivationStep = ({ index, step }) => (
   </div>
 );
 
+/**
+ * The worked explanation itself: the method description, steps (or the plain outputs), assumptions, reference and
+ * the narration line, for the results Formula card. The description and reference can run to sentences, so they live here and the
+ * headings above stay short.
+ */
+export const ExplanationBody = ({ explanation, narration, narrationState }) => (
+  <>
+    {explanation.method && <p className="text-[11px] text-text-main leading-relaxed">{explanation.method}</p>}
+
+    {/* Worked derivation, step by step. Nothing here is invented: the steps come from
+        groundhog's own docstring and the values exactly as computed. */}
+    {explanation.steps && explanation.steps.length > 0 ? (
+      <div className="space-y-3">
+        {explanation.steps.map((step, idx) => <DerivationStep key={step.title} index={idx} step={step} />)}
+      </div>
+    ) : (
+      <div className="space-y-1.5 pt-1">
+        {(explanation.outputs || []).map((o) => <QuantityRow key={o.key} q={o} />)}
+      </div>
+    )}
+
+    {explanation.assumptions && explanation.assumptions.length > 0 && (
+      <div className="pt-1">
+        <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide mb-1">Assumptions</div>
+        <ul className="list-disc list-inside space-y-0.5 text-[11px] text-text-muted">
+          {explanation.assumptions.map((a, idx) => <li key={idx}>{a}</li>)}
+        </ul>
+      </div>
+    )}
+
+    {explanation.standard && (
+      <div className="pt-1">
+        <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide mb-1">Reference</div>
+        <p className="text-[11px] text-text-muted leading-relaxed">{explanation.standard}</p>
+      </div>
+    )}
+
+    {/* AI narration: loaded in the background, never replaces the facts above */}
+    <div className="flex items-start gap-1.5 text-[11px] text-text-muted pt-2 border-t border-border/40">
+      <Sparkles size={12} className="text-primary shrink-0 mt-0.5" />
+      {narrationState === 'loading' && <span className="italic">GeoAI is writing a plain-language explanation…</span>}
+      {narrationState === 'done' && <span>{narration}</span>}
+      {narrationState === 'unavailable' && <span className="italic">No plain-language narration available (install a local model in the GeoAI model manager to get one).</span>}
+    </div>
+  </>
+);
+
 export const FormulaDerivationCard = ({ functionName, functionId, formData = {}, results = {}, className = '' }) => {
   // The explainer looks the calculation up by its groundhog id; the title ("API RP2 GEO (Sand)")
   // is ambiguous and unknown to the backend, which then falls back to generic text.
   const explainId = functionId || functionName;
   const [isExpanded, setIsExpanded] = useState(true);
-  const [explanation, setExplanation] = useState(null);
-  const [narration, setNarration] = useState(null);
-  const [narrationState, setNarrationState] = useState('idle'); // idle | loading | done | unavailable
-  const abortRef = useRef(null);
-
-  const hasResults = results && Object.keys(results).length > 0;
-
-  useEffect(() => {
-    abortRef.current?.abort();
-    setExplanation(null);
-    setNarration(null);
-    setNarrationState('idle');
-    if (!explainId || !hasResults) return;
-
-    let cancelled = false;
-    api.geoaiExplain(explainId, formData, results)
-      .then((data) => { if (!cancelled) setExplanation(data); })
-      .catch(() => { if (!cancelled) setExplanation(null); });
-
-    const controller = new AbortController();
-    abortRef.current = controller;
-    setNarrationState('loading');
-    api.geoaiExplainNarrate(explainId, formData, results, controller.signal)
-      .then((data) => {
-        if (cancelled) return;
-        if (data?.narration) {
-          setNarration(data.narration);
-          setNarrationState('done');
-        } else {
-          setNarrationState('unavailable');
-        }
-      })
-      .catch(() => { if (!cancelled) setNarrationState('unavailable'); });
-
-    return () => { cancelled = true; controller.abort(); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [explainId, JSON.stringify(formData), JSON.stringify(results)]);
+  const { explanation, narration, narrationState, hasResults } = useCalculationExplanation(explainId, formData, results);
 
   if (!hasResults || !explainId) return null;
 
   return (
-    <div className={`geo-card bg-surface/80 border border-border rounded-md overflow-hidden ${className}`}>
+    <div className={`border border-border rounded-md overflow-hidden ${className}`}>
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between px-4 py-2.5 bg-background border-b border-border text-left hover:bg-surface-elevated transition-colors"
+        className="w-full flex items-center justify-between px-4 py-2.5 border-b border-border text-left hover:bg-surface-muted/40 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <div className="p-1 rounded-md bg-primary/10 text-primary border border-primary/20">
+          <div className="p-1 text-primary">
             <Sigma size={15} />
           </div>
-          <div>
-            <span className="text-xs font-bold text-text-main block">
-              {explanation?.method || 'Calculation method'}
-            </span>
-            <span className="text-[10px] font-mono text-text-muted">
-              {explanation?.standard || 'Loading method and standard…'}
-            </span>
+          <div className="min-w-0">
+            <span className="text-xs font-bold text-text-main block">Calculation details</span>
+            {functionName && <span className="text-[10px] text-text-muted block truncate">{functionName}</span>}
           </div>
         </div>
         <div className="flex items-center gap-1 text-text-muted">
@@ -143,36 +150,7 @@ export const FormulaDerivationCard = ({ functionName, functionId, formData = {},
           {!explanation ? (
             <div className="text-text-muted">Loading…</div>
           ) : (
-            <>
-              {/* Worked derivation, step by step. Nothing here is invented: the steps come from
-                  groundhog's own docstring and the values exactly as computed. */}
-              {explanation.steps && explanation.steps.length > 0 ? (
-                <div className="space-y-3">
-                  {explanation.steps.map((step, idx) => <DerivationStep key={step.title} index={idx} step={step} />)}
-                </div>
-              ) : (
-                <div className="space-y-1.5 pt-1">
-                  {(explanation.outputs || []).map((o) => <QuantityRow key={o.key} q={o} />)}
-                </div>
-              )}
-
-              {explanation.assumptions && explanation.assumptions.length > 0 && (
-                <div className="pt-1">
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wide mb-1">Assumptions</div>
-                  <ul className="list-disc list-inside space-y-0.5 text-[11px] text-text-muted">
-                    {explanation.assumptions.map((a, idx) => <li key={idx}>{a}</li>)}
-                  </ul>
-                </div>
-              )}
-
-              {/* AI narration: loaded in the background, never replaces the facts above */}
-              <div className="flex items-start gap-1.5 text-[11px] text-text-muted pt-2 border-t border-border/40">
-                <Sparkles size={12} className="text-primary shrink-0 mt-0.5" />
-                {narrationState === 'loading' && <span className="italic">GeoAI is writing a plain-language explanation…</span>}
-                {narrationState === 'done' && <span>{narration}</span>}
-                {narrationState === 'unavailable' && <span className="italic">No plain-language narration available (install a local model in the GeoAI model manager to get one).</span>}
-              </div>
-            </>
+            <ExplanationBody explanation={explanation} narration={narration} narrationState={narrationState} />
           )}
         </div>
       )}

@@ -3,12 +3,59 @@
  * License: GPL v3
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '../../components/ui/Card';
 import { ArrowRight, Folder, FileText } from 'lucide-react';
+import { loadFunctionDocs } from '../calculations/guide/functionDocs';
+import { CALC_STATUS } from '../calculations/calcStatus';
+import { FavoriteStar } from '../../components/common/FavoriteStar';
 
-export const DashboardGrid = ({ items, onSelect, title, description, isCategory = false }) => {
+/**
+ * One-line summaries of the calculations on a page, from the offline Guide docs (loaded on first use and
+ * cached). Summaries that only introduce a list or equation ("... as follows:") are skipped.
+ */
+const useFunctionSummaries = (items) => {
+    const [summaries, setSummaries] = useState({});
+    const wanted = (items || []).filter((item) => !item.description && item.id).map((item) => item.id).join(',');
+    useEffect(() => {
+        if (!wanted) return undefined;
+        let cancelled = false;
+        loadFunctionDocs()
+            .then((docs) => {
+                if (cancelled) return;
+                const found = {};
+                for (const id of wanted.split(',')) {
+                    const summary = docs.functions?.[id]?.summary?.trim();
+                    if (summary && !summary.endsWith(':')) found[id] = summary;
+                }
+                setSummaries(found);
+            })
+            .catch(() => { /* docs unavailable: cards show their title only */ });
+        return () => { cancelled = true; };
+    }, [wanted]);
+    return summaries;
+};
+
+const CardMeta = ({ item }) => {
+    const status = CALC_STATUS[item.status];
+    const standards = item.standards || [];
+    if (!status && standards.length === 0) return null;
+    return (
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            {status && (
+                <span className={`inline-flex items-center gap-1 ${status.className}`}>
+                    <status.Icon size={12} /> {status.label}
+                </span>
+            )}
+            {standards.length > 0 && <span className="text-text-muted truncate">{standards.join(' · ')}</span>}
+        </div>
+    );
+};
+
+// `favoriteOf(item)` -> {id, type} gives each card a favourite star (a folder or a method).
+export const DashboardGrid = ({ items, onSelect, title, description, isCategory = false, favoriteOf }) => {
+    const summaries = useFunctionSummaries(items);
     return (
         <div className="max-w-7xl mx-auto h-full flex flex-col">
             <div className="mb-8 shrink-0">
@@ -32,8 +79,11 @@ export const DashboardGrid = ({ items, onSelect, title, description, isCategory 
                                     <div className={`p-3 rounded-md ring-1 ring-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 text-primary`}>
                                         {isCategory ? <Folder size={24} /> : <FileText size={24} />}
                                     </div>
-                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
-                                        <ArrowRight size={20} className="text-primary" />
+                                    <div className="flex items-center gap-1">
+                                        {favoriteOf && <FavoriteStar {...favoriteOf(item)} label={item.title} size={17} reveal />}
+                                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
+                                            <ArrowRight size={20} className="text-primary" />
+                                        </div>
                                     </div>
                                 </div>
 
@@ -41,9 +91,12 @@ export const DashboardGrid = ({ items, onSelect, title, description, isCategory 
                                     {item.title}
                                 </h3>
 
-                                <p className="text-text-muted text-sm line-clamp-2">
-                                    {item.description || "Access geotechnical modules and calculations."}
-                                </p>
+                                {(item.description || summaries[item.id]) && (
+                                    <p className="text-text-muted text-sm line-clamp-2">
+                                        {item.description || summaries[item.id]}
+                                    </p>
+                                )}
+                                <CardMeta item={item} />
                             </Card>
                         </motion.div>
                     ))}

@@ -1,0 +1,94 @@
+{
+ "domain": {
+  "id": "offshore_pipelines",
+  "title": "Offshore pipelines & cables",
+  "description": "Embedment and contact of pipelines and cables.",
+  "order": 9
+ },
+ "calculations": [
+  {
+   "id": "contactwidth",
+   "title": "Contact Width",
+   "group": "Pipeline and cable stability",
+   "methods": [
+    {
+     "id": "contactwidth",
+     "label": "Contact Width",
+     "function": "contactwidth",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "contactwidth"
+  },
+  {
+   "id": "embedment_drained",
+   "title": "Embedment (Drained)",
+   "group": "Pipeline and cable stability",
+   "methods": [
+    {
+     "id": "embedment_drained",
+     "label": "Embedment (Drained)",
+     "function": "embedment_drained",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "embedment_drained"
+  },
+  {
+   "id": "embedment_undrained_method1",
+   "title": "Embedment (Undrained Method 1)",
+   "group": "Pipeline and cable stability",
+   "methods": [
+    {
+     "id": "embedment_undrained_method1",
+     "label": "Embedment (Undrained Method 1)",
+     "function": "embedment_undrained_method1",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "embedment_undrained_method1"
+  },
+  {
+   "id": "embedment_undrained_method2",
+   "title": "Embedment (Undrained Method 2)",
+   "group": "Pipeline and cable stability",
+   "methods": [
+    {
+     "id": "embedment_undrained_method2",
+     "label": "Embedment (Undrained Method 2)",
+     "function": "embedment_undrained_method2",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "embedment_undrained_method2"
+  },
+  {
+   "id": "lay_touchdown_factor",
+   "title": "Lay Touchdown Factor",
+   "group": "Pipeline and cable stability",
+   "methods": [
+    {
+     "id": "lay_touchdown_factor",
+     "label": "Lay Touchdown Factor",
+     "function": "lay_touchdown_factor",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "lay_touchdown_factor"
+  },
+  {
+   "id": "penetratedarea",
+   "title": "Penetrated Area",
+   "group": "Pipeline and cable stability",
+   "methods": [
+    {
+     "id": "penetratedarea",
+     "label": "Penetrated Area",
+     "function": "penetratedarea",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "penetratedarea"
+  }
+ ]
+}

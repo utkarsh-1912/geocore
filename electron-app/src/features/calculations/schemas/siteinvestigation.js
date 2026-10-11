@@ -206,18 +206,20 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'e_min',
-                label: 'E Min',
+                // Groundhog names the limits by density: e_min is the void ratio at MINIMUM density (loosest state,
+                // the larger value, conventionally e_max). Entered the conventional way, Dr comes out as 1 - Dr.
+                label: 'Void ratio, loosest state (e at min. density)',
                 type: 'float',
                 required: true,
-                description: 'Void ratio at the minimum density (e_{min}) [-] - Suggested range: 0.0 <= e_min <= 5.0',
+                description: 'Void ratio at the minimum density, i.e. the loosest state: the LARGER of the two limits (conventionally written e_max) [-] - Suggested range: 0.0 <= e_min <= 5.0',
                 unit: '-'
             },
             {
                 name: 'e_max',
-                label: 'E Max',
+                label: 'Void ratio, densest state (e at max. density)',
                 type: 'float',
                 required: true,
-                description: 'Void ratio at the maximum density (e_{max}) [-] - Suggested range: 0.0 <= e_max <= 5.0',
+                description: 'Void ratio at the maximum density, i.e. the densest state: the SMALLER of the two limits (conventionally written e_min) [-] - Suggested range: 0.0 <= e_max <= 5.0',
                 unit: '-'
             },
         ]

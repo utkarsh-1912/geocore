@@ -346,3 +346,7 @@ import core.geoai.tools_shallow  # noqa: E402,F401  (registers calculate_shallow
 
 # 17-19. Project CPT retrieval and CPT-based axial pile capacity (Groundhog LCPC / Koppejan / De Beer)
 import core.geoai.tools_cpt_piles  # noqa: E402,F401  (registers list_project_cpts, get_cpt_summary, calculate_pile_capacity_from_cpt)
+
+
+# 20. Project ground model: a calculation's inputs from the project, with sources
+import core.geoai.tools_project_model  # noqa: E402,F401  (registers get_project_inputs)

@@ -1,0 +1,27 @@
+{
+ "domain": {
+  "id": "design_basis",
+  "title": "Design basis",
+  "description": "Partial factors and design approaches.",
+  "order": 10
+ },
+ "calculations": [
+  {
+   "id": "eurocode7_factors",
+   "title": "Eurocode 7 STR/GEO Partial Factors",
+   "group": "Partial factors",
+   "methods": [
+    {
+     "id": "eurocode7_factors",
+     "label": "Eurocode 7 STR/GEO Partial Factors",
+     "function": "eurocode7_factors",
+     "standards": [
+      "Eurocode 7"
+     ],
+     "status": "unverified"
+    }
+   ],
+   "default_method": "eurocode7_factors"
+  }
+ ]
+}

@@ -1,0 +1,255 @@
+{
+ "domain": {
+  "id": "deep_foundations",
+  "title": "Deep foundations",
+  "description": "Unit pile resistances, axial capacity, load-settlement, lateral behaviour, cavity expansion and pile tests.",
+  "order": 5
+ },
+ "calculations": [
+  {
+   "id": "pile_unit_shaft_friction",
+   "title": "Unit shaft friction",
+   "group": "Unit resistances",
+   "summary": "Unit shaft friction of a pile in sand or clay.",
+   "methods": [
+    {
+     "id": "API_unit_shaft_friction_clay",
+     "label": "API (Clay)",
+     "function": "API_unit_shaft_friction_clay",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    },
+    {
+     "id": "API_unit_shaft_friction_sand_rp2geo",
+     "label": "API RP2 GEO (Sand)",
+     "function": "API_unit_shaft_friction_sand_rp2geo",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    },
+    {
+     "id": "unitskinfriction_clay_almhamre",
+     "label": "Alm & Hamre (Clay)",
+     "function": "unitskinfriction_clay_almhamre",
+     "status": "unverified"
+    },
+    {
+     "id": "unitskinfriction_sand_almhamre",
+     "label": "Alm & Hamre (Sand)",
+     "function": "unitskinfriction_sand_almhamre",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "API_unit_shaft_friction_clay"
+  },
+  {
+   "id": "pile_unit_end_bearing",
+   "title": "Unit end bearing",
+   "group": "Unit resistances",
+   "summary": "Unit end bearing of a pile in sand or clay.",
+   "methods": [
+    {
+     "id": "API_unit_end_bearing_clay",
+     "label": "API (Clay)",
+     "function": "API_unit_end_bearing_clay",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    },
+    {
+     "id": "API_unit_end_bearing_sand_rp2geo",
+     "label": "API RP2 GEO (Sand)",
+     "function": "API_unit_end_bearing_sand_rp2geo",
+     "standards": [
+      "API RP2GEO"
+     ],
+     "status": "unverified"
+    },
+    {
+     "id": "unitendbearing_clay_almhamre",
+     "label": "Alm & Hamre (Clay)",
+     "function": "unitendbearing_clay_almhamre",
+     "status": "unverified"
+    },
+    {
+     "id": "unitendbearing_sand_almhamre",
+     "label": "Alm & Hamre (Sand)",
+     "function": "unitendbearing_sand_almhamre",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "API_unit_end_bearing_clay"
+  },
+  {
+   "id": "pile_axial_capacity",
+   "title": "Pile axial capacity",
+   "group": "Axial capacity",
+   "summary": "Shaft, base and total axial resistance of a single pile.",
+   "methods": [
+    {
+     "id": "AxCapCalculation",
+     "label": "Axial Capacity (AxCap)",
+     "function": "AxCapCalculation",
+     "status": "unverified",
+     "data": [
+      "soil_profile"
+     ]
+    },
+    {
+     "id": "LCPC_Calculation",
+     "label": "LCPC Calculation",
+     "function": "LCPC_Calculation",
+     "status": "unverified",
+     "data": [
+      "cpt"
+     ]
+    },
+    {
+     "id": "KoppejanCalculation",
+     "label": "Koppejan Calculation",
+     "function": "KoppejanCalculation",
+     "standards": [
+      "NEN 9997-1"
+     ],
+     "status": "unverified",
+     "data": [
+      "cpt"
+     ]
+    },
+    {
+     "id": "DeBeerCalculation",
+     "label": "De Beer Calculation",
+     "function": "DeBeerCalculation",
+     "status": "unverified",
+     "data": [
+      "cpt"
+     ]
+    }
+   ],
+   "data": [
+    "cpt",
+    "soil_profile"
+   ],
+   "default_method": "AxCapCalculation"
+  },
+  {
+   "id": "PileSettlementCurves",
+   "title": "Pile Settlement Curves",
+   "group": "Load-settlement",
+   "methods": [
+    {
+     "id": "PileSettlementCurves",
+     "label": "Pile Settlement Curves",
+     "function": "PileSettlementCurves",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "PileSettlementCurves"
+  },
+  {
+   "id": "pilegroupeffect_reesevanimpe",
+   "title": "Pile Group Effect (Reese & Van Impe)",
+   "group": "Lateral behaviour & groups",
+   "methods": [
+    {
+     "id": "pilegroupeffect_reesevanimpe",
+     "label": "Pile Group Effect (Reese & Van Impe)",
+     "function": "pilegroupeffect_reesevanimpe",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "pilegroupeffect_reesevanimpe"
+  },
+  {
+   "id": "reinforced_circularsection_inertia",
+   "title": "Reinforced Circular Section Inertia",
+   "group": "Lateral behaviour & groups",
+   "methods": [
+    {
+     "id": "reinforced_circularsection_inertia",
+     "label": "Reinforced Circular Section Inertia",
+     "function": "reinforced_circularsection_inertia",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "reinforced_circularsection_inertia"
+  },
+  {
+   "id": "expansion_cylinder_tresca",
+   "title": "Cylinder Expansion (Tresca)",
+   "group": "Cavity expansion",
+   "methods": [
+    {
+     "id": "expansion_cylinder_tresca",
+     "label": "Cylinder Expansion (Tresca)",
+     "function": "expansion_cylinder_tresca",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "expansion_cylinder_tresca"
+  },
+  {
+   "id": "expansion_tresca_thicksphere",
+   "title": "Thick Sphere Expansion (Tresca)",
+   "group": "Cavity expansion",
+   "methods": [
+    {
+     "id": "expansion_tresca_thicksphere",
+     "label": "Thick Sphere Expansion (Tresca)",
+     "function": "expansion_tresca_thicksphere",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "expansion_tresca_thicksphere"
+  },
+  {
+   "id": "stress_cylinder_elastic_isotropic",
+   "title": "Elastic Cylinder Stress (Isotropic)",
+   "group": "Cavity expansion",
+   "methods": [
+    {
+     "id": "stress_cylinder_elastic_isotropic",
+     "label": "Elastic Cylinder Stress (Isotropic)",
+     "function": "stress_cylinder_elastic_isotropic",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "stress_cylinder_elastic_isotropic"
+  },
+  {
+   "id": "negativeskinfriction_pilegroup_zeevaertdebeer",
+   "title": "Zeevaert & De Beer (Pile Group)",
+   "group": "Negative skin friction",
+   "methods": [
+    {
+     "id": "negativeskinfriction_pilegroup_zeevaertdebeer",
+     "label": "Zeevaert & De Beer (Pile Group)",
+     "function": "negativeskinfriction_pilegroup_zeevaertdebeer",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "soil_profile"
+   ],
+   "default_method": "negativeskinfriction_pilegroup_zeevaertdebeer"
+  },
+  {
+   "id": "piletest_chinkondler",
+   "title": "Chin-Kondler Extrapolation",
+   "group": "Pile load tests",
+   "methods": [
+    {
+     "id": "piletest_chinkondler",
+     "label": "Chin-Kondler Extrapolation",
+     "function": "piletest_chinkondler",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "piletest_chinkondler"
+  }
+ ]
+}

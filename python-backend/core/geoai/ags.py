@@ -36,7 +36,13 @@ class AGSProjectDataset:
         group_headers: List[str] = []
         group_rows: List[List[str]] = []
 
+        import csv
+
         lines = ags_text.splitlines()
+
+        def fields(text: str) -> List[str]:
+            # AGS rows are CSV: a quoted description may contain commas ("Firm brown CLAY, sandy").
+            return [p.strip() for p in next(csv.reader([text], skipinitialspace=True), [])]
 
         for line in lines:
             line_str = line.strip()
@@ -50,7 +56,7 @@ class AGSProjectDataset:
                     df = pd.DataFrame(group_rows, columns=group_headers)
                     dataset.groups[current_group] = df
 
-                parts = [p.strip().strip('"') for p in line_str.split(',')]
+                parts = fields(line_str)
                 current_group = parts[1] if len(parts) > 1 else "UNKNOWN"
                 group_headers = []
                 group_rows = []
@@ -58,7 +64,7 @@ class AGSProjectDataset:
 
             # Check for header line: "HEADING","<COL1>","<COL2>"
             if line_str.startswith('"HEADING"') or line_str.startswith('HEADING'):
-                parts = [p.strip().strip('"') for p in line_str.split(',')]
+                parts = fields(line_str)
                 group_headers = parts[1:]
                 continue
 
@@ -69,7 +75,7 @@ class AGSProjectDataset:
 
             # Check for data line: "DATA","<VAL1>","<VAL2>"
             if line_str.startswith('"DATA"') or line_str.startswith('DATA'):
-                parts = [p.strip().strip('"') for p in line_str.split(',')]
+                parts = fields(line_str)
                 data_vals = parts[1:]
                 # Pad or slice to match headers
                 if len(data_vals) < len(group_headers):

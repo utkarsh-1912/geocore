@@ -42,6 +42,42 @@
    "key": "Failure angle",
    "quantity": "failure_plane_angle",
    "reason": "Angle of the failure plane from the vertical, 45 - phi/2, in degrees."
+  },
+  {
+   "function": "frictionangle_spt_kulhawymayne",
+   "key": "N",
+   "quantity": "spt_n",
+   "reason": "N is the SPT blow count here (the function's docstring), not a force or a count of anything else."
+  },
+  {
+   "function": "overburdencorrection_spt_ISO",
+   "key": "N",
+   "quantity": "spt_n",
+   "reason": "N is the SPT blow count here (the function's docstring), not a force or a count of anything else."
+  },
+  {
+   "function": "overburdencorrection_spt_liaowhitman",
+   "key": "N",
+   "quantity": "spt_n",
+   "reason": "N is the SPT blow count here (the function's docstring), not a force or a count of anything else."
+  },
+  {
+   "function": "relativedensityclass_spt_terzaghipeck",
+   "key": "N",
+   "quantity": "spt_n",
+   "reason": "N is the SPT blow count here (the function's docstring), not a force or a count of anything else."
+  },
+  {
+   "function": "spt_N60_correction",
+   "key": "N",
+   "quantity": "spt_n",
+   "reason": "N is the SPT blow count here (the function's docstring), not a force or a count of anything else."
+  },
+  {
+   "function": "undrainedshearstrengthclass_spt_terzaghipeck",
+   "key": "N",
+   "quantity": "spt_n",
+   "reason": "N is the SPT blow count here (the function's docstring), not a force or a count of anything else."
   }
  ]
 }

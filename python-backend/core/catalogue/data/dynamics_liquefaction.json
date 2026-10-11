@@ -1,0 +1,612 @@
+{
+ "domain": {
+  "id": "dynamics_liquefaction",
+  "title": "Soil dynamics & liquefaction",
+  "description": "Dynamic soil properties, cyclic behaviour and liquefaction triggering.",
+  "order": 7
+ },
+ "calculations": [
+  {
+   "id": "cyclicstressratio_moss",
+   "title": "Moss (2006) Cyclic Stress Ratio",
+   "group": "Liquefaction",
+   "methods": [
+    {
+     "id": "cyclicstressratio_moss",
+     "label": "Moss (2006) Cyclic Stress Ratio",
+     "function": "cyclicstressratio_moss",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cyclicstressratio_moss"
+  },
+  {
+   "id": "cyclicstressratio_youd",
+   "title": "Youd (2001) Cyclic Stress Ratio",
+   "group": "Liquefaction",
+   "methods": [
+    {
+     "id": "cyclicstressratio_youd",
+     "label": "Youd (2001) Cyclic Stress Ratio",
+     "function": "cyclicstressratio_youd",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cyclicstressratio_youd"
+  },
+  {
+   "id": "liquefaction_robertsonfear",
+   "title": "Robertson & Fear (1995) Liquefaction",
+   "group": "Liquefaction",
+   "methods": [
+    {
+     "id": "liquefaction_robertsonfear",
+     "label": "Robertson & Fear (1995) Liquefaction",
+     "function": "liquefaction_robertsonfear",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "liquefaction_robertsonfear"
+  },
+  {
+   "id": "liquefactionprobability_moss",
+   "title": "Moss (2006) Liquefaction Probability",
+   "group": "Liquefaction",
+   "methods": [
+    {
+     "id": "liquefactionprobability_moss",
+     "label": "Moss (2006) Liquefaction Probability",
+     "function": "liquefactionprobability_moss",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "liquefactionprobability_moss"
+  },
+  {
+   "id": "liquefactionprobability_saye",
+   "title": "Saye (2017) Liquefaction Probability",
+   "group": "Liquefaction",
+   "methods": [
+    {
+     "id": "liquefactionprobability_saye",
+     "label": "Saye (2017) Liquefaction Probability",
+     "function": "liquefactionprobability_saye",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "liquefactionprobability_saye"
+  },
+  {
+   "id": "cycliccontours_dssclay_andersen",
+   "title": "AC Cyclic Contours (DSS Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "cycliccontours_dssclay_andersen",
+     "label": "AC Cyclic Contours (DSS Clay)",
+     "function": "cycliccontours_dssclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cycliccontours_dssclay_andersen"
+  },
+  {
+   "id": "cycliccontours_triaxialclay_andersen",
+   "title": "AC Cyclic Contours (Triaxial Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "cycliccontours_triaxialclay_andersen",
+     "label": "AC Cyclic Contours (Triaxial Clay)",
+     "function": "cycliccontours_triaxialclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cycliccontours_triaxialclay_andersen"
+  },
+  {
+   "id": "cyclicstrength_dsssand_relativedensity",
+   "title": "AC Cyclic Strength (DSS Sand - Dr)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "cyclicstrength_dsssand_relativedensity",
+     "label": "AC Cyclic Strength (DSS Sand - Dr)",
+     "function": "cyclicstrength_dsssand_relativedensity",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cyclicstrength_dsssand_relativedensity"
+  },
+  {
+   "id": "cyclicstrength_dsssand_watercontent",
+   "title": "AC Cyclic Strength (DSS Sand - w)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "cyclicstrength_dsssand_watercontent",
+     "label": "AC Cyclic Strength (DSS Sand - w)",
+     "function": "cyclicstrength_dsssand_watercontent",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "cyclicstrength_dsssand_watercontent"
+  },
+  {
+   "id": "plotcycliccontours_dssclay_andersen",
+   "title": "Plot Cyclic Contours (DSS Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotcycliccontours_dssclay_andersen",
+     "label": "Plot Cyclic Contours (DSS Clay)",
+     "function": "plotcycliccontours_dssclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotcycliccontours_dssclay_andersen"
+  },
+  {
+   "id": "plotcycliccontours_triaxialclay_andersen",
+   "title": "Plot Cyclic Contours (Triaxial Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotcycliccontours_triaxialclay_andersen",
+     "label": "Plot Cyclic Contours (Triaxial Clay)",
+     "function": "plotcycliccontours_triaxialclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotcycliccontours_triaxialclay_andersen"
+  },
+  {
+   "id": "plotporepressureaccumulation_dssclay_andersen",
+   "title": "Plot Pore Pressure (DSS Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotporepressureaccumulation_dssclay_andersen",
+     "label": "Plot Pore Pressure (DSS Clay)",
+     "function": "plotporepressureaccumulation_dssclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotporepressureaccumulation_dssclay_andersen"
+  },
+  {
+   "id": "plotporepressureaccumulation_dsssand_andersen",
+   "title": "Plot Pore Pressure (DSS Sand)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotporepressureaccumulation_dsssand_andersen",
+     "label": "Plot Pore Pressure (DSS Sand)",
+     "function": "plotporepressureaccumulation_dsssand_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotporepressureaccumulation_dsssand_andersen"
+  },
+  {
+   "id": "plotporepressureaccumulation_triaxialclay_andersen",
+   "title": "Plot Pore Pressure (Triaxial Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotporepressureaccumulation_triaxialclay_andersen",
+     "label": "Plot Pore Pressure (Triaxial Clay)",
+     "function": "plotporepressureaccumulation_triaxialclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotporepressureaccumulation_triaxialclay_andersen"
+  },
+  {
+   "id": "plotstrainaccumulation_dssclay_andersen",
+   "title": "Plot Strain Accum. (DSS Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotstrainaccumulation_dssclay_andersen",
+     "label": "Plot Strain Accum. (DSS Clay)",
+     "function": "plotstrainaccumulation_dssclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotstrainaccumulation_dssclay_andersen"
+  },
+  {
+   "id": "plotstrainaccumulation_dsssand_andersen",
+   "title": "Plot Strain Accum. (DSS Sand)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotstrainaccumulation_dsssand_andersen",
+     "label": "Plot Strain Accum. (DSS Sand)",
+     "function": "plotstrainaccumulation_dsssand_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotstrainaccumulation_dsssand_andersen"
+  },
+  {
+   "id": "plotstrainaccumulation_triaxialclay_andersen",
+   "title": "Plot Strain Accum. (Triaxial Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "plotstrainaccumulation_triaxialclay_andersen",
+     "label": "Plot Strain Accum. (Triaxial Clay)",
+     "function": "plotstrainaccumulation_triaxialclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "plotstrainaccumulation_triaxialclay_andersen"
+  },
+  {
+   "id": "porepressureaccumulation_dssclay_andersen",
+   "title": "Pore Pressure Accum. (DSS Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "porepressureaccumulation_dssclay_andersen",
+     "label": "Pore Pressure Accum. (DSS Clay)",
+     "function": "porepressureaccumulation_dssclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "porepressureaccumulation_dssclay_andersen"
+  },
+  {
+   "id": "porepressureaccumulation_triaxialclay_andersen",
+   "title": "Pore Pressure Accum. (Triaxial Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "porepressureaccumulation_triaxialclay_andersen",
+     "label": "Pore Pressure Accum. (Triaxial Clay)",
+     "function": "porepressureaccumulation_triaxialclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "porepressureaccumulation_triaxialclay_andersen"
+  },
+  {
+   "id": "strainaccumulation_dssclay_andersen",
+   "title": "Strain Accum. (DSS Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "strainaccumulation_dssclay_andersen",
+     "label": "Strain Accum. (DSS Clay)",
+     "function": "strainaccumulation_dssclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "strainaccumulation_dssclay_andersen"
+  },
+  {
+   "id": "strainaccumulation_dsssand_andersen",
+   "title": "Strain Accum. (DSS Sand)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "strainaccumulation_dsssand_andersen",
+     "label": "Strain Accum. (DSS Sand)",
+     "function": "strainaccumulation_dsssand_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "strainaccumulation_dsssand_andersen"
+  },
+  {
+   "id": "strainaccumulation_triaxialclay_andersen",
+   "title": "Strain Accum. (Triaxial Clay)",
+   "group": "Cyclic behaviour",
+   "methods": [
+    {
+     "id": "strainaccumulation_triaxialclay_andersen",
+     "label": "Strain Accum. (Triaxial Clay)",
+     "function": "strainaccumulation_triaxialclay_andersen",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "strainaccumulation_triaxialclay_andersen"
+  },
+  {
+   "id": "dampingratio_sandgravel_seed",
+   "title": "Seed & Idriss (1970) Damping Ratio",
+   "group": "Dynamic properties",
+   "methods": [
+    {
+     "id": "dampingratio_sandgravel_seed",
+     "label": "Seed & Idriss (1970) Damping Ratio",
+     "function": "dampingratio_sandgravel_seed",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "dampingratio_sandgravel_seed"
+  },
+  {
+   "id": "gmax_shearwavevelocity",
+   "title": "Gmax from Shear Wave Velocity",
+   "group": "Dynamic properties",
+   "methods": [
+    {
+     "id": "gmax_shearwavevelocity",
+     "label": "Gmax from Shear Wave Velocity",
+     "function": "gmax_shearwavevelocity",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "gmax_shearwavevelocity"
+  },
+  {
+   "id": "modulusreduction_darendeli",
+   "title": "Darendeli (2001) Modulus Reduction",
+   "group": "Dynamic properties",
+   "methods": [
+    {
+     "id": "modulusreduction_darendeli",
+     "label": "Darendeli (2001) Modulus Reduction",
+     "function": "modulusreduction_darendeli",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "modulusreduction_darendeli"
+  },
+  {
+   "id": "modulusreduction_plasticity_ishibashi",
+   "title": "Ishibashi & Zhang (1993) Modulus Reduction",
+   "group": "Dynamic properties",
+   "methods": [
+    {
+     "id": "modulusreduction_plasticity_ishibashi",
+     "label": "Ishibashi & Zhang (1993) Modulus Reduction",
+     "function": "modulusreduction_plasticity_ishibashi",
+     "status": "unverified"
+    }
+   ],
+   "default_method": "modulusreduction_plasticity_ishibashi"
+  },
+  {
+   "id": "Qtn_cs_boulanger_idriss_2014",
+   "title": "B&I (2014) Qtn,cs",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "Qtn_cs_boulanger_idriss_2014",
+     "label": "B&I (2014) Qtn,cs",
+     "function": "Qtn_cs_boulanger_idriss_2014",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "Qtn_cs_boulanger_idriss_2014"
+  },
+  {
+   "id": "Qtn_cs_idriss_boulanger_2008",
+   "title": "I&B (2008) Qtn,cs",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "Qtn_cs_idriss_boulanger_2008",
+     "label": "I&B (2008) Qtn,cs",
+     "function": "Qtn_cs_idriss_boulanger_2008",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "Qtn_cs_idriss_boulanger_2008"
+  },
+  {
+   "id": "Qtn_cs_robertson_cabal_2022",
+   "title": "R&C (2022) Qtn,cs",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "Qtn_cs_robertson_cabal_2022",
+     "label": "R&C (2022) Qtn,cs",
+     "function": "Qtn_cs_robertson_cabal_2022",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "Qtn_cs_robertson_cabal_2022"
+  },
+  {
+   "id": "Qtn_cs_robertson_wride_1998",
+   "title": "R&W (1998) Qtn,cs",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "Qtn_cs_robertson_wride_1998",
+     "label": "R&W (1998) Qtn,cs",
+     "function": "Qtn_cs_robertson_wride_1998",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "Qtn_cs_robertson_wride_1998"
+  },
+  {
+   "id": "crr_boulanger_idriss_2014",
+   "title": "B&I (2014) CRR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "crr_boulanger_idriss_2014",
+     "label": "B&I (2014) CRR",
+     "function": "crr_boulanger_idriss_2014",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "crr_boulanger_idriss_2014"
+  },
+  {
+   "id": "crr_idriss_boulanger_2008",
+   "title": "I&B (2008) CRR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "crr_idriss_boulanger_2008",
+     "label": "I&B (2008) CRR",
+     "function": "crr_idriss_boulanger_2008",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "crr_idriss_boulanger_2008"
+  },
+  {
+   "id": "crr_robertson_cabal_2022",
+   "title": "R&C (2022) CRR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "crr_robertson_cabal_2022",
+     "label": "R&C (2022) CRR",
+     "function": "crr_robertson_cabal_2022",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "crr_robertson_cabal_2022"
+  },
+  {
+   "id": "crr_robertson_wride_1998",
+   "title": "R&W (1998) CRR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "crr_robertson_wride_1998",
+     "label": "R&W (1998) CRR",
+     "function": "crr_robertson_wride_1998",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "crr_robertson_wride_1998"
+  },
+  {
+   "id": "csr_boulanger_idriss_2014",
+   "title": "B&I (2014) CSR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "csr_boulanger_idriss_2014",
+     "label": "B&I (2014) CSR",
+     "function": "csr_boulanger_idriss_2014",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "csr_boulanger_idriss_2014"
+  },
+  {
+   "id": "csr_idriss_boulanger_2008",
+   "title": "I&B (2008) CSR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "csr_idriss_boulanger_2008",
+     "label": "I&B (2008) CSR",
+     "function": "csr_idriss_boulanger_2008",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "csr_idriss_boulanger_2008"
+  },
+  {
+   "id": "csr_robertson_cabal_2022",
+   "title": "R&C (2022) CSR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "csr_robertson_cabal_2022",
+     "label": "R&C (2022) CSR",
+     "function": "csr_robertson_cabal_2022",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "csr_robertson_cabal_2022"
+  },
+  {
+   "id": "csr_robertson_wride_1998",
+   "title": "R&W (1998) CSR",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "csr_robertson_wride_1998",
+     "label": "R&W (1998) CSR",
+     "function": "csr_robertson_wride_1998",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "csr_robertson_wride_1998"
+  },
+  {
+   "id": "fos_liquefaction",
+   "title": "Factor of Safety (Liquefaction)",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "fos_liquefaction",
+     "label": "Factor of Safety (Liquefaction)",
+     "function": "fos_liquefaction",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "fos_liquefaction"
+  },
+  {
+   "id": "liquefaction_strains_zhang",
+   "title": "Zhang (2002) Liquefaction Strains",
+   "group": "CPT-based liquefaction",
+   "methods": [
+    {
+     "id": "liquefaction_strains_zhang",
+     "label": "Zhang (2002) Liquefaction Strains",
+     "function": "liquefaction_strains_zhang",
+     "status": "unverified"
+    }
+   ],
+   "data": [
+    "cpt"
+   ],
+   "default_method": "liquefaction_strains_zhang"
+  }
+ ]
+}

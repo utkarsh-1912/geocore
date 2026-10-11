@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { Activity, ChevronRight } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { getCategoryIcon } from '../../config/categoryIcons';
+import { NAV_MODES } from '@/config/navigation';
 import logoLight from '../../assets/logo-2.png';
 import logoDark from '../../assets/logo.png';
 import { useTheme } from '../../context/ThemeContext';
@@ -34,7 +35,8 @@ const RailTooltip = ({ tip }) => {
     );
 };
 
-const NavItem = ({ active, collapsed, label, icon, onClick, onTip, large = false }) => {
+// `dot`: a small badge on the icon (e.g. an unread GeoAI answer).
+const NavItem = ({ active, collapsed, label, icon, onClick, onTip, large = false, dot = false }) => {
     const showTip = (e) => {
         if (!collapsed) return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -55,7 +57,10 @@ const NavItem = ({ active, collapsed, label, icon, onClick, onTip, large = false
                 } ${collapsed ? 'justify-center' : 'gap-3 px-3'}`}
         >
             {active && <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r bg-[image:var(--gradient-brand)] shadow-[0_0_10px_var(--glow-brand)]" />}
-            <span className={`shrink-0 flex items-center justify-center ${large ? 'w-6 h-6' : 'w-5 h-5'}`}>{icon}</span>
+            <span className={`relative shrink-0 flex items-center justify-center ${large ? 'w-6 h-6' : 'w-5 h-5'}`}>
+                {icon}
+                {dot && <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-sidebar shadow-[0_0_8px_var(--color-primary)]" />}
+            </span>
             {!collapsed && <span className="text-sm truncate">{label}</span>}
         </button>
     );
@@ -69,7 +74,10 @@ export const Sidebar = ({
     backendStatus,
     onStatusClick,
     onOpenGeoAI,
-    isGeoAIActive
+    isGeoAIActive,
+    geoaiUnread = 0,
+    navMode,
+    onNavModeChange
 }) => {
     const [tip, setTip] = useState(null);
     const { isDarkMode } = useTheme();
@@ -98,8 +106,9 @@ export const Sidebar = ({
                 <NavItem
                     active={isGeoAIActive}
                     collapsed={collapsed}
-                    label="GeoAI"
+                    label={geoaiUnread ? `GeoAI · ${geoaiUnread} new answer${geoaiUnread === 1 ? '' : 's'}` : 'GeoAI'}
                     icon={<GeoAILogo size={24} className="text-primary" />}
+                    dot={geoaiUnread > 0}
                     large
                     onClick={onOpenGeoAI}
                     onTip={setTip}
@@ -107,7 +116,28 @@ export const Sidebar = ({
 
                 {collapsed
                     ? <div className="my-3 mx-2 h-px bg-border" />
-                    : <div className="px-3 pt-5 pb-1.5 text-[10.5px] font-semibold text-text-subtle uppercase tracking-[0.14em]">Modules</div>}
+                    : (
+                        <div className="px-3 pt-5 pb-1.5 flex items-center justify-between gap-2">
+                            <span className="text-[10.5px] font-semibold text-text-subtle uppercase tracking-[0.14em]">Modules</span>
+                            {onNavModeChange && (
+                                <div role="radiogroup" aria-label="Group calculations" className="flex shrink-0 rounded-md border border-border p-0.5">
+                                    {Object.entries(NAV_MODES).map(([mode, m]) => (
+                                        <button
+                                            key={mode}
+                                            type="button"
+                                            role="radio"
+                                            aria-checked={navMode === mode}
+                                            title={m.title}
+                                            onClick={() => onNavModeChange(mode)}
+                                            className={`px-1.5 py-px rounded text-[10px] font-semibold transition-colors ${navMode === mode ? 'bg-primary/15 text-primary' : 'text-text-subtle hover:text-text-main'}`}
+                                        >
+                                            {m.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                 <ul className="space-y-0.5">
                     {modules.map((module) => {

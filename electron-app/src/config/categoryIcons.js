@@ -5,7 +5,7 @@ import {
     Scale, ScrollText, ChartSpline, Waypoints, FileText
 } from 'lucide-react';
 
-/** Icon per top-level module category (ids from config/geotechnicalModules.js), chosen for civil / geotechnical meaning. */
+/** Icon per top-level module (ids from config/geotechnicalModules.js and config/catalogueNavigation.json), chosen for civil / geotechnical meaning. */
 export const CATEGORY_ICONS = {
     general: DraftingCompass,        // engineering utilities: profiles, grids, plotting, mapping
     site_investigation: Layers,      // ground stratigraphy: boreholes, CPT / SPT logs, lab results
@@ -18,6 +18,18 @@ export const CATEGORY_ICONS = {
     indian_standards: ScrollText,    // BIS codes
     constitutive: ChartSpline,       // stress-strain curves
     pipelines: Waypoints,            // pipeline / cable routes
+
+    // Catalogue navigation (python-backend/core/catalogue/data): same icons as the classic modules they replace.
+    ground_data: DraftingCompass,
+    ground_characterisation: Layers,
+    shallow_foundations: Building2,
+    settlement_consolidation: Hourglass,
+    deep_foundations: Hammer,
+    retaining_excavations: Shovel,
+    dynamics_liquefaction: AudioWaveform,
+    material_models: ChartSpline,
+    offshore_pipelines: Waypoints,
+    design_basis: Scale,
 };
 
 export const getCategoryIcon = (id) => CATEGORY_ICONS[id] || FileText;

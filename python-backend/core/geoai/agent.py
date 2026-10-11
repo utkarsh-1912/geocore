@@ -8,6 +8,7 @@ This module provides the main orchestration loop that connects the SLM
 import inspect
 import json
 import logging
+import math
 import re
 import time
 from dataclasses import dataclass
@@ -28,7 +29,7 @@ from .response_guard import (TRUNCATION_NOTE, AnswerStreamCleaner, clean_answer,
                              sentence_keys, strip_calculation_records)
 from .tool_registry import GeoAIToolRegistry
 from .system_prompt import build_system_prompt
-from .tool_selector import select_relevant_tools
+from .tool_selector import CHARS_PER_TOKEN, select_relevant_tools
 from .exceptions import GeoAIValidationError
 from .argument_grounding import missing_inputs_message, ungrounded_arguments
 from .visuals import ImageIds, assign_image_ids, build_visuals, image_manifest
@@ -46,13 +47,31 @@ EXPLANATION_INSTRUCTION = ("The results above are already shown to the user with
 # Prior conversation turns replayed to the model (small models need a short context).
 MAX_HISTORY_TURNS = 6
 MAX_HISTORY_CHARS = 600
-# Share of the model context window the offered tool schemas may occupy (approximate tokens).
+# Share of the model context window the offered tool schemas may occupy (approximate tokens),
+# capped at the budget the tool offer was benchmarked with (n_ctx 4096), so a larger window
+# holds more conversation rather than slower-to-evaluate schemas.
 TOOL_SCHEMA_BUDGET_FRACTION = 0.45
+MAX_TOOL_SCHEMA_TOKENS = TOOL_SCHEMA_BUDGET_FRACTION * 4096
+# A replayed calculation record: lists longer than this are summarised, and the whole record is
+# capped. Conversations saved by older builds can carry full tables or plot data in their results.
+MAX_RECORD_LIST_ITEMS = 10
+MAX_RECORD_CHARS = 1500
+# Prompt tokens kept free for the tool call, tool results and template overhead, on top of the
+# answer cap; older history turns are dropped until the prompt fits the context window.
+PROMPT_RESERVE_TOKENS = 768
 
 
 def _compact_value(v: Any) -> Any:
     if isinstance(v, float):
         return float(f"{v:.4g}")
+    if isinstance(v, (list, tuple)):
+        if len(v) > MAX_RECORD_LIST_ITEMS:
+            if all(isinstance(x, dict) for x in v):
+                return {"columns": [str(c) for c in v[0]], "n_rows": len(v)}
+            return {"n_items": len(v)}
+        return [_compact_value(x) for x in v]
+    if isinstance(v, dict):
+        return {k: _compact_value(x) for k, x in v.items()}
     return v
 
 
@@ -74,7 +93,37 @@ def _calculation_record(tool: Dict[str, Any]) -> Optional[str]:
                 record["output_units"] = prov["output_units"]
             if prov.get("method"):
                 record["method"] = prov["method"]
-    return "[Calculation record] " + json.dumps(record, default=str, ensure_ascii=False)
+    text = json.dumps(record, default=str, ensure_ascii=False)
+    if len(text) > MAX_RECORD_CHARS and isinstance(record.get("results"), dict):
+        # Keep the scalar outputs a follow-up question is about; drop nested tables and figures.
+        record["results"] = {k: (v if not isinstance(v, (dict, list)) else "(omitted)")
+                             for k, v in record["results"].items()}
+        text = json.dumps(record, default=str, ensure_ascii=False)
+    if len(text) > MAX_RECORD_CHARS:
+        text = text[:MAX_RECORD_CHARS].rstrip() + " ..."
+    return "[Calculation record] " + text
+
+
+def _approx_prompt_tokens(messages: List[ChatMessage], tools: Optional[List[dict]]) -> float:
+    chars = sum(len(m.content or "") for m in messages) + len(json.dumps(tools or []))
+    return chars / CHARS_PER_TOKEN
+
+
+def fit_history(messages: List[ChatMessage], tools: Optional[List[dict]], max_prompt_tokens: float) -> int:
+    """
+    Drop the oldest replayed turns (messages between the system prompt and the new user message)
+    until the prompt's approximate size fits ``max_prompt_tokens``. The kept history still starts
+    with a user turn (strictly alternating templates such as Gemma's reject a leading assistant).
+    Returns the number of messages dropped.
+    """
+    dropped = 0
+    while len(messages) > 2 and _approx_prompt_tokens(messages, tools) > max_prompt_tokens:
+        del messages[1]
+        dropped += 1
+        while len(messages) > 2 and messages[1].role == MessageRole.ASSISTANT:
+            del messages[1]
+            dropped += 1
+    return dropped
 
 
 def history_to_messages(history: Optional[List[Dict[str, Any]]]) -> List[ChatMessage]:
@@ -134,19 +183,67 @@ def _grounding_text(messages: List[ChatMessage]) -> str:
     return "\n".join(parts)
 
 
+def _format_number(v: float) -> str:
+    """4 significant figures, grouped thousands, no float noise: 130927.62 -> '130,900', 0.33333 -> '0.3333'."""
+    if not math.isfinite(v) or v == 0:
+        return str(v)
+    rounded = float(f"{v:.4g}")
+    if 1e-3 <= abs(rounded) < 1e7:
+        return f"{rounded:,.10f}".rstrip("0").rstrip(".")
+    return f"{rounded:.3e}"
+
+
+def _summary_value(v: Any) -> str:
+    if isinstance(v, bool):
+        return "yes" if v else "no"
+    if isinstance(v, float):
+        return _format_number(v)
+    if isinstance(v, int):
+        return f"{v:,}"
+    return str(_compact_value(v))
+
+
+def _tool_title(tool: Dict[str, Any]) -> str:
+    """The calculation's catalogue title ("Gmax from Shear Wave Velocity"), else the tool name made readable."""
+    catalogue = tool.get("catalogue") if isinstance(tool.get("catalogue"), dict) else {}
+    if catalogue.get("calculation"):
+        method = catalogue.get("method")
+        return catalogue["calculation"] + (f" ({method})" if method and method != catalogue["calculation"] else "")
+    name = str(tool.get("name") or "calculation").replace("_", " ").strip()
+    return name[:1].upper() + name[1:]
+
+
+def _value_label(function_id: Optional[str], key: str) -> str:
+    """'Small-strain shear modulus Gₘₐₓ' for a known quantity, else the result key as the tool returned it."""
+    from core.quantity_directory import lookup_in
+    bare = re.sub(r"\s*\[[^\]]*\]\s*$", "", key).strip()
+    quantity = lookup_in(function_id, bare)
+    if not quantity:
+        return key
+    return f"{quantity['name']} {quantity.get('symbol') or bare}"
+
+
 def _result_summary(tools_used: List[Dict[str, Any]]) -> str:
-    """Deterministic answer from tool results, used when the model writes no explanation."""
+    """
+    Deterministic answer from tool results, used when the model writes no explanation and shown before its prose
+    when it does. Written for the engineer: the calculation's name, then each value with its quantity name, symbol
+    and the unit the tool reported. The exact values and the tool call itself are in the UI's evidence card.
+    """
+    from core.quantity_directory import canonical_unit
     lines = []
     for t in tools_used:
+        title = _tool_title(t)
         wrapper = t.get("result") if isinstance(t.get("result"), dict) else {}
         if wrapper.get("status") == "error":
-            lines.append(f"**{t.get('name')}** failed: {wrapper.get('error')}")
+            lines.append(f"**{title}** could not be calculated: {wrapper.get('error')}")
             continue
         res = wrapper.get("result", wrapper)
         if not isinstance(res, dict):
             continue
         prov = res.get("_provenance") if isinstance(res.get("_provenance"), dict) else {}
         units = prov.get("output_units") if isinstance(prov.get("output_units"), dict) else {}
+        catalogue = t.get("catalogue") if isinstance(t.get("catalogue"), dict) else {}
+        function_id = catalogue.get("function")
         values = []
         for k, v in res.items():
             if k.startswith("_"):
@@ -154,11 +251,14 @@ def _result_summary(tools_used: List[Dict[str, Any]]) -> str:
             unit = units.get(k)
             if isinstance(v, dict) and set(v) == {"image_id", "details"}:
                 continue  # an image: drawn by the UI, not a value to read out
+            label = _value_label(function_id, k)
             if isinstance(v, dict) and set(v) == {"columns", "n_rows"}:  # a long table summarised for the model
-                values.append(f"{k} = table of {v['n_rows']} rows")
+                values.append(f"{label}: table of {v['n_rows']} rows")
                 continue
-            values.append(f"{k} = {_compact_value(v)}" + (f" {unit}" if unit and unit != "-" else ""))
-        lines.append(f"**{t.get('name')}** result: " + ", ".join(values))
+            shown_unit = (canonical_unit(unit) or unit) if unit and unit != "-" else None
+            values.append(f"{label} = {_summary_value(v)}" + (f" {shown_unit}" if shown_unit else ""))
+        lines.append(f"**{title}:** " + "; ".join(values))
+        lines.extend(f"Warning: {w}" for w in res.get("_warnings") or [])
     return "\n".join(lines)
 
 
@@ -235,6 +335,10 @@ class AgentStreamEvent:
     tool_result: Optional[Dict[str, Any]] = None
     # Display blocks for the UI only (core.geoai.visuals); never part of the model prompt.
     visuals: Optional[List[Dict[str, Any]]] = None
+    # The tool's calculation, method and verification status (core.geoai.catalogue_link); UI only.
+    catalogue: Optional[Dict[str, Any]] = None
+    # {input field: unit} of the tool's inputs, so the UI can show the provenance inputs with units; UI only.
+    input_units: Optional[Dict[str, str]] = None
 
     def to_sse(self) -> str:
         data = {
@@ -246,6 +350,10 @@ class AgentStreamEvent:
         }
         if self.visuals:
             data["visuals"] = self.visuals
+        if self.catalogue:
+            data["catalogue"] = self.catalogue
+        if self.input_units:
+            data["input_units"] = self.input_units
         return f"data: {json.dumps(data)}\n\n"
 
 def _close_stream(stream: Any) -> None:
@@ -284,7 +392,8 @@ class GeoAIAgent:
         if max_tools is None:
             max_tools = config.max_tools
         if tool_schema_token_budget is None:
-            tool_schema_token_budget = TOOL_SCHEMA_BUDGET_FRACTION * config.n_ctx
+            tool_schema_token_budget = min(TOOL_SCHEMA_BUDGET_FRACTION * config.n_ctx, MAX_TOOL_SCHEMA_TOKENS)
+        self._n_ctx = config.n_ctx
         # Generation caps: the tool-selection turn (a call or a clarification) vs the answer
         # written after tool results. They bound runaway generations (p95 latency).
         self._decision_max_tokens = config.decision_max_tokens
@@ -293,6 +402,8 @@ class GeoAIAgent:
         self._max_tools = max_tools
         # Compact model-facing schemas (validation still uses the full schema, see tool_selector).
         self._compact_tool_schemas = bool(getattr(config, "compact_tool_schemas", False))
+        # Offer a selected tool's other catalogue methods with it (off by default, see GeoAIModelConfig).
+        self._catalogue_methods = bool(getattr(config, "catalogue_methods", False))
         # A few Groundhog schemas are ~1k tokens; cap their total so the prompt fits n_ctx.
         self._tool_schema_token_budget = tool_schema_token_budget
 
@@ -309,7 +420,12 @@ class GeoAIAgent:
                                                 max_tools=self._max_tools,
                                                 max_schema_tokens=self._tool_schema_token_budget,
                                                 compact=self._compact_tool_schemas,
-                                                domains=self._domains)
+                                                domains=self._domains,
+                                                group_methods=self._catalogue_methods)
+        dropped = fit_history(messages, tools_for_model,
+                              self._n_ctx - self._answer_max_tokens - PROMPT_RESERVE_TOKENS)
+        if dropped:
+            logger.info(f"GeoAI: dropped {dropped} old history message(s) to fit n_ctx={self._n_ctx}")
         return messages, tools_for_model
 
     def _execute_tool_call(self, tool_call: ToolCall, context: Optional[Dict[str, Any]] = None,
@@ -368,6 +484,20 @@ class GeoAIAgent:
         wrapper.pop("display", None)
         assign_image_ids(visuals, ids)
         return visuals
+
+    def _catalogue_of(self, tool_name: str) -> Dict[str, Any]:
+        """{"catalogue": ...} for a tools_used entry (UI only, never in a tool message), or {} when not catalogued."""
+        from core.geoai.catalogue_link import tool_catalogue
+        get_tool = getattr(self._registry, "get_tool", None)
+        info = tool_catalogue(get_tool(tool_name)) if get_tool else None
+        return {"catalogue": info} if info else {}
+
+    def _input_units_of(self, tool_name: str) -> Dict[str, Any]:
+        """{"input_units": {field: unit}} for a tools_used entry (UI only: the units of the inputs in its provenance)."""
+        get_tool = getattr(self._registry, "get_tool", None)
+        tool = get_tool(tool_name) if get_tool else None
+        units = tool.input_units() if tool is not None and hasattr(tool, "input_units") else {}
+        return {"input_units": units} if units else {}
 
     def _interpretive_tools(self, tools_used: List[Dict[str, Any]]) -> List[str]:
         """Names of the used tools whose registry entry is marked interpretive."""
@@ -432,7 +562,8 @@ class GeoAIAgent:
                 result = self._execute_tool_call(tc, context=context, ids=ids)
                 visuals = self._visuals_for(tc, result, ids)
                 tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result,
-                                   "visuals": visuals})
+                                   "visuals": visuals, **self._catalogue_of(tc.function_name),
+                                   **self._input_units_of(tc.function_name)})
                 
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)
@@ -551,9 +682,11 @@ class GeoAIAgent:
                 result = self._execute_tool_call(tc, context=context, ids=ids)
                 visuals = self._visuals_for(tc, result, ids)
                 tools_used.append({"name": tc.function_name, "arguments": tc.arguments, "result": result,
-                                   "visuals": visuals})
+                                   "visuals": visuals, **self._catalogue_of(tc.function_name),
+                                   **self._input_units_of(tc.function_name)})
                 yield AgentStreamEvent(type='tool_result', tool_name=tc.function_name, tool_result=result,
-                                       visuals=visuals)
+                                       visuals=visuals, catalogue=tools_used[-1].get("catalogue"),
+                                       input_units=tools_used[-1].get("input_units"))
                 
                 tool_result_msg = make_tool_result_message(tc.id, tc.function_name, result)
                 messages.append(tool_result_msg)

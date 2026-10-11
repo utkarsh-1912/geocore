@@ -8,23 +8,29 @@
  * collapsible history sidebar, and Groundhog calculations.
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useId } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-    Send, ArrowRight, RefreshCw, Plus, MessageSquare, 
+    Send, ArrowRight, RefreshCw, Plus, 
     Trash2, Copy, Cpu, Check, X, PanelLeft,
     PanelLeftClose, Download, Pencil, RotateCcw,
     Shield, CheckCircle2, ChevronDown, AlertTriangle,
     HardDrive, Zap, BookOpen, Compass, Layers, User,
-    FileCode, ExternalLink, Sparkles, Square, Maximize2
+    FileCode, ExternalLink, Sparkles, Square, Maximize2, Sigma
 } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
 import { buildChatHistory, nextMessageId } from './chatHistory';
+import {
+    useShared, conversationsStore, loadingConvStore, liveStepsStore, unreadStore, abortHandle,
+    registerView, reportView, answerFinished, forgetUnread,
+} from './geoaiSession';
 import { MarkdownText } from './MarkdownText';
 import { AnswerWithVisuals } from './VisualBlocks';
 import { ResultValues } from './ResultValues';
+import { CatalogueNote } from './CatalogueNote';
+import { Tex } from '../calculations/UserGuideTemplate';
 import { imagesOf, stripImageMarkers } from './answerVisuals';
 import { ProjectGroundwaterField } from './ProjectGroundwaterField';
 import { createTraceRecorder, finalTurnText, stopGeoAIChat, streamGeoAIChat, useElapsedSeconds } from './geoaiStream';
@@ -139,7 +145,38 @@ const DownloadProgress = ({ status }) => {
     );
 };
 
-export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext, onBackToModules, compact = false, onClose, onExpand }) => {
+/**
+ * The model's worked solution, nothing else: no copy of the calculation card. Below it only the checks of what the
+ * model wrote - numbers that are not from the calculation, and the method's own equation when the model's differs.
+ */
+const SolutionAnswer = ({ msg, streaming }) => (
+    <div className="space-y-3" data-solution-answer>
+        {msg.unavailable
+            ? <p className="text-text-muted">{msg.unavailable}</p>
+            : (msg.text ? <AnswerWithVisuals text={msg.text} visuals={[]} /> : <span className="text-text-muted">GeoAI is writing the worked solution…</span>)}
+        {!streaming && msg.equationCheck && (
+            <div className="space-y-2 rounded-md border border-warning/40 bg-warning/10 px-2.5 py-2 text-[11px] text-text-main" role="alert" data-equation-check>
+                <p className="flex gap-1.5">
+                    <AlertTriangle size={12} className="mt-0.5 shrink-0 text-warning" />
+                    <span>GeoAI's equation differs from the one the calculation used. The method's equation, and it with your inputs substituted:</span>
+                </p>
+                {msg.equationCheck.equation && <div className="overflow-x-auto"><Tex tex={msg.equationCheck.equation} /></div>}
+                {msg.equationCheck.substitution && <div className="overflow-x-auto"><Tex tex={msg.equationCheck.substitution} /></div>}
+            </div>
+        )}
+        {!streaming && msg.unverified?.length > 0 && (
+            <p className="flex gap-1.5 rounded-md border border-warning/40 bg-warning/10 px-2.5 py-1.5 text-[11px] text-text-main" role="alert">
+                <AlertTriangle size={12} className="mt-0.5 shrink-0 text-warning" />
+                <span>Not from the calculation: {msg.unverified.join(', ')}. GeoAI wrote these numbers itself; check them against the result card above.</span>
+            </p>
+        )}
+    </div>
+);
+
+// `openModelManager`: open with the model manager showing (e.g. from the home "Select Model" button).
+// `visible`: false while the GeoAI tab is kept mounted out of sight, so a running answer can finish there
+// (status polling pauses; a finished answer is marked unread with a chime - see geoaiSession.js).
+export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext, onBackToModules, compact = false, onClose, onExpand, openModelManager = false, visible = true }) => {
     // UI Layout State (compact = hosted in the slide-out copilot drawer: history starts collapsed)
     const [sidebarOpen, setSidebarOpen] = useState(!compact);
 
@@ -151,39 +188,17 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         messages: []
     });
 
-    // Conversations & Message State
-    const [conversations, setConversations] = useState(() => {
-        const saved = localStorage.getItem('geoai_conversations');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    return parsed;
-                }
-            } catch (e) { }
-        }
-        return [createDefaultConv()];
-    });
-
-    const [activeConvId, setActiveConvId] = useState(() => {
-        const saved = localStorage.getItem('geoai_conversations');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    return parsed[0].id;
-                }
-            } catch (e) { }
-        }
-        return null;
-    });
+    // Conversations & Message State: shared with the other GeoAI view and saved by geoaiSession.js.
+    const [conversations, setConversations] = useShared(conversationsStore);
+    const [unreadIds] = useShared(unreadStore);
+    const [activeConvId, setActiveConvId] = useState(() => conversationsStore.get()[0]?.id ?? null);
 
     const [inputValue, setInputValue] = useState('');
     // Id of the conversation whose answer is running (null when idle). There is one local model and one
     // stop handle, so only one answer runs at a time; its live trace belongs to that conversation only.
-    const [loadingConvId, setLoadingConvId] = useState(null);
-    const [liveSteps, setLiveSteps] = useState([]);
-    const abortRef = useRef(null);
+    const [loadingConvId, setLoadingConvId] = useShared(loadingConvStore);
+    const [liveSteps, setLiveSteps] = useShared(liveStepsStore);
+    const abortRef = abortHandle;
     const isBusy = loadingConvId !== null;
     const elapsedSeconds = useElapsedSeconds(isBusy);
 
@@ -197,7 +212,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     const [availableModels, setAvailableModels] = useState([]);
     const [downloadStatus, setDownloadStatus] = useState({ status: 'idle' });
     const [memoryInfo, setMemoryInfo] = useState(null);
-    const [showModelModal, setShowModelModal] = useState(false);
+    const [showModelModal, setShowModelModal] = useState(openModelManager);
     const [convToDelete, setConvToDelete] = useState(null);
 
     // Gateway / Modal Filter State
@@ -221,12 +236,12 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 setActiveConvId(fresh.id);
             }
         }
-    }, [conversations, activeConvId]);
+    }, [conversations, activeConvId, setConversations]);
 
-    // Save conversations to localStorage
-    useEffect(() => {
-        localStorage.setItem('geoai_conversations', JSON.stringify(conversations));
-    }, [conversations]);
+    // Tell the session what this view shows, so a finished answer is only "unread" when nobody sees it.
+    const viewId = useId();
+    useEffect(() => registerView(viewId), [viewId]);
+    useEffect(() => { reportView(viewId, visible, activeConvId); }, [viewId, visible, activeConvId, unreadIds]);
 
     const activeConversation = conversations.find(c => c.id === activeConvId) || conversations[0] || createDefaultConv();
     const currentConvId = activeConversation?.id;
@@ -258,10 +273,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
 
     // Fetch model & memory status
     useEffect(() => {
+        if (!visible) return undefined; // kept mounted out of sight: no polling
         fetchStatus();
         const interval = setInterval(fetchStatus, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [visible]);
 
     // Poll download status if actively downloading
     useEffect(() => {
@@ -323,6 +339,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
     const confirmDeleteConversation = () => {
         if (!convToDelete) return;
         const id = convToDelete.id;
+        forgetUnread(id);
         const remaining = conversations.filter(c => c.id !== id);
         if (remaining.length === 0) {
             const fresh = createDefaultConv();
@@ -353,6 +370,62 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
             }
             return conv;
         }));
+    };
+
+    // "Explain" under a calculation result: the local model writes a detailed worked solution, grounded in the
+    // calculation's guide details (method, theory, equation, symbols, values, Groundhog's results); numbers it uses
+    // that are not in those details, and an equation that differs from the method's, are flagged. Both messages
+    // stay in this chat only (`local`): they are not sent to the model as history.
+    const explainResult = async (msg) => {
+        if (isBusy) return;
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const targetId = currentConvId || activeConvId;
+        const results = msg.results?.result || msg.results;
+        const explain = { tool: msg.executedTool, args: msg.parameters || {}, results };
+        const aiMessageId = nextMessageId('ai');
+        updateCurrentMessages([
+            ...messages.map(m => (m.id === msg.id ? { ...m, explained: true } : m)),
+            { id: nextMessageId('user'), sender: 'user', text: `Explain the ${msg.catalogue?.method || msg.catalogue?.calculation || 'calculation'} step by step`,
+              local: true, timestamp: time },
+            { id: aiMessageId, sender: 'ai', kind: 'solution', local: true, timestamp: time, text: '', explain },
+        ]);
+        const setAiMessage = (fields) => setConversations(prev => prev.map(c => (
+            c.id === targetId
+                ? { ...c, messages: c.messages.map(m => m.id === aiMessageId ? { ...m, ...fields } : m) }
+                : c
+        )));
+        setLoadingConvId(targetId);
+        setLiveSteps([]);
+        const trace = createTraceRecorder(setLiveSteps);
+        const controller = new AbortController();
+        abortRef.current = controller;
+        let shownText = '';
+        try {
+            const turn = await streamGeoAIChat({
+                signal: controller.signal,
+                request: (signal) => api.geoaiSolutionStream({
+                    function_id: explain.tool, args: explain.args, results: explain.results,
+                    applicability: msg.catalogue?.applicability,
+                }, signal),
+                onText: (t) => { shownText = t; setAiMessage({ text: t }); },
+                onStage: trace.stage,
+            });
+            setAiMessage({
+                text: turn.unavailable ? '' : finalTurnText(turn, shownText),
+                unavailable: turn.unavailable || null,
+                unverified: turn.unverified || [],
+                equationCheck: turn.equationCheck || null,
+                trace: trace.finish(turn),
+            });
+        } catch {
+            setAiMessage(controller.signal.aborted
+                ? { text: shownText ? `${shownText}\n\n_Stopped._` : '_Stopped._' }
+                : { text: '', unavailable: 'GeoAI could not write the solution. The calculation details are below.' });
+        } finally {
+            abortRef.current = null;
+            setLoadingConvId(null);
+            if (!controller.signal.aborted) answerFinished(targetId);
+        }
     };
 
     const handleSendMessage = async (textToSend, baseMessages = null) => {
@@ -414,6 +487,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                 executedTool: turn.executedTool,
                 parameters: turn.parameters,
                 results: turn.results,
+                catalogue: turn.catalogue,
                 visuals: turn.visuals
             });
         } catch {
@@ -430,6 +504,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                     executedTool: res.executed_tool,
                     parameters: res.parameters_extracted,
                     results: res.results,
+                    catalogue: res.tools_used?.[0]?.catalogue || null,
                     visuals: res.visuals,
                     provenance: res.provenance,
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -447,13 +522,14 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
         } finally {
             abortRef.current = null;
             setLoadingConvId(null);
+            if (!controller.signal.aborted) answerFinished(targetId);
         }
     };
 
     const handleStop = () => stopGeoAIChat(abortRef.current);
 
-    // Stop a running answer when the window closes, so the model is not left computing.
-    useEffect(() => () => abortRef.current?.abort(), []);
+    // A running answer is stopped when the last GeoAI view closes (registerView), so the model is not left
+    // computing; closing the drawer while the GeoAI tab is kept mounted lets it finish there.
 
     // Grow a textarea with its content (capped by its CSS max-height).
     const autoGrow = (el) => {
@@ -630,9 +706,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             >
                                 <div className="flex items-center gap-2 truncate">
                                     {conv.id === loadingConvId
-                                        ? <RefreshCw size={13} className="shrink-0 animate-spin text-primary" aria-label="Answering" />
-                                        : <MessageSquare size={13} className="shrink-0 opacity-70" />}
-                                    <span className="truncate">{conv.title}</span>
+                                        ? <RefreshCw size={12} className="shrink-0 animate-spin text-primary" aria-label="Answering" />
+                                        : unreadIds.includes(conv.id) && (
+                                            <span className="h-2 w-2 shrink-0 rounded-full bg-primary shadow-[0_0_6px_var(--color-primary)]" aria-label="New answer" title="New answer" />
+                                        )}
+                                    <span className={`truncate ${unreadIds.includes(conv.id) ? 'text-text-main font-semibold' : ''}`}>{conv.title}</span>
                                 </div>
                                 <button
                                     onClick={(e) => {
@@ -733,7 +811,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                             ) : (
                                 <>
                                     <AlertTriangle size={13} className="shrink-0" />
-                                    <span className="font-semibold text-[11px]">Install / Select Model</span>
+                                    <span className="font-semibold text-[11px]">Select Model</span>
                                     <ChevronDown size={12} />
                                 </>
                             )}
@@ -965,7 +1043,11 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                                 : 'bg-surface border border-border text-text-main rounded-lg rounded-tl-md shadow-sm w-full'
                                                         }`}
                                                     >
-                                                        {msg.sender === 'ai' && !msg.text && !imagesOf(msg.visuals).length ? (
+                                                        {msg.kind === 'explanation' ? (
+                                                            <span className="text-text-muted">Made by an earlier version of Explain. Ask again for a worked solution.</span>
+                                                        ) : msg.kind === 'solution' ? (
+                                                            <SolutionAnswer msg={msg} streaming={msg.id === lastMessageId && isLoading} />
+                                                        ) : msg.sender === 'ai' && !msg.text && !imagesOf(msg.visuals).length ? (
                                                             <span className="text-text-muted">No response received.</span>
                                                         ) : (
                                                             msg.sender === 'ai' ? (
@@ -1027,6 +1109,7 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                             </button>
                                                         )}
                                                     </div>
+                                                    <CatalogueNote catalogue={msg.catalogue} warnings={(msg.results.result || msg.results)?._warnings} />
 
                                                     <ResultValues
                                                         results={msg.results.result || msg.results}
@@ -1040,6 +1123,15 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                             <span className="font-mono text-[9px]">{msg.results._provenance.standard}</span>
                                                         </div>
                                                     )}
+                                                </div>
+                                            )}
+                                            {msg.executedTool && msg.results && !msg.explained && msg.results.status !== 'error' && !isLoading && (
+                                                <div className="flex flex-wrap gap-1.5" data-result-chips>
+                                                    <button type="button" onClick={() => explainResult(msg)}
+                                                        title="Step-by-step explanation from the calculation's guide: inputs, governing equation with values, result"
+                                                        className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/5 px-3 py-1 text-[11px] font-medium text-primary hover:bg-primary/10 transition-colors">
+                                                        <Sigma size={12} />Explain step by step
+                                                    </button>
                                                 </div>
                                             )}
                                         </div>

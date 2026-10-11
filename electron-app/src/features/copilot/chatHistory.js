@@ -16,7 +16,8 @@ export const nextMessageId = (prefix) => `${prefix}-${Date.now()}-${++idCounter}
 
 export const buildChatHistory = (messages = []) =>
     messages
-        .filter(m => (m.sender === 'user' || m.sender === 'ai') && !m.isError && m.text)
+        // `local` messages (the "Explain" request and its step-by-step reply) are shown in the chat only.
+        .filter(m => (m.sender === 'user' || m.sender === 'ai') && !m.isError && !m.local && m.text)
         .slice(-MAX_HISTORY_MESSAGES)
         .map(m => {
             // Old {{image:ID}} markers mean nothing to the model next turn (ids restart at v1): keep them out.
