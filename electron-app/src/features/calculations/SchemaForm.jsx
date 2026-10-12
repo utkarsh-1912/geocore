@@ -19,7 +19,7 @@ import { FormSettingsPanel } from './FormSettingsPanel';
 import { Tooltip } from '../../components/ui/Tooltip';
 import { MathText, UserGuideTemplate, generateDefaultDocumentation } from './UserGuideTemplate';
 import { api } from '../../api/client';
-import { validateForm, resolveLimits, describeRange, isNumericInput } from '../../utils/formValidation';
+import { validateForm, resolveLimits, describeRange, isNumericInput, isBlank } from '../../utils/formValidation';
 import { inputLabel } from '../../utils/geoNotation';
 import { normalizeSchemaInputs, loadFieldBounds } from './schemaInputs';
 
@@ -800,6 +800,11 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                                                 required={input.required}
                                                 disabled={isEditMode}
                                             >
+                                                {/* Without a value the browser would display the first option although
+                                                    none is selected (and none is sent): show that explicitly. */}
+                                                {(isBlank(formData[input.name]) || !input.required) && (
+                                                    <option value="">{input.required ? 'Select…' : '— not specified —'}</option>
+                                                )}
                                                 {options.map(opt => {
                                                     const optValue = typeof opt === 'object' ? opt.value : opt;
                                                     return <option key={optValue} value={optValue}>{typeof opt === 'object' ? opt.label : opt}</option>;

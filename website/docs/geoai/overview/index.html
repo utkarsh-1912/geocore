@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="/assets/css/site.css?v=93d053c934">
+  <link rel="stylesheet" href="/assets/css/site.css?v=5aec6e6cb7">
 </head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -121,6 +121,11 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
   <li>
         <a href="/docs/geocore/using/eurocode7/">
     <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/indian-standards/">
+    <span>Indian Standard (BIS) calculations</span>  </a>
 
   </li>
   <li>
@@ -817,20 +822,13 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
     <div class="prose docs-body"><p>GeoAI is the geotechnical assistant built into GeoCore. You describe a calculation in plain language; GeoAI chooses a calculation tool, extracts the input values from your message, runs the calculation through groundhog and explains the result.</p>
 <p>GeoAI runs locally. It uses a small language model on your own computer (or a rule-based fallback when no model is installed). Your prompts and project data are not sent to a cloud service.</p>
 <h2 id="how-it-works">How it works</h2>
-<div class="highlight"><pre><span></span><code>Your request
-   │
-   ▼
-Local language model ── chooses a tool and extracts the inputs
-   │
-   ▼
-GeoCore tool registry ── validates the inputs against the tool&#39;s schema
-   │
-   ▼
-groundhog ── performs the calculation
-   │
-   ▼
-Local language model ── explains the result, with units and method
-</code></pre></div>
+<ol class="diagram-flow" aria-label="How GeoAI answers a request">
+  <li><strong>Your request</strong></li>
+  <li><strong>Local language model</strong><span>chooses a tool and extracts the inputs</span></li>
+  <li><strong>GeoCore tool registry</strong><span>validates the inputs against the tool's schema</span></li>
+  <li><strong>groundhog</strong><span>performs the calculation</span></li>
+  <li><strong>Local language model</strong><span>explains the result, with units and method</span></li>
+</ol>
 
 <p>The language model <strong>does not calculate</strong>. Every number in a GeoAI answer that comes from a calculation is produced by a groundhog function (or a GeoCore CPT/SPT routine), and the model is instructed to report it with its units and method. The model can only call tools registered in GeoCore's tool registry; it cannot run arbitrary code, shell commands or file operations.</p>
 <p>Specifically, GeoAI:</p>

@@ -179,7 +179,8 @@
      "id": "acousticimpedance_bulkunitweight_chen",
      "label": "Chen Acoustic Impedance–Porosity Correlation",
      "function": "acousticimpedance_bulkunitweight_chen",
-     "status": "unverified"
+     "status": "corrected",
+     "status_note": "Groundhog 0.16.0 fails (KeyError 'w [-]' or NaN) for G_s outside 2.4-2.9 or e > 5; fixed in core/groundhog_corrections.py and checked against the phase relations."
     }
    ],
    "default_method": "acousticimpedance_bulkunitweight_chen"

@@ -29,18 +29,30 @@ Every calculator documents its inputs with units and suggested ranges. The under
 
 ## How GeoCore is built
 
-```text
-┌──────────────────────────────────────────────────────────┐
-│               GeoCore desktop application                │
-├───────────────────────────┬──────────────────────────────┤
-│ Electron + React frontend │ Python calculation engine    │
-│  - calculation forms      │  - FastAPI (local only)      │
-│  - results & Plotly charts│  - groundhog 0.16.0          │
-│  - soil profile manager   │  - input validation          │
-│  - GeoAI panel            │  - GeoAI agent & tools       │
-└─────────────┬─────────────┴───────────────┬──────────────┘
-              └──── HTTP on 127.0.0.1:8000 ─┘
-```
+<div class="diagram-arch" role="figure" aria-label="GeoCore architecture">
+  <div class="diagram-arch__title">GeoCore desktop application</div>
+  <div class="diagram-arch__cols">
+    <div class="diagram-arch__col">
+      <strong>Electron + React frontend</strong>
+      <ul>
+        <li>calculation forms</li>
+        <li>results &amp; Plotly charts</li>
+        <li>soil profile manager</li>
+        <li>GeoAI panel</li>
+      </ul>
+    </div>
+    <div class="diagram-arch__col">
+      <strong>Python calculation engine</strong>
+      <ul>
+        <li>FastAPI (local only)</li>
+        <li>groundhog 0.16.0</li>
+        <li>input validation</li>
+        <li>GeoAI agent &amp; tools</li>
+      </ul>
+    </div>
+  </div>
+  <div class="diagram-arch__link">The two talk over HTTP on 127.0.0.1:8000</div>
+</div>
 
 - The **frontend** is an Electron shell with a React user interface. It renders a form for each calculator, shows results and charts, and keeps a local calculation history.
 - The **calculation engine** is a Python process started by the desktop app. It maps each calculator to its groundhog function or class (or to GeoCore's own implementation, for the BIS calculators), validates the inputs and returns the results. It also runs GeoAI. In packaged builds it is a frozen PyInstaller executable, so no separate Python installation is needed.

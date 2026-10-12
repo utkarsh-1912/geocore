@@ -26,21 +26,13 @@ GeoAI runs locally. It uses a small language model on your own computer (or a ru
 
 ## How it works
 
-```text
-Your request
-   │
-   ▼
-Local language model ── chooses a tool and extracts the inputs
-   │
-   ▼
-GeoCore tool registry ── validates the inputs against the tool's schema
-   │
-   ▼
-groundhog ── performs the calculation
-   │
-   ▼
-Local language model ── explains the result, with units and method
-```
+<ol class="diagram-flow" aria-label="How GeoAI answers a request">
+  <li><strong>Your request</strong></li>
+  <li><strong>Local language model</strong><span>chooses a tool and extracts the inputs</span></li>
+  <li><strong>GeoCore tool registry</strong><span>validates the inputs against the tool's schema</span></li>
+  <li><strong>groundhog</strong><span>performs the calculation</span></li>
+  <li><strong>Local language model</strong><span>explains the result, with units and method</span></li>
+</ol>
 
 The language model **does not calculate**. Every number in a GeoAI answer that comes from a calculation is produced by a groundhog function (or a GeoCore CPT/SPT routine), and the model is instructed to report it with its units and method. The model can only call tools registered in GeoCore's tool registry; it cannot run arbitrary code, shell commands or file operations.
 

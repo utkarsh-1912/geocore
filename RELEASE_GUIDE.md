@@ -8,17 +8,15 @@ This guide provides step-by-step instructions for listing, building, and releasi
 
 GeoCore utilizes an automated multi-platform release strategy powered by **GitHub Actions**, **PyInstaller**, and **electron-builder**.
 
-```
-    Tag Commit (e.g. `v1.0.0`)
-               │
-               ▼
-      GitHub Actions Workflow
-      ├── Windows Runner: Builds `main.exe` + `GeoCore-Setup.exe`
-      ├── macOS Runner:   Builds `main` + `GeoCore.dmg`
-      └── Linux Runner:   Builds `main` + `GeoCore.AppImage` + `geocore.deb`
-               │
-               ▼
-     GitHub Release Artifacts
+```mermaid
+flowchart TD
+    TAG["Tag commit (e.g. v1.0.0)"] --> GHA["GitHub Actions workflow"]
+    GHA --> WIN["Windows runner<br/>main.exe + GeoCore-Setup.exe"]
+    GHA --> MAC["macOS runner<br/>main + GeoCore.dmg"]
+    GHA --> LIN["Linux runner<br/>main + GeoCore.AppImage + geocore.deb"]
+    WIN --> REL["GitHub Release artifacts"]
+    MAC --> REL
+    LIN --> REL
 ```
 
 ---
@@ -33,6 +31,27 @@ Update the version string in `electron-app/package.json`, `python-backend/main.p
   "version": "1.0.0"
 }
 ```
+
+### Step 1b: Write the release notes
+Release notes live in one place, `website/_content/geocore/changelog.md`. It feeds the docs page
+(`/docs/changelog`), the GitHub release text and the download page. Commit messages are not used.
+```bash
+# 1. Describe what changed since the last release, from the code itself (calculators, catalogue methods,
+#    GeoAI tools, API routes, docs pages, dependencies, groundhog version, files changed per area).
+python .github/scripts/changelog.py draft            # print it
+python .github/scripts/changelog.py draft --write    # or put it in the "Unreleased" section
+
+# 2. Rewrite the draft as user-facing notes under Added / Changed / Fixed in "## Unreleased" and delete
+#    the auto-draft block (the release step refuses a section that still holds it).
+
+# 3. Stamp the version and date, and rebuild the docs so /docs/changelog shows it.
+python .github/scripts/changelog.py release v1.1.0 --build
+```
+The release workflow runs `changelog.py check <tag>` (no notes, no release) and publishes
+`changelog.py notes <tag>` as the GitHub release text.
+
+> Keep local tags in sync with GitHub before drafting (`git fetch --tags --force`): the draft compares
+> against the newest local `vX.Y.Z` tag. Use `--since <ref>` to compare against something else.
 
 ### Step 2: Tag & Push to GitHub
 ```bash

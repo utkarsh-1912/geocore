@@ -1778,6 +1778,37 @@ def modules_catalogue_markdown(ui: Dict[str, Any], api_index: Dict[Tuple[str, st
     return "\n".join(out).strip() + "\n", total, linked
 
 
+def indian_standards_markdown() -> str:
+    """
+    One section per Indian Standard (BIS) calculator, from website/_build/bis_docs.py: the same content as the
+    app's Guide & Theory, with parameters read from the implementation's docstrings.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("bis_docs", REPO_ROOT / "website" / "_build" / "bis_docs.py")
+    bis = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bis)
+    titles = {e["id"]: e["title"] for e in load_geocore_ui()["entries"]}
+
+    def cell(text: str) -> str:
+        return str(text).replace("|", "\\|").replace("\n", " ") or "—"
+
+    out: List[str] = []
+    for fid, doc in bis.BIS_DOCS.items():
+        params = bis._docstring_params(doc["module"], fid)
+        source = f"{bis.SOURCE_URL}/{doc['module']}.py#L{bis._function_line(doc['module'], fid) or 1}"
+        theory = re.sub(r"^####\s+", "### ", doc["theory"].strip(), flags=re.M)
+        out += [f"## {titles.get(fid, fid)}", "", f"*{doc['summary']}*", "", theory, "",
+                "### Inputs", "", "| Input | Symbol | Unit | Range | Description |", "|---|---|---|---|---|"]
+        for name, p in params.items():
+            sym = doc["symbols"].get(name)
+            out.append(f"| `{name}` | {('$' + sym + '$') if sym else '—'} | {cell(p.get('unit', ''))} | "
+                       f"{cell(doc['ranges'].get(name, ''))} | {cell(p.get('description', ''))} |")
+        out += ["", "### Outputs", "", doc["returns"].strip(), "", "### References", ""]
+        out += [f"- {bis.REF[k]}" for k in doc["references"]]
+        out += ["", f"Implementation: [`core/standards/bis/{doc['module']}.py`]({source}) (`{fid}`).", ""]
+    return "\n".join(out).rstrip() + "\n"
+
+
 def eurocode7_markdown() -> str:
     from groundhog.standards.eurocode7.factors import Eurocode7_factoring_STR_GEO
     ec7 = Eurocode7_factoring_STR_GEO()
@@ -2129,6 +2160,7 @@ def build(repo_path: Optional[str]) -> Dict[str, Any]:
         "geoai-model-catalogue": geoai_model_catalogue_markdown,
         "geoai-model-benchmarks": geoai_model_benchmarks_markdown,
         "eurocode7-factors": eurocode7_markdown,
+        "indian-standards": indian_standards_markdown,
     }
     if GEOCORE_SRC_DIR.exists():
         for src in sorted(GEOCORE_SRC_DIR.glob("*.md")):

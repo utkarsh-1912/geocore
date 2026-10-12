@@ -79,30 +79,36 @@
   </div>
 </section>
 
-<section class="section section--tight cm-principles" aria-label="Principles">
-  <div class="container">
-    <ul class="cm-principles__list">
-      <li>{{ icon('lock') }}<div><h2>Offline</h2><p>Your project never leaves your computer.</p></div></li>
-      <li>{{ icon('calculator') }}<div><h2>Deterministic</h2><p>Same inputs, same answer, with units shown.</p></div></li>
-      <li>{{ icon('scale') }}<div><h2>Open source</h2><p>GPLv3. Read the method behind any result.</p></div></li>
-    </ul>
-  </div>
-</section>
-
 <section class="section" id="features" aria-labelledby="features-title">
-  <div class="container">
-    <div class="section-head cm-head">
-      <h2 id="features-title">{{ fn_total }} calculations in {{ domains|length }} areas</h2>
-      <p>Each one has a form with units and validation, a plot and an export. <a href="{{ url('docs/') }}">Browse the docs</a></p>
-    </div>
-    <ul class="cm-tiles">
-      {% for d in domains %}
-      <li class="cm-tile" id="domain-{{ d.key }}">
-        <span class="cm-tile__icon">{{ icon(d.icon) }}</span>
-        <span class="cm-tile__title">{{ d.title }}</span>
-        <span class="cm-tile__count">{{ d.count }}</span>
+  <div class="container cm-bento">
+    <article class="cm-bento__main">
+      <div class="cm-bento__head">
+        <h2 id="features-title"><span class="cm-bento__num">{{ fn_total }}</span> calculations in {{ domains|length }} areas</h2>
+        <p>Each one has a form with units and validation, a plot and an export. <a href="{{ url('docs/') }}">Browse the docs {{ icon('arrow-right') }}</a></p>
+      </div>
+      <ul class="cm-tiles">
+        {% for d in domains %}
+        <li class="cm-tile" id="domain-{{ d.key }}">
+          <span class="cm-tile__icon">{{ icon(d.icon) }}</span>
+          <span class="cm-tile__title">{{ d.title }}</span>
+          <span class="cm-tile__count">{{ d.count }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </article>
+    <ul class="cm-bento__side" aria-label="Principles">
+      <li class="cm-principle">
+        <span class="cm-principle__icon">{{ icon('lock') }}</span>
+        <h3>Offline</h3><p>Your project never leaves your computer.</p>
       </li>
-      {% endfor %}
+      <li class="cm-principle">
+        <span class="cm-principle__icon">{{ icon('calculator') }}</span>
+        <h3>Deterministic</h3><p>Same inputs, same answer, with units shown.</p>
+      </li>
+      <li class="cm-principle">
+        <span class="cm-principle__icon">{{ icon('scale') }}</span>
+        <h3>Open source</h3><p>GPLv3. Read the method behind any result.</p>
+      </li>
     </ul>
   </div>
 </section>

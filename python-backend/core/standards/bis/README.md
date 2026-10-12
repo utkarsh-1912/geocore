@@ -3,12 +3,12 @@
 Deterministic calculations from Indian Standards that Groundhog does not cover. They are available
 in the desktop app (sidebar → **Indian Standards (BIS)**) and to GeoAI as validated tools.
 
-```text
-core/standards/bis/*.py      calculations (SI units, clause-cited, BISInputError for out-of-scope input)
-        │
-        ├── core.registry.Registry.function_map   → desktop forms (electron-app/.../schemas/bis.js)
-        └── core/geoai/schemas/bis.py (SCHEMA_REGISTRY) → GeoAI Tool Registry (same names, strict units)
-                                    core/geoai/tool_metadata.py → provenance (method / standard / assumptions)
+```mermaid
+flowchart LR
+    CALC["core/standards/bis/*.py<br/>calculations: SI units, clause-cited,<br/>BISInputError for out-of-scope input"]
+    CALC --> REG["core.registry.Registry.function_map"] --> FORMS["Desktop forms<br/>electron-app/.../schemas/bis.js"]
+    CALC --> SCH["core/geoai/schemas/bis.py<br/>(SCHEMA_REGISTRY)"] --> TOOLS["GeoAI Tool Registry<br/>same names, strict units"]
+    META["core/geoai/tool_metadata.py<br/>method / standard / assumptions"] -. provenance .-> TOOLS
 ```
 
 ## Source verification

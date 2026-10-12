@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="/assets/css/site.css?v=93d053c934">
+  <link rel="stylesheet" href="/assets/css/site.css?v=5aec6e6cb7">
 </head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -121,6 +121,11 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
   <li>
         <a href="/docs/geocore/using/eurocode7/">
     <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/indian-standards/">
+    <span>Indian Standard (BIS) calculations</span>  </a>
 
   </li>
   <li>
@@ -828,17 +833,30 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
 </ul>
 <p>Every calculator documents its inputs with units and suggested ranges. The underlying groundhog documentation is part of these docs: see the <a href="/docs/groundhog/api/">Groundhog API Reference</a>.</p>
 <h2 id="how-geocore-is-built">How GeoCore is built</h2>
-<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────┐
-│               GeoCore desktop application                │
-├───────────────────────────┬──────────────────────────────┤
-│ Electron + React frontend │ Python calculation engine    │
-│  - calculation forms      │  - FastAPI (local only)      │
-│  - results &amp; Plotly charts│  - groundhog 0.16.0          │
-│  - soil profile manager   │  - input validation          │
-│  - GeoAI panel            │  - GeoAI agent &amp; tools       │
-└─────────────┬─────────────┴───────────────┬──────────────┘
-              └──── HTTP on 127.0.0.1:8000 ─┘
-</code></pre></div>
+<div class="diagram-arch" role="figure" aria-label="GeoCore architecture">
+  <div class="diagram-arch__title">GeoCore desktop application</div>
+  <div class="diagram-arch__cols">
+    <div class="diagram-arch__col">
+      <strong>Electron + React frontend</strong>
+      <ul>
+        <li>calculation forms</li>
+        <li>results &amp; Plotly charts</li>
+        <li>soil profile manager</li>
+        <li>GeoAI panel</li>
+      </ul>
+    </div>
+    <div class="diagram-arch__col">
+      <strong>Python calculation engine</strong>
+      <ul>
+        <li>FastAPI (local only)</li>
+        <li>groundhog 0.16.0</li>
+        <li>input validation</li>
+        <li>GeoAI agent &amp; tools</li>
+      </ul>
+    </div>
+  </div>
+  <div class="diagram-arch__link">The two talk over HTTP on 127.0.0.1:8000</div>
+</div>
 
 <ul>
 <li>The <strong>frontend</strong> is an Electron shell with a React user interface. It renders a form for each calculator, shows results and charts, and keeps a local calculation history.</li>

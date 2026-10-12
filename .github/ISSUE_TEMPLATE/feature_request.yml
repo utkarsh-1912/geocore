@@ -1,0 +1,25 @@
+name: Feature or calculation request
+description: Suggest a new calculation, method, standard or improvement.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you need to do?
+      description: The engineering task or problem, not only the feature.
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method and source
+      description: For a calculation, the method and where it is defined (standard and clause, or paper). GeoCore implements methods from citable sources only.
+  - type: textarea
+    id: verification
+    attributes:
+      label: Worked example (optional)
+      description: A published or hand-checked example with inputs and results; it becomes a benchmark case.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered (optional)

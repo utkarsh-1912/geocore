@@ -60,6 +60,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'standard',
+                options: ['BS 5930:2015', 'ASTM D-2488'],
                 label: 'Standard',
                 type: 'string',
                 default: 'BS 5930:2015',
@@ -71,6 +72,7 @@ export const siteInvestigationSchemas = {
         inputs: [
             {
                 name: 'symbol',
+                options: ['GW', 'GP', 'GM', 'GC', 'SW', 'SP', 'SM', 'SC', 'ML', 'CL', 'OL', 'MH', 'CH', 'OH'],
                 label: 'Symbol',
                 type: 'string',
                 required: true,
@@ -536,6 +538,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'stress_condition',
+                options: ['triaxial strain', 'plane strain'],
                 label: 'Stress Condition',
                 type: 'string',
                 default: 'triaxial strain',
@@ -601,6 +604,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'trend',
+                options: ['Remoulded', 'NC', 'OC'],
                 label: 'Trend',
                 type: 'string',
                 default: 'NC',
@@ -1250,6 +1254,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'sensor_location',
+                options: ['u1', 'u2'],
                 label: 'Sensor Location',
                 type: 'string',
                 default: 'u2',
@@ -1285,6 +1290,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'sandtype',
+                options: ['NC', 'Aged NC', 'OC'],
                 label: 'Sandtype',
                 type: 'string',
                 required: true,
@@ -2219,6 +2225,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'age',
+                options: ['Holocene', 'Pleistocene', 'Tertiary'],
                 label: 'Age',
                 type: 'string',
                 default: 'Holocene',
@@ -2925,6 +2932,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'option',
+                options: ['name', 'coords'],
                 label: 'Option',
                 type: 'string',
                 default: 'name',
@@ -3074,6 +3082,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'option',
+                options: ['name', 'coords'],
                 label: 'Option',
                 type: 'string',
                 default: 'name',
@@ -3481,13 +3490,15 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'country',
+                options: ['Japan', 'United States', 'Argentina', 'China', 'Other'],
                 label: 'Country',
-                type: 'float',
+                type: 'string',
                 required: true,
                 description: 'Country where SPT test is executed - Options: (\'Japan\', \'United States\', \'Argentina\', \'China\', \'Other\'). If \'Other\' is chosen, an override for \eta_H should be specified'
             },
             {
                 name: 'hammertype',
+                options: ['Donut', 'Safety'],
                 label: 'Hammertype',
                 type: 'string',
                 required: true,
@@ -3495,13 +3506,15 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'hammerrelease',
+                options: ['Free fall', 'Rope and pulley'],
                 label: 'Hammerrelease',
-                type: 'float',
+                type: 'string',
                 required: true,
                 description: 'Release mechanism for the hammer - Options: (\'Free fall\', \'Rope and pulley\')'
             },
             {
                 name: 'samplertype',
+                options: ['Standard sampler', 'With liner for dense sand and clay', 'With liner for loose sand'],
                 label: 'Samplertype',
                 type: 'string',
                 default: 'Standard sampler',
@@ -3598,6 +3611,7 @@ export const siteInvestigationSchemas = {
             },
             {
                 name: 'soiltype',
+                options: ['Silts', 'Clean sands', 'Coarse sands', 'Gravels'],
                 label: 'Soiltype',
                 type: 'string',
                 required: true,

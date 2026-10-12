@@ -119,7 +119,7 @@ export const classificationSchemas = {
     },
     uscs_categories: {
         inputs: [
-            { name: "symbol", type: "string", description: "USCS symbol (e.g. SP, CL)", required: true }
+            { name: "symbol", options: ["GW", "GP", "GM", "GC", "SW", "SP", "SM", "SC", "ML", "CL", "OL", "MH", "CH", "OH"], type: "string", description: "USCS symbol (e.g. SP, CL)", required: true }
         ]
     }
 };

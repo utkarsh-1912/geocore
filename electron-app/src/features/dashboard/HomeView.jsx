@@ -6,7 +6,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
-import { ArrowRight, Folder, Book, Search } from 'lucide-react';
+import { ArrowRight, Folder, Book, Search, FolderKanban } from 'lucide-react';
 import { getCategoryIcon } from '@/config/categoryIcons';
 import { GeoAILogo } from '@/components/common/GeoAILogo';
 import { ConfirmationModal } from '@/components/common/ConfirmationModal';
@@ -31,7 +31,7 @@ const countTools = (category) => {
 /**
  * HomeView — Enhanced landing page with quick actions, favorites, recent calculations, and module grid
  */
-export const HomeView = ({ modules, onSelectCategory, onSelectFunction, onSelectFolder, history = [], onClearRecent, onOpenRecent, onRemoveRecent, onViewHistory, onOpenCopilot, onOpenCommands, onOpenHelp }) => {
+export const HomeView = ({ modules, onSelectCategory, onSelectFunction, onSelectFolder, history = [], onClearRecent, onOpenRecent, onRemoveRecent, onViewHistory, onOpenCopilot, onOpenCommands, onOpenHelp, onOpenProject }) => {
     const [showClearConfirm, setShowClearConfirm] = useState(false);
     // Starred methods and folders alike.
     const { entries: favoriteEntries } = useFavorites();
@@ -86,6 +86,16 @@ export const HomeView = ({ modules, onSelectCategory, onSelectFunction, onSelect
                             >
                                 <Book size={14} className="text-primary" />
                                 <span>Guide</span>
+                            </button>
+                        )}
+                        {onOpenProject && (
+                            <button
+                                onClick={onOpenProject}
+                                title="Project calculations and reports"
+                                className="flex items-center gap-2 px-3.5 py-2 bg-white/5 border border-white/15 rounded-md hover:bg-white/10 hover:border-primary/50 transition-colors text-sm text-white"
+                            >
+                                <FolderKanban size={14} className="text-primary" />
+                                <span>Project</span>
                             </button>
                         )}
                         <button

@@ -46,7 +46,7 @@ export const deepFoundationsSchemas = {
             api_soildescription: {
                 type: "string",
                 title: "Soil Description",
-                enum: ["Sand", "Sand-silt"],
+                enum: ["Sand", "Sand-silt", "Silt", "Gravel"],
                 default: "Sand",
                 description: "Description of the soil type"
             },

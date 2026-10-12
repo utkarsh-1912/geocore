@@ -6,6 +6,7 @@
  * Inputs mirror core/geoai/schemas/bis.py (same names, units and options).
  */
 
+// Theory, equations and clause references are in the Guide (website/_build/bis_docs.py -> functionDocs.json).
 const BIS_NOTE = `<p><i>GeoCore implementation of the clauses cited. Results support, and do not replace, engineering judgement; check against the current edition of the code.</i></p>`;
 
 export const bisSchemas = {
@@ -29,19 +30,7 @@ export const bisSchemas = {
             { name: "factor_of_safety", type: "float", description: "Factor of safety for the net safe bearing capacity (optional)" },
             { name: "unit_weight_water", type: "float", unit: "kN/m3", default: 9.81, description: "Unit weight of water [kN/m3]" }
         ],
-        documentation: `
-            <h3>IS 6403:1981 - Bearing capacity of shallow foundations</h3>
-            <p>Net ultimate bearing capacity on the shear criterion (cl. 5.1.2):</p>
-            <p>q<sub>d</sub> = c N<sub>c</sub> s<sub>c</sub> d<sub>c</sub> i<sub>c</sub> + q (N<sub>q</sub> − 1) s<sub>q</sub> d<sub>q</sub> i<sub>q</sub> + ½ B γ N<sub>γ</sub> s<sub>γ</sub> d<sub>γ</sub> i<sub>γ</sub> W′</p>
-            <ul>
-                <li>Bearing capacity factors per Table 1; local shear uses c′ = 2c/3 and φ′ = tan⁻¹(0.67 tan φ).</li>
-                <li>Shape factors per Table 2, depth factors per cl. 5.1.2.2, inclination factors per cl. 5.1.2.3.</li>
-                <li>W′ = 0.5 with the water table at or above the base and 1 at or below Df + B, interpolated linearly between.</li>
-                <li>Eccentric loads use B′ = B − 2e<sub>B</sub> and L′ = L − 2e<sub>L</sub> (cl. 5.0.1).</li>
-            </ul>
-            <p>Allowable bearing capacity is the lesser of q<sub>d</sub>/FS and the pressure for permissible settlement (cl. 6.1, IS 1904). IS 6403 is under revision by BIS.</p>
-            ${BIS_NOTE}
-        `
+        documentation: BIS_NOTE
     },
     classify_soil_is1498: {
         inputs: [
@@ -57,15 +46,7 @@ export const bisSchemas = {
             { name: "highly_organic", type: "boolean", default: false, description: "Peat / highly organic soil (identified visually)" },
             { name: "boundary_tolerance", type: "float", unit: "%", default: 0, description: "Tolerance for lying 'on' the A-line or wL = 35/50 lines [%]" }
         ],
-        documentation: `
-            <h3>IS 1498:1970 - Indian Standard Soil Classification</h3>
-            <ul>
-                <li>Coarse-grained if more than 50 % is retained on the 75-micron sieve; gravel if more than half the coarse fraction is retained on 4.75 mm.</li>
-                <li>GW: Cu &gt; 4 and Cc 1-3; SW: Cu &gt; 6 and Cc 1-3. Less than 5 % fines is clean, more than 12 % is dirty, and 5-12 % gets a dual symbol.</li>
-                <li>Fine-grained soils: L (wL &lt; 35), I (35-50), H (&gt; 50). A-line: I<sub>p</sub> = 0.73 (wL − 20). ML-CL applies above the A-line with I<sub>p</sub> 4-7.</li>
-            </ul>
-            ${BIS_NOTE}
-        `
+        documentation: BIS_NOTE
     },
     spt_correction_is2131: {
         inputs: [
@@ -74,15 +55,7 @@ export const bisSchemas = {
             { name: "fine_sand_or_silt_below_water_table", type: "boolean", default: false, description: "Fine sand / silt below water table (dilatancy correction)" },
             { name: "energy_ratio", type: "float", unit: "%", description: "Measured hammer energy ratio (optional N60 normalisation) [%]" }
         ],
-        documentation: `
-            <h3>IS 2131:1981 - SPT corrections (cl. 3.6)</h3>
-            <ul>
-                <li>Overburden (Fig. 1): C<sub>N</sub> = 0.77 log<sub>10</sub>(20/σ′<sub>v</sub>), with σ′<sub>v</sub> in kgf/cm² and C<sub>N</sub> ≤ 2.</li>
-                <li>Dilatancy, for fine sand or silt below the water table when N′ &gt; 15: N″ = 15 + ½(N′ − 15).</li>
-                <li>If the energy ratio is given, N is first normalised to N60 = N·ER/60 (ISO 22476-3). This step is not part of IS 2131:1981; check it against IS 2131:2025.</li>
-            </ul>
-            ${BIS_NOTE}
-        `
+        documentation: BIS_NOTE
     },
     investigation_depth_is1892: {
         inputs: [
@@ -92,15 +65,7 @@ export const bisSchemas = {
             { name: "embankment_height", type: "float", unit: "m", description: "Embankment height [m]" },
             { name: "founding_depth", type: "float", unit: "m", default: 0, description: "Founding level / pile tip below ground level [m]" }
         ],
-        documentation: `
-            <h3>IS 1892:2021 - Depth of investigation (cl. 5.6.3)</h3>
-            <ul>
-                <li>Shallow foundations: 2-3 × the largest width. Rafts: 1-2 × the width (taken as at least 6 m).</li>
-                <li>Piles: at least the greater of 5 m and 5 diameters below the tip. Embankments: 1-2 × the height. Wells: 1.5-2 × the width.</li>
-                <li>Extend at least 5 m into rock if it is met earlier. The stress increase at the final depth must be below 10 % of the in-situ stress.</li>
-            </ul>
-            ${BIS_NOTE}
-        `
+        documentation: BIS_NOTE
     },
     borehole_layout_is1892: {
         inputs: [
@@ -110,7 +75,7 @@ export const bisSchemas = {
             { name: "route_length", type: "float", unit: "m", description: "Length of linear structure [m]" },
             { name: "site_area", type: "float", unit: "ha", description: "Solar plant site area [ha]" }
         ],
-        documentation: `<h3>IS 1892:2021 Table 2 - Disposition of boreholes</h3><p>Minimum boreholes by structure type: grid at ≤ 50 m spacing for large plans, at least three per building over 50 m high, 50-500 m spacing along linear works, and one per 2-5 ha (minimum five) for solar plants.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     permissible_settlement_is1904: {
         inputs: [
@@ -122,7 +87,7 @@ export const bisSchemas = {
             { name: "calculated_max_settlement", type: "float", unit: "mm", description: "Calculated maximum settlement to check [mm]" },
             { name: "calculated_differential_settlement", type: "float", unit: "mm", description: "Calculated differential settlement to check [mm]" }
         ],
-        documentation: `<h3>IS 1904:2021 Table 1 - Permissible settlements</h3><p>Maximum settlement, differential settlement (× L) and angular distortion for isolated and raft foundations. Per the code note, these values are a guide; the designer decides the limits. In the 2021 revision, the maximum for rafts under RC structures on plastic clay is 125 mm.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     stability_check_is1904: {
         inputs: [
@@ -131,7 +96,7 @@ export const bisSchemas = {
             { name: "disturbing", type: "float", description: "Disturbing force / moment (same units)", required: true },
             { name: "wind_or_seismic", type: "boolean", default: false, description: "Wind or seismic forces included" }
         ],
-        documentation: `<h3>IS 1904:2021 cl. 17.1 - Sliding and overturning</h3><p>Minimum factor of safety: 1.5 with wind or seismic loads. Without them, 1.75 for sliding and 2.0 for overturning.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     raft_rigidity_is2950: {
         inputs: [
@@ -146,7 +111,7 @@ export const bisSchemas = {
             { name: "moment_of_inertia", type: "float", unit: "m4", description: "Moment of inertia I (default B·d³/12) [m4]" },
             { name: "column_spacing", type: "float", unit: "m", description: "Column spacing [m]" }
         ],
-        documentation: `<h3>IS 2950 (Part 1):1981 Appendix C - Rigid or flexible raft</h3><p>K = E/(12E<sub>s</sub>)·(d/b)³, and K &gt; 0.5 means rigid. With λ = (kB/4E<sub>c</sub>I)<sup>¼</sup>, the rigid (conventional) method may also be used when the column spacing is less than 1.75/λ.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     specific_gravity_is2720: {
         inputs: [
@@ -156,7 +121,7 @@ export const bisSchemas = {
             { name: "mass_bottle_water", type: "float", unit: "g", description: "m4, bottle + water [g]", required: true },
             { name: "temperature", type: "float", unit: "degC", default: 27, description: "Test temperature [°C]" }
         ],
-        documentation: `<h3>IS 2720 (Part 3/Sec 1) - Specific gravity</h3><p>G = (m2 − m1)/((m4 − m1) − (m3 − m2)), corrected to 27 °C by the ratio of water densities.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     flow_index_is2720: {
         inputs: [
@@ -165,7 +130,7 @@ export const bisSchemas = {
             { name: "water_content_2", type: "float", unit: "%", description: "w2 [%]", required: true },
             { name: "blows_2", type: "float", description: "N2 drops", required: true }
         ],
-        documentation: `<h3>IS 2720 (Part 5) - Flow index</h3><p>I<sub>f</sub> = (w1 − w2)/log<sub>10</sub>(N2/N1).</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     liquid_limit_one_point_is2720: {
         inputs: [
@@ -174,7 +139,7 @@ export const bisSchemas = {
             { name: "blows", type: "float", description: "Casagrande drops (15-35)" },
             { name: "cone_penetration", type: "float", unit: "mm", description: "Cone penetration (16-26 mm)" }
         ],
-        documentation: `<h3>IS 2720 (Part 5) - One-point liquid limit</h3><p>Casagrande: w<sub>L</sub> = w<sub>N</sub>/(1.3215 − 0.23 log N). Cone: w<sub>N</sub>/(0.77 log D) or w<sub>N</sub>/(0.65 + 0.0175 D).</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     consistency_indices_is2720: {
         inputs: [
@@ -183,7 +148,7 @@ export const bisSchemas = {
             { name: "natural_water_content", type: "float", unit: "%", description: "Natural water content [%]" },
             { name: "flow_index", type: "float", unit: "%", description: "Flow index If [%]" }
         ],
-        documentation: `<h3>IS 2720 (Part 5) - Consistency indices</h3><p>I<sub>p</sub> = w<sub>L</sub> − w<sub>P</sub>; I<sub>L</sub> = (w − w<sub>P</sub>)/I<sub>p</sub>; I<sub>c</sub> = (w<sub>L</sub> − w)/I<sub>p</sub>; I<sub>t</sub> = I<sub>p</sub>/I<sub>f</sub>.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     permeability_constant_head_is2720: {
         inputs: [
@@ -194,7 +159,7 @@ export const bisSchemas = {
             { name: "time", type: "float", unit: "s", description: "Time t [s]", required: true },
             { name: "temperature", type: "float", unit: "degC", default: 27, description: "Water temperature [°C]" }
         ],
-        documentation: `<h3>IS 2720 (Part 17) - Constant head permeability</h3><p>k<sub>T</sub> = QL/(Aht), and k<sub>27</sub> = k<sub>T</sub>·η<sub>T</sub>/η<sub>27</sub>.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     },
     permeability_falling_head_is2720: {
         inputs: [
@@ -206,6 +171,6 @@ export const bisSchemas = {
             { name: "time", type: "float", unit: "s", description: "Elapsed time [s]", required: true },
             { name: "temperature", type: "float", unit: "degC", default: 27, description: "Water temperature [°C]" }
         ],
-        documentation: `<h3>IS 2720 (Part 17) - Falling head permeability</h3><p>k<sub>T</sub> = 2.303·aL/(At)·log<sub>10</sub>(h1/h2), and k<sub>27</sub> = k<sub>T</sub>·η<sub>T</sub>/η<sub>27</sub>.</p>${BIS_NOTE}`
+        documentation: BIS_NOTE
     }
 };

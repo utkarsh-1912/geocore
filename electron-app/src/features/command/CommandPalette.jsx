@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Folder, Layers, Calculator, Moon, History, HelpCircle, Clock, CornerDownLeft } from 'lucide-react';
+import { Search, Folder, Layers, Calculator, Moon, History, HelpCircle, Clock, CornerDownLeft, FolderKanban } from 'lucide-react';
 import { GeoAILogo } from '@/components/common/GeoAILogo';
 import { KBD } from '@/components/ui/KBD';
 import { GEOTECHNICAL_MODULES } from '@/config/geotechnicalModules';
@@ -214,6 +214,7 @@ export const CommandPalette = ({ modules = GEOTECHNICAL_MODULES, isOpen, onClose
 
         items.push(makeItem({ type: 'Action', id: 'toggle_theme', title: 'Toggle dark / light mode', icon: Moon, action: 'toggleTheme' }));
         items.push(makeItem({ type: 'Action', id: 'open_history', title: 'Open calculation history', icon: History, shortcut: 'Ctrl+H', action: 'openHistory' }));
+        items.push(makeItem({ type: 'Action', id: 'open_project', title: 'Open project calculations and reports', icon: FolderKanban, action: 'openProject' }));
         items.push(makeItem({ type: 'Action', id: 'open_copilot', title: 'Open GeoAI assistant', icon: GeoAILogo, shortcut: 'Ctrl+Shift+A', action: 'openCopilot' }));
         items.push(makeItem({ type: 'Action', id: 'open_help', title: 'Help & keyboard shortcuts', icon: HelpCircle, action: 'openHelp' }));
 

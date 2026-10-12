@@ -1,15 +1,54 @@
-# GeoCore
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="electron-app/public/logo.png">
+    <img src="electron-app/public/logo-2.png" alt="GeoCore" width="360">
+  </picture>
+</p>
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
-[![CI](https://github.com/utkarsh-1912/geocore/actions/workflows/ci.yml/badge.svg)](https://github.com/utkarsh-1912/geocore/actions/workflows/ci.yml)
-[![Build & Release](https://github.com/utkarsh-1912/geocore/actions/workflows/release.yml/badge.svg)](https://github.com/utkarsh-1912/geocore/actions/workflows/release.yml)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-green)](https://www.python.org/)
+<p align="center">
+  <strong>Offline geotechnical calculations you can check.</strong><br>
+  An open-source desktop workstation built on <a href="https://github.com/snakesonabrain/groundhog">groundhog</a>, with GeoAI, a local assistant that never does the arithmetic itself.
+</p>
 
-**GeoCore** is an open-source desktop application for geotechnical engineering: foundation design, CPT/SPT interpretation, AGS data, soil dynamics, Eurocode 7 checks and PDF reporting. Calculations are powered by the [Groundhog](https://github.com/snakesonabrain/groundhog) library.
+<p align="center">
+  <a href="LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a>
+  <a href="https://github.com/utkarsh-1912/geocore/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/utkarsh-1912/geocore?sort=semver"></a>
+  <a href="https://github.com/utkarsh-1912/geocore/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/utkarsh-1912/geocore/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/utkarsh-1912/geocore/actions/workflows/release.yml"><img alt="Build & Release" src="https://github.com/utkarsh-1912/geocore/actions/workflows/release.yml/badge.svg"></a>
+  <img alt="Platforms" src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey">
+  <img alt="Python 3.10+" src="https://img.shields.io/badge/Python-3.10%2B-green">
+</p>
 
-GeoCore ships with **GeoAI**, a local engineering assistant. A small language model running on your machine interprets your question, picks the right GeoCore tool, and explains the result. The numbers always come from Groundhog, not from the model.
+<p align="center">
+  <a href="https://github.com/utkarsh-1912/geocore/releases/latest">Download</a> ·
+  <a href="website/_content/geocore/changelog.md">Changelog</a> ·
+  <a href="CONTRIBUTING.md">Contributing</a> ·
+  <a href="SECURITY.md">Security</a> ·
+  <a href="CODE_OF_CONDUCT.md">Code of conduct</a>
+</p>
 
 ---
+
+## Contents
+
+- [Why GeoCore](#why-geocore)
+- [Download](#download)
+- [Features](#features)
+- [GeoAI](#geoai)
+- [Architecture](#architecture)
+- [Development](#development)
+- [Building installers](#building-installers)
+- [Contributing](#contributing)
+- [Citing GeoCore](#citing-geocore)
+- [License and credits](#license-and-credits)
+- [Disclaimer](#disclaimer)
+
+## Why GeoCore
+
+- **Offline.** Your project data, calculations and the GeoAI model stay on your computer. Nothing is uploaded.
+- **Deterministic.** Every number comes from groundhog or GeoCore's own clause-cited code: the same inputs give the same answer, with units shown.
+- **Checkable.** Each calculator has a Guide & Theory page with the method, equations, parameters and references, and every result can be traced to its inputs.
+- **Open source.** GPLv3. Read the method behind any result, or change it.
 
 ## Download
 
@@ -21,85 +60,78 @@ Installers are published on the [Releases page](https://github.com/utkarsh-1912/
 | macOS | `.dmg` and `.zip` (auto-update needs a code-signed build) | Apple Silicon (arm64) and Intel (x64) |
 | Linux | `.AppImage` (auto-updates) and `.deb` | x64 |
 
----
+What changed in each release is in the [changelog](website/_content/geocore/changelog.md).
 
 ## Features
 
-**Deep foundations**
-- CPT-based axial pile capacity: LCPC (Bustamante & Gianeselli), Koppejan, De Beer
-- Axial capacity profiles (compression and tension)
-- Negative skin friction (Zeevaert–De Beer), single piles and groups
-- Unit shaft friction and end bearing (API RP 2GEO, Alm & Hamre)
-- Pile load–settlement curves and Chin–Kondner extrapolation of load tests
+221 calculators in 10 engineering areas, organised by task (with a classic groundhog-library view), each with a validated form, units, plots and export.
 
-**Shallow foundations and settlement**
-- Bearing capacity (Eurocode 7, Vesic, API RP 2GEO)
-- Elastic and Schmertmann CPT-based settlement
-- Stress distribution (Boussinesq, Westergaard, strip and circular loads)
-
-**Site investigation**
+**Site investigation and ground characterisation**
 - PCPT processing and correlations (Ic, Qtn, Fr, su, φ′, Dr, Gmax, Vs, …)
 - SPT corrections and correlations (N60, (N1)60, relative density, …)
-- Soil classification and phase relations
+- Soil classification, phase relations and a phase-relations solver
 - AGS 3.1 / 4 import and conversion
+
+**Foundations and settlement**
+- CPT-based axial pile capacity: LCPC (Bustamante & Gianeselli), Koppejan, De Beer
+- Axial capacity profiles, negative skin friction (Zeevaert–De Beer), pile load–settlement curves and load-test extrapolation
+- Shallow foundation bearing capacity (Eurocode 7, Vesic, API RP 2GEO), elastic and Schmertmann settlement
+- Stress distribution (Boussinesq, Westergaard, strip and circular loads)
 
 **Soil dynamics and liquefaction**
 - CPT-based liquefaction triggering (Boulanger & Idriss, Robertson & Wride, Robertson & Cabal)
-- Cyclic accumulation (Andersen DSS/triaxial contour diagrams)
-- Gmax and modulus-reduction curves (Darendeli, Ishibashi & Zhang)
+- Cyclic accumulation (Andersen contour diagrams), Gmax and modulus-reduction curves
 
-**Eurocode 7**
-- Characteristic value selection (5 % / 95 % fractiles, linear trends)
-- Partial factors for DA1-1, DA1-2, DA2 and DA3
+**Standards**
+- Eurocode 7: partial factors for DA1-1, DA1-2, DA2 and DA3, and characteristic value selection
+- Indian Standards (BIS), implemented in GeoCore with clause references:
+  - IS 6403 bearing capacity;
+  - IS 1904 settlement limits and stability;
+  - IS 2950 raft rigidity;
+  - IS 1892 investigation depth and borehole layout;
+  - IS 2131 SPT corrections;
+  - IS 1498 soil classification;
+  - IS 2720 laboratory tests.
 
-**Output**
-- Interactive Plotly charts
-- One-click PDF reports with inputs, charts and custom header
-- CSV and JSON export
-
----
+**Project workflow**
+- Compare the methods of a calculation side by side, with a suggested method for the data you have
+- A project ground model: values from soil profiles, CPT and AGS data are offered as inputs, with their source
+- Saved runs that flag when their inputs change, HTML/PDF reports and reviewer sign-off
+- Interactive Plotly charts, CSV and JSON export, calculation history and a command palette
 
 ## GeoAI
 
-GeoAI is fully local. There is no cloud LLM and no separate model server — the model is loaded in-process through `llama-cpp-python` from a GGUF file on disk.
+GeoAI is fully local. There is no cloud LLM and no separate model server: the model is loaded in-process through `llama-cpp-python` from a GGUF file on disk.
 
-```text
-User question
-     │
-     ▼
-Local SLM (GGUF via llama.cpp)   ← understands intent, picks a tool, extracts arguments
-     │
-     ▼
-Tool selector                    ← retrieves a small, relevant subset of tools for the prompt
-     │
-     ▼
-GeoAI Tool Registry              ← explicit schemas, unit-aware input validation
-     │
-     ▼
-Groundhog / GeoCore calculation  ← deterministic result with provenance
-     │
-     ▼
-Response guard + explanation     ← grounded answer that cites the tool, inputs and units
+```mermaid
+flowchart TD
+    Q["User question"] --> SLM["Local SLM (GGUF via llama.cpp)<br/><i>understands intent, picks a tool, extracts arguments</i>"]
+    SLM --> SEL["Tool selector<br/><i>retrieves a small, relevant subset of tools for the prompt</i>"]
+    SEL --> REG["GeoAI Tool Registry<br/><i>explicit schemas, unit-aware input validation</i>"]
+    REG --> CALC["Groundhog / GeoCore calculation<br/><i>deterministic result with provenance</i>"]
+    CALC --> GUARD["Response guard + explanation<br/><i>grounded answer that cites the tool, inputs and units</i>"]
 ```
 
-Design rules (see [AGENTS.md](AGENTS.md) for the full list):
+Design rules (the full list is in [AGENTS.md](AGENTS.md)):
 
-- **The model reasons; Groundhog calculates.** The model never does the engineering arithmetic itself.
+- **The model reasons; groundhog calculates.** The model never does the engineering arithmetic itself.
 - **Whitelisted tools only.** The model cannot run arbitrary Python, shell, SQL or file operations.
-- **No invented inputs.** Missing or invalid parameters come back as tool errors and GeoAI asks the user.
+- **No invented inputs.** Missing or invalid parameters come back as tool errors, and GeoAI asks the user.
+- **Grounded explanations.** *Explain* writes a worked solution from the calculation's documented method and actual inputs. GeoCore warns when a number or equation in it does not come from the calculation.
 - **Compact context.** CPT, SPT and AGS data are parsed deterministically and exposed through query tools rather than pasted into the prompt.
 - **Replaceable model.** Providers implement a common `ModelProvider` interface (`llama_cpp` for production, `heuristic` as a fallback and for tests).
 
-### Models
+### Models and configuration
 
-Choose or download a GGUF model from the GeoAI settings panel in the app. Models and configuration are stored in:
+Choose or download a GGUF model from the GeoAI settings panel. Models and configuration are stored in:
 
 | OS | Location |
 | :--- | :--- |
 | Windows | `%APPDATA%\GeoCore\` (models in `models\`) |
 | macOS / Linux | `~/.geocore/` (models in `models/`) |
 
-Useful environment variables for development:
+<details>
+<summary>Environment variables for development</summary>
 
 | Variable | Purpose |
 | :--- | :--- |
@@ -112,12 +144,14 @@ Useful environment variables for development:
 | `GEOAI_CHAT_FORMAT` | `chatml-function-calling`, `native` or `prompted` |
 | `GEOAI_LORA_PATH`, `GEOAI_LORA_SCALE` | Optional LoRA adapter |
 | `GEOAI_THINKING` | Enable the model's thinking mode (off by default) |
+| `GEOCORE_CONFIG_DIR` | Use another config directory (tests use this) |
+| `GEOCORE_PROJECT_DB` | Use another project database file |
 
-### Reliability
+</details>
 
-The chat shows what it is doing (*Checking for tools*, *Interpreting input*, *Calling tool*, *Generating output*). A turn that produces no answer says so instead of staying blank, and the model is loaded in the background when the chat opens. Each turn's outcome is logged locally to `geoai_turns.jsonl` in the config directory (no prompt text) so failures can be counted by cause; see [the GeoAI README](python-backend/core/geoai/README.md#reliability-and-diagnostics).
+### Reliability and evaluation
 
-### Evaluation
+The chat shows what it is doing (*Checking for tools*, *Interpreting input*, *Calling tool*, *Generating output*). A turn that produces no answer says so instead of staying blank. Each turn's outcome is logged locally to `geoai_turns.jsonl` in the config directory, without prompt text, so failures can be counted by cause; see [the GeoAI README](python-backend/core/geoai/README.md#reliability-and-diagnostics).
 
 GeoAI has an offline evaluation suite for tool selection, argument extraction, clarification and grounding:
 
@@ -129,40 +163,41 @@ python -m core.geoai.eval.runner --provider llama_cpp --model path/to/model.gguf
 
 Fine-tuning scripts (LoRA/QLoRA) live in [`python-backend/core/geoai/finetune`](python-backend/core/geoai/finetune/README.md).
 
----
-
 ## Architecture
 
-```text
-┌──────────────────────────────┬──────────────────────────────┐
-│   Electron desktop shell     │   Python backend             │
-│   React 19 + Vite            │   FastAPI + Uvicorn          │
-│   Tailwind CSS, Plotly       │   Groundhog, NumPy, SciPy    │
-│                              │   GeoAI (llama-cpp-python)   │
-└──────────────┬───────────────┴──────────────┬───────────────┘
-               └──────── HTTP 127.0.0.1:8000 ─┘
+```mermaid
+flowchart LR
+    subgraph FE["Electron desktop shell"]
+        direction TB
+        F1["React 19 + Vite"]
+        F2["Tailwind CSS, Plotly"]
+    end
+    subgraph BE["Python backend"]
+        direction TB
+        B1["FastAPI + Uvicorn"]
+        B2["groundhog, NumPy, SciPy"]
+        B3["GeoAI (llama-cpp-python)"]
+    end
+    FE <-- "HTTP 127.0.0.1:8000" --> BE
 ```
 
 | Path | Contents |
 | :--- | :--- |
 | [`electron-app/`](electron-app/README.md) | Electron main process and React UI |
-| [`python-backend/`](python-backend/README.md) | FastAPI entry point, calculation registry, wrappers and API routes |
+| [`python-backend/`](python-backend/README.md) | FastAPI entry point, calculation registry, catalogue, project model, standards and API routes |
 | [`python-backend/core/geoai/`](python-backend/core/geoai/README.md) | Agent, model providers, tool registry, CPT/SPT/AGS tools, research, evaluation |
-| `python-backend/tests/` | Backend test suite |
+| [`python-backend/core/standards/bis/`](python-backend/core/standards/bis/README.md) | Indian Standard calculations and their source verification |
 | [`website/`](website/README.md) | Product website and user documentation |
 | [`AGENTS.md`](AGENTS.md) | GeoAI design rules and milestones |
-| [`RELEASE_GUIDE.md`](RELEASE_GUIDE.md) | Building and publishing releases |
-
----
+| [`RELEASE_GUIDE.md`](RELEASE_GUIDE.md) | Building and publishing releases, and writing the changelog |
 
 ## Development
 
-### Prerequisites
+**Prerequisites:**
+- Node.js 22 (CI's version; Vite 7 needs at least 20.19) and npm.
+- Python 3.10+. CI runs on 3.10, so avoid syntax that needs a newer version.
 
-- Node.js 22 (CI's version; Vite 7 needs at least 20.19) and npm
-- Python 3.10+ (CI runs on 3.10, so avoid syntax that needs a newer version)
-
-### Backend
+**Backend**
 
 ```bash
 cd python-backend
@@ -170,24 +205,18 @@ python -m venv venv
 venv\Scripts\activate          # Windows
 source venv/bin/activate       # macOS / Linux
 pip install -r requirements.txt
-python main.py
+python main.py                 # API on http://127.0.0.1:8000
 ```
 
-The API starts on `http://127.0.0.1:8000`.
-
-### Frontend
-
-In a second terminal:
+**Frontend** (second terminal)
 
 ```bash
 cd electron-app
 npm install
-npm start
+npm start                      # Vite dev server, then Electron
 ```
 
-This runs the Vite dev server and opens Electron once it is ready.
-
-### Tests
+**Tests**
 
 ```bash
 cd python-backend
@@ -195,11 +224,9 @@ pip install pytest httpx
 python -m pytest tests/
 ```
 
----
+The suite needs no model and no network: GeoAI tests use scripted providers, and numerical tests compare against deterministic expected values.
 
 ## Building installers
-
-Freeze the backend with PyInstaller, then package the desktop app:
 
 ```bash
 cd python-backend
@@ -214,14 +241,24 @@ npm run dist:mac    # macOS .dmg and .zip
 npm run dist:linux  # Linux .AppImage and .deb (build on Linux)
 ```
 
-Tagged pushes (`v*`) build and publish installers automatically through GitHub Actions. See [RELEASE_GUIDE.md](RELEASE_GUIDE.md) for the full release process.
+Tagged pushes (`v*`) build and publish installers through GitHub Actions. The release notes come from the changelog. See [RELEASE_GUIDE.md](RELEASE_GUIDE.md).
 
----
+## Contributing
+
+Contributions are welcome: bug reports, documentation, verified benchmark cases and new calculations. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request, and follow the [code of conduct](CODE_OF_CONDUCT.md). To report a security issue, see [SECURITY.md](SECURITY.md).
+
+## Citing GeoCore
+
+If GeoCore supports published work, please cite it; [CITATION.cff](CITATION.cff) has the details, and GitHub shows a "Cite this repository" button. Please also cite [groundhog](https://github.com/snakesonabrain/groundhog), which performs most of the calculations.
+
+## License and credits
+
+Copyright © Utkarsh Gupta. GeoCore is free software, released under the [GNU General Public License v3.0](LICENSE).
+
+- Engineering calculations are performed by [groundhog](https://github.com/snakesonabrain/groundhog) by Bruno Stuyts, licensed under the GNU GPL v3 or later. The groundhog documentation adapted for GeoCore's guides keeps its attribution.
+- Local inference uses [llama.cpp](https://github.com/ggml-org/llama.cpp) through [llama-cpp-python](https://github.com/abetlen/llama-cpp-python). GeoAI models are optional downloads under their own licences, shown in the model manager.
+- Indian Standard texts are copyrighted by the Bureau of Indian Standards and are not included. GeoCore implements the cited clauses only.
 
 ## Disclaimer
 
-GeoCore and GeoAI are engineering aids. Results depend on the input parameters and the chosen method, and must be reviewed by a qualified geotechnical engineer before being used in design.
-
-## License
-
-Copyright © Utkarsh Gupta. Released under the [GNU General Public License v3.0](LICENSE).
+GeoCore and GeoAI are engineering aids. Results depend on the input parameters and the chosen method, and must be reviewed by a qualified geotechnical engineer before being used in design. The software is provided without warranty; see the [licence](LICENSE).

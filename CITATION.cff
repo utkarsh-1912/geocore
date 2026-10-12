@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use GeoCore in your work, please cite it as below, and also cite groundhog, which performs most of the calculations."
+title: "GeoCore: an offline geotechnical engineering workstation"
+type: software
+authors:
+  - family-names: Gupta
+    given-names: Utkarsh
+version: 1.0.0
+date-released: 2026-10-04
+license: GPL-3.0-only
+repository-code: "https://github.com/utkarsh-1912/geocore"
+keywords:
+  - geotechnical engineering
+  - CPT
+  - foundations
+  - desktop application
+  - local language model
+references:
+  - type: software
+    title: groundhog
+    authors:
+      - family-names: Stuyts
+        given-names: Bruno
+    repository-code: "https://github.com/snakesonabrain/groundhog"
+    license: GPL-3.0-or-later

@@ -589,6 +589,74 @@ a.card:hover { border-color: var(--c-border-strong); }
 .callout--primary { border-left-color: var(--c-primary); }
 .callout--primary > .icon { color: var(--c-primary); }
 
+/* Diagrams drawn in HTML (no script): a vertical flow and a two-column architecture box */
+.diagram-flow {
+  list-style: none;
+  margin: 0 0 var(--sp-6);
+  padding: 0;
+  max-width: 34rem;
+}
+.prose .diagram-flow { padding-left: 0; }
+.prose .diagram-flow li { margin-bottom: var(--sp-6); } /* beats .prose li, leaves room for the arrow */
+.prose .diagram-flow li:last-child { margin-bottom: 0; }
+.diagram-flow li {
+  position: relative;
+  margin: 0 0 var(--sp-6);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-primary);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+}
+.diagram-flow li:last-child { margin-bottom: 0; }
+.diagram-flow li:not(:last-child)::after {
+  content: "↓"; /* down arrow in the gap to the next step */
+  position: absolute;
+  left: 1.25rem;
+  top: 100%;
+  height: var(--sp-6);
+  display: flex;
+  align-items: center;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  color: var(--c-primary);
+}
+.diagram-flow strong { display: block; color: var(--c-text); }
+.diagram-flow span { display: block; font-size: var(--fs-sm); color: var(--c-text-muted); }
+
+.diagram-arch {
+  margin: 0 0 var(--sp-6);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  overflow: hidden;
+}
+.diagram-arch__title {
+  padding: var(--sp-2) var(--sp-4);
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  background: var(--c-primary-soft);
+  border-bottom: 1px solid var(--c-border);
+}
+.diagram-arch__cols { display: grid; grid-template-columns: 1fr 1fr; }
+.diagram-arch__col { padding: var(--sp-3) var(--sp-4); }
+.diagram-arch__col + .diagram-arch__col { border-left: 1px solid var(--c-border); }
+.diagram-arch__col strong { display: block; margin-bottom: var(--sp-2); }
+.prose .diagram-arch__col ul { margin: 0; padding-left: 1.1rem; font-size: var(--fs-sm); }
+.prose .diagram-arch__col li { margin-bottom: var(--sp-1); }
+.diagram-arch__link {
+  padding: var(--sp-2) var(--sp-4);
+  font-size: var(--fs-sm);
+  text-align: center;
+  color: var(--c-text-muted);
+  border-top: 1px dashed var(--c-border-strong);
+}
+@media (max-width: 40rem) {
+  .diagram-arch__cols { grid-template-columns: 1fr; }
+  .diagram-arch__col + .diagram-arch__col { border-left: 0; border-top: 1px solid var(--c-border); }
+}
+
 /* Tables */
 .table-wrap {
   width: 100%;
@@ -2159,13 +2227,46 @@ main > .section:last-child { padding-bottom: var(--sp-12); }
 .hero { padding-bottom: var(--sp-12); }
 .hero .figure-panel { max-width: 40rem; }
 
-.cm-principles { padding-block: var(--sp-8); }
-.cm-principles__list { display: grid; gap: var(--sp-6); margin: 0; padding: 0; list-style: none; }
-@media (min-width: 48rem) { .cm-principles__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-10); } }
-.cm-principles__list li { display: flex; align-items: flex-start; gap: var(--sp-4); }
-.cm-principles__list .icon { flex: none; width: 1.5rem; height: 1.5rem; margin-top: 0.2rem; color: var(--c-primary); }
-.cm-principles__list h2 { margin: 0 0 var(--sp-1); font-size: var(--fs-md); }
-.cm-principles__list p { margin: 0; color: var(--c-text-muted); font-size: var(--fs-sm); }
+/* Landing: calculations card + the three principles as one bento grid */
+.cm-bento { display: grid; gap: var(--sp-4); }
+@media (min-width: 64rem) { .cm-bento { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } }
+.cm-bento__main {
+  padding: var(--sp-6); border: 1px solid var(--c-border); border-radius: var(--r-lg);
+  background: var(--c-surface); box-shadow: var(--shadow-sm);
+}
+@media (min-width: 48rem) { .cm-bento__main { padding: var(--sp-8); } }
+.cm-bento__head { margin-bottom: var(--sp-6); }
+.cm-bento__head h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-3); margin: 0 0 var(--sp-2); font-size: var(--fs-2xl); }
+.cm-bento__num { color: var(--c-primary); font-size: calc(var(--fs-2xl) * 1.6); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.cm-bento__head p { margin: 0; color: var(--c-text-muted); }
+.cm-bento__head a { display: inline-flex; align-items: center; gap: var(--sp-1); font-weight: var(--fw-semibold); text-decoration: none; }
+.cm-bento__head a:hover { text-decoration: underline; }
+.cm-bento__head a .icon { width: 1em; height: 1em; }
+.cm-bento__main .cm-tiles { grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); }
+.cm-bento__main .cm-tile { background: var(--c-bg, var(--c-surface)); }
+
+.cm-bento__side { display: grid; gap: var(--sp-4); margin: 0; padding: 0; list-style: none; }
+/* Below the two-column layout the principles lead, as a strip of three (tablet) or compact rows (phone). */
+@media (max-width: 63.99rem) { .cm-bento__side { order: -1; } }
+@media (min-width: 40rem) and (max-width: 63.99rem) { .cm-bento__side { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cm-principle {
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: var(--sp-2);
+  padding: var(--sp-5) var(--sp-6); border: 1px solid var(--c-border); border-radius: var(--r-lg);
+  background: var(--c-surface); box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.cm-principle:hover { border-color: var(--c-primary); box-shadow: var(--shadow-md); }
+.cm-principle__icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: var(--r-md); background: var(--c-primary-soft); color: var(--c-primary); }
+.cm-principle__icon .icon { width: 1.25rem; height: 1.25rem; }
+.cm-principle h3 { margin: var(--sp-1) 0 0; font-size: var(--fs-md); }
+.cm-principle p { margin: 0; color: var(--c-text-muted); font-size: var(--fs-sm); }
+@media (prefers-reduced-motion: reduce) { .cm-principle { transition: none; } }
+@media (max-width: 39.99rem) {
+  .cm-bento__side { gap: var(--sp-3); }
+  .cm-principle { display: grid; grid-template-columns: auto 1fr; column-gap: var(--sp-4); row-gap: 0; padding: var(--sp-4); }
+  .cm-principle__icon { grid-row: span 2; align-self: center; }
+  .cm-principle h3 { margin: 0; }
+}
 
 .section-head.cm-head { max-width: none; margin-bottom: var(--sp-8); }
 .cm-head h2 { margin: 0 0 var(--sp-2); font-size: var(--fs-2xl); }

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/utkarsh-1912/geocore/security/advisories/new
+    about: Report security problems privately, not as a public issue.
+  - name: groundhog library issues
+    url: https://github.com/snakesonabrain/groundhog/issues
+    about: Problems in a groundhog function itself (also reproducible outside GeoCore) belong upstream.

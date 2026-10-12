@@ -7,7 +7,8 @@ Offline "Guide & Theory" content for the GeoCore desktop app.
 Writes electron-app/src/features/calculations/guide/functionDocs.json: one entry per calculator in
 electron-app/src/config/geotechnicalModules.js, keyed by the calculator id, with the theory, formulas,
 parameter metadata, outputs and references taken from the groundhog docstrings that GeoCore ships
-(website/_content/groundhog/api.json).
+(website/_content/groundhog/api.json). GeoCore's Indian Standard calculators, which groundhog does not
+cover, take their content from bis_docs.py (marked "origin": "geocore").
 
 Reuses the docs pipeline rather than duplicating it:
   - calculator id -> groundhog target: extract_docs.load_geocore_ui() (same mapping as the website),
@@ -34,6 +35,7 @@ OUT_PATH = REPO / "electron-app" / "src" / "features" / "calculations" / "guide"
 
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(CONTENT_DIR))
+import bis_docs  # noqa: E402
 import docs_content  # noqa: E402
 import extract_docs  # noqa: E402  (pure helpers only; importing does not run the extractor)
 
@@ -159,6 +161,10 @@ def build_app_docs() -> Path:
             "docs_slug": extract_docs.module_slug(item["module"]),
             "source_url": f"{extract_docs.GH_REPO_URL}/blob/{source_ref}/{mod['source_path']}#L{item.get('line') or 1}",
         }
+    # GeoCore's own Indian Standard (BIS) calculators have no groundhog docstrings; their docs come from bis_docs.
+    bis = bis_docs.build_bis_entries(md, _html, ui["entries"])
+    functions.update(bis)
+    missing = [fid for fid in missing if fid not in bis]
     data = {
         "groundhog_version": version,
         "license": api["license"],

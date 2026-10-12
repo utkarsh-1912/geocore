@@ -14,7 +14,15 @@ export const generalSchemas = {
             { name: "data_kind", label: "File contains", type: "select", options: DATA_KIND_OPTIONS, default: "soil_profile", description: "CPT sounding or layered soil profile (suggested from the file's columns). GeoAI reads CPT soundings with its CPT tools and layered profiles as the project stratigraphy.", required: true },
             { name: "depth_from_col", type: "column_select", default: "Depth from [m]", description: "Column name for top depth", required: true },
             { name: "depth_to_col", type: "column_select", default: "Depth to [m]", description: "Column name for bottom depth", required: true },
-            { name: "nan_strategy", type: "string", default: "fill", description: "Strategy for NaN values" }
+            {
+                name: "nan_strategy", label: "Missing values", type: "select",
+                options: [
+                    { value: "fill", label: "Fill missing numbers with 0" },
+                    { value: "keep", label: "Keep missing values blank (NaN)" },
+                ],
+                default: "fill",
+                description: "How empty numeric cells are stored. Filling with 0 treats a missing measurement as zero; keep them blank if 0 is not a meaningful value for a column."
+            }
         ]
     },
     CalculationGrid: {

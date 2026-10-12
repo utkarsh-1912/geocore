@@ -116,6 +116,7 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
 
     const entry = docs?.functions?.[functionId] || null;
     const paramDocs = entry?.params || {};
+    const isGeoCore = entry?.origin === 'geocore';
     const hasNotes = Boolean(pageDocs && pageDocs.trim());
 
     return (
@@ -133,7 +134,7 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         {entry && (
-                            <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-background border border-border text-primary font-medium" title="groundhog implementation">
+                            <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-background border border-border text-primary font-medium" title={isGeoCore ? 'GeoCore implementation' : 'groundhog implementation'}>
                                 {entry.module}.{entry.qualname}
                             </span>
                         )}
@@ -275,12 +276,18 @@ export const UserGuideTemplate = ({ functionId, functionName, pageDocs, schema, 
                     <span>Applicability & Engineering Judgement</span>
                 </div>
                 <p className="text-text-muted leading-relaxed">
-                    Results are computed by the groundhog library using the method described above. Check that the
+                    Results are computed by {isGeoCore ? "GeoCore's implementation of the cited clauses" : 'the groundhog library'} using the method described above. Check that the
                     method applies to your soil conditions, that inputs are in the stated units and within the
                     suggested ranges, and review results with engineering judgement before using them in design.
                 </p>
                 {/* Credit for the adapted groundhog docstrings (GPL): author, version and licence, source as a link. */}
-                {entry && docs?.attribution && (
+                {isGeoCore && (
+                    <p className="text-[10px] text-text-muted/80 pt-1 border-t border-primary/10">
+                        GeoCore implementation of the Indian Standard clauses cited (GPL v3); the code texts are not bundled
+                        {entry.source_url && <> · <a href={entry.source_url} target="_blank" rel="noreferrer" className="underline hover:text-primary">source</a></>}
+                    </p>
+                )}
+                {entry && !isGeoCore && docs?.attribution && (
                     <p className="text-[10px] text-text-muted/80 pt-1 border-t border-primary/10" title={docs.attribution}>
                         Adapted from groundhog {docs.groundhog_version} by {docs.author} ({docs.license})
                         {entry.source_url && <> · <a href={entry.source_url} target="_blank" rel="noreferrer" className="underline hover:text-primary">source</a></>}

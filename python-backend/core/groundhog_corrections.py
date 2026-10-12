@@ -1,7 +1,7 @@
 # Author: Utkarsh Gupta
 # License: GPL v3
 """
-Groundhog functions that GeoCore overrides because the installed version (0.16.0) returns a wrong number.
+Groundhog functions that GeoCore overrides because the installed version (0.16.0) returns a wrong number or fails.
 
 Each correction keeps the Groundhog function's name, module, signature, docstring, validation and return
 keys, so the desktop calculators and the GeoAI tools (both built from ``Registry.function_map``) use it
@@ -14,6 +14,14 @@ mohrcoulomb_triaxial_compression
     otherwise too high: sigma_3 = 100 kPa, c = 0, phi = 30 degrees gives 301.57 kPa instead of 300, and the
     Mohr circle then misses the failure envelope. The circle, the figure and the other outputs are Groundhog's
     own construction (Budhu, 2011), only fed with the correct sigma_1.
+
+acousticimpedance_bulkunitweight_chen
+    Groundhog validates its documented ranges (G_s 1.0-3.0, gamma 12-22 kN/m3) and then calls the phase-relation
+    helpers voidratio_bulkunitweight and porosity_voidratio, which validate again with narrower ranges (G_s
+    2.4-2.9, e <= 5). Outside those the helpers return their error output: for G_s = 2.0 the void-ratio helper
+    returns no 'w [-]' and the function raises KeyError: 'w [-]'; for gamma = 12 kN/m3 (e = 7.25) the porosity
+    is NaN and so is the impedance. The correction calls the same helpers without that second validation; the
+    equations and outputs are Groundhog's.
 """
 import functools
 
@@ -22,6 +30,8 @@ import pandas as pd
 import plotly.graph_objs as go
 from groundhog.constitutivemodels import general
 from groundhog.general.validation import Validator
+from groundhog.siteinvestigation.classification import phaserelations
+from groundhog.siteinvestigation.correlations import general as correlations_general
 from plotly import subplots
 
 
@@ -99,5 +109,38 @@ def _mohrcoulomb_triaxial_compression(sigma_3, cohesion, phi, latex_titles=True,
 mohrcoulomb_triaxial_compression = functools.wraps(general.mohrcoulomb_triaxial_compression)(
     _mohrcoulomb_triaxial_compression)
 
+
+
+@Validator(correlations_general.ACOUSTICIMPEDANCE_BULKUNITWEIGHT_CHEN,
+           correlations_general.ACOUSTICIMPEDANCE_BULKUNITWEIGHT_CHEN_ERRORRETURN)
+def _acousticimpedance_bulkunitweight_chen(
+        bulkunitweight, specific_gravity=2.65, saturation=1.0, gamma_w=10.0, calibration_factor_4=0.0001315,
+        calibration_factor_3=-0.03776, calibration_factor_2=4.201, calibration_factor_1=-245.0,
+        calibration_factor_0=8603.0, **kwargs):
+    # The inputs were validated above against this function's own ranges; the helpers only compute.
+    _e = phaserelations.voidratio_bulkunitweight(
+        bulkunitweight=bulkunitweight, saturation=saturation, specific_gravity=specific_gravity,
+        unitweight_water=gamma_w, validate=False, fail_silently=False)['e [-]']
+    if _e < 0:
+        # gamma > G_s gamma_w: denser than the solids themselves. Raising makes the Validator return NaN,
+        # as Groundhog's porosity helper did for a negative void ratio.
+        raise ValueError(f"Bulk unit weight {bulkunitweight} kN/m3 exceeds G_s * gamma_w = "
+                         f"{specific_gravity * gamma_w:g} kN/m3: the void ratio would be negative.")
+    _n = phaserelations.porosity_voidratio(voidratio=_e, validate=False, fail_silently=False)['porosity [-]']
+    _I = calibration_factor_4 * (100 * _n) ** 4 +         calibration_factor_3 * (100 * _n) ** 3 +         calibration_factor_2 * (100 * _n) ** 2 +         calibration_factor_1 * (100 * _n) +         calibration_factor_0
+
+    return {
+        'e [-]': _e,
+        'n [-]': _n,
+        'I [(m/s).(g/cm3)]': _I,
+    }
+
+
+acousticimpedance_bulkunitweight_chen = functools.wraps(correlations_general.acousticimpedance_bulkunitweight_chen)(
+    _acousticimpedance_bulkunitweight_chen)
+
 #: function name -> corrected callable; Registry.function_map takes these over Groundhog's.
-CORRECTED_FUNCTIONS = {"mohrcoulomb_triaxial_compression": mohrcoulomb_triaxial_compression}
+CORRECTED_FUNCTIONS = {
+    "mohrcoulomb_triaxial_compression": mohrcoulomb_triaxial_compression,
+    "acousticimpedance_bulkunitweight_chen": acousticimpedance_bulkunitweight_chen,
+}

@@ -35,6 +35,9 @@ jobs:
       # Manual runs (workflow_dispatch) are checked against the tag typed into the form.
       - name: Compare tag with package.json, main.py and diagnostics.py
         run: python .github/scripts/check_version.py "${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}"
+      # The release notes come from website/_content/geocore/changelog.md; refuse a release without them.
+      - name: Changelog has notes for this version
+        run: python .github/scripts/changelog.py check "${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}"
 
   build-release:
     name: Build (${{ matrix.os }})
@@ -134,6 +137,12 @@ jobs:
           cd electron-app
           npm run dist
 
+      # Commit messages do not describe changes, so GitHub's generated notes were only a "Full Changelog"
+      # link. Publish the version's section of the changelog instead (same text as /docs/changelog).
+      - name: Release notes from the changelog
+        shell: bash
+        run: python .github/scripts/changelog.py notes "${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}" > release-notes.md
+
       - name: Automatically Create & Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -141,7 +150,8 @@ jobs:
           # tagged with the branch name (e.g. "main"), which electron-updater cannot read as a version.
           tag_name: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}
           name: "GeoCore ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}"
-          generate_release_notes: true
+          body_path: release-notes.md
+          generate_release_notes: false
           draft: false
           prerelease: false
           # NSIS installer, macOS dmg/zip, Linux AppImage + deb. latest*.yml + *.blockmap

@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indian Standard (BIS) calculations — GeoCore Docs</title>
+  <meta name="description" content="Theory, equations, clause references and inputs for GeoCore&#39;s IS 6403, IS 1498, IS 2131, IS 1892, IS 1904, IS 2950 and IS 2720 calculators.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1210" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoCore">
+  <meta property="og:title" content="Indian Standard (BIS) calculations — GeoCore Docs">
+  <meta property="og:description" content="Theory, equations, clause references and inputs for GeoCore&#39;s IS 6403, IS 1498, IS 2131, IS 1892, IS 1904, IS 2950 and IS 2720 calculators.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=5aec6e6cb7">
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css?v=b9ce0e8ce9"></head>
+<body class="layout-docs">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" aria-label="GeoCore home">
+        <img class="brand__logo brand__logo--light" src="/assets/images/logo-2.png" alt="GeoCore" width="150" height="31">
+        <img class="brand__logo brand__logo--dark" src="/assets/images/logo.png" alt="" width="150" height="31">
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/index.html#features">Features</a></li>
+          <li class="nav-menu" data-nav-menu>
+            <button class="nav-menu__btn" type="button" aria-expanded="false" aria-controls="nav-menu-learn"
+data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></button>
+            <ul class="nav-menu__list" id="nav-menu-learn" hidden>
+              <li><a href="/docs/" aria-current="page"><span>Documentation</span><small>Guides, theory and API reference</small></a></li>
+              <li><a href="/tutorials.html"><span>Video tutorials</span><small>Short walkthroughs of the app</small></a></li>
+            </ul>
+          </li>
+          <li><a href="/download.html">Download</a></li>
+          <li><a href="/about.html">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="https://github.com/utkarsh-1912/geocore" aria-label="GeoCore on GitHub" title="GeoCore on GitHub"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-github"></use></svg></a>
+        <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme">
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-sun"></use></svg>
+        </button>
+        <a class="btn btn--primary" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download</a>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+          <span data-when="closed"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-menu"></use></svg></span><span data-when="open"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-x"></use></svg></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Home<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/index.html#features">Features<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/docs/" aria-current="page">Documentation<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/tutorials.html">Video tutorials<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/download.html">Download<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+        <li><a href="/about.html">About<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></a></li>
+      </ul>
+      <a class="btn btn--primary btn--lg" href="/download.html"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-download"></use></svg>Download GeoCore</a>
+    </nav>
+  </header>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar" aria-label="Documentation">
+    <button class="btn btn--secondary docs-sidebar__toggle" type="button" data-sidebar-toggle
+            aria-controls="docs-sidebar-panel" aria-expanded="true">
+      <span>Documentation menu</span><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-menu"></use></svg>
+    </button>
+    <div class="docs-sidebar__panel" id="docs-sidebar-panel">
+      <form class="docs-search" role="search" data-docs-search data-root="/" data-index="/docs/search-index.json">
+        <label class="visually-hidden" for="docs-search-input">Search the documentation</label>
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-search"></use></svg>
+        <input id="docs-search-input" type="search" placeholder="Search docs  ( / )" autocomplete="off"
+               aria-controls="docs-search-results" aria-autocomplete="list" aria-expanded="false">
+        <ul class="search-results" id="docs-search-results" data-search-results hidden></ul>
+        <p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+      </form>
+      <nav class="docs-nav" aria-label="Documentation sections">
+        <h2><a href="/docs/getting-started/">Getting Started</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/overview/">
+    <span>What is GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/installation/">
+    <span>Installing GeoCore</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/building-from-source/">
+    <span>Running and building from source</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/using-geocore/">Using GeoCore</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geocore/using/calculations/">
+    <span>Running calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/soil-profiles/">
+    <span>Soil profiles and AGS data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/modules/">
+    <span>Calculation catalogue</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/eurocode7/">
+    <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/indian-standards/" aria-current="page">
+    <span>Indian Standard (BIS) calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/parameter-overrides/">
+    <span>Customising calculator forms</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/local-api/">
+    <span>Local calculation engine API</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/geoai/">GeoAI</a></h2>
+<ul>
+  <li>
+        <a href="/docs/geoai/overview/">
+    <span>GeoAI overview</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-setup/">
+    <span>Setting up a GeoAI model</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/model-benchmarks/">
+    <span>Model benchmarks</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/tools/">
+    <span>GeoAI tools</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/research/">
+    <span>Local document search</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geoai/limitations/">
+    <span>Limitations and engineering caution</span>  </a>
+
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/guides/">Groundhog Guides</a></h2>
+<ul>
+  <li>
+        <a href="/docs/groundhog/guides/introduction/">
+    <span>Introduction to groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/getting-started/">
+    <span>Getting started with groundhog</span>  </a>
+
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/guides/topics/">
+    <span>Topics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/guides/topics/general/">
+    <span>General and utility functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/site-investigation/">
+    <span>Site investigation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/piles/">
+    <span>Pile calculations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/consolidation/">
+    <span>Consolidation functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/excavations/">
+    <span>Excavations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/standards/">
+    <span>Standards</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/guides/topics/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/tutorials/">
+    <span>Tutorials</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-cpt-processing-tutorial/">
+    <span>CGS webinar - CPT processing tutorial</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/cgs-webinar-de-beer-method-for-axial-pile-resistance/">
+    <span>CGS webinar - De Beer method for axial pile resistance</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-bro-cpt-retrieval/">
+    <span>CPT retrieval from BRO (DINOLoket)</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-pile-resistance-calculation/">
+    <span>Demo - De Beer pile resistance calculation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-de-beer-unit-base-resistance-calculation/">
+    <span>Demo - Pile base resistance calculation according to De Beer&#39;s method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/demo-koppejan-pile-resistance-calculation/">
+    <span>Demo - Koppejan&#39;s pile resistance calculation method</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-axial-pile-capacity-calculation-according-to-api-rp2-geo-with-groundhog/">
+    <span>Tutorial - Axial pile capacity calculation according to API RP2 GEO with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-basic-use-of-groundhog-functions/">
+    <span>Tutorial - Basic use of groundhog functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-fence-diagrams-with-groundhog/">
+    <span>Tutorial - Fence diagrams with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-mac-and-linux/">
+    <span>gINT data import in Python for Linux and Mac</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-gint-data-import-in-python-for-windows/">
+    <span>gINT data import in Python for Windows</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-groundhog-parameter-selection-example/">
+    <span>Groundhog parameter selection example</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-loading-ags-data-using-groundhog/">
+    <span>Tutorial - Loading AGS data using ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-processing-with-groundhog/">
+    <span>Tutorial - PCPT data processing with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pcpt-data-reading-with-groundhog/">
+    <span>Tutorial - PCPT data reading with Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-pore-pressure-dissipation/">
+    <span>Tutorial - Pore pressure dissipation</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-settlement-calculations-with-groundhog/">
+    <span>Tutorial - Settlement calculations with ```groundhog```</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-shallow-foundation-capacity-with-groundhog/">
+    <span>Tutorial - Shallow foundation capacity with groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-soil-profile-objects-in-groundhog/">
+    <span>Tutorial - Soil profile objects in Groundhog</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/tutorials/tutorial-spt-data-processing-with-groundhog/">
+    <span>Tutorial - SPT data processing with Groundhog</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/groundhog/api/">Groundhog API Reference</a></h2>
+<ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/">
+    <span>Consolidation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/dissipation/">
+    <span>Dissipation</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/dissipation/onedimensionalconsolidation/">
+    <span>One-dimensional consolidation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/consolidation/groundwaterflow/">
+    <span>Groundwater flow</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/consolidation/groundwaterflow/pumpingtests/">
+    <span>Pumping tests</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/constitutivemodels/">
+    <span>Constitutive models</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/cohesionless/">
+    <span>cohesionless</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/constitutivemodels/general/">
+    <span>general</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/">
+    <span>Deep foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialcapacity/">
+    <span>Axial capacity</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/axcap/">
+    <span>axcap</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/debeer/">
+    <span>debeer</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/endbearing/">
+    <span>Unit end bearing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/koppejan/">
+    <span>koppejan</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/lcpc/">
+    <span>lcpc</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/negativeskinfriction/">
+    <span>Negative skin friction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/piletesting/">
+    <span>Pile testing functionality</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialcapacity/skinfriction/">
+    <span>Unit skin friction</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/axialresponse/">
+    <span>Axial response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/axialresponse/settlement/">
+    <span>Pile settlement</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/boreholestability/">
+    <span>Borehole stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/boreholestability/cavityexpansion/">
+    <span>Cavity expansion methods for cast in-situ piles</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/deepfoundations/lateralresponse/">
+    <span>Lateral response</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/deepfoundations/lateralresponse/lateral/">
+    <span>Pile lateral behaviour</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/excavations/">
+    <span>Excavations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/excavations/basic/">
+    <span>Earth pressure coefficients</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/excavations/soilmix/">
+    <span>Soilmix</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/general/">
+    <span>General</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/general/agsconversion/">
+    <span>agsconversion</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/parameter_mapping/">
+    <span>Parameter mapping</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/plotting/">
+    <span>Plotting</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/soilprofile/">
+    <span>soilprofile</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/general/validation/">
+    <span>Validation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/">
+    <span>Pipelines and cables</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/pipelinescables/stability/">
+    <span>Stability</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/pipelinescables/stability/penetration/">
+    <span>Pipeline and cable penetration</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/shallowfoundations/">
+    <span>Shallow foundations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/capacity/">
+    <span>Shallow foundation capacity</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/settlement/">
+    <span>Settlement</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/shallowfoundations/stressdistribution/">
+    <span>Stress distributions</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/">
+    <span>Site investigation</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/classification/">
+    <span>Classification</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/categories/">
+    <span>Soil classes and categories</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/classification/phaserelations/">
+    <span>Phase relations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/correlations/">
+    <span>Correlations</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesionless/">
+    <span>Cohesionless soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/cohesive/">
+    <span>Cohesive soils</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/correlations/general/">
+    <span>All soil types</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/insitutests/">
+    <span>In-situ tests</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_correlations/">
+    <span>PCPT functions</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/pcpt_processing/">
+    <span>pcpt_processing</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/read_site_data/">
+    <span>read_site_data</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_correlations/">
+    <span>SPT corrections and correlations</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/insitutests/spt_processing/">
+    <span>spt_processing</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/siteinvestigation/labtesting/">
+    <span>Lab testing</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/compressibility/">
+    <span>Compressibility</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/indextests/">
+    <span>indextests</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/siteinvestigation/labtesting/samplepreparation/">
+    <span>Sample preparation</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/soildynamics/">
+    <span>Soil dynamics</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cptliquefaction/">
+    <span>CPT Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/cyclicbehaviour/">
+    <span>Cyclic behaviour</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/liquefaction/">
+    <span>Liquefaction</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/soildynamics/soilproperties/">
+    <span>Dynamic soil property correlations</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/">
+    <span>Standards</span>  </a>
+</summary>
+        <ul>
+  <li>
+      <details>
+        <summary>  <a href="/docs/groundhog/api/standards/eurocode7/">
+    <span>Eurocode 7</span>  </a>
+</summary>
+        <ul>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/factors/">
+    <span>factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/groundhog/api/standards/eurocode7/parameter_selection/">
+    <span>Parameter selection</span>  </a>
+
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+
+      </details>
+  </li>
+</ul>
+        <h2><a href="/docs/changelog/">Changelog</a></h2>
+        <h2><a href="/docs/license/">License &amp; Credits</a></h2>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main" class="docs-content" tabindex="-1">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/docs/">Docs</a></li>
+        <li><a href="/docs/using-geocore/">Using GeoCore</a></li>
+        <li><span aria-current="page">Indian Standard (BIS) calculations</span></li>
+      </ol>
+    </nav>
+
+    <h1>Indian Standard (BIS) calculations</h1>
+    <div class="prose docs-body"><p>GeoCore implements a set of Indian Standard (Bureau of Indian Standards) calculations that groundhog does not
+cover. They are in the app under <strong>Indian Standards (BIS)</strong> in the <em>Library</em> view (and under their engineering task
+in the <em>By task</em> view), and GeoAI can call them as validated tools.</p>
+<p>Each calculation takes SI inputs and cites the clause it applies. Inputs outside the scope of a clause are reported
+as errors, never adjusted. Clause notes come back as warnings with the result.</p>
+<p>The sections below are generated from the same source as the app's Guide &amp; Theory pages
+(<code>website/_build/bis_docs.py</code>). Parameter descriptions and units are read from the implementation, so they match
+the calculator.</p>
+<blockquote>
+<p><strong>Editions implemented.</strong>
+- IS 6403:1981 (Reaffirmed) with Amendment 1. Under revision by BIS.
+- IS 1904:2021.
+- IS 1892:2021.
+- IS 2131:1981. The 2025 revision is not encoded.
+- IS 1498:1970.
+- IS 2950 (Part 1):1981 with Amendment 1.
+- IS 2720 Parts 3/Sec 1 (1980), 5 (1985) and 17 (1986).</p>
+<p>Check results against the current edition of each code. BIS code texts are copyrighted and are not included
+with GeoCore.</p>
+</blockquote>
+<h2 id="is-6403-bearing-capacity-shallow-foundation">IS 6403 Bearing Capacity (Shallow Foundation)</h2>
+<p><em>Net ultimate (and optionally net safe) bearing capacity of a shallow foundation on the shear criterion, IS 6403:1981 cl. 5.1-5.3.</em></p>
+<p>IS 6403 gives the <strong>net ultimate bearing capacity</strong> of a shallow foundation on the shear criterion. GeoCore
+evaluates the general equation of cl. 5.1.2 with the factors of Tables 1-3:</p>
+<div class="math-display">\[q_d = c\,N_c\,s_c\,d_c\,i_c + q\,(N_q - 1)\,s_q\,d_q\,i_q + \tfrac{1}{2}\,B\,\gamma\,N_\gamma\,s_\gamma\,d_\gamma\,i_\gamma\,W'\]</div>
+<p>where <span class="math">\(q\)</span> is the effective overburden pressure at the founding level.</p>
+<h3 id="bearing-capacity-factors-table-1">Bearing capacity factors (Table 1)</h3>
+<div class="math-display">\[N_q = e^{\pi \tan\phi}\,\tan^2\!\left(45^\circ + \frac{\phi}{2}\right), \qquad N_c = (N_q - 1)\cot\phi, \qquad N_\gamma = 2\,(N_q + 1)\tan\phi\]</div>
+<p>These closed forms reproduce Table 1 for <span class="math">\(\phi\)</span> = 0-50°. For <span class="math">\(\phi = 0\)</span>, <span class="math">\(N_c = 2 + \pi = 5.14\)</span>, <span class="math">\(N_q = 1\)</span> and
+<span class="math">\(N_\gamma = 0\)</span> (cl. 5.3.1.1). For <span class="math">\(\phi\)</span> between 20° and 50°, <span class="math">\(N_q\)</span> and <span class="math">\(N_\gamma\)</span> come from Groundhog
+(<code>nq_frictionangle_sand</code>, <code>ngamma_frictionangle_vesic</code>), which use the same equations.</p>
+<h3 id="failure-mode">Failure mode</h3>
+<ul>
+<li><strong>General shear:</strong> the factors are read at <span class="math">\(\phi\)</span> with cohesion <span class="math">\(c\)</span>.</li>
+<li><strong>Local shear (cl. 5.1.1):</strong> <span class="math">\(c' = \tfrac{2}{3}c\)</span>, and the factors are read at <span class="math">\(\phi' = \tan^{-1}(0.67\tan\phi)\)</span>.
+  GeoCore also evaluates the depth and inclination factors with <span class="math">\(\phi'\)</span>.</li>
+<li><strong>From relative density (Table 3):</strong> general shear for <span class="math">\(D_r &gt; 70\,\%\)</span> and local shear for <span class="math">\(D_r &lt; 20\,\%\)</span>.
+  Between these, <span class="math">\(q_d\)</span> is interpolated linearly between the local and general values.</li>
+</ul>
+<h3 id="shape-factors-table-2">Shape factors (Table 2)</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Shape</th>
+<th><span class="math">\(s_c\)</span></th>
+<th><span class="math">\(s_q\)</span></th>
+<th><span class="math">\(s_\gamma\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Strip</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Square</td>
+<td>1.3</td>
+<td>1.2</td>
+<td>0.8</td>
+</tr>
+<tr>
+<td>Circle</td>
+<td>1.3</td>
+<td>1.2</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Rectangle</td>
+<td><span class="math">\(1 + 0.2\,B/L\)</span></td>
+<td><span class="math">\(1 + 0.2\,B/L\)</span></td>
+<td><span class="math">\(1 - 0.4\,B/L\)</span></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="depth-factors-cl-5122-optional">Depth factors (cl. 5.1.2.2, optional)</h3>
+<p>The code allows depth factors only when the backfill is properly compacted, so they are off by default.
+With <span class="math">\(\sqrt{N_\phi} = \tan(45^\circ + \phi/2)\)</span>:</p>
+<div class="math-display">\[d_c = 1 + 0.2\,\frac{D_f}{B}\sqrt{N_\phi}, \qquad d_q = d_\gamma = \begin{cases}1 &amp; \phi &lt; 10^\circ \\ 1 + 0.1\,\dfrac{D_f}{B}\sqrt{N_\phi} &amp; \phi \ge 10^\circ\end{cases}\]</div>
+<h3 id="inclination-factors-cl-5123">Inclination factors (cl. 5.1.2.3)</h3>
+<p>For a load inclined at <span class="math">\(\alpha\)</span> to the vertical:</p>
+<div class="math-display">\[i_c = i_q = \left(1 - \frac{\alpha}{90}\right)^2, \qquad i_\gamma = \left(1 - \frac{\alpha}{\phi}\right)^2\]</div>
+<p><span class="math">\(i_\gamma = 0\)</span> when <span class="math">\(\alpha \ge \phi\)</span>.</p>
+<h3 id="water-table-cl-5124-and-cl-222">Water table (cl. 5.1.2.4 and cl. 2.2.2)</h3>
+<ul>
+<li><span class="math">\(W' = 1\)</span> when the water table is at or below <span class="math">\(D_f + B\)</span>.</li>
+<li><span class="math">\(W' = 0.5\)</span> when it is at or above the founding level <span class="math">\(D_f\)</span>.</li>
+<li>Between these, <span class="math">\(W'\)</span> is interpolated linearly.</li>
+</ul>
+<p>The effective surcharge <span class="math">\(q\)</span> uses the bulk unit weight above the water table and the submerged unit weight
+<span class="math">\(\gamma_{sat} - \gamma_w\)</span> below it.</p>
+<h3 id="eccentric-loads-cl-501">Eccentric loads (cl. 5.0.1)</h3>
+<p>The effective dimensions are <span class="math">\(B' = B - 2e_B\)</span> and <span class="math">\(L' = L - 2e_L\)</span>. An eccentric square becomes a
+<span class="math">\(B' \times L'\)</span> rectangle. Eccentric loading of a circular footing is outside the clause and is rejected.</p>
+<h3 id="net-safe-bearing-capacity">Net safe bearing capacity</h3>
+<p>If a factor of safety <span class="math">\(F\)</span> is given, <span class="math">\(q_{ns} = q_{nu}/F\)</span>. By cl. 6.1, the allowable bearing capacity is the
+lesser of <span class="math">\(q_{nu}/F\)</span> and the pressure that keeps settlement within the IS 1904 limits. This calculator gives
+the shear criterion only.</p>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>The graphical methods of IS 6403 are not implemented: the SPT chart (Fig. 1), the static cone chart
+  (Fig. 2), two-layer clay (Fig. 3) and desiccated clay (Table 4).</li>
+<li>GeoCore warns when <span class="math">\(D_f &gt; B\)</span> (the code covers shallow foundations, cl. 2.2.5).</li>
+<li>GeoCore warns when the founding depth is less than the 500 mm minimum of IS 1904:2021 cl. 7.2.</li>
+<li>IS 6403 is under revision by BIS.</li>
+</ul>
+<h3 id="inputs">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>width</code></td>
+<td><span class="math">\(B\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Footing width B; diameter for a circle</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td><span class="math">\(D_f\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Founding depth Df below the surrounding ground level</td>
+</tr>
+<tr>
+<td><code>water_table_depth</code></td>
+<td><span class="math">\(d_w\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Depth of the (highest likely) water table below ground level</td>
+</tr>
+<tr>
+<td><code>unit_weight</code></td>
+<td><span class="math">\(\gamma\)</span></td>
+<td>kN/m3</td>
+<td>—</td>
+<td>Bulk unit weight gamma of the foundation soil</td>
+</tr>
+<tr>
+<td><code>cohesion</code></td>
+<td><span class="math">\(c\)</span></td>
+<td>kPa</td>
+<td>—</td>
+<td>Cohesion c (undrained cohesion for phi = 0 analysis)</td>
+</tr>
+<tr>
+<td><code>friction_angle</code></td>
+<td><span class="math">\(\phi\)</span></td>
+<td>deg</td>
+<td>0 to 50 deg (Table 1)</td>
+<td>Angle of shearing resistance phi, 0-50</td>
+</tr>
+<tr>
+<td><code>shape</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Footing shape. Options: strip, square, circle, rectangle</td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td><span class="math">\(L\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Footing length L, required for a rectangle (L &gt;= B)</td>
+</tr>
+<tr>
+<td><code>failure_mode</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Shear failure mode. Options: general, local, from_relative_density</td>
+</tr>
+<tr>
+<td><code>relative_density</code></td>
+<td><span class="math">\(D_r\)</span></td>
+<td>%</td>
+<td>0 to 100 %</td>
+<td>Relative density for failure_mode = from_relative_density</td>
+</tr>
+<tr>
+<td><code>load_inclination</code></td>
+<td><span class="math">\(\alpha\)</span></td>
+<td>deg</td>
+<td>0 to below 90 deg</td>
+<td>Inclination alpha of the resultant load to the vertical</td>
+</tr>
+<tr>
+<td><code>eccentricity_width</code></td>
+<td><span class="math">\(e_B\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Load eccentricity along the width eB</td>
+</tr>
+<tr>
+<td><code>eccentricity_length</code></td>
+<td><span class="math">\(e_L\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Load eccentricity along the length eL</td>
+</tr>
+<tr>
+<td><code>saturated_unit_weight</code></td>
+<td><span class="math">\(\gamma_{sat}\)</span></td>
+<td>kN/m3</td>
+<td>—</td>
+<td>Saturated unit weight, needed when the water table is above the base</td>
+</tr>
+<tr>
+<td><code>apply_depth_factors</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Apply cl. 5.1.2.2 depth factors (only if backfill is properly compacted)</td>
+</tr>
+<tr>
+<td><code>factor_of_safety</code></td>
+<td><span class="math">\(F\)</span></td>
+<td>—</td>
+<td>—</td>
+<td>Factor of safety on net ultimate capacity for the net safe value</td>
+</tr>
+<tr>
+<td><code>unit_weight_water</code></td>
+<td><span class="math">\(\gamma_w\)</span></td>
+<td>kN/m3</td>
+<td>—</td>
+<td>Unit weight of water</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs">Outputs</h3>
+<ul>
+<li>Bearing capacity factors <span class="math">\(N_c\)</span>, <span class="math">\(N_q\)</span>, <span class="math">\(N_\gamma\)</span>, and the shape, depth and inclination factors.</li>
+<li><span class="math">\(W'\)</span>, the effective surcharge <span class="math">\(q\)</span> [kPa], and the effective dimensions <span class="math">\(B'\)</span> and <span class="math">\(L'\)</span> [m].</li>
+<li>The cohesion, surcharge and unit weight terms [kPa].</li>
+<li>The net ultimate bearing capacity <span class="math">\(q_{nu}\)</span> [kPa].</li>
+<li>The net ultimate load on the effective area [kN/m for a strip, kN otherwise].</li>
+<li>With a factor of safety, the net safe bearing capacity <span class="math">\(q_{ns}\)</span> [kPa].</li>
+<li>Clause notes as warnings.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li>IS 6403:1981 (Reaffirmed), including Amendment No. 1 (1984). Bureau of Indian Standards. Under revision by BIS (CED 43).</li>
+<li>IS 1904:2021 (fourth revision). Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is6403.py#L141"><code>core/standards/bis/is6403.py</code></a> (<code>bearing_capacity_is6403</code>).</p>
+<h2 id="is-1498-soil-classification">IS 1498 Soil Classification</h2>
+<p><em>Laboratory classification of a soil into an IS 1498 group symbol and name (cl. 3.5, Table 3).</em></p>
+<p>IS 1498 classifies soil from its grading and plasticity.</p>
+<h3 id="division-cl-31-32">Division (cl. 3.1, 3.2)</h3>
+<ul>
+<li><strong>Coarse-grained:</strong> more than half of the material is retained on the 75-micron IS sieve (fines ≤ 50 %).
+  The soil is a gravel (G) if more of the coarse fraction is gravel (retained on 4.75 mm) than sand,
+  otherwise a sand (S).</li>
+<li><strong>Fine-grained:</strong> more than 50 % fines. The liquid limit sets the compressibility: L for
+  <span class="math">\(w_L &lt; 35\,\%\)</span>, I for 35-50 %, H for <span class="math">\(w_L &gt; 50\,\%\)</span>.</li>
+<li><strong>Peat (Pt)</strong> is identified visually (colour, odour, fibrous texture) and is flagged by the user.</li>
+</ul>
+<h3 id="coarse-grained-soils-table-3">Coarse-grained soils (Table 3)</h3>
+<p>With <span class="math">\(5\,\%\)</span> fines or less, the grading is assessed from</p>
+<div class="math-display">\[C_u = \frac{D_{60}}{D_{10}}, \qquad C_c = \frac{D_{30}^2}{D_{10}\,D_{60}}\]</div>
+<ul>
+<li><strong>GW:</strong> <span class="math">\(C_u &gt; 4\)</span> and <span class="math">\(1 \le C_c \le 3\)</span>.</li>
+<li><strong>SW:</strong> <span class="math">\(C_u &gt; 6\)</span> and <span class="math">\(1 \le C_c \le 3\)</span>.</li>
+<li>Otherwise the soil is poorly graded (GP, SP).</li>
+</ul>
+<p>The fines content sets the symbol:</p>
+<ul>
+<li><strong>&lt; 5 % fines:</strong> clean soil (GW, GP, SW, SP).</li>
+<li><strong>&gt; 12 % fines:</strong> M if the fines plot below the A-line or <span class="math">\(I_p &lt; 4\)</span>, C if above with <span class="math">\(I_p &gt; 7\)</span>, and the dual
+  symbol GM-GC or SM-SC if above with <span class="math">\(I_p\)</span> 4-7.</li>
+<li><strong>5-12 % fines:</strong> borderline, with a dual symbol such as SP-SM. A borderline case of a borderline case
+  takes the non-plastic symbol (cl. 3.5.2).</li>
+</ul>
+<h3 id="fine-grained-soils-cl-353-354">Fine-grained soils (cl. 3.5.3, 3.5.4)</h3>
+<p>The A-line on the plasticity chart is</p>
+<div class="math-display">\[I_p = 0.73\,(w_L - 20)\]</div>
+<ul>
+<li><strong>Above the A-line:</strong> clay (CL, CI, CH).</li>
+<li><strong>Below it:</strong> silt (ML, MI, MH), or organic soil (OL, OI, OH) when the oven-dried liquid limit is below
+  <span class="math">\(\tfrac{3}{4}\)</span> of the liquid limit before drying (cl. 3.5.3.1).</li>
+<li><strong>Above the A-line with <span class="math">\(I_p\)</span> 4-7:</strong> ML-CL.</li>
+<li><strong>On the A-line, or on the <span class="math">\(w_L\)</span> = 35 or 50 lines</strong> (within the boundary tolerance): a boundary symbol is
+  given (cl. 3.5.4).</li>
+</ul>
+<p><span class="math">\(I_p = w_L - w_P\)</span>, taken as 0 when <span class="math">\(w_P \ge w_L\)</span> (IS 2720 Part 5 cl. 8.2).</p>
+<h3 id="inputs_1">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>percent_fines</code></td>
+<td>—</td>
+<td>%</td>
+<td>0 to 100 % (fines + gravel ≤ 100 %)</td>
+<td>Percentage passing the 75-micron IS sieve</td>
+</tr>
+<tr>
+<td><code>percent_gravel</code></td>
+<td>—</td>
+<td>%</td>
+<td>0 to 100 %</td>
+<td>Percentage retained on the 4.75 mm IS sieve (gravel, 80-4.75 mm)</td>
+</tr>
+<tr>
+<td><code>liquid_limit</code></td>
+<td><span class="math">\(w_L\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Liquid limit wL</td>
+</tr>
+<tr>
+<td><code>plastic_limit</code></td>
+<td><span class="math">\(w_P\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Plastic limit wP</td>
+</tr>
+<tr>
+<td><code>non_plastic</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>True when the plastic limit cannot be determined (Ip reported as NP)</td>
+</tr>
+<tr>
+<td><code>d10</code></td>
+<td><span class="math">\(D_{10}\)</span></td>
+<td>mm</td>
+<td>—</td>
+<td>Particle size with 10 percent finer</td>
+</tr>
+<tr>
+<td><code>d30</code></td>
+<td><span class="math">\(D_{30}\)</span></td>
+<td>mm</td>
+<td>—</td>
+<td>Particle size with 30 percent finer</td>
+</tr>
+<tr>
+<td><code>d60</code></td>
+<td><span class="math">\(D_{60}\)</span></td>
+<td>mm</td>
+<td>—</td>
+<td>Particle size with 60 percent finer</td>
+</tr>
+<tr>
+<td><code>liquid_limit_oven_dried</code></td>
+<td>—</td>
+<td>%</td>
+<td>—</td>
+<td>Liquid limit after oven drying, to identify organic fines</td>
+</tr>
+<tr>
+<td><code>highly_organic</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>True for peat / highly organic soil identified visually (Pt)</td>
+</tr>
+<tr>
+<td><code>boundary_tolerance</code></td>
+<td>—</td>
+<td>%</td>
+<td>—</td>
+<td>Distance from the A-line or the wL = 35 / 50 lines within which a soil is treated as lying on the line</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_1">Outputs</h3>
+<ul>
+<li>Group symbol, group name and division.</li>
+<li>Gravel, sand and fines percentages.</li>
+<li><span class="math">\(C_u\)</span> and <span class="math">\(C_c\)</span> where graded.</li>
+<li><span class="math">\(w_L\)</span>, <span class="math">\(I_p\)</span> and the A-line <span class="math">\(I_p\)</span> for fine-grained soil, plus the organic check if given.</li>
+<li>Boundary-classification notes.</li>
+</ul>
+<h3 id="references_1">References</h3>
+<ul>
+<li>IS 1498:1970 (Reaffirmed). Bureau of Indian Standards.</li>
+<li>IS 2720 (Part 5):1985. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is1498.py#L69"><code>core/standards/bis/is1498.py</code></a> (<code>classify_soil_is1498</code>).</p>
+<h2 id="is-2131-spt-n-corrections">IS 2131 SPT N Corrections</h2>
+<p><em>Overburden and dilatancy corrections of the SPT N value in cohesionless soil, IS 2131:1981 cl. 3.6.</em></p>
+<h3 id="overburden-correction-cl-361-fig-1">Overburden correction (cl. 3.6.1, Fig. 1)</h3>
+<p>The observed N is multiplied by the factor of Fig. 1. That figure plots the Peck, Hanson and Thornburn (1974)
+curve:</p>
+<div class="math-display">\[C_N = 0.77\,\log_{10}\!\left(\frac{20}{\sigma'_v}\right) \le 2.0, \qquad N' = C_N\,N\]</div>
+<p>with <span class="math">\(\sigma'_v\)</span> in kgf/cm², where 1 kgf/cm² = 98.0665 kPa. Fig. 1 covers 0-5 kgf/cm² (about 490 kPa);
+beyond that <span class="math">\(C_N\)</span> is extrapolated and a warning is given.</p>
+<h3 id="dilatancy-correction-cl-362">Dilatancy correction (cl. 3.6.2)</h3>
+<p>For fine sand or silt below the water table, when <span class="math">\(N' &gt; 15\)</span>:</p>
+<div class="math-display">\[N'' = 15 + \tfrac{1}{2}\,(N' - 15)\]</div>
+<h3 id="optional-energy-normalisation-not-is-21311981">Optional energy normalisation (not IS 2131:1981)</h3>
+<p>If a measured hammer energy ratio ER [%] is given, N is first normalised as</p>
+<div class="math-display">\[N_{60} = N\,\frac{ER}{60}\]</div>
+<p>This follows ISO 22476-3 and is labelled as such in the result. IS 2131 was revised in 2025; that edition's
+energy correction is not encoded here.</p>
+<h3 id="inputs_2">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_observed</code></td>
+<td><span class="math">\(N\)</span></td>
+<td>—</td>
+<td>—</td>
+<td>Observed N value, blows per 300 mm penetration</td>
+</tr>
+<tr>
+<td><code>effective_overburden_pressure</code></td>
+<td><span class="math">\(\sigma'_v\)</span></td>
+<td>kPa</td>
+<td>—</td>
+<td>Effective vertical overburden pressure at the test depth</td>
+</tr>
+<tr>
+<td><code>fine_sand_or_silt_below_water_table</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>True if the stratum is fine sand or silt below the water table (cl. 3.6.2)</td>
+</tr>
+<tr>
+<td><code>energy_ratio</code></td>
+<td><span class="math">\(ER\)</span></td>
+<td>%</td>
+<td>0 to 100 %</td>
+<td>Measured hammer energy ratio; if given N is first normalised to 60 % energy (not part of IS 2131:1981)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_2">Outputs</h3>
+<ul>
+<li>Effective overburden [kgf/cm²] and <span class="math">\(C_N\)</span>.</li>
+<li><span class="math">\(N'\)</span> after the overburden correction.</li>
+<li><span class="math">\(N''\)</span> after the dilatancy correction (where it applies).</li>
+<li>The corrected N.</li>
+<li><span class="math">\(N_{60}\)</span> when an energy ratio is given.</li>
+</ul>
+<h3 id="references_2">References</h3>
+<ul>
+<li>IS 2131:1981 (Reaffirmed). Bureau of Indian Standards. The 2025 revision is not encoded in GeoCore.</li>
+<li>Peck, R.B., Hanson, W.E. and Thornburn, T.H. (1974). Foundation Engineering, 2nd ed. Wiley. (The curve plotted in IS 2131 Fig. 1.)</li>
+<li>ISO 22476-3. Geotechnical investigation and testing: Field testing, Part 3: Standard penetration test. (Optional N60 normalisation only; not part of IS 2131:1981.)</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2131.py#L33"><code>core/standards/bis/is2131.py</code></a> (<code>spt_correction_is2131</code>).</p>
+<h2 id="is-1892-depth-of-investigation">IS 1892 Depth of Investigation</h2>
+<p><em>Guideline depth of subsurface investigation for a foundation type, IS 1892:2021 cl. 5.6.3.</em></p>
+<p>IS 1892 cl. 5.6.3.2 gives guideline depths of exploration, measured below the reference level:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Foundation</th>
+<th>Guideline depth</th>
+<th>Reference level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shallow (non-raft)</td>
+<td>2 to 3 × the largest foundation width <span class="math">\(B\)</span></td>
+<td>Founding level</td>
+</tr>
+<tr>
+<td>Raft</td>
+<td>1.0 to 2.0 × the raft width (<span class="math">\(B\)</span> taken as at least 6 m)</td>
+<td>Founding level</td>
+</tr>
+<tr>
+<td>Pile</td>
+<td>at least the greater of 5 m and <span class="math">\(5D\)</span></td>
+<td>Pile termination level</td>
+</tr>
+<tr>
+<td>Embankment</td>
+<td>1.0 to 2.0 × the embankment height <span class="math">\(H\)</span></td>
+<td>Base of the embankment</td>
+</tr>
+<tr>
+<td>Well</td>
+<td>1.5 to 2.0 × the well width or diameter</td>
+<td>Well termination level</td>
+</tr>
+</tbody>
+</table></div>
+<p>Where the founding depth is given, GeoCore adds it to report depths below ground level. Embankments are
+excluded from this.</p>
+<p>Two further requirements apply to every case, and the calculator states them as notes:</p>
+<ul>
+<li>Investigate at least to the depth where the stress increase from the foundation is below <strong>10 %</strong> of the
+  in-situ stress, and deeper where weaker layers lie below that zone (cl. 5.6.3.1).</li>
+<li>If rock is met earlier, extend the boreholes at least <strong>5 m into rock</strong>, depending on its characteristics
+  (cl. 5.6.3.2).</li>
+</ul>
+<p>The clause says these values "may be followed"; they are guidelines, not limits.</p>
+<h3 id="inputs_3">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>foundation_type</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Foundation type. Options: shallow, raft, pile, embankment, well</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td><span class="math">\(B\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Largest foundation width (shallow), raft width, or well width/diameter</td>
+</tr>
+<tr>
+<td><code>pile_diameter</code></td>
+<td><span class="math">\(D\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Pile diameter, for pile foundations</td>
+</tr>
+<tr>
+<td><code>embankment_height</code></td>
+<td><span class="math">\(H\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Embankment height, for embankments</td>
+</tr>
+<tr>
+<td><code>founding_depth</code></td>
+<td><span class="math">\(D_f\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Founding level (pile tip / well termination for those types) below ground level</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_3">Outputs</h3>
+<ul>
+<li>The rule applied and the reference level.</li>
+<li>Minimum and maximum guideline depth below the reference level [m].</li>
+<li>Where applicable, the same depths below ground level [m].</li>
+</ul>
+<h3 id="references_3">References</h3>
+<ul>
+<li>IS 1892:2021 (second revision). Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is1892.py#L30"><code>core/standards/bis/is1892.py</code></a> (<code>investigation_depth_is1892</code>).</p>
+<h2 id="is-1892-borehole-disposition">IS 1892 Borehole Disposition</h2>
+<p><em>Minimum number and disposition of boreholes by type of structure, IS 1892:2021 cl. 5.6.2, Table 2.</em></p>
+<p>IS 1892 Table 2 sets the minimum disposition of boreholes or trial pits:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Structure category</th>
+<th>Rule (Table 2)</th>
+<th>GeoCore count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light residential (single or double storey, lightly loaded)</td>
+<td>At least one at the centre of the building</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Site of about 0.4 ha</td>
+<td>One in each corner and one in the centre</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Large plan or multiple buildings</td>
+<td>Grid with points not more than 50 m apart, minimum two, covering the built-up area</td>
+<td><span class="math">\(\max\!\left(2,\ n_x\,n_y\right)\)</span></td>
+</tr>
+<tr>
+<td>Building higher than 50 m</td>
+<td>Minimum three at each building</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Linear structure (road, railway, pipeline, wall, line)</td>
+<td>50 m to 500 m spacing: closer in erratic strata, wider in uniform strata</td>
+<td>count at 500 m and at 50 m</td>
+</tr>
+<tr>
+<td>Solar power plant</td>
+<td>One per 2 to 5 ha, minimum 5 per site</td>
+<td>count at 1 per 5 ha and 1 per 2 ha</td>
+</tr>
+</tbody>
+</table></div>
+<p>For the grid, <span class="math">\(n_x = \lceil L/50 \rceil + 1\)</span> and <span class="math">\(n_y = \lceil W/50 \rceil + 1\)</span>. This assumes a rectangular
+built-up area covered by a regular 50 m grid.</p>
+<p>For a linear structure of length <span class="math">\(L\)</span>, the count is <span class="math">\(\lceil L/s \rceil + 1\)</span> at spacing <span class="math">\(s\)</span>.</p>
+<p>Boreholes are preferred to trial pits. Add boreholes where the stratification varies significantly
+(cl. 5.6.2).</p>
+<h3 id="inputs_4">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structure_type</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Structure category. Options: light_residential, site_0_4_ha, large_plan_or_multiple_buildings, tall_building, linear, solar_plant</td>
+</tr>
+<tr>
+<td><code>plan_length</code></td>
+<td><span class="math">\(L\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Plan length of the built-up area, for large_plan_or_multiple_buildings</td>
+</tr>
+<tr>
+<td><code>plan_width</code></td>
+<td><span class="math">\(W\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Plan width of the built-up area, for large_plan_or_multiple_buildings</td>
+</tr>
+<tr>
+<td><code>route_length</code></td>
+<td><span class="math">\(L\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Length of a linear structure (road, railway, pipeline, wall, line)</td>
+</tr>
+<tr>
+<td><code>site_area</code></td>
+<td><span class="math">\(A\)</span></td>
+<td>ha</td>
+<td>—</td>
+<td>Site area, for a solar power plant</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_4">Outputs</h3>
+<ul>
+<li>The Table 2 rule.</li>
+<li>The minimum number of boreholes, or the counts at both ends of the permitted spacing.</li>
+<li>Grid points along the length and width where a grid applies.</li>
+</ul>
+<h3 id="references_4">References</h3>
+<ul>
+<li>IS 1892:2021 (second revision). Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is1892.py#L91"><code>core/standards/bis/is1892.py</code></a> (<code>borehole_layout_is1892</code>).</p>
+<h2 id="is-1904-permissible-settlement">IS 1904 Permissible Settlement</h2>
+<p><em>Permissible maximum settlement, differential settlement and angular distortion of shallow foundations, IS 1904:2021 Table 1, with an optional check of calculated values.</em></p>
+<p>IS 1904:2021 Table 1 (cl. 16.3.4) gives permissible settlements by:</p>
+<ul>
+<li>foundation type (isolated or raft);</li>
+<li>type of structure;</li>
+<li>soil group: sand and hard clay, or plastic clay.</li>
+</ul>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Foundation</th>
+<th>Structure</th>
+<th>Sand / hard clay: max [mm]</th>
+<th>Sand / hard clay: differential</th>
+<th>Plastic clay: max [mm]</th>
+<th>Plastic clay: differential</th>
+<th>Angular distortion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Isolated</td>
+<td>Steel</td>
+<td>50</td>
+<td>0.0033 L</td>
+<td>50</td>
+<td>0.0033 L</td>
+<td>1/300</td>
+</tr>
+<tr>
+<td>Isolated</td>
+<td>Reinforced concrete</td>
+<td>50</td>
+<td>0.0015 L</td>
+<td>75</td>
+<td>0.0015 L</td>
+<td>1/666</td>
+</tr>
+<tr>
+<td>Isolated</td>
+<td>Multistorey framed</td>
+<td>60</td>
+<td>0.002 L</td>
+<td>75</td>
+<td>0.002 L</td>
+<td>1/500</td>
+</tr>
+<tr>
+<td>Isolated</td>
+<td>Water tower / silo</td>
+<td>50</td>
+<td>0.0015 L</td>
+<td>75</td>
+<td>0.0015 L</td>
+<td>1/666</td>
+</tr>
+<tr>
+<td>Raft</td>
+<td>Steel</td>
+<td>75</td>
+<td>0.0033 L</td>
+<td>100</td>
+<td>0.0033 L</td>
+<td>1/300</td>
+</tr>
+<tr>
+<td>Raft</td>
+<td>Reinforced concrete</td>
+<td>75</td>
+<td>0.0021 L</td>
+<td>125</td>
+<td>0.002 L</td>
+<td>1/500</td>
+</tr>
+<tr>
+<td>Raft</td>
+<td>Multistorey framed</td>
+<td>75</td>
+<td>0.0025 L</td>
+<td>125</td>
+<td>0.0033 L</td>
+<td>1/400 (sand), 1/300 (clay)</td>
+</tr>
+<tr>
+<td>Raft</td>
+<td>Water tower / silo</td>
+<td>100</td>
+<td>0.0025 L</td>
+<td>125</td>
+<td>0.0025 L</td>
+<td>1/400</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Load bearing walls</strong> (isolated foundations, either soil group): 60 mm maximum, with limits that depend on
+<span class="math">\(L/H\)</span>:</p>
+<ul>
+<li>0.0002 L and 1/5000 at <span class="math">\(L/H = 2\)</span>;</li>
+<li>0.0004 L and 1/2500 at <span class="math">\(L/H = 7\)</span>;</li>
+<li>interpolated linearly between.</li>
+</ul>
+<p>The code gives no limits for rafts under load bearing walls.</p>
+<p>The 2021 revision raised the limit for <strong>rafts under RC structures on plastic clay to 125 mm</strong> (100 mm in
+IS 1904:1986).</p>
+<h3 id="check">Check</h3>
+<p>The permissible differential settlement over a span <span class="math">\(L\)</span> is <span class="math">\(\delta_{perm} = k\,L\)</span>, where <span class="math">\(k\)</span> is the Table 1
+coefficient. If calculated values are given, GeoCore compares:</p>
+<ul>
+<li>the maximum settlement with the permissible maximum;</li>
+<li>the differential settlement with <span class="math">\(\delta_{perm}\)</span>.</li>
+</ul>
+<p>The calculated angular distortion is <span class="math">\(\delta / L\)</span> (cl. 16.3.5).</p>
+<p>The code notes that the values are a guide; the designer decides the permissible settlements in each case.</p>
+<h3 id="inputs_5">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>foundation_type</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Foundation type. Options: isolated, raft</td>
+</tr>
+<tr>
+<td><code>structure_type</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Structure type. Options: steel, reinforced_concrete, multistorey_framed, load_bearing_walls, water_tower_silo</td>
+</tr>
+<tr>
+<td><code>soil_type</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Soil group of Table 1. Options: sand_hard_clay, plastic_clay</td>
+</tr>
+<tr>
+<td><code>span_length</code></td>
+<td><span class="math">\(L\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>L, length of the deflected part of wall/raft or centre-to-centre column distance</td>
+</tr>
+<tr>
+<td><code>length_height_ratio</code></td>
+<td><span class="math">\(L/H\)</span></td>
+<td>—</td>
+<td>2 to 7</td>
+<td>L/H of a load bearing wall (2 to 7)</td>
+</tr>
+<tr>
+<td><code>calculated_max_settlement</code></td>
+<td>—</td>
+<td>mm</td>
+<td>—</td>
+<td>Calculated maximum settlement to check</td>
+</tr>
+<tr>
+<td><code>calculated_differential_settlement</code></td>
+<td>—</td>
+<td>mm</td>
+<td>—</td>
+<td>Calculated differential settlement over span_length to check</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_5">Outputs</h3>
+<ul>
+<li>Permissible maximum settlement [mm], the differential coefficient (× L) and the angular distortion.</li>
+<li>With a span, the permissible differential settlement [mm].</li>
+<li>With calculated values, whether each is within the limit.</li>
+</ul>
+<h3 id="references_5">References</h3>
+<ul>
+<li>IS 1904:2021 (fourth revision). Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is1904.py#L63"><code>core/standards/bis/is1904.py</code></a> (<code>permissible_settlement_is1904</code>).</p>
+<h2 id="is-1904-sliding-overturning-check">IS 1904 Sliding / Overturning Check</h2>
+<p><em>Factor of safety against sliding or overturning compared with the IS 1904:2021 cl. 17.1 minimum.</em></p>
+<p>The factor of safety is the ratio of the resisting action to the disturbing action, in consistent units:</p>
+<div class="math-display">\[F = \frac{\text{resisting force or moment}}{\text{disturbing force or moment}}\]</div>
+<p>IS 1904:2021 cl. 17.1 sets these minimum values:</p>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Check</th>
+<th>Dead, imposed and earth pressure loads</th>
+<th>Including wind or seismic forces</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sliding (cl. 17.1.1)</td>
+<td>1.75</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>Overturning (cl. 17.1.2)</td>
+<td>2.0</td>
+<td>1.5</td>
+</tr>
+</tbody>
+</table></div>
+<p>The engineer computes the resisting and disturbing actions for the governing load combination; this
+calculator only compares their ratio with the clause minimum.</p>
+<h3 id="inputs_6">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Stability check. Options: sliding, overturning</td>
+</tr>
+<tr>
+<td><code>resisting</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Resisting force [kN] (sliding) or resisting moment [kNm] (overturning), in consistent units</td>
+</tr>
+<tr>
+<td><code>disturbing</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Disturbing force or overturning moment, in the same units as resisting</td>
+</tr>
+<tr>
+<td><code>wind_or_seismic</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>True when wind load or seismic forces are included with dead, imposed and earth pressure loads</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_6">Outputs</h3>
+<ul>
+<li>The factor of safety.</li>
+<li>The required minimum.</li>
+<li>Whether the minimum is met.</li>
+</ul>
+<h3 id="references_6">References</h3>
+<ul>
+<li>IS 1904:2021 (fourth revision). Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is1904.py#L126"><code>core/standards/bis/is1904.py</code></a> (<code>stability_check_is1904</code>).</p>
+<h2 id="is-2950-raft-rigidity-rigid-flexible">IS 2950 Raft Rigidity (Rigid / Flexible)</h2>
+<p><em>Whether a raft may be analysed as rigid (conventional method) or flexible, from IS 2950 (Part 1) Appendix C.</em></p>
+<h3 id="relative-stiffness-factor-appendix-c-2">Relative stiffness factor (Appendix C-2)</h3>
+<div class="math-display">\[K = \frac{E}{12\,E_s}\left(\frac{d}{b}\right)^3 \quad\text{(rectangular)}, \qquad K = \frac{E}{12\,E_s}\left(\frac{d}{2R}\right)^3 \quad\text{(circular)}\]</div>
+<p>where:</p>
+<ul>
+<li><span class="math">\(d\)</span> is the raft thickness;</li>
+<li><span class="math">\(b\)</span> is the length of the section in the bending axis;</li>
+<li><span class="math">\(R\)</span> is the radius of a circular raft;</li>
+<li><span class="math">\(E\)</span> is the concrete modulus and <span class="math">\(E_s\)</span> the modulus of compressibility of the soil.</li>
+</ul>
+<p><span class="math">\(K &gt; 0.5\)</span> means the raft is rigid (C-2.1.1); <span class="math">\(K \le 0.5\)</span> means flexible (cl. 5.2.1).</p>
+<h3 id="column-spacing-criterion-appendix-c-3-cl-511">Column spacing criterion (Appendix C-3, cl. 5.1.1)</h3>
+<p>With the modulus of subgrade reaction <span class="math">\(k\)</span>:</p>
+<div class="math-display">\[\lambda = \left(\frac{k\,B}{4\,E_c\,I}\right)^{1/4}\]</div>
+<p>The conventional (rigid) method may be used when the column spacing is less than <span class="math">\(1.75/\lambda\)</span>. By default
+<span class="math">\(I = B\,d^3/12\)</span> (a solid slab of uniform thickness), in which case <span class="math">\(\lambda\)</span> does not depend on <span class="math">\(B\)</span>.</p>
+<p>Cl. 5.1.1 allows the rigid method when either criterion holds. Adjacent column loads and spacings must also
+not vary by more than 20 % (cl. 5.1.3, 5.2.1); the engineer checks this.</p>
+<h3 id="inputs_7">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shape</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Raft shape. Options: rectangular, circular</td>
+</tr>
+<tr>
+<td><code>raft_thickness</code></td>
+<td><span class="math">\(d\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Raft thickness d</td>
+</tr>
+<tr>
+<td><code>concrete_modulus</code></td>
+<td><span class="math">\(E\)</span></td>
+<td>kPa</td>
+<td>—</td>
+<td>Modulus of elasticity of the raft concrete E</td>
+</tr>
+<tr>
+<td><code>soil_modulus</code></td>
+<td><span class="math">\(E_s\)</span></td>
+<td>kPa</td>
+<td>—</td>
+<td>Modulus of compressibility of the foundation soil Es</td>
+</tr>
+<tr>
+<td><code>raft_length</code></td>
+<td><span class="math">\(b\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Rectangular raft: length b of the section in the bending axis</td>
+</tr>
+<tr>
+<td><code>raft_radius</code></td>
+<td><span class="math">\(R\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Circular raft: radius R</td>
+</tr>
+<tr>
+<td><code>subgrade_modulus</code></td>
+<td><span class="math">\(k\)</span></td>
+<td>kN/m3</td>
+<td>—</td>
+<td>Modulus of subgrade reaction k for the raft width (IS 2950 App. B, IS 9214)</td>
+</tr>
+<tr>
+<td><code>raft_width</code></td>
+<td><span class="math">\(B\)</span></td>
+<td>m</td>
+<td>—</td>
+<td>Raft width B for lambda</td>
+</tr>
+<tr>
+<td><code>moment_of_inertia</code></td>
+<td><span class="math">\(I\)</span></td>
+<td>m4</td>
+<td>—</td>
+<td>Moment of inertia I of the raft over width B; default B d^3 / 12 (solid slab)</td>
+</tr>
+<tr>
+<td><code>column_spacing</code></td>
+<td>—</td>
+<td>m</td>
+<td>—</td>
+<td>Column spacing to compare with 1.75 / lambda</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_7">Outputs</h3>
+<ul>
+<li><span class="math">\(K\)</span> and the K criterion.</li>
+<li>With <span class="math">\(k\)</span>: <span class="math">\(\lambda\)</span> [1/m] and the critical spacing <span class="math">\(1.75/\lambda\)</span> [m].</li>
+<li>With a column spacing: the spacing criterion.</li>
+<li>The resulting choice of analysis method.</li>
+</ul>
+<h3 id="references_7">References</h3>
+<ul>
+<li>IS 2950 (Part 1):1981 (Reaffirmed), including Amendment No. 1. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2950.py#L25"><code>core/standards/bis/is2950.py</code></a> (<code>raft_rigidity_is2950</code>).</p>
+<h2 id="is-2720-3-specific-gravity">IS 2720-3 Specific Gravity</h2>
+<p><em>Specific gravity of soil particles by the density bottle method, referred to 27 °C, IS 2720 (Part 3/Sec 1):1980 cl. 5.</em></p>
+<p>From the four weighings of the density bottle method:</p>
+<div class="math-display">\[G = \frac{m_2 - m_1}{(m_4 - m_1) - (m_3 - m_2)}\]</div>
+<ul>
+<li><span class="math">\(m_1\)</span>: empty bottle;</li>
+<li><span class="math">\(m_2\)</span>: bottle and dry soil;</li>
+<li><span class="math">\(m_3\)</span>: bottle, soil and water;</li>
+<li><span class="math">\(m_4\)</span>: bottle full of water.</li>
+</ul>
+<p>The value is referred to 27 °C by the ratio of water densities:</p>
+<div class="math-display">\[G_{27} = G\,\frac{\rho_w(T)}{\rho_w(27\,^\circ\mathrm{C})}\]</div>
+<p>IS 2720 does not tabulate water density. GeoCore uses the Tanaka et al. (2001) correlation for air-free water,
+valid for 0-40 °C.</p>
+<p>Report the average of two determinations to 0.01, and repeat the test if they differ by more than 0.03
+(cl. 6.1). A value outside 2.0-3.2 triggers a check-the-readings warning.</p>
+<h3 id="inputs_8">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mass_bottle</code></td>
+<td><span class="math">\(m_1\)</span></td>
+<td>g</td>
+<td>—</td>
+<td>m1, mass of the empty density bottle</td>
+</tr>
+<tr>
+<td><code>mass_bottle_soil</code></td>
+<td><span class="math">\(m_2\)</span></td>
+<td>g</td>
+<td>—</td>
+<td>m2, mass of bottle and dry soil</td>
+</tr>
+<tr>
+<td><code>mass_bottle_soil_water</code></td>
+<td><span class="math">\(m_3\)</span></td>
+<td>g</td>
+<td>—</td>
+<td>m3, mass of bottle, soil and water</td>
+</tr>
+<tr>
+<td><code>mass_bottle_water</code></td>
+<td><span class="math">\(m_4\)</span></td>
+<td>g</td>
+<td>—</td>
+<td>m4, mass of bottle full of water only</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><span class="math">\(T\)</span></td>
+<td>degC</td>
+<td>0 to 40 degC</td>
+<td>Room/test temperature</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_8">Outputs</h3>
+<ul>
+<li><span class="math">\(G\)</span> at the test temperature.</li>
+<li>The temperature correction factor.</li>
+<li><span class="math">\(G_{27}\)</span>.</li>
+</ul>
+<h3 id="references_8">References</h3>
+<ul>
+<li>IS 2720 (Part 3/Section 1):1980. Bureau of Indian Standards.</li>
+<li>Tanaka, M., Girard, G., Davis, R., Peuto, A. and Bignell, N. (2001). Recommended table for the density of water between 0 °C and 40 °C based on recent experimental reports. Metrologia 38, 301-309.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2720.py#L26"><code>core/standards/bis/is2720.py</code></a> (<code>specific_gravity_is2720</code>).</p>
+<h2 id="is-2720-5-flow-index">IS 2720-5 Flow Index</h2>
+<p><em>Flow index from two points of the flow curve, IS 2720 (Part 5):1985 cl. 3.5.2.</em></p>
+<p>The flow curve plots water content against the logarithm of the number of drops. Its slope is the flow index:</p>
+<div class="math-display">\[I_f = \frac{w_1 - w_2}{\log_{10}(N_2 / N_1)}\]</div>
+<p>The two points (<span class="math">\(w_1\)</span>, <span class="math">\(N_1\)</span>) and (<span class="math">\(w_2\)</span>, <span class="math">\(N_2\)</span>) must have different numbers of drops. <span class="math">\(I_f\)</span> is used for the
+toughness index <span class="math">\(I_t = I_p / I_f\)</span>.</p>
+<h3 id="inputs_9">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>water_content_1</code></td>
+<td><span class="math">\(w_1\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Water content w1 at N1 drops</td>
+</tr>
+<tr>
+<td><code>blows_1</code></td>
+<td><span class="math">\(N_1\)</span></td>
+<td>—</td>
+<td>—</td>
+<td>Number of drops N1</td>
+</tr>
+<tr>
+<td><code>water_content_2</code></td>
+<td><span class="math">\(w_2\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Water content w2 at N2 drops</td>
+</tr>
+<tr>
+<td><code>blows_2</code></td>
+<td><span class="math">\(N_2\)</span></td>
+<td>—</td>
+<td>—</td>
+<td>Number of drops N2</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_9">Outputs</h3>
+<ul>
+<li>Flow index <span class="math">\(I_f\)</span> [%].</li>
+</ul>
+<h3 id="references_9">References</h3>
+<ul>
+<li>IS 2720 (Part 5):1985. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2720.py#L57"><code>core/standards/bis/is2720.py</code></a> (<code>flow_index_is2720</code>).</p>
+<h2 id="is-2720-5-one-point-liquid-limit">IS 2720-5 One-Point Liquid Limit</h2>
+<p><em>Liquid limit from a single trial, Casagrande (cl. 5.6) or cone (cl. 6.5), IS 2720 (Part 5):1985.</em></p>
+<h3 id="casagrande-apparatus-cl-56">Casagrande apparatus (cl. 5.6)</h3>
+<div class="math-display">\[w_L = \frac{w_N}{1.3215 - 0.23\,\log_{10} N}\]</div>
+<p>valid for 15 to 35 drops.</p>
+<h3 id="cone-penetrometer-cl-65">Cone penetrometer (cl. 6.5)</h3>
+<p>Two relationships are given, and both are reported:</p>
+<div class="math-display">\[w_L = \frac{w_N}{0.77\,\log_{10} D} \qquad\text{and}\qquad w_L = \frac{w_N}{0.65 + 0.0175\,D}\]</div>
+<p>valid for a penetration <span class="math">\(D\)</span> of 16 to 26 mm.</p>
+<p>Here <span class="math">\(w_N\)</span> is the water content of the accepted trial. The one-point method is not for highly organic soils.
+Its constants are regional, so national and international reports should use the multi-point or cone method
+(cl. 1.1.1).</p>
+<h3 id="inputs_10">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>water_content</code></td>
+<td><span class="math">\(w_N\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Water content wN of the accepted trial</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Apparatus. Options: casagrande, cone</td>
+</tr>
+<tr>
+<td><code>blows</code></td>
+<td><span class="math">\(N\)</span></td>
+<td>—</td>
+<td>15 to 35</td>
+<td>Casagrande: number of drops to close the groove, 15-35</td>
+</tr>
+<tr>
+<td><code>cone_penetration</code></td>
+<td><span class="math">\(D\)</span></td>
+<td>mm</td>
+<td>16 to 26 mm</td>
+<td>Cone: penetration D of the accepted trial, 16-26</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_10">Outputs</h3>
+<ul>
+<li>Liquid limit <span class="math">\(w_L\)</span> [%].</li>
+<li>For the cone, both the log and the linear relationship.</li>
+</ul>
+<h3 id="references_10">References</h3>
+<ul>
+<li>IS 2720 (Part 5):1985. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2720.py#L75"><code>core/standards/bis/is2720.py</code></a> (<code>liquid_limit_one_point_is2720</code>).</p>
+<h2 id="is-2720-5-consistency-indices">IS 2720-5 Consistency Indices</h2>
+<p><em>Plasticity, liquidity, consistency and toughness indices, IS 2720 (Part 5):1985 cl. 8-11.</em></p>
+<div class="math-display">\[I_p = w_L - w_P \qquad \text{(cl. 8)}\]</div>
+<p><span class="math">\(I_p\)</span> is reported as 0 when <span class="math">\(w_P \ge w_L\)</span> (cl. 8.2). The other indices are then undefined.</p>
+<div class="math-display">\[I_L = \frac{w_0 - w_P}{I_p}\ \ \text{(cl. 10)}, \qquad I_c = \frac{w_L - w_0}{I_p}\ \ \text{(cl. 11)}, \qquad I_t = \frac{I_p}{I_f}\ \ \text{(cl. 9)}\]</div>
+<p><span class="math">\(I_L\)</span> and <span class="math">\(I_c\)</span> need the natural water content <span class="math">\(w_0\)</span>; <span class="math">\(I_t\)</span> needs the flow index <span class="math">\(I_f\)</span>.</p>
+<h3 id="inputs_11">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>liquid_limit</code></td>
+<td><span class="math">\(w_L\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Liquid limit wL</td>
+</tr>
+<tr>
+<td><code>plastic_limit</code></td>
+<td><span class="math">\(w_P\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Plastic limit wP</td>
+</tr>
+<tr>
+<td><code>natural_water_content</code></td>
+<td><span class="math">\(w_0\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Natural water content w0</td>
+</tr>
+<tr>
+<td><code>flow_index</code></td>
+<td><span class="math">\(I_f\)</span></td>
+<td>%</td>
+<td>—</td>
+<td>Flow index If, for the toughness index</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_11">Outputs</h3>
+<ul>
+<li><span class="math">\(I_p\)</span> [%].</li>
+<li>As the inputs allow: <span class="math">\(I_L\)</span>, <span class="math">\(I_c\)</span> and <span class="math">\(I_t\)</span>.</li>
+</ul>
+<h3 id="references_11">References</h3>
+<ul>
+<li>IS 2720 (Part 5):1985. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2720.py#L109"><code>core/standards/bis/is2720.py</code></a> (<code>consistency_indices_is2720</code>).</p>
+<h2 id="is-2720-17-constant-head-permeability">IS 2720-17 Constant Head Permeability</h2>
+<p><em>Coefficient of permeability by the constant head test, referred to 27 °C, IS 2720 (Part 17):1986 cl. 5.4.</em></p>
+<div class="math-display">\[k_T = \frac{Q\,L}{A\,h\,t}, \qquad i = \frac{h}{L}\]</div>
+<ul>
+<li><span class="math">\(Q\)</span>: volume of water collected in time <span class="math">\(t\)</span>;</li>
+<li><span class="math">\(L\)</span>: length between the head-measuring points;</li>
+<li><span class="math">\(A\)</span>: cross-sectional area of the specimen;</li>
+<li><span class="math">\(h\)</span>: head loss.</li>
+</ul>
+<p>The result is referred to 27 °C by the viscosity ratio:</p>
+<div class="math-display">\[k_{27} = k_T\,\frac{\eta_T}{\eta_{27}}\]</div>
+<p>Water viscosity is not tabulated in IS 2720. GeoCore uses the Vogel equation,
+<span class="math">\(\eta = 2.414\times10^{-5}\cdot 10^{247.8/(T_K - 140)}\)</span> Pa·s, which is within about 0.5 % of reference
+values for 0-40 °C.</p>
+<p>The test suits <span class="math">\(k\)</span> between <span class="math">\(10^{-3}\)</span> and <span class="math">\(10^{-7}\)</span> cm/s (cl. 1.1). Results outside that range are flagged.</p>
+<h3 id="inputs_12">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discharge_volume</code></td>
+<td><span class="math">\(Q\)</span></td>
+<td>cm3</td>
+<td>—</td>
+<td>Quantity of water Q collected</td>
+</tr>
+<tr>
+<td><code>specimen_length</code></td>
+<td><span class="math">\(L\)</span></td>
+<td>cm</td>
+<td>—</td>
+<td>Length of specimen L between head measuring points</td>
+</tr>
+<tr>
+<td><code>specimen_area</code></td>
+<td><span class="math">\(A\)</span></td>
+<td>cm2</td>
+<td>—</td>
+<td>Cross-sectional area of specimen A</td>
+</tr>
+<tr>
+<td><code>head_loss</code></td>
+<td><span class="math">\(h\)</span></td>
+<td>cm</td>
+<td>—</td>
+<td>Head loss h over length L</td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td><span class="math">\(t\)</span></td>
+<td>s</td>
+<td>—</td>
+<td>Collection time t</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><span class="math">\(T\)</span></td>
+<td>degC</td>
+<td>0 to 40 degC</td>
+<td>Water temperature T</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_12">Outputs</h3>
+<ul>
+<li>Hydraulic gradient <span class="math">\(i\)</span>.</li>
+<li><span class="math">\(k_T\)</span> [cm/s].</li>
+<li>The viscosity ratio.</li>
+<li><span class="math">\(k_{27}\)</span> [cm/s].</li>
+</ul>
+<h3 id="references_12">References</h3>
+<ul>
+<li>IS 2720 (Part 17):1986. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2720.py#L147"><code>core/standards/bis/is2720.py</code></a> (<code>permeability_constant_head_is2720</code>).</p>
+<h2 id="is-2720-17-falling-head-permeability">IS 2720-17 Falling Head Permeability</h2>
+<p><em>Coefficient of permeability by the falling head test, referred to 27 °C, IS 2720 (Part 17):1986 cl. 6.3.</em></p>
+<div class="math-display">\[k_T = 2.303\,\frac{a\,L}{A\,t}\,\log_{10}\!\left(\frac{h_1}{h_2}\right)\]</div>
+<ul>
+<li><span class="math">\(a\)</span>: area of the stand-pipe;</li>
+<li><span class="math">\(A\)</span>: area of the specimen;</li>
+<li><span class="math">\(L\)</span>: specimen length;</li>
+<li><span class="math">\(h_1\)</span> and <span class="math">\(h_2\)</span>: initial and final heads, with <span class="math">\(h_2 &lt; h_1\)</span>;</li>
+<li><span class="math">\(t\)</span>: elapsed time.</li>
+</ul>
+<p>The result is referred to 27 °C as in the constant head test:</p>
+<div class="math-display">\[k_{27} = k_T\,\frac{\eta_T}{\eta_{27}}\]</div>
+<p>Water viscosity comes from the Vogel equation (0-40 °C). Results outside the <span class="math">\(10^{-3}\)</span> to <span class="math">\(10^{-7}\)</span> cm/s range
+recommended for the test (cl. 1.1) are flagged.</p>
+<h3 id="inputs_13">Inputs</h3>
+<div class="table-wrap"><table class="data">
+<thead>
+<tr>
+<th>Input</th>
+<th>Symbol</th>
+<th>Unit</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>standpipe_area</code></td>
+<td><span class="math">\(a\)</span></td>
+<td>cm2</td>
+<td>—</td>
+<td>Cross-sectional area of the stand-pipe a</td>
+</tr>
+<tr>
+<td><code>specimen_length</code></td>
+<td><span class="math">\(L\)</span></td>
+<td>cm</td>
+<td>—</td>
+<td>Length of specimen L</td>
+</tr>
+<tr>
+<td><code>specimen_area</code></td>
+<td><span class="math">\(A\)</span></td>
+<td>cm2</td>
+<td>—</td>
+<td>Cross-sectional area of specimen A</td>
+</tr>
+<tr>
+<td><code>initial_head</code></td>
+<td><span class="math">\(h_1\)</span></td>
+<td>cm</td>
+<td>—</td>
+<td>Initial head h1</td>
+</tr>
+<tr>
+<td><code>final_head</code></td>
+<td><span class="math">\(h_2\)</span></td>
+<td>cm</td>
+<td>—</td>
+<td>Final head h2</td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td><span class="math">\(t\)</span></td>
+<td>s</td>
+<td>—</td>
+<td>Elapsed time tf - ti</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><span class="math">\(T\)</span></td>
+<td>degC</td>
+<td>0 to 40 degC</td>
+<td>Water temperature T</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="outputs_13">Outputs</h3>
+<ul>
+<li><span class="math">\(k_T\)</span> [cm/s].</li>
+<li>The viscosity ratio.</li>
+<li><span class="math">\(k_{27}\)</span> [cm/s].</li>
+</ul>
+<h3 id="references_13">References</h3>
+<ul>
+<li>IS 2720 (Part 17):1986. Bureau of Indian Standards.</li>
+</ul>
+<p>Implementation: <a href="https://github.com/utkarsh-1912/geocore/blob/main/python-backend/core/standards/bis/is2720.py#L173"><code>core/standards/bis/is2720.py</code></a> (<code>permeability_falling_head_is2720</code>).</p></div>
+
+    <aside class="attribution" aria-label="Source and licence">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-scale"></use></svg>
+      <div>
+        <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
+<a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/indian-standards.md">Source</a></p>
+<p class="attribution__note">Written from: <code>python-backend/core/standards/bis/README.md</code>, <code>website/_build/bis_docs.py</code></p>      </div>
+    </aside>
+
+
+    <nav class="pager" aria-label="Previous and next pages">
+<a class="prev" href="/docs/geocore/using/eurocode7/" rel="prev"><small><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-left"></use></svg>Previous</small>Eurocode 7 partial factors</a><a class="next" href="/docs/geocore/using/parameter-overrides/" rel="next"><small>Next<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg?v=2db2e09fa7#i-chevron-right"></use></svg></small>Customising calculator forms</a>    </nav>
+  </main>
+
+  <aside class="docs-toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">On this page</h2>
+    <ul data-toc>
+      <li class="lvl-2"><a href="#is-6403-bearing-capacity-shallow-foundation">IS 6403 Bearing Capacity (Shallow Foundation)</a></li>
+      <li class="lvl-2"><a href="#is-1498-soil-classification">IS 1498 Soil Classification</a></li>
+      <li class="lvl-2"><a href="#is-2131-spt-n-corrections">IS 2131 SPT N Corrections</a></li>
+      <li class="lvl-2"><a href="#is-1892-depth-of-investigation">IS 1892 Depth of Investigation</a></li>
+      <li class="lvl-2"><a href="#is-1892-borehole-disposition">IS 1892 Borehole Disposition</a></li>
+      <li class="lvl-2"><a href="#is-1904-permissible-settlement">IS 1904 Permissible Settlement</a></li>
+      <li class="lvl-2"><a href="#is-1904-sliding-overturning-check">IS 1904 Sliding / Overturning Check</a></li>
+      <li class="lvl-2"><a href="#is-2950-raft-rigidity-rigid-flexible">IS 2950 Raft Rigidity (Rigid / Flexible)</a></li>
+      <li class="lvl-2"><a href="#is-2720-3-specific-gravity">IS 2720-3 Specific Gravity</a></li>
+      <li class="lvl-2"><a href="#is-2720-5-flow-index">IS 2720-5 Flow Index</a></li>
+      <li class="lvl-2"><a href="#is-2720-5-one-point-liquid-limit">IS 2720-5 One-Point Liquid Limit</a></li>
+      <li class="lvl-2"><a href="#is-2720-5-consistency-indices">IS 2720-5 Consistency Indices</a></li>
+      <li class="lvl-2"><a href="#is-2720-17-constant-head-permeability">IS 2720-17 Constant Head Permeability</a></li>
+      <li class="lvl-2"><a href="#is-2720-17-falling-head-permeability">IS 2720-17 Falling Head Permeability</a></li>
+    </ul>
+  </aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <img class="brand__logo brand__logo--light" src="/assets/images/logo-2.png" alt="GeoCore" width="150" height="31" loading="lazy">
+        <img class="brand__logo brand__logo--dark" src="/assets/images/logo.png" alt="" width="150" height="31" loading="lazy">
+          </a>
+          <p>Offline geotechnical engineering on your desktop. Calculations by <a href="https://github.com/snakesonabrain/groundhog">Groundhog</a>, the open-source library by Bruno Stuyts.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="/index.html#features">Features</a></li>
+            <li><a href="/index.html#geoai">GeoAI</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+            <li><a href="/tutorials.html">Video tutorials</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Project">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore">Source on GitHub</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/releases">Releases</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/issues">Report an issue</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">License (GPLv3)</a></li>
+            <li><a href="/about.html#credits">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Utkarsh Gupta. GeoCore is free software under the GNU GPL v3.</span>
+        <span>Docs include material adapted from the <a href="https://github.com/snakesonabrain/groundhog">groundhog</a> documentation by Bruno Stuyts (GPL-3.0-or-later) — <a href="/docs/license/">credits</a>.</span>
+        <span>No cookies, no analytics, no third-party fonts.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js?v=5c8704b96e" defer></script>
+  <script src="/assets/js/docs.js?v=a62b5efb96" defer></script>
+  <script src="/assets/vendor/katex/katex.min.js?v=155f6c2d67" defer></script>
+  <script src="/assets/vendor/katex/contrib/auto-render.min.js?v=e5372d199b" defer></script>
+  <script src="/assets/js/math.js?v=0659b2343e" defer></script>
+</body>
+</html>

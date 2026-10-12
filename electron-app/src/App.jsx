@@ -14,7 +14,7 @@ import { HistoryProvider, useHistory } from './context/HistoryContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { FavoriteStar } from './components/common/FavoriteStar';
-import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, ChevronRight, ChevronDown, Sheet, FolderKanban, Save } from 'lucide-react';
+import { Menu, History as HistoryIcon, Search, Sun, Moon, HelpCircle, ArrowLeft, Home, Download, FileText, FileJson, ChevronRight, ChevronDown, Sheet, Save } from 'lucide-react';
 import { GeoAILogo } from './components/common/GeoAILogo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { catalogueEntry, findFunction, folderKey, modulesFor, readNavMode, storeNavMode } from './config/navigation';
@@ -517,6 +517,7 @@ const MainLayout = () => {
     switch (action) {
       case 'toggleTheme': toggleTheme(); break;
       case 'openHistory': setHistoryOpen(true); break;
+      case 'openProject': setProjectOpen(true); break;
       case 'openCopilot': setCopilotOpen(true); break;
       case 'openHelp': setHelpOpen(true); break;
     }
@@ -900,9 +901,6 @@ const MainLayout = () => {
             <button onClick={() => setHelpOpen(true)} className={ICON_BUTTON} title="Help & Shortcuts" aria-label="Help">
               <HelpCircle size={18} />
             </button>
-            <button onClick={() => setProjectOpen(true)} className={ICON_BUTTON} title="Project calculations and reports" aria-label="Project">
-              <FolderKanban size={18} />
-            </button>
             <button onClick={() => setHistoryOpen(true)} className={ICON_BUTTON} title="Calculation History (Ctrl+H)" aria-label="History">
               <HistoryIcon size={18} />
             </button>
@@ -954,6 +952,7 @@ const MainLayout = () => {
                   onOpenCopilot={() => setCopilotOpen(true)}
                   onOpenCommands={() => setCommandPaletteOpen(true)}
                   onOpenHelp={() => setHelpOpen(true)}
+                  onOpenProject={() => setProjectOpen(true)}
                 />
               </motion.div>
             )}

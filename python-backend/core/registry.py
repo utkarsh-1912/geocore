@@ -327,7 +327,9 @@ class Registry:
             if new_cols:
                 df = df.rename(columns=new_cols)
 
-            nan_strategy = args.get('nan_strategy', 'fill')
+            nan_strategy = args.get('nan_strategy') or 'fill'
+            if nan_strategy not in ('fill', 'keep'):
+                return {"error": f"Unknown missing-value strategy '{nan_strategy}': use 'fill' (fill with 0) or 'keep' (leave blank)."}
             if nan_strategy == 'fill':
                 # Only fill numeric columns to avoid mess in categorical ones
                 numeric_df = df.select_dtypes(include=[np.number])

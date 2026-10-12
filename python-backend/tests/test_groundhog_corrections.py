@@ -79,3 +79,75 @@ def test_desktop_calculator_and_geoai_tool_use_the_correction():
     assert values["sigma_1_f"] == pytest.approx(300.0, rel=1e-9)
     geoai = tool_registry.invoke_tool("mohrcoulomb_triaxial_compression", {"sigma_3": 100, "cohesion": 0, "phi": 30})
     assert geoai["sigma_1_f [kPa]"] == pytest.approx(300.0, rel=1e-9)
+
+
+# --- acousticimpedance_bulkunitweight_chen -------------------------------------------------------------------
+
+from groundhog.siteinvestigation.correlations import general as correlations_general  # noqa: E402
+
+from core.groundhog_corrections import acousticimpedance_bulkunitweight_chen as acoustic  # noqa: E402
+
+CHEN = (0.0001315, -0.03776, 4.201, -245.0, 8603.0)  # calibration factors 4..0 (Chen et al., 2021)
+
+
+def chen_closed_form(gamma, gs=2.65, s=1.0, gamma_w=10.0):
+    e = (gamma_w * gs - gamma) / (gamma - s * gamma_w)  # Budhu (2011) phase relation
+    n = e / (1 + e)
+    p = 100 * n
+    return e, n, sum(c * p ** k for c, k in zip(CHEN, (4, 3, 2, 1, 0)))
+
+
+@pytest.mark.parametrize("kwargs", [
+    {"bulkunitweight": 18.0},
+    {"bulkunitweight": 18.0, "specific_gravity": 2.0},   # Groundhog: KeyError 'w [-]' (helper allows 2.4-2.9)
+    {"bulkunitweight": 22.0, "specific_gravity": 3.0},   # same, upper end of the documented G_s range
+    {"bulkunitweight": 12.0},                             # Groundhog: NaN (e = 7.25 > helper's 5)
+    {"bulkunitweight": 16.0, "saturation": 0.8, "gamma_w": 10.25},
+])
+def test_acoustic_impedance_matches_the_phase_relations(kwargs):
+    res = acoustic(**kwargs, fail_silently=False)
+    e, n, impedance = chen_closed_form(kwargs["bulkunitweight"], kwargs.get("specific_gravity", 2.65),
+                                       kwargs.get("saturation", 1.0), kwargs.get("gamma_w", 10.0))
+    assert res["e [-]"] == pytest.approx(e, rel=1e-12)
+    assert res["n [-]"] == pytest.approx(n, rel=1e-12)
+    assert res["I [(m/s).(g/cm3)]"] == pytest.approx(impedance, rel=1e-12)
+
+
+def test_acoustic_impedance_groundhog_original_fails_so_the_correction_is_needed():
+    # If these start passing Groundhog has been fixed: drop the correction.
+    original = correlations_general.acousticimpedance_bulkunitweight_chen
+    with pytest.raises(KeyError):
+        original(bulkunitweight=18.0, specific_gravity=2.0, fail_silently=False)
+    assert math.isnan(original(bulkunitweight=12.0)["I [(m/s).(g/cm3)]"])
+    # Inside the helpers' ranges the correction is Groundhog's own result.
+    assert acoustic(bulkunitweight=18.0) == original(bulkunitweight=18.0)
+
+
+def test_acoustic_impedance_rejects_inputs_like_groundhog():
+    with pytest.warns(UserWarning):
+        assert math.isnan(acoustic(bulkunitweight=11.0)["I [(m/s).(g/cm3)]"])  # below the documented 12 kN/m3
+    # gamma > G_s gamma_w would need a negative void ratio.
+    assert math.isnan(acoustic(bulkunitweight=22.0, specific_gravity=2.0)["e [-]"])
+    with pytest.raises(ValueError, match="negative"):
+        acoustic(bulkunitweight=22.0, specific_gravity=2.0, fail_silently=False)
+
+
+def test_acoustic_impedance_keeps_groundhogs_name_signature_and_validation():
+    import inspect
+    from core.geoai.inventory_sync import groundhog_validation_spec
+    original = correlations_general.acousticimpedance_bulkunitweight_chen
+    assert acoustic.__name__ == original.__name__ and acoustic.__module__ == original.__module__
+    assert acoustic.__doc__ == original.__doc__
+    assert inspect.signature(acoustic) == inspect.signature(original)
+    assert groundhog_validation_spec(acoustic) is correlations_general.ACOUSTICIMPEDANCE_BULKUNITWEIGHT_CHEN
+
+
+def test_desktop_calculator_and_geoai_tool_use_the_acoustic_correction():
+    registry = Registry()
+    assert registry.function_map["acousticimpedance_bulkunitweight_chen"] is acoustic
+    args = {"bulkunitweight": 18.0, "specific_gravity": 2.0}
+    expected = chen_closed_form(18.0, 2.0)[2]
+    desktop = registry.execute_function("siteinvestigation", "acousticimpedance_bulkunitweight_chen", args)
+    assert desktop["I [(m/s).(g/cm3)]"] == pytest.approx(expected, rel=1e-9)
+    geoai = tool_registry.invoke_tool("acousticimpedance_bulkunitweight_chen", args)
+    assert geoai["I [(m/s).(g/cm3)]"] == pytest.approx(expected, rel=1e-9)

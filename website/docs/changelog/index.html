@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <script src="/assets/js/theme-init.js?v=4dd37c5fb3"></script>
-  <link rel="stylesheet" href="/assets/css/site.css?v=93d053c934">
+  <link rel="stylesheet" href="/assets/css/site.css?v=5aec6e6cb7">
 </head>
 <body class="layout-docs">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -121,6 +121,11 @@ data-active="true">Learn<svg class="icon" aria-hidden="true" focusable="false"><
   <li>
         <a href="/docs/geocore/using/eurocode7/">
     <span>Eurocode 7 partial factors</span>  </a>
+
+  </li>
+  <li>
+        <a href="/docs/geocore/using/indian-standards/">
+    <span>Indian Standard (BIS) calculations</span>  </a>
 
   </li>
   <li>
@@ -818,6 +823,45 @@ groundhog is a separate project with its own version history; see its <a href="h
 <h2 id="unreleased">Unreleased</h2>
 <h3 id="added">Added</h3>
 <ul>
+<li><strong>Calculations by engineering task.</strong> Calculators are now organised as a catalogue of 192 calculations in
+  10 areas (site investigation, foundations, settlement, dynamics, …), each with one or more methods
+  (214 in total). A sidebar switch keeps the classic groundhog-library grouping ("Library").</li>
+<li><strong>Methods and suggestions.</strong> The ⋯ menu on a calculator lists its other methods with their status and
+  standards, and suggests a method from the data you have (for pile axial capacity: a CPT-based method
+  when CPT data is loaded, the soil-profile method otherwise).</li>
+<li><strong>Compare methods.</strong> Run every method of a calculation on the same inputs and see the results side by
+  side, with the spread between them.</li>
+<li><strong>Phase-relations solver.</strong> Enter any consistent set of phase quantities (unit weight, void ratio, water
+  content, saturation, …) and GeoCore solves the rest with groundhog's functions. Assumed values such as
+  Gs or Sr are used only when you tick them.</li>
+<li><strong>Verified methods.</strong> A method is marked <em>verified</em> only when it reproduces independent closed-form
+  benchmark cases (32 cases, run with the test suite); everything else stays <em>unverified</em>.</li>
+<li><strong>Project ground model.</strong> Project values for a location and depth range are taken from saved soil
+  profiles, CPT data and imported AGS files, and offered as form inputs with their source shown.
+  <strong>Import AGS</strong> reads locations (LOCA/HOLE), layers (GEOL) and SPT N values (averaged per layer, with the
+  test depths listed as the source).</li>
+<li><strong>Saved runs, reports and sign-off.</strong> Save a calculation to the project, see when it is out of date
+  because its inputs changed, export an HTML or PDF report, and sign a run off as reviewed; the reviewer
+  and date appear in the report. Values you type over a project value are recorded as overrides.</li>
+<li><strong>Command palette filters</strong> by data type (CPT, SPT, AGS, soil profile, lab tests) and by standard.</li>
+<li><strong>GeoAI project inputs.</strong> The <code>get_project_inputs</code> tool gives GeoAI the project values for a calculation
+  at a location and depth range, with sources, instead of asking for numbers already in the project.</li>
+<li><strong>GeoAI Explain.</strong> An <em>Explain</em> action on a result asks the local model for a worked solution (problem,
+  method, governing equation, substitution, result) grounded in the calculation's guide and its actual
+  inputs and outputs. The model does not recalculate. GeoCore checks the answer and warns when it quotes
+  a number that is not in the calculation or writes an equation different from the documented one.</li>
+<li><strong>Applicability warnings</strong> on GeoAI tool results, for example Rankine with a backfill slope steeper
+  than φ, or a relative density outside its limits.</li>
+<li><strong>Guide &amp; Theory for the Indian Standard calculators</strong> (IS 6403, IS 1498, IS 2131, IS 1892, IS 1904,
+  IS 2950, IS 2720): governing equations, factor tables, clause references, parameters with symbols,
+  units and ranges, and limitations, written from what GeoCore implements.</li>
+<li><strong>Indian Standard calculations in the online docs</strong>: a new <em>Using GeoCore › Indian Standard (BIS)
+  calculations</em> page with the same theory, equations and inputs as the app's guides.</li>
+<li>Contributor guide, code of conduct, security policy, citation file (<code>CITATION.cff</code>) and issue and pull
+  request templates.</li>
+<li>Local API: <code>POST /api/calculations/{id}/run</code>, <code>POST /api/calculations/{id}/compare</code>,
+  <code>GET /api/calculations/{id}/suggest</code>, <code>GET /api/catalogue</code> and the <code>/api/project/...</code> routes for the
+  project model, runs, reviews and reports.</li>
 <li>Mohr-Coulomb triaxial compression and extension calculators (Constitutive models › General): Mohr's
   circle at failure, the stresses at failure and the orientation of the failure plane, from groundhog.</li>
 <li>Burland (1990) intrinsic and sedimentation compression lines calculator (Site investigation ›
@@ -827,12 +871,42 @@ groundhog is a separate project with its own version history; see its <a href="h
   function's documented inputs (with units and suggested ranges), outputs, formulas and cited references,
   and the documentation is searchable through GeoAI's local document index, with links to these pages.</li>
 </ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li>Calculator pages are simpler: one card with the inputs, and the extras (methods, project values,
+  solver, compare) behind a single <em>More options</em> menu. Project values and Compare open as dialogs, with
+  Sync and Import AGS beside the dialog title.</li>
+<li>Equations in the guides and docs render more cleanly. Units are set upright, math in parameter
+  descriptions and tooltips is typeset, and unbalanced braces from groundhog docstrings are repaired.</li>
+<li>GeoAI tool details (method, standards) come from the calculation catalogue, so the chat shows the
+  same names as the calculator pages.</li>
+<li><strong>Project</strong> (project calculations and reports) moved from the title bar to the home screen's welcome card;
+  it is also in the command palette.</li>
+<li>The README was rewritten, with the logo, a feature overview and the project's open-source policies.</li>
+<li>The website's home page combines the three principles (offline, deterministic, open source) with
+  the calculations overview.</li>
+<li>Release notes on GitHub and on the download page now come from this changelog
+  (<code>.github/scripts/changelog.py</code>), instead of an auto-generated "Full Changelog" link.</li>
+</ul>
 <h3 id="fixed">Fixed</h3>
 <ul>
-<li>The documentation now describes the groundhog GeoCore actually ships: version 0.16.0 at the commit
+<li>Settlement calculation (profile): a profile without compressibility data now gets a clear message that
+  names the missing columns (Cc, Cr and OCR, or mv) and the columns found, instead of a raw error.
+  Common column names such as <code>UnitWeight [kN_m3]</code> and <code>SoilType</code> are recognised, the saved profile is
+  no longer modified by the calculation, and a result that is not a number is reported as an error.</li>
+<li>Negative skin friction and pile-test forms now accept a saved soil profile. The log-time and root-time
+  consolidation forms keep the drainage length. The relative-density form labels state groundhog's
+  e_min / e_max convention.</li>
+<li>AGS files with commas inside quoted fields are read correctly.</li>
+<li>
+<p>PDF export works for large reports (previously limited to about 2 MB).</p>
+</li>
+<li>
+<p>The documentation now describes the groundhog GeoCore actually ships: version 0.16.0 at the commit
   pinned in <code>python-backend/requirements.txt</code>, not the 0.15.0 release. Links to groundhog source code
   point at that commit; several (LCPC, pile testing, lateral response, soil mixing) previously led to
-  files that do not exist in the 0.15.0 release.</li>
+  files that do not exist in the 0.15.0 release.</p>
+</li>
 <li>The AASHTO Young's modulus (SPT) calculator had no Guide &amp; Theory text in the app and was not marked
   "Available in GeoCore" in these docs.</li>
 <li>The release workflow, when started by hand from a branch, published the release under the branch name
@@ -872,7 +946,7 @@ groundhog is a separate project with its own version history; see its <a href="h
       <div>
         <p><strong>GeoCore documentation</strong> by Utkarsh Gupta, licensed under the <a href="https://github.com/utkarsh-1912/geocore/blob/main/LICENSE">GNU GPL v3</a>.
 <a href="https://github.com/utkarsh-1912/geocore/blob/main/website/_content/geocore/changelog.md">Source</a></p>
-<p class="attribution__note">Written from: <code>RELEASE_GUIDE.md</code>, <code>electron-app/package.json</code>, <code>stage/plan.md</code></p>      </div>
+<p class="attribution__note">Written from: <code>RELEASE_GUIDE.md</code>, <code>electron-app/package.json</code>, <code>stage/plan.md</code>, <code>.github/scripts/changelog.py</code></p>      </div>
     </aside>
 
 
@@ -885,6 +959,7 @@ groundhog is a separate project with its own version history; see its <a href="h
     <ul data-toc>
       <li class="lvl-2"><a href="#unreleased">Unreleased</a></li>
       <li class="lvl-3"><a href="#added">Added</a></li>
+      <li class="lvl-3"><a href="#changed">Changed</a></li>
       <li class="lvl-3"><a href="#fixed">Fixed</a></li>
       <li class="lvl-2"><a href="#v100-2026-10-04">v1.0.0 — 2026-10-04</a></li>
       <li class="lvl-3"><a href="#added_1">Added</a></li>

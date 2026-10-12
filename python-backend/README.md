@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../electron-app/public/logo.png">
+    <img src="../electron-app/public/logo-2.png" alt="GeoCore" width="240">
+  </picture>
+</p>
+
 # GeoCore backend
 
 FastAPI service that exposes the Groundhog calculation library to the desktop app and hosts GeoAI. It binds to `127.0.0.1:8000`.
@@ -28,6 +35,10 @@ Python 3.10+ (CI runs 3.10, so avoid newer syntax).
 | `core/paths.py` | Per-user storage; `GEOCORE_CONFIG_DIR` overrides it (tests use this) |
 | `core/schema_manager.py`, `schema_overrides.json`, `module_info_structured.json` | Form schemas and manual overrides; `generate_schemas.py` regenerates them |
 | `core/geoai/` | GeoAI: see [core/geoai/README.md](core/geoai/README.md) |
+| `core/catalogue/` | Calculation catalogue (calculations × methods), benchmarks, method run/compare/suggest, applicability checks; `/api/catalogue`, `/api/calculations/...` |
+| `core/project/` | Project ground model (SQLite), AGS import, saved runs, reviews and HTML reports; `/api/project/...` |
+| `core/standards/bis/` | Indian Standard calculations: see [core/standards/bis/README.md](core/standards/bis/README.md) |
+| `tests/golden/` | Recorded `/api/execute` outputs; `python tests/golden/golden_tools.py check` guards against accidental result changes |
 | `tests/` | Test suite |
 | `main.spec` | PyInstaller spec for the packaged backend |
 

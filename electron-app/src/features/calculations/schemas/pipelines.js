@@ -17,7 +17,7 @@ export const pipelineSchemas = {
             { name: "phi_eff", type: "float", unit: "deg", description: "Effective friction angle", required: true },
             { name: "diameter", type: "float", unit: "m", description: "Pipeline diameter", required: true },
             { name: "roughness_factor", type: "float", default: 0.67, description: "Roughness (0=smooth, 1=rough)" },
-            { name: "Ngamma_theory", type: "string", default: "Vesic", description: "Theory (Vesic, Meyerhof, DavisBooker)" }
+            { name: "Ngamma_theory", options: ["Vesic", "Meyerhof", "DavisBooker"], type: "string", default: "Vesic", description: "Theory (Vesic, Meyerhof, DavisBooker)" }
         ]
     },
     embedment_undrained_method1: {
