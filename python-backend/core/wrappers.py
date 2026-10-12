@@ -7,6 +7,9 @@ import json
 import plotly
 import warnings
 import math
+import re
+
+import pandas as pd
 from groundhog.shallowfoundations.capacity import ShallowFoundationCapacityUndrained, ShallowFoundationCapacityDrained
 from groundhog.shallowfoundations.settlement import SettlementCalculation
 from groundhog.general.soilprofile import SoilProfile
@@ -1485,6 +1488,72 @@ def stress_cylinder_elastic_isotropic_wrapper(args):
         import traceback
         traceback.print_exc()
         return {"error": f"Elastic Cylinder Stress Error: {str(e)}"}
+
+
+# Columns Groundhog's SettlementCalculation reads, and the spellings of them a saved profile may use. A column is
+# taken only when its unit matches (or it has none and the quantity is dimensionless); values are never converted
+# or assumed.
+_SETTLEMENT_COLUMNS = {
+    "Total unit weight [kN/m3]": (("total unit weight", "unit weight", "unitweight", "bulk unit weight", "gamma"),
+                                  ("kn/m3", "kn_m3", "kn/m^3", "kn/m³")),
+    "Cc [-]": (("cc", "compression index"), ("-", "")),
+    "Cr [-]": (("cr", "recompression index", "swelling index", "cs"), ("-", "")),
+    "OCR [-]": (("ocr", "overconsolidation ratio"), ("-", "")),
+    "mv [1/kPa]": (("mv", "coefficient of volume compressibility"), ("1/kpa", "m2/kn", "m^2/kn", "m²/kn")),
+    "Soil type": (("soil type", "soiltype", "soil", "soil description", "description"), ("",)),
+}
+_COLUMN_PARTS = re.compile(r"^\s*(.*?)\s*(?:\[([^\]]*)\])?\s*$")
+
+
+def _settlement_key(text):
+    return re.sub(r"[\s_]+", " ", str(text)).strip().lower()
+
+
+def settlement_profile(profile, name):
+    """
+    A copy of a saved soil profile ready for Groundhog's SettlementCalculation: the columns it reads renamed to its
+    exact spellings ("UnitWeight [kN_m3]" -> "Total unit weight [kN/m3]"), and an error message instead when the
+    profile lacks what the calculation needs - unit weight in every layer, and compressibility (mv, or Cc, Cr and
+    OCR). Working on a copy also keeps the calculation from adding its own columns to the saved profile.
+    Returns (profile copy, None) or (None, message).
+    """
+    from groundhog.general.soilprofile import SoilProfile
+    renames, have = {}, set()
+    for col in profile.columns:
+        if col in _SETTLEMENT_COLUMNS:
+            have.add(col)
+            continue
+        m = _COLUMN_PARTS.match(str(col))
+        base, unit = _settlement_key(m.group(1)), (m.group(2) or "").strip().lower().replace(" ", "")
+        for target, (names, units) in _SETTLEMENT_COLUMNS.items():
+            if target not in have and base in names and unit in units:
+                renames[col] = target
+                have.add(target)
+                break
+    df = profile.rename(columns=renames)
+
+    def filled(column):
+        return column in df.columns and pd.to_numeric(df[column], errors="coerce").notna().all()
+
+    columns_found = ", ".join(str(c) for c in profile.columns)
+    problems = []
+    if "Soil type" not in df.columns or df["Soil type"].isna().any():
+        problems.append("a soil type column 'Soil type' (text, e.g. SAND or CLAY) for every layer")
+    if not filled("Total unit weight [kN/m3]"):
+        problems.append("a total unit weight column 'Total unit weight [kN/m3]' with a value in every layer")
+    compressibility = ["Cc [-]", "Cr [-]", "OCR [-]"]
+    if not filled("mv [1/kPa]") and not all(filled(c) for c in compressibility):
+        partial = [c for c in compressibility if c in df.columns]
+        missing = [c for c in compressibility if not filled(c)]
+        detail = (f" (it has {', '.join(partial)} but not {', '.join(missing)} in every layer)" if partial else "")
+        problems.append("compressibility in every layer: either 'mv [1/kPa]' (coefficient of volume compressibility), "
+                        "or all three of 'Cc [-]' (compression index), 'Cr [-]' (recompression index) and "
+                        f"'OCR [-]' (overconsolidation ratio){detail}")
+    if problems:
+        return None, (f"Soil profile '{name}' cannot be used for a settlement calculation. It needs "
+                      + "; and ".join(problems) + f". Columns in the profile: {columns_found}. Add the missing "
+                      "values to the profile (Manage); GeoCore does not assume them.")
+    return SoilProfile(pd.DataFrame(df)), None
 
 
 def _table_rows(value):

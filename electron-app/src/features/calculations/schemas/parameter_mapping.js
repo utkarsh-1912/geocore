@@ -6,20 +6,20 @@
 export const parameterMappingSchemas = {
     get_projected_point: {
         inputs: [
-            { name: "lon1", type: "float", description: "Longitude of line end 1", required: true },
-            { name: "lat1", type: "float", description: "Latitude of line end 1", required: true },
-            { name: "lon2", type: "float", description: "Longitude of line end 2", required: true },
-            { name: "lat2", type: "float", description: "Latitude of line end 2", required: true },
-            { name: "lon3", type: "float", description: "Longitude of point", required: true },
-            { name: "lat3", type: "float", description: "Latitude of point", required: true }
+            { name: "lon1", min: -180, max: 180, type: "float", description: "Longitude of line end 1", required: true },
+            { name: "lat1", min: -90, max: 90, type: "float", description: "Latitude of line end 1", required: true },
+            { name: "lon2", min: -180, max: 180, type: "float", description: "Longitude of line end 2", required: true },
+            { name: "lat2", min: -90, max: 90, type: "float", description: "Latitude of line end 2", required: true },
+            { name: "lon3", min: -180, max: 180, type: "float", description: "Longitude of point", required: true },
+            { name: "lat3", min: -90, max: 90, type: "float", description: "Latitude of point", required: true }
         ]
     },
     latlon_distance: {
         inputs: [
-            { name: "lon1", type: "float", required: true },
-            { name: "lat1", type: "float", required: true },
-            { name: "lon2", type: "float", required: true },
-            { name: "lat2", type: "float", required: true }
+            { name: "lon1", min: -180, max: 180, type: "float", required: true },
+            { name: "lat1", min: -90, max: 90, type: "float", required: true },
+            { name: "lon2", min: -180, max: 180, type: "float", required: true },
+            { name: "lat2", min: -90, max: 90, type: "float", required: true }
         ]
     },
     map_depth_properties: {

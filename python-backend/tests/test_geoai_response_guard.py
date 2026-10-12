@@ -370,6 +370,21 @@ def test_answer_cut_at_cap_gets_truncation_note():
     assert resp.response_text == "Short complete answer."
 
 
+def test_truncation_note_matches_frontend_continue_chip():
+    # The desktop chat shows a "Continue" chip when an answer ends with this exact note
+    # (electron-app/src/features/copilot/truncation.js); keep the two copies in sync.
+    import json
+    from pathlib import Path
+    from core.geoai.response_guard import TRUNCATION_NOTE
+    js = Path(__file__).resolve().parents[2] / "electron-app" / "src" / "features" / "copilot" / "truncation.js"
+    if not js.exists():
+        return  # backend-only checkout
+    literal = next(line for line in js.read_text(encoding="utf-8").splitlines()
+                   if line.startswith("export const TRUNCATION_NOTE"))
+    js_value = json.loads(literal.split("=", 1)[1].strip().rstrip(";").replace("'", '"'))
+    assert js_value == TRUNCATION_NOTE
+
+
 # ---------------- fabricated "[Calculation record" narration (no tool ever called) ----------------
 
 # Regression: a live Phi-4-mini session asked to classify CPT soil behavior for

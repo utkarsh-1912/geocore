@@ -21,21 +21,21 @@ export const constitutiveSchemas = {
     hardening_soil_drained_triaxial: {
         inputs: [
             // Material Parameters (__init__)
-            { name: "friction_angle", type: "float", unit: "deg", description: "Friction angle", required: true },
-            { name: "cohesion", type: "float", unit: "kPa", description: "Cohesion", required: true },
-            { name: "Rf", type: "float", default: 0.9, description: "Failure ratio (default 0.9)", required: true },
+            { name: "friction_angle", type: "float", unit: "deg", min: 0, max: 90, minExclusive: true, maxExclusive: true, description: "Friction angle", required: true },
+            { name: "cohesion", type: "float", unit: "kPa", min: 0, description: "Cohesion", required: true },
+            { name: "Rf", type: "float", unit: "-", min: 0, max: 1, minExclusive: true, maxExclusive: true, default: 0.9, description: "Failure ratio (default 0.9)", required: true },
 
             // Stiffness Parameters (set_reference_moduli)
-            { name: "E50_ref", type: "float", unit: "kPa", description: "Secant stiffness at 50% strength", required: true },
-            { name: "Eur_ref", type: "float", unit: "kPa", description: "Unloading/reloading stiffness", required: true },
-            { name: "Eoed_ref", type: "float", unit: "kPa", description: "Oedometric stiffness", required: true },
-            { name: "p_ref", type: "float", unit: "kPa", default: 100, description: "Reference pressure", required: true },
+            { name: "E50_ref", type: "float", unit: "kPa", min: 0, minExclusive: true, description: "Secant stiffness at 50% strength", required: true },
+            { name: "Eur_ref", type: "float", unit: "kPa", min: 0, minExclusive: true, description: "Unloading/reloading stiffness", required: true },
+            { name: "Eoed_ref", type: "float", unit: "kPa", min: 0, minExclusive: true, description: "Oedometric stiffness", required: true },
+            { name: "p_ref", type: "float", unit: "kPa", min: 0, minExclusive: true, default: 100, description: "Reference pressure", required: true },
 
             // Test Parameters (calculate_drainedtriaxial)
-            { name: "sigma3", type: "float", unit: "kPa", description: "Confining pressure (sigma3)", required: true },
-            { name: "sigma1_0", type: "float", unit: "kPa", description: "Initial vertical stress", required: true },
-            { name: "m", type: "float", description: "Stress dependence power (m)", required: true },
-            { name: "N", type: "int", default: 100, description: "Number of steps" }
+            { name: "sigma3", type: "float", unit: "kPa", min: 0, minExclusive: true, description: "Confining pressure (sigma3)", required: true },
+            { name: "sigma1_0", type: "float", unit: "kPa", min: 0, minExclusive: true, description: "Initial vertical stress", required: true },
+            { name: "m", type: "float", unit: "-", min: 0, max: 1, description: "Stress dependence power (m)", required: true },
+            { name: "N", type: "int", min: 1, default: 100, description: "Number of steps" }
         ],
         documentation: `
             <h3>Hardening Soil Model - Drained Triaxial Test</h3>

@@ -5,6 +5,7 @@
  * deterministic calculation record (see core/geoai/agent.py: history_to_messages).
  */
 import { stripImageMarkers } from './answerVisuals';
+import { stripTruncationNote } from './truncation';
 
 const MAX_HISTORY_MESSAGES = 6;
 
@@ -21,7 +22,7 @@ export const buildChatHistory = (messages = []) =>
         .slice(-MAX_HISTORY_MESSAGES)
         .map(m => {
             // Old {{image:ID}} markers mean nothing to the model next turn (ids restart at v1): keep them out.
-            const item = { role: m.sender === 'user' ? 'user' : 'assistant', content: stripImageMarkers(m.text) };
+            const item = { role: m.sender === 'user' ? 'user' : 'assistant', content: stripTruncationNote(stripImageMarkers(m.text)) };
             if (m.sender === 'ai' && m.executedTool) {
                 item.tool = { name: m.executedTool, arguments: m.parameters || {}, result: m.results ?? null };
             }

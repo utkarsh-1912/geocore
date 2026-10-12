@@ -147,3 +147,75 @@ def validate_and_coerce_inputs(function_id: str, raw_args: Dict[str, Any]) -> Tu
         raise build_validation_error(function_id, input_cls, e)
     except (TypeError, ValueError) as e:
         raise GeoAIValidationError(f"Validation failed for '{function_id}': {str(e)}")
+
+
+_FIELD_BOUNDS: Optional[Dict[str, Dict[str, Dict[str, Any]]]] = None
+
+
+def _field_limits(field: Any) -> Tuple[Any, Any, bool, bool]:
+    """(min, max, min_exclusive, max_exclusive) from a pydantic field's ge/gt/le/lt constraints."""
+    lo = hi = None
+    lo_x = hi_x = False
+    for m in field.metadata:
+        if getattr(m, 'ge', None) is not None:
+            lo, lo_x = m.ge, False
+        if getattr(m, 'gt', None) is not None:
+            lo, lo_x = m.gt, True
+        if getattr(m, 'le', None) is not None:
+            hi, hi_x = m.le, False
+        if getattr(m, 'lt', None) is not None:
+            hi, hi_x = m.lt, True
+    return lo, hi, lo_x, hi_x
+
+
+def _tighter(a: Any, a_x: bool, b: Any, b_x: bool, pick) -> Tuple[Any, bool]:
+    """The stricter of two one-sided limits; pick is max for lower limits and min for upper ones."""
+    if a is None:
+        return b, b_x
+    if b is None or a == b:
+        return a, a_x or (a == b and b_x)
+    return (a, a_x) if pick(a, b) == a else (b, b_x)
+
+
+def field_bounds() -> Dict[str, Dict[str, Dict[str, Any]]]:
+    """
+    ``{function_id: {parameter: {"min", "max", "min_exclusive", "max_exclusive", "unit", "integer"}}}``
+    for every bounded input, so the form shows and checks the limits the calculation enforces:
+    the schema that validates the request (validate_and_coerce_inputs) intersected with Groundhog's
+    own validated range (parameter_inventory.json), which Groundhog applies again when it runs.
+    None = open side; unbounded parameters are omitted. Cached; both are fixed at run time.
+    """
+    global _FIELD_BOUNDS
+    if _FIELD_BOUNDS is None:
+        import typing
+        from core.registry import registry  # noqa: F401  (registers the auto-generated schemas)
+        from core.geoai.schemas import SCHEMA_REGISTRY
+        from core.geoai.schema_factory import _INVENTORY_BY_FUNC
+        from core.geoai.units import normalize_unit_str
+
+        def _num(v: Any) -> Any:
+            return None if v in ("", None) else float(v)
+
+        out: Dict[str, Dict[str, Dict[str, Any]]] = {}
+        for function_id, (input_cls, _) in SCHEMA_REGISTRY.items():
+            inventory = {r["parameter_name"]: r for r in _INVENTORY_BY_FUNC.get(function_id, [])}
+            for name, field in input_cls.model_fields.items():
+                lo, hi, lo_x, hi_x = _field_limits(field)
+                unit = (field.json_schema_extra or {}).get('unit') if isinstance(field.json_schema_extra, dict) else None
+                row = inventory.get(name)
+                if row and row.get("python_type") in ("int", "float") and                         normalize_unit_str(row.get("display_unit") or "-") == normalize_unit_str(unit or "-"):
+                    lo, lo_x = _tighter(lo, lo_x, _num(row.get("min_value")), bool(row.get("min_exclusive")), max)
+                    hi, hi_x = _tighter(hi, hi_x, _num(row.get("max_value")), bool(row.get("max_exclusive")), min)
+                if lo is None and hi is None:
+                    continue
+                types = typing.get_args(field.annotation) or (field.annotation,)
+                out.setdefault(function_id, {})[name] = {
+                    "min": None if lo is None else float(lo),
+                    "max": None if hi is None else float(hi),
+                    "min_exclusive": lo_x,
+                    "max_exclusive": hi_x,
+                    "unit": None if unit in ("", "-", None) else unit,
+                    "integer": int in types and float not in types,
+                }
+        _FIELD_BOUNDS = out
+    return _FIELD_BOUNDS

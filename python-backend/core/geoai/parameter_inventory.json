@@ -166,7 +166,8 @@
     "max_value": 400.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Undrained shear strength (S_u) [kPa]  - Suggested range: 0.0<=undrained_shear_strength<=400.0"
+    "physical_meaning": "Undrained shear strength (S_u) [kPa]  - Suggested range: 0.0<=undrained_shear_strength<=400.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.axialcapacity.skinfriction",
@@ -179,7 +180,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "In-situ vertical effective stress (p'_o(z)) [kPa]  - Suggested range: 0.0<=vertical_effective_stress  .. math::     f(z) = \\alpha \\cdot S_u      \\alpha = 0.5 \\cdot \\psi^{-0.5} & \\quad \\text{for } \\psi \\leq 1.0      \\alpha = 0.5 \\cdot \\psi^{-0.25} & \\quad \\text{for } \\psi > 1.0      \\psi = \\frac{S_u}{p'_o(z)}"
+    "physical_meaning": "In-situ vertical effective stress (p'_o(z)) [kPa]  - Suggested range: 0.0<=vertical_effective_stress  .. math::     f(z) = \\alpha \\cdot S_u      \\alpha = 0.5 \\cdot \\psi^{-0.5} & \\quad \\text{for } \\psi \\leq 1.0      \\alpha = 0.5 \\cdot \\psi^{-0.25} & \\quad \\text{for } \\psi > 1.0      \\psi = \\frac{S_u}{p'_o(z)}",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.axialcapacity.skinfriction",
@@ -907,7 +909,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa]                      - Suggested range: \\sigma_v^{\\prime} \\geq 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa]                      - Suggested range: \\sigma_v^{\\prime} \\geq 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -972,7 +975,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff > 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff > 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -1011,7 +1015,8 @@
     "max_value": 110.0,
     "is_nullable": false,
     "default_value": "100",
-    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     q_{c1N} = \\max \\left( \\min \\left( \\frac{q_c}{0.001 P_a}, 254 \\right), 21 \\right)      m = 1.338 - 0.249 \\cdot (q_{c1N})^{0.264}      C_N = \\min \\left( \\left( \\frac{P_a}{\\sigma_v^{\\prime}} \\right)^m, 1.7 \\right)      FC = 2.8 \\cdot I_c^{2.6}      \\Delta q_{c1N} = (5.4 + q_{c1N} / 16) \\cdot \\exp \\left( 1.63 + \\frac{9.7}{FC + 0.01} - \\left( \\frac{15.7}{FC + 0.01} \\right)^2 \\right)      Q_{tn,cs} = q_{c1N} + \\Delta q_{c1N}"
+    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     q_{c1N} = \\max \\left( \\min \\left( \\frac{q_c}{0.001 P_a}, 254 \\right), 21 \\right)      m = 1.338 - 0.249 \\cdot (q_{c1N})^{0.264}      C_N = \\min \\left( \\left( \\frac{P_a}{\\sigma_v^{\\prime}} \\right)^m, 1.7 \\right)      FC = 2.8 \\cdot I_c^{2.6}      \\Delta q_{c1N} = (5.4 + q_{c1N} / 16) \\cdot \\exp \\left( 1.63 + \\frac{9.7}{FC + 0.01} - \\left( \\frac{15.7}{FC + 0.01} \\right)^2 \\right)      Q_{tn,cs} = q_{c1N} + \\Delta q_{c1N}",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -1063,7 +1068,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -1089,7 +1095,8 @@
     "max_value": 110.0,
     "is_nullable": false,
     "default_value": "100",
-    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     K_c = \\begin{cases}     1.0 & \\text{if } I_c \\leq 1.7 \\\\     1.0 & \\text{if } 1.7 < I_c < 2.36 \\text{ and } F_r < 0.5 \\\\     15 - \\frac{14}{1 + \\left( \\frac{I_c}{2.95} \\right)^{11}} & \\text{otherwise}     \\end{cases}      n = \\min \\left( 1, 0.381 \\cdot I_c + 0.05 \\cdot \\left( \\frac{\\sigma_v^{\\prime}}{P_a} \\right) - 0.15 \\right)      Q_{tn} = \\left( \\frac{q_t - \\sigma_v}{P_a} \\right) \\cdot \\left( \\frac{P_a}{\\sigma_v^{\\prime}} \\right)^n      Q_{tn,cs} = K_c \\cdot Q_{tn}"
+    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     K_c = \\begin{cases}     1.0 & \\text{if } I_c \\leq 1.7 \\\\     1.0 & \\text{if } 1.7 < I_c < 2.36 \\text{ and } F_r < 0.5 \\\\     15 - \\frac{14}{1 + \\left( \\frac{I_c}{2.95} \\right)^{11}} & \\text{otherwise}     \\end{cases}      n = \\min \\left( 1, 0.381 \\cdot I_c + 0.05 \\cdot \\left( \\frac{\\sigma_v^{\\prime}}{P_a} \\right) - 0.15 \\right)      Q_{tn} = \\left( \\frac{q_t - \\sigma_v}{P_a} \\right) \\cdot \\left( \\frac{P_a}{\\sigma_v^{\\prime}} \\right)^n      Q_{tn,cs} = K_c \\cdot Q_{tn}",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -1102,7 +1109,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Total vertical stress at the depth of interest (\\sigma_v) [kPa] - Suggested range: sigma_vo > 0.0"
+    "physical_meaning": "Total vertical stress at the depth of interest (\\sigma_v) [kPa] - Suggested range: sigma_vo > 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -1154,7 +1162,8 @@
     "max_value": 110.0,
     "is_nullable": false,
     "default_value": "100",
-    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     C_Q = \\min \\left( \\left( \\frac{P_a}{\\sigma_v} \\right)^{0.5}, 2 \\right)      q_{c1N} = \\frac{q_c}{0.001 P_a} \\cdot C_Q      K_c = \\begin{cases}     1.0 & \\text{if } I_c \\leq 1.64 \\\\     1.0 & \\text{if } I_c < 2.36 \\text{ and } F_r < 0.5 \\\\     -0.403 I_c^4 + 5.581 I_c^3 - 21.63 I_c^2 + 33.75 I_c - 17.88 & \\text{otherwise}     \\end{cases}      Q_{tn,cs} = K_c \\cdot q_{c1N}"
+    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     C_Q = \\min \\left( \\left( \\frac{P_a}{\\sigma_v} \\right)^{0.5}, 2 \\right)      q_{c1N} = \\frac{q_c}{0.001 P_a} \\cdot C_Q      K_c = \\begin{cases}     1.0 & \\text{if } I_c \\leq 1.64 \\\\     1.0 & \\text{if } I_c < 2.36 \\text{ and } F_r < 0.5 \\\\     -0.403 I_c^4 + 5.581 I_c^3 - 21.63 I_c^2 + 33.75 I_c - 17.88 & \\text{otherwise}     \\end{cases}      Q_{tn,cs} = K_c \\cdot q_{c1N}",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.spt_processing",
@@ -1466,7 +1475,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 9.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 9.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -1921,7 +1931,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Drainage length (H_{dr}) [m]"
+    "physical_meaning": "Drainage length (H_{dr}) [m]",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.consolidation.dissipation.onedimensionalconsolidation",
@@ -2077,7 +2088,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -2246,7 +2258,8 @@
     "max_value": 110.0,
     "is_nullable": false,
     "default_value": "100",
-    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     CRR = \\min \\left( \\exp \\left( \\frac{Q_{tn,cs}}{113} + \\left( \\frac{Q_{tn,cs}}{1000} \\right)^2 - \\left( \\frac{Q_{tn,cs}}{140} \\right)^3 + \\left( \\frac{Q_{tn,cs}}{137} \\right)^4 - 2.80 \\right), 0.6 \\right)      C_{\\sigma} = \\frac{1}{37.3 - 8.27 \\cdot \\min(Q_{tn,cs}, 211)^{0.264}}      K_{\\sigma} = \\min \\left( 1 - C_{\\sigma} \\cdot \\ln \\left( \\frac{\\sigma_v^{\\prime}}{P_a} \\right), 1.1 \\right)"
+    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     CRR = \\min \\left( \\exp \\left( \\frac{Q_{tn,cs}}{113} + \\left( \\frac{Q_{tn,cs}}{1000} \\right)^2 - \\left( \\frac{Q_{tn,cs}}{140} \\right)^3 + \\left( \\frac{Q_{tn,cs}}{137} \\right)^4 - 2.80 \\right), 0.6 \\right)      C_{\\sigma} = \\frac{1}{37.3 - 8.27 \\cdot \\min(Q_{tn,cs}, 211)^{0.264}}      K_{\\sigma} = \\min \\left( 1 - C_{\\sigma} \\cdot \\ln \\left( \\frac{\\sigma_v^{\\prime}}{P_a} \\right), 1.1 \\right)",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -2285,7 +2298,8 @@
     "max_value": 110.0,
     "is_nullable": false,
     "default_value": "100",
-    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     CRR = \\min \\left( \\exp \\left( \\frac{Q_{tn,cs}}{540} + \\left( \\frac{Q_{tn,cs}}{67} \\right)^2 - \\left( \\frac{Q_{tn,cs}}{80} \\right)^3 + \\left( \\frac{Q_{tn,cs}}{114} \\right)^4 - 3 \\right), 0.6 \\right)      C_{\\sigma} = \\min \\left( \\frac{1}{37.3 - 8.27 \\cdot \\min(Q_{tn,cs}, 211)^{0.264}}, 0.3 \\right)      K_{\\sigma} = \\min \\left( 1 - C_{\\sigma} \\cdot \\ln \\left( \\frac{\\sigma_v^{\\prime}}{P_a} \\right), 1.1 \\right)"
+    "physical_meaning": "Reference atmospheric pressure (P_a) [kPa] - Suggested range: atmospheric_pressure > 0.0 (optional, default=100.0)  .. math::     CRR = \\min \\left( \\exp \\left( \\frac{Q_{tn,cs}}{540} + \\left( \\frac{Q_{tn,cs}}{67} \\right)^2 - \\left( \\frac{Q_{tn,cs}}{80} \\right)^3 + \\left( \\frac{Q_{tn,cs}}{114} \\right)^4 - 3 \\right), 0.6 \\right)      C_{\\sigma} = \\min \\left( \\frac{1}{37.3 - 8.27 \\cdot \\min(Q_{tn,cs}, 211)^{0.264}}, 0.3 \\right)      K_{\\sigma} = \\min \\left( 1 - C_{\\sigma} \\cdot \\ln \\left( \\frac{\\sigma_v^{\\prime}}{P_a} \\right), 1.1 \\right)",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -2389,7 +2403,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -2454,7 +2469,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -2519,7 +2535,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -2597,7 +2614,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.cptliquefaction",
@@ -2896,7 +2914,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress at the depth of interest (\\sigma_v^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -3013,7 +3032,8 @@
     "max_value": 250.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress at the depth considered (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 250.0"
+    "physical_meaning": "Vertical effective stress at the depth considered (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 250.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -3026,7 +3046,8 @@
     "max_value": 23.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Depth considered for the assessment (z) [m] - Suggested range: 0.0 <= depth <= 23.0"
+    "physical_meaning": "Depth considered for the assessment (z) [m] - Suggested range: 0.0 <= depth <= 23.0",
+    "max_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -3039,7 +3060,8 @@
     "max_value": 8.5,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Earthquake magnitude (M) [-] - Suggested range: 0.0 <= magnitude <= 8.5"
+    "physical_meaning": "Earthquake magnitude (M) [-] - Suggested range: 0.0 <= magnitude <= 8.5",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -3208,7 +3230,8 @@
     "max_value": 100.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Horizontal coefficient of consolidation (<span class=\"math-inline\">c_h</span>) [m2/yr] - Suggested range: 0.0 <= ch <= 100.0"
+    "physical_meaning": "Horizontal coefficient of consolidation (<span class=\"math-inline\">c_h</span>) [m2/yr] - Suggested range: 0.0 <= ch <= 100.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -3624,7 +3647,8 @@
     "max_value": 2.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Pipeline or cable penetration below virgin seabed (z) [m] - Suggested range: 0.0 <= penetration <= 2.0"
+    "physical_meaning": "Pipeline or cable penetration below virgin seabed (z) [m] - Suggested range: 0.0 <= penetration <= 2.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.pipelinescables.stability.penetration",
@@ -3663,7 +3687,8 @@
     "max_value": 2.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Pipeline or cable diameter (D) [m] - Suggested range: 0.0 <= diameter <= 2.0"
+    "physical_meaning": "Pipeline or cable diameter (D) [m] - Suggested range: 0.0 <= diameter <= 2.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.pipelinescables.stability.penetration",
@@ -3754,7 +3779,8 @@
     "max_value": 2.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Penetration depth for which the pipeline penetration is calculated (m) [m] - Suggested range: 0.0 <= penetration <= 2.0"
+    "physical_meaning": "Penetration depth for which the pipeline penetration is calculated (m) [m] - Suggested range: 0.0 <= penetration <= 2.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.pipelinescables.stability.penetration",
@@ -3793,7 +3819,8 @@
     "max_value": 2.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Pipeliine diameter (D) [m] - Suggested range: 0.0 <= diameter <= 2.0"
+    "physical_meaning": "Pipeliine diameter (D) [m] - Suggested range: 0.0 <= diameter <= 2.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.pipelinescables.stability.penetration",
@@ -3819,7 +3846,8 @@
     "max_value": 50.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Undrained shear strength at the pipeline invert level (s_u) [kPa] - Suggested range: 0.0 <= undrained_shear_strength <= 50.0"
+    "physical_meaning": "Undrained shear strength at the pipeline invert level (s_u) [kPa] - Suggested range: 0.0 <= undrained_shear_strength <= 50.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.pipelinescables.stability.penetration",
@@ -3949,7 +3977,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective length of the footing (L^{\\prime}) [m]  - Suggested range: 0.0<=effective_length"
+    "physical_meaning": "Effective length of the footing (L^{\\prime}) [m]  - Suggested range: 0.0<=effective_length",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.capacity",
@@ -3962,7 +3991,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Minimum effective lateral dimension (B^{\\prime}) [m]  - Suggested range: 0.0<=effective_width"
+    "physical_meaning": "Minimum effective lateral dimension (B^{\\prime}) [m]  - Suggested range: 0.0<=effective_width",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.capacity",
@@ -4131,7 +4161,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Isotropic horizontal stress in the soil mass before borehole excavation (p_0) [kPa] - Suggested range: insitu_pressure >= 0.0"
+    "physical_meaning": "Isotropic horizontal stress in the soil mass before borehole excavation (p_0) [kPa] - Suggested range: insitu_pressure >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.boreholestability.cavityexpansion",
@@ -4144,7 +4175,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Pressure on the borehole wall due to drilling fluids or concrete (p) [kPa] - Suggested range: borehole_pressure >= 0.0"
+    "physical_meaning": "Pressure on the borehole wall due to drilling fluids or concrete (p) [kPa] - Suggested range: borehole_pressure >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.boreholestability.cavityexpansion",
@@ -4157,7 +4189,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Borehole initial diameter (equations are formulated in terms of radius but diameter is more convenient as input) (2 \\cdot a_0) [m] - Suggested range: diameter >= 0.0"
+    "physical_meaning": "Borehole initial diameter (equations are formulated in terms of radius but diameter is more convenient as input) (2 \\cdot a_0) [m] - Suggested range: diameter >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.boreholestability.cavityexpansion",
@@ -4170,7 +4203,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Undrained shear strength of the material surrounding the borehole (S_u) [kPa] - Suggested range: undrained_shear_strength >= 0.0"
+    "physical_meaning": "Undrained shear strength of the material surrounding the borehole (S_u) [kPa] - Suggested range: undrained_shear_strength >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.boreholestability.cavityexpansion",
@@ -4183,7 +4217,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Shear modulus of the material surrounding the borehole (G) [kPa] - Suggested range: shear_modulus >= 0.0"
+    "physical_meaning": "Shear modulus of the material surrounding the borehole (G) [kPa] - Suggested range: shear_modulus >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.boreholestability.cavityexpansion",
@@ -4521,7 +4556,8 @@
     "max_value": 120.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Total cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 120.0"
+    "physical_meaning": "Total cone resistance (<span class=\"math-inline\">q_t</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qt <= 120.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -4534,7 +4570,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -5535,7 +5572,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -5860,7 +5898,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -5951,7 +5990,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress at depth of interest (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress at depth of interest (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -5964,7 +6004,8 @@
     "max_value": 10.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Friction ratio (R_f) [pct] - Suggested range: 0.0 <= Rf <= 10.0"
+    "physical_meaning": "Friction ratio (R_f) [pct] - Suggested range: 0.0 <= Rf <= 10.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -5977,7 +6018,8 @@
     "max_value": 0.6,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Cyclic shear stress ratio (CSR) [-] - Suggested range: 0.0 <= CSR <= 0.6"
+    "physical_meaning": "Cyclic shear stress ratio (CSR) [-] - Suggested range: 0.0 <= CSR <= 0.6",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -6146,7 +6188,8 @@
     "max_value": 1000.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.liquefaction",
@@ -6653,7 +6696,8 @@
     "max_value": 10.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Strain amplitude (\\gamma) [pct] - Suggested range: 0.0 <= strain <= 10.0"
+    "physical_meaning": "Strain amplitude (\\gamma) [pct] - Suggested range: 0.0 <= strain <= 10.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.soildynamics.soilproperties",
@@ -6796,7 +6840,8 @@
     "max_value": 90.0,
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Friction angle (total or effective) (\\varphi) [deg] - Suggested range: 0.0 <= phi <= 90.0"
+    "physical_meaning": "Friction angle (total or effective) (\\varphi) [deg] - Suggested range: 0.0 <= phi <= 90.0",
+    "max_exclusive": true
   },
   {
     "module_id": "groundhog.constitutivemodels.general",
@@ -7225,7 +7270,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Effective overburden pressure (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective overburden pressure (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.spt_correlations",
@@ -7277,7 +7323,8 @@
     "max_value": 10.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Measured sleeve friction (<span class=\"math-inline\">f_s^*</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= measured_fs <= 10.0"
+    "physical_meaning": "Measured sleeve friction (<span class=\"math-inline\">f_s^*</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= measured_fs <= 10.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -7316,7 +7363,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Effective vertical stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Effective vertical stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -8915,7 +8963,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Initial vertical effective stress in the center of the layer (\\sigma_{v0}^{\\prime}) [kPa] - Suggested range: initial_effective_stress >= 0.0"
+    "physical_meaning": "Initial vertical effective stress in the center of the layer (\\sigma_{v0}^{\\prime}) [kPa] - Suggested range: initial_effective_stress >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.settlement",
@@ -8993,7 +9042,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Initial vertical effective stress in the center of the layer (\\sigma_{v0)^{\\prime}) [kPa] - Suggested range: initial_effective_stress >= 0.0"
+    "physical_meaning": "Initial vertical effective stress in the center of the layer (\\sigma_{v0)^{\\prime}) [kPa] - Suggested range: initial_effective_stress >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.settlement",
@@ -9006,7 +9056,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Preconsolidation pressure, maximum vertical stress to which the layer has been subjected (p_c^{\\prime}) [kPa] - Suggested range: preconsolidation_pressure >= 0.0"
+    "physical_meaning": "Preconsolidation pressure, maximum vertical stress to which the layer has been subjected (p_c^{\\prime}) [kPa] - Suggested range: preconsolidation_pressure >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.settlement",
@@ -9318,7 +9369,8 @@
     "max_value": 120.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Cone tipe resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0"
+    "physical_meaning": "Cone tipe resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -9331,7 +9383,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -9383,7 +9436,8 @@
     "max_value": 120.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0"
+    "physical_meaning": "Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -9396,7 +9450,8 @@
     "max_value": "",
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -9461,7 +9516,8 @@
     "max_value": 120.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0"
+    "physical_meaning": "Cone tip resistance (<span class=\"math-inline\">q_c</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= qc <= 120.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -9968,7 +10024,8 @@
     "max_value": 4.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Ratio of volume of voids to volume of solids (<span class=\"math-inline\">e</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= voidratio <= 4.0"
+    "physical_meaning": "Ratio of volume of voids to volume of solids (<span class=\"math-inline\">e</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= voidratio <= 4.0",
+    "min_exclusive": true
   },
   {
     "module_id": "classification.phaserelations",
@@ -10332,7 +10389,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -10748,7 +10806,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Depth below the base of the foundation (z) [m] - Suggested range: z >= 0.0"
+    "physical_meaning": "Depth below the base of the foundation (z) [m] - Suggested range: z >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.stressdistribution",
@@ -10904,7 +10963,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical distance from the soil surface (z) [m] - Suggested range: z >= 0.0"
+    "physical_meaning": "Vertical distance from the soil surface (z) [m] - Suggested range: z >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.stressdistribution",
@@ -11008,7 +11068,8 @@
     "max_value": 10.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Number of layers for the sample (<span class=\"math-inline\">N</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= no_layers <= 10.0"
+    "physical_meaning": "Number of layers for the sample (<span class=\"math-inline\">N</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 1.0 <= no_layers <= 10.0",
+    "min_exclusive": true
   },
   {
     "module_id": "labtesting.samplepreparation",
@@ -11177,7 +11238,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (\\sigma_{vo}^{\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.axialcapacity.endbearing",
@@ -11268,7 +11330,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (\\\\sigma_{vo}^{\\\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (\\\\sigma_{vo}^{\\\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.axialcapacity.skinfriction",
@@ -11372,7 +11435,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (\\\\sigma_vo^{\\\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0"
+    "physical_meaning": "Vertical effective stress (\\\\sigma_vo^{\\\\prime}) [kPa] - Suggested range: sigma_vo_eff >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.deepfoundations.axialcapacity.skinfriction",
@@ -11983,7 +12047,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Effective length of the footing (L^{\\prime}) [m]  - Suggested range: 0.0<=effective_length"
+    "physical_meaning": "Effective length of the footing (L^{\\prime}) [m]  - Suggested range: 0.0<=effective_length",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.capacity",
@@ -11996,7 +12061,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Minimum effective lateral dimension (B^{\\prime}) [m]  - Suggested range: 0.0<=effective_width"
+    "physical_meaning": "Minimum effective lateral dimension (B^{\\prime}) [m]  - Suggested range: 0.0<=effective_width",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.capacity",
@@ -12256,7 +12322,8 @@
     "max_value": 25.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "The bulk unit weight of the soil (ratio of weight of water and solids to volume) (<span class=\"math-inline\">\\gamma</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 10.0 <= bulkunitweight <= 25.0"
+    "physical_meaning": "The bulk unit weight of the soil (ratio of weight of water and solids to volume) (<span class=\"math-inline\">\\gamma</span>) [<span class=\"math-inline\">kN/m3</span>] - Suggested range: 10.0 <= bulkunitweight <= 25.0",
+    "min_exclusive": true
   },
   {
     "module_id": "classification.phaserelations",
@@ -12347,7 +12414,8 @@
     "max_value": 1.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Porosity of the sample defined as the ratio of volume of voids to total volume (<span class=\"math-inline\">n</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= porosity <= 1.0"
+    "physical_meaning": "Porosity of the sample defined as the ratio of volume of voids to total volume (<span class=\"math-inline\">n</span>) [<span class=\"math-inline\">-</span>] - Suggested range: 0.0 <= porosity <= 1.0",
+    "max_exclusive": true
   },
   {
     "module_id": "classification.phaserelations",
@@ -12373,7 +12441,8 @@
     "max_value": 1.0,
     "is_nullable": false,
     "default_value": "1.0",
-    "physical_meaning": "Saturation of the sample (<span class=\"math-inline\">S</span>) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)"
+    "physical_meaning": "Saturation of the sample (<span class=\"math-inline\">S</span>) [-] - Suggested range: 0.0 <= saturation <= 1.0 (optional, default= 1.0)",
+    "min_exclusive": true
   },
   {
     "module_id": "classification.phaserelations",
@@ -12620,7 +12689,8 @@
     "max_value": 10.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Sleeve friction (<span class=\"math-inline\">f_s</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= fs <= 10.0"
+    "physical_meaning": "Sleeve friction (<span class=\"math-inline\">f_s</span>) [<span class=\"math-inline\">MPa</span>] - Suggested range: 0.0 <= fs <= 10.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -12633,7 +12703,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -12776,7 +12847,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -13036,7 +13108,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -13101,7 +13174,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -13166,7 +13240,8 @@
     "max_value": 1000.0,
     "is_nullable": true,
     "default_value": "",
-    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0"
+    "physical_meaning": "Vertical effective stress (<span class=\"math-inline\">\\sigma_{vo}^{\\prime}</span>) [<span class=\"math-inline\">kPa</span>] - Suggested range: 0.0 <= sigma_vo_eff <= 1000.0",
+    "min_exclusive": true
   },
   {
     "module_id": "insitutests.pcpt_correlations",
@@ -14089,7 +14164,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Center-to-center offset of reinforcement elements (a) [m] - Suggested range: reinforcement_offset >= 0.0"
+    "physical_meaning": "Center-to-center offset of reinforcement elements (a) [m] - Suggested range: reinforcement_offset >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.excavations.soilmix",
@@ -14180,7 +14256,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Width of the strip load (B) [m] - Suggested range: width >= 0.0"
+    "physical_meaning": "Width of the strip load (B) [m] - Suggested range: width >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.stressdistribution",
@@ -14206,7 +14283,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Toe depth of the retaining structure (H_0) [m] - Suggested range: toe_depth >= 0.0"
+    "physical_meaning": "Toe depth of the retaining structure (H_0) [m] - Suggested range: toe_depth >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.shallowfoundations.stressdistribution",
@@ -14219,7 +14297,8 @@
     "max_value": "",
     "is_nullable": false,
     "default_value": "",
-    "physical_meaning": "Depth for the stress calculation (z) [m] - Suggested range: depth >= 0.0"
+    "physical_meaning": "Depth for the stress calculation (z) [m] - Suggested range: depth >= 0.0",
+    "min_exclusive": true
   },
   {
     "module_id": "groundhog.cohesive.correlations.compression",

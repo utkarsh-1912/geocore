@@ -61,6 +61,32 @@ def test_equation_check_accepts_rewritten_forms_and_flags_a_different_equation()
     assert equation_mismatch("No equation written.", formula)
 
 
+def test_equation_check_accepts_mathematically_equal_forms():
+    """GeoAI substituting rho = gamma/g into G = rho Vs^2 is the same equation, not a different one."""
+    _, explanation = build_grounding(*GMAX)
+    formula = explanation["formula"]
+    # The answer that raised the false alarm: rho folded in, then the numbers substituted on the same quantity.
+    answer = (r"### Governing equation" "\n" r"$$G_{max} = \frac{\gamma}{g} V_s^2$$" "\n"
+              r"### Substitution" "\n" r"$$G_{max} = \frac{19}{9.81} \times 260^2$$")
+    assert not equation_mismatch(answer, formula)
+    assert not equation_mismatch(r"$$G_{max} = V_s^{2} \cdot \gamma / g$$", formula)  # reordered
+    assert not equation_mismatch(r"$$G_{max} = \left(\frac{\gamma}{g}\right) \cdot V_s^2$$", formula)
+    # Still flagged: the right quantities in a wrong equation, with or without rho folded in.
+    assert equation_mismatch(r"$$G_{max} = \frac{\gamma}{g} V_s$$", formula)
+    assert equation_mismatch(r"$$G_{max} = \gamma \cdot g \cdot V_s^2$$", formula)
+    assert equation_mismatch(r"$$G_{max} = \rho V_s^2$$ $$\rho = \gamma \cdot g$$", formula)
+
+
+def test_equation_parser_subset():
+    from core.geoai.equation_check import ParseError, parse, same_expression
+    assert same_expression(parse(r"\frac{a}{b} c"), parse(r"a c / b"))
+    assert same_expression(parse(r"\sqrt{x^2}"), parse(r"x"))
+    assert same_expression(parse(r"K_{a} \cdot \sigma'_{v}"), parse(r"\sigma'_v K_a"))
+    assert not same_expression(parse(r"x^2"), parse(r"2 x"))
+    with pytest.raises(ParseError):
+        parse(r"\int_0^1 x dx")  # outside the subset: the caller falls back to the text comparison
+
+
 def test_substitution_replaces_inputs_and_defaults_only():
     _, explanation = build_grounding(*GMAX)
     sub = substituted_formula(explanation, _default_symbols("gmax_shearwavevelocity", {"Vs": 260, "gamma": 19}))

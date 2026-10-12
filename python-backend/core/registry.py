@@ -966,10 +966,15 @@ class Registry:
                 if profile is None:  # a SoilProfile is a DataFrame: `not profile` is ambiguous
                     return {"error": f"SoilProfile with ID {profile_id} not found."}
 
-                # 2. Initialize Calculation
-                # SettlementCalculation expects a SoilProfile object (pandas df wrapper)
-                # Our 'profile' is a SoilProfile instance (from groundhog.general.soilprofile)
-                calc = SettlementCalculation(profile)
+                # 2. Initialize Calculation on a prepared copy: Groundhog's column spellings, and a clear message
+                # naming what is missing (unit weight, compressibility) instead of Groundhog's KeyError text.
+                wrappers = _load_wrapper_module("wrappers")
+                profile_name = next((m.get("name") for m in state_manager.list_by_type("all")
+                                     if m.get("id") == profile_id), None) or profile_id
+                prepared, problem = wrappers.settlement_profile(profile, profile_name)
+                if problem:
+                    return {"error": problem}
+                calc = SettlementCalculation(prepared)
 
                 # 3. Set Foundation
                 width = float(args.get('foundation_width', 1.0))

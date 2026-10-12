@@ -38,7 +38,7 @@ REL_TOL = 1e-6
 ABS_TOL = 1e-9
 _ARRAY_LIMIT = 20  # numeric lists longer than this are fingerprinted
 _UUID = re.compile(r"[0-9a-f]{0,8}-?[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b")  # also a cut-off uuid
-_NAME_SUFFIX = re.compile(r"\b([A-Z][A-Za-z]+)_[0-9a-f]{4}\b")  # generated object names: SoilProfile_86ad
+_NAME_SUFFIX = re.compile(r"\b([A-Z][A-Za-z]+)_[0-9a-f]{4,8}\b")  # generated object names: SoilProfile_86ad, _6e5ac7cc
 # Interpreter noise that can land in a captured-warnings list depending on garbage-collection timing.
 _ENV_NOISE = re.compile(r"unclosed <(socket|file|_io)|ResourceWarning")
 _TIME = re.compile(r"\b\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?\b")

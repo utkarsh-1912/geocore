@@ -751,7 +751,8 @@ export const SchemaForm = ({ functionId, functionName, schema, onCalculate, isLo
                             const titleMatch = /^(.*?)\s*\[([^\]]+)\]\s*$/.exec(input.label || '');
                             const label = inputLabel(input, functionId);
                             const displayLabel = titleMatch ? titleMatch[1] : label.text;
-                            const rawUnit = input.unit || (titleMatch ? titleMatch[2] : null);
+                            // Last resort: the unit the calculation validates this input in.
+                            const rawUnit = input.unit || (titleMatch ? titleMatch[2] : null) || functionBounds?.[input.name]?.unit;
                             const displayUnit = rawUnit && rawUnit !== '-' ? rawUnit : null;
                             const limits = resolveLimits(input, functionBounds);
                             const rangeHint = isNumericInput(input) ? describeRange(limits) : null;

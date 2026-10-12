@@ -16,12 +16,13 @@ import {
     PanelLeftClose, Download, Pencil, RotateCcw,
     Shield, CheckCircle2, ChevronDown, AlertTriangle,
     HardDrive, Zap, BookOpen, Compass, Layers, User,
-    FileCode, ExternalLink, Sparkles, Square, Maximize2, Sigma
+    FileCode, ExternalLink, Sparkles, Square, Maximize2, Sigma, ChevronsRight
 } from 'lucide-react';
 import { GeoAILogo } from '../../components/common/GeoAILogo';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { api } from '../../api/client';
 import { buildChatHistory, nextMessageId } from './chatHistory';
+import { CONTINUE_PROMPT, isTruncatedAnswer } from './truncation';
 import {
     useShared, conversationsStore, loadingConvStore, liveStepsStore, unreadStore, abortHandle,
     registerView, reportView, answerFinished, forgetUnread,
@@ -158,7 +159,7 @@ const SolutionAnswer = ({ msg, streaming }) => (
             <div className="space-y-2 rounded-md border border-warning/40 bg-warning/10 px-2.5 py-2 text-[11px] text-text-main" role="alert" data-equation-check>
                 <p className="flex gap-1.5">
                     <AlertTriangle size={12} className="mt-0.5 shrink-0 text-warning" />
-                    <span>GeoAI's equation differs from the one the calculation used. The method's equation, and it with your inputs substituted:</span>
+                    <span>GeoAI wrote a different equation from the one Groundhog used for this result. The method's equation, then with your inputs:</span>
                 </p>
                 {msg.equationCheck.equation && <div className="overflow-x-auto"><Tex tex={msg.equationCheck.equation} /></div>}
                 {msg.equationCheck.substitution && <div className="overflow-x-auto"><Tex tex={msg.equationCheck.substitution} /></div>}
@@ -1131,6 +1132,16 @@ export const GeoAIFullWindow = ({ onSelectFunction, canOpenForm, currentContext,
                                                         title="Step-by-step explanation from the calculation's guide: inputs, governing equation with values, result"
                                                         className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/5 px-3 py-1 text-[11px] font-medium text-primary hover:bg-primary/10 transition-colors">
                                                         <Sigma size={12} />Explain step by step
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {msg.sender === 'ai' && msg.id === lastMessageId && !isLoading && isTruncatedAnswer(msg.text) && (
+                                                <div className="flex flex-wrap gap-1.5" data-continue-chip>
+                                                    <button type="button" onClick={() => handleSendMessage(CONTINUE_PROMPT)}
+                                                        disabled={isBusy}
+                                                        title="Ask GeoAI to continue the answer from where it was cut off"
+                                                        className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/5 px-3 py-1 text-[11px] font-medium text-primary hover:bg-primary/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                                                        <ChevronsRight size={12} />Continue
                                                     </button>
                                                 </div>
                                             )}

@@ -137,9 +137,9 @@ def create_dynamic_router():
 
     @router.get("/schema/bounds")
     def get_field_bounds():
-        """Groundhog's validated min/max (and display unit) per function parameter, so the forms
-        can flag out-of-range inputs while typing instead of after the calculation runs."""
-        from .geoai.inventory_sync import field_bounds
+        """The min/max (strict or not, and unit) the calculation validates per function parameter,
+        so the forms can flag out-of-range inputs while typing instead of after the calculation runs."""
+        from .geoai.validator import field_bounds
         return field_bounds()
 
     @router.get("/schema/overrides")

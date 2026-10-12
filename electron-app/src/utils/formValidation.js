@@ -12,28 +12,36 @@ const firstDefined = (...vals) => vals.find((v) => v !== undefined && v !== null
 
 export const isNumericInput = (input) => NUMERIC_TYPES.has(input.type);
 
-/** Effective {min, max, integer} of an input after merging schema limits with Groundhog bounds. */
+/**
+ * Effective {min, max, minExclusive, maxExclusive, integer} of an input after merging schema limits with
+ * the calculation's validated bounds. An exclusive end is a value the calculation rejects itself, e.g.
+ * σ'v0 = 0 when the method divides by it, so the range is "> 0" rather than "≥ 0".
+ */
 export function resolveLimits(input, groundhogBounds) {
     const gh = groundhogBounds?.[input.name];
     const toNum = (v) => (v === undefined || v === null || v === '' ? undefined : Number(v));
+    const ghMin = toNum(gh?.min);
+    const ghMax = toNum(gh?.max);
     const min = toNum(firstDefined(gh?.min, input.min, input.minimum));
     const max = toNum(firstDefined(gh?.max, input.max, input.maximum));
     return {
         min: Number.isFinite(min) ? min : undefined,
         max: Number.isFinite(max) ? max : undefined,
+        minExclusive: ghMin !== undefined ? Boolean(gh.min_exclusive) : Boolean(input.minExclusive),
+        maxExclusive: ghMax !== undefined ? Boolean(gh.max_exclusive) : Boolean(input.maxExclusive),
         integer: Boolean(gh?.integer) || input.type === 'int' || input.type === 'integer',
     };
 }
 
 const fmt = (n) => (Math.abs(n) >= 1e6 || (n !== 0 && Math.abs(n) < 1e-4) ? n.toExponential(2) : String(n));
 
-/** Short hint such as "0 – 0.5", "≥ 0" or "≤ 90"; null when unbounded. */
+/** Short hint such as "0 – 0.5", "> 0, ≤ 100", "≥ 0" or "< 90"; null when unbounded. */
 export function describeRange(limits) {
-    const { min, max } = limits;
-    if (min !== undefined && max !== undefined) return `${fmt(min)} – ${fmt(max)}`;
-    if (min !== undefined) return `≥ ${fmt(min)}`;
-    if (max !== undefined) return `≤ ${fmt(max)}`;
-    return null;
+    const { min, max, minExclusive, maxExclusive } = limits;
+    const lower = min !== undefined ? `${minExclusive ? '>' : '≥'} ${fmt(min)}` : null;
+    const upper = max !== undefined ? `${maxExclusive ? '<' : '≤'} ${fmt(max)}` : null;
+    if (lower && upper) return minExclusive || maxExclusive ? `${lower}, ${upper}` : `${fmt(min)} – ${fmt(max)}`;
+    return lower || upper;
 }
 
 const isCountedAsMissing = (input, value) => {
@@ -57,8 +65,12 @@ export function validateField(input, value, groundhogBounds) {
         if (text === '' || !Number.isFinite(num)) return 'Enter a valid number';
         const limits = resolveLimits(input, groundhogBounds);
         if (limits.integer && !Number.isInteger(num)) return 'Must be a whole number';
-        if (limits.min !== undefined && num < limits.min) return `Must be ≥ ${fmt(limits.min)}`;
-        if (limits.max !== undefined && num > limits.max) return `Must be ≤ ${fmt(limits.max)}`;
+        if (limits.min !== undefined && (limits.minExclusive ? num <= limits.min : num < limits.min)) {
+            return `Must be ${limits.minExclusive ? '>' : '≥'} ${fmt(limits.min)}`;
+        }
+        if (limits.max !== undefined && (limits.maxExclusive ? num >= limits.max : num > limits.max)) {
+            return `Must be ${limits.maxExclusive ? '<' : '≤'} ${fmt(limits.max)}`;
+        }
         return null;
     }
 

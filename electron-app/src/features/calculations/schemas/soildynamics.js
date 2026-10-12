@@ -51,7 +51,7 @@ export const soilDynamicsSchemas = {
             { name: "CSR", type: "float", min: 0.0, max: 0.6, description: "Cyclic shear stress ratio", required: true },
             { name: "CSR_star", type: "float", min: 0.0, max: 0.6, description: "Equivalent uniform cyclic stress ratio (M=7.5)", required: true },
             { name: "Pa", type: "float", unit: "kPa", default: 100.0, min: 90.0, max: 110.0, description: "Atmospheric pressure" },
-            { name: "delta_qc_override", type: "float", description: "Override for qc correction" },
+            { name: "delta_qc_override", type: "float", unit: "MPa", description: "Override for qc correction" },
             { name: "c_override", type: "float", description: "Override for normalisation exponent" },
             { name: "x1", type: "float", default: 0.78, description: "Factor x1" },
             { name: "x2", type: "float", default: -0.33, description: "Factor x2" },
@@ -68,7 +68,7 @@ export const soilDynamicsSchemas = {
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, max: 1000.0, description: "Vertical effective stress", required: true },
             { name: "CSR", type: "float", min: 0.0, max: 1.0, description: "Cyclic stress ratio (M=7.5)", required: true },
             { name: "fs", type: "float", unit: "MPa", min: 0.0, max: 10.0, description: "Sleeve friction", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" },
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" },
             { name: "deltaQ_nominator", type: "float", default: 10.0, description: "DeltaQ nominator term" },
             { name: "deltaQ_denominator", type: "float", default: 0.67, description: "DeltaQ denominator term" },
             { name: "exponent_qcnormalised", type: "float", default: 0.5, description: "Exponent for qc normalisation" },
@@ -102,7 +102,7 @@ export const soilDynamicsSchemas = {
             { name: "vertical_effective_stress", type: "float", unit: "kPa", min: 100.0, max: 250.0, description: "Vertical effective stress", required: true },
             { name: "fines_content", type: "float", unit: "%", min: 5.0, max: 35.0, default: 5.0, description: "Fines content" },
             { name: "stress_exponent", type: "float", min: 0.2, max: 1.0, default: 0.9, description: "Stress exponent" },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     cyclicstrength_dsssand_watercontent: {
@@ -111,7 +111,7 @@ export const soilDynamicsSchemas = {
             { name: "vertical_effective_stress", type: "float", unit: "kPa", min: 100.0, max: 250.0, description: "Vertical effective stress", required: true },
             { name: "fines_content", type: "float", unit: "%", min: 5.0, max: 35.0, default: 5.0, description: "Fines content" },
             { name: "stress_exponent", type: "float", min: 0.2, max: 1.0, default: 0.9, description: "Stress exponent" },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     plotcycliccontours_dssclay_andersen: {
@@ -198,8 +198,8 @@ export const soilDynamicsSchemas = {
             { name: "N", type: "float", min: 1.0, description: "Number of cycles", required: true },
             { name: "frequency", type: "float", unit: "Hz", min: 0.05, max: 100.0, description: "Loading frequency", required: true },
             { name: "soiltype", type: "select", options: ["sand", "fine sand", "silt", "clay", "all"], description: "Soil type", required: true },
-            { name: "min_strain", type: "float", unit: "%", default: 0.0001, description: "Minimum strain" },
-            { name: "max_strain", type: "float", unit: "%", default: 1.0, description: "Maximum strain" },
+            { name: "min_strain", min: 0, minExclusive: true, type: "float", unit: "%", default: 0.0001, description: "Minimum strain" },
+            { name: "max_strain", min: 0, minExclusive: true, type: "float", unit: "%", default: 1.0, description: "Maximum strain" },
             { name: "no_points", type: "int", default: 250, min: 10, description: "Number of points" }
         ]
     },
@@ -275,21 +275,21 @@ export const soilDynamicsSchemas = {
             { name: "Qtn_cs", type: "float", min: 0.0, description: "Normalized cone penetration resistance", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, description: "Effective vertical stress", required: true },
             { name: "relative_density", type: "float", min: 0.0, max: 1.0, description: "Relative density", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     crr_idriss_boulanger_2008: {
         inputs: [
             { name: "Qtn_cs", type: "float", min: 0.0, description: "Normalized cone penetration resistance", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, description: "Effective vertical stress", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     crr_boulanger_idriss_2014: {
         inputs: [
             { name: "Qtn_cs", type: "float", min: 0.0, description: "Normalized cone penetration resistance", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, description: "Effective vertical stress", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     Qtn_cs_robertson_cabal_2022: {
@@ -299,7 +299,7 @@ export const soilDynamicsSchemas = {
             { name: "qt", type: "float", unit: "MPa", min: 0.0, description: "Cone tip resistance", required: true },
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, description: "Effective vertical stress", required: true },
             { name: "sigma_vo", type: "float", unit: "kPa", min: 0.0, description: "Total vertical stress", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     // Missing Qtn_cs for other methods? Checked source file, only robertson_cabal_2022 Qtn_cs and robertson_wride Qtn_cs (actually it's missing in my view_file output but `Qtn_cs_idriss_boulanger_2008` corresponds to `Qtn_cs` input in CRR functions). 
@@ -314,7 +314,7 @@ export const soilDynamicsSchemas = {
             { name: "qc", type: "float", unit: "MPa", min: 0.0, description: "Cone tip resistance", required: true },
             { name: "ic", type: "float", min: 1.0, max: 3.5, description: "Soil behavior type index", required: true },
             { name: "C_FC", type: "float", min: -0.2, max: 0.2, default: 0.0, description: "Fitting parameter for fines content" },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     Qtn_cs_idriss_boulanger_2008: {
@@ -322,7 +322,7 @@ export const soilDynamicsSchemas = {
             { name: "sigma_vo_eff", type: "float", unit: "kPa", min: 0.0, description: "Effective vertical stress", required: true },
             { name: "qc", type: "float", unit: "MPa", min: 0.0, description: "Cone tip resistance", required: true },
             { name: "ic", type: "float", min: 1.0, max: 3.5, description: "Soil behavior type index", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     Qtn_cs_robertson_wride_1998: {
@@ -332,7 +332,7 @@ export const soilDynamicsSchemas = {
             { name: "ic", type: "float", min: 1.0, max: 3.5, description: "Soil behavior type index", required: true },
             { name: "qc", type: "float", unit: "MPa", min: 0.0, max: 120.0, description: "Cone tip resistance", required: true },
             { name: "Fr", type: "float", min: 0.0, max: 10.0, description: "Friction ratio", required: true },
-            { name: "atmospheric_pressure", type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", unit: "kPa", default: 100.0, description: "Atmospheric pressure" }
         ]
     },
     liquefaction_strains_zhang: {

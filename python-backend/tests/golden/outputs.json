@@ -15103,7 +15103,7 @@
   },
   "settlement_calculation": {
    "body": {
-    "detail": "Settlement Calculation Error: \"'mv [1/kPa]' or 'Cc [-]', 'Cr [-]' and 'OCR [-]' need to be defined\""
+    "detail": "Soil profile 'SoilProfile_<id>' cannot be used for a settlement calculation. It needs compressibility in every layer: either 'mv [1/kPa]' (coefficient of volume compressibility), or all three of 'Cc [-]' (compression index), 'Cr [-]' (recompression index) and 'OCR [-]' (overconsolidation ratio) (it has Cc [-], Cr [-] but not OCR [-] in every layer). Columns in the profile: Depth from [m], Depth to [m], Soil type, Total unit weight [kN/m3], Submerged unit weight [kN/m3], Friction angle [deg], Undrained shear strength [kPa], Cc [-], Cr [-], e0 [-], K [-], Interface friction angle [deg]. Add the missing values to the profile (Manage); GeoCore does not assume them."
    },
    "http": 500
   },

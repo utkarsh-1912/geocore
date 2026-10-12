@@ -10,6 +10,7 @@ import { ChevronDown, ChevronUp, Database, Layers, CheckCircle2 } from 'lucide-r
 import Papa from 'papaparse';
 import { getParameterNotation } from '@/utils/geoNotation';
 import { canonicalUnit } from '@/utils/quantities';
+import { formatNumber } from '@/utils/formatNumber';
 import { FormulaDerivationCard } from '../calculations/FormulaDerivationCard';
 import { ThemedChart } from './ThemedChart';
 
@@ -410,7 +411,7 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
                                             {not?.symbol && <span className="shrink-0 text-primary font-mono text-[11px] font-semibold">{not.symbol}</span>}
                                         </div>
                                         <div className="text-xl font-mono font-semibold text-text-main mt-1 break-all">
-                                            {Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 })}
+                                            {formatNumber(Number(val))}
                                             {not?.unit && not.unit !== '-' && <span className="text-xs text-text-muted font-normal ml-1.5">{not.unit}</span>}
                                         </div>
                                     </div>
@@ -449,7 +450,7 @@ export const ResultsRenderer =({ results, functionName = '', functionId, formDat
                                             <td className="py-2.5 px-4 text-text-main font-mono font-semibold break-all min-w-[7rem]">
                                                 <div className="max-h-40 overflow-auto">
                                                     {typeof value === 'number'
-                                                        ? value.toLocaleString(undefined, { maximumFractionDigits: 5 })
+                                                        ? formatNumber(value)
                                                         : (typeof value === 'object' ? <NestedValue value={value} /> : String(value))}
                                                 </div>
                                             </td>

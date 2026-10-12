@@ -9,7 +9,7 @@ export const insituTestsSchemas = {
         inputs: [
             { name: "qc", type: "float", description: "Cone resistance [MPa]", required: true },
             { name: "Rf", type: "float", description: "Friction ratio [%]", required: true },
-            { name: "atmospheric_pressure", type: "float", description: "Atmospheric pressure [kPa]", default: 100.0 }
+            { name: "atmospheric_pressure", min: 0, minExclusive: true, type: "float", description: "Atmospheric pressure [kPa]", default: 100.0 }
         ]
     },
     behaviourindex_pcpt_robertsonwride: {

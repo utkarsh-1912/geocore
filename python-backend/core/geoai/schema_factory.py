@@ -219,10 +219,12 @@ def build_schema_for_function(func_name: str, func_obj: Any) -> Type[GeoAIBaseMo
             "description": desc,
             "json_schema_extra": {"unit": unit}
         }
+        # Groundhog's ranges are inclusive, but some endpoints are singular (e.g. sigma_vo_eff = 0
+        # divides by zero); the inventory marks those min_exclusive / max_exclusive.
         if min_v is not None:
-            field_kwargs["ge"] = min_v
+            field_kwargs["gt" if inv_p.get("min_exclusive") else "ge"] = min_v
         if max_v is not None:
-            field_kwargs["le"] = max_v
+            field_kwargs["lt" if inv_p.get("max_exclusive") else "le"] = max_v
         # Name documented with different case in the Groundhog docstring (e.g. ':param PI:'
         # for signature 'pi') is accepted as an alias; the canonical key stays the signature name.
         if documented_name and documented_name != p_name:

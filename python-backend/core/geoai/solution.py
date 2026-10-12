@@ -142,7 +142,7 @@ _DISPLAY_MATH = re.compile(r"\$\$(.+?)\$\$", re.S)
 
 
 def _norm_tex(tex: str) -> str:
-    """LaTeX reduced for comparison: no spacing, \left/\right, \text, braces; products and fractions spelled one way."""
+    r"""LaTeX reduced for comparison: no spacing, \left/\right, \text, braces; products and fractions spelled one way."""
     t = tex.replace("\\left", "").replace("\\right", "")
     t = re.sub(r"\\(?:text|mathrm|operatorname)\{([^}]*)\}", r"\1", t)
     t = re.sub(r"\\(?:cdot|times)", "*", t)
@@ -154,20 +154,38 @@ def _norm_tex(tex: str) -> str:
 
 def equation_mismatch(answer: str, formula: Optional[str]) -> bool:
     """
-    True when a line of the method's governing equation does not appear in the answer's display equations (after
-    normalisation): the model wrote a different equation than the one Groundhog evaluated.
+    True when the answer's display equations do not contain the method's governing equation: the model wrote a
+    different equation than the one Groundhog evaluated. Each line of the method's equation counts as written when
+    the answer has it after normalisation (text), or has an equation for the same quantity that is mathematically
+    the same once the method's definitions are substituted (equation_check: G = gamma/g Vs^2 is G = rho Vs^2 with
+    rho = gamma/g). Lines only used to define another (rho = gamma/g) need not be written separately then.
     """
+    from core.geoai import equation_check as eqc
     if not formula:
         return False
-    written = {_norm_tex(line) for block in _DISPLAY_MATH.findall(answer) for line in re.split(r"\\\\", block)}
+    blocks = [line for block in _DISPLAY_MATH.findall(answer) for line in re.split(r"\\\\", block)]
+    written = {_norm_tex(line) for line in blocks}
     written |= {w.split("=", 1)[1] if "=" in w else w for w in list(written)}
-    for line in re.split(r"\\\\", formula):
+    written_eqs = eqc.equations(blocks)
+    method_lines = [line for line in re.split(r"\\\\", formula) if _norm_tex(line)]
+    method_defs = {k: v[0] for k, v in eqc.equations(method_lines).items()}
+    # A defined quantity used in another line of the method (rho in G = rho Vs^2) is covered by that line's check.
+    used = set()
+    for name, rhs in method_defs.items():
+        used |= eqc.symbols_in(rhs, set())
+    for line in method_lines:
         target = _norm_tex(line)
-        if not target:
-            continue
         rhs = target.split("=", 1)[1] if "=" in target else target
-        if target not in written and rhs not in written:
-            return True
+        if target in written or rhs in written:
+            continue
+        same = eqc.equivalent_line(line, method_defs, written_eqs)
+        if same:
+            continue
+        eq = eqc.parse_equation(line)
+        if same is None and eq and eq[0] in used and any(eqc.equivalent_line(other, method_defs, written_eqs)
+                                                        for other in method_lines if other is not line):
+            continue  # an intermediate definition folded into an equivalent main equation
+        return True
     return False
 
 

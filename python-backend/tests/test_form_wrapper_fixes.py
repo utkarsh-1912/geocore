@@ -137,3 +137,51 @@ def test_log_time_method_result_uses_the_drainage_length():
     # cv = 0.197 H^2 / t50: doubling the drainage length quadruples cv at the same t50
     assert a["t50 [s]"] == pytest.approx(b["t50 [s]"]) and math.isfinite(a["cv [m2/s]"])
     assert b["cv [m2/s]"] == pytest.approx(4 * a["cv [m2/s]"])
+
+
+def test_settlement_names_what_the_profile_lacks(saved):
+    # A real-world profile: unit weight spelt 'UnitWeight [kN_m3]', soil type 'SoilType', no compressibility.
+    saved["field"] = SoilProfile(pd.DataFrame([
+        {"Depth from [m]": 0.0, "Depth to [m]": 3.0, "SoilType": "Clayey Sand", "UnitWeight [kN_m3]": 18.5, "SPT [N]": 12},
+        {"Depth from [m]": 3.0, "Depth to [m]": 8.0, "SoilType": "Soft Clay", "UnitWeight [kN_m3]": 17.0, "SPT [N]": 6},
+    ]))
+    before = list(saved["field"].columns)
+    out = _run("settlement_calculation", {"soilprofile": "field", "foundation_width": 2, "applied_stress": 100,
+                                          "water_level": 1})
+    msg = out["error"]
+    assert "cannot be used for a settlement calculation" in msg and "'mv [1/kPa]'" in msg and "'OCR [-]'" in msg
+    assert "unit weight" not in msg.split("It needs")[1].split("Columns")[0]      # UnitWeight [kN_m3] was recognised
+    assert "Soil type" not in msg.split("It needs")[1].split("Columns")[0]        # SoilType was recognised
+    assert "Columns in the profile: Depth from [m], Depth to [m], SoilType" in msg and "does not assume" in msg
+    assert list(saved["field"].columns) == before
+
+
+def test_settlement_reports_a_partial_compressibility_set(saved):
+    saved["partial"] = SoilProfile(pd.DataFrame([{**r, "OCR [-]": None} for r in LAYERS[:1]] + [dict(r) for r in LAYERS[1:]]))
+    msg = _run("settlement_calculation", {"soilprofile": "partial", "foundation_width": 2, "applied_stress": 100,
+                                          "water_level": 1})["error"]
+    assert "it has Cc [-], Cr [-], OCR [-] but not OCR [-] in every layer" in msg
+
+
+def test_settlement_accepts_common_spellings_and_leaves_the_saved_profile_alone(saved):
+    from groundhog.shallowfoundations.settlement import SettlementCalculation
+    renamed = [{"Depth from [m]": r["Depth from [m]"], "Depth to [m]": r["Depth to [m]"], "SoilType": r["Soil type"],
+                "Unit weight [kN/m3]": r["Total unit weight [kN/m3]"], "Compression index": r["Cc [-]"],
+                "Cr": r["Cr [-]"], "OCR": r["OCR [-]"]} for r in LAYERS]
+    saved["spelt"] = SoilProfile(pd.DataFrame(renamed))
+    before = list(saved["spelt"].columns)
+    out = _run("settlement_calculation", {"soilprofile": "spelt", "foundation_width": 2, "foundation_shape": "strip",
+                                          "foundation_length": 0, "applied_stress": 100, "water_level": 1})
+    calc = SettlementCalculation(SoilProfile(pd.DataFrame(LAYERS)))
+    calc.set_foundation(width=2, shape="strip", length=0)
+    calc.calculate_initial_state(waterlevel=1)
+    calc.create_grid()
+    calc.calculate_foundation_stress(applied_stress=100)
+    calc.calculate()
+    assert out["settlement [m]"] == pytest.approx(float(calc.settlement))
+    assert list(saved["spelt"].columns) == before  # no columns added to the saved profile
+    # A unit weight with the wrong unit is not taken as one.
+    saved["wrong"] = SoilProfile(pd.DataFrame([{**r, "Unit weight [kN/m3]": None, "Unit weight [kPa]": 18.0}
+                                               for r in renamed]).drop(columns=["Unit weight [kN/m3]"]))
+    assert "'Total unit weight [kN/m3]'" in _run("settlement_calculation", {"soilprofile": "wrong", "foundation_width": 2,
+                                                                            "applied_stress": 100})["error"]

@@ -13,9 +13,10 @@ import React, { useState } from 'react';
 import { Sigma, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 import { useCalculationExplanation } from './useCalculationExplanation';
 import { Tex } from './UserGuideTemplate';
+import { formatNumber } from '../../utils/formatNumber';
 
 const formatValue = (v) => {
-  if (typeof v === 'number') return Number.isInteger(v) ? String(v) : v.toFixed(4).replace(/0+$/, '').replace(/\.$/, '');
+  if (typeof v === 'number') return formatNumber(v, { grouping: false });
   if (v !== null && typeof v === 'object') return JSON.stringify(v); // never "[object Object]"
   return String(v);
 };

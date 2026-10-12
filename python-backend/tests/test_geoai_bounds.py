@@ -20,6 +20,7 @@ from core.geoai.schema_factory import MODEL_EXCLUDED_FUNCTIONS, SKIPPED_FUNCTION
 from core.geoai.schemas import SCHEMA_REGISTRY
 from core.geoai.tool_registry import tool_registry
 from core.geoai.units import UnitDimension, get_unit_dimension
+from core.geoai.validator import _field_limits
 
 
 def _bound(v):
@@ -57,11 +58,11 @@ def test_schema_bounds_equal_groundhog_validation_ranges():
             s = spec.get(field)
             if not s or s.get("type") not in ("float", "int"):
                 continue
-            ge = next((m.ge for m in fi.metadata if hasattr(m, "ge")), None)
-            le = next((m.le for m in fi.metadata if hasattr(m, "le")), None)
+            # Strict (gt/lt) where the inventory marks a singular endpoint, inclusive otherwise.
+            lo, hi, _, _ = _field_limits(fi)
             gh = (_bound(s.get("min_value")), _bound(s.get("max_value")))
-            if (ge, le) != gh:
-                drift.append(f"{name}.{field}: schema {(ge, le)} != Groundhog {gh}")
+            if (lo, hi) != gh:
+                drift.append(f"{name}.{field}: schema {(lo, hi)} != Groundhog {gh}")
     assert not drift, "\n".join(drift)
 
 
@@ -89,7 +90,7 @@ def test_no_implausible_upper_bounds_on_auto_schemas():
         for field, fi in tool.input_model.model_fields.items():
             unit = (fi.json_schema_extra or {}).get("unit", "-")
             dim = get_unit_dimension(unit) if unit != "-" else None
-            le = next((m.le for m in fi.metadata if hasattr(m, "le")), None)
+            _, le, _, _ = _field_limits(fi)
             if dim in _MIN_PLAUSIBLE_UPPER and le is not None and \
                     _to_canonical(le, unit) < _MIN_PLAUSIBLE_UPPER[dim]:
                 problems.append(f"{name}.{field}: upper bound {le} {unit}")
